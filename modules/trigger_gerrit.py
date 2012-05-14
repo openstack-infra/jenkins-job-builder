@@ -33,6 +33,8 @@
 #       branchCompareType: 'ANT'
 #       branchPattern: '**'
 #     ...
+#
+# triggerApprovalCategory and triggerApprovalValue only required if triggerOnCommentAddedEvent: 'true'
 
 import xml.etree.ElementTree as XML
 
@@ -61,8 +63,9 @@ class trigger_gerrit(object):
         XML.SubElement(gtrig, 'triggerOnChangeMergedEvent').text = trigger_data['triggerOnChangeMergedEvent']
         XML.SubElement(gtrig, 'triggerOnCommentAddedEvent').text = trigger_data['triggerOnCommentAddedEvent']
         XML.SubElement(gtrig, 'triggerOnRefUpdatedEvent').text = trigger_data['triggerOnRefUpdatedEvent']
-        XML.SubElement(gtrig, 'commentAddedTriggerApprovalCategory').text = trigger_data['triggerApprovalCategory']
-        XML.SubElement(gtrig, 'commentAddedTriggerApprovalValue').text = str(trigger_data['triggerApprovalValue'])
+        if trigger_data['triggerOnCommentAddedEvent'] == 'true':
+            XML.SubElement(gtrig, 'commentAddedTriggerApprovalCategory').text = trigger_data['triggerApprovalCategory']
+            XML.SubElement(gtrig, 'commentAddedTriggerApprovalValue').text = str(trigger_data['triggerApprovalValue'])
         XML.SubElement(gtrig, 'buildStartMessage')
         XML.SubElement(gtrig, 'buildFailureMessage').text = trigger_data['failureMessage']
         XML.SubElement(gtrig, 'buildSuccessfulMessage')

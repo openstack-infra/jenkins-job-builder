@@ -153,21 +153,35 @@ class Jenkins(object):
          xml = self.jenkins.get_job_config(job_name)
          return hashlib.md5(xml).hexdigest()
 
+     def delete_job(self, job_name):
+         if self.jenkins.is_job(job_name):
+             self.jenkins.delete_job(job_name)
 
-yparse = YamlParser(options.file)
-cache = CacheStorage()
-remote_jenkins = Jenkins(config.get('jenkins','url'), config.get('jenkins','user'), config.get('jenkins','password'))
-while True:
-    try:
-      xml = yparse.get_next_xml()
-      job = yparse.get_name()
-      md5 = xml.md5()
-      if remote_jenkins.is_job(job) and not cache.is_cached(job):
-          old_md5 = remote_jenkins.get_job_md5(job)
-          cache.set(job, old_md5)
+def delete_job():
+    remote_jenkins = Jenkins(config.get('jenkins','url'), config.get('jenkins','user'), config.get('jenkins','password'))
+    remote_jenkins.delete_job(options.name)
 
-      if cache.has_changed(job, md5):
-         remote_jenkins.update_job(job, xml.output())
-         cache.set(job, md5)
-    except StopIteration:
-      break
+def update_job():
+    yparse = YamlParser(options.file)
+    cache = CacheStorage()
+    remote_jenkins = Jenkins(config.get('jenkins','url'), config.get('jenkins','user'), config.get('jenkins','password'))
+    while True:
+        try:
+            xml = yparse.get_next_xml()
+            job = yparse.get_name()
+            md5 = xml.md5()
+            if remote_jenkins.is_job(job) and not cache.is_cached(job):
+                old_md5 = remote_jenkins.get_job_md5(job)
+                cache.set(job, old_md5)
+
+            if cache.has_changed(job, md5):
+                remote_jenkins.update_job(job, xml.output())
+                cache.set(job, md5)
+        except StopIteration:
+            break
+
+if options.command == 'delete':
+    delete_job()
+elif options.command == 'update':
+    update_job()
+

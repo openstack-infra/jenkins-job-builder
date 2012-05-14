@@ -327,3 +327,163 @@ scm:
 
 assignednode:
   node: 'oneiric'
+
+---
+# pep8-check
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_pep8
+
+main:
+  name: 'check-reddwarf-pep8'
+  site: 'stackforge'
+  project: 'reddwarf'
+  authenticatedBuild: 'true'
+  disabled: 'true'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'false'
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'stackforge/reddwarf'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - copy_bundle
+  - pep8
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# python26-check
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'check-reddwarf-python26'
+  site: 'stackforge'
+  project: 'reddwarf'
+  authenticatedBuild: 'true'
+  disabled: 'true'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'true'
+  triggerOnRefUpdatedEvent: 'false'
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'stackforge/reddwarf'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - copy_bundle
+  - python26
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# python27-check
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'check-reddwarf-python27'
+  site: 'stackforge'
+  project: 'reddwarf'
+  authenticatedBuild: 'true'
+  disabled: 'true'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'false'
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'stackforge/reddwarf'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - copy_bundle
+  - python27
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# merge-check
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'check-reddwarf-merge'
+  site: 'stackforge'
+  project: 'reddwarf'
+  authenticatedBuild: 'true'
+  disabled: 'true'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'false'
+  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'stackforge/reddwarf'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+

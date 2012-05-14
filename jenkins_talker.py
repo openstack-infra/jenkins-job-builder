@@ -42,13 +42,17 @@ class JenkinsTalker(object):
             raise JenkinsTalkerException('error posting XML')
         curl.close()
 
-    def _get_request(self, path, pass_codes):
+    def _get_request(self, path, pass_codes, post=False):
         curl = pycurl.Curl()
         response = StringIO()
         curl.setopt(pycurl.URL, self.url + path)
+        if post == True:
+            curl.setopt(pycurl.POST, 1)
+            curl.setopt(pycurl.POSTFIELDSIZE, 0)
         curl.setopt(pycurl.USERPWD, self.user + ":" +  self.password)
         curl.setopt(pycurl.WRITEFUNCTION, response.write)
         curl.perform()
+        print response.getvalue()
         if curl.getinfo(pycurl.RESPONSE_CODE) not in pass_codes:
             raise JenkinsTalkerException('error getting response')
         curl.close()
@@ -67,7 +71,7 @@ class JenkinsTalker(object):
     def delete_job(self, job_name):
         path = 'job/' + job_name + '/doDelete'
         pass_codes = [ 302 ]
-        self._get_request(path, pass_codes)
+        self._get_request(path, pass_codes, True)
 
     def get_job_config(self, job_name):
         path = 'job/' + job_name + '/config.xml'
