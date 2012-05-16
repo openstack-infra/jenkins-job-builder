@@ -1,0 +1,7 @@
+project:
+  template: 'python_jobs'
+
+values:
+  name: 'python-cinderclient'
+  site: 'openstack'
+  disabled: 'false'

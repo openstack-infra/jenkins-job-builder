@@ -1,0 +1,7 @@
+project:
+  template: 'python_jobs'
+
+values:
+  name: 'python-keystoneclient'
+  site: 'openstack'
+  disabled: 'false'

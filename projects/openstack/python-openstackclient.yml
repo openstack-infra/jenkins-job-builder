@@ -1,0 +1,7 @@
+project:
+  template: 'python_jobs'
+
+values:
+  name: 'python-openstackclient'
+  site: 'openstack'
+  disabled: 'false'
