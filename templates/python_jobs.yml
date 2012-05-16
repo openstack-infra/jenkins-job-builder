@@ -1,0 +1,490 @@
+---
+# coverage
+modules:
+  - logrotate
+  - properties
+  - scm
+  - assignednode
+  - trigger_timed
+  - builders
+  - publisher_coverage
+
+main:
+  name: '@NAME@-coverage'
+  site: '@SITE@'
+  project: '@NAME@'
+  authenticatedBuild: 'false'
+  disabled: '@DISABLED@'
+
+trigger:
+  timed: '*/15 * * * *'
+
+builders:
+  - copy_bundle
+  - coverage
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+logrotate:
+  daysToKeep: 3
+  numToKeep: 20
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+---
+# pep8-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_pep8
+
+main:
+  name: 'gate-@NAME@-pep8'
+  site: '@SITE@'
+  project: '@NAME@'
+  authenticatedBuild: 'true'
+  disabled: '@DISABLED@'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'true'
+  triggerOnRefUpdatedEvent: 'false'
+  triggerApprovalCategory: 'APRV'
+  triggerApprovalValue: 1
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: '@SITE@/@NAME@'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - copy_bundle
+  - pep8
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# python26-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-@NAME@-python26'
+  site: '@SITE@'
+  project: '@NAME@'
+  authenticatedBuild: 'true'
+  disabled: '@DISABLED@'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'true'
+  triggerOnRefUpdatedEvent: 'false'
+  triggerApprovalCategory: 'APRV'
+  triggerApprovalValue: 1
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: '@SITE@/@NAME@'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - copy_bundle
+  - python26
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# python27-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-@NAME@-python27'
+  site: '@SITE@'
+  project: '@NAME@'
+  authenticatedBuild: 'true'
+  disabled: '@DISABLED@'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'true'
+  triggerOnRefUpdatedEvent: 'false'
+  triggerApprovalCategory: 'APRV'
+  triggerApprovalValue: 1
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: '@SITE@/@NAME@'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - copy_bundle
+  - python27
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# venv
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_timed
+  - builders
+  - publisher_venv
+
+main:
+  name: '@NAME@-venv'
+  site: '@SITE@'
+  project: '@NAME@'
+  authenticatedBuild: 'false'
+  disabled: '@DISABLED@'
+
+trigger:
+  timed: '@midnight'
+
+builders:
+  - venv
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# docs
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_timed
+  - builders
+  - publisher_docs
+
+main:
+  name: '@NAME@-docs'
+  site: '@SITE@'
+  project: '@NAME@'
+  authenticatedBuild: 'false'
+  disabled: '@DISABLED@'
+
+trigger:
+  timed: '*/15 * * * *'
+
+builders:
+  - copy_bundle
+  - docs
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# merge-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-@NAME@-merge'
+  site: '@SITE@'
+  project: '@NAME@'
+  authenticatedBuild: 'true'
+  disabled: '@DISABLED@'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'true'
+  triggerOnRefUpdatedEvent: 'false'
+  triggerApprovalCategory: 'APRV'
+  triggerApprovalValue: 1
+  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: '@SITE@/@NAME@'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# ppa
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_none
+  - builders
+  - publisher_ppa
+
+main:
+  name: '@NAME@-ppa'
+  site: '@SITE@'
+  project: '@NAME@'
+  authenticatedBuild: 'false'
+  disabled: '@DISABLED@'
+
+builders:
+  - ppa
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# tarball
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_tarball
+
+main:
+  name: '@NAME@-tarball'
+  site: '@SITE@'
+  project: '@NAME@'
+  authenticatedBulid: 'false'
+  disabled: '@DISABLED@'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'true'
+  triggerApprovalCategory: ''
+  triggerApprovalValue: ''
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: '@SITE@/@NAME@'
+      branchCompareType: 'REG_EXP'
+      branchPattern: '^(?!refs/).*$'
+
+builders:
+  - gerrit_git_prep
+  - copy_bundle
+  - tarball
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+
+---
+# pep8-check
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_pep8
+
+main:
+  name: 'check-@NAME@-pep8'
+  site: '@SITE@'
+  project: '@NAME@'
+  authenticatedBuild: 'true'
+  disabled: '@DISABLED@'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'false'
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: '@SITE@/@NAME@'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - copy_bundle
+  - pep8
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# python26-check
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'check-@NAME@-python26'
+  site: '@SITE@'
+  project: '@NAME@'
+  authenticatedBuild: 'true'
+  disabled: '@DISABLED@'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'false'
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: '@SITE@/@NAME@'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - copy_bundle
+  - python26
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# python27-check
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'check-@NAME@-python27'
+  site: '@SITE@'
+  project: '@NAME@'
+  authenticatedBuild: 'true'
+  disabled: '@DISABLED@'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'false'
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: '@SITE@/@NAME@'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - copy_bundle
+  - python27
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# merge-check
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'check-@NAME@-merge'
+  site: '@SITE@'
+  project: '@NAME@'
+  authenticatedBuild: 'true'
+  disabled: '@DISABLED@'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'false'
+  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: '@SITE@/@NAME@'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+

@@ -52,7 +52,6 @@ class JenkinsTalker(object):
         curl.setopt(pycurl.USERPWD, self.user + ":" +  self.password)
         curl.setopt(pycurl.WRITEFUNCTION, response.write)
         curl.perform()
-        print response.getvalue()
         if curl.getinfo(pycurl.RESPONSE_CODE) not in pass_codes:
             raise JenkinsTalkerException('error getting response')
         curl.close()

@@ -24,9 +24,7 @@ import xml.etree.ElementTree as XML
 import pycurl
 import jenkins_talker
 import ConfigParser
-from xml.dom.ext import PrettyPrint
 from StringIO import StringIO
-from xml.dom.ext.reader import Sax2
 
 parser = argparse.ArgumentParser()
 subparser = parser.add_subparsers(help='update or delete job', dest='command')
@@ -50,7 +48,22 @@ class YamlParser(object):
     def __init__(self, yfile):
         self.data = yaml.load_all(yfile)
         self.it = self.data.__iter__()
-        self.current = ''
+        self.current = self.it.next()
+        if self.current.has_key('project'):
+            self.process_template()
+        self.it = self.data.__iter__()
+
+    def process_template(self):
+        project_data = self.current['project']
+        template_file = file('templates/' + project_data['template']  + '.yml', 'r')
+        template = template_file.read()
+        template_file.close()
+        values = self.current['values'].iteritems()
+        for key, value in values:
+            key = '@' + key.upper() + '@'
+            template = template.replace(key, value)
+        template_steam = StringIO(template)
+        self.data = yaml.load_all(template_steam)
 
     def get_next_xml(self):
         self.current = self.it.next()
@@ -103,11 +116,7 @@ In modules/jenkins_jobs"
         return hashlib.md5(self.output()).hexdigest()
 
     def output(self):
-        reader = Sax2.Reader()
-        docNode = reader.fromString(XML.tostring(self.xml))
-        tmpStream = StringIO()
-        PrettyPrint(docNode, stream=tmpStream)
-        return tmpStream.getvalue() 
+        return XML.tostring(self.xml)
 
 class CacheStorage(object):
      def __init__(self):
