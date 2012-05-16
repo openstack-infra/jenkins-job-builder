@@ -351,6 +351,9 @@ trigger:
   triggerOnChangeMergedEvent: 'false'
   triggerOnCommentAddedEvent: 'false'
   triggerOnRefUpdatedEvent: 'false'
+  overrideVotes: 'true'
+  gerritBuildSuccessfulVerifiedValue: 1
+  gerritBuildFailedVerifiedValue: -1
   failureMessage: ''
   projects:
     - projectCompareType: 'PLAIN'
@@ -391,6 +394,9 @@ trigger:
   triggerOnChangeMergedEvent: 'false'
   triggerOnCommentAddedEvent: 'false'
   triggerOnRefUpdatedEvent: 'false'
+  overrideVotes: 'true'
+  gerritBuildSuccessfulVerifiedValue: 1
+  gerritBuildFailedVerifiedValue: -1
   failureMessage: ''
   projects:
     - projectCompareType: 'PLAIN'
@@ -431,6 +437,9 @@ trigger:
   triggerOnChangeMergedEvent: 'false'
   triggerOnCommentAddedEvent: 'false'
   triggerOnRefUpdatedEvent: 'false'
+  overrideVotes: 'true'
+  gerritBuildSuccessfulVerifiedValue: 1
+  gerritBuildFailedVerifiedValue: -1
   failureMessage: ''
   projects:
     - projectCompareType: 'PLAIN'
@@ -471,6 +480,9 @@ trigger:
   triggerOnChangeMergedEvent: 'false'
   triggerOnCommentAddedEvent: 'false'
   triggerOnRefUpdatedEvent: 'false'
+  overrideVotes: 'true'
+  gerritBuildSuccessfulVerifiedValue: 1
+  gerritBuildFailedVerifiedValue: -1
   failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
   projects:
     - projectCompareType: 'PLAIN'
