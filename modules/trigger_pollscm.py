@@ -13,21 +13,21 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Jenkins Job module for timed triggers
+# Jenkins Job module for scm polling triggers
 # To use add the following into your YAML:
 # trigger:
-#   timed: '@midnight'
+#   pollscm: '@midnight'
 # or
-#   timed: '*/15 * * * *'
+#   pollscm: '*/15 * * * *'
 
 import xml.etree.ElementTree as XML
 
-class trigger_timed(object):
+class trigger_pollscm(object):
     def __init__(self, data):
         self.data = data
 
     def gen_xml(self, xml_parent):
-        time = self.data['trigger']['timed']
+        time = self.data['trigger']['pollscm']
         trigger = XML.SubElement(xml_parent, 'triggers', {'class':'vector'})
-        scmtrig = XML.SubElement(trigger, 'hudson.triggers.TimerTrigger')
+        scmtrig = XML.SubElement(trigger, 'hudson.triggers.SCMTrigger')
         XML.SubElement(scmtrig, 'spec').text = time

@@ -5,7 +5,7 @@ modules:
   - properties
   - scm
   - assignednode
-  - trigger_timed
+  - trigger_pollscm
   - builders
   - publisher_coverage
 
@@ -17,7 +17,7 @@ main:
   disabled: '@DISABLED@'
 
 trigger:
-  timed: '*/15 * * * *'
+  pollscm: '*/15 * * * *'
 
 builders:
   - copy_bundle
@@ -167,7 +167,7 @@ modules:
   - properties
   - scm
   - assignednode
-  - trigger_timed
+  - trigger_pollscm
   - builders
   - publisher_venv
 
@@ -179,7 +179,7 @@ main:
   disabled: '@DISABLED@'
 
 trigger:
-  timed: '@midnight'
+  pollscm: '@midnight'
 
 builders:
   - venv
@@ -196,7 +196,7 @@ modules:
   - properties
   - scm
   - assignednode
-  - trigger_timed
+  - trigger_pollscm
   - builders
   - publisher_docs
 
@@ -208,7 +208,7 @@ main:
   disabled: '@DISABLED@'
 
 trigger:
-  timed: '*/15 * * * *'
+  pollscm: '*/15 * * * *'
 
 builders:
   - copy_bundle
