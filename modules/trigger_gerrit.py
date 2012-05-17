@@ -22,6 +22,9 @@
 #  triggerOnRefUpdatedEvent: 'false'
 #  triggerApprovalCategory: 'APRV'
 #  triggerApprovalValue: 1
+#  overrideVotes: 'true'
+#  gerritBuildSuccessfulVerifiedValue: 1
+#  gerritBuildFailedVerifiedValue: -1
 #  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
 #   projects:
 #     - projectCompareType: 'PLAIN'
@@ -63,6 +66,9 @@ class trigger_gerrit(object):
         XML.SubElement(gtrig, 'triggerOnChangeMergedEvent').text = trigger_data['triggerOnChangeMergedEvent']
         XML.SubElement(gtrig, 'triggerOnCommentAddedEvent').text = trigger_data['triggerOnCommentAddedEvent']
         XML.SubElement(gtrig, 'triggerOnRefUpdatedEvent').text = trigger_data['triggerOnRefUpdatedEvent']
+        if trigger_data['overrideVotes'] == 'true':
+            XML.SubElement(gtrig, 'gerritBuildSuccessfulVerifiedValue').text = str(trigger_data['gerritBuildSuccessfulVerifiedValue'])
+            XML.SubElement(gtrig, 'gerritBuildFailedVerifiedValue').text = str(trigger_data['gerritBuildFailedVerifiedValue'])
         if trigger_data['triggerOnCommentAddedEvent'] == 'true':
             XML.SubElement(gtrig, 'commentAddedTriggerApprovalCategory').text = trigger_data['triggerApprovalCategory']
             XML.SubElement(gtrig, 'commentAddedTriggerApprovalValue').text = str(trigger_data['triggerApprovalValue'])
