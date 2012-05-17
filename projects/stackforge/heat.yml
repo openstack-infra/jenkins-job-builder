@@ -1,0 +1,8 @@
+project:
+  template: 'python_jobs'
+
+values:
+  name: 'heat'
+  site: 'stackforge'
+  disabled: 'false'
+
