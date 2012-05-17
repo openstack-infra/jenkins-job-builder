@@ -162,35 +162,6 @@ assignednode:
   node: 'oneiric'
 
 ---
-# venv
-modules:
-  - properties
-  - scm
-  - assignednode
-  - trigger_pollscm
-  - builders
-  - publisher_venv
-
-main:
-  name: '@NAME@-venv'
-  site: '@SITE@'
-  project: '@NAME@'
-  authenticatedBuild: 'false'
-  disabled: '@DISABLED@'
-
-trigger:
-  pollscm: '@midnight'
-
-builders:
-  - venv
-
-scm:
-  scm: 'true'
-
-assignednode:
-  node: 'oneiric'
-
----
 # docs
 modules:
   - properties

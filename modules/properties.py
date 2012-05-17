@@ -35,10 +35,6 @@ class properties(object):
         XML.SubElement(throttle, 'throttleEnabled').text = 'false'
         XML.SubElement(throttle, 'throttleOption').text = 'project'
         XML.SubElement(throttle, 'configVersion').text = '1'
-        env = XML.SubElement(properties, 'EnvInjectJobProperty')
-        einfo = XML.SubElement(env, 'info')
-        eiproperties = XML.SubElement(einfo, 'propertiesContent')
-        eiproperties.text = 'PROJECT={project}'.format(project=main['project'])
         XML.SubElement(einfo, 'loadFilesFromMaster').text = 'false'
         XML.SubElement(env, 'on').text = 'true'
         XML.SubElement(env, 'keepJenkinsSystemVariables').text = 'true'
