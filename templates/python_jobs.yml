@@ -20,7 +20,6 @@ trigger:
   pollscm: '*/15 * * * *'
 
 builders:
-  - copy_bundle
   - coverage
 
 scm:
@@ -68,7 +67,6 @@ trigger:
 
 builders:
   - gerrit_git_prep
-  - copy_bundle
   - pep8
 
 scm:
@@ -110,7 +108,6 @@ trigger:
 
 builders:
   - gerrit_git_prep
-  - copy_bundle
   - python26
 
 scm:
@@ -152,7 +149,6 @@ trigger:
 
 builders:
   - gerrit_git_prep
-  - copy_bundle
   - python27
 
 scm:
@@ -182,7 +178,6 @@ trigger:
   pollscm: '*/15 * * * *'
 
 builders:
-  - copy_bundle
   - docs
 
 scm:
@@ -290,7 +285,6 @@ trigger:
 
 builders:
   - gerrit_git_prep
-  - copy_bundle
   - tarball
 
 scm:
@@ -334,7 +328,6 @@ trigger:
 
 builders:
   - gerrit_git_prep
-  - copy_bundle
   - pep8
 
 scm:
@@ -377,7 +370,6 @@ trigger:
 
 builders:
   - gerrit_git_prep
-  - copy_bundle
   - python26
 
 scm:
@@ -420,7 +412,6 @@ trigger:
 
 builders:
   - gerrit_git_prep
-  - copy_bundle
   - python27
 
 scm:
