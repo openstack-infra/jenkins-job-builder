@@ -54,13 +54,13 @@ class builders(object):
 
     def _tarball(self, xml_parent):
         self._add_script(xml_parent,
-          '/usr/local/jenkins/slave_scripts/create-tarball.sh %s' % self.data['project'])
+          '/usr/local/jenkins/slave_scripts/create-tarball.sh %s' % self.data['main']['project'])
 
     def _ppa(self, xml_parent):
         self._add_script(xml_parent, 'rm -rf build dist.zip\n\
 mkdir build')
         copy = XML.SubElement(xml_parent, 'hudson.plugins.copyartifact.CopyArtifact')
-        XML.SubElement(copy, 'projectName').text = '%s-tarball' % self.data['project']
+        XML.SubElement(copy, 'projectName').text = '%s-tarball' % self.data['main']['project']
         XML.SubElement(copy, 'filter').text = 'dist/*.tar.gz'
         XML.SubElement(copy, 'target').text = 'build'
         selector = XML.SubElement(copy, 'selector', {'class':'hudson.plugins.copyartifact.StatusBuildSelector'})
