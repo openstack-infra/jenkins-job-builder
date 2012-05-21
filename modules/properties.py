@@ -35,11 +35,6 @@ class properties(object):
         XML.SubElement(throttle, 'throttleEnabled').text = 'false'
         XML.SubElement(throttle, 'throttleOption').text = 'project'
         XML.SubElement(throttle, 'configVersion').text = '1'
-        XML.SubElement(einfo, 'loadFilesFromMaster').text = 'false'
-        XML.SubElement(env, 'on').text = 'true'
-        XML.SubElement(env, 'keepJenkinsSystemVariables').text = 'true'
-        XML.SubElement(env, 'keepBuildVariables').text = 'true'
-        XML.SubElement(env, 'contributors')
         if main.has_key('authenticatedBuild') and main['authenticatedBuild'] == 'true':
             security = XML.SubElement(properties, 'hudson.security.AuthorizationMatrixProperty')
             XML.SubElement(security, 'permission').text = 'hudson.model.Item.Build:authenticated'
