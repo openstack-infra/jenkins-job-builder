@@ -66,7 +66,7 @@ class trigger_gerrit(object):
         XML.SubElement(gtrig, 'triggerOnChangeMergedEvent').text = trigger_data['triggerOnChangeMergedEvent']
         XML.SubElement(gtrig, 'triggerOnCommentAddedEvent').text = trigger_data['triggerOnCommentAddedEvent']
         XML.SubElement(gtrig, 'triggerOnRefUpdatedEvent').text = trigger_data['triggerOnRefUpdatedEvent']
-        if trigger_data['overrideVotes'] == 'true':
+        if trigger_data.has_key('overrideVotes') and trigger_data['overrideVotes'] == 'true':
             XML.SubElement(gtrig, 'gerritBuildSuccessfulVerifiedValue').text = str(trigger_data['gerritBuildSuccessfulVerifiedValue'])
             XML.SubElement(gtrig, 'gerritBuildFailedVerifiedValue').text = str(trigger_data['gerritBuildFailedVerifiedValue'])
         if trigger_data['triggerOnCommentAddedEvent'] == 'true':
