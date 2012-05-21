@@ -36,3 +36,43 @@ scm:
 
 assignednode:
   node: 'oneiric'
+
+---
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'check-ceilometer-merge'
+  site: 'stackforge'
+  project: 'ceilometer'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'false'
+  overrideVotes: 'true'
+  gerritBuildSuccessfulVerifiedValue: 1
+  gerritBuildFailedVerifiedValue: -1
+  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'stackforge/ceilometer'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
