@@ -22,7 +22,7 @@ import yaml
 import sys
 import xml.etree.ElementTree as XML
 import pycurl
-import jenkins_talker
+import jenkins
 import ConfigParser
 from StringIO import StringIO
 
@@ -147,16 +147,16 @@ class CacheStorage(object):
          
 class Jenkins(object):
      def __init__(self, url, user, password):
-         self.jenkins = jenkins_talker.JenkinsTalker(url, user, password)
+         self.jenkins = jenkins.Jenkins(url, user, password)
 
      def update_job(self, job_name, xml):
          if self.jenkins.is_job(job_name):
-             self.jenkins.update_job(job_name, xml)
+             self.jenkins.reconfig_job(job_name, xml)
          else:
              self.jenkins.create_job(job_name, xml)
 
      def is_job(self, job_name):
-         return self.jenkins.is_job(job_name)
+         return self.jenkins.job_exists(job_name)
 
      def get_job_md5(self, job_name):
          xml = self.jenkins.get_job_config(job_name)
