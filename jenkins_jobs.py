@@ -150,7 +150,7 @@ class Jenkins(object):
          self.jenkins = jenkins.Jenkins(url, user, password)
 
      def update_job(self, job_name, xml):
-         if self.jenkins.is_job(job_name):
+         if self.is_job(job_name):
              self.jenkins.reconfig_job(job_name, xml)
          else:
              self.jenkins.create_job(job_name, xml)
@@ -163,7 +163,7 @@ class Jenkins(object):
          return hashlib.md5(xml).hexdigest()
 
      def delete_job(self, job_name):
-         if self.jenkins.is_job(job_name):
+         if self.is_job(job_name):
              self.jenkins.delete_job(job_name)
 
 def delete_job():
