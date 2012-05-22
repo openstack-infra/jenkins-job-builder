@@ -41,7 +41,11 @@ class builders(object):
         self._add_script(xml_parent, '/usr/local/jenkins/slave_scripts/run-docs.sh')
 
     def _gerrit_git_prep(self, xml_parent):
-        self._add_script(xml_parent, '/usr/local/jenkins/slave_scripts/gerrit-git-prep.sh {site}'.format(site=self.data['main']['site']))
+        if self.data['main'].has_key('host'):
+            site = self.data['main']['host']
+        else:
+            site = self.data['main']['site']
+        self._add_script(xml_parent, '/usr/local/jenkins/slave_scripts/gerrit-git-prep.sh {site}'.format(site=site))
 
     def _pep8(self, xml_parent):
         self._add_script(xml_parent, 'tox -v -epep8 | tee pep8.txt')
