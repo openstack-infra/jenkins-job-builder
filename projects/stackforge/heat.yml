@@ -3,6 +3,6 @@ project:
 
 values:
   name: 'heat'
-  site: 'stackforge'
+  site: 'heat-api'
   disabled: 'false'
 
