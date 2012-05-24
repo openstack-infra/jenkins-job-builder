@@ -241,7 +241,7 @@ main:
   site: '@SITE@'
   project: '@NAME@'
   authenticatedBuild: 'false'
-  disabled: '@DISABLED@'
+  disabled: 'true'
 
 builders:
   - ppa
