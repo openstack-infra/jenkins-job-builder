@@ -11,10 +11,11 @@ modules:
 
 main:
   name: '@NAME@-coverage'
-  site: '@SITE@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'false'
-  disabled: '@DISABLED@'
+  disabled: '@DISABLED@' 
 
 trigger:
   pollscm: '*/15 * * * *'
@@ -46,7 +47,8 @@ modules:
 
 main:
   name: 'gate-@NAME@-pep8'
-  site: '@SITE@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'true'
   disabled: '@DISABLED@'
@@ -61,7 +63,7 @@ trigger:
   failureMessage: ''
   projects:
     - projectCompareType: 'PLAIN'
-      projectPattern: '@SITE@/@NAME@'
+      projectPattern: '@GITHUB_ORG@/@NAME@'
       branchCompareType: 'ANT'
       branchPattern: '**'
 
@@ -87,7 +89,8 @@ modules:
 
 main:
   name: 'gate-@NAME@-python26'
-  site: '@SITE@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'true'
   disabled: '@DISABLED@'
@@ -102,7 +105,7 @@ trigger:
   failureMessage: ''
   projects:
     - projectCompareType: 'PLAIN'
-      projectPattern: '@SITE@/@NAME@'
+      projectPattern: '@GITHUB_ORG@/@NAME@'
       branchCompareType: 'ANT'
       branchPattern: '**'
 
@@ -128,7 +131,8 @@ modules:
 
 main:
   name: 'gate-@NAME@-python27'
-  site: '@SITE@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'true'
   disabled: '@DISABLED@'
@@ -143,7 +147,7 @@ trigger:
   failureMessage: ''
   projects:
     - projectCompareType: 'PLAIN'
-      projectPattern: '@SITE@/@NAME@'
+      projectPattern: '@GITHUB_ORG@/@NAME@'
       branchCompareType: 'ANT'
       branchPattern: '**'
 
@@ -169,7 +173,8 @@ modules:
 
 main:
   name: '@NAME@-docs'
-  site: '@SITE@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'false'
   disabled: '@DISABLED@'
@@ -186,6 +191,9 @@ scm:
 assignednode:
   node: 'oneiric'
 
+publisher:
+  site: '@PUBLISHER_SITE@'
+
 ---
 # merge-gate
 modules:
@@ -198,7 +206,8 @@ modules:
 
 main:
   name: 'gate-@NAME@-merge'
-  site: '@SITE@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'true'
   disabled: '@DISABLED@'
@@ -213,7 +222,7 @@ trigger:
   failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
   projects:
     - projectCompareType: 'PLAIN'
-      projectPattern: '@SITE@/@NAME@'
+      projectPattern: '@GITHUB_ORG@/@NAME@'
       branchCompareType: 'ANT'
       branchPattern: '**'
 
@@ -238,7 +247,8 @@ modules:
 
 main:
   name: '@NAME@-ppa'
-  site: '@SITE@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'false'
   disabled: '@DISABLED@'
@@ -264,7 +274,8 @@ modules:
 
 main:
   name: '@NAME@-tarball'
-  site: '@SITE@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBulid: 'false'
   disabled: '@DISABLED@'
@@ -279,7 +290,7 @@ trigger:
   failureMessage: ''
   projects:
     - projectCompareType: 'PLAIN'
-      projectPattern: '@SITE@/@NAME@'
+      projectPattern: '@GITHUB_ORG@/@NAME@'
       branchCompareType: 'REG_EXP'
       branchPattern: '^(?!refs/).*$'
 
@@ -292,6 +303,9 @@ scm:
 
 assignednode:
   node: 'oneiric'
+
+publisher:
+  site: '@PUBLISHER_SITE@'
 
 
 ---
@@ -306,7 +320,8 @@ modules:
 
 main:
   name: 'check-@NAME@-pep8'
-  site: '@SITE@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'true'
   disabled: '@DISABLED@'
@@ -322,7 +337,7 @@ trigger:
   failureMessage: ''
   projects:
     - projectCompareType: 'PLAIN'
-      projectPattern: '@SITE@/@NAME@'
+      projectPattern: '@GITHUB_ORG@/@NAME@'
       branchCompareType: 'ANT'
       branchPattern: '**'
 
@@ -348,7 +363,8 @@ modules:
 
 main:
   name: 'check-@NAME@-python26'
-  site: '@SITE@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'true'
   disabled: '@DISABLED@'
@@ -364,7 +380,7 @@ trigger:
   failureMessage: ''
   projects:
     - projectCompareType: 'PLAIN'
-      projectPattern: '@SITE@/@NAME@'
+      projectPattern: '@GITHUB_ORG@/@NAME@'
       branchCompareType: 'ANT'
       branchPattern: '**'
 
@@ -390,7 +406,8 @@ modules:
 
 main:
   name: 'check-@NAME@-python27'
-  site: '@SITE@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'true'
   disabled: '@DISABLED@'
@@ -406,7 +423,7 @@ trigger:
   failureMessage: ''
   projects:
     - projectCompareType: 'PLAIN'
-      projectPattern: '@SITE@/@NAME@'
+      projectPattern: '@GITHUB_ORG@/@NAME@'
       branchCompareType: 'ANT'
       branchPattern: '**'
 
@@ -432,7 +449,8 @@ modules:
 
 main:
   name: 'check-@NAME@-merge'
-  site: '@SITE@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'true'
   disabled: '@DISABLED@'
@@ -448,7 +466,7 @@ trigger:
   failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
   projects:
     - projectCompareType: 'PLAIN'
-      projectPattern: '@SITE@/@NAME@'
+      projectPattern: '@GITHUB_ORG@/@NAME@'
       branchCompareType: 'ANT'
       branchPattern: '**'
 

@@ -3,6 +3,7 @@ project:
 
 values:
   name: 'reddwarf'
-  site: 'stackforge'
   disabled: 'true'
-
+  github_org: 'stackforge'
+  review_site: 'review.stackforge.org'
+  publisher_site: 'TODO.stackforge.org'

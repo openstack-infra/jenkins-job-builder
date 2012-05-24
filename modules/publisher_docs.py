@@ -14,7 +14,8 @@
 # under the License.
 
 # Jenkins Job module for docs publishers
-# No additional YAML needed
+# publish:
+#   site: 'glance.openstack.org'
 
 import xml.etree.ElementTree as XML
 
@@ -24,9 +25,10 @@ class publisher_docs(object):
 
     def gen_xml(self, xml_parent):
         main = self.data['main']
+        publish = self.data['publisher']
         publishers = XML.SubElement(xml_parent, 'publishers')
         scp = XML.SubElement(publishers, 'be.certipost.hudson.plugin.SCPRepositoryPublisher')
-        XML.SubElement(scp, 'siteName').text = '{proj}.{site}.org'.format(proj=main['project'], site=main['site'])
+        XML.SubElement(scp, 'siteName').text = publish['site']
         entries = XML.SubElement(scp, 'entries')
         entry = XML.SubElement(entries, 'be.certipost.hudson.plugin.Entry')
         XML.SubElement(entry, 'filePath').text = 'docs/{proj}'.format(proj=main['project'])

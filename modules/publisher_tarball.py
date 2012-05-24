@@ -14,11 +14,9 @@
 # under the License.
 
 # Jenkins Job module for tarball publishers
-# To use you can optionally add the following into your YAML:
-# publisher:
-#   uploadProject: 'glance'
-#
-# If you do not add this it will default to the project specified in the YAML
+# To use you add the following into your YAML:
+# publish:
+#   site: 'glance.openstack.org'
 
 import xml.etree.ElementTree as XML
 
@@ -27,19 +25,16 @@ class publisher_tarball(object):
         self.data = data
 
     def gen_xml(self, xml_parent):
-        if self.data.has_key('publisher') and self.data['publisher'].has_key('upload_project'):
-            project = self.data['publisher']['upload_project']
-        else:
-            project = self.data['main']['project']
+        site = self.data['publisher']['site']
         publishers = XML.SubElement(xml_parent, 'publishers')
         archiver = XML.SubElement(publishers, 'hudson.tasks.ArtifactArchiver')
         XML.SubElement(archiver, 'artifacts').text = 'dist/*.tar.gz'
         XML.SubElement(archiver, 'latestOnly').text = 'false'
         scp = XML.SubElement(publishers, 'be.certipost.hudson.plugin.SCPRepositoryPublisher')
-        XML.SubElement(scp, 'siteName').text = '{proj}.{site}.org'.format(proj=project, site=self.data['main']['site'])
+        XML.SubElement(scp, 'siteName').text = site
         entries = XML.SubElement(scp, 'entries')
         entry = XML.SubElement(entries, 'be.certipost.hudson.plugin.Entry')
-        XML.SubElement(entry, 'filePath').text = 'tarballs/{proj}/'.format(proj=project)
+        XML.SubElement(entry, 'filePath').text = 'tarballs/{proj}/'.format(proj=self.data['main']['project'])
         XML.SubElement(entry, 'sourceFile').text = 'dist/*.tar.gz'
         XML.SubElement(entry, 'keepHierarchy').text = 'false'
         btrigger = XML.SubElement(publishers, 'hudson.plugins.parameterizedtrigger.BuildTrigger')

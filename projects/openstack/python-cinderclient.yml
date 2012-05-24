@@ -3,5 +3,7 @@ project:
 
 values:
   name: 'python-cinderclient'
-  site: 'openstack'
   disabled: 'false'
+  github_org: 'openstack'
+  review_site: 'review.openstack.org'
+  publisher_site: 'nova.openstack.org'

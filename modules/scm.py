@@ -36,7 +36,7 @@ class scm(object):
           huser = XML.SubElement(user, 'hudson.plugins.git.UserRemoteConfig')
           XML.SubElement(huser, 'name').text = 'origin'
           XML.SubElement(huser, 'refspec').text = '+refs/heads/*:refs/remotes/origin/*'
-          XML.SubElement(huser, 'url').text = 'git://github.com/{site}/{project}.git'.format(site=main['site'], project=main['project'])
+          XML.SubElement(huser, 'url').text = 'git://github.com/{org}/{project}.git'.format(org=main['github_org'], project=main['project'])
           branches = XML.SubElement(scm, 'branches')
           bspec = XML.SubElement(branches, 'hudson.plugins.git.BranchSpec')
           XML.SubElement(bspec, 'name').text = '**'

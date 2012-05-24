@@ -11,7 +11,7 @@ modules:
 
 main:
   name: 'heat-coverage'
-  site: 'heat-api'
+  github_org: 'heat-api'
   project: 'heat'
   authenticatedBuild: 'false'
   disabled: 'false'
@@ -46,8 +46,8 @@ modules:
 
 main:
   name: 'gate-heat-pep8'
-  site: 'heat-api'
-  host: 'stackforge'
+  github_org: 'heat-api'
+  review_site: 'review.stackforge.org'
   project: 'heat'
   authenticatedBuild: 'true'
   disabled: 'false'
@@ -88,8 +88,8 @@ modules:
 
 main:
   name: 'gate-heat-python26'
-  site: 'heat-api'
-  host: 'stackforge'
+  github_org: 'heat-api'
+  review_site: 'review.stackforge.org'
   project: 'heat'
   authenticatedBuild: 'true'
   disabled: 'false'
@@ -130,8 +130,8 @@ modules:
 
 main:
   name: 'gate-heat-python27'
-  site: 'heat-api'
-  host: 'stackforge'
+  github_org: 'heat-api'
+  review_site: 'review.stackforge.org'
   project: 'heat'
   authenticatedBuild: 'true'
   disabled: 'false'
@@ -172,7 +172,8 @@ modules:
 
 main:
   name: 'heat-docs'
-  site: 'heat-api'
+  github_org: 'heat-api'
+  review_site: 'review.stackforge.org'
   project: 'heat'
   authenticatedBuild: 'false'
   disabled: 'false'
@@ -189,6 +190,9 @@ scm:
 assignednode:
   node: 'oneiric'
 
+publisher:
+  site: TODO.stackforge.org
+
 ---
 # merge-gate
 modules:
@@ -201,8 +205,8 @@ modules:
 
 main:
   name: 'gate-heat-merge'
-  site: 'heat-api'
-  host: 'stackforge'
+  github_org: 'heat-api'
+  review_site: 'review.stackforge.org'
   project: 'heat'
   authenticatedBuild: 'true'
   disabled: 'false'
@@ -242,7 +246,7 @@ modules:
 
 main:
   name: 'heat-ppa'
-  site: 'heat-api'
+  github_org: 'heat-api'
   project: 'heat'
   authenticatedBuild: 'false'
   disabled: 'false'
@@ -268,8 +272,8 @@ modules:
 
 main:
   name: 'heat-tarball'
-  site: 'heat-api'
-  host: 'stackforge'
+  github_org: 'heat-api'
+  review_site: 'review.stackforge.org'
   project: 'heat'
   authenticatedBulid: 'false'
   disabled: 'false'
@@ -298,6 +302,8 @@ scm:
 assignednode:
   node: 'oneiric'
 
+publisher:
+  site: TODO.stackforge.org
 
 ---
 # pep8-check
@@ -311,8 +317,8 @@ modules:
 
 main:
   name: 'check-heat-pep8'
-  site: 'heat-api'
-  host: 'stackforge'
+  github_org: 'heat-api'
+  review_site: 'review.stackforge.org'
   project: 'heat'
   authenticatedBuild: 'true'
   disabled: 'false'
@@ -354,8 +360,8 @@ modules:
 
 main:
   name: 'check-heat-python26'
-  site: 'heat-api'
-  host: 'stackforge'
+  github_org: 'heat-api'
+  review_site: 'review.stackforge.org'
   project: 'heat'
   authenticatedBuild: 'true'
   disabled: 'false'
@@ -397,8 +403,8 @@ modules:
 
 main:
   name: 'check-heat-python27'
-  site: 'heat-api'
-  host: 'stackforge'
+  github_org: 'heat-api'
+  review_site: 'review.stackforge.org'
   project: 'heat'
   authenticatedBuild: 'true'
   disabled: 'false'
@@ -440,8 +446,8 @@ modules:
 
 main:
   name: 'check-heat-merge'
-  site: 'heat-api'
-  host: 'stackforge'
+  github_org: 'heat-api'
+  review_site: 'review.stackforge.org'
   project: 'heat'
   authenticatedBuild: 'true'
   disabled: 'false'

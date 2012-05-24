@@ -9,7 +9,8 @@ modules:
 
 main:
   name: 'gate-ceilometer-merge'
-  site: 'stackforge'
+  github_org: 'stackforge'
+  review_site: 'review.stackforge.org'
   project: 'ceilometer'
   authenticatedBuild: 'true'
   disabled: 'false'
@@ -48,7 +49,8 @@ modules:
 
 main:
   name: 'check-ceilometer-merge'
-  site: 'stackforge'
+  github_org: 'stackforge'
+  review_site: 'review.stackforge.org'
   project: 'ceilometer'
   authenticatedBuild: 'true'
   disabled: 'false'

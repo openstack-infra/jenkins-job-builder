@@ -21,28 +21,33 @@ import hashlib
 import yaml
 import sys
 import xml.etree.ElementTree as XML
+from xml.dom import minidom
 import pycurl
 import jenkins
 import ConfigParser
 from StringIO import StringIO
+import re
 
 parser = argparse.ArgumentParser()
-subparser = parser.add_subparsers(help='update or delete job', dest='command')
+subparser = parser.add_subparsers(help='update, test or delete job', dest='command')
 parser_update = subparser.add_parser('update')
 parser_update.add_argument('file', help='YAML file for update', type=file)
+parser_update = subparser.add_parser('test')
+parser_update.add_argument('file', help='YAML file for test', type=file)
 parser_delete = subparser.add_parser('delete')
 parser_delete.add_argument('name', help='name of job')
 parser.add_argument('--conf', dest='conf', help='Configuration file')
 options = parser.parse_args()
 
 if options.conf:
-  conf = options.conf
+    conf = options.conf
 else:
-  conf = 'jenkins_jobs.ini'
+    conf = 'jenkins_jobs.ini'
 
-conffp = open(conf, 'r')
-config = ConfigParser.ConfigParser()
-config.readfp(conffp)
+if not options.command == 'test':
+    conffp = open(conf, 'r')
+    config = ConfigParser.ConfigParser()
+    config.readfp(conffp)
 
 class YamlParser(object):
     def __init__(self, yfile):
@@ -115,8 +120,13 @@ In modules/jenkins_jobs"
     def md5(self):
         return hashlib.md5(self.output()).hexdigest()
 
+    # Pretty printing ideas from http://stackoverflow.com/questions/749796/pretty-printing-xml-in-python
+    pretty_text_re = re.compile('>\n\s+([^<>\s].*?)\n\s+</', re.DOTALL)
+
     def output(self):
-        return XML.tostring(self.xml)
+        out = minidom.parseString(XML.tostring(self.xml)).toprettyxml(indent='  ')
+        return self.pretty_text_re.sub('>\g<1></', out)
+
 
 class CacheStorage(object):
      def __init__(self):
@@ -170,14 +180,18 @@ def delete_job():
     remote_jenkins = Jenkins(config.get('jenkins','url'), config.get('jenkins','user'), config.get('jenkins','password'))
     remote_jenkins.delete_job(options.name)
 
-def update_job():
+def update_job(test = False):
     yparse = YamlParser(options.file)
     cache = CacheStorage()
-    remote_jenkins = Jenkins(config.get('jenkins','url'), config.get('jenkins','user'), config.get('jenkins','password'))
+    if not test:
+        remote_jenkins = Jenkins(config.get('jenkins','url'), config.get('jenkins','user'), config.get('jenkins','password'))
     while True:
         try:
             xml = yparse.get_next_xml()
             job = yparse.get_name()
+            if test:
+                print xml.output()
+                continue
             md5 = xml.md5()
             if remote_jenkins.is_job(job) and not cache.is_cached(job):
                 old_md5 = remote_jenkins.get_job_md5(job)
@@ -193,4 +207,6 @@ if options.command == 'delete':
     delete_job()
 elif options.command == 'update':
     update_job()
+elif options.command == 'test':
+    update_job(True)
 
