@@ -26,6 +26,8 @@ import ConfigParser
 from StringIO import StringIO
 import re
 
+class JenkinsJobsException(Exception): pass
+
 parser = argparse.ArgumentParser()
 subparser = parser.add_subparsers(help='update, test or delete job', dest='command')
 parser_update = subparser.add_parser('update')
@@ -51,10 +53,13 @@ class YamlParser(object):
     def __init__(self, yfile):
         self.data = yaml.load_all(yfile)
         self.it = self.data.__iter__()
-        self.current = self.it.next()
-        if self.current.has_key('project'):
-            self.process_template()
-        self.it = self.data.__iter__()
+        self.template_data = None
+        self.current = None
+        self.current_template = None
+        self.template_it = None
+        self.reading_template = False
+        self.eof = False
+        self.seek_next_xml()
 
     def process_template(self):
         project_data = self.current['project']
@@ -66,14 +71,42 @@ class YamlParser(object):
             key = '@' + key.upper() + '@'
             template = template.replace(key, value)
         template_steam = StringIO(template)
-        self.data = yaml.load_all(template_steam)
+        self.template_data = yaml.load_all(template_steam)
+        self.template_it = self.template_data.__iter__()
+        self.reading_template = True
 
     def get_next_xml(self):
-        self.current = self.it.next()
-        return XmlParser(self.current)
+        if not self.eof:
+            if self.reading_template:
+                data = XmlParser(self.current_template)
+            else:
+                data = XmlParser(self.current)
+            self.seek_next_xml()
+            return data
+        else:
+            raise JenkinsJobsException('End of file')
+
+    def seek_next_xml(self):
+        if self.reading_template:
+            try:
+                self.current_template = self.template_it.next()
+                return
+            except StopIteration:
+                self.reading_template = False
+        try:
+            self.current = self.it.next()
+        except StopIteration:
+            self.eof = True
+
+        if self.current.has_key('project'):
+            self.process_template()
+            self.current_template = self.template_it.next()
 
     def get_name(self):
-        return self.current['main']['name']
+        if self.reading_template:
+            return self.current_template['main']['name']
+        else:
+            return self.current['main']['name']
 
 
 class XmlParser(object):
@@ -198,7 +231,7 @@ def update_job(test = False):
             if cache.has_changed(job, md5):
                 remote_jenkins.update_job(job, xml.output())
                 cache.set(job, md5)
-        except StopIteration:
+        except JenkinsJobsException:
             break
 
 if options.command == 'delete':
