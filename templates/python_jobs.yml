@@ -251,7 +251,7 @@ main:
   github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'false'
-  disabled: '@DISABLED@'
+  disabled: 'true'
 
 builders:
   - ppa
