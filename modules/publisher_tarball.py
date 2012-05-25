@@ -42,7 +42,7 @@ class publisher_tarball(object):
         btrigger_config = XML.SubElement(btrigger_configs, 'hudson.plugins.parameterizedtrigger.BuildTriggerConfig')
         configs = XML.SubElement(btrigger_config, 'configs')
         parameters = XML.SubElement(configs, 'hudson.plugins.parameterizedtrigger.PredefinedBuildParameters')
-        properties = XML.SubElement(parameters, 'properties').text = 'BUILD_SELECTOR=&lt;SpecificBuildSelector&gt;&lt;buildNumber&gt;$BUILD_NUMBER&lt;/buildNumber&gt;&lt;/SpecificBuildSelector&gt;\n\
+        XML.SubElement(parameters, 'properties').text = 'BUILD_SELECTOR=&lt;SpecificBuildSelector&gt;&lt;buildNumber&gt;$BUILD_NUMBER&lt;/buildNumber&gt;&lt;/SpecificBuildSelector&gt;\n\
 BRANCH=$GERRIT_REFNAME'
         XML.SubElement(btrigger_config, 'projects').text = '{proj}-ppa'.format(proj=self.data['main']['project'])
         XML.SubElement(btrigger_config, 'condition').text = 'SUCCESS'
