@@ -19,10 +19,8 @@ import os
 import argparse
 import hashlib
 import yaml
-import sys
 import xml.etree.ElementTree as XML
 from xml.dom import minidom
-import pycurl
 import jenkins
 import ConfigParser
 from StringIO import StringIO
