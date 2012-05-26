@@ -1,0 +1,212 @@
+---
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-gerrit-merge'
+  github_org: 'openstack-ci'
+  review_site: 'review.openstack.org'
+  project: 'gerrit'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'true'
+  triggerOnRefUpdatedEvent: 'false'
+  triggerApprovalCategory: 'APRV'
+  triggerApprovalValue: 1
+  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack-ci/gerrit'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'check-gerrit-merge'
+  github_org: 'openstack-ci'
+  review_site: 'review.openstack.org'
+  project: 'gerrit'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'false'
+  overrideVotes: 'true'
+  gerritBuildSuccessfulVerifiedValue: 1
+  gerritBuildFailedVerifiedValue: -1
+  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack-ci/gerrit'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# check-gerrit-unittests
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'check-gerrit-unittests'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'gerrit'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'false'
+  overrideVotes: 'true'
+  gerritBuildSuccessfulVerifiedValue: 1
+  gerritBuildFailedVerifiedValue: -1
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack-ci/gerrit'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - maven_test
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# gate-gerrit-unittests
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-gerrit-unittests'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'gerrit'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'true'
+  triggerOnRefUpdatedEvent: 'false'
+  triggerApprovalCategory: 'APRV'
+  triggerApprovalValue: 1
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack-ci/gerrit'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - maven_test
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# gerrit-package
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_war
+
+main:
+  name: 'gerrit-package'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'gerrit'
+  authenticatedBulid: 'false'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'true'
+  triggerApprovalCategory: ''
+  triggerApprovalValue: ''
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack-ci/gerrit'
+      branchCompareType: 'REG_EXP'
+      branchPattern: '^(?!refs/).*$'
+
+builders:
+  - gerrit_git_prep
+  - gerrit_package
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+publisher:
+  site: 'nova.openstack.org'
+  warfile: 'gerrit-war/target/gerrit*.war'
+  target_path: 'tarballs/ci/'

@@ -43,6 +43,16 @@ class builders(object):
     def _gerrit_git_prep(self, xml_parent):
         self._add_script(xml_parent, '/usr/local/jenkins/slave_scripts/gerrit-git-prep.sh {site}'.format(site=self.data['main']['review_site']))
 
+    def _maven_test(self, xml_parent):
+        self._add_script(xml_parent, 'mvn test')
+
+    def _maven_package(self, xml_parent):
+        self._add_script(xml_parent, 'mvn package')
+
+    def _gerrit_package(self, xml_parent):
+        self._add_script(xml_parent,
+            '/usr/local/jenkins/slave_scripts/package-gerrit.sh')
+
     def _pep8(self, xml_parent):
         self._add_script(xml_parent, 'tox -v -epep8 | tee pep8.txt')
 
