@@ -37,13 +37,3 @@ class publisher_tarball(object):
         XML.SubElement(entry, 'filePath').text = 'tarballs/{proj}/'.format(proj=self.data['main']['project'])
         XML.SubElement(entry, 'sourceFile').text = 'dist/*.tar.gz'
         XML.SubElement(entry, 'keepHierarchy').text = 'false'
-        btrigger = XML.SubElement(publishers, 'hudson.plugins.parameterizedtrigger.BuildTrigger')
-        btrigger_configs = XML.SubElement(btrigger, 'configs')
-        btrigger_config = XML.SubElement(btrigger_configs, 'hudson.plugins.parameterizedtrigger.BuildTriggerConfig')
-        configs = XML.SubElement(btrigger_config, 'configs')
-        parameters = XML.SubElement(configs, 'hudson.plugins.parameterizedtrigger.PredefinedBuildParameters')
-        XML.SubElement(parameters, 'properties').text = 'BUILD_SELECTOR=&lt;SpecificBuildSelector&gt;&lt;buildNumber&gt;$BUILD_NUMBER&lt;/buildNumber&gt;&lt;/SpecificBuildSelector&gt;\n\
-BRANCH=$GERRIT_REFNAME'
-        XML.SubElement(btrigger_config, 'projects').text = '{proj}-ppa'.format(proj=self.data['main']['project'])
-        XML.SubElement(btrigger_config, 'condition').text = 'SUCCESS'
-        XML.SubElement(btrigger_config, 'triggerWithNoParameters').text = 'false'
