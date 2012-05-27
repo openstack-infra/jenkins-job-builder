@@ -53,6 +53,7 @@ class YamlParser(object):
     def __init__(self, yfile):
         self.data = yaml.load_all(yfile)
         self.it = self.data.__iter__()
+        self.job_name = None
         self.template_data = None
         self.current = None
         self.current_template = None
@@ -79,8 +80,10 @@ class YamlParser(object):
         if not self.eof:
             if self.reading_template:
                 data = XmlParser(self.current_template)
+                self.job_name = self.current_template['main']['name']
             else:
                 data = XmlParser(self.current)
+                self.job_name = self.current['main']['name']
             self.seek_next_xml()
             return data
         else:
@@ -103,11 +106,7 @@ class YamlParser(object):
             self.current_template = self.template_it.next()
 
     def get_name(self):
-        if self.reading_template:
-            return self.current_template['main']['name']
-        else:
-            return self.current['main']['name']
-
+        return self.job_name
 
 class XmlParser(object):
     def __init__(self, data):
