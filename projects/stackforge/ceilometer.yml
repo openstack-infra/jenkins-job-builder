@@ -1,80 +1,9 @@
----
-modules:
-  - properties
-  - scm
-  - assignednode
-  - trigger_gerrit
-  - builders
-  - publisher_none
+project:
+  template: 'python_jobs'
 
-main:
-  name: 'gate-ceilometer-merge'
+values:
+  name: 'ceilometer'
+  disabled: 'false'
   github_org: 'stackforge'
   review_site: 'review.stackforge.org'
-  project: 'ceilometer'
-  authenticatedBuild: 'true'
-  disabled: 'false'
-
-trigger:
-  triggerOnPatchsetUploadedEvent: 'false'
-  triggerOnChangeMergedEvent: 'false'
-  triggerOnCommentAddedEvent: 'true'
-  triggerOnRefUpdatedEvent: 'false'
-  triggerApprovalCategory: 'APRV'
-  triggerApprovalValue: 1
-  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
-  projects:
-    - projectCompareType: 'PLAIN'
-      projectPattern: 'stackforge/ceilometer'
-      branchCompareType: 'ANT'
-      branchPattern: '**'
-
-builders:
-  - gerrit_git_prep
-
-scm:
-  scm: 'false'
-
-assignednode:
-  node: 'oneiric'
-
----
-modules:
-  - properties
-  - scm
-  - assignednode
-  - trigger_gerrit
-  - builders
-  - publisher_none
-
-main:
-  name: 'check-ceilometer-merge'
-  github_org: 'stackforge'
-  review_site: 'review.stackforge.org'
-  project: 'ceilometer'
-  authenticatedBuild: 'true'
-  disabled: 'false'
-
-trigger:
-  triggerOnPatchsetUploadedEvent: 'true'
-  triggerOnChangeMergedEvent: 'false'
-  triggerOnCommentAddedEvent: 'false'
-  triggerOnRefUpdatedEvent: 'false'
-  overrideVotes: 'true'
-  gerritBuildSuccessfulVerifiedValue: 1
-  gerritBuildFailedVerifiedValue: -1
-  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
-  projects:
-    - projectCompareType: 'PLAIN'
-      projectPattern: 'stackforge/ceilometer'
-      branchCompareType: 'ANT'
-      branchPattern: '**'
-
-builders:
-  - gerrit_git_prep
-
-scm:
-  scm: 'false'
-
-assignednode:
-  node: 'oneiric'
+  publisher_site: 'TODO.stackforge.org'
