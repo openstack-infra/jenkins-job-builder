@@ -1,9 +1,482 @@
-project:
-  template: 'python_jobs'
+---
+# coverage
+modules:
+  - logrotate
+  - properties
+  - scm
+  - assignednode
+  - trigger_pollscm
+  - builders
+  - publisher_coverage
 
-values:
-  name: 'swift'
-  disabled: 'false'
-  github_org: 'openstack'
+main:
+  name: 'swift-coverage'
   review_site: 'review.openstack.org'
-  publisher_site: 'nova.openstack.org'
+  github_org: 'openstack'
+  project: 'swift'
+  authenticatedBuild: 'false'
+  disabled: 'false' 
+
+trigger:
+  pollscm: '*/15 * * * *'
+
+builders:
+  - coverage
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+logrotate:
+  daysToKeep: 3
+  numToKeep: 20
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+---
+# pep8-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_pep8
+
+main:
+  name: 'gate-swift-pep8'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack'
+  project: 'swift'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'true'
+  triggerOnRefUpdatedEvent: 'false'
+  triggerApprovalCategory: 'APRV'
+  triggerApprovalValue: 1
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack/swift'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - pep8
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# python26-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-swift-python26'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack'
+  project: 'swift'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'true'
+  triggerOnRefUpdatedEvent: 'false'
+  triggerApprovalCategory: 'APRV'
+  triggerApprovalValue: 1
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack/swift'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - python26
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# python27-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-swift-python27'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack'
+  project: 'swift'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'true'
+  triggerOnRefUpdatedEvent: 'false'
+  triggerApprovalCategory: 'APRV'
+  triggerApprovalValue: 1
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack/swift'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - python27
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# docs
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_pollscm
+  - builders
+  - publisher_docs
+
+main:
+  name: 'swift-docs'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack'
+  project: 'swift'
+  authenticatedBuild: 'false'
+  disabled: 'false'
+
+trigger:
+  pollscm: '*/15 * * * *'
+
+builders:
+  - docs
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+publisher:
+  site: 'nova.openstack.org'
+
+---
+# merge-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-swift-merge'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack'
+  project: 'swift'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'true'
+  triggerOnRefUpdatedEvent: 'false'
+  triggerApprovalCategory: 'APRV'
+  triggerApprovalValue: 1
+  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack/swift'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# ppa
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_none
+  - builders
+  - publisher_ppa
+
+main:
+  name: 'swift-ppa'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack'
+  project: 'swift'
+  authenticatedBuild: 'false'
+  disabled: 'true'
+
+builders:
+  - ppa
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# tarball
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_tarball
+
+main:
+  name: 'swift-tarball'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack'
+  project: 'swift'
+  authenticatedBulid: 'false'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'true'
+  triggerApprovalCategory: ''
+  triggerApprovalValue: ''
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack/swift'
+      branchCompareType: 'REG_EXP'
+      branchPattern: '^(?!refs/).*$'
+
+builders:
+  - gerrit_git_prep
+  - tarball_nomilestone
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+publisher:
+  site: 'nova.openstack.org'
+
+
+---
+# pep8-check
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_pep8
+
+main:
+  name: 'check-swift-pep8'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack'
+  project: 'swift'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'false'
+  overrideVotes: 'true'
+  gerritBuildSuccessfulVerifiedValue: 1
+  gerritBuildFailedVerifiedValue: -1
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack/swift'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - pep8
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# python26-check
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'check-swift-python26'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack'
+  project: 'swift'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'false'
+  overrideVotes: 'true'
+  gerritBuildSuccessfulVerifiedValue: 1
+  gerritBuildFailedVerifiedValue: -1
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack/swift'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - python26
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# python27-check
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'check-swift-python27'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack'
+  project: 'swift'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'false'
+  overrideVotes: 'true'
+  gerritBuildSuccessfulVerifiedValue: 1
+  gerritBuildFailedVerifiedValue: -1
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack/swift'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - python27
+
+scm:
+  scm: 'true'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# merge-check
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'check-swift-merge'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack'
+  project: 'swift'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'true'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'false'
+  triggerOnRefUpdatedEvent: 'false'
+  overrideVotes: 'true'
+  gerritBuildSuccessfulVerifiedValue: 1
+  gerritBuildFailedVerifiedValue: -1
+  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack/swift'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+

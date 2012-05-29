@@ -66,6 +66,10 @@ class builders(object):
         self._add_script(xml_parent,
           '/usr/local/jenkins/slave_scripts/create-tarball.sh %s' % self.data['main']['project'])
 
+    def _tarball_nomilestone(self, xml_parent):
+        self._add_script(xml_parent,
+          'export NOMILESTONE=1\n/usr/local/jenkins/slave_scripts/create-tarball.sh %s' % self.data['main']['project'])
+
     def _ppa(self, xml_parent):
         self._add_script(xml_parent, 'rm -rf build dist.zip\n\
 mkdir build')
