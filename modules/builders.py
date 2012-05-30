@@ -22,12 +22,14 @@
 import xml.etree.ElementTree as XML
 
 class builders(object):
-    def __init__(self, data):
+
+    def __init__(self, data, alias='builders'):
         self.data = data
+        self.alias = alias
 
     def gen_xml(self, xml_parent):
-        builders = XML.SubElement(xml_parent, 'builders')
-        for builder in self.data['builders']:
+        builders = XML.SubElement(xml_parent, self.alias)
+        for builder in self.data[self.alias]:
             getattr(self, '_' + builder)(builders)
 
     def _add_script(self, xml_parent, script):
@@ -52,6 +54,15 @@ class builders(object):
     def _gerrit_package(self, xml_parent):
         self._add_script(xml_parent,
             '/usr/local/jenkins/slave_scripts/package-gerrit.sh')
+
+    def _gerrit_preclean(self, xml_parent):
+        self._add_script(xml_parent, "#!/bin/bash -xe\n\
+rm -fr ~/.m2\n\
+rm -fr ~/.java\n\
+./tools/version.sh --release")
+
+    def _gerrit_postrun(self, xml_parent):
+        self._add_script(xml_parent, "./tools/version.sh --reset")
 
     def _pep8(self, xml_parent):
         self._add_script(xml_parent, 'tox -v -epep8 | tee pep8.txt')

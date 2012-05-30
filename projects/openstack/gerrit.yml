@@ -82,11 +82,12 @@ assignednode:
 ---
 # check-gerrit-unittests
 modules:
+  - project_maven
   - properties
   - scm
   - assignednode
   - trigger_gerrit
-  - builders
+  - builders:prebuilders
   - publisher_war
 
 main:
@@ -112,9 +113,18 @@ trigger:
       branchCompareType: 'ANT'
       branchPattern: '**'
 
-builders:
+prebuilders:
   - gerrit_git_prep
-  - gerrit_package
+  - gerrit_preclean
+
+maven:
+  root_module:
+    group_id: com.google.gerrit
+    artifact_id: gerrit-parent
+  goals: 'clean package -Dgerrit.include-documentation=1 -X'
+
+postbuilders:
+  - gerrit_postrun
 
 scm:
   scm: 'true'
@@ -130,11 +140,13 @@ publisher:
 ---
 # gate-gerrit-unittests
 modules:
+  - project_maven
   - properties
   - scm
   - assignednode
   - trigger_gerrit
-  - builders
+  - builders:prebuilders
+  - builders:postbuilders
   - publisher_none
 
 main:
@@ -159,9 +171,18 @@ trigger:
       branchCompareType: 'ANT'
       branchPattern: '**'
 
-builders:
+prebuilders:
   - gerrit_git_prep
-  - gerrit_package
+  - gerrit_preclean
+
+maven:
+  root_module:
+    group_id: com.google.gerrit
+    artifact_id: gerrit-parent
+  goals: 'clean package -Dgerrit.include-documentation=1 -X'
+
+postbuilders:
+  - gerrit_postrun
 
 scm:
   scm: 'true'
@@ -172,11 +193,13 @@ assignednode:
 ---
 # gerrit-package
 modules:
+  - project_maven
   - properties
   - scm
   - assignednode
   - trigger_gerrit
-  - builders
+  - builders:prebuilders
+  - builders:postbuilders
   - publisher_war
 
 main:
@@ -201,9 +224,18 @@ trigger:
       branchCompareType: 'REG_EXP'
       branchPattern: '^(?!refs/).*$'
 
-builders:
+prebuilders:
   - gerrit_git_prep
-  - gerrit_package
+  - gerrit_preclean
+
+maven:
+  root_module:
+    group_id: com.google.gerrit
+    artifact_id: gerrit-parent
+  goals: 'clean package -Dgerrit.include-documentation=1 -X'
+
+postbuilders:
+  - gerrit_postrun
 
 scm:
   scm: 'true'

@@ -118,14 +118,25 @@ class XmlParser(object):
 
     def _load_modules(self):
         for modulename in self.data['modules']:
-            modulename = 'modules.{name}'.format(name=modulename)
-            self._register_module(modulename)
+            full_modulename = 'modules.{name}'.format(name=modulename)
+            is_project = modulename.startswith('project_')
+            module = self._register_module(full_modulename, is_project)
+            if is_project:
+                self.xml = module.gen_xml(self.xml) 
 
-    def _register_module(self, modulename):
-        classname = modulename.rsplit('.', 1)[1]
-        module = __import__(modulename, fromlist=[classname])
+    def _register_module(self, modulename, skip=False):
+        class_and_alias = modulename.rsplit('.', 1)[1]
+        classname_split = class_and_alias.split(":")
+        classname = classname_split[0]
+        module = __import__(modulename.split(":")[0], fromlist=[classname])
         cla = getattr(module, classname)
-        self.modules.append(cla(self.data))
+        if len(classname_split) > 1:
+            cla_instance = cla(self.data, classname_split[1])
+        else:
+            cla_instance = cla(self.data)
+        if not skip:
+            self.modules.append(cla_instance)
+        return cla_instance
 
     def _build(self):
         XML.SubElement(self.xml, 'actions')
