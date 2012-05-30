@@ -122,6 +122,11 @@ scm:
 assignednode:
   node: 'oneiric'
 
+publisher:
+  site: 'nova.openstack.org'
+  warfile: 'gerrit-war/target/gerrit*.war'
+  target_path: 'tarballs/ci/test/'
+
 ---
 # gate-gerrit-unittests
 modules:
@@ -163,11 +168,6 @@ scm:
 
 assignednode:
   node: 'oneiric'
-
-publisher:
-  site: 'nova.openstack.org'
-  warfile: 'gerrit-war/target/gerrit*.war'
-  target_path: 'tarballs/ci/test/'
 
 ---
 # gerrit-package
