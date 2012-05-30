@@ -7,3 +7,4 @@ values:
   github_org: 'openstack'
   review_site: 'review.openstack.org'
   publisher_site: 'swift.openstack.org'
+  node: 'oneiric'

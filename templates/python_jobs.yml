@@ -27,7 +27,7 @@ scm:
   scm: 'true'
 
 assignednode:
-  node: 'oneiric'
+  node: '@NODE@'
 
 logrotate:
   daysToKeep: 3
@@ -75,7 +75,7 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: '@NODE@'
 
 ---
 # python26-gate
@@ -117,7 +117,7 @@ scm:
   scm: 'true'
 
 assignednode:
-  node: 'oneiric'
+  node: '@NODE@'
 
 ---
 # python27-gate
@@ -159,7 +159,7 @@ scm:
   scm: 'true'
 
 assignednode:
-  node: 'oneiric'
+  node: '@NODE@'
 
 ---
 # docs
@@ -189,7 +189,7 @@ scm:
   scm: 'true'
 
 assignednode:
-  node: 'oneiric'
+  node: '@NODE@'
 
 publisher:
   site: '@PUBLISHER_SITE@'
@@ -233,7 +233,7 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: '@NODE@'
 
 ---
 # ppa
@@ -260,7 +260,7 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: '@NODE@'
 
 ---
 # tarball
@@ -302,7 +302,7 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: '@NODE@'
 
 publisher:
   site: '@PUBLISHER_SITE@'
@@ -349,7 +349,7 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: '@NODE@'
 
 ---
 # python26-check
@@ -392,7 +392,7 @@ scm:
   scm: 'true'
 
 assignednode:
-  node: 'oneiric'
+  node: '@NODE@'
 
 ---
 # python27-check
@@ -435,7 +435,7 @@ scm:
   scm: 'true'
 
 assignednode:
-  node: 'oneiric'
+  node: '@NODE@'
 
 ---
 # merge-check
@@ -477,6 +477,6 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: '@NODE@'
 
 
