@@ -87,7 +87,7 @@ modules:
   - assignednode
   - trigger_gerrit
   - builders
-  - publisher_none
+  - publisher_war
 
 main:
   name: 'check-gerrit-unittests'
@@ -163,6 +163,11 @@ scm:
 
 assignednode:
   node: 'oneiric'
+
+publisher:
+  site: 'nova.openstack.org'
+  warfile: 'gerrit-war/target/gerrit*.war'
+  target_path: 'tarballs/ci/test/'
 
 ---
 # gerrit-package
