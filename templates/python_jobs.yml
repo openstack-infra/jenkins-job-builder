@@ -325,6 +325,7 @@ main:
   project: '@NAME@'
   authenticatedBuild: 'true'
   disabled: '@DISABLED@'
+  concurrent: 'true'
 
 trigger:
   triggerOnPatchsetUploadedEvent: 'true'
@@ -368,6 +369,7 @@ main:
   project: '@NAME@'
   authenticatedBuild: 'true'
   disabled: '@DISABLED@'
+  concurrent: 'true'
 
 trigger:
   triggerOnPatchsetUploadedEvent: 'true'
@@ -411,6 +413,7 @@ main:
   project: '@NAME@'
   authenticatedBuild: 'true'
   disabled: '@DISABLED@'
+  concurrent: 'true'
 
 trigger:
   triggerOnPatchsetUploadedEvent: 'true'
@@ -454,6 +457,7 @@ main:
   project: '@NAME@'
   authenticatedBuild: 'true'
   disabled: '@DISABLED@'
+  concurrent: 'true'
 
 trigger:
   triggerOnPatchsetUploadedEvent: 'true'
