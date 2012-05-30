@@ -19,18 +19,15 @@ parameters:
   - name: UUID
     type: string
     description: Zuul provided key to link builds with Gerrit events
-  - name: DEPENDENT_CHANGES
-    type: string
-    description: Zuul provided list of dependent changes to merge
   - name: GERRIT_PROJECT
     type: string
     description: Zuul provided project name
   - name: GERRIT_BRANCH
     type: string
     description: Zuul provided branch name
-  - name: GERRIT_REFSPEC
+  - name: GERRIT_CHANGES
     type: string
-    description: Zuul provided refspec of the change to test
+    description: Zuul provided list of dependent changes to merge
 
 notification_endpoints:
   - protocol: HTTP
@@ -67,18 +64,15 @@ parameters:
   - name: UUID
     type: string
     description: Zuul provided key to link builds with Gerrit events
-  - name: DEPENDENT_CHANGES
-    type: string
-    description: Zuul provided list of dependent changes to merge
   - name: GERRIT_PROJECT
     type: string
     description: Zuul provided project name
   - name: GERRIT_BRANCH
     type: string
     description: Zuul provided branch name
-  - name: GERRIT_REFSPEC
+  - name: GERRIT_CHANGES
     type: string
-    description: Zuul provided refspec of the change to test
+    description: Zuul provided list of dependent changes to merge
 
 notification_endpoints:
   - protocol: HTTP
@@ -115,18 +109,15 @@ parameters:
   - name: UUID
     type: string
     description: Zuul provided key to link builds with Gerrit events
-  - name: DEPENDENT_CHANGES
-    type: string
-    description: Zuul provided list of dependent changes to merge
   - name: GERRIT_PROJECT
     type: string
     description: Zuul provided project name
   - name: GERRIT_BRANCH
     type: string
     description: Zuul provided branch name
-  - name: GERRIT_REFSPEC
+  - name: GERRIT_CHANGES
     type: string
-    description: Zuul provided refspec of the change to test
+    description: Zuul provided list of dependent changes to merge
 
 notification_endpoints:
   - protocol: HTTP
