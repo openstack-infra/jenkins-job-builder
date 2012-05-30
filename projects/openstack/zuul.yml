@@ -34,7 +34,7 @@ parameters:
 
 notification_endpoints:
   - protocol: HTTP
-    URL: http://127.0.0.1:8090/jenkins_endpoint
+    URL: http://127.0.0.1:8001/jenkins_endpoint
 
 builders:
   - gerrit_git_prep
@@ -82,7 +82,7 @@ parameters:
 
 notification_endpoints:
   - protocol: HTTP
-    URL: http://127.0.0.1:8090/jenkins_endpoint
+    URL: http://127.0.0.1:8001/jenkins_endpoint
 
 builders:
   - gerrit_git_prep
@@ -130,7 +130,7 @@ parameters:
 
 notification_endpoints:
   - protocol: HTTP
-    URL: http://127.0.0.1:8090/jenkins_endpoint
+    URL: http://127.0.0.1:8001/jenkins_endpoint
 
 builders:
   - gerrit_git_prep
