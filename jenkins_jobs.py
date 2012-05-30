@@ -139,7 +139,10 @@ In modules/jenkins_jobs"
         XML.SubElement(self.xml, 'disabled').text = self.data['main']['disabled']
         XML.SubElement(self.xml, 'blockBuildWhenDownstreamBuilding').text = 'false'
         XML.SubElement(self.xml, 'blockBuildWhenUpstreamBuilding').text = 'false'
-        XML.SubElement(self.xml, 'concurrentBuild').text = 'false'
+        if self.data['main'].get('concurrent'):
+            XML.SubElement(self.xml, 'concurrentBuild').text = 'true'
+        else:
+            XML.SubElement(self.xml, 'concurrentBuild').text = 'false'
         XML.SubElement(self.xml, 'buildWrappers')
         self._insert_modules()
 

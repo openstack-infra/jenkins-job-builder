@@ -1,0 +1,116 @@
+---
+# pyflakes-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-zuul-pyflakes'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'zuul'
+  disabled: 'false'
+  concurrent: 'true'
+
+parameters:
+  - name: UUID
+    type: string
+    description: Zuul provided key to link builds with Gerrit events
+  - name: changes
+    type: string
+    description: Zuul provided list of changes to merge
+
+notification_endpoints:
+  - protocol: HTTP
+    URL: http://127.0.0.1:8090/jenkins_endpoint
+
+builders:
+  - gerrit_git_prep
+  - pyflakes
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# pep8-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - builders
+  - publisher_pep8
+
+main:
+  name: 'gate-zuul-pep8'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'zuul'
+  disabled: 'false'
+  concurrent: 'true'
+
+parameters:
+  - name: UUID
+    type: string
+    description: Zuul provided key to link builds with Gerrit events
+  - name: changes
+    type: string
+    description: Zuul provided list of changes to merge
+
+notification_endpoints:
+  - protocol: HTTP
+    URL: http://127.0.0.1:8090/jenkins_endpoint
+
+builders:
+  - gerrit_git_prep
+  - pep8
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# merge-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-zuul-merge'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'zuul'
+  disabled: 'false'
+  concurrent: 'true'
+
+parameters:
+  - name: UUID
+    type: string
+    description: Zuul provided key to link builds with Gerrit events
+  - name: changes
+    type: string
+    description: Zuul provided list of changes to merge
+
+notification_endpoints:
+  - protocol: HTTP
+    URL: http://127.0.0.1:8090/jenkins_endpoint
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+

@@ -19,6 +19,7 @@
 import xml.etree.ElementTree as XML
 
 class properties(object):
+
     def __init__(self, data):
         self.data = data
 
@@ -38,3 +39,42 @@ class properties(object):
         if main.has_key('authenticatedBuild') and main['authenticatedBuild'] == 'true':
             security = XML.SubElement(properties, 'hudson.security.AuthorizationMatrixProperty')
             XML.SubElement(security, 'permission').text = 'hudson.model.Item.Build:authenticated'
+        self.do_parameters(properties)
+        self.do_notifications(properties)
+
+    parameter_types = {
+        'string': 'hudson.model.StringParameterDefinition',
+        'bool': 'hudson.model.BooleanParameterDefinition',
+        'file': 'hudson.model.FileParameterDefinition',
+        'text': 'hudson.model.TextParameterDefinition',
+        # Others require more work
+        }
+
+    def do_parameters(self, xml_parent):
+        params = self.data.get('parameters', None)
+        if not params:
+            return
+        pdefp = XML.SubElement(xml_parent, 'hudson.model.ParametersDefinitionProperty')
+        pdefs = XML.SubElement(pdefp, 'parameterDefinitions')
+        for param in params:
+            ptype = self.parameter_types.get(param['type'])
+            pdef = XML.SubElement(pdefs, ptype)
+            XML.SubElement(pdef, 'name').text = param['name']
+            XML.SubElement(pdef, 'description').text = param['description']
+            if param['type'] != 'file':
+                default = param.get('default', None)
+                if default:
+                    XML.SubElement(pdef, 'defaultValue').text = default
+                else:
+                    XML.SubElement(pdef, 'defaultValue')
+
+    def do_notifications(self, xml_parent):
+        endpoints = self.data.get('notification_endpoints', None)
+        if not endpoints:
+            return
+        notify_element = XML.SubElement(xml_parent, 'com.tikal.hudson.plugins.notification.HudsonNotificationProperty')
+        endpoints_element = XML.SubElement(notify_element, 'endpoints')
+        for ep in endpoints:
+            endpoint_element = XML.SubElement(endpoints_element, 'com.tikal.hudson.plugins.notification.Endpoint')
+            XML.SubElement(endpoint_element, 'protocol').text = ep['protocol']
+            XML.SubElement(endpoint_element, 'url').text = ep['URL']

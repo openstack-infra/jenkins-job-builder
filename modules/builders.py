@@ -56,6 +56,9 @@ class builders(object):
     def _pep8(self, xml_parent):
         self._add_script(xml_parent, 'tox -v -epep8 | tee pep8.txt')
 
+    def _pyflakes(self, xml_parent):
+        self._add_script(xml_parent, 'pyflakes .')
+
     def _python26(self, xml_parent):
         self._add_script(xml_parent, '/usr/local/jenkins/slave_scripts/run-tox.sh 26')
 
