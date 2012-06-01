@@ -4,7 +4,6 @@ modules:
   - properties
   - scm
   - assignednode
-  - trigger_gerrit
   - builders
   - publisher_none
 
@@ -14,20 +13,25 @@ main:
   github_org: 'openstack'
   project: 'openstack-ci-puppet'
   disabled: 'false'
+  concurrent: 'true'
 
-trigger:
-  triggerOnPatchsetUploadedEvent: 'false'
-  triggerOnChangeMergedEvent: 'false'
-  triggerOnCommentAddedEvent: 'true'
-  triggerOnRefUpdatedEvent: 'false'
-  triggerApprovalCategory: 'APRV'
-  triggerApprovalValue: 1
-  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
-  projects:
-    - projectCompareType: 'PLAIN'
-      projectPattern: 'openstack/openstack-ci-puppet'
-      branchCompareType: 'ANT'
-      branchPattern: '**'
+parameters:
+  - name: UUID
+    type: string
+    description: Zuul provided key to link builds with Gerrit events
+  - name: GERRIT_PROJECT
+    type: string
+    description: Zuul provided project name
+  - name: GERRIT_BRANCH
+    type: string
+    description: Zuul provided branch name
+  - name: GERRIT_CHANGES
+    type: string
+    description: Zuul provided list of dependent changes to merge
+
+notification_endpoints:
+  - protocol: HTTP
+    URL: http://127.0.0.1:8001/jenkins_endpoint
 
 builders:
   - gerrit_git_prep
@@ -44,7 +48,6 @@ modules:
   - properties
   - scm
   - assignednode
-  - trigger_gerrit
   - builders
   - publisher_none
 
@@ -54,20 +57,25 @@ main:
   github_org: 'openstack'
   project: 'openstack-ci-puppet'
   disabled: 'false'
+  concurrent: 'true'
 
-trigger:
-  triggerOnPatchsetUploadedEvent: 'false'
-  triggerOnChangeMergedEvent: 'false'
-  triggerOnCommentAddedEvent: 'true'
-  triggerOnRefUpdatedEvent: 'false'
-  triggerApprovalCategory: 'APRV'
-  triggerApprovalValue: 1
-  failureMessage: ''
-  projects:
-    - projectCompareType: 'PLAIN'
-      projectPattern: 'openstack/openstack-ci-puppet'
-      branchCompareType: 'ANT'
-      branchPattern: '**'
+parameters:
+  - name: UUID
+    type: string
+    description: Zuul provided key to link builds with Gerrit events
+  - name: GERRIT_PROJECT
+    type: string
+    description: Zuul provided project name
+  - name: GERRIT_BRANCH
+    type: string
+    description: Zuul provided branch name
+  - name: GERRIT_CHANGES
+    type: string
+    description: Zuul provided list of dependent changes to merge
+
+notification_endpoints:
+  - protocol: HTTP
+    URL: http://127.0.0.1:8001/jenkins_endpoint
 
 builders:
   - gerrit_git_prep
