@@ -114,7 +114,7 @@ builders:
   - python26
 
 scm:
-  scm: 'true'
+  scm: 'false'
 
 assignednode:
   node: '@NODE@'
@@ -156,7 +156,7 @@ builders:
   - python27
 
 scm:
-  scm: 'true'
+  scm: 'false'
 
 assignednode:
   node: '@NODE@'
@@ -391,7 +391,7 @@ builders:
   - python26
 
 scm:
-  scm: 'true'
+  scm: 'false'
 
 assignednode:
   node: '@NODE@'
@@ -435,7 +435,7 @@ builders:
   - python27
 
 scm:
-  scm: 'true'
+  scm: 'false'
 
 assignednode:
   node: '@NODE@'
