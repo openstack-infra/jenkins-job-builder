@@ -1,0 +1,81 @@
+---
+# gate-ci-puppet-merge
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-ci-puppet-merge'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack'
+  project: 'openstack-ci-puppet'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'true'
+  triggerOnRefUpdatedEvent: 'false'
+  triggerApprovalCategory: 'APRV'
+  triggerApprovalValue: 1
+  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack/openstack-ci-puppet'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# gate-ci-puppet-syntax
+modules:
+  - properties
+  - scm
+  - assignednode
+  - trigger_gerrit
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-ci-puppet-syntax'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack'
+  project: 'openstack-ci-puppet'
+  disabled: 'false'
+
+trigger:
+  triggerOnPatchsetUploadedEvent: 'false'
+  triggerOnChangeMergedEvent: 'false'
+  triggerOnCommentAddedEvent: 'true'
+  triggerOnRefUpdatedEvent: 'false'
+  triggerApprovalCategory: 'APRV'
+  triggerApprovalValue: 1
+  failureMessage: ''
+  projects:
+    - projectCompareType: 'PLAIN'
+      projectPattern: 'openstack/openstack-ci-puppet'
+      branchCompareType: 'ANT'
+      branchPattern: '**'
+
+builders:
+  - gerrit_git_prep
+  - puppet_syntax
+  - pyflakes
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'

@@ -70,6 +70,14 @@ rm -fr ~/.java\n\
     def _pyflakes(self, xml_parent):
         self._add_script(xml_parent, 'pyflakes .')
 
+    def _puppet_syntax(self, xml_parent):
+        self._add_script(xml_parent, """
+find . -iname *.pp | xargs puppet parser validate --modulepath=`pwd`/modules
+for f in `find . -iname *.erb` ; do
+  erb -x -T '-' $f | ruby -c
+done
+""")
+
     def _python26(self, xml_parent):
         self._add_script(xml_parent, '/usr/local/jenkins/slave_scripts/run-tox.sh 26')
 
