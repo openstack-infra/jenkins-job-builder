@@ -168,7 +168,6 @@ modules:
   - properties
   - scm
   - assignednode
-  - trigger_gerrit
   - builders:prebuilders
   - builders:postbuilders
   - publisher_war
@@ -180,20 +179,28 @@ main:
   project: 'gerrit'
   authenticatedBulid: 'false'
   disabled: 'false'
+  concurrent: 'true'
 
-trigger:
-  triggerOnPatchsetUploadedEvent: 'false'
-  triggerOnChangeMergedEvent: 'false'
-  triggerOnCommentAddedEvent: 'false'
-  triggerOnRefUpdatedEvent: 'true'
-  triggerApprovalCategory: ''
-  triggerApprovalValue: ''
-  failureMessage: ''
-  projects:
-    - projectCompareType: 'PLAIN'
-      projectPattern: 'openstack-ci/gerrit'
-      branchCompareType: 'REG_EXP'
-      branchPattern: '^(?!refs/).*$'
+parameters:
+  - name: UUID
+    type: string
+    description: Zuul provided key to link builds with Gerrit events
+  - name: GERRIT_PROJECT
+    type: string
+    description: Zuul provided project name
+  - name: GERRIT_REFNAME
+    type: string
+    description: Zuul provided ref name
+  - name: GERRIT_OLDREV
+    type: string
+    description: Zuul provided old reference for ref-updated
+  - name: GERRIT_NEWREV
+    type: string
+    description: Zuul provided new reference for ref-updated
+
+notification_endpoints:
+  - protocol: HTTP
+    URL: http://127.0.0.1:8001/jenkins_endpoint
 
 prebuilders:
   - gerrit_git_prep
