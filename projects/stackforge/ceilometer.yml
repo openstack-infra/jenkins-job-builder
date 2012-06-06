@@ -8,3 +8,95 @@ values:
   review_site: 'review.stackforge.org'
   publisher_site: 'TODO.stackforge.org'
   node: 'oneiric'
+
+---
+# python26-essex-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-ceilometeer-python26-essex'
+  review_site: 'review.stackforge.org'
+  github_org: 'stackforge'
+  project: 'ceilometer'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+  concurrent: 'true'
+
+parameters:
+  - name: UUID
+    type: string
+    description: Zuul provided key to link builds with Gerrit events
+  - name: GERRIT_PROJECT
+    type: string
+    description: Zuul provided project name
+  - name: GERRIT_BRANCH
+    type: string
+    description: Zuul provided branch name
+  - name: GERRIT_CHANGES
+    type: string
+    description: Zuul provided list of dependent changes to merge
+
+notification_endpoints:
+  - protocol: HTTP
+    URL: http://127.0.0.1:8001/jenkins_endpoint
+
+builders:
+  - gerrit_git_prep
+  - python26-essex
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# python27-essex-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-ceilometeer-python27-essex'
+  review_site: 'review.stackforge.org'
+  github_org: 'stackforge'
+  project: 'ceilometer'
+  authenticatedBuild: 'true'
+  disabled: 'false'
+  concurrent: 'true'
+
+parameters:
+  - name: UUID
+    type: string
+    description: Zuul provided key to link builds with Gerrit events
+  - name: GERRIT_PROJECT
+    type: string
+    description: Zuul provided project name
+  - name: GERRIT_BRANCH
+    type: string
+    description: Zuul provided branch name
+  - name: GERRIT_CHANGES
+    type: string
+    description: Zuul provided list of dependent changes to merge
+
+notification_endpoints:
+  - protocol: HTTP
+    URL: http://127.0.0.1:8001/jenkins_endpoint
+
+builders:
+  - gerrit_git_prep
+  - python27-essex
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'

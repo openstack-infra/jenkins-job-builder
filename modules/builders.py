@@ -84,6 +84,12 @@ done
     def _python27(self, xml_parent):
         self._add_script(xml_parent, '/usr/local/jenkins/slave_scripts/run-tox.sh 27')
 
+    def _python26_essex(self, xml_parent):
+        self._add_script(xml_parent, '/usr/local/jenkins/slave_scripts/run-tox.sh 26-essex')
+
+    def _python27_essex(self, xml_parent):
+        self._add_script(xml_parent, '/usr/local/jenkins/slave_scripts/run-tox.sh 27-essex')
+
     def _tarball(self, xml_parent):
         self._add_script(xml_parent,
           '/usr/local/jenkins/slave_scripts/create-tarball.sh %s' % self.data['main']['project'])
