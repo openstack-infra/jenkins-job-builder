@@ -1,0 +1,89 @@
+---
+# pep8-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - builders
+  - publisher_pep8
+
+main:
+  name: 'gate-tempest-pep8'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'tempest'
+  disabled: 'false'
+  concurrent: 'true'
+
+parameters:
+  - name: UUID
+    type: string
+    description: Zuul provided key to link builds with Gerrit events
+  - name: GERRIT_PROJECT
+    type: string
+    description: Zuul provided project name
+  - name: GERRIT_BRANCH
+    type: string
+    description: Zuul provided branch name
+  - name: GERRIT_CHANGES
+    type: string
+    description: Zuul provided list of dependent changes to merge
+
+notification_endpoints:
+  - protocol: HTTP
+    URL: http://127.0.0.1:8001/jenkins_endpoint
+
+builders:
+  - gerrit_git_prep
+  - pep8
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
+---
+# merge-gate
+modules:
+  - properties
+  - scm
+  - assignednode
+  - builders
+  - publisher_none
+
+main:
+  name: 'gate-tempest-merge'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'tempest'
+  disabled: 'false'
+  concurrent: 'true'
+
+parameters:
+  - name: UUID
+    type: string
+    description: Zuul provided key to link builds with Gerrit events
+  - name: GERRIT_PROJECT
+    type: string
+    description: Zuul provided project name
+  - name: GERRIT_BRANCH
+    type: string
+    description: Zuul provided branch name
+  - name: GERRIT_CHANGES
+    type: string
+    description: Zuul provided list of dependent changes to merge
+
+notification_endpoints:
+  - protocol: HTTP
+    URL: http://127.0.0.1:8001/jenkins_endpoint
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'oneiric'
+
