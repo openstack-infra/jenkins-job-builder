@@ -124,8 +124,9 @@ builders:
 scm:
   scm: 'false'
 
+# >= precise does not have python2.6
 assignednode:
-  node: '@NODE@'
+  node: 'oneiric'
 
 ---
 # python27-gate
@@ -384,8 +385,9 @@ builders:
 scm:
   scm: 'false'
 
+# >= precise does not have python2.6
 assignednode:
-  node: '@NODE@'
+  node: 'oneiric'
 
 ---
 # python27-check
