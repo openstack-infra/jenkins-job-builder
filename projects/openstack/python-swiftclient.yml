@@ -7,4 +7,5 @@ values:
   github_org: 'openstack'
   review_site: 'review.openstack.org'
   publisher_site: 'swift.openstack.org'
+  doc_publisher_site: 'docs.openstack.org'
   node: 'precise'

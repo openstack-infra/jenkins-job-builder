@@ -188,7 +188,7 @@ modules:
   - assignednode
   - trigger_pollscm
   - builders
-  - publisher_docs
+  - publisher_ftp
 
 main:
   name: '@NAME@-docs'
@@ -211,7 +211,11 @@ assignednode:
   node: '@NODE@'
 
 publisher:
-  site: '@PUBLISHER_SITE@'
+  site: '@DOC_PUBLISHER_SITE@'
+  remote_dir: 'dev/docs/@NAME@'
+  source_files: 'doc/build/html/**'
+  remove_prefix: 'doc/build/html'
+  excludes: ''
 
 ---
 # merge-gate
