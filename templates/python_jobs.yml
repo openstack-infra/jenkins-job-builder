@@ -88,7 +88,7 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publisher_junit
 
 main:
   name: 'gate-@NAME@-python26'
@@ -128,6 +128,9 @@ scm:
 assignednode:
   node: 'oneiric'
 
+publisher:
+  results: '**/nosetests.xml'
+
 ---
 # python27-gate
 modules:
@@ -135,7 +138,7 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publisher_junit
 
 main:
   name: 'gate-@NAME@-python27'
@@ -173,6 +176,9 @@ scm:
 
 assignednode:
   node: '@NODE@'
+
+publisher:
+  results: '**/nosetests.xml'
 
 ---
 # docs
@@ -367,7 +373,7 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publisher_junit
 
 main:
   name: 'check-@NAME@-python26'
@@ -389,6 +395,9 @@ scm:
 assignednode:
   node: 'oneiric'
 
+publisher:
+  results: '**/nosetests.xml'
+
 ---
 # python27-check
 modules:
@@ -396,7 +405,7 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publisher_junit
 
 main:
   name: 'check-@NAME@-python27'
@@ -416,6 +425,9 @@ scm:
 
 assignednode:
   node: '@NODE@'
+
+publisher:
+  results: '**/nosetests.xml'
 
 ---
 # merge-check
