@@ -40,7 +40,7 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: 'precise'
 
 ---
 # gate-ci-puppet-syntax
@@ -86,4 +86,4 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: 'precise'

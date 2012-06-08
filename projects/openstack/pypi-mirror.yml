@@ -41,7 +41,7 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: 'precise'
 
 ---
 # merge-gate
@@ -85,5 +85,5 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: 'precise'
 

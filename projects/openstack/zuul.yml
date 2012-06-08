@@ -41,7 +41,7 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: 'precise'
 
 ---
 # pep8-gate
@@ -86,7 +86,7 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: 'precise'
 
 ---
 # merge-gate
@@ -130,5 +130,5 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: 'precise'
 

@@ -40,5 +40,5 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: 'precise'
 

@@ -41,7 +41,7 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: 'precise'
 
 ---
 # check-gerrit-unittests
@@ -97,7 +97,7 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: 'precise'
 
 publisher:
   site: 'nova.openstack.org'
@@ -159,7 +159,7 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: 'precise'
 
 ---
 # gerrit-package
@@ -219,7 +219,7 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'oneiric'
+  node: 'precise'
 
 publisher:
   site: 'nova.openstack.org'
