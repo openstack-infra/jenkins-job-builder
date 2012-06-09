@@ -68,7 +68,7 @@ rm -fr ~/.java\n\
         self._add_script(xml_parent, 'tox -v -epep8 | tee pep8.txt')
 
     def _pyflakes(self, xml_parent):
-        self._add_script(xml_parent, 'pyflakes .')
+        self._add_script(xml_parent, 'tox -v -epyflakes')
 
     def _puppet_syntax(self, xml_parent):
         self._add_script(xml_parent, """
