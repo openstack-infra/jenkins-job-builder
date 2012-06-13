@@ -212,7 +212,7 @@ assignednode:
 
 publisher:
   site: '@DOC_PUBLISHER_SITE@'
-  remote_dir: 'dev/docs/@NAME@'
+  remote_dir: 'developer/@NAME@'
   source_files: 'doc/build/html/**'
   remove_prefix: 'doc/build/html'
   excludes: ''
