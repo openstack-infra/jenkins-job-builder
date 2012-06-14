@@ -7,7 +7,7 @@ modules:
   - assignednode
   - trigger_pollscm
   - builders
-  - publisher_coverage
+  - publishers
 
 main:
   name: '@NAME@-coverage'
@@ -15,12 +15,15 @@ main:
   github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'false'
-  disabled: '@DISABLED@' 
+  disabled: @DISABLED@
 
 trigger:
   pollscm: '*/15 * * * *'
 
 builders:
+  - coverage
+
+post_build_actions:
   - coverage
 
 scm:
@@ -42,7 +45,7 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_pep8
+  - publishers
 
 main:
   name: 'gate-@NAME@-pep8'
@@ -50,7 +53,7 @@ main:
   github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'true'
-  disabled: '@DISABLED@'
+  disabled: @DISABLED@
   concurrent: 'true'
 
 parameters:
@@ -75,6 +78,9 @@ builders:
   - gerrit_git_prep
   - pep8
 
+post_build_actions:
+  - pep8
+
 scm:
   scm: 'false'
 
@@ -88,7 +94,7 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_junit
+  - publishers
 
 main:
   name: 'gate-@NAME@-python26'
@@ -96,7 +102,7 @@ main:
   github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'true'
-  disabled: '@DISABLED@'
+  disabled: @DISABLED@
   concurrent: 'true'
 
 parameters:
@@ -121,15 +127,16 @@ builders:
   - gerrit_git_prep
   - python26
 
+post_build_actions:
+  - junit:
+      results: '**/nosetests.xml'
+
 scm:
   scm: 'false'
 
 # >= precise does not have python2.6
 assignednode:
   node: 'oneiric'
-
-publisher:
-  results: '**/nosetests.xml'
 
 ---
 # python27-gate
@@ -138,7 +145,7 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_junit
+  - publishers
 
 main:
   name: 'gate-@NAME@-python27'
@@ -146,7 +153,7 @@ main:
   github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'true'
-  disabled: '@DISABLED@'
+  disabled: @DISABLED@
   concurrent: 'true'
 
 parameters:
@@ -171,14 +178,15 @@ builders:
   - gerrit_git_prep
   - python27
 
+post_build_actions:
+  - junit:
+      results: '**/nosetests.xml'
+
 scm:
   scm: 'false'
 
 assignednode:
   node: '@NODE@'
-
-publisher:
-  results: '**/nosetests.xml'
 
 ---
 # docs
@@ -188,7 +196,7 @@ modules:
   - assignednode
   - trigger_pollscm
   - builders
-  - publisher_ftp
+  - publishers
 
 main:
   name: '@NAME@-docs'
@@ -196,7 +204,7 @@ main:
   github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'false'
-  disabled: '@DISABLED@'
+  disabled: @DISABLED@
 
 trigger:
   pollscm: '*/15 * * * *'
@@ -204,18 +212,19 @@ trigger:
 builders:
   - docs
 
+post_build_actions:
+  - ftp:
+      site: '@DOC_PUBLISHER_SITE@'
+      remote_dir: 'developer/@NAME@'
+      source_files: 'doc/build/html/**'
+      remove_prefix: 'doc/build/html'
+      excludes: ''
+
 scm:
   scm: 'true'
 
 assignednode:
   node: '@NODE@'
-
-publisher:
-  site: '@DOC_PUBLISHER_SITE@'
-  remote_dir: 'developer/@NAME@'
-  source_files: 'doc/build/html/**'
-  remove_prefix: 'doc/build/html'
-  excludes: ''
 
 ---
 # merge-gate
@@ -224,7 +233,7 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publishers
 
 main:
   name: 'gate-@NAME@-merge'
@@ -232,7 +241,7 @@ main:
   github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'true'
-  disabled: '@DISABLED@'
+  disabled: @DISABLED@
   concurrent: 'true'
 
 parameters:
@@ -270,7 +279,7 @@ modules:
   - assignednode
   - trigger_none
   - builders
-  - publisher_ppa
+  - publishers
 
 main:
   name: '@NAME@-ppa'
@@ -278,9 +287,12 @@ main:
   github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBuild: 'false'
-  disabled: 'true'
+  disabled: true
 
 builders:
+  - ppa
+
+post_build_actions:
   - ppa
 
 scm:
@@ -296,7 +308,7 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_tarball
+  - publishers
 
 main:
   name: '@NAME@-tarball'
@@ -304,7 +316,7 @@ main:
   github_org: '@GITHUB_ORG@'
   project: '@NAME@'
   authenticatedBulid: 'false'
-  disabled: '@DISABLED@'
+  disabled: @DISABLED@
   concurrent: 'true'
 
 parameters:
@@ -332,11 +344,12 @@ builders:
   - gerrit_git_prep
   - tarball
 
+post_build_actions:
+  - tarball:
+      site: '@PUBLISHER_SITE@'
+
 scm:
   scm: 'false'
 
 assignednode:
   node: '@NODE@'
-
-publisher:
-  site: '@PUBLISHER_SITE@'

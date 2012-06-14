@@ -5,14 +5,13 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_pep8
+  - publishers
 
 main:
   name: 'gate-tempest-pep8'
   review_site: 'review.openstack.org'
   github_org: 'openstack-ci'
   project: 'tempest'
-  disabled: 'false'
   concurrent: 'true'
 
 parameters:
@@ -37,6 +36,9 @@ builders:
   - gerrit_git_prep
   - pep8
 
+post_build_actions:
+  - pep8
+
 scm:
   scm: 'false'
 
@@ -50,14 +52,13 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publishers
 
 main:
   name: 'gate-tempest-merge'
   review_site: 'review.openstack.org'
   github_org: 'openstack-ci'
   project: 'tempest'
-  disabled: 'false'
   concurrent: 'true'
 
 parameters:

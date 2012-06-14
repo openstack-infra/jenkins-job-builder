@@ -30,7 +30,11 @@ class builders(object):
     def gen_xml(self, xml_parent):
         builders = XML.SubElement(xml_parent, self.alias)
         for builder in self.data[self.alias]:
-            getattr(self, '_' + builder)(builders)
+            if isinstance(builder, dict):
+                for key, value in builder.items():
+                    getattr(self, '_' + key)(builders, value)
+            else:
+                getattr(self, '_' + builder)(builders)
 
     def _add_script(self, xml_parent, script):
         shell = XML.SubElement(xml_parent, 'hudson.tasks.Shell')
@@ -78,6 +82,31 @@ for f in `find . -iname *.erb` ; do
 done
 """)
 
+    def _shell(self, xml_parent, data):
+        self._add_script(xml_parent, data)
+
+    def _trigger_builds(self, xml_parent, data):
+        tbuilder = XML.SubElement(xml_parent, 'hudson.plugins.parameterizedtrigger.TriggerBuilder')
+        configs = XML.SubElement(tbuilder, 'configs')
+        for project_def in data:
+            tconfig = XML.SubElement(configs, 'hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig')
+            tconfigs = XML.SubElement(tconfig, 'configs')
+            if project_def.has_key('predefined_parameters'):
+                params = XML.SubElement(tconfigs,
+                                        'hudson.plugins.parameterizedtrigger.PredefinedBuildParameters')
+                properties = XML.SubElement(params, 'properties')
+                properties.text = project_def['predefined_parameters']
+            else:
+                tconfigs.set('class', 'java.util.Collections$EmptyList')
+            projects = XML.SubElement(tconfig, 'projects')
+            projects.text = project_def['project']
+            condition = XML.SubElement(tconfig, 'condition')
+            condition.text = 'ALWAYS'
+            trigger_with_no_params = XML.SubElement(tconfig, 'triggerWithNoParameters')
+            trigger_with_no_params.text = 'false'
+            build_all_nodes_with_label = XML.SubElement(tconfig, 'buildAllNodesWithLabel')
+            build_all_nodes_with_label.text = 'false'
+            
     def _python26(self, xml_parent):
         self._add_script(xml_parent, '/usr/local/jenkins/slave_scripts/run-tox.sh 26')
 

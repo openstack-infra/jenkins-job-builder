@@ -5,14 +5,13 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publishers
 
 main:
   name: 'gate-ci-puppet-merge'
   review_site: 'review.openstack.org'
   github_org: 'openstack'
   project: 'openstack-ci-puppet'
-  disabled: 'false'
   concurrent: 'true'
 
 parameters:
@@ -49,14 +48,13 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publishers
 
 main:
   name: 'gate-ci-puppet-syntax'
   review_site: 'review.openstack.org'
   github_org: 'openstack'
   project: 'openstack-ci-puppet'
-  disabled: 'false'
   concurrent: 'true'
 
 parameters:

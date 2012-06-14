@@ -5,14 +5,13 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publishers
 
 main:
   name: 'gate-pypi-mirror-pyflakes'
   review_site: 'review.openstack.org'
   github_org: 'openstack-ci'
   project: 'pypi-mirror'
-  disabled: 'false'
   concurrent: 'true'
 
 parameters:
@@ -50,14 +49,13 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publishers
 
 main:
   name: 'gate-pypi-mirror-merge'
   review_site: 'review.openstack.org'
   github_org: 'openstack-ci'
   project: 'pypi-mirror'
-  disabled: 'false'
   concurrent: 'true'
 
 parameters:

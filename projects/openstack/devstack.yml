@@ -5,14 +5,13 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publishers
 
 main:
   name: 'gate-devstack-merge'
   review_site: 'review.openstack.org'
   github_org: 'openstack-dev'
   project: 'devstack'
-  disabled: 'false'
   concurrent: 'true'
 
 parameters:

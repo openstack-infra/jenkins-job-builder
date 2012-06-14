@@ -5,14 +5,13 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publishers
 
 main:
   name: 'gate-zuul-pyflakes'
   review_site: 'review.openstack.org'
   github_org: 'openstack-ci'
   project: 'zuul'
-  disabled: 'false'
   concurrent: 'true'
 
 parameters:
@@ -50,14 +49,13 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_pep8
+  - publishers
 
 main:
   name: 'gate-zuul-pep8'
   review_site: 'review.openstack.org'
   github_org: 'openstack-ci'
   project: 'zuul'
-  disabled: 'false'
   concurrent: 'true'
 
 parameters:
@@ -82,6 +80,9 @@ builders:
   - gerrit_git_prep
   - pep8
 
+post_build_actions:
+  - pep8
+
 scm:
   scm: 'false'
 
@@ -95,14 +96,13 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publishers
 
 main:
   name: 'gate-zuul-merge'
   review_site: 'review.openstack.org'
   github_org: 'openstack-ci'
   project: 'zuul'
-  disabled: 'false'
   concurrent: 'true'
 
 parameters:

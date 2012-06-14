@@ -147,7 +147,10 @@ If you would like to make changes to this job, please see:\n\n\
 https://github.com/openstack/openstack-ci-puppet\n\n\
 In modules/jenkins_jobs"
         XML.SubElement(self.xml, 'keepDependencies').text = 'false'
-        XML.SubElement(self.xml, 'disabled').text = self.data['main']['disabled']
+        if self.data['main'].get('disabled'):
+            XML.SubElement(self.xml, 'disabled').text = 'true'
+        else:
+            XML.SubElement(self.xml, 'disabled').text = 'false'
         XML.SubElement(self.xml, 'blockBuildWhenDownstreamBuilding').text = 'false'
         XML.SubElement(self.xml, 'blockBuildWhenUpstreamBuilding').text = 'false'
         if self.data['main'].get('concurrent'):

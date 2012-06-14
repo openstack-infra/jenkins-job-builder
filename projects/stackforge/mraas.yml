@@ -5,7 +5,7 @@ modules:
   - assignednode
   - trigger_gerrit
   - builders
-  - publisher_none
+  - publishers
 
 main:
   name: 'gate-MRaaS-merge'
@@ -13,7 +13,6 @@ main:
   review_site: 'review.stackforge.org'
   project: 'MRaaS'
   authenticatedBuild: 'true'
-  disabled: 'false'
 
 trigger:
   triggerOnPatchsetUploadedEvent: 'false'
@@ -45,7 +44,7 @@ modules:
   - assignednode
   - trigger_gerrit
   - builders
-  - publisher_none
+  - publishers
 
 main:
   name: 'check-MRaaS-merge'
@@ -53,7 +52,6 @@ main:
   review_site: 'review.stackforge.org'
   project: 'MRaaS'
   authenticatedBuild: 'true'
-  disabled: 'false'
 
 trigger:
   triggerOnPatchsetUploadedEvent: 'true'

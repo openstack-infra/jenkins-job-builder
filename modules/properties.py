@@ -26,9 +26,11 @@ class properties(object):
     def gen_xml(self, xml_parent):
         main = self.data['main']
         properties = XML.SubElement(xml_parent, 'properties')
-        github = XML.SubElement(properties, 'com.coravy.hudson.plugins.github.GithubProjectProperty')
-        github_url = XML.SubElement(github, 'projectUrl')
-        github_url.text = "https://github.com/{org}/{project}".format(org=main['github_org'], project=main['project'])
+        if main.get('project'):
+            github = XML.SubElement(properties, 'com.coravy.hudson.plugins.github.GithubProjectProperty')
+            github_url = XML.SubElement(github, 'projectUrl')
+            github_url.text = "https://github.com/{org}/{project}".format(
+                org=main['github_org'], project=main['project'])
         throttle = XML.SubElement(properties, 'hudson.plugins.throttleconcurrents.ThrottleJobProperty')
         XML.SubElement(throttle, 'maxConcurrentPerNode').text = '0'
         XML.SubElement(throttle, 'maxConcurrentTotal').text = '0'
