@@ -17,7 +17,7 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publishers
 
 main:
   name: 'gate-ceilometeer-python26-essex'
@@ -25,7 +25,6 @@ main:
   github_org: 'stackforge'
   project: 'ceilometer'
   authenticatedBuild: 'true'
-  disabled: 'false'
   concurrent: 'true'
 
 parameters:
@@ -48,7 +47,7 @@ notification_endpoints:
 
 builders:
   - gerrit_git_prep
-  - python26-essex
+  - python26_essex
 
 scm:
   scm: 'false'
@@ -63,7 +62,7 @@ modules:
   - scm
   - assignednode
   - builders
-  - publisher_none
+  - publishers
 
 main:
   name: 'gate-ceilometeer-python27-essex'
@@ -94,7 +93,7 @@ notification_endpoints:
 
 builders:
   - gerrit_git_prep
-  - python27-essex
+  - python27_essex
 
 scm:
   scm: 'false'
