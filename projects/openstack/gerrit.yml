@@ -6,6 +6,7 @@ modules:
   - assignednode
   - builders
   - publishers
+  - zuul
 
 main:
   name: 'gate-gerrit-merge'
@@ -15,23 +16,8 @@ main:
   authenticatedBuild: 'true'
   concurrent: 'true'
 
-parameters:
-  - name: UUID
-    type: string
-    description: Zuul provided key to link builds with Gerrit events
-  - name: GERRIT_PROJECT
-    type: string
-    description: Zuul provided project name
-  - name: GERRIT_BRANCH
-    type: string
-    description: Zuul provided branch name
-  - name: GERRIT_CHANGES
-    type: string
-    description: Zuul provided list of dependent changes to merge
-
-notification_endpoints:
-  - protocol: HTTP
-    URL: http://127.0.0.1:8001/jenkins_endpoint
+triggers:
+  - zuul
 
 builders:
   - gerrit_git_prep
@@ -51,6 +37,7 @@ modules:
   - assignednode
   - builders:prebuilders
   - publishers
+  - zuul
 
 main:
   name: 'check-gerrit-unittests'
@@ -60,23 +47,8 @@ main:
   authenticatedBuild: 'true'
   concurrent: 'true'
 
-parameters:
-  - name: UUID
-    type: string
-    description: Zuul provided key to link builds with Gerrit events
-  - name: GERRIT_PROJECT
-    type: string
-    description: Zuul provided project name
-  - name: GERRIT_BRANCH
-    type: string
-    description: Zuul provided branch name
-  - name: GERRIT_CHANGES
-    type: string
-    description: Zuul provided list of dependent changes to merge
-
-notification_endpoints:
-  - protocol: HTTP
-    URL: http://127.0.0.1:8001/jenkins_endpoint
+triggers:
+  - zuul
 
 prebuilders:
   - gerrit_git_prep
@@ -113,6 +85,7 @@ modules:
   - builders:prebuilders
   - builders:postbuilders
   - publishers
+  - zuul
 
 main:
   name: 'gate-gerrit-unittests'
@@ -122,23 +95,8 @@ main:
   authenticatedBuild: 'true'
   concurrent: 'true'
 
-parameters:
-  - name: UUID
-    type: string
-    description: Zuul provided key to link builds with Gerrit events
-  - name: GERRIT_PROJECT
-    type: string
-    description: Zuul provided project name
-  - name: GERRIT_BRANCH
-    type: string
-    description: Zuul provided branch name
-  - name: GERRIT_CHANGES
-    type: string
-    description: Zuul provided list of dependent changes to merge
-
-notification_endpoints:
-  - protocol: HTTP
-    URL: http://127.0.0.1:8001/jenkins_endpoint
+triggers:
+  - zuul
 
 prebuilders:
   - gerrit_git_prep
@@ -169,6 +127,7 @@ modules:
   - builders:prebuilders
   - builders:postbuilders
   - publishers
+  - zuul
 
 main:
   name: 'gerrit-package'
@@ -178,26 +137,8 @@ main:
   authenticatedBulid: 'false'
   concurrent: 'true'
 
-parameters:
-  - name: UUID
-    type: string
-    description: Zuul provided key to link builds with Gerrit events
-  - name: GERRIT_PROJECT
-    type: string
-    description: Zuul provided project name
-  - name: GERRIT_REFNAME
-    type: string
-    description: Zuul provided ref name
-  - name: GERRIT_OLDREV
-    type: string
-    description: Zuul provided old reference for ref-updated
-  - name: GERRIT_NEWREV
-    type: string
-    description: Zuul provided new reference for ref-updated
-
-notification_endpoints:
-  - protocol: HTTP
-    URL: http://127.0.0.1:8001/jenkins_endpoint
+triggers:
+  - zuul_post
 
 prebuilders:
   - gerrit_git_prep
