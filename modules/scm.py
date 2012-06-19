@@ -22,11 +22,19 @@
 
 import xml.etree.ElementTree as XML
 
-class scm(object):
-    def __init__(self, data):
+
+def register(registry):
+    mod = SCM()
+    registry.registerModule(mod)
+
+
+class SCM(object):
+    sequence = 30
+
+    def handle_data(self, data):
         self.data = data
 
-    def gen_xml(self, xml_parent):
+    def gen_xml(self, xml_parent, data):
         main = self.data['main']
         scm_enabled = self.data['scm']['scm']
         if scm_enabled == 'true':

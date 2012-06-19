@@ -1,13 +1,5 @@
 ---
 # gate-gerrit-merge
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-gerrit-merge'
   github_org: 'openstack-ci'
@@ -30,15 +22,6 @@ assignednode:
 
 ---
 # check-gerrit-unittests
-modules:
-  - project_maven
-  - properties
-  - scm
-  - assignednode
-  - builders:prebuilders
-  - publishers
-  - zuul
-
 main:
   name: 'check-gerrit-unittests'
   review_site: 'review.openstack.org'
@@ -77,16 +60,6 @@ assignednode:
 
 ---
 # gate-gerrit-unittests
-modules:
-  - project_maven
-  - properties
-  - scm
-  - assignednode
-  - builders:prebuilders
-  - builders:postbuilders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-gerrit-unittests'
   review_site: 'review.openstack.org'
@@ -119,16 +92,6 @@ assignednode:
 
 ---
 # gerrit-package
-modules:
-  - project_maven
-  - properties
-  - scm
-  - assignednode
-  - builders:prebuilders
-  - builders:postbuilders
-  - publishers
-  - zuul
-
 main:
   name: 'gerrit-package'
   review_site: 'review.openstack.org'

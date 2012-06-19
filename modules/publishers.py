@@ -18,21 +18,39 @@
 
 import xml.etree.ElementTree as XML
 
-class publishers(object):
-    def __init__(self, data):
+
+def register(registry):
+    mod = Publishers(registry)
+    registry.registerModule(mod)
+
+
+class Publishers(object):
+    sequence = 70
+
+    def __init__(self, registry):
+        self.registry = registry
+        for f in dir(self):
+            if not f.startswith('_publisher_'):
+                continue
+            self.registry.registerHandler('publisher', f[len('_publisher_'):],
+                                          getattr(self, f))
+
+    def handle_data(self, data):
         self.data = data
 
-    def gen_xml(self, xml_parent):
+    def gen_xml(self, xml_parent, data):
         publishers = XML.SubElement(xml_parent, 'publishers')
         actions = self.data.get('post_build_actions', [])
         for action in actions:
             if isinstance(action, dict):
                 for key, value in action.items():
-                    getattr(self, '_' + key)(publishers, value)
+                    func = self.registry.getHandler('publisher', key)
+                    func(publishers, value)
             else:
-                getattr(self, '_' + action)(publishers)
+                func = self.registry.getHandler('publisher', action)
+                func(publishers)
 
-    def _archive(self, xml_parent, data):
+    def _publisher_archive(self, xml_parent, data):
         archiver = XML.SubElement(xml_parent, 'hudson.tasks.ArtifactArchiver')
         artifacts = XML.SubElement(archiver, 'artifacts')
         artifacts.text = data['artifacts']
@@ -46,7 +64,7 @@ class publishers(object):
         else:
             latest.text = 'false'
 
-    def _trigger_parameterized_builds(self, xml_parent, data):
+    def _publisher_trigger_parameterized_builds(self, xml_parent, data):
         tbuilder = XML.SubElement(xml_parent, 'hudson.plugins.parameterizedtrigger.BuildTrigger')
         configs = XML.SubElement(tbuilder, 'configs')
         for project_def in data:
@@ -66,7 +84,7 @@ class publishers(object):
             trigger_with_no_params = XML.SubElement(tconfig, 'triggerWithNoParameters')
             trigger_with_no_params.text = 'false'
 
-    def _coverage(self, xml_parent):
+    def _publisher_coverage(self, xml_parent):
         cobertura = XML.SubElement(xml_parent, 'hudson.plugins.cobertura.CoberturaPublisher')
         XML.SubElement(cobertura, 'coberturaReportFile').text = '**/coverage.xml'
         XML.SubElement(cobertura, 'onlyStable').text = 'false'
@@ -116,7 +134,7 @@ class publishers(object):
     # This will upload everything under $workspace/base/source/dir to
     # docs.openstack.org $ftpdir/dest/dir exluding the excluded file type.
 
-    def _ftp(self, xml_parent, data):
+    def _publisher_ftp(self, xml_parent, data):
         """
         Example XML:
         <publishers>
@@ -186,7 +204,7 @@ class publishers(object):
     # publisher:
     #   results: 'nosetests.xml'
 
-    def _junit(self, xml_parent, data):
+    def _publisher_junit(self, xml_parent, data):
         junitresult = XML.SubElement(xml_parent,
             'hudson.tasks.junit.JUnitResultArchiver')
         XML.SubElement(junitresult, 'testResults').text = data['results']
@@ -207,7 +225,7 @@ class publishers(object):
         XML.SubElement(tconfig, 'usePattern').text = 'false'
         XML.SubElement(tconfig, 'pattern')
 
-    def _pep8(self, xml_parent):
+    def _publisher_pep8(self, xml_parent):
         violations = XML.SubElement(xml_parent, 'hudson.plugins.violations.ViolationsPublisher')
         config = XML.SubElement(violations, 'config')
         suppressions = XML.SubElement(config, 'suppressions', {'class':'tree-set'})
@@ -249,7 +267,7 @@ class publishers(object):
     # Jenkins Job module for PPA publishers
     # No additional YAML needed
 
-    def _ppa(self, xml_parent):
+    def _publisher_ppa(self, xml_parent):
         archiver = XML.SubElement(xml_parent, 'hudson.tasks.ArtifactArchiver')
         XML.SubElement(archiver, 'artifacts').text = 'build/*.dsc,build/*.tar.gz,build/*.changes'
         XML.SubElement(archiver, 'latestOnly').text = 'false'
@@ -259,7 +277,7 @@ class publishers(object):
     # publish:
     #   site: 'glance.openstack.org'
 
-    def _tarball(self, xml_parent, data):
+    def _publisher_tarball(self, xml_parent, data):
         site = data['site']
         archiver = XML.SubElement(xml_parent, 'hudson.tasks.ArtifactArchiver')
         XML.SubElement(archiver, 'artifacts').text = 'dist/*.tar.gz'
@@ -279,7 +297,7 @@ class publishers(object):
     #   warfile: 'gerrit-war/target/gerrit*.war'
     #   target_path: 'tarballs/ci/'
 
-    def _war(self, xml_parent, data):
+    def _publisher_war(self, xml_parent, data):
         site = data['site']
         archiver = XML.SubElement(xml_parent, 'hudson.tasks.ArtifactArchiver')
         XML.SubElement(archiver, 'artifacts').text = data['warfile']

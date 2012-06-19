@@ -1,13 +1,5 @@
 ---
 # pyflakes-gate
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-pypi-mirror-pyflakes'
   review_site: 'review.openstack.org'
@@ -30,14 +22,6 @@ assignednode:
 
 ---
 # merge-gate
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-pypi-mirror-merge'
   review_site: 'review.openstack.org'

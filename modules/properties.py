@@ -18,12 +18,19 @@
 
 import xml.etree.ElementTree as XML
 
-class properties(object):
 
-    def __init__(self, data):
+def register(registry):
+    mod = Properties()
+    registry.registerModule(mod)
+
+
+class Properties(object):
+    sequence = 20
+
+    def handle_data(self, data):
         self.data = data
 
-    def gen_xml(self, xml_parent):
+    def gen_xml(self, xml_parent, data):
         main = self.data['main']
         properties = XML.SubElement(xml_parent, 'properties')
         if main.get('project'):

@@ -25,6 +25,9 @@ import jenkins
 import ConfigParser
 from StringIO import StringIO
 import re
+import pkgutil
+
+import modules
 
 class JenkinsJobsException(Exception): pass
 
@@ -51,6 +54,7 @@ if not options.command == 'test':
 
 class YamlParser(object):
     def __init__(self, yfile):
+        self.registry = ModuleRegistry()
         self.data = yaml.load_all(yfile)
         self.it = self.data.__iter__()
         self.job_name = None
@@ -79,10 +83,10 @@ class YamlParser(object):
     def get_next_xml(self):
         if not self.eof:
             if self.reading_template:
-                data = XmlParser(self.current_template)
+                data = XmlParser(self.current_template, self.registry)
                 self.job_name = self.current_template['main']['name']
             else:
-                data = XmlParser(self.current)
+                data = XmlParser(self.current, self.registry)
                 self.job_name = self.current['main']['name']
             self.seek_next_xml()
             return data
@@ -108,37 +112,49 @@ class YamlParser(object):
     def get_name(self):
         return self.job_name
 
-class XmlParser(object):
-    def __init__(self, data):
-        self.data = data
-        self.xml = XML.Element('project')
+class ModuleRegistry(object):
+    # TODO: make this extensible
+
+    def __init__(self):
         self.modules = []
-        self._load_modules()
+        self.handlers = {}
+
+        for importer, modname, ispkg in pkgutil.iter_modules(modules.__path__):
+            module = __import__('modules.'+modname, fromlist=['register'])
+            register = getattr(module, 'register', None)
+            if register:
+                register(self)
+
+    def registerModule(self, mod):
+        self.modules.append(mod)
+        self.modules.sort(lambda a, b: cmp(a.sequence, b.sequence))
+
+    def registerHandler(self, category, name, method):
+        cat_dict = self.handlers.get(category, {})
+        if not cat_dict:
+            self.handlers[category] = cat_dict
+        cat_dict[name] = method
+
+    def getHandler(self, category, name):
+        return self.handlers[category][name]
+
+class XmlParser(object):
+    def __init__(self, data, registry):
+        self.data = data
+        self.registry = registry
         self._build()
 
-    def _load_modules(self):
-        for modulename in self.data['modules']:
-            full_modulename = 'modules.{name}'.format(name=modulename)
-            is_project = modulename.startswith('project_')
-            module = self._register_module(full_modulename, is_project)
-            if is_project:
-                self.xml = module.gen_xml(self.xml) 
-
-    def _register_module(self, modulename, skip=False):
-        class_and_alias = modulename.rsplit('.', 1)[1]
-        classname_split = class_and_alias.split(":")
-        classname = classname_split[0]
-        module = __import__(modulename.split(":")[0], fromlist=[classname])
-        cla = getattr(module, classname)
-        if len(classname_split) > 1:
-            cla_instance = cla(self.data, classname_split[1])
-        else:
-            cla_instance = cla(self.data)
-        if not skip:
-            self.modules.append(cla_instance)
-        return cla_instance
-
     def _build(self):
+        for module in self.registry.modules:
+            if hasattr(module, 'root_xml'):
+                element = module.root_xml(self.data)
+                if element is not None:
+                    self.xml = element
+
+        for module in self.registry.modules:
+            if hasattr(module, 'handle_data'):
+                module.handle_data(self.data)
+        
         XML.SubElement(self.xml, 'actions')
         description = XML.SubElement(self.xml, 'description')
         description.text = "THIS JOB IS MANAGED BY PUPPET AND WILL BE OVERWRITTEN.\n\n\
@@ -158,11 +174,10 @@ In modules/jenkins_jobs"
         else:
             XML.SubElement(self.xml, 'concurrentBuild').text = 'false'
         XML.SubElement(self.xml, 'buildWrappers')
-        self._insert_modules()
 
-    def _insert_modules(self):
-        for module in self.modules:
-            module.gen_xml(self.xml)
+        for module in self.registry.modules:
+            if hasattr(module, 'gen_xml'):
+                module.gen_xml(self.xml, self.data)
 
     def md5(self):
         return hashlib.md5(self.output()).hexdigest()

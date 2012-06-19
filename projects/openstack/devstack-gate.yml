@@ -1,13 +1,5 @@
 ---
 # merge-gate
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-devstack-gate-merge'
   review_site: 'review.openstack.org'

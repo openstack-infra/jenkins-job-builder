@@ -12,14 +12,6 @@ values:
 
 ---
 # python26-essex-gate
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-ceilometeer-python26-essex'
   review_site: 'review.stackforge.org'
@@ -43,14 +35,6 @@ assignednode:
 
 ---
 # python27-essex-gate
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-ceilometeer-python27-essex'
   review_site: 'review.stackforge.org'

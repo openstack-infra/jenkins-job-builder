@@ -1,13 +1,5 @@
 ---
 # gate-ci-puppet-merge
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-ci-puppet-merge'
   review_site: 'review.openstack.org'
@@ -29,14 +21,6 @@ assignednode:
 
 ---
 # gate-ci-puppet-syntax
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-ci-puppet-syntax'
   review_site: 'review.openstack.org'

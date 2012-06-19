@@ -1,12 +1,4 @@
 ---
-modules:
-  - properties
-  - scm
-  - assignednode
-  - trigger_gerrit
-  - builders
-  - publishers
-
 main:
   name: 'gate-MRaaS-merge'
   github_org: 'stackforge'
@@ -14,19 +6,20 @@ main:
   project: 'MRaaS'
   authenticatedBuild: 'true'
 
-trigger:
-  triggerOnPatchsetUploadedEvent: 'false'
-  triggerOnChangeMergedEvent: 'false'
-  triggerOnCommentAddedEvent: 'true'
-  triggerOnRefUpdatedEvent: 'false'
-  triggerApprovalCategory: 'APRV'
-  triggerApprovalValue: 1
-  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
-  projects:
-    - projectCompareType: 'PLAIN'
-      projectPattern: 'stackforge/MRaaS'
-      branchCompareType: 'ANT'
-      branchPattern: '**'
+triggers:
+  - gerrit:
+      triggerOnPatchsetUploadedEvent: 'false'
+      triggerOnChangeMergedEvent: 'false'
+      triggerOnCommentAddedEvent: 'true'
+      triggerOnRefUpdatedEvent: 'false'
+      triggerApprovalCategory: 'APRV'
+      triggerApprovalValue: 1
+      failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+      projects:
+        - projectCompareType: 'PLAIN'
+          projectPattern: 'stackforge/MRaaS'
+          branchCompareType: 'ANT'
+          branchPattern: '**'
 
 builders:
   - gerrit_git_prep
@@ -38,14 +31,6 @@ assignednode:
   node: 'oneiric'
 
 ---
-modules:
-  - properties
-  - scm
-  - assignednode
-  - trigger_gerrit
-  - builders
-  - publishers
-
 main:
   name: 'check-MRaaS-merge'
   github_org: 'stackforge'
@@ -53,20 +38,21 @@ main:
   project: 'MRaaS'
   authenticatedBuild: 'true'
 
-trigger:
-  triggerOnPatchsetUploadedEvent: 'true'
-  triggerOnChangeMergedEvent: 'false'
-  triggerOnCommentAddedEvent: 'false'
-  triggerOnRefUpdatedEvent: 'false'
-  overrideVotes: 'true'
-  gerritBuildSuccessfulVerifiedValue: 1
-  gerritBuildFailedVerifiedValue: -1
-  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
-  projects:
-    - projectCompareType: 'PLAIN'
-      projectPattern: 'stackforge/MRaaS'
-      branchCompareType: 'ANT'
-      branchPattern: '**'
+triggers:
+  - gerrit:
+      triggerOnPatchsetUploadedEvent: 'true'
+      triggerOnChangeMergedEvent: 'false'
+      triggerOnCommentAddedEvent: 'false'
+      triggerOnRefUpdatedEvent: 'false'
+      overrideVotes: 'true'
+      gerritBuildSuccessfulVerifiedValue: 1
+      gerritBuildFailedVerifiedValue: -1
+      failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+      projects:
+        - projectCompareType: 'PLAIN'
+          projectPattern: 'stackforge/MRaaS'
+          branchCompareType: 'ANT'
+          branchPattern: '**'
 
 builders:
   - gerrit_git_prep

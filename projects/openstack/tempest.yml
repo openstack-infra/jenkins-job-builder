@@ -1,13 +1,5 @@
 ---
 # pep8-gate
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-tempest-pep8'
   review_site: 'review.openstack.org'
@@ -33,14 +25,6 @@ assignednode:
 
 ---
 # merge-gate
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-tempest-merge'
   review_site: 'review.openstack.org'

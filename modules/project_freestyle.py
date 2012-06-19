@@ -13,21 +13,27 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Jenkins Job module for timed triggers
-# To use add the following into your YAML:
-# trigger:
-#   timed: '@midnight'
-# or
-#   timed: '*/15 * * * *'
+# Jenkins Job module for maven projects
+# To use you add the following into your YAML:
+# maven:
+#   root_module:
+#     group_id: com.google.gerrit
+#     artifact_id: gerrit-parent
+#   goals: 'test'
 
 import xml.etree.ElementTree as XML
 
-class trigger_timed(object):
-    def __init__(self, data):
-        self.data = data
 
-    def gen_xml(self, xml_parent):
-        time = self.data['trigger']['timed']
-        trigger = XML.SubElement(xml_parent, 'triggers', {'class':'vector'})
-        scmtrig = XML.SubElement(trigger, 'hudson.triggers.TimerTrigger')
-        XML.SubElement(scmtrig, 'spec').text = time
+def register(registry):
+    mod = Freestyle()
+    registry.registerModule(mod)
+
+
+class Freestyle(object):
+    sequence = 0
+
+    def root_xml(self, data):
+        if 'maven' in data:
+            return None
+        xml_parent = XML.Element('project')
+        return xml_parent

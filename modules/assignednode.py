@@ -20,12 +20,17 @@
 
 import xml.etree.ElementTree as XML
 
-class assignednode(object):
-    def __init__(self, data):
-        self.data = data
 
-    def gen_xml(self, xml_parent):
-        node = self.data['assignednode']['node']
+def register(registry):
+    mod = AssignedNode()
+    registry.registerModule(mod)
+
+
+class AssignedNode(object):
+    sequence = 40
+
+    def gen_xml(self, xml_parent, data):
+        node = data['assignednode']['node']
         XML.SubElement(xml_parent, 'assignedNode').text = node
         XML.SubElement(xml_parent, 'canRoam').text = 'false' 
 

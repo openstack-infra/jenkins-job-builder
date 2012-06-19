@@ -23,16 +23,23 @@
 
 import xml.etree.ElementTree as XML
 
-class project_maven(object):
-    def __init__(self, data):
-        self.data = data
 
-    def gen_xml(self, xml_parent):
+def register(registry):
+    mod = Maven()
+    registry.registerModule(mod)
+
+
+class Maven(object):
+    sequence = 0
+
+    def root_xml(self, data):
+        if 'maven' not in data:
+            return None
         xml_parent = XML.Element('maven2-moduleset')
         root_module = XML.SubElement(xml_parent, 'root_module')
-        XML.SubElement(root_module, 'groupId').text = self.data['maven']['root_module']['group_id']
-        XML.SubElement(root_module, 'artifactId').text = self.data['maven']['root_module']['artifact_id']
-        XML.SubElement(xml_parent, 'goals').text = self.data['maven']['goals']
+        XML.SubElement(root_module, 'groupId').text = data['maven']['root_module']['group_id']
+        XML.SubElement(root_module, 'artifactId').text = data['maven']['root_module']['artifact_id']
+        XML.SubElement(xml_parent, 'goals').text = data['maven']['goals']
 
         XML.SubElement(xml_parent, 'aggregatorStyleBuild').text = 'true'
         XML.SubElement(xml_parent, 'incrementalBuild').text = 'false'

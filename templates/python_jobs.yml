@@ -1,14 +1,5 @@
 ---
 # coverage
-modules:
-  - logrotate
-  - properties
-  - scm
-  - assignednode
-  - trigger_pollscm
-  - builders
-  - publishers
-
 main:
   name: '@NAME@-coverage'
   review_site: '@REVIEW_SITE@'
@@ -17,8 +8,8 @@ main:
   authenticatedBuild: 'false'
   disabled: @DISABLED@
 
-trigger:
-  pollscm: '*/15 * * * *'
+triggers:
+  - pollscm: '*/15 * * * *'
 
 builders:
   - coverage
@@ -40,14 +31,6 @@ logrotate:
 
 ---
 # pep8-gate
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-@NAME@-pep8'
   review_site: '@REVIEW_SITE@'
@@ -75,14 +58,6 @@ assignednode:
 
 ---
 # python26-gate
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-@NAME@-python26'
   review_site: '@REVIEW_SITE@'
@@ -112,14 +87,6 @@ assignednode:
 
 ---
 # python27-gate
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-@NAME@-python27'
   review_site: '@REVIEW_SITE@'
@@ -148,15 +115,6 @@ assignednode:
 
 ---
 # docs
-modules:
-  - properties
-  - scm
-  - assignednode
-  - trigger_pollscm
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: '@NAME@-docs'
   review_site: '@REVIEW_SITE@'
@@ -165,8 +123,8 @@ main:
   authenticatedBuild: 'false'
   disabled: @DISABLED@
 
-trigger:
-  pollscm: '*/15 * * * *'
+triggers:
+  - pollscm: '*/15 * * * *'
 
 builders:
   - docs
@@ -187,14 +145,6 @@ assignednode:
 
 ---
 # merge-gate
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: 'gate-@NAME@-merge'
   review_site: '@REVIEW_SITE@'
@@ -218,14 +168,6 @@ assignednode:
 
 ---
 # ppa
-modules:
-  - properties
-  - scm
-  - assignednode
-  - trigger_none
-  - builders
-  - publishers
-
 main:
   name: '@NAME@-ppa'
   review_site: '@REVIEW_SITE@'
@@ -248,14 +190,6 @@ assignednode:
 
 ---
 # tarball
-modules:
-  - properties
-  - scm
-  - assignednode
-  - builders
-  - publishers
-  - zuul
-
 main:
   name: '@NAME@-tarball'
   review_site: '@REVIEW_SITE@'

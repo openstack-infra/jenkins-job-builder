@@ -53,13 +53,16 @@ ZUUL_NOTIFICATIONS = [
      'protocol': 'HTTP'}
     ]
 
-class zuul(object):
-    def __init__(self, data):
-        self.data = data
-        self._update()
 
-    def _update(self):
-        data = self.data
+def register(registry):
+    mod = Zuul()
+    registry.registerModule(mod)
+
+
+class Zuul(object):
+    sequence = 0
+
+    def handle_data(self, data):
         if ('zuul' not in data.get('triggers', []) and
             'zuul_post' not in data.get('triggers', [])):
             return
@@ -70,8 +73,7 @@ class zuul(object):
         data['notification_endpoints'].extend(ZUUL_NOTIFICATIONS)
         if 'zuul' in data.get('triggers', []):
             data['parameters'].extend(ZUUL_PARAMETERS)
+            data['triggers'].remove('zuul')
         if 'zuul_post' in data.get('triggers', []):
             data['parameters'].extend(ZUUL_POST_PARAMETERS)
-
-    def gen_xml(self, xml_parent):
-        pass
+            data['triggers'].remove('zuul_post')

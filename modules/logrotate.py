@@ -23,11 +23,19 @@
 
 import xml.etree.ElementTree as XML
 
-class logrotate(object):
-    def __init__(self, data):
+
+def register(registry):
+    mod = LogRotate()
+    registry.registerModule(mod)
+
+
+class LogRotate(object):
+    sequence = 10
+
+    def handle_data(self, data):
         self.data = data
 
-    def gen_xml(self, xml_parent):
+    def gen_xml(self, xml_parent, data):
         if self.data.has_key('logrotate'):
             lr_xml = XML.SubElement(xml_parent, 'logRotator')
             logrotate = self.data['logrotate']
