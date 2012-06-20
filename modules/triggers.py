@@ -49,7 +49,7 @@ def register(registry):
 
 class Triggers(object):
     sequence = 50
-    
+
     def __init__(self, registry):
         self.registry = registry
         for f in dir(self):

@@ -17,28 +17,37 @@
 
 import xml.etree.ElementTree as XML
 
-class wrappers(object):
-    def __init__(self, data):
-        self.data = data
+def register(registry):
+    mod = Wrappers()
+    registry.registerModule(mod)
 
-    def gen_xml(self, xml_parent):
-        publishers = XML.SubElement(xml_parent, 'buildWrappers')
 
-        if 'timeout' in self.data['main']:
-            self._timeout(publishers)
-        if 'timestamps' in self.data['main']:
-            self._timestamps(publishers)
+class Wrappers(object):
+    sequence = 80
 
-    def _timeout(self, xml_parent):
+    def gen_xml(self, xml_parent, data):
+        wrappers = XML.SubElement(xml_parent, 'buildWrappers')
+
+        if 'timeout' in data['main']:
+            self._timeout(wrappers, data)
+        if 'ansicolor' in data['main']:
+            self._ansicolor(wrappers, data)
+        if 'timestamps' in data['main']:
+            self._timestamps(wrappers, data)
+
+    def _timeout(self, xml_parent, data):
         twrapper = XML.SubElement(xml_parent, 'hudson.plugins.build__timeout.BuildTimeoutWrapper')
         tminutes = XML.SubElement(twrapper, 'timeoutMinutes')
-        tminutes.text = str(self.data['main']['timeout'])
+        tminutes.text = str(data['main']['timeout'])
         failbuild = XML.SubElement(twrapper, 'failBuild')
-        fail = self.data['main'].get('timeout_fail', False)
+        fail = data['main'].get('timeout_fail', False)
         if fail:
             failbuild.text = 'true'
         else:
             failbuild.text = 'false'
 
-    def _timestamps(self, xml_parent):
+    def _timestamps(self, xml_parent, data):
         XML.SubElement(xml_parent, 'hudson.plugins.timestamper.TimestamperBuildWrapper')
+
+    def _ansicolor(self, xml_parent, data):
+        XML.SubElement(xml_parent, 'hudson.plugins.ansicolor.AnsiColorBuildWrapper')
