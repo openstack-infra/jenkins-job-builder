@@ -8,6 +8,12 @@ main:
   authenticatedBuild: 'false'
   disabled: @DISABLED@
 
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
 triggers:
   - pollscm: '*/15 * * * *'
 
@@ -23,12 +29,6 @@ scm:
 assignednode:
   node: '@NODE@'
 
-logrotate:
-  daysToKeep: 3
-  numToKeep: 20
-  artifactDaysToKeep: -1
-  artifactNumToKeep: -1
-
 ---
 # pep8-gate
 main:
@@ -39,6 +39,12 @@ main:
   authenticatedBuild: 'true'
   disabled: @DISABLED@
   concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
 
 triggers:
   - zuul
@@ -66,6 +72,12 @@ main:
   authenticatedBuild: 'true'
   disabled: @DISABLED@
   concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
 
 triggers:
   - zuul
@@ -96,6 +108,12 @@ main:
   disabled: @DISABLED@
   concurrent: 'true'
 
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
 triggers:
   - zuul
 
@@ -122,6 +140,12 @@ main:
   project: '@NAME@'
   authenticatedBuild: 'false'
   disabled: @DISABLED@
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
 
 triggers:
   - pollscm: '*/15 * * * *'
@@ -154,6 +178,12 @@ main:
   disabled: @DISABLED@
   concurrent: 'true'
 
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
 triggers:
   - zuul
 
@@ -175,6 +205,12 @@ main:
   project: '@NAME@'
   authenticatedBuild: 'false'
   disabled: true
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
 
 builders:
   - ppa
@@ -198,6 +234,12 @@ main:
   authenticatedBulid: 'false'
   disabled: @DISABLED@
   concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
 
 triggers:
   - zuul_post

@@ -7,6 +7,12 @@ main:
   project: 'devstack-gate'
   concurrent: 'true'
 
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
 triggers:
   - zuul
 
@@ -164,7 +170,7 @@ main:
 
 logrotate:
   daysToKeep: 28
-  numToKeep: -1
+  numToKeep: 100
   artifactDaysToKeep: -1
   artifactNumToKeep: -1
 
@@ -201,7 +207,7 @@ main:
 
 logrotate:
   daysToKeep: 28
-  numToKeep: -1
+  numToKeep: 100
   artifactDaysToKeep: -1
   artifactNumToKeep: -1
 
