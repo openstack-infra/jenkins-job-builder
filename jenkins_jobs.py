@@ -173,7 +173,6 @@ In modules/jenkins_jobs"
             XML.SubElement(self.xml, 'concurrentBuild').text = 'true'
         else:
             XML.SubElement(self.xml, 'concurrentBuild').text = 'false'
-        XML.SubElement(self.xml, 'buildWrappers')
 
         for module in self.registry.modules:
             if hasattr(module, 'gen_xml'):
