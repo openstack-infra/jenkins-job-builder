@@ -7,6 +7,7 @@ values:
   github_org: 'stackforge'
   review_site: 'review.stackforge.org'
   publisher_site: 'TODO.stackforge.org'
+  tarball_project: 'ceilometer'
   doc_publisher_site: 'TODO.stackforge.org'
   node: 'oneiric'
 

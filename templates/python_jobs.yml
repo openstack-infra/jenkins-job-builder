@@ -251,6 +251,7 @@ builders:
 post_build_actions:
   - tarball:
       site: '@PUBLISHER_SITE@'
+      project: '@TARBALL_PROJECT@'
 
 scm:
   scm: 'false'

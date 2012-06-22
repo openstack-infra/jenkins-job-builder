@@ -276,6 +276,7 @@ class Publishers(object):
     # To use you add the following into your YAML:
     # publish:
     #   site: 'glance.openstack.org'
+    #    dir: 'glance'
 
     def _publisher_tarball(self, xml_parent, data):
         site = data['site']
@@ -286,7 +287,7 @@ class Publishers(object):
         XML.SubElement(scp, 'siteName').text = site
         entries = XML.SubElement(scp, 'entries')
         entry = XML.SubElement(entries, 'be.certipost.hudson.plugin.Entry')
-        XML.SubElement(entry, 'filePath').text = 'tarballs/{proj}/'.format(proj=self.data['main']['project'])
+        XML.SubElement(entry, 'filePath').text = 'tarballs/{proj}/'.format(proj=data['project'])
         XML.SubElement(entry, 'sourceFile').text = 'dist/*.tar.gz'
         XML.SubElement(entry, 'keepHierarchy').text = 'false'
 

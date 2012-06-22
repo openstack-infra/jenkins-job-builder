@@ -7,5 +7,6 @@ values:
   github_org: 'heat-api'
   review_site: 'review.stackforge.org'
   publisher_site: 'TODO.stackforge.org'
+  tarball_project: 'heat'
   doc_publisher_site: 'TODO.stackforge.org'
   node: 'oneiric'
