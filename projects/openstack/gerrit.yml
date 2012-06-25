@@ -5,7 +5,7 @@ main:
   github_org: 'openstack-ci'
   review_site: 'review.openstack.org'
   project: 'gerrit'
-  authenticatedBuild: 'true'
+  authenticatedBuild: 'false'
   concurrent: 'true'
 
 triggers:
@@ -27,7 +27,7 @@ main:
   review_site: 'review.openstack.org'
   github_org: 'openstack-ci'
   project: 'gerrit'
-  authenticatedBuild: 'true'
+  authenticatedBuild: 'false'
   concurrent: 'true'
 
 triggers:
@@ -65,7 +65,7 @@ main:
   review_site: 'review.openstack.org'
   github_org: 'openstack-ci'
   project: 'gerrit'
-  authenticatedBuild: 'true'
+  authenticatedBuild: 'false'
   concurrent: 'true'
 
 triggers:
