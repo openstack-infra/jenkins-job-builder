@@ -42,7 +42,6 @@ main:
   github_org: 'stackforge'
   project: 'ceilometer'
   authenticatedBuild: 'true'
-  disabled: 'false'
   concurrent: 'true'
 
 triggers:
