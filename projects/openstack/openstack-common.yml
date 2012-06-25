@@ -1,0 +1,12 @@
+project:
+  template: 'python_jobs'
+
+values:
+  name: 'openstack-common'
+  disabled: 'false'
+  github_org: 'openstack'
+  review_site: 'review.openstack.org'
+  publisher_site: 'nova.openstack.org'
+  tarball_project: 'openstack-common'
+  doc_publisher_site: 'docs.openstack.org'
+  node: 'precise'
