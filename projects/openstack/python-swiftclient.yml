@@ -22,7 +22,7 @@ main:
   concurrent: 'true'
 
 triggers:
-  - zuul
+  - zuul_post
 
 builders:
   - gerrit_git_prep
