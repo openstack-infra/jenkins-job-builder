@@ -36,7 +36,7 @@ main:
   review_site: '@REVIEW_SITE@'
   github_org: '@GITHUB_ORG@'
   project: '@NAME@'
-  authenticatedBuild: 'true'
+  authenticatedBuild: 'false'
   disabled: @DISABLED@
   concurrent: 'true'
 
@@ -69,7 +69,7 @@ main:
   review_site: '@REVIEW_SITE@'
   github_org: '@GITHUB_ORG@'
   project: '@NAME@'
-  authenticatedBuild: 'true'
+  authenticatedBuild: 'false'
   disabled: @DISABLED@
   concurrent: 'true'
 
@@ -104,7 +104,7 @@ main:
   review_site: '@REVIEW_SITE@'
   github_org: '@GITHUB_ORG@'
   project: '@NAME@'
-  authenticatedBuild: 'true'
+  authenticatedBuild: 'false'
   disabled: @DISABLED@
   concurrent: 'true'
 
@@ -174,7 +174,7 @@ main:
   review_site: '@REVIEW_SITE@'
   github_org: '@GITHUB_ORG@'
   project: '@NAME@'
-  authenticatedBuild: 'true'
+  authenticatedBuild: 'false'
   disabled: @DISABLED@
   concurrent: 'true'
 

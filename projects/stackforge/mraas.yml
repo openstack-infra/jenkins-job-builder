@@ -4,7 +4,7 @@ main:
   github_org: 'stackforge'
   review_site: 'review.stackforge.org'
   project: 'MRaaS'
-  authenticatedBuild: 'true'
+  authenticatedBuild: 'false'
 
 triggers:
   - gerrit:
@@ -36,7 +36,7 @@ main:
   github_org: 'stackforge'
   review_site: 'review.stackforge.org'
   project: 'MRaaS'
-  authenticatedBuild: 'true'
+  authenticatedBuild: 'false'
 
 triggers:
   - gerrit:
