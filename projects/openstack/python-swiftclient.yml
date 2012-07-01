@@ -32,4 +32,4 @@ scm:
   scm: 'false'
 
 assignednode:
-  node: 'master'
+  node: 'pypi'
