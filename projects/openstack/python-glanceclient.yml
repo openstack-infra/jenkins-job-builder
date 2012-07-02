@@ -7,7 +7,7 @@ values:
   github_org: 'openstack'
   review_site: 'review.openstack.org'
   publisher_site: 'nova.openstack.org'
-  tarball_project: 'glance'
+  tarball_project: 'python-glanceclient'
   doc_publisher_site: 'docs.openstack.org'
   node: 'precise'
 

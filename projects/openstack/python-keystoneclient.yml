@@ -7,7 +7,7 @@ values:
   github_org: 'openstack'
   review_site: 'review.openstack.org'
   publisher_site: 'nova.openstack.org'
-  tarball_project: 'keystone'
+  tarball_project: 'python-keystoneclient'
   doc_publisher_site: 'docs.openstack.org'
   node: 'precise'
 
