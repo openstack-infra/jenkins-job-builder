@@ -2,7 +2,7 @@
 main:
   name: 'gate-MRaaS-merge'
   github_org: 'stackforge'
-  review_site: 'review.stackforge.org'
+  review_site: 'review.openstack.org'
   project: 'MRaaS'
   authenticatedBuild: 'false'
 
@@ -34,7 +34,7 @@ assignednode:
 main:
   name: 'check-MRaaS-merge'
   github_org: 'stackforge'
-  review_site: 'review.stackforge.org'
+  review_site: 'review.openstack.org'
   project: 'MRaaS'
   authenticatedBuild: 'false'
 
