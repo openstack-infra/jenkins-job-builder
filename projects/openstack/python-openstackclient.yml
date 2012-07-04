@@ -1,5 +1,5 @@
 project:
-  template: 'python_jobs'
+  template: 'python_library_jobs'
 
 values:
   name: 'python-openstackclient'
@@ -10,26 +10,3 @@ values:
   tarball_project: 'python-openstackclient'
   doc_publisher_site: 'docs.openstack.org'
   node: 'precise'
-
----
-# pypi-upload
-main:
-  name: 'python-openstackclient-pypi'
-  review_site: 'review.openstack.org'
-  github_org: 'openstack'
-  project: 'python-openstackclient'
-  authenticatedBuild: 'false'
-  concurrent: 'true'
-
-triggers:
-  - zuul_post
-
-builders:
-  - gerrit_git_prep
-  - shell: tox -v -evenv python setup.py sdist upload
-
-scm:
-  scm: 'false'
-
-assignednode:
-  node: 'pypi'
