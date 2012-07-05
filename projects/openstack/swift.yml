@@ -6,6 +6,17 @@ values:
   disabled: 'false'
   github_org: 'openstack'
   review_site: 'review.openstack.org'
+  node: 'precise'
+
+---
+project:
+  template: 'openstack_publish_jobs'
+
+values:
+  name: 'swift'
+  disabled: 'false'
+  github_org: 'openstack'
+  review_site: 'review.openstack.org'
   publisher_site: 'nova.openstack.org'
   tarball_project: 'swift'
   doc_publisher_site: 'docs.openstack.org'

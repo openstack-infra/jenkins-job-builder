@@ -6,7 +6,4 @@ values:
   disabled: 'true'
   github_org: 'stackforge'
   review_site: 'review.openstack.org'
-  publisher_site: 'TODO.stackforge.org'
-  tarball_project: 'reddwarf'
-  doc_publisher_site: 'TODO.stackforge.org'
   node: 'oneiric'

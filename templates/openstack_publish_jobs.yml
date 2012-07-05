@@ -1,0 +1,72 @@
+---
+# docs
+main:
+  name: '@NAME@-docs'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
+  project: '@NAME@'
+  authenticatedBuild: 'false'
+  disabled: @DISABLED@
+  concurrent: 'true'
+
+triggers:
+  - zuul_post
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+builders:
+  - gerrit_git_prep
+  - docs
+
+post_build_actions:
+  - ftp:
+      site: '@DOC_PUBLISHER_SITE@'
+      remote_dir: 'developer/@NAME@'
+      source_files: 'doc/build/html/**'
+      remove_prefix: 'doc/build/html'
+      excludes: ''
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: '@NODE@'
+
+---
+# tarball
+main:
+  name: '@NAME@-tarball'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
+  project: '@NAME@'
+  authenticatedBulid: 'false'
+  disabled: @DISABLED@
+  concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+triggers:
+  - zuul_post
+
+builders:
+  - gerrit_git_prep
+  - tarball
+
+post_build_actions:
+  - tarball:
+      site: '@PUBLISHER_SITE@'
+      project: '@TARBALL_PROJECT@'
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: '@NODE@'

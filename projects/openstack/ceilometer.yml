@@ -6,9 +6,6 @@ values:
   disabled: 'false'
   github_org: 'stackforge'
   review_site: 'review.openstack.org'
-  publisher_site: 'TODO.stackforge.org'
-  tarball_project: 'ceilometer'
-  doc_publisher_site: 'TODO.stackforge.org'
   node: 'oneiric'
 
 ---
