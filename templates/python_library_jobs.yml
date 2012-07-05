@@ -7,6 +7,7 @@ main:
   project: '@NAME@'
   authenticatedBuild: 'false'
   disabled: @DISABLED@
+  concurrent: 'true'
 
 logrotate:
   daysToKeep: 28
@@ -15,16 +16,17 @@ logrotate:
   artifactNumToKeep: -1
 
 triggers:
-  - pollscm: '*/15 * * * *'
+  - zuul_post
 
 builders:
+  - gerrit_git_prep
   - coverage
 
 post_build_actions:
   - coverage
 
 scm:
-  scm: 'true'
+  scm: 'false'
 
 assignednode:
   node: '@NODE@'
@@ -140,6 +142,10 @@ main:
   project: '@NAME@'
   authenticatedBuild: 'false'
   disabled: @DISABLED@
+  concurrent: 'true'
+
+triggers:
+  - zuul_post
 
 logrotate:
   daysToKeep: 28
@@ -147,10 +153,8 @@ logrotate:
   artifactDaysToKeep: -1
   artifactNumToKeep: -1
 
-triggers:
-  - pollscm: '*/15 * * * *'
-
 builders:
+  - gerrit_git_prep
   - docs
 
 post_build_actions:
@@ -162,7 +166,7 @@ post_build_actions:
       excludes: ''
 
 scm:
-  scm: 'true'
+  scm: 'false'
 
 assignednode:
   node: '@NODE@'
@@ -293,3 +297,34 @@ scm:
 
 assignednode:
   node: 'pypi'
+
+---
+# docs-gate
+main:
+  name: 'gate-@NAME@-docs'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
+  project: '@NAME@'
+  authenticatedBuild: 'false'
+  disabled: @DISABLED@
+  concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+triggers:
+  - zuul
+
+builders:
+  - gerrit_git_prep
+  - docs
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: '@NODE@'
+

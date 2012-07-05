@@ -19,6 +19,7 @@ triggers:
   - zuul_post
 
 builders:
+  - gerrit_git_prep
   - coverage
 
 post_build_actions:
@@ -153,6 +154,7 @@ logrotate:
   artifactNumToKeep: -1
 
 builders:
+  - gerrit_git_prep
   - docs
 
 post_build_actions:
@@ -219,6 +221,7 @@ triggers:
   - zuul
 
 builders:
+  - gerrit_git_prep
   - docs
 
 scm:
