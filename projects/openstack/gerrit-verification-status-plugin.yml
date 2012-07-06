@@ -1,0 +1,20 @@
+---
+main:
+  name: 'gate-gerrit-verification-status-plugin-merge'
+  github_org: 'openstack-ci'
+  review_site: 'review.openstack.org'
+  project: 'gerrit-verification-status-plugin'
+  authenticatedBuild: 'false'
+  concurrent: 'true'
+
+triggers:
+  - zuul
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'precise'
