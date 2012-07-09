@@ -87,7 +87,7 @@ rm -fr ~/.java\n\
         self._add_script(xml_parent, "./tools/version.sh --reset")
 
     def _builder_pep8(self, xml_parent):
-        self._add_script(xml_parent, 'tox -v -epep8 | tee pep8.txt')
+        self._add_script(xml_parent, 'set -o pipefail ; tox -v -epep8 | tee pep8.txt ; set +o pipefail')
 
     def _builder_pyflakes(self, xml_parent):
         self._add_script(xml_parent, 'tox -v -epyflakes')
