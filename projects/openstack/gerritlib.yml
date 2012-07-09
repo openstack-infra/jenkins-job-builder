@@ -1,0 +1,113 @@
+---
+# pyflakes-gate
+main:
+  name: 'gate-gerritlib-pyflakes'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'gerritlib'
+  concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+triggers:
+  - zuul
+
+builders:
+  - gerrit_git_prep
+  - pyflakes
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'precise'
+
+---
+# pep8-gate
+main:
+  name: 'gate-gerritlib-pep8'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'gerritlib'
+  concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+triggers:
+  - zuul
+
+builders:
+  - gerrit_git_prep
+  - pep8
+
+post_build_actions:
+  - pep8
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'precise'
+
+---
+# merge-gate
+main:
+  name: 'gate-gerritlib-merge'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'gerritlib'
+  concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+triggers:
+  - zuul
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'precise'
+
+---
+# pypi-upload
+main:
+  name: 'gerritlib-pypi'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'gerritlib'
+  concurrent: 'true'
+
+triggers:
+  - zuul_post
+
+builders:
+  - gerrit_git_prep
+  - shell: tox -v -evenv python setup.py sdist upload
+
+post_build_actions:
+  - tarball:
+      site: 'nova.openstack.org'
+      project: 'ci'
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'pypi'
+
