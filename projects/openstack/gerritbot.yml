@@ -1,0 +1,85 @@
+---
+# pyflakes-gate
+main:
+  name: 'gate-gerritbot-pyflakes'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'gerritbot'
+  concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+triggers:
+  - zuul
+
+builders:
+  - gerrit_git_prep
+  - pyflakes
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'precise'
+
+---
+# pep8-gate
+main:
+  name: 'gate-gerritbot-pep8'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'gerritbot'
+  concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+triggers:
+  - zuul
+
+builders:
+  - gerrit_git_prep
+  - pep8
+
+post_build_actions:
+  - pep8
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'precise'
+
+---
+# merge-gate
+main:
+  name: 'gate-gerritbot-merge'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack-ci'
+  project: 'gerritbot'
+  concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+triggers:
+  - zuul
+
+builders:
+  - gerrit_git_prep
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'precise'
