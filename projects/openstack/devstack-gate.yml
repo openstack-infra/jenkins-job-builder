@@ -147,7 +147,7 @@ post_build_actions:
   - archive: 
       artifacts: logs/*
   - junit:
-      results: '**/nosetests.xml'
+      results: '**/nosetests*.xml'
   - trigger_parameterized_builds:
     - project: devstack-update-complete
       when: complete
