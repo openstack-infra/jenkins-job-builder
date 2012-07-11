@@ -56,6 +56,7 @@ class Properties(object):
         'bool': 'hudson.model.BooleanParameterDefinition',
         'file': 'hudson.model.FileParameterDefinition',
         'text': 'hudson.model.TextParameterDefinition',
+        'label': 'org.jvnet.jenkins.plugins.nodelabelparameter.LabelParameterDefinition',
         # Others require more work
         }
 
