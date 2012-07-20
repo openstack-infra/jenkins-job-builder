@@ -34,9 +34,9 @@ class JenkinsJobsException(Exception): pass
 parser = argparse.ArgumentParser()
 subparser = parser.add_subparsers(help='update, test or delete job', dest='command')
 parser_update = subparser.add_parser('update')
-parser_update.add_argument('file', help='YAML file for update', type=file)
+parser_update.add_argument('file', help='YAML file for update')
 parser_update = subparser.add_parser('test')
-parser_update.add_argument('file', help='YAML file for test', type=file)
+parser_update.add_argument('file', help='YAML file for test')
 parser_delete = subparser.add_parser('delete')
 parser_delete.add_argument('name', help='name of job')
 parser.add_argument('--conf', dest='conf', help='Configuration file')
@@ -242,27 +242,33 @@ def delete_job():
     remote_jenkins.delete_job(options.name)
 
 def update_job(test = False):
-    yparse = YamlParser(options.file)
+    if os.path.isdir(options.file):
+        files_to_process = [os.path.join(options.file, f)
+                            for f in os.listdir(options.file)]
+    else:
+        files_to_process = [options.file]
     cache = CacheStorage()
     if not test:
         remote_jenkins = Jenkins(config.get('jenkins','url'), config.get('jenkins','user'), config.get('jenkins','password'))
-    while True:
-        try:
-            xml = yparse.get_next_xml()
-            job = yparse.get_name()
-            if test:
-                print xml.output()
-                continue
-            md5 = xml.md5()
-            if remote_jenkins.is_job(job) and not cache.is_cached(job):
-                old_md5 = remote_jenkins.get_job_md5(job)
-                cache.set(job, old_md5)
+    for in_file in files_to_process:
+        yparse = YamlParser(open(in_file, 'r'))
+        while True:
+            try:
+                xml = yparse.get_next_xml()
+                job = yparse.get_name()
+                if test:
+                    print xml.output()
+                    continue
+                md5 = xml.md5()
+                if remote_jenkins.is_job(job) and not cache.is_cached(job):
+                    old_md5 = remote_jenkins.get_job_md5(job)
+                    cache.set(job, old_md5)
 
-            if cache.has_changed(job, md5):
-                remote_jenkins.update_job(job, xml.output())
-                cache.set(job, md5)
-        except JenkinsJobsException:
-            break
+                if cache.has_changed(job, md5):
+                    remote_jenkins.update_job(job, xml.output())
+                    cache.set(job, md5)
+            except JenkinsJobsException:
+                break
 
 if options.command == 'delete':
     delete_job()
