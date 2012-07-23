@@ -21,3 +21,31 @@ values:
   tarball_project: 'horizon'
   doc_publisher_site: 'docs.openstack.org'
   node: 'precise'
+
+---
+# gate-horizon-selenium
+main:
+  name: 'gate-horizon-selenium'
+  review_site: 'review.openstack.org'
+  github_org: 'openstack'
+  project: 'horizon'
+  concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+triggers:
+  - zuul
+
+builders:
+  - gerrit_git_prep
+  - selenium
+
+scm:
+  scm: 'false'
+
+assignednode:
+  node: 'precise'

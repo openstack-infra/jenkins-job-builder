@@ -100,6 +100,9 @@ for f in `find . -iname *.erb` ; do
 done
 """)
 
+    def _builder_selenium(self, xml_parent):
+        self._add_script(xml_parent, '/usr/local/jenkins/slave_scripts/run-selenium.sh')
+
     def _builder_shell(self, xml_parent, data):
         self._add_script(xml_parent, data)
 
