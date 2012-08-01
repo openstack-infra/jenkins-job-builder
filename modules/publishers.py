@@ -180,7 +180,6 @@ class Publishers(object):
 
         transfers = XML.SubElement(ftp, 'transfers')
         ftp_transfers = XML.SubElement(transfers, 'jenkins.plugins.publish__over__ftp.BapFtpTransfer')
-        # TODO: the next four fields are where the magic happens. Fill them in.
         XML.SubElement(ftp_transfers, 'remoteDirectory').text = data['remote_dir']
         XML.SubElement(ftp_transfers, 'sourceFiles').text = data['source_files']
         XML.SubElement(ftp_transfers, 'excludes').text = data['excludes']
@@ -310,3 +309,21 @@ class Publishers(object):
         XML.SubElement(entry, 'filePath').text = data['target_path']
         XML.SubElement(entry, 'sourceFile').text = data['warfile']
         XML.SubElement(entry, 'keepHierarchy').text = 'false'
+
+    # Jenkins Job module for generic scp publishing
+    # To use you add the following into your YAML:
+    # publish:
+    #   site: 'openstack-ci.openstack.org'
+    #   source: 'doc/build/html/**/*'
+    #   target_path: 'ci/zuul'
+    #   keep_heirarchy: 'true'
+
+    def _publisher_scp(self, xml_parent, data):
+        site = data['site']
+        scp = XML.SubElement(xml_parent, 'be.certipost.hudson.plugin.SCPRepositoryPublisher')
+        XML.SubElement(scp, 'siteName').text = site
+        entries = XML.SubElement(scp, 'entries')
+        entry = XML.SubElement(entries, 'be.certipost.hudson.plugin.Entry')
+        XML.SubElement(entry, 'filePath').text = data['target_path']
+        XML.SubElement(entry, 'sourceFile').text = data['source']
+        XML.SubElement(entry, 'keepHierarchy').text = data['keep_heirarchy']
