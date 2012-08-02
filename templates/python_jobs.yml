@@ -116,6 +116,12 @@ logrotate:
   artifactDaysToKeep: -1
   artifactNumToKeep: -1
 
+parameters:
+  - name: NODE_LABEL
+    description: Label of node to use for this build
+    type: label
+    default: '@NODE@'
+
 triggers:
   - zuul
 
