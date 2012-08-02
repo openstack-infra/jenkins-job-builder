@@ -38,7 +38,6 @@ main:
   github_org: 'openstack-ci'
   project: 'zuul'
   authenticatedBuild: 'false'
-  disabled: 'false'
   concurrent: 'true'
 
 triggers:
