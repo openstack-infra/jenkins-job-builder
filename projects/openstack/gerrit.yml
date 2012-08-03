@@ -7,6 +7,8 @@ main:
   project: 'gerrit'
   authenticatedBuild: 'false'
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 triggers:
   - zuul
@@ -29,6 +31,8 @@ main:
   project: 'gerrit'
   authenticatedBuild: 'false'
   concurrent: 'true'
+  timeout: 40
+  timeout_fail: true
 
 triggers:
   - zuul
@@ -67,6 +71,8 @@ main:
   project: 'gerrit'
   authenticatedBuild: 'false'
   concurrent: 'true'
+  timeout: 40
+  timeout_fail: true
 
 triggers:
   - zuul
@@ -99,6 +105,8 @@ main:
   project: 'gerrit'
   authenticatedBulid: 'false'
   concurrent: 'true'
+  timeout: 40
+  timeout_fail: true
 
 triggers:
   - zuul_post

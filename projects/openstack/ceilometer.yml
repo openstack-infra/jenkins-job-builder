@@ -17,6 +17,8 @@ main:
   project: 'ceilometer'
   authenticatedBuild: 'false'
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 triggers:
   - zuul
@@ -40,6 +42,8 @@ main:
   project: 'ceilometer'
   authenticatedBuild: 'false'
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 triggers:
   - zuul

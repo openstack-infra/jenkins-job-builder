@@ -8,6 +8,8 @@ main:
   authenticatedBuild: 'false'
   disabled: @DISABLED@
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 logrotate:
   daysToKeep: 28
@@ -41,6 +43,8 @@ main:
   authenticatedBuild: 'false'
   disabled: @DISABLED@
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 logrotate:
   daysToKeep: 28
@@ -74,6 +78,8 @@ main:
   authenticatedBuild: 'false'
   disabled: @DISABLED@
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 logrotate:
   daysToKeep: 28
@@ -109,6 +115,8 @@ main:
   authenticatedBuild: 'false'
   disabled: @DISABLED@
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 logrotate:
   daysToKeep: 28
@@ -149,6 +157,8 @@ main:
   authenticatedBuild: 'false'
   disabled: @DISABLED@
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 logrotate:
   daysToKeep: 28
@@ -178,6 +188,8 @@ main:
   authenticatedBuild: 'false'
   disabled: @DISABLED@
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 logrotate:
   daysToKeep: 28

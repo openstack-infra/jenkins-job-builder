@@ -6,6 +6,8 @@ main:
   project: 'gerrit-verification-status-plugin'
   authenticatedBuild: 'false'
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 triggers:
   - zuul

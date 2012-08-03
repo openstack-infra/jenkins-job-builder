@@ -6,6 +6,8 @@ main:
   github_org: 'openstack-dev'
   project: 'devstack'
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 triggers:
   - zuul

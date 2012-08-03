@@ -30,6 +30,8 @@ main:
   github_org: 'openstack'
   project: 'horizon'
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 logrotate:
   daysToKeep: 28

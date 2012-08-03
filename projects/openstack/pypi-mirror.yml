@@ -6,6 +6,8 @@ main:
   github_org: 'openstack-ci'
   project: 'pypi-mirror'
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 triggers:
   - zuul
@@ -28,6 +30,8 @@ main:
   github_org: 'openstack-ci'
   project: 'pypi-mirror'
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 triggers:
   - zuul

@@ -6,6 +6,8 @@ main:
   github_org: 'openstack-ci'
   project: 'devstack-gate'
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 logrotate:
   daysToKeep: 28
@@ -179,6 +181,8 @@ main:
   name: 'devstack-update-inprogress'
   review_site: 'review.openstack.org'
   github_org: 'openstack-ci'
+  timeout: 10
+  timeout_fail: true
 
 logrotate:
   daysToKeep: 28
@@ -216,6 +220,8 @@ main:
   name: 'devstack-update-complete'
   review_site: 'review.openstack.org'
   github_org: 'openstack-ci'
+  timeout: 10
+  timeout_fail: true
 
 logrotate:
   daysToKeep: 28

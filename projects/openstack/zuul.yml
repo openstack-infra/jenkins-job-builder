@@ -16,6 +16,8 @@ main:
   github_org: 'openstack-ci'
   project: 'zuul'
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 triggers:
   - zuul
@@ -39,6 +41,8 @@ main:
   project: 'zuul'
   authenticatedBuild: 'false'
   concurrent: 'true'
+  timeout: 20
+  timeout_fail: true
 
 triggers:
   - zuul_post
