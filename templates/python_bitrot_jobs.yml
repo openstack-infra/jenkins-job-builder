@@ -1,0 +1,102 @@
+---
+# python26-gate
+main:
+  name: 'periodic-@NAME@-python26-@BRANCH_NAME@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
+  project: '@NAME@'
+  authenticatedBuild: 'false'
+  disabled: @DISABLED@
+  concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+triggers:
+  - timed: '@daily'
+
+builders:
+  - python26
+
+post_build_actions:
+  - junit:
+      results: '**/nosetests.xml'
+
+scm:
+  scm: 'true'
+  branches: 
+    - '@BRANCH_SPEC@'
+
+# >= precise does not have python2.6
+assignednode:
+  node: 'oneiric'
+
+---
+# python27-gate
+main:
+  name: 'periodic-@NAME@-python27-@BRANCH_NAME@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
+  project: '@NAME@'
+  authenticatedBuild: 'false'
+  disabled: @DISABLED@
+  concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+triggers:
+  - timed: '@daily'
+
+builders:
+  - python27
+
+post_build_actions:
+  - junit:
+      results: '**/nosetests.xml'
+
+scm:
+  scm: 'true'
+  branches: 
+    - '@BRANCH_SPEC@'
+
+assignednode:
+  node: '@NODE@'
+
+---
+# docs-gate
+main:
+  name: 'periodic-@NAME@-docs-@BRANCH_NAME@'
+  review_site: '@REVIEW_SITE@'
+  github_org: '@GITHUB_ORG@'
+  project: '@NAME@'
+  authenticatedBuild: 'false'
+  disabled: @DISABLED@
+  concurrent: 'true'
+
+logrotate:
+  daysToKeep: 28
+  numToKeep: -1
+  artifactDaysToKeep: -1
+  artifactNumToKeep: -1
+
+triggers:
+  - timed: '@daily'
+
+builders:
+  - docs
+
+scm:
+  scm: 'true'
+  branches: 
+    - '@BRANCH_SPEC@'
+
+assignednode:
+  node: '@NODE@'
+

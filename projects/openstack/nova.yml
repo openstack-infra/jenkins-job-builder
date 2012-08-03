@@ -10,6 +10,32 @@ values:
 
 ---
 project:
+  template: 'python_bitrot_jobs'
+
+values:
+  name: 'nova'
+  disabled: 'false'
+  github_org: 'openstack'
+  review_site: 'review.openstack.org'
+  node: 'oneiric'
+  branch_name: 'stable-diablo'
+  branch_spec: 'stable/diablo'
+
+---
+project:
+  template: 'python_bitrot_jobs'
+
+values:
+  name: 'nova'
+  disabled: 'false'
+  github_org: 'openstack'
+  review_site: 'review.openstack.org'
+  node: 'precise'
+  branch_name: 'stable-essex'
+  branch_spec: 'stable/essex'
+
+---
+project:
   template: 'openstack_publish_jobs'
 
 values:

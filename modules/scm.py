@@ -45,9 +45,11 @@ class SCM(object):
           XML.SubElement(huser, 'name').text = 'origin'
           XML.SubElement(huser, 'refspec').text = '+refs/heads/*:refs/remotes/origin/*'
           XML.SubElement(huser, 'url').text = 'git://github.com/{org}/{project}.git'.format(org=main['github_org'], project=main['project'])
-          branches = XML.SubElement(scm, 'branches')
-          bspec = XML.SubElement(branches, 'hudson.plugins.git.BranchSpec')
-          XML.SubElement(bspec, 'name').text = '**'
+          xml_branches = XML.SubElement(scm, 'branches')
+          branches = self.data['scm'].get('branches', ['**'])
+          for branch in branches:
+              bspec = XML.SubElement(xml_branches, 'hudson.plugins.git.BranchSpec')
+              XML.SubElement(bspec, 'name').text = branch
           XML.SubElement(scm, 'disableSubmodules').text = 'false'
           XML.SubElement(scm, 'recursiveSubmodules').text = 'false'
           XML.SubElement(scm, 'doGenerateSubmoduleConfigurations').text = 'false'
