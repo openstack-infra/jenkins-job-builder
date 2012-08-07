@@ -1,0 +1,10 @@
+- project:
+    name: python-swiftclient
+    github-org: openstack
+    node: precise
+    tarball-publisher-site: swift.openstack.org
+    doc-publisher-site: docs.openstack.org
+    
+    jobs:
+      - python-jobs
+      - pypi-jobs

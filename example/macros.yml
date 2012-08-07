@@ -1,0 +1,115 @@
+- builder:
+    name: gerrit_git_prep
+    builders:
+      - shell: "/usr/local/jenkins/slave_scripts/gerrit-git-prep.sh review.openstack.org"
+
+- builder:
+    name: coverage
+    builders:
+      - shell: "/usr/local/jenkins/slave_scripts/run-cover.sh"
+
+- builder:
+    name: docs
+    builders:
+      - shell: "/usr/local/jenkins/slave_scripts/run-docs.sh"
+
+- builder:
+    name: maven_test
+    builders:
+      - shell: "mvn test"
+
+- builder:
+    name: maven_package
+    builders:
+      - shell: "mvn package"
+
+- builder:
+    name: gerrit_package
+    builders:
+      - shell: "/usr/local/jenkins/slave_scripts/package-gerrit.sh"
+
+- builder:
+    name: gerrit_preclean
+    #TODO: multiline:
+    builders:
+      - shell: "#!/bin/bash -xe\nrm -fr ~/.m2\nrm -fr ~/.java\n./tools/version.sh --release"
+
+- builder:
+    name: gerrit_postrun
+    builders:
+      - shell: "./tools/version.sh --reset"
+
+- builder:
+    name: pep8
+    builders:
+      - shell: "set -o pipefail ; tox -v -epep8 | tee pep8.txt ; set +o pipefail"
+
+- builder:
+    name: pyflakes
+    builders:
+      - shell: "tox -v -epyflakes"
+
+- builder:
+    name: puppet_syntax
+    builders:
+      # TODO: remove blank line
+      - shell: |
+
+          find . -iname *.pp | xargs puppet parser validate --modulepath=`pwd`/modules
+          for f in `find . -iname *.erb` ; do
+            erb -x -T '-' $f | ruby -c
+          done
+
+- builder:
+    name: selenium
+    builders:
+      - shell: "/usr/local/jenkins/slave_scripts/run-selenium.sh"
+
+- builder:
+    name: python26
+    builders:
+      - shell: "/usr/local/jenkins/slave_scripts/run-tox.sh 26"
+      - something:
+          arg: value
+
+- builder:
+    name: python27
+    builders:
+      - shell: "/usr/local/jenkins/slave_scripts/run-tox.sh 27"
+
+- builder:
+    name: python26_essex
+    builders:
+      - shell: "/usr/local/jenkins/slave_scripts/run-tox.sh 26-essex"
+
+- builder:
+    name: python27_essex
+    builders:
+      - shell: "/usr/local/jenkins/slave_scripts/run-tox.sh 27-essex"
+
+- builder:
+    name: tarball
+    builders:
+      - shell: "/usr/local/jenkins/slave_scripts/create-tarball.sh {project}"
+
+# ======================================================================
+
+- publisher:
+    name: tarball
+    publishers:
+      - archive:
+          artifacts: 'dist/*.tar.gz'
+      - scp:
+          site: '{site}'
+          source: 'dist/*.tar.gz'
+          target: 'tarballs/{project}/'
+
+- publisher:
+    name: war
+    publishers:
+      - archive:
+          artifacts: '{warfile}'
+      - scp:
+          site: '{site}'
+          source: '{warfile}'
+          target: '{target}'

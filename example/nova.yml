@@ -1,0 +1,12 @@
+- project:
+    name: nova
+    github-org: openstack
+    node: precise
+    tarball-publisher-site: nova.openstack.org
+    doc-publisher-site: docs.openstack.org
+    
+    jobs:
+      - python-jobs
+      - python-diablo-bitrot-jobs
+      - python-essex-bitrot-jobs
+      - openstack-publish-jobs

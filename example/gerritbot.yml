@@ -1,0 +1,90 @@
+- project:
+    name: gerritbot
+    github-org: openstack-ci
+    node: precise
+    doc-publisher-site: ci.openstack.org
+    tarball-publisher-site: ci.openstack.org
+    
+    jobs:
+      - gate-{name}-merge
+      - gate-{name}-pep8
+      - gate-{name}-pyflakes
+      # TODO: standardize
+      #- '{name}-sdist-tarball'
+      #- '{name}-pypi'
+
+- job:
+    name: 'gerritbot-sdist-tarball'
+    project-type: freestyle
+    concurrent: true
+    node: precise
+
+    properties:
+      - github:
+          url: 'https://github.com/openstack-ci/gerritbot'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+
+    triggers:
+      - zuul_post
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    builders:
+      - gerrit_git_prep
+      - shell: |
+          #!/bin/bash -xe
+          BRANCH=$GERRIT_REFNAME
+          BRANCH_PATH=`echo $BRANCH | tr / -`
+
+          tox -v -evenv python setup.py sdist
+          cp dist/* dist/gerritbot-$BRANCH_PATH.tar.gz
+
+    publishers:
+      - tarball:
+          project: 'gerritbot'
+          site: 'ci.openstack.org'
+
+
+- job:
+    name: 'gerritbot-pypi'
+    concurrent: true
+    node: pypi
+
+    properties:
+      - github:
+          url: 'https://github.com/openstack-ci/gerritbot'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+
+    triggers:
+      - zuul_post
+
+    builders:
+      - gerrit_git_prep
+      - shell: tox -v -evenv python setup.py sdist upload
+
+    publishers:
+      - tarball:
+          project: 'gerritbot'
+          site: 'ci.openstack.org'

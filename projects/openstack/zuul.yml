@@ -1,71 +1,62 @@
-project:
-  template: 'python_jobs'
+#project:
+#  template: 'python_jobs'
+#
+#values:
+#  name: 'zuul'
+#  disabled: 'false'
+#  github_org: 'openstack-ci'
+#  review_site: 'review.openstack.org'
+#  node: 'precise'
+#
+#---
 
-values:
-  name: 'zuul'
-  disabled: 'false'
-  github_org: 'openstack-ci'
-  review_site: 'review.openstack.org'
-  node: 'precise'
+- job:
+    name: gate-zuul-pyflakes
+    project-type: freestyle
+    concurrent: true
+    timeout: 20
+    timeout_fail: true
 
----
-# pyflakes-gate
-main:
-  name: 'gate-zuul-pyflakes'
-  review_site: 'review.openstack.org'
-  github_org: 'openstack-ci'
-  project: 'zuul'
-  concurrent: 'true'
-  timeout: 20
-  timeout_fail: true
+    triggers:
+      - zuul
 
-triggers:
-  - zuul
+    builders:
+      - gerrit_git_prep
+      - pyflakes
 
-builders:
-  - gerrit_git_prep
-  - pyflakes
+    assignednode:
+      node: 'precise'
 
-scm:
-  scm: 'false'
+- job:
+    name: zuul-docs
+    project-type: freestyle
+    #review_site: 'review.openstack.org'
+    #github_org: 'openstack-ci'
+    #project: 'zuul'
+    #authenticatedBuild: 'false'
+    concurrent: true
+    timeout: 20
+    timeout_fail: true
 
-assignednode:
-  node: 'precise'
+    triggers:
+      - zuul_post
 
----
-# zuul-docs
-main:
-  name: 'zuul-docs'
-  review_site: 'review.openstack.org'
-  github_org: 'openstack-ci'
-  project: 'zuul'
-  authenticatedBuild: 'false'
-  concurrent: 'true'
-  timeout: 20
-  timeout_fail: true
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
 
-triggers:
-  - zuul_post
+    builders:
+      - gerrit_git_prep
+      - docs
 
-logrotate:
-  daysToKeep: 28
-  numToKeep: -1
-  artifactDaysToKeep: -1
-  artifactNumToKeep: -1
+    post_build_actions:
+      - scp:
+          site: '173.203.107.207'
+          source: 'doc/build/html/**/*'
+          target_path: 'ci/zuul'
+          keep_heirarchy: 'true'
 
-builders:
-  - gerrit_git_prep
-  - docs
-
-post_build_actions:
-  - scp:
-      site: '173.203.107.207'
-      source: 'doc/build/html/**/*'
-      target_path: 'ci/zuul'
-      keep_heirarchy: 'true'
-
-scm:
-  scm: 'false'
-
-assignednode:
-  node: 'precise'
+    assignednode:
+      node: 'precise'

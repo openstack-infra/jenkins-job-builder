@@ -1,5 +1,4 @@
-#! /usr/bin/env python
-# Copyright (C) 2012 OpenStack, LLC.
+# Copyright 2012 Hewlett-Packard Development Company, L.P.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,23 +21,16 @@
 #  artifactNumToKeep: -1
 
 import xml.etree.ElementTree as XML
+import jenkins_jobs.modules.base
 
 
-def register(registry):
-    mod = LogRotate()
-    registry.registerModule(mod)
-
-
-class LogRotate(object):
+class LogRotate(jenkins_jobs.modules.base.Base):
     sequence = 10
 
-    def handle_data(self, data):
-        self.data = data
-
-    def gen_xml(self, xml_parent, data):
-        if self.data.has_key('logrotate'):
+    def gen_xml(self, parser, xml_parent, data):
+        if data.has_key('logrotate'):
             lr_xml = XML.SubElement(xml_parent, 'logRotator')
-            logrotate = self.data['logrotate']
+            logrotate = data['logrotate']
             lr_days = XML.SubElement(lr_xml, 'daysToKeep')
             lr_days.text = str(logrotate['daysToKeep'])
             lr_num = XML.SubElement(lr_xml, 'numToKeep')

@@ -1,0 +1,43 @@
+- project:
+    name: horizon
+    github-org: openstack
+    node: precise
+    tarball-publisher-site: nova.openstack.org
+    doc-publisher-site: docs.openstack.org
+    
+    jobs:
+      - python-jobs
+      - openstack-publish-jobs
+
+- job:
+    name: gate-horizon-selenium
+    concurrent: true
+    node: precise
+
+    properties:
+      - github:
+          url: https://github.com/openstack/horizon
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+      - selenium

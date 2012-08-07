@@ -1,0 +1,87 @@
+- job-template:
+    name: '{name}-docs'
+    project-type: freestyle
+    concurrent: true
+    node: precise
+
+    properties:
+      - github:
+          url: 'https://github.com/{github-org}/{name}'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    triggers:
+      - zuul_post
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    builders:
+      - gerrit_git_prep
+      - docs
+
+    publishers:
+      - ftp:
+          site: '{doc-publisher-site}'
+          source: 'doc/build/html/**'
+          target: 'developer/{name}'
+          remove-prefix: 'doc/build/html'
+          excludes: ''
+
+- job-template:
+    name: '{name}-tarball'
+    project-type: freestyle
+    concurrent: true
+    node: precise
+
+    properties:
+      - github:
+          url: 'https://github.com/{github-org}/{name}'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    triggers:
+      - zuul_post
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    builders:
+      - gerrit_git_prep
+      - tarball:
+          project: '{name}'
+
+    publishers:
+      - tarball:
+          project: '{name}'
+          site: '{tarball-publisher-site}'
+
+- job-group:
+    name: openstack-publish-jobs
+    jobs:
+      - '{name}-docs'
+      - '{name}-tarball'

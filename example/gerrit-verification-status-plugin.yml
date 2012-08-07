@@ -1,0 +1,35 @@
+- project:
+    name: gerrit-verification-status-plugin
+    github-org: openstack-ci
+    node: precise
+    
+      # TODO: standardize
+    #jobs:
+      #- gate-{name}-merge
+
+- job:
+    name: gate-gerrit-verification-status-plugin-merge
+    concurrent: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    properties:
+      - github:
+          url: https://github.com/openstack-ci/gerrit-verification-status-plugin
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+
+    node: precise

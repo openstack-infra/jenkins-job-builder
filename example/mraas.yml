@@ -1,0 +1,82 @@
+- project:
+    name: MRaaS
+    github-org: stackforge
+    node: precise
+
+- job:
+    name: gate-MRaaS-merge
+    concurrent: false
+    node: oneiric
+
+    properties:
+      - github:
+          url: https://github.com/stackforge/MRaaS
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    triggers:
+      - gerrit:
+          triggerOnPatchsetUploadedEvent: 'false'
+          triggerOnChangeMergedEvent: 'false'
+          triggerOnCommentAddedEvent: 'true'
+          triggerOnRefUpdatedEvent: 'false'
+          triggerApprovalCategory: 'APRV'
+          triggerApprovalValue: 1
+          failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+          projects:
+            - projectCompareType: 'PLAIN'
+              projectPattern: 'stackforge/MRaaS'
+              branchCompareType: 'ANT'
+              branchPattern: '**'
+
+    builders:
+      - gerrit_git_prep
+
+
+- job:
+    name: check-MRaaS-merge
+    concurrent: false
+    node: oneiric
+
+    properties:
+      - github:
+          url: https://github.com/stackforge/MRaaS
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    triggers:
+      - gerrit:
+          triggerOnPatchsetUploadedEvent: 'true'
+          triggerOnChangeMergedEvent: 'false'
+          triggerOnCommentAddedEvent: 'false'
+          triggerOnRefUpdatedEvent: 'false'
+          overrideVotes: 'true'
+          gerritBuildSuccessfulVerifiedValue: 1
+          gerritBuildFailedVerifiedValue: -1
+          failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+          projects:
+            - projectCompareType: 'PLAIN'
+              projectPattern: 'stackforge/MRaaS'
+              branchCompareType: 'ANT'
+              branchPattern: '**'
+
+    builders:
+      - gerrit_git_prep

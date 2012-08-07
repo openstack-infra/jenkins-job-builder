@@ -1,0 +1,10 @@
+- project:
+    name: pbr
+    github-org: openstack-dev
+    node: precise
+    tarball-publisher-site: nova.openstack.org
+    doc-publisher-site: docs.openstack.org
+    
+    jobs:
+      - python-jobs
+      - pypi-jobs

@@ -1,0 +1,80 @@
+- project:
+    name: ceilometer
+    github-org: stackforge
+    node: oneiric
+    
+    jobs:
+      - python-jobs
+
+
+- job:
+    name: 'gate-ceilometer-python26-essex'
+    concurrent: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    properties:
+      - github:
+          url: https://github.com/stackforge/ceilometer
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    # TODO: logrotate this job
+    #logrotate:
+    #  daysToKeep: 28
+    #  numToKeep: -1
+    #  artifactDaysToKeep: -1
+    #  artifactNumToKeep: -1
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+      - python26_essex
+
+    # >= precise does not have python2.6
+    node: oneiric
+  
+
+- job:
+    name: 'gate-ceilometer-python27-essex'
+    concurrent: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    properties:
+      - github:
+          url: https://github.com/stackforge/ceilometer
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    # TODO: logrotate this job
+    #logrotate:
+    #  daysToKeep: 28
+    #  numToKeep: -1
+    #  artifactDaysToKeep: -1
+    #  artifactNumToKeep: -1
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+      - python27_essex
+
+    node: oneiric

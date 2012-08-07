@@ -1,0 +1,140 @@
+- job-template:
+    name: 'periodic-{name}-python26-{branch-name}'
+    concurrent: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    properties:
+      - github:
+          url: 'https://github.com/{github-org}/{name}'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    triggers:
+      - timed: '@daily'
+
+    builders:
+      - python26
+
+    scm:
+      - git: 
+          url: 'git://github.com/{github-org}/{name}.git'
+          branches:
+            - 'origin/{branch}'
+
+    # >= precise does not have python2.6
+    node: oneiric
+  
+
+- job-template:
+    name: 'periodic-{name}-python27-{branch-name}'
+    concurrent: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    properties:
+      - github:
+          url: 'https://github.com/{github-org}/{name}'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    triggers:
+      - timed: '@daily'
+
+    builders:
+      - python27
+
+    scm:
+      - git: 
+          url: 'git://github.com/{github-org}/{name}.git'
+          branches:
+            - 'origin/{branch}'
+
+    node: '{node}'
+  
+
+- job-template:
+    name: 'periodic-{name}-docs-{branch-name}'
+    concurrent: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    properties:
+      - github:
+          url: 'https://github.com/{github-org}/{name}'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    triggers:
+      - timed: '@daily'
+
+    builders:
+      - docs
+
+    scm:
+      - git: 
+          url: 'git://github.com/{github-org}/{name}.git'
+          branches:
+            - 'origin/{branch}'
+
+    node: '{node}'
+
+  
+- job-group:
+    name: python-diablo-bitrot-jobs
+    branch: 'stable/diablo'
+    branch-name: 'stable-diablo'
+    node: oneiric
+    jobs:
+      - 'periodic-{name}-python26-{branch-name}'
+      - 'periodic-{name}-python27-{branch-name}'
+      - 'periodic-{name}-docs-{branch-name}'
+
+- job-group:
+    name: python-essex-bitrot-jobs
+    branch: 'stable/essex'
+    branch-name: 'stable-essex'
+    node: precise
+    jobs:
+      - 'periodic-{name}-python26-{branch-name}'
+      - 'periodic-{name}-python27-{branch-name}'
+      - 'periodic-{name}-docs-{branch-name}'

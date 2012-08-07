@@ -1,0 +1,34 @@
+- project:
+    name: requirements
+    github-org: openstack
+    node: oneiric
+    
+    # TODO: standardize
+    #jobs:
+    #  - gate-{name}-merge
+
+- job:
+    name: gate-requirements-merge
+    concurrent: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+
+    properties:
+      - github:
+          url: https://github.com/openstack/requirements
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+
+    node: precise

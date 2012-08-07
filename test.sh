@@ -9,18 +9,19 @@ mkdir -p /tmp/jenkins_jobs_test/test
 
 if [ "$1" == "save" ]
 then
-    for x in `find projects/ -name *.yml`
-    do
-	echo $x
-	BASENAME=`basename $x`
-	python jenkins_jobs.py test $x > /tmp/jenkins_jobs_test/saved/$BASENAME.xml
-    done
+    rm -f /tmp/jenkins_jobs_test/saved/*
+    jenkins-jobs test -o /tmp/jenkins_jobs_test/saved/ example 
 else
-    for x in `find projects/ -name *.yml`
+    rm -f /tmp/jenkins_jobs_test/test/*
+    jenkins-jobs test -o /tmp/jenkins_jobs_test/test/ example 
+    for x in `(cd /tmp/jenkins_jobs_test/saved && find -type f)`
     do
-	echo $x
-	BASENAME=`basename $x`
-	python jenkins_jobs.py test $x > /tmp/jenkins_jobs_test/test/$BASENAME.xml
+	if ! diff -u /tmp/jenkins_jobs_test/saved/$x /tmp/jenkins_jobs_test/test/$x >/dev/null 2>&1
+	then
+	    echo "============================================================"
+	    echo $x
+	    echo "------------------------------------------------------------"
+	fi
+	diff -u /tmp/jenkins_jobs_test/saved/$x /tmp/jenkins_jobs_test/test/$x
     done
-    diff -r /tmp/jenkins_jobs_test/saved /tmp/jenkins_jobs_test/test
 fi

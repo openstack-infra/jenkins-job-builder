@@ -1,0 +1,159 @@
+- project:
+    name: gerrit
+    github-org: openstack-ci
+    node: precise
+    
+    # TODO: standardize
+    #jobs:
+    #  - gate-{name}-merge
+
+
+- job:
+    name: gate-gerrit-merge
+    concurrent: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    properties:
+      - github:
+          url: https://github.com/openstack-ci/gerrit
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+
+    node: precise
+
+
+- job:
+    name: check-gerrit-unittests
+    project-type: maven
+    concurrent: true
+    node: precise
+
+    wrappers:
+      - timeout:
+          timeout: 40
+          fail: true
+
+    properties:
+      - github:
+          url: https://github.com/openstack-ci/gerrit
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    triggers:
+      - zuul
+
+    prebuilders:
+      - gerrit_git_prep
+      - gerrit_preclean
+
+    maven:
+      root_module:
+        group_id: com.google.gerrit
+        artifact_id: gerrit-parent
+      goals: 'clean package -Dgerrit.include-documentation=1 -X'
+
+    postbuilders:
+      - gerrit_postrun
+
+    publishers:
+      - war:
+          site: 'nova.openstack.org'
+          warfile: 'gerrit-war/target/gerrit*.war'
+          target: 'tarballs/ci/test/'
+
+
+- job:
+    name: gate-gerrit-unittests
+    project-type: maven
+    concurrent: true
+    node: precise
+
+    wrappers:
+      - timeout:
+          timeout: 40
+          fail: true
+
+    properties:
+      - github:
+          url: https://github.com/openstack-ci/gerrit
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    triggers:
+      - zuul
+
+    prebuilders:
+      - gerrit_git_prep
+      - gerrit_preclean
+
+    maven:
+      root_module:
+        group_id: com.google.gerrit
+        artifact_id: gerrit-parent
+      goals: 'clean package -Dgerrit.include-documentation=1 -X'
+
+    postbuilders:
+      - gerrit_postrun
+
+
+- job:
+    name: gerrit-package
+    project-type: maven
+    concurrent: true
+    node: precise
+
+    wrappers:
+      - timeout:
+          timeout: 40
+          fail: true
+
+    properties:
+      - github:
+          url: https://github.com/openstack-ci/gerrit
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    triggers:
+      - zuul_post
+
+    prebuilders:
+      - gerrit_git_prep
+      - gerrit_preclean
+
+    maven:
+      root_module:
+        group_id: com.google.gerrit
+        artifact_id: gerrit-parent
+      goals: 'clean package -Dgerrit.include-documentation=1 -X'
+
+    postbuilders:
+      - gerrit_postrun
+
+    publishers:
+      - war:
+          site: 'nova.openstack.org'
+          warfile: 'gerrit-war/target/gerrit*.war'
+          target: 'tarballs/ci/'

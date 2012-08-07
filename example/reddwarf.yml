@@ -1,0 +1,7 @@
+- project:
+    name: reddwarf
+    github-org: stackforge
+    node: oneiric
+    
+    jobs:
+      - python-jobs

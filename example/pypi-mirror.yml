@@ -1,0 +1,64 @@
+- project:
+    name: pypi-mirror
+    github-org: openstack-ci
+    node: precise
+    
+    # TODO: standardize
+    #jobs:
+    #  - gate-{name}-merge
+    #  - gate-{name}-pyflakes
+
+- job:
+    name: gate-pypi-mirror-merge
+    project-type: freestyle
+    concurrent: true
+    node: precise
+
+    properties:
+      - github:
+          url: https://github.com/openstack-ci/pypi-mirror
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+
+- job:
+    name: gate-pypi-mirror-pyflakes
+    project-type: freestyle
+    concurrent: true
+    node: precise
+
+    properties:
+      - github:
+          url: https://github.com/openstack-ci/pypi-mirror
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+      - pyflakes

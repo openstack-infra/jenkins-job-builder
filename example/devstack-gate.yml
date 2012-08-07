@@ -1,0 +1,273 @@
+- job:
+    name: gate-devstack-gate-merge
+    project-type: freestyle
+    concurrent: true
+    node: precise
+
+    properties:
+      - github:
+          url: https://github.com/openstack-ci/devstack-gate
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+
+
+- job:
+    name: gate-integration-tests-devstack-vm
+    project-type: freestyle
+    concurrent: true
+    node: devstack-precise
+
+    properties:
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    parameters:
+      - label:
+          name: NODE_LABEL
+          description: Label of node to use for this build
+          default: devstack-precise
+
+    wrappers:
+      - timeout:
+          timeout: 40
+          fail: true
+      - timestamps
+
+    triggers:
+      - zuul
+
+    builders:
+      - trigger-builds:
+          - project: devstack-update-inprogress
+            predefined_parameters:
+              DEVSTACK_NODE_NAME=${NODE_NAME}
+      - shell: |
+          #!/bin/bash -xe
+          #
+          # This job also gates devstack-gate, but in case a previous run fails,
+          # we need to always make sure that we're starting with the latest copy
+          # from master, before we start applying changes to it.  If a previous run
+          # leaves a bad copy of the gate script, we may get stuck.
+          #
+          if [[ ! -e devstack-gate ]]; then
+              git clone https://review.openstack.org/p/openstack-ci/devstack-gate
+          else
+              cd devstack-gate
+              git remote update
+              git reset --hard
+              git clean -x -f
+              git checkout master
+              git reset --hard remotes/origin/master
+              git clean -x -f
+              cd ..
+          fi
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - archive: 
+          artifacts: logs/*
+      - trigger-parameterized-builds:
+          - project: devstack-update-complete
+            when: complete
+            predefined_parameters:
+              DEVSTACK_NODE_NAME=${NODE_NAME}
+
+
+- job:
+    name: gate-tempest-devstack-vm
+    project-type: freestyle
+    concurrent: true
+    node: devstack-precise
+
+    properties:
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    parameters:
+      - label:
+          name: NODE_LABEL
+          description: Label of node to use for this build
+          default: devstack-precise
+
+    wrappers:
+      - timeout:
+          timeout: 90
+          fail: true
+      - timestamps
+
+    triggers:
+      - zuul
+
+    builders:
+      - trigger-builds:
+          - project: devstack-update-inprogress
+            predefined_parameters:
+              DEVSTACK_NODE_NAME=${NODE_NAME}
+      - shell: |
+          #!/bin/bash -xe
+          #
+          # This job also gates devstack-gate, but in case a previous run fails,
+          # we need to always make sure that we're starting with the latest copy
+          # from master, before we start applying changes to it.  If a previous run
+          # leaves a bad copy of the gate script, we may get stuck.
+          #
+          if [[ ! -e devstack-gate ]]; then
+              git clone https://review.openstack.org/p/openstack-ci/devstack-gate
+          else
+              cd devstack-gate
+              git remote update
+              git reset --hard
+              git clean -x -f
+              git checkout master
+              git reset --hard remotes/origin/master
+              git clean -x -f
+              cd ..
+          fi
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - archive: 
+          artifacts: logs/*
+      - trigger-parameterized-builds:
+          - project: devstack-update-complete
+            when: complete
+            predefined_parameters:
+              DEVSTACK_NODE_NAME=${NODE_NAME}
+
+
+# Called by devstack jobs to alert that they have started so that the
+# jenkins slave they are running on can be disabled.
+- job:
+    name: devstack-update-inprogress
+    project-type: freestyle
+    concurrent: false
+    node: master
+
+    properties:
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: 100
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    wrappers:
+      - timeout:
+          timeout: 10
+          fail: true
+      - timestamps
+
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+
+          if [[ ! -e devstack-gate ]]; then
+              git clone https://review.openstack.org/p/openstack-ci/devstack-gate
+          else
+              cd devstack-gate
+              git remote update
+              git pull --ff-only origin
+              cd ..
+          fi
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          $WORKSPACE/devstack-gate/devstack-vm-inprogress.py $DEVSTACK_NODE_NAME
+
+
+# Called by devstack jobs to alert that they have completed so that the
+# jenkins slave may be deleted.
+- job:
+    name: devstack-update-complete
+    project-type: freestyle
+    concurrent: false
+    node: master
+
+    properties:
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: 100
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    wrappers:
+      - timeout:
+          timeout: 10
+          fail: true
+      - timestamps
+
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+
+          if [[ ! -e devstack-gate ]]; then
+              git clone https://review.openstack.org/p/openstack-ci/devstack-gate
+          else
+              cd devstack-gate
+              git remote update
+              git pull --ff-only origin
+              cd ..
+          fi
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          $WORKSPACE/devstack-gate/devstack-vm-delete.py $DEVSTACK_NODE_NAME

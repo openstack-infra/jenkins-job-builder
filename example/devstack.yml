@@ -1,0 +1,33 @@
+- job:
+    name: gate-devstack-merge
+    project-type: freestyle
+    concurrent: true
+    node: precise
+
+    properties:
+      - github:
+          url: https://github.com/openstack-dev/devstack
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    # TODO: logrotate this job
+    #logrotate:
+    #  daysToKeep: 28
+    #  numToKeep: -1
+    #  artifactDaysToKeep: -1
+    #  artifactNumToKeep: -1
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep

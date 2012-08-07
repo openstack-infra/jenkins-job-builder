@@ -1,0 +1,45 @@
+- project:
+    name: gerritlib
+    github-org: openstack-ci
+    node: precise
+    doc-publisher-site: ci.openstack.org
+    tarball-publisher-site: ci.openstack.org
+    
+    jobs:
+      - gate-{name}-merge
+      - gate-{name}-pep8
+      - gate-{name}-pyflakes
+      # TODO: standardize
+      #- '{name}-pypi'
+
+- job:
+    name: 'gerritlib-pypi'
+    concurrent: true
+    node: pypi
+
+    properties:
+      - github:
+          url: 'https://github.com/openstack-ci/gerritlib'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    triggers:
+      - zuul_post
+
+    builders:
+      - gerrit_git_prep
+      - shell: tox -v -evenv python setup.py sdist upload
+
+    publishers:
+      - tarball:
+          project: 'ci'
+          site: 'nova.openstack.org'

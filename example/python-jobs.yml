@@ -1,0 +1,267 @@
+- job-template:
+    name: '{name}-coverage'
+    concurrent: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    properties:
+      - github:
+          url: 'https://github.com/{github-org}/{name}'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    triggers:
+      - zuul_post
+
+    builders:
+      - gerrit_git_prep
+      - coverage
+
+    publishers:
+       - coverage
+
+    node: '{node}'
+  
+
+- job-template:
+    name: 'gate-{name}-pep8'
+    concurrent: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    properties:
+      - github:
+          url: 'https://github.com/{github-org}/{name}'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+      - pep8
+
+    publishers:
+      - pep8
+
+    node: '{node}'
+  
+
+- job-template:
+    name: 'gate-{name}-python26'
+    concurrent: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    properties:
+      - github:
+          url: 'https://github.com/{github-org}/{name}'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+      - python26
+
+    # >= precise does not have python2.6
+    node: oneiric
+  
+
+- job-template:
+    name: 'gate-{name}-python27'
+    concurrent: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    properties:
+      - github:
+          url: 'https://github.com/{github-org}/{name}'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    parameters:
+      - label: 
+          name: NODE_LABEL
+          description: Label of node to use for this build
+          default: '{node}'
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+      - python27
+
+    node: '{node}'
+  
+
+- job-template:
+    name: 'gate-{name}-merge'
+    concurrent: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    properties:
+      - github:
+          url: 'https://github.com/{github-org}/{name}'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+
+    node: '{node}'
+
+
+- job-template:
+    name: 'gate-{name}-docs'
+    concurrent: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    properties:
+      - github:
+          url: 'https://github.com/{github-org}/{name}'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+      - docs
+
+    node: '{node}'
+
+  
+- job-template:
+    name: 'gate-{name}-pyflakes'
+    project-type: freestyle
+    concurrent: true
+    node: precise
+
+    properties:
+      - github:
+          url: 'https://github.com/{github-org}/{name}'
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+      - pyflakes
+
+
+- job-group:
+    name: python-jobs
+    jobs:
+      - '{name}-coverage'
+      - 'gate-{name}-merge'
+      - 'gate-{name}-pep8'
+      - 'gate-{name}-python26'
+      - 'gate-{name}-python27'
+      - 'gate-{name}-docs'
+      # pyflakes isn't standard

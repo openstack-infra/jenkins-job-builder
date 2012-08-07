@@ -1,5 +1,4 @@
-#! /usr/bin/env python
-# Copyright (C) 2012 OpenStack, LLC.
+# Copyright 2012 Hewlett-Packard Development Company, L.P.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,27 +12,20 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Jenkins Job module for maven projects
-# To use you add the following into your YAML:
-# maven:
-#   root_module:
-#     group_id: com.google.gerrit
-#     artifact_id: gerrit-parent
-#   goals: 'test'
+# Jenkins Job module for assigned nodes
+# To use add the folowing into your YAML:
+# assignednode:
+#   - node: 'oneiric'
 
 import xml.etree.ElementTree as XML
+import jenkins_jobs.modules.base
 
 
-def register(registry):
-    mod = Freestyle()
-    registry.registerModule(mod)
+class AssignedNode(jenkins_jobs.modules.base.Base):
+    sequence = 40
 
-
-class Freestyle(object):
-    sequence = 0
-
-    def root_xml(self, data):
-        if 'maven' in data:
-            return None
-        xml_parent = XML.Element('project')
-        return xml_parent
+    def gen_xml(self, parser, xml_parent, data):
+        node = data.get('node', None)
+        if node:
+            XML.SubElement(xml_parent, 'assignedNode').text = node
+            XML.SubElement(xml_parent, 'canRoam').text = 'false'

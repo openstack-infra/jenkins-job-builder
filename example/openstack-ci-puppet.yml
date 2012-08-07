@@ -1,0 +1,63 @@
+- project:
+    name: ci-puppet
+    github-org: openstack
+    node: precise
+    
+    # TODO: standardize
+    #jobs:
+    #  - gate-{name}-merge
+
+- job:
+    name: gate-ci-puppet-merge
+    concurrent: true
+    node: precise
+
+    properties:
+      - github:
+          url: https://github.com/openstack/openstack-ci-puppet
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+
+
+- job:
+    name: gate-ci-puppet-syntax
+    concurrent: true
+    node: precise
+
+    properties:
+      - github:
+          url: https://github.com/openstack/openstack-ci-puppet
+      - throttle:
+          max-per-node: 0
+          max-total: 0
+          option: project
+          enabled: false
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+
+    triggers:
+      - zuul
+
+    builders:
+      - gerrit_git_prep
+      - puppet_syntax
+      - pyflakes

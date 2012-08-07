@@ -1,0 +1,10 @@
+- project:
+    name: keystone
+    github-org: openstack
+    node: precise
+    tarball-publisher-site: nova.openstack.org
+    doc-publisher-site: docs.openstack.org
+    
+    jobs:
+      - python-jobs
+      - openstack-publish-jobs

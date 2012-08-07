@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+
+import jenkins_jobs.builder
+import argparse
+
+def main():
+    parser = argparse.ArgumentParser()
+    subparser = parser.add_subparsers(help='update, test or delete job',
+                                      dest='command')
+    parser_update = subparser.add_parser('update')
+    parser_update.add_argument('path', help='Path to YAML file or directory')
+    parser_update.add_argument('name', help='name of job')
+    parser_test = subparser.add_parser('test')
+    parser_test.add_argument('path', help='Path to YAML file or directory')
+    parser_test.add_argument('-o', dest='output_dir', help='Path to output XML')
+    parser_test.add_argument('name', help='name of job', nargs='?')
+    parser_delete = subparser.add_parser('delete')
+    parser_delete.add_argument('name', help='name of job')
+    parser.add_argument('--conf', dest='conf', help='Configuration file')
+    options = parser.parse_args()
+
+    if options.conf:
+        conf = options.conf
+    else:
+        conf = 'jenkins_jobs.ini'
+
+    if not options.command == 'test':
+        conffp = open(conf, 'r')
+        config = ConfigParser.ConfigParser()
+        config.readfp(conffp)
+    else:
+        config = {}
+
+    builder = jenkins_jobs.builder.Builder(config.get('jenkins','url'),
+                                           config.get('jenkins','user'),
+                                           config.get('jenkins','password'))
+
+    if options.command == 'delete':
+        builder.delete_job()
+    elif options.command == 'update':
+        builder.update_job()
+    elif options.command == 'test':
+        builder.update_job(options.path, options.name,
+                           output_dir=options.output_dir)
+
+if __name__ == '__main__':
+    main()
