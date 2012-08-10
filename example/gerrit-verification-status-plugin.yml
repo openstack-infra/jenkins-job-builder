@@ -1,7 +1,0 @@
-- project:
-    name: gerrit-verification-status-plugin
-    github-org: openstack-ci
-    node: precise
-    
-    jobs:
-      - gate-{name}-merge

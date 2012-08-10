@@ -1,7 +1,0 @@
-- project:
-    name: devstack
-    github-org: openstack-dev
-    node: precise
-    
-    jobs:
-      - gate-{name}-merge

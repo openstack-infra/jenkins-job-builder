@@ -1,7 +1,0 @@
-- project:
-    name: heat
-    github-org: heat-api
-    node: oneiric
-    
-    jobs:
-      - python-jobs

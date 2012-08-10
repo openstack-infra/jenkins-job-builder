@@ -1,8 +1,0 @@
-- project:
-    name: tempest
-    github-org: openstack-ci
-    node: precise
-    
-    jobs:
-      - gate-{name}-merge
-      - gate-{name}-pep8

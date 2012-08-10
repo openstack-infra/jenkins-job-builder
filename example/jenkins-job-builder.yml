@@ -1,7 +1,0 @@
-- project:
-    name: jenkins-job-builder
-    github-org: openstack-ci
-    node: precise
-    
-    jobs:
-      - gate-{name}-merge

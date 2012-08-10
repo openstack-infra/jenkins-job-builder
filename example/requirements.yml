@@ -1,7 +1,0 @@
-- project:
-    name: requirements
-    github-org: openstack
-    node: precise
-    
-    jobs:
-      - gate-{name}-merge

@@ -1,8 +1,0 @@
-- project:
-    name: pypi-mirror
-    github-org: openstack-ci
-    node: precise
-    
-    jobs:
-      - gate-{name}-merge
-      - gate-{name}-pyflakes
