@@ -1,34 +1,7 @@
 - project:
     name: jenkins-job-builder
-    github-org: openstack
+    github-org: openstack-ci
     node: precise
     
-    # TODO: standardize
-    #jobs:
-    #  - gate-{name}-merge
-
-- job:
-    name: gate-jenkins-job-builder-merge
-    concurrent: true
-    node: precise
-
-    properties:
-      - github:
-          url: https://github.com/openstack-ci/jenkins-job-builder
-      - throttle:
-          max-per-node: 0
-          max-total: 0
-          option: project
-          enabled: false
-
-    wrappers:
-      - timeout:
-          timeout: 30
-          fail: true
-      - timestamps
-
-    triggers:
-      - zuul
-
-    builders:
-      - gerrit-git-prep
+    jobs:
+      - gate-{name}-merge

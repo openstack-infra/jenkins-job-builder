@@ -1,67 +1,8 @@
 - project:
     name: tempest
-    github-org: openstack
+    github-org: openstack-ci
     node: precise
     
-    # TODO: standardize
-    #jobs:
-    #  - gate-{name}-merge
-    #  - gate-{name}-pep8
-
-- job:
-    name: gate-tempest-merge
-    concurrent: true
-
-    wrappers:
-      - timeout:
-          timeout: 30
-          fail: true
-      - timestamps
-
-    properties:
-      - github:
-          url: https://github.com/openstack-ci/tempest
-      - throttle:
-          max-per-node: 0
-          max-total: 0
-          option: project
-          enabled: false
-
-    triggers:
-      - zuul
-
-    builders:
-      - gerrit-git-prep
-
-    node: precise
-
-- job:
-    name: gate-tempest-pep8
-    concurrent: true
-
-    wrappers:
-      - timeout:
-          timeout: 30
-          fail: true
-      - timestamps
-
-    properties:
-      - github:
-          url: https://github.com/openstack-ci/tempest
-      - throttle:
-          max-per-node: 0
-          max-total: 0
-          option: project
-          enabled: false
-
-    triggers:
-      - zuul
-
-    builders:
-      - gerrit-git-prep
-      - pep8
-
-    publishers:
-      - pep8
-
-    node: precise
+    jobs:
+      - gate-{name}-merge
+      - gate-{name}-pep8

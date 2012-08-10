@@ -26,12 +26,11 @@
           option: project
           enabled: false
 
-    # TODO: logrotate this job
-    #logrotate:
-    #  daysToKeep: 28
-    #  numToKeep: -1
-    #  artifactDaysToKeep: -1
-    #  artifactNumToKeep: -1
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
 
     triggers:
       - zuul
@@ -63,12 +62,11 @@
           option: project
           enabled: false
 
-    # TODO: logrotate this job
-    #logrotate:
-    #  daysToKeep: 28
-    #  numToKeep: -1
-    #  artifactDaysToKeep: -1
-    #  artifactNumToKeep: -1
+    logrotate:
+      daysToKeep: 28
+      numToKeep: -1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
 
     triggers:
       - zuul

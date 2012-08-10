@@ -40,6 +40,7 @@
           remove-prefix: 'doc/build/html'
           excludes: ''
 
+
 - job-template:
     name: '{name}-tarball'
     project-type: freestyle
@@ -79,6 +80,7 @@
       - tarball:
           project: '{name}'
           site: '{tarball-publisher-site}'
+
 
 - job-group:
     name: openstack-publish-jobs

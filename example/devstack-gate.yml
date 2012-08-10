@@ -1,35 +1,10 @@
-- job:
-    name: gate-devstack-gate-merge
-    project-type: freestyle
-    concurrent: true
+- project:
+    name: devstack-gate
+    github-org: openstack-ci
     node: precise
-
-    properties:
-      - github:
-          url: https://github.com/openstack-ci/devstack-gate
-      - throttle:
-          max-per-node: 0
-          max-total: 0
-          option: project
-          enabled: false
-
-    logrotate:
-      daysToKeep: 28
-      numToKeep: -1
-      artifactDaysToKeep: -1
-      artifactNumToKeep: -1
-
-    wrappers:
-      - timeout:
-          timeout: 30
-          fail: true
-      - timestamps
-
-    triggers:
-      - zuul
-
-    builders:
-      - gerrit-git-prep
+    
+    jobs:
+      - gate-{name}-merge
 
 
 - job:
