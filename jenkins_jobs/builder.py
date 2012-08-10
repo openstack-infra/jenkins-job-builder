@@ -229,8 +229,8 @@ class Builder(object):
         self.jenkins = Jenkins(jenkins_url, jenkins_user, jenkins_password)
         self.cache = CacheStorage()
 
-    def delete_job(self):
-        self.jenkins.delete_job(options.name)
+    def delete_job(self, name):
+        self.jenkins.delete_job(name)
 
     def update_job(self, fn, name=None, output_dir=None):
         if os.path.isdir(fn):
@@ -249,9 +249,6 @@ class Builder(object):
             if name and job.name != name:
                 continue
             if output_dir:
-                #print '='*70
-                #print job.name
-                #print '-'*70
                 if name:
                     print job.output()
                     continue
@@ -261,13 +258,13 @@ class Builder(object):
                 f.close()
                 continue
             md5 = job.md5()
-            if (remote_jenkins.is_job(job.nam)
+            if (self.jenkins.is_job(job.name)
                 and not self.cache.is_cached(job.name)):
-                old_md5 = remote_jenkins.get_job_md5(job.name)
+                old_md5 = self.jenkins.get_job_md5(job.name)
                 self.cache.set(job.name, old_md5)
 
             if self.cache.has_changed(job.name, md5):
-                remote_jenkins.update_job(job.name, xml.output())
+                self.jenkins.update_job(job.name, job.output())
                 self.cache.set(job.name, md5)
 
 

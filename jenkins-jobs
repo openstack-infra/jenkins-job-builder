@@ -2,6 +2,7 @@
 
 import jenkins_jobs.builder
 import argparse
+import ConfigParser
 
 def main():
     parser = argparse.ArgumentParser()
@@ -9,7 +10,7 @@ def main():
                                       dest='command')
     parser_update = subparser.add_parser('update')
     parser_update.add_argument('path', help='Path to YAML file or directory')
-    parser_update.add_argument('name', help='name of job')
+    parser_update.add_argument('name', help='name of job', nargs='?')
     parser_test = subparser.add_parser('test')
     parser_test.add_argument('path', help='Path to YAML file or directory')
     parser_test.add_argument('-o', dest='output_dir', help='Path to output XML')
@@ -22,7 +23,7 @@ def main():
     if options.conf:
         conf = options.conf
     else:
-        conf = 'jenkins_jobs.ini'
+        conf = '/etc/jenkins_jobs/jenkins_jobs.ini'
 
     if not options.command == 'test':
         conffp = open(conf, 'r')
@@ -36,9 +37,9 @@ def main():
                                            config.get('jenkins','password'))
 
     if options.command == 'delete':
-        builder.delete_job()
+        builder.delete_job(options.name)
     elif options.command == 'update':
-        builder.update_job()
+        builder.update_job(options.path, options.name)
     elif options.command == 'test':
         builder.update_job(options.path, options.name,
                            output_dir=options.output_dir)
