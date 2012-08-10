@@ -55,6 +55,7 @@ ZUUL_NOTIFICATIONS = [
          {'url': 'http://127.0.0.1:8001/jenkins_endpoint'}}
     ]
 
+
 class Zuul(jenkins_jobs.modules.base.Base):
     sequence = 0
 

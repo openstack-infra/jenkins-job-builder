@@ -18,11 +18,13 @@
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 
+
 def github(parser, xml_parent, data):
     github = XML.SubElement(xml_parent,
                'com.coravy.hudson.plugins.github.GithubProjectProperty')
     github_url = XML.SubElement(github, 'projectUrl')
     github_url.text = data['url']
+
 
 def throttle(parser, xml_parent, data):
     throttle = XML.SubElement(xml_parent,
@@ -40,6 +42,7 @@ def throttle(parser, xml_parent, data):
     XML.SubElement(throttle, 'throttleOption').text = data.get('option')
     XML.SubElement(throttle, 'configVersion').text = '1'
 
+
 def authenticated_build(parser, xml_parent, data):
     # TODO: generalize this
     if data:
@@ -47,6 +50,7 @@ def authenticated_build(parser, xml_parent, data):
                         'hudson.security.AuthorizationMatrixProperty')
         XML.SubElement(security, 'permission').text = \
         'hudson.model.Item.Build:authenticated'
+
 
 def base_param(parser, xml_parent, data, do_default, ptype):
     pdef = XML.SubElement(xml_parent, ptype)
@@ -59,25 +63,31 @@ def base_param(parser, xml_parent, data, do_default, ptype):
         else:
             XML.SubElement(pdef, 'defaultValue')
 
+
 def string_param(parser, xml_parent, data):
     base_param(parser, xml_parent, data, True,
                'hudson.model.StringParameterDefinition')
+
 
 def bool_param(parser, xml_parent, data):
     base_param(parser, xml_parent, data, True,
                'hudson.model.BooleanParameterDefinition')
 
+
 def file_param(parser, xml_parent, data):
     base_param(parser, xml_parent, data, False,
                'hudson.model.FileParameterDefinition')
+
 
 def text_param(parser, xml_parent, data):
     base_param(parser, xml_parent, data, True,
                'hudson.model.TextParameterDefinition')
 
+
 def label_param(parser, xml_parent, data):
     base_param(parser, xml_parent, data, True,
       'org.jvnet.jenkins.plugins.nodelabelparameter.LabelParameterDefinition')
+
 
 def http_endpoint(parser, xml_parent, data):
     endpoint_element = XML.SubElement(xml_parent,
@@ -114,4 +124,3 @@ class Properties(jenkins_jobs.modules.base.Base):
             for endpoint in notifications:
                 self._dispatch('notification', 'notifications',
                                parser, endpoints_element, endpoint)
-

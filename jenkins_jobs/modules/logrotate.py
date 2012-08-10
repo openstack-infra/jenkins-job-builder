@@ -28,7 +28,7 @@ class LogRotate(jenkins_jobs.modules.base.Base):
     sequence = 10
 
     def gen_xml(self, parser, xml_parent, data):
-        if data.has_key('logrotate'):
+        if 'logrotate' in data:
             lr_xml = XML.SubElement(xml_parent, 'logRotator')
             logrotate = data['logrotate']
             lr_days = XML.SubElement(lr_xml, 'daysToKeep')

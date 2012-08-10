@@ -26,7 +26,7 @@ setup(name='jenkins_job_builder',
       zip_safe=False,
       packages=find_packages(),
 
-      entry_points = {
+      entry_points={
         'jenkins_jobs.projects': [
             'freestyle=jenkins_jobs.modules.project_freestyle:Freestyle',
             'maven=jenkins_jobs.modules.project_maven:Maven',

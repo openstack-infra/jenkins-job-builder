@@ -30,9 +30,11 @@ def timeout(parser, xml_parent, data):
     else:
         failbuild.text = 'false'
 
+
 def timestamps(parser, xml_parent, data):
     XML.SubElement(xml_parent,
                    'hudson.plugins.timestamper.TimestamperBuildWrapper')
+
 
 def ansicolor(parser, xml_parent, data):
     XML.SubElement(xml_parent,
@@ -48,4 +50,3 @@ class Wrappers(jenkins_jobs.modules.base.Base):
         for wrap in data.get('wrappers', []):
             self._dispatch('wrapper', 'wrappers',
                            parser, wrappers, wrap)
-

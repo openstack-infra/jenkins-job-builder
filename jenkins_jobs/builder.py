@@ -21,15 +21,9 @@ import yaml
 import xml.etree.ElementTree as XML
 from xml.dom import minidom
 import jenkins
-import ConfigParser
-from StringIO import StringIO
 import re
-import pkgutil
 import pkg_resources
-import pprint
-import sys
 
-class JenkinsJobsException(Exception): pass
 
 class YamlParser(object):
     def __init__(self):
@@ -115,11 +109,16 @@ class YamlParser(object):
     def gen_xml(self, xml, data):
         XML.SubElement(xml, 'actions')
         description = XML.SubElement(xml, 'description')
-        description.text = "THIS JOB IS MANAGED BY PUPPET AND WILL BE OVERWRITTEN.\n\n\
-DON'T EDIT THIS JOB THROUGH THE WEB\n\n\
-If you would like to make changes to this job, please see:\n\n\
-https://github.com/openstack/openstack-ci-puppet\n\n\
-In modules/jenkins_jobs"
+        description.text = """THIS JOB IS MANAGED BY PUPPET \
+AND WILL BE OVERWRITTEN.
+
+DON'T EDIT THIS JOB THROUGH THE WEB
+
+If you would like to make changes to this job, please see:
+
+https://github.com/openstack/openstack-ci-puppet
+
+In modules/jenkins_jobs"""
         XML.SubElement(xml, 'keepDependencies').text = 'false'
         if data.get('disabled'):
             XML.SubElement(xml, 'disabled').text = 'true'
@@ -138,8 +137,6 @@ In modules/jenkins_jobs"
 
 
 class ModuleRegistry(object):
-    # TODO: make this extensible
-
     def __init__(self):
         self.modules = []
         self.handlers = {}
@@ -160,6 +157,7 @@ class ModuleRegistry(object):
     def getHandler(self, category, name):
         return self.handlers[category][name]
 
+
 class XmlJob(object):
     def __init__(self, xml, name):
         self.xml = xml
@@ -168,61 +166,65 @@ class XmlJob(object):
     def md5(self):
         return hashlib.md5(self.output()).hexdigest()
 
-    # Pretty printing ideas from http://stackoverflow.com/questions/749796/pretty-printing-xml-in-python
+    # Pretty printing ideas from
+    # http://stackoverflow.com/questions/749796/pretty-printing-xml-in-python
     pretty_text_re = re.compile('>\n\s+([^<>\s].*?)\n\s+</', re.DOTALL)
 
     def output(self):
-        out = minidom.parseString(XML.tostring(self.xml)).toprettyxml(indent='  ')
+        out = minidom.parseString(XML.tostring(self.xml))
+        out = out.toprettyxml(indent='  ')
         return self.pretty_text_re.sub('>\g<1></', out)
 
 
 class CacheStorage(object):
-     def __init__(self):
-         self.cachefilename = os.path.expanduser('~/.jenkins_jobs_cache.yml')
-         try:
-             yfile = file(self.cachefilename, 'r')
-         except IOError:
-             self.data = {}
-             return
-         self.data = yaml.load(yfile)
-         yfile.close()
+    def __init__(self):
+        self.cachefilename = os.path.expanduser('~/.jenkins_jobs_cache.yml')
+        try:
+            yfile = file(self.cachefilename, 'r')
+        except IOError:
+            self.data = {}
+            return
+        self.data = yaml.load(yfile)
+        yfile.close()
 
-     def set(self, job, md5):
-         self.data[job] = md5
-         yfile = file(self.cachefilename, 'w')
-         yaml.dump(self.data, yfile)
-         yfile.close()
+    def set(self, job, md5):
+        self.data[job] = md5
+        yfile = file(self.cachefilename, 'w')
+        yaml.dump(self.data, yfile)
+        yfile.close()
 
-     def is_cached(self, job):
-         if self.data.has_key(job):
+    def is_cached(self, job):
+        if job in self.data:
             return True
-         return False
+        return False
 
-     def has_changed(self, job, md5):
-         if self.data.has_key(job) and self.data[job] == md5:
+    def has_changed(self, job, md5):
+        if job in self.data and self.data[job] == md5:
             return False
-         return True
+        return True
+
 
 class Jenkins(object):
-     def __init__(self, url, user, password):
-         self.jenkins = jenkins.Jenkins(url, user, password)
+    def __init__(self, url, user, password):
+        self.jenkins = jenkins.Jenkins(url, user, password)
 
-     def update_job(self, job_name, xml):
-         if self.is_job(job_name):
-             self.jenkins.reconfig_job(job_name, xml)
-         else:
-             self.jenkins.create_job(job_name, xml)
+    def update_job(self, job_name, xml):
+        if self.is_job(job_name):
+            self.jenkins.reconfig_job(job_name, xml)
+        else:
+            self.jenkins.create_job(job_name, xml)
 
-     def is_job(self, job_name):
-         return self.jenkins.job_exists(job_name)
+    def is_job(self, job_name):
+        return self.jenkins.job_exists(job_name)
 
-     def get_job_md5(self, job_name):
-         xml = self.jenkins.get_job_config(job_name)
-         return hashlib.md5(xml).hexdigest()
+    def get_job_md5(self, job_name):
+        xml = self.jenkins.get_job_config(job_name)
+        return hashlib.md5(xml).hexdigest()
 
-     def delete_job(self, job_name):
-         if self.is_job(job_name):
-             self.jenkins.delete_job(job_name)
+    def delete_job(self, job_name):
+        if self.is_job(job_name):
+            self.jenkins.delete_job(job_name)
+
 
 class Builder(object):
     def __init__(self, jenkins_url, jenkins_user, jenkins_password):
@@ -244,7 +246,7 @@ class Builder(object):
             parser.parse(in_file)
         parser.generateXML()
 
-        parser.jobs.sort(lambda a,b: cmp(a.name, b.name))
+        parser.jobs.sort(lambda a, b: cmp(a.name, b.name))
         for job in parser.jobs:
             if name and job.name != name:
                 continue
@@ -266,6 +268,3 @@ class Builder(object):
             if self.cache.has_changed(job.name, md5):
                 self.jenkins.update_job(job.name, job.output())
                 self.cache.set(job.name, md5)
-
-
-

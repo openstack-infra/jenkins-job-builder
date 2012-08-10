@@ -23,6 +23,7 @@
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 
+
 class Maven(jenkins_jobs.modules.base.Base):
     sequence = 0
 

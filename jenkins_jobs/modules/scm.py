@@ -22,9 +22,10 @@
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 
+
 def git(self, xml_parent, data):
     scm = XML.SubElement(xml_parent,
-                         'scm',{'class':'hudson.plugins.git.GitSCM'})
+                         'scm', {'class': 'hudson.plugins.git.GitSCM'})
     XML.SubElement(scm, 'configVersion').text = '2'
     user = XML.SubElement(scm, 'userRemoteConfigs')
     huser = XML.SubElement(user, 'hudson.plugins.git.UserRemoteConfig')
@@ -46,9 +47,9 @@ def git(self, xml_parent, data):
     XML.SubElement(scm, 'pruneBranches').text = 'false'
     XML.SubElement(scm, 'remotePoll').text = 'false'
     XML.SubElement(scm, 'buildChooser',
-                   {'class':'hudson.plugins.git.util.DefaultBuildChooser'})
+                   {'class': 'hudson.plugins.git.util.DefaultBuildChooser'})
     XML.SubElement(scm, 'gitTool').text = 'Default'
-    XML.SubElement(scm, 'submoduleCfg', {'class':'list'})
+    XML.SubElement(scm, 'submoduleCfg', {'class': 'list'})
     XML.SubElement(scm, 'relativeTargetDir')
     XML.SubElement(scm, 'reference')
     XML.SubElement(scm, 'excludedRegions')
@@ -57,6 +58,7 @@ def git(self, xml_parent, data):
     XML.SubElement(scm, 'gitConfigEmail')
     XML.SubElement(scm, 'skipTag').text = 'false'
     XML.SubElement(scm, 'scmName')
+
 
 class SCM(jenkins_jobs.modules.base.Base):
     sequence = 30
@@ -68,5 +70,4 @@ class SCM(jenkins_jobs.modules.base.Base):
                 self._dispatch('scm', 'scm',
                                parser, xml_parent, scm)
         else:
-            XML.SubElement(xml_parent, 'scm', {'class':'hudson.scm.NullSCM'})
-
+            XML.SubElement(xml_parent, 'scm', {'class': 'hudson.scm.NullSCM'})

@@ -20,24 +20,24 @@
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
-import pkg_resources
-import yaml
+
 
 def shell(parser, xml_parent, data):
     shell = XML.SubElement(xml_parent, 'hudson.tasks.Shell')
     XML.SubElement(shell, 'command').text = data
 
+
 def trigger_builds(parser, xml_parent, data):
     tbuilder = XML.SubElement(xml_parent,
-                              'hudson.plugins.parameterizedtrigger.TriggerBuilder')
+                   'hudson.plugins.parameterizedtrigger.TriggerBuilder')
     configs = XML.SubElement(tbuilder, 'configs')
     for project_def in data:
         tconfig = XML.SubElement(configs,
             'hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig')
         tconfigs = XML.SubElement(tconfig, 'configs')
-        if project_def.has_key('predefined-parameters'):
+        if 'predefined-parameters' in project_def:
             params = XML.SubElement(tconfigs,
-                'hudson.plugins.parameterizedtrigger.PredefinedBuildParameters')
+              'hudson.plugins.parameterizedtrigger.PredefinedBuildParameters')
             properties = XML.SubElement(params, 'properties')
             properties.text = project_def['predefined-parameters']
         else:
@@ -46,10 +46,13 @@ def trigger_builds(parser, xml_parent, data):
         projects.text = project_def['project']
         condition = XML.SubElement(tconfig, 'condition')
         condition.text = 'ALWAYS'
-        trigger_with_no_params = XML.SubElement(tconfig, 'triggerWithNoParameters')
+        trigger_with_no_params = XML.SubElement(tconfig,
+                                                'triggerWithNoParameters')
         trigger_with_no_params.text = 'false'
-        build_all_nodes_with_label = XML.SubElement(tconfig, 'buildAllNodesWithLabel')
+        build_all_nodes_with_label = XML.SubElement(tconfig,
+                                                    'buildAllNodesWithLabel')
         build_all_nodes_with_label.text = 'false'
+
 
 class Builders(jenkins_jobs.modules.base.Base):
     sequence = 60

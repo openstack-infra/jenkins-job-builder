@@ -24,7 +24,11 @@
 #  overrideVotes: 'true'
 #  gerritBuildSuccessfulVerifiedValue: 1
 #  gerritBuildFailedVerifiedValue: -1
-#  failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+#
+#  failureMessage: 'This change was unable to be automatically merged
+#  with the current state of the repository. Please rebase your change
+#  and upload a new patchset.'
+#
 #   projects:
 #     - projectCompareType: 'PLAIN'
 #       projectPattern: 'openstack/nova'
@@ -36,10 +40,12 @@
 #       branchPattern: '**'
 #     ...
 #
-# triggerApprovalCategory and triggerApprovalValue only required if triggerOnCommentAddedEvent: 'true'
+# triggerApprovalCategory and triggerApprovalValue only required
+# if triggerOnCommentAddedEvent: 'true'
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+
 
 def gerrit(parser, xml_parent, data):
     projects = data['projects']
@@ -71,7 +77,7 @@ def gerrit(parser, xml_parent, data):
         data['triggerOnCommentAddedEvent']
     XML.SubElement(gtrig, 'triggerOnRefUpdatedEvent').text = \
         data['triggerOnRefUpdatedEvent']
-    if data.has_key('overrideVotes') and data['overrideVotes'] == 'true':
+    if 'overrideVotes' in data and data['overrideVotes'] == 'true':
         XML.SubElement(gtrig, 'gerritBuildSuccessfulVerifiedValue').text = \
             str(data['gerritBuildSuccessfulVerifiedValue'])
         XML.SubElement(gtrig, 'gerritBuildFailedVerifiedValue').text = \
@@ -87,6 +93,7 @@ def gerrit(parser, xml_parent, data):
     XML.SubElement(gtrig, 'buildUnstableMessage')
     XML.SubElement(gtrig, 'customUrl')
 
+
 # Jenkins Job module for scm polling triggers
 # To use add the following into your YAML:
 # trigger:
@@ -97,6 +104,7 @@ def gerrit(parser, xml_parent, data):
 def pollscm(parser, xml_parent, data):
     scmtrig = XML.SubElement(xml_parent, 'hudson.triggers.SCMTrigger')
     XML.SubElement(scmtrig, 'spec').text = data
+
 
 # Jenkins Job module for timed triggers
 # To use add the following into your YAML:
@@ -109,6 +117,7 @@ def timed(parser, xml_parent, data):
     scmtrig = XML.SubElement(xml_parent, 'hudson.triggers.TimerTrigger')
     XML.SubElement(scmtrig, 'spec').text = data
 
+
 class Triggers(jenkins_jobs.modules.base.Base):
     sequence = 50
 
@@ -117,8 +126,7 @@ class Triggers(jenkins_jobs.modules.base.Base):
         if not triggers:
             return
 
-        trig_e = XML.SubElement(xml_parent, 'triggers', {'class':'vector'})
+        trig_e = XML.SubElement(xml_parent, 'triggers', {'class': 'vector'})
         for trigger in triggers:
             self._dispatch('trigger', 'triggers',
                            parser, trig_e, trigger)
-

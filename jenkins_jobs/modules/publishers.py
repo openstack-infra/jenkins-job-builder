@@ -18,6 +18,7 @@
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 
+
 def archive(parser, xml_parent, data):
     archiver = XML.SubElement(xml_parent, 'hudson.tasks.ArtifactArchiver')
     artifacts = XML.SubElement(archiver, 'artifacts')
@@ -32,6 +33,7 @@ def archive(parser, xml_parent, data):
     else:
         latest.text = 'false'
 
+
 def trigger_parameterized_builds(parser, xml_parent, data):
     tbuilder = XML.SubElement(xml_parent,
         'hudson.plugins.parameterizedtrigger.BuildTrigger')
@@ -40,9 +42,9 @@ def trigger_parameterized_builds(parser, xml_parent, data):
         tconfig = XML.SubElement(configs,
             'hudson.plugins.parameterizedtrigger.BuildTriggerConfig')
         tconfigs = XML.SubElement(tconfig, 'configs')
-        if project_def.has_key('predefined-parameters'):
+        if 'predefined-parameters' in project_def:
             params = XML.SubElement(tconfigs,
-                'hudson.plugins.parameterizedtrigger.PredefinedBuildParameters')
+              'hudson.plugins.parameterizedtrigger.PredefinedBuildParameters')
             properties = XML.SubElement(params, 'properties')
             properties.text = project_def['predefined-parameters']
         else:
@@ -55,6 +57,7 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                                                 'triggerWithNoParameters')
         trigger_with_no_params.text = 'false'
 
+
 def coverage(parser, xml_parent, data):
     cobertura = XML.SubElement(xml_parent,
                                'hudson.plugins.cobertura.CoberturaPublisher')
@@ -62,8 +65,8 @@ def coverage(parser, xml_parent, data):
     XML.SubElement(cobertura, 'onlyStable').text = 'false'
     healthy = XML.SubElement(cobertura, 'healthyTarget')
     targets = XML.SubElement(healthy, 'targets', {
-            'class':'enum-map',
-            'enum-type':'hudson.plugins.cobertura.targets.CoverageMetric'})
+            'class': 'enum-map',
+            'enum-type': 'hudson.plugins.cobertura.targets.CoverageMetric'})
     entry = XML.SubElement(targets, 'entry')
     XML.SubElement(entry, 'hudson.plugins.cobertura.targets.CoverageMetric'
                    ).text = 'CONDITIONAL'
@@ -78,8 +81,8 @@ def coverage(parser, xml_parent, data):
     XML.SubElement(entry, 'int').text = '80'
     unhealthy = XML.SubElement(cobertura, 'unhealthyTarget')
     targets = XML.SubElement(unhealthy, 'targets', {
-            'class':'enum-map',
-            'enum-type':'hudson.plugins.cobertura.targets.CoverageMetric'})
+            'class': 'enum-map',
+            'enum-type': 'hudson.plugins.cobertura.targets.CoverageMetric'})
     entry = XML.SubElement(targets, 'entry')
     XML.SubElement(entry, 'hudson.plugins.cobertura.targets.CoverageMetric'
                    ).text = 'CONDITIONAL'
@@ -94,8 +97,8 @@ def coverage(parser, xml_parent, data):
     XML.SubElement(entry, 'int').text = '0'
     failing = XML.SubElement(cobertura, 'failingTarget')
     targets = XML.SubElement(failing, 'targets', {
-            'class':'enum-map',
-            'enum-type':'hudson.plugins.cobertura.targets.CoverageMetric'})
+            'class': 'enum-map',
+            'enum-type': 'hudson.plugins.cobertura.targets.CoverageMetric'})
     entry = XML.SubElement(targets, 'entry')
     XML.SubElement(entry, 'hudson.plugins.cobertura.targets.CoverageMetric'
                    ).text = 'CONDITIONAL'
@@ -123,40 +126,6 @@ def coverage(parser, xml_parent, data):
 # docs.openstack.org $ftpdir/dest/dir exluding the excluded file type.
 
 def ftp(parser, xml_parent, data):
-    """
-    Example XML:
-    <publishers>
-      <jenkins.plugins.publish__over__ftp.BapFtpPublisherPlugin>
-        <consolePrefix>FTP: </consolePrefix>
-        <delegate>
-          <publishers>
-            <jenkins.plugins.publish__over__ftp.BapFtpPublisher>
-              <configName>docs.openstack.org</configName>
-              <verbose>true</verbose>
-              <transfers>
-                <jenkins.plugins.publish__over__ftp.BapFtpTransfer>
-                  <remoteDirectory></remoteDirectory>
-                  <sourceFiles>openstack-identity-api/target/docbkx/webhelp/api/openstack-identity-service/2.0/**</sourceFiles>
-                  <excludes>**/*.xml,**/null*</excludes>
-                  <removePrefix>openstack-identity-api/target/docbkx/webhelp</removePrefix>
-                  <remoteDirectorySDF>false</remoteDirectorySDF>
-                  <flatten>false</flatten>
-                  <cleanRemote>false</cleanRemote>
-                  <asciiMode>false</asciiMode>
-                </jenkins.plugins.publish__over__ftp.BapFtpTransfer>
-              </transfers>
-              <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
-              <usePromotionTimestamp>false</usePromotionTimestamp>
-            </jenkins.plugins.publish__over__ftp.BapFtpPublisher>
-          </publishers>
-          <continueOnError>false</continueOnError>
-          <failOnError>false</failOnError>
-          <alwaysPublishFromMaster>false</alwaysPublishFromMaster>
-          <hostConfigurationAccess class="jenkins.plugins.publish_over_ftp.BapFtpPublisherPlugin" reference="../.."/>
-        </delegate>
-      </jenkins.plugins.publish__over__ftp.BapFtpPublisherPlugin>
-    </publishers>
-    """
     outer_ftp = XML.SubElement(xml_parent,
         'jenkins.plugins.publish__over__ftp.BapFtpPublisherPlugin')
     XML.SubElement(outer_ftp, 'consolePrefix').text = 'FTP: '
@@ -168,7 +137,8 @@ def ftp(parser, xml_parent, data):
     XML.SubElement(ftp, 'verbose').text = 'true'
 
     transfers = XML.SubElement(ftp, 'transfers')
-    ftp_transfers = XML.SubElement(transfers, 'jenkins.plugins.publish__over__ftp.BapFtpTransfer')
+    ftp_transfers = XML.SubElement(transfers,
+        'jenkins.plugins.publish__over__ftp.BapFtpTransfer')
     XML.SubElement(ftp_transfers, 'remoteDirectory').text = data['target']
     XML.SubElement(ftp_transfers, 'sourceFiles').text = data['source']
     XML.SubElement(ftp_transfers, 'excludes').text = data['excludes']
@@ -186,6 +156,7 @@ def ftp(parser, xml_parent, data):
     XML.SubElement(delegate, 'hostConfigurationAccess',
         {'class': 'jenkins.plugins.publish_over_ftp.BapFtpPublisherPlugin',
          'reference': '../..'})
+
 
 # Jenkins Job module for coverage publishers
 # To use you add the following into your YAML:
@@ -211,14 +182,16 @@ def _pep8_add_entry(xml_parent, name):
     XML.SubElement(tconfig, 'usePattern').text = 'false'
     XML.SubElement(tconfig, 'pattern')
 
+
 # Jenkins Job module for pep8 publishers
 # No additional YAML needed
 
 def pep8(parser, xml_parent, data):
     violations = XML.SubElement(xml_parent,
-                                'hudson.plugins.violations.ViolationsPublisher')
+                    'hudson.plugins.violations.ViolationsPublisher')
     config = XML.SubElement(violations, 'config')
-    suppressions = XML.SubElement(config, 'suppressions', {'class':'tree-set'})
+    suppressions = XML.SubElement(config, 'suppressions',
+                                  {'class': 'tree-set'})
     XML.SubElement(suppressions, 'no-comparator')
     configs = XML.SubElement(config, 'typeConfigs')
     XML.SubElement(configs, 'no-comparator')
@@ -254,6 +227,7 @@ def pep8(parser, xml_parent, data):
     XML.SubElement(config, 'fauxProjectPath')
     XML.SubElement(config, 'encoding').text = 'default'
 
+
 # Jenkins Job module for generic scp publishing
 # To use you add the following into your YAML:
 # publish:
@@ -276,6 +250,7 @@ def scp(parser, xml_parent, data):
     else:
         XML.SubElement(entry, 'keepHierarchy').text = 'false'
 
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
@@ -285,6 +260,3 @@ class Publishers(jenkins_jobs.modules.base.Base):
         for action in data.get('publishers', []):
             self._dispatch('publisher', 'publishers',
                            parser, publishers, action)
-
-
-
