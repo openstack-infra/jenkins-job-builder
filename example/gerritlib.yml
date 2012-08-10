@@ -33,10 +33,10 @@
       - timestamps
 
     triggers:
-      - zuul_post
+      - zuul-post
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
       - shell: tox -v -evenv python setup.py sdist upload
 
     publishers:

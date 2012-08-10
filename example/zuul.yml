@@ -33,7 +33,7 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
       - pyflakes
 
 
@@ -59,7 +59,7 @@
       - timestamps
 
     triggers:
-      - zuul_post
+      - zuul-post
 
     logrotate:
       daysToKeep: 28
@@ -68,7 +68,7 @@
       artifactNumToKeep: -1
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
       - docs
 
     publishers:

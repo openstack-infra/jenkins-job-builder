@@ -24,10 +24,10 @@
       artifactNumToKeep: -1
 
     triggers:
-      - zuul_post
+      - zuul-post
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
       - coverage
 
     publishers:
@@ -65,7 +65,7 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
       - pep8
 
     publishers:
@@ -103,7 +103,7 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
       - python26
 
     # >= precise does not have python2.6
@@ -145,7 +145,7 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
       - python27
 
     node: '{node}'
@@ -180,7 +180,7 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
 
     node: '{node}'
 
@@ -214,7 +214,7 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
       - docs
 
     node: '{node}'
@@ -251,7 +251,7 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
       - pyflakes
 
 

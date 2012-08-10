@@ -39,7 +39,7 @@
               branchPattern: '**'
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
 
 
 - job:
@@ -79,4 +79,4 @@
               branchPattern: '**'
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep

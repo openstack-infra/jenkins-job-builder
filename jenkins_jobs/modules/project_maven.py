@@ -31,8 +31,10 @@ class Maven(jenkins_jobs.modules.base.Base):
             return None
         xml_parent = XML.Element('maven2-moduleset')
         root_module = XML.SubElement(xml_parent, 'root_module')
-        XML.SubElement(root_module, 'groupId').text = data['maven']['root_module']['group_id']
-        XML.SubElement(root_module, 'artifactId').text = data['maven']['root_module']['artifact_id']
+        XML.SubElement(root_module, 'groupId').text = \
+            data['maven']['root-module']['group-id']
+        XML.SubElement(root_module, 'artifactId').text = \
+            data['maven']['root-module']['artifact-id']
         XML.SubElement(xml_parent, 'goals').text = data['maven']['goals']
 
         XML.SubElement(xml_parent, 'aggregatorStyleBuild').text = 'true'

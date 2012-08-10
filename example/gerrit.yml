@@ -31,7 +31,7 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
 
     node: precise
 
@@ -60,17 +60,17 @@
       - zuul
 
     prebuilders:
-      - gerrit_git_prep
-      - gerrit_preclean
+      - gerrit-git-prep
+      - gerrit-preclean
 
     maven:
-      root_module:
-        group_id: com.google.gerrit
-        artifact_id: gerrit-parent
+      root-module:
+        group-id: com.google.gerrit
+        artifact-id: gerrit-parent
       goals: 'clean package -Dgerrit.include-documentation=1 -X'
 
     postbuilders:
-      - gerrit_postrun
+      - gerrit-postrun
 
     publishers:
       - war:
@@ -103,17 +103,17 @@
       - zuul
 
     prebuilders:
-      - gerrit_git_prep
-      - gerrit_preclean
+      - gerrit-git-prep
+      - gerrit-preclean
 
     maven:
-      root_module:
-        group_id: com.google.gerrit
-        artifact_id: gerrit-parent
+      root-module:
+        group-id: com.google.gerrit
+        artifact-id: gerrit-parent
       goals: 'clean package -Dgerrit.include-documentation=1 -X'
 
     postbuilders:
-      - gerrit_postrun
+      - gerrit-postrun
 
 
 - job:
@@ -137,20 +137,20 @@
           enabled: false
 
     triggers:
-      - zuul_post
+      - zuul-post
 
     prebuilders:
-      - gerrit_git_prep
-      - gerrit_preclean
+      - gerrit-git-prep
+      - gerrit-preclean
 
     maven:
-      root_module:
-        group_id: com.google.gerrit
-        artifact_id: gerrit-parent
+      root-module:
+        group-id: com.google.gerrit
+        artifact-id: gerrit-parent
       goals: 'clean package -Dgerrit.include-documentation=1 -X'
 
     postbuilders:
-      - gerrit_postrun
+      - gerrit-postrun
 
     publishers:
       - war:

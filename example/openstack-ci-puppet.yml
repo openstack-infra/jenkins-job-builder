@@ -31,7 +31,7 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
 
 
 - job:
@@ -58,6 +58,6 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
-      - puppet_syntax
+      - gerrit-git-prep
+      - puppet-syntax
       - pyflakes

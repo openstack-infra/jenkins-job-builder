@@ -33,7 +33,7 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
 
 - job:
     name: gate-pypi-mirror-pyflakes
@@ -60,5 +60,5 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
       - pyflakes

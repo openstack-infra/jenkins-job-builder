@@ -30,6 +30,6 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
 
     node: precise

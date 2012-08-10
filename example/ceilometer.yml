@@ -37,8 +37,8 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
-      - python26_essex
+      - gerrit-git-prep
+      - python26-essex
 
     # >= precise does not have python2.6
     node: oneiric
@@ -74,7 +74,7 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
-      - python27_essex
+      - gerrit-git-prep
+      - python27-essex
 
     node: oneiric

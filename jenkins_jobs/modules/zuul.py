@@ -68,7 +68,7 @@ class Zuul(jenkins_jobs.modules.base.Base):
                 continue
 
             if ('zuul' not in job.get('triggers', []) and
-                'zuul_post' not in job.get('triggers', [])):
+                'zuul-post' not in job.get('triggers', [])):
                 continue
             if 'parameters' not in job:
                 job['parameters'] = []
@@ -78,8 +78,8 @@ class Zuul(jenkins_jobs.modules.base.Base):
             if 'zuul' in job.get('triggers', []):
                 job['parameters'].extend(ZUUL_PARAMETERS)
                 job['triggers'].remove('zuul')
-            if 'zuul_post' in job.get('triggers', []):
+            if 'zuul-post' in job.get('triggers', []):
                 job['parameters'].extend(ZUUL_POST_PARAMETERS)
-                job['triggers'].remove('zuul_post')
+                job['triggers'].remove('zuul-post')
             changed = True
         return changed

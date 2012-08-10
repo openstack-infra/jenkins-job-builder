@@ -1,5 +1,5 @@
 - builder:
-    name: gerrit_git_prep
+    name: gerrit-git-prep
     builders:
       - shell: "/usr/local/jenkins/slave_scripts/gerrit-git-prep.sh review.openstack.org"
 
@@ -14,28 +14,28 @@
       - shell: "/usr/local/jenkins/slave_scripts/run-docs.sh"
 
 - builder:
-    name: maven_test
+    name: maven-test
     builders:
       - shell: "mvn test"
 
 - builder:
-    name: maven_package
+    name: maven-package
     builders:
       - shell: "mvn package"
 
 - builder:
-    name: gerrit_package
+    name: gerrit-package
     builders:
       - shell: "/usr/local/jenkins/slave_scripts/package-gerrit.sh"
 
 - builder:
-    name: gerrit_preclean
+    name: gerrit-preclean
     #TODO: multiline:
     builders:
       - shell: "#!/bin/bash -xe\nrm -fr ~/.m2\nrm -fr ~/.java\n./tools/version.sh --release"
 
 - builder:
-    name: gerrit_postrun
+    name: gerrit-postrun
     builders:
       - shell: "./tools/version.sh --reset"
 
@@ -50,7 +50,7 @@
       - shell: "tox -v -epyflakes"
 
 - builder:
-    name: puppet_syntax
+    name: puppet-syntax
     builders:
       # TODO: remove blank line
       - shell: |
@@ -78,12 +78,12 @@
       - shell: "/usr/local/jenkins/slave_scripts/run-tox.sh 27"
 
 - builder:
-    name: python26_essex
+    name: python26-essex
     builders:
       - shell: "/usr/local/jenkins/slave_scripts/run-tox.sh 26-essex"
 
 - builder:
-    name: python27_essex
+    name: python27-essex
     builders:
       - shell: "/usr/local/jenkins/slave_scripts/run-tox.sh 27-essex"
 

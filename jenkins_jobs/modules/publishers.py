@@ -40,11 +40,11 @@ def trigger_parameterized_builds(parser, xml_parent, data):
         tconfig = XML.SubElement(configs,
             'hudson.plugins.parameterizedtrigger.BuildTriggerConfig')
         tconfigs = XML.SubElement(tconfig, 'configs')
-        if project_def.has_key('predefined_parameters'):
+        if project_def.has_key('predefined-parameters'):
             params = XML.SubElement(tconfigs,
                 'hudson.plugins.parameterizedtrigger.PredefinedBuildParameters')
             properties = XML.SubElement(params, 'properties')
-            properties.text = project_def['predefined_parameters']
+            properties.text = project_def['predefined-parameters']
         else:
             tconfigs.set('class', 'java.util.Collections$EmptyList')
         projects = XML.SubElement(tconfig, 'projects')

@@ -29,7 +29,7 @@
       - zuul
 
     builders:
-      - gerrit_git_prep
+      - gerrit-git-prep
 
 
 - job:
@@ -69,7 +69,7 @@
     builders:
       - trigger-builds:
           - project: devstack-update-inprogress
-            predefined_parameters:
+            predefined-parameters:
               DEVSTACK_NODE_NAME=${NODE_NAME}
       - shell: |
           #!/bin/bash -xe
@@ -103,7 +103,7 @@
       - trigger-parameterized-builds:
           - project: devstack-update-complete
             when: complete
-            predefined_parameters:
+            predefined-parameters:
               DEVSTACK_NODE_NAME=${NODE_NAME}
 
 
@@ -144,7 +144,7 @@
     builders:
       - trigger-builds:
           - project: devstack-update-inprogress
-            predefined_parameters:
+            predefined-parameters:
               DEVSTACK_NODE_NAME=${NODE_NAME}
       - shell: |
           #!/bin/bash -xe
@@ -179,7 +179,7 @@
       - trigger-parameterized-builds:
           - project: devstack-update-complete
             when: complete
-            predefined_parameters:
+            predefined-parameters:
               DEVSTACK_NODE_NAME=${NODE_NAME}
 
 
