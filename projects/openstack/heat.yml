@@ -1,9 +1,0 @@
-project:
-  template: 'python_jobs'
-
-values:
-  name: 'heat'
-  disabled: 'false'
-  github_org: 'heat-api'
-  review_site: 'review.openstack.org'
-  node: 'oneiric'

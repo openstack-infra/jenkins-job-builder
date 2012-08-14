@@ -1,9 +1,0 @@
-project:
-  template: 'python_jobs'
-
-values:
-  name: 'reddwarf'
-  disabled: 'true'
-  github_org: 'stackforge'
-  review_site: 'review.openstack.org'
-  node: 'oneiric'
