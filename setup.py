@@ -58,7 +58,7 @@ setup(name='jenkins_job_builder',
             'coverage=jenkins_jobs.modules.publishers:coverage',
             'ftp=jenkins_jobs.modules.publishers:ftp',
             'junit=jenkins_jobs.modules.publishers:junit',
-            'pep8=jenkins_jobs.modules.publishers:pep8',
+            'violations=jenkins_jobs.modules.publishers:violations',
             'scp=jenkins_jobs.modules.publishers:scp',
             ],
         'jenkins_jobs.scm': [
