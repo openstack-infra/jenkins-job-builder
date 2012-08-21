@@ -190,6 +190,7 @@ def _violations_add_entry(xml_parent, name, data):
     else:
         XML.SubElement(tconfig, 'pattern')
 
+
 def violations(parser, xml_parent, data):
     violations = XML.SubElement(xml_parent,
                     'hudson.plugins.violations.ViolationsPublisher')
@@ -238,13 +239,22 @@ def scp(parser, xml_parent, data):
                          'be.certipost.hudson.plugin.SCPRepositoryPublisher')
     XML.SubElement(scp, 'siteName').text = site
     entries = XML.SubElement(scp, 'entries')
-    entry = XML.SubElement(entries, 'be.certipost.hudson.plugin.Entry')
-    XML.SubElement(entry, 'filePath').text = data['target']
-    XML.SubElement(entry, 'sourceFile').text = data['source']
-    if data.get('keep-hierarchy', False):
-        XML.SubElement(entry, 'keepHierarchy').text = 'true'
-    else:
-        XML.SubElement(entry, 'keepHierarchy').text = 'false'
+    for entry in data['files']:
+        entry_e = XML.SubElement(entries, 'be.certipost.hudson.plugin.Entry')
+        XML.SubElement(entry_e, 'filePath').text = entry['target']
+        XML.SubElement(entry_e, 'sourceFile').text = entry.get('source', '')
+        if entry.get('keep-hierarchy', False):
+            XML.SubElement(entry_e, 'keepHierarchy').text = 'true'
+        else:
+            XML.SubElement(entry_e, 'keepHierarchy').text = 'false'
+        if entry.get('copy-console', False):
+            XML.SubElement(entry_e, 'copyConsoleLog').text = 'true'
+        else:
+            XML.SubElement(entry_e, 'copyConsoleLog').text = 'false'
+        if entry.get('copy-after-failure', False):
+            XML.SubElement(entry_e, 'copyAfterFailure').text = 'true'
+        else:
+            XML.SubElement(entry_e, 'copyAfterFailure').text = 'false'
 
 
 class Publishers(jenkins_jobs.modules.base.Base):
