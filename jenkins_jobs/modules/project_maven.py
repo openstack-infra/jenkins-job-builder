@@ -38,6 +38,8 @@ class Maven(jenkins_jobs.modules.base.Base):
             data['maven']['root-module']['artifact-id']
         XML.SubElement(xml_parent, 'goals').text = data['maven']['goals']
 
+        XML.SubElement(xml_parent, 'rootPOM').text = \
+            data['maven'].get('root-pom', 'pom.xml')
         XML.SubElement(xml_parent, 'aggregatorStyleBuild').text = 'true'
         XML.SubElement(xml_parent, 'incrementalBuild').text = 'false'
         XML.SubElement(xml_parent, 'perModuleEmail').text = 'true'
