@@ -42,7 +42,7 @@ do
 	echo $x
 	echo "------------------------------------------------------------"
     fi
-    diff -u .test/old/$x .test/new/$x
+    diff -u .test/old/$x .test/new/$x || /bin/true
 done
 
 echo
