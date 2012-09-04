@@ -42,6 +42,28 @@ def throttle(parser, xml_parent, data):
     XML.SubElement(throttle, 'throttleOption').text = data.get('option')
     XML.SubElement(throttle, 'configVersion').text = '1'
 
+def inject(parser, xml_parent, data):
+    inject = XML.SubElement(xml_parent,
+                 'EnvInjectJobProperty')
+    info = XML.SubElement(inject, 'info')
+    XML.SubElement(info, 'propertiesFilePath').text = str(
+        data.get('properties-file', ''))
+    XML.SubElement(info, 'propertiesContent').text = str(
+        data.get('properties-content', ''))
+    XML.SubElement(info, 'scriptFilePath').text = str(
+        data.get('script-file', ''))
+    XML.SubElement(info, 'scriptContent').text = str(
+        data.get('script-content', ''))
+    XML.SubElement(info, 'groovyScriptContent').text = str(
+        data.get('groovy-content', ''))
+    XML.SubElement(info, 'loadFilesFromMaster').text = str(
+        data.get('load-from-master', 'false')).lower()
+    XML.SubElement(inject, 'on').text = str(
+        data.get('enabled', 'true')).lower()
+    XML.SubElement(inject, 'keepJenkinsSystemVariables').text = str(
+        data.get('keep-system-variables', 'true')).lower()
+    XML.SubElement(inject, 'keepBuildVariables').text = str(
+        data.get('keep-build-variables', 'true')).lower()
 
 def authenticated_build(parser, xml_parent, data):
     # TODO: generalize this

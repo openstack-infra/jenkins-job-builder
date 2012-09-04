@@ -38,6 +38,7 @@ setup(name='jenkins_job_builder',
         'jenkins_jobs.properties': [
             'github=jenkins_jobs.modules.properties:github',
             'throttle=jenkins_jobs.modules.properties:throttle',
+            'inject=jenkins_jobs.modules.properties:inject',
             'authenticated-build=jenkins_jobs.modules.properties:'
               'authenticated_build',
             ],
