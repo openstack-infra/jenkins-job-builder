@@ -41,13 +41,27 @@ class YamlParser(object):
             self.data[cls] = group
 
     def getJob(self, name):
-        return self.data.get('job', {}).get(name, None)
+        job = self.data.get('job', {}).get(name, None)
+        if not job:
+            return job
+        return self.applyDefaults(job)
 
     def getJobGroup(self, name):
         return self.data.get('job-group', {}).get(name, None)
 
     def getJobTemplate(self, name):
-        return self.data.get('job-template', {}).get(name, None)
+        job = self.data.get('job-template', {}).get(name, None)
+        if not job:
+            return job
+        return self.applyDefaults(job)
+
+    def applyDefaults(self, data):
+        whichdefaults = data.get('defaults', 'global')
+        defaults = self.data.get('defaults', {}).get(whichdefaults, {})
+        newdata = {}
+        newdata.update(defaults)
+        newdata.update(data)
+        return newdata
 
     def generateXML(self):
         changed = True
@@ -59,6 +73,7 @@ class YamlParser(object):
                         changed = True
 
         for job in self.data.get('job', {}).values():
+            job = self.applyDefaults(job)
             self.getXMLForJob(job)
         for project in self.data.get('project', {}).values():
             for jobname in project.get('jobs', []):
