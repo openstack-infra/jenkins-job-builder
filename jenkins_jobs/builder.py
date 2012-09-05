@@ -124,16 +124,7 @@ class YamlParser(object):
     def gen_xml(self, xml, data):
         XML.SubElement(xml, 'actions')
         description = XML.SubElement(xml, 'description')
-        description.text = """THIS JOB IS MANAGED BY PUPPET \
-AND WILL BE OVERWRITTEN.
-
-DON'T EDIT THIS JOB THROUGH THE WEB
-
-If you would like to make changes to this job, please see:
-
-https://github.com/openstack/openstack-ci-puppet
-
-In modules/jenkins_jobs"""
+        description.text = data.get('description', '')
         XML.SubElement(xml, 'keepDependencies').text = 'false'
         if data.get('disabled'):
             XML.SubElement(xml, 'disabled').text = 'true'
