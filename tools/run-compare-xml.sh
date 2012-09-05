@@ -17,10 +17,14 @@
 #    under the License.
 
 rm -fr .test
-mkdir -p .test/old
-mkdir -p .test/new
+mkdir -p .test/old/config
+mkdir -p .test/old/out
+mkdir -p .test/new/config
+mkdir -p .test/new/out
 cd .test
 git clone https://review.openstack.org/p/openstack/openstack-ci-puppet --depth 1
+cp openstack-ci-puppet/modules/openstack_project/files/jenkins_job_builder/config/* old/config
+cp openstack-ci-puppet/modules/openstack_project/files/jenkins_job_builder/config/* new/config
 cd ..
 GITHEAD=`git rev-parse HEAD`
 
@@ -33,16 +37,16 @@ git checkout $GITHEAD
 tox -e compare-xml-new
 
 CHANGED=0
-for x in `(cd .test/old && find -type f)`
+for x in `(cd .test/old/out && find -type f)`
 do
-    if ! diff -u .test/old/$x .test/new/$x >/dev/null 2>&1
+    if ! diff -u .test/old/out/$x .test/new/out/$x >/dev/null 2>&1
     then
 	CHANGED=1
 	echo "============================================================"
 	echo $x
 	echo "------------------------------------------------------------"
     fi
-    diff -u .test/old/$x .test/new/$x || /bin/true
+    diff -u .test/old/out/$x .test/new/out/$x || /bin/true
 done
 
 echo
