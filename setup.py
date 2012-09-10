@@ -62,6 +62,7 @@ setup(name='jenkins_job_builder',
             'junit=jenkins_jobs.modules.publishers:junit',
             'violations=jenkins_jobs.modules.publishers:violations',
             'scp=jenkins_jobs.modules.publishers:scp',
+            'pipeline=jenkins_jobs.modules.publishers:pipeline',
             ],
         'jenkins_jobs.scm': [
             'git=jenkins_jobs.modules.scm:git',

@@ -256,6 +256,10 @@ def scp(parser, xml_parent, data):
         else:
             XML.SubElement(entry_e, 'copyAfterFailure').text = 'false'
 
+def pipeline(parser, xml_parent, data):
+    pippub = XML.SubElement(xml_parent, 
+           'au.com.centrumsystems.hudson.plugin.buildpipeline.trigger.BuildPipelineTrigger')
+    XML.SubElement(pippub, 'downstreamProjectNames').text = data
 
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
