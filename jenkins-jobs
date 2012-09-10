@@ -3,6 +3,7 @@
 import jenkins_jobs.builder
 import argparse
 import ConfigParser
+import logging
 
 def main():
     parser = argparse.ArgumentParser()
@@ -18,7 +19,14 @@ def main():
     parser_delete = subparser.add_parser('delete')
     parser_delete.add_argument('name', help='name of job')
     parser.add_argument('--conf', dest='conf', help='Configuration file')
+    parser.add_argument('-l', '--log_level', dest='log_level', default='info',
+                        help="Log level (default '%default')")
     options = parser.parse_args()
+
+    options.log_level = getattr(logging, options.log_level.upper(),
+                                  logging.INFO)
+    logging.basicConfig(level=options.log_level)
+    logger = logging.getLogger()
 
     if options.conf:
         conf = options.conf
@@ -26,19 +34,23 @@ def main():
         conf = '/etc/jenkins_jobs/jenkins_jobs.ini'
 
     if not options.command == 'test':
+        logger.debug("Reading config from {0}".format(conf))
         conffp = open(conf, 'r')
         config = ConfigParser.ConfigParser()
         config.readfp(conffp)
     else:
         config = {}
-
+    logger.debug("Config: {0}".format(config))
     builder = jenkins_jobs.builder.Builder(config.get('jenkins','url'),
                                            config.get('jenkins','user'),
                                            config.get('jenkins','password'))
 
     if options.command == 'delete':
+        logger.info("Deleting job {0}".format(options.name))
         builder.delete_job(options.name)
     elif options.command == 'update':
+        logger.info("Updating jobs in {0} ({1})".format(options.path,
+                          options.name))
         builder.update_job(options.path, options.name)
     elif options.command == 'test':
         builder.update_job(options.path, options.name,

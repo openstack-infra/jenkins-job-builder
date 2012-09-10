@@ -23,7 +23,9 @@ from xml.dom import minidom
 import jenkins
 import re
 import pkg_resources
+import logging
 
+logger = logging.getLogger(__name__)
 
 class YamlParser(object):
     def __init__(self):
@@ -73,9 +75,11 @@ class YamlParser(object):
                         changed = True
 
         for job in self.data.get('job', {}).values():
+            logger.debug("XMLifying job '{0}'".format(job['name']))
             job = self.applyDefaults(job)
             self.getXMLForJob(job)
         for project in self.data.get('project', {}).values():
+            logger.debug("XMLifying project '{0}'".format(project['name']))
             for jobname in project.get('jobs', []):
                 job = self.getJob(jobname)
                 if job:
@@ -218,8 +222,10 @@ class Jenkins(object):
 
     def update_job(self, job_name, xml):
         if self.is_job(job_name):
+            logger.info("Reconfiguring jenkins job {0}".format(job_name))
             self.jenkins.reconfig_job(job_name, xml)
         else:
+            logger.info("Creating jenkins job {0}".format(job_name))
             self.jenkins.create_job(job_name, xml)
 
     def is_job(self, job_name):
@@ -251,6 +257,7 @@ class Builder(object):
             files_to_process = [fn]
         parser = YamlParser()
         for in_file in files_to_process:
+            logger.debug("Parsing YAML file {0}".format(in_file))
             parser.parse(in_file)
         parser.generateXML()
 
@@ -263,6 +270,7 @@ class Builder(object):
                     print job.output()
                     continue
                 fn = os.path.join(output_dir, job.name)
+                logger.debug("Writing XML to '{0}'".format(fn))
                 f = open(fn, 'w')
                 f.write(job.output())
                 f.close()
