@@ -12,13 +12,23 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Jenkins Job module for logrotate
-# To use add the folowing into your YAML:
-# logrotate:
-#  daysToKeep: 3
-#  numToKeep: 20
-#  artifactDaysToKeep: -1
-#  artifactNumToKeep: -1
+
+"""
+The Logrotate section allows you to automatically remove old build
+history.  It adds the ``logrotate`` attribute to the :ref:`Job`
+definition.
+
+Example::
+
+  job:
+    name: test_job
+    logrotate:
+      daysToKeep: 3
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+"""
+
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base

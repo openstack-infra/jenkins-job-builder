@@ -3,3 +3,5 @@
 config
 .tox
 .test
+doc/build
+doc/source/sourcecode

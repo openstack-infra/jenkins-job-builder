@@ -12,13 +12,43 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Jenkins Job module for wrappers
+
+"""
+Wrappers can alter the way the build is run as well as the build output.
+
+**Component**: wrappers
+  :Macro: wrapper
+  :Entry Point: jenkins_jobs.wrappers
+
+Example::
+
+  job:
+    name: test_job
+
+    wrappers:
+      - timeout:
+          timeout: 90
+          fail: true
+"""
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 
 
 def timeout(parser, xml_parent, data):
+    """yaml: timeout
+    Abort the build if it runs too long.
+
+    :arg int timeout: Abort the build after this number of minutes
+    :arg bool fail: Mark the build as failed (default false)
+
+    Example::
+
+      wrappers:
+        - timeout:
+            timeout: 90
+            fail: true
+    """
     twrapper = XML.SubElement(xml_parent,
         'hudson.plugins.build__timeout.BuildTimeoutWrapper')
     tminutes = XML.SubElement(twrapper, 'timeoutMinutes')
@@ -32,11 +62,27 @@ def timeout(parser, xml_parent, data):
 
 
 def timestamps(parser, xml_parent, data):
+    """yaml: timestamps
+    Add timestamps to the console log.
+
+    Example::
+
+      wrappers:
+        - timestamps
+    """
     XML.SubElement(xml_parent,
                    'hudson.plugins.timestamper.TimestamperBuildWrapper')
 
 
 def ansicolor(parser, xml_parent, data):
+    """yaml: ansicolor
+    Translate ANSI color codes to HTML in the console log.
+
+    Example::
+
+      wrappers:
+        - ansicolor
+    """
     XML.SubElement(xml_parent,
                    'hudson.plugins.ansicolor.AnsiColorBuildWrapper')
 

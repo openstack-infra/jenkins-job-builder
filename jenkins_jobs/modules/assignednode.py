@@ -12,10 +12,21 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Jenkins Job module for assigned nodes
-# To use add the folowing into your YAML:
-# assignednode:
-#   - node: 'oneiric'
+
+"""
+The Assigned Node section allows you to specify which Jenkins node (or
+named group) should run the specified job.  It adds the ``node``
+attribute to the :ref:`Job` definition.
+
+Example::
+
+  job:
+    name: test_job
+    node: precise
+
+That speficies that the job should be run on a Jenkins node or node group
+named ``precise``.
+"""
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base

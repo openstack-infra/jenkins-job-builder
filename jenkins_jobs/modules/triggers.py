@@ -12,42 +12,69 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Jenkins Job module for gerrit triggers
-# To use add the following into your YAML:
-# trigger:
-#  triggerOnPatchsetUploadedEvent: 'false'
-#  triggerOnChangeMergedEvent: 'false'
-#  triggerOnCommentAddedEvent: 'true'
-#  triggerOnRefUpdatedEvent: 'false'
-#  triggerApprovalCategory: 'APRV'
-#  triggerApprovalValue: 1
-#  overrideVotes: 'true'
-#  gerritBuildSuccessfulVerifiedValue: 1
-#  gerritBuildFailedVerifiedValue: -1
-#
-#  failureMessage: 'This change was unable to be automatically merged
-#  with the current state of the repository. Please rebase your change
-#  and upload a new patchset.'
-#
-#   projects:
-#     - projectCompareType: 'PLAIN'
-#       projectPattern: 'openstack/nova'
-#       branchCompareType: 'ANT'
-#       branchPattern: '**'
-#     - projectCompareType: 'PLAIN'
-#       projectPattern: 'openstack/glance'
-#       branchCompareType: 'ANT'
-#       branchPattern: '**'
-#     ...
-#
-# triggerApprovalCategory and triggerApprovalValue only required
-# if triggerOnCommentAddedEvent: 'true'
+
+"""
+Triggers define what causes a jenkins job to start buliding.
+
+**Component**: triggers
+  :Macro: trigger
+  :Entry Point: jenkins_jobs.triggers
+
+Example::
+
+  job:
+    name: test_job
+
+    triggers:
+      - timed: '@daily'
+"""
+
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 
 
 def gerrit(parser, xml_parent, data):
+    """yaml: gerrit
+    Trigger on a Gerrit event.
+
+    :arg bool triggerOnPatchsetUploadedEvent: Trigger on patchset upload
+    :arg bool triggerOnChangeMergedEvent: Trigger on change merged
+    :arg bool triggerOnCommentAddedEvent: Trigger on comment added
+    :arg bool triggerOnRefUpdatedEvent: Trigger on ref-updated
+    :arg str triggerApprovalCategory: Approval category for comment added
+    :arg int triggerApprovalValue: Approval value for comment added
+    :arg bool overrideVotes: Override default vote values
+    :arg int gerritBuildSuccessfulVerifiedValue: Successful ''Verified'' value
+    :arg int gerritBuildFailedVerifiedValue: Failed ''Verified'' value
+    :arg str failureMessage: Message to leave on failure
+    :arg list projects: list of projects to match
+
+      :Project: * **projectCompareType** (`str`) --  ''PLAIN'' or ''ANT''
+                * **projectPattern** (`str`) -- Project name pattern to match
+                * **branchComprareType** (`str`) -- ''PLAIN'' or ''ANT''
+                * **branchPattern** ('str') -- Branch name pattern to match
+
+    You may select one or more gerrit events upon which to trigger.
+    You must also supply at least one project and branch, optionally
+    more.  If you select the comment-added trigger, you should alse
+    indicate which approval category and value you want to trigger the
+    job.
+
+    Example::
+
+      trigger:
+        - gerrit:
+            triggerOnCommentAddedEvent: true
+            triggerApprovalCategory: 'APRV'
+            triggerApprovalValue: 1
+            projects:
+              - projectCompareType: 'PLAIN'
+                projectPattern: 'test-project'
+                branchCompareType: 'ANT'
+                branchPattern: '**'
+    """
+
     projects = data['projects']
     gtrig = XML.SubElement(xml_parent,
                            'com.sonyericsson.hudson.plugins.gerrit.trigger.'
@@ -94,26 +121,33 @@ def gerrit(parser, xml_parent, data):
     XML.SubElement(gtrig, 'customUrl')
 
 
-# Jenkins Job module for scm polling triggers
-# To use add the following into your YAML:
-# trigger:
-#   pollscm: '@midnight'
-# or
-#   pollscm: '*/15 * * * *'
-
 def pollscm(parser, xml_parent, data):
+    """yaml: pollscm
+    Poll the SCM to determine if there has been a change.
+
+    :Parameter: the polling interval (cron syntax)
+
+    Example:
+
+    trigger:
+      - pollscm: "\*/15 * * * \*"
+    """
+
     scmtrig = XML.SubElement(xml_parent, 'hudson.triggers.SCMTrigger')
     XML.SubElement(scmtrig, 'spec').text = data
 
 
-# Jenkins Job module for timed triggers
-# To use add the following into your YAML:
-# trigger:
-#   timed: '@midnight'
-# or
-#   timed: '*/15 * * * *'
-
 def timed(parser, xml_parent, data):
+    """yaml: pollscm
+    Poll the SCM to determine if there has been a change.
+
+    :Parameter: the polling interval (cron syntax)
+
+    Example:
+
+    trigger:
+      - pollscm: "@midnight"
+    """
     scmtrig = XML.SubElement(xml_parent, 'hudson.triggers.TimerTrigger')
     XML.SubElement(scmtrig, 'spec').text = data
 

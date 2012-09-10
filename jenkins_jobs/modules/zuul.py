@@ -12,10 +12,33 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Jenkins Job module for Zuul
+"""
+The Zuul module adds triggers that configure jobs for use with Zuul_.
+
+.. _Zuul: http://ci.openstack.org/zuul/
+"""
+
+def zuul():
+    """yaml: zuul
+    Configure this job to be triggered by Zuul.
+
+    Example::
+
+      triggers:
+        - zuul
+    """
+
+def zuul_post():
+    """yaml: zuul-post
+    Configure this post-merge job to be triggered by Zuul.
+
+    Example::
+
+      triggers:
+        - zuul-post
+    """
 
 import jenkins_jobs.modules.base
-
 
 ZUUL_PARAMETERS = [
     {'string':

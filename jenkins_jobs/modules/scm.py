@@ -12,18 +12,47 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Jenkins Job module for scm
-# To use add the folowing into your YAML:
-# scm:
-#  scm: 'true'
-# or
-#  scm: 'false'
+
+"""
+The SCM module allows you to specify the source code location for the
+project.  It adds the ``scm`` attribute to the :ref:`Job` definition,
+which accepts a single scm definiton.
+
+**Component**: scm
+  :Macro: scm
+  :Entry Point: jenkins_jobs.scm
+
+Example::
+
+  job:
+    name: test_job
+    scm:
+      -git:
+        url: https://example.com/project.git
+
+"""
+
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 
 
 def git(self, xml_parent, data):
+    """yaml: git
+    Specifies the git SCM repository for this job.
+
+    :arg str url: URL of the git repository
+    :arg list(str) branches: list of branch specifiers to build
+
+    Example::
+
+      scm:
+        -git:
+          url: https://example.com/project.git
+          branches:
+            - master
+            - stable
+    """
     scm = XML.SubElement(xml_parent,
                          'scm', {'class': 'hudson.plugins.git.GitSCM'})
     XML.SubElement(scm, 'configVersion').text = '2'

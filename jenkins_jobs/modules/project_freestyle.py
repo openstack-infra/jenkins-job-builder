@@ -12,13 +12,21 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Jenkins Job module for maven projects
-# To use you add the following into your YAML:
-# maven:
-#   root_module:
-#     group_id: com.google.gerrit
-#     artifact_id: gerrit-parent
-#   goals: 'test'
+
+"""
+The Freestyle Project module handles creating freestyle Jenkins
+projects (i.e., those that do not use Maven).  You may specify
+``freestyle`` in the ``project-type`` attribute to the :ref:`Job`
+definition if you wish, though it is the default, so you may omit
+``project-type`` altogether if you are creating a freestyle project.
+
+Example::
+
+  job:
+    name: test_job
+    project-type: freestyle
+"""
+
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base

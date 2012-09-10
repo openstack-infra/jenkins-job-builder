@@ -12,22 +12,65 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Jenkins Job module for builders
-# To use add the folowing into your YAML:
-# builders:
-#   - 'gerrit_git_prep'
-#   - 'python26'
+
+"""
+Builders define actions that the Jenkins job should execute.  Examples
+include shell scripts or maven targets.  The ``builders`` attribute in
+the :ref:`Job` definition accepts a list of builders to invoke.  They
+may be components defined below, locally defined macros (using the top
+level definition of ``builder:``, or locally defined components found
+via the ``jenkins_jobs.builders`` entry point.
+
+**Component**: builders
+  :Macro: builder
+  :Entry Point: jenkins_jobs.builders
+
+Example::
+
+  job:
+    name: test_job
+
+    builders:
+      - shell: "make test"
+
+"""
+
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 
-
 def shell(parser, xml_parent, data):
+    """yaml: shell
+    Execute a shell command.
+
+    :Parameter: the shell command to execute
+
+    Example::
+
+      builders:
+        - shell: "make test"
+
+    """
     shell = XML.SubElement(xml_parent, 'hudson.tasks.Shell')
     XML.SubElement(shell, 'command').text = data
 
-
 def trigger_builds(parser, xml_parent, data):
+    """yaml: trigger-builds
+    Trigger builds of other jobs.
+
+    :arg str project: the Jenkins project to trigger
+    :arg str predefined-parameters:
+      key/value pairs to be passed to the job (optional)
+
+    Example::
+
+      builders:
+        - trigger-builds:
+            - project: "build_started"
+              predefined-parameters:
+                FOO="bar"
+
+    """
     tbuilder = XML.SubElement(xml_parent,
                    'hudson.plugins.parameterizedtrigger.TriggerBuilder')
     configs = XML.SubElement(tbuilder, 'configs')

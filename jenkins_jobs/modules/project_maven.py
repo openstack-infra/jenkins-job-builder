@@ -12,13 +12,29 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Jenkins Job module for maven projects
-# To use you add the following into your YAML:
-# maven:
-#   root_module:
-#     group_id: com.google.gerrit
-#     artifact_id: gerrit-parent
-#   goals: 'test'
+
+"""
+The Maven Project module handles creating Maven Jenkins projects.  To
+create a Maven project, specify ``maven`` in the ``project-type``
+attribute to the :ref:`Job` definition.
+
+It also requires a ``maven`` section in the :ref:`Job` definition.
+All of the fields below are required, except ``root-pom``, whose
+default is ``pom.xml``.
+
+Example::
+
+  job:
+    name: doc_job
+    project-type: maven
+
+    maven:
+      root-module:
+        group-id: org.example.docs
+        artifact-id: example-guide
+      root-pom: doc/src/pom.xml
+      goals: "clean generate-sources"
+"""
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base

@@ -12,14 +12,47 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Jenkins Job module for coverage publishers
-# No additional YAML needed
+
+"""
+Publishers define actions that the Jenkins job should perform after
+the build is complete.
+
+**Component**: publishers
+  :Macro: publisher
+  :Entry Point: jenkins_jobs.publishers
+
+Example::
+
+  job:
+    name: test_job
+
+    publishers:
+      - scp:
+          site: 'example.com'
+          source: 'doc/build/html/**/*'
+          target_path: 'project'
+"""
+
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 
 
 def archive(parser, xml_parent, data):
+    """yaml: archive
+    Archive build artifacts
+
+    :arg str artifacts: path specifier for artifacts to archive
+    :arg str excludes: path specifier for artifacts to exclude
+    :arg bool latest_only: only keep the artifacts from the latest
+      successful build
+
+    Example::
+
+      publishers:
+        - archive:
+            artifacts: *.tar.gz
+    """
     archiver = XML.SubElement(xml_parent, 'hudson.tasks.ArtifactArchiver')
     artifacts = XML.SubElement(archiver, 'artifacts')
     artifacts.text = data['artifacts']
@@ -35,6 +68,20 @@ def archive(parser, xml_parent, data):
 
 
 def trigger_parameterized_builds(parser, xml_parent, data):
+    """yaml: trigger-parameterized-builds
+    Trigger parameterized builds of other jobs.
+
+    :arg str project: name of the job to trigger
+    :arg str predefined-parameters: parameters to pass to the other
+      job (optional)
+    :arg str condition: when to trigger the other job (default 'ALWAYS')
+
+    Example::
+
+      publishers:
+        - trigger-parameterized-builds:
+            project: other_job
+    """
     tbuilder = XML.SubElement(xml_parent,
         'hudson.plugins.parameterizedtrigger.BuildTrigger')
     configs = XML.SubElement(tbuilder, 'configs')
@@ -59,6 +106,14 @@ def trigger_parameterized_builds(parser, xml_parent, data):
 
 
 def coverage(parser, xml_parent, data):
+    """yaml: coverage
+    Generate a cobertura coverage report.
+
+    Example::
+
+      publishers:
+        - coverage
+    """
     cobertura = XML.SubElement(xml_parent,
                                'hudson.plugins.cobertura.CoberturaPublisher')
     XML.SubElement(cobertura, 'coberturaReportFile').text = '**/coverage.xml'
@@ -114,18 +169,27 @@ def coverage(parser, xml_parent, data):
     XML.SubElement(cobertura, 'sourceEncoding').text = 'ASCII'
 
 
-# Jenkins Job module for publishing via ftp
-# publish:
-#   site: 'docs.openstack.org'
-#   remote_dir: 'dest/dir'
-#   source_files: 'base/source/dir/**'
-#   remove_prefix: 'base/source/dir'
-#   excludes: '**/*.exludedfiletype'
-#
-# This will upload everything under $workspace/base/source/dir to
-# docs.openstack.org $ftpdir/dest/dir exluding the excluded file type.
-
 def ftp(parser, xml_parent, data):
+    """yaml: ftp
+    Upload files via FTP.
+
+    :arg str site: name of the ftp site
+    :arg str target: destination directory
+    :arg str source: source path specifier
+    :arg str excludes: excluded file pattern (optional)
+    :arg str remove-prefix: prefix to remove from uploaded file paths
+      (optional)
+
+    Example::
+
+      publishers:
+        - ftp:
+            site: 'ftp.example.com'
+            target: 'dest/dir'
+            source: 'base/source/dir/**'
+            remove-prefix: 'base/source/dir'
+            excludes: '**/*.excludedfiletype'
+    """
     outer_ftp = XML.SubElement(xml_parent,
         'jenkins.plugins.publish__over__ftp.BapFtpPublisherPlugin')
     XML.SubElement(outer_ftp, 'consolePrefix').text = 'FTP: '
@@ -158,12 +222,18 @@ def ftp(parser, xml_parent, data):
          'reference': '../..'})
 
 
-# Jenkins Job module for coverage publishers
-# To use you add the following into your YAML:
-# publisher:
-#   results: 'nosetests.xml'
-
 def junit(parser, xml_parent, data):
+    """yaml: junit
+    Publish JUnit test results.
+
+    :arg str results: results filename
+
+    Example::
+
+      publishers:
+        - junit:
+            results: nosetests.xml
+    """
     junitresult = XML.SubElement(xml_parent,
                                  'hudson.tasks.junit.JUnitResultArchiver')
     XML.SubElement(junitresult, 'testResults').text = data['results']
@@ -192,6 +262,35 @@ def _violations_add_entry(xml_parent, name, data):
 
 
 def violations(parser, xml_parent, data):
+    """yaml: violations
+    Publish code style violations.
+
+    The violations component accepts any number of dictionaries keyed
+    by the name of the violations system.  The dictionary has the
+    following values:
+
+    :arg int min: sunny threshold
+    :arg int max: stormy threshold
+    :arg int unstable: unstable threshold
+    :arg str pattern: report filename pattern
+
+    Any system without a dictionary provided will use default values.
+
+    Valid systems are:
+
+      checkstyle, codenarc, cpd, cpplint, csslint, findbugs, fxcop,
+      gendarme, jcreport, jslint, pep8, pmd, pylint, simian, stylecop
+
+    Example::
+
+      publishers:
+        - violations:
+            pep8:
+              min: 0
+              max: 1
+              unstable: 1
+              pattern: '**/pep8.txt'
+    """
     violations = XML.SubElement(xml_parent,
                     'hudson.plugins.violations.ViolationsPublisher')
     config = XML.SubElement(violations, 'config')
@@ -234,6 +333,27 @@ def violations(parser, xml_parent, data):
 #   keep_heirarchy: 'true'
 
 def scp(parser, xml_parent, data):
+    """yaml: scp
+    Upload files via SCP
+
+    :arg str site: name of the scp site
+    :arg str target: destination directory
+    :arg str source: source path specifier
+    :arg bool keep-hierarchy: keep the file hierarchy when uploading
+      (default false)
+    :arg bool copy-after-failure: copy files even if the job fails
+      (default false)
+    :arg bool copy-console: copy the console log (default false); if
+      specified, omit 'target'
+
+    Example::
+
+      publishers:
+        - scp:
+            site: 'example.com'
+            target: 'dest/dir'
+            source: 'base/source/dir/**'
+    """
     site = data['site']
     scp = XML.SubElement(xml_parent,
                          'be.certipost.hudson.plugin.SCPRepositoryPublisher')
