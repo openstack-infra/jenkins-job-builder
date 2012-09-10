@@ -56,6 +56,10 @@ def trigger_builds(parser, xml_parent, data):
                                                     'buildAllNodesWithLabel')
         build_all_nodes_with_label.text = 'false'
 
+def builders_from(parser, xml_parent, data):
+    pbs = XML.SubElement(xml_parent, 
+        'hudson.plugins.templateproject.ProxyBuilder')
+    XML.SubElement(pbs, 'projectName').text = data
 
 class Builders(jenkins_jobs.modules.base.Base):
     sequence = 60
