@@ -136,6 +136,8 @@ class YamlParser(object):
             XML.SubElement(xml, 'concurrentBuild').text = 'true'
         else:
             XML.SubElement(xml, 'concurrentBuild').text = 'false'
+        if('quiet-period' in data):
+            XML.SubElement(xml, 'quietPeriod').text = str(data['quiet-period'])
 
         for module in self.registry.modules:
             if hasattr(module, 'gen_xml'):
