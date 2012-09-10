@@ -92,6 +92,7 @@ def string_param(parser, xml_parent, data):
 
 
 def bool_param(parser, xml_parent, data):
+    data['default'] = str(data.get('default', 'false')).lower()
     base_param(parser, xml_parent, data, True,
                'hudson.model.BooleanParameterDefinition')
 
