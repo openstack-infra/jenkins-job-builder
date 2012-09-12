@@ -30,9 +30,9 @@ def throttle(parser, xml_parent, data):
     throttle = XML.SubElement(xml_parent,
                  'hudson.plugins.throttleconcurrents.ThrottleJobProperty')
     XML.SubElement(throttle, 'maxConcurrentPerNode').text = str(
-        data.get('max-per-node'))
+        data.get('max-per-node', '0'))
     XML.SubElement(throttle, 'maxConcurrentTotal').text = str(
-        data.get('max-total'))
+        data.get('max-total', '0'))
     # TODO: What's "categories"?
     #XML.SubElement(throttle, 'categories')
     if data.get('enabled', True):
