@@ -248,6 +248,8 @@ class Builder(object):
 
     def delete_job(self, name):
         self.jenkins.delete_job(name)
+        if(self.cache.is_cached(name)):
+            self.cache.set(name, '')
 
     def update_job(self, fn, name=None, output_dir=None):
         if os.path.isdir(fn):

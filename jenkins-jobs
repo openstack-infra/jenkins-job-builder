@@ -19,7 +19,7 @@ def main():
                              help='Path to output XML')
     parser_test.add_argument('name', help='name of job', nargs='?')
     parser_delete = subparser.add_parser('delete')
-    parser_delete.add_argument('name', help='name of job')
+    parser_delete.add_argument('name', help='name of job', nargs='+')
     parser.add_argument('--conf', dest='conf', help='Configuration file')
     parser.add_argument('-l', '--log_level', dest='log_level', default='info',
                         help="Log level (default '%default')")
@@ -48,8 +48,9 @@ def main():
                                            config.get('jenkins', 'password'))
 
     if options.command == 'delete':
-        logger.info("Deleting job {0}".format(options.name))
-        builder.delete_job(options.name)
+        for job in options.name:
+            logger.info("Deleting job {0}".format(job))
+            builder.delete_job(job)
     elif options.command == 'update':
         logger.info("Updating jobs in {0} ({1})".format(options.path,
                           options.name))
