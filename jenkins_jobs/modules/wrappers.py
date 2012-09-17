@@ -38,6 +38,8 @@ import jenkins_jobs.modules.base
 def timeout(parser, xml_parent, data):
     """yaml: timeout
     Abort the build if it runs too long.
+    Requires the Jenkins `Build Timeout Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Build-timeout+Plugin>`_
 
     :arg int timeout: Abort the build after this number of minutes
     :arg bool fail: Mark the build as failed (default false)
@@ -64,6 +66,8 @@ def timeout(parser, xml_parent, data):
 def timestamps(parser, xml_parent, data):
     """yaml: timestamps
     Add timestamps to the console log.
+    Requires the Jenkins `Timestamper Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Timestamper>`_
 
     Example::
 
@@ -77,6 +81,8 @@ def timestamps(parser, xml_parent, data):
 def ansicolor(parser, xml_parent, data):
     """yaml: ansicolor
     Translate ANSI color codes to HTML in the console log.
+    Requires the Jenkins `Ansi Color Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/AnsiColor+Plugin>`_
 
     Example::
 

@@ -70,6 +70,8 @@ def archive(parser, xml_parent, data):
 def trigger_parameterized_builds(parser, xml_parent, data):
     """yaml: trigger-parameterized-builds
     Trigger parameterized builds of other jobs.
+    Requires the Jenkins `Parameterized Trigger Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Parameterized+Trigger+Plugin>`_
 
     :arg str project: name of the job to trigger
     :arg str predefined-parameters: parameters to pass to the other
@@ -108,6 +110,8 @@ def trigger_parameterized_builds(parser, xml_parent, data):
 def coverage(parser, xml_parent, data):
     """yaml: coverage
     Generate a cobertura coverage report.
+    Requires the Jenkins `Cobertura Coverage Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Cobertura+Plugin>`_
 
     Example::
 
@@ -172,6 +176,8 @@ def coverage(parser, xml_parent, data):
 def ftp(parser, xml_parent, data):
     """yaml: ftp
     Upload files via FTP.
+    Requires the Jenkins `Publish over FTP Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Publish+Over+FTP+Plugin>`_
 
     :arg str site: name of the ftp site
     :arg str target: destination directory
@@ -264,6 +270,8 @@ def _violations_add_entry(xml_parent, name, data):
 def violations(parser, xml_parent, data):
     """yaml: violations
     Publish code style violations.
+    Requires the Jenkins `Violations Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Violations>`_
 
     The violations component accepts any number of dictionaries keyed
     by the name of the violations system.  The dictionary has the
@@ -335,6 +343,8 @@ def violations(parser, xml_parent, data):
 def scp(parser, xml_parent, data):
     """yaml: scp
     Upload files via SCP
+    Requires the Jenkins `SCP Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/SCP+plugin>`_
 
     :arg str site: name of the scp site
     :arg str target: destination directory

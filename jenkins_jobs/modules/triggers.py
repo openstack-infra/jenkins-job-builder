@@ -37,6 +37,8 @@ import jenkins_jobs.modules.base
 def gerrit(parser, xml_parent, data):
     """yaml: gerrit
     Trigger on a Gerrit event.
+    Requires the Jenkins `Gerrit Trigger Plugin.
+    <wiki.jenkins-ci.org/display/JENKINS/Gerrit+Trigger>`_
 
     :arg bool triggerOnPatchsetUploadedEvent: Trigger on patchset upload
     :arg bool triggerOnChangeMergedEvent: Trigger on change merged

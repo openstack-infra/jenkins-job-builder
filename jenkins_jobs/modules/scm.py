@@ -40,6 +40,8 @@ import jenkins_jobs.modules.base
 def git(self, xml_parent, data):
     """yaml: git
     Specifies the git SCM repository for this job.
+    Requires the Jenkins `Git Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin>`_
 
     :arg str url: URL of the git repository
     :arg list(str) branches: list of branch specifiers to build

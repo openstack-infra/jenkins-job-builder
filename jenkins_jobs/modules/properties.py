@@ -57,6 +57,8 @@ def github(parser, xml_parent, data):
 def throttle(parser, xml_parent, data):
     """yaml: throttle
     Throttles the number of builds for this job.
+    Requires the Jenkins `Throttle Concurrent Builds Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Throttle+Concurrent+Builds+Plugin>`_
 
     :arg int max-per-node: max concurrent builds per node (default 0)
     :arg int max-total: max concurrent builds (default 0)
@@ -88,6 +90,8 @@ def throttle(parser, xml_parent, data):
 def inject(parser, xml_parent, data):
     """yaml: inject
     Allows you to inject evironment variables into the build.
+    Requires the Jenkins `Env Inject Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin>`_
 
     :arg str properties-file: file to read with properties (optional)
     :arg str properties-content: key=value properties (optional)
