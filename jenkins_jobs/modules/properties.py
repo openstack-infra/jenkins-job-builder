@@ -58,7 +58,8 @@ def throttle(parser, xml_parent, data):
     """yaml: throttle
     Throttles the number of builds for this job.
     Requires the Jenkins `Throttle Concurrent Builds Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Throttle+Concurrent+Builds+Plugin>`_
+    <https://wiki.jenkins-ci.org/display/JENKINS/
+    Throttle+Concurrent+Builds+Plugin>`_
 
     :arg int max-per-node: max concurrent builds per node (default 0)
     :arg int max-total: max concurrent builds (default 0)

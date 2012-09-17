@@ -27,6 +27,7 @@ from sphinx.locale import l_, _
 
 yaml_sig_re = re.compile('yaml:\s*(.*)')
 
+
 class PyYAMLFunction(PyModulelevel):
     def handle_signature(self, sig, signode):
         """Transform a Python signature into RST nodes.
@@ -47,7 +48,7 @@ class PyYAMLFunction(PyModulelevel):
             'module', self.env.temp_data.get('py:module'))
         classname = self.env.temp_data.get('py:class')
 
-        fullname=name
+        fullname = name
 
         signode['module'] = modname
         signode['class'] = classname
@@ -82,6 +83,7 @@ class PyYAMLFunction(PyModulelevel):
 
     def get_index_text(self, modname, name_cls):
         return _('%s (in module %s)') % (name_cls[0], modname)
+
 
 class YAMLFunctionDocumenter(FunctionDocumenter):
     priority = FunctionDocumenter.priority + 10
@@ -131,6 +133,7 @@ class YAMLFunctionDocumenter(FunctionDocumenter):
 
     def format_name(self):
         return self._name
+
 
 def setup(app):
     app.add_autodocumenter(YAMLFunctionDocumenter)

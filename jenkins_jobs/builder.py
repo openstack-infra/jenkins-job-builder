@@ -27,6 +27,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class YamlParser(object):
     def __init__(self):
         self.registry = ModuleRegistry()

@@ -71,7 +71,8 @@ def trigger_parameterized_builds(parser, xml_parent, data):
     """yaml: trigger-parameterized-builds
     Trigger parameterized builds of other jobs.
     Requires the Jenkins `Parameterized Trigger Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Parameterized+Trigger+Plugin>`_
+    <https://wiki.jenkins-ci.org/display/JENKINS/
+    Parameterized+Trigger+Plugin>`_
 
     :arg str project: name of the job to trigger
     :arg str predefined-parameters: parameters to pass to the other
@@ -386,10 +387,13 @@ def scp(parser, xml_parent, data):
         else:
             XML.SubElement(entry_e, 'copyAfterFailure').text = 'false'
 
+
 def pipeline(parser, xml_parent, data):
-    pippub = XML.SubElement(xml_parent, 
-           'au.com.centrumsystems.hudson.plugin.buildpipeline.trigger.BuildPipelineTrigger')
+    pippub = XML.SubElement(xml_parent,
+           'au.com.centrumsystems.hudson.plugin.'
+           'buildpipeline.trigger.BuildPipelineTrigger')
     XML.SubElement(pippub, 'downstreamProjectNames').text = data
+
 
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70

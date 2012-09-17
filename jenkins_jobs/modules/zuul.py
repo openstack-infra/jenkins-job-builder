@@ -18,6 +18,7 @@ The Zuul module adds triggers that configure jobs for use with Zuul_.
 .. _Zuul: http://ci.openstack.org/zuul/
 """
 
+
 def zuul():
     """yaml: zuul
     Configure this job to be triggered by Zuul.
@@ -27,6 +28,7 @@ def zuul():
       triggers:
         - zuul
     """
+
 
 def zuul_post():
     """yaml: zuul-post

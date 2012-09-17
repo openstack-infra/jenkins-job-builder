@@ -39,6 +39,7 @@ Example::
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 
+
 def shell(parser, xml_parent, data):
     """yaml: shell
     Execute a shell command.
@@ -53,6 +54,7 @@ def shell(parser, xml_parent, data):
     """
     shell = XML.SubElement(xml_parent, 'hudson.tasks.Shell')
     XML.SubElement(shell, 'command').text = data
+
 
 def trigger_builds(parser, xml_parent, data):
     """yaml: trigger-builds
@@ -84,7 +86,7 @@ def trigger_builds(parser, xml_parent, data):
             properties = XML.SubElement(params, 'properties')
             properties.text = project_def['predefined-parameters']
         if(project_def.get('current-parameters')):
-            XML.SubElement(tconfigs, 
+            XML.SubElement(tconfigs,
                  'hudson.plugins.parameterizedtrigger.CurrentBuildParameters')
         if(len(list(tconfigs)) == 0):
             tconfigs.set('class', 'java.util.Collections$EmptyList')
@@ -99,10 +101,12 @@ def trigger_builds(parser, xml_parent, data):
                                                     'buildAllNodesWithLabel')
         build_all_nodes_with_label.text = 'false'
 
+
 def builders_from(parser, xml_parent, data):
-    pbs = XML.SubElement(xml_parent, 
+    pbs = XML.SubElement(xml_parent,
         'hudson.plugins.templateproject.ProxyBuilder')
     XML.SubElement(pbs, 'projectName').text = data
+
 
 class Builders(jenkins_jobs.modules.base.Base):
     sequence = 60
