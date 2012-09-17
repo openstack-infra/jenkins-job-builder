@@ -59,6 +59,9 @@ def shell(parser, xml_parent, data):
 def trigger_builds(parser, xml_parent, data):
     """yaml: trigger-builds
     Trigger builds of other jobs.
+    Requires the Jenkins `Parameterized Trigger Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/
+    Parameterized+Trigger+Plugin>`_
 
     :arg str project: the Jenkins project to trigger
     :arg str predefined-parameters:
@@ -103,6 +106,19 @@ def trigger_builds(parser, xml_parent, data):
 
 
 def builders_from(parser, xml_parent, data):
+    """yaml: builders-from
+    Use builders from another project.
+    Requires the Jenkins `Template Project Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Template+Project+Plugin>`_
+
+    :arg str projectName: the name of the other project
+
+    Example::
+
+      builders:
+        - builders-from:
+            - project: "base-build"
+    """
     pbs = XML.SubElement(xml_parent,
         'hudson.plugins.templateproject.ProxyBuilder')
     XML.SubElement(pbs, 'projectName').text = data

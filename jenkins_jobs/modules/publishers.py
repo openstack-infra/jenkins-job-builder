@@ -333,14 +333,6 @@ def violations(parser, xml_parent, data):
     XML.SubElement(config, 'encoding').text = 'default'
 
 
-# Jenkins Job module for generic scp publishing
-# To use you add the following into your YAML:
-# publish:
-#   site: 'openstack-ci.openstack.org'
-#   source: 'doc/build/html/**/*'
-#   target_path: 'ci/zuul'
-#   keep_heirarchy: 'true'
-
 def scp(parser, xml_parent, data):
     """yaml: scp
     Upload files via SCP
@@ -389,9 +381,22 @@ def scp(parser, xml_parent, data):
 
 
 def pipeline(parser, xml_parent, data):
+    """yaml: pipeline
+    Upload files via SCP
+    Requires the Jenkins `Build Pipeline Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Build+Pipeline+Plugin>`_
+
+    :arg str downstreamProjectNames: name of the downstream projects
+
+    Example::
+
+      publishers:
+        - pipleline:
+            downstreamProjectNames: 'deploy'
+    """
     pippub = XML.SubElement(xml_parent,
-           'au.com.centrumsystems.hudson.plugin.'
-           'buildpipeline.trigger.BuildPipelineTrigger')
+                            'au.com.centrumsystems.hudson.plugin.'
+                            'buildpipeline.trigger.BuildPipelineTrigger')
     XML.SubElement(pippub, 'downstreamProjectNames').text = data
 
 
