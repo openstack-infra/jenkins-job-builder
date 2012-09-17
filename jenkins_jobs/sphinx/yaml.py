@@ -21,9 +21,9 @@
 
 import re
 from sphinx.ext.autodoc import Documenter, FunctionDocumenter
-from sphinx.domains.python import PyModulelevel
+from sphinx.domains.python import PyModulelevel, _pseudo_parse_arglist
 from sphinx import addnodes
-from sphinx.locale import l_, _
+from sphinx.locale import _
 
 yaml_sig_re = re.compile('yaml:\s*(.*)')
 
