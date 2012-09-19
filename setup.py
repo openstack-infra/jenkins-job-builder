@@ -95,6 +95,7 @@ setup(name='jenkins_job_builder',
             'triggers=jenkins_jobs.modules.triggers:Triggers',
             'wrappers=jenkins_jobs.modules.wrappers:Wrappers',
             'zuul=jenkins_jobs.modules.zuul:Zuul',
+            'hipchat=jenkins_jobs.modules.hipchat_notif:HipChat',
             ]
         }
 

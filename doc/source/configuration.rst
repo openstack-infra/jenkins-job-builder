@@ -184,6 +184,7 @@ The bulk of the job definitions come from the following modules.
    project_maven
    general
    builders
+   hipchat
    notifications
    parameters
    properties

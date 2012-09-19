@@ -29,8 +29,8 @@ logger = logging.getLogger(__name__)
 
 
 class YamlParser(object):
-    def __init__(self):
-        self.registry = ModuleRegistry()
+    def __init__(self, config=None):
+        self.registry = ModuleRegistry(config)
         self.data = {}
         self.jobs = []
 
@@ -150,9 +150,10 @@ class YamlParser(object):
 
 
 class ModuleRegistry(object):
-    def __init__(self):
+    def __init__(self, config):
         self.modules = []
         self.handlers = {}
+        self.global_config = config
 
         for entrypoint in pkg_resources.iter_entry_points(
             group='jenkins_jobs.modules'):
@@ -242,9 +243,11 @@ class Jenkins(object):
 
 
 class Builder(object):
-    def __init__(self, jenkins_url, jenkins_user, jenkins_password):
+    def __init__(self, jenkins_url, jenkins_user, jenkins_password,
+                      config=None):
         self.jenkins = Jenkins(jenkins_url, jenkins_user, jenkins_password)
         self.cache = CacheStorage()
+        self.global_config = config
 
     def delete_job(self, name):
         self.jenkins.delete_job(name)
@@ -258,7 +261,7 @@ class Builder(object):
                                 if (f.endswith('.yml') or f.endswith('.yaml'))]
         else:
             files_to_process = [fn]
-        parser = YamlParser()
+        parser = YamlParser(self.global_config)
         for in_file in files_to_process:
             logger.debug("Parsing YAML file {0}".format(in_file))
             parser.parse(in_file)

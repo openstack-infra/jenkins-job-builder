@@ -45,7 +45,8 @@ def main():
     logger.debug("Config: {0}".format(config))
     builder = jenkins_jobs.builder.Builder(config.get('jenkins', 'url'),
                                            config.get('jenkins', 'user'),
-                                           config.get('jenkins', 'password'))
+                                           config.get('jenkins', 'password'),
+                                           config)
 
     if options.command == 'delete':
         for job in options.name:
