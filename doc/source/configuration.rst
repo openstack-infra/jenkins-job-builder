@@ -188,6 +188,7 @@ The bulk of the job definitions come from the following modules.
    parameters
    properties
    publishers
+   reporters
    scm
    triggers
    wrappers

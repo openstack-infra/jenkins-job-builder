@@ -400,6 +400,37 @@ def pipeline(parser, xml_parent, data):
     XML.SubElement(pippub, 'downstreamProjectNames').text = data
 
 
+def email(parser, xml_parent, data):
+    """yaml: email
+    Email notifications on build failure.
+
+    :arg str recipients: Recipient email addresses
+    :arg bool notify-every-unstable-build: Send an email for every
+      unstable build (default true)
+    :arg bool send-to-individuals: Send an email to the individual
+      who broke the build (default false)
+
+    Example::
+
+      publishers:
+        - email:
+            recipients: breakage@example.com
+    """
+
+    # TODO: raise exception if this is applied to a maven job
+    mailer = XML.SubElement(xml_parent,
+                            'hudson.tasks.Mailer')
+    XML.SubElement(mailer, 'recipients').text = data['recipients']
+
+    # Note the logic reversal (included here to match the GUI
+    if data.get('notify-every-unstable-build', True):
+        XML.SubElement(mailer, 'dontNotifyEveryUnstableBuild').text = 'false'
+    else:
+        XML.SubElement(mailer, 'dontNotifyEveryUnstableBuild').text = 'true'
+    XML.SubElement(mailer, 'sendToIndividuals').text = str(
+        data.get('send-to-individuals', False)).lower()
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
