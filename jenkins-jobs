@@ -5,6 +5,7 @@ import argparse
 import ConfigParser
 import logging
 
+
 def main():
     parser = argparse.ArgumentParser()
     subparser = parser.add_subparsers(help='update, test or delete job',
@@ -14,7 +15,8 @@ def main():
     parser_update.add_argument('name', help='name of job', nargs='?')
     parser_test = subparser.add_parser('test')
     parser_test.add_argument('path', help='Path to YAML file or directory')
-    parser_test.add_argument('-o', dest='output_dir', help='Path to output XML')
+    parser_test.add_argument('-o', dest='output_dir',
+                             help='Path to output XML')
     parser_test.add_argument('name', help='name of job', nargs='?')
     parser_delete = subparser.add_parser('delete')
     parser_delete.add_argument('name', help='name of job')
@@ -41,9 +43,9 @@ def main():
     else:
         config = {}
     logger.debug("Config: {0}".format(config))
-    builder = jenkins_jobs.builder.Builder(config.get('jenkins','url'),
-                                           config.get('jenkins','user'),
-                                           config.get('jenkins','password'))
+    builder = jenkins_jobs.builder.Builder(config.get('jenkins', 'url'),
+                                           config.get('jenkins', 'user'),
+                                           config.get('jenkins', 'password'))
 
     if options.command == 'delete':
         logger.info("Deleting job {0}".format(options.name))
