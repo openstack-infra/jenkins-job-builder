@@ -45,6 +45,8 @@ later.  There are a few basic optional fields for a Job definition::
   should not use the ``global`` defaults, use this field to specify a
   different set of defaults.
 
+.. _job-template:
+
 Job Template
 ^^^^^^^^^^^^
 
@@ -71,6 +73,8 @@ Will not cause any job to be created in Jenkins, however, it will
 define a template that you can use to create jobs with a `Project`_
 definition.  It's name will depend on what is supplied to the
 `Project`_.
+
+.. _project:
 
 Project
 ^^^^^^^

@@ -578,11 +578,20 @@ def pipeline(parser, xml_parent, data):
 
       publishers:
         - pipleline: deploy
+
+    You can build pipeline jobs that are re-usable in different pipelines by
+    using a :ref:`job-template` to define the pipeline jobs,
+    and variable substitution to specify the name of
+    the downstream job in the pipeline.
+    Job-specific substitutions are useful here (see :ref:`project`).
+
+    See 'samples/pipeline.yaml' for an example pipeline implementation.
     """
-    pippub = XML.SubElement(xml_parent,
+    if data != '':
+        pippub = XML.SubElement(xml_parent,
                             'au.com.centrumsystems.hudson.plugin.'
                             'buildpipeline.trigger.BuildPipelineTrigger')
-    XML.SubElement(pippub, 'downstreamProjectNames').text = data
+        XML.SubElement(pippub, 'downstreamProjectNames').text = data
 
 
 def email(parser, xml_parent, data):

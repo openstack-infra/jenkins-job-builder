@@ -1,0 +1,73 @@
+# Sample YAML representation of a flexible pipeline for use with the
+# Jenkins Build Pipeline Plugin
+# (https://wiki.jenkins-ci.org/display/JENKINS/Build+Pipeline+Plugin)
+# The pipeline is defined at the project level, using job-specific variable
+# substitution to specify the next job in the pipeline ('pipeline-next') 
+# for each job.
+#
+# This example defines the skeleton of two deployment pipelines: one for
+# a 'base_os' subsystem to three chef servers, and the second to
+# a 'database' subsystem to two chef servers.
+# 
+# The pipeline uses an automatically-executed job in '{subsys}-prepare'
+# (using the Parameterized Trigger Plugin - 
+# https://wiki.jenkins-ci.org/display/JENKINS/Parameterized+Trigger+Plugin),
+# and manually-triggered jobs using the Pipeline publisher (e.g.
+# '{subsys}-initialise').
+#
+# Note how each project defines a different pipeline, with a different
+# length, but re-uses the same job templates.
+
+- project:
+    name: deploy_base_os
+    subsys: base_os
+    jobs:
+      - '{subsys}-prepare':
+          pipeline-next: '{subsys}-initialise'
+      - '{subsys}-initialise':
+          pipeline-next: '{subsys}-upload-chef-server1'
+      - '{subsys}-upload-chef-server1':
+          pipeline-next: '{subsys}-upload-chef-server2'
+      - '{subsys}-upload-chef-server2':
+          pipeline-next: '{subsys}-upload-chef-server3'
+      - '{subsys}-upload-chef-server3':
+          pipeline-next: ''
+
+- project:
+    name: deploy_database
+    subsys: db
+    jobs:
+      - '{subsys}-prepare':
+          pipeline-next: '{subsys}-initialise'
+      - '{subsys}-initialise':
+          pipeline-next: '{subsys}-upload-chef-server1'
+      - '{subsys}-upload-chef-server1':
+          pipeline-next: '{subsys}-upload-chef-server2'
+      - '{subsys}-upload-chef-server2':
+          pipeline-next: ''
+
+- job-template:
+    name: '{subsys}-prepare'
+    builders:
+      - trigger-builds:
+          - project: '{pipeline-next}'
+
+- job-template:
+    name: '{subsys}-initialise'
+    publishers:
+      - pipeline: '{pipeline-next}'
+        
+- job-template:
+    name: '{subsys}-upload-chef-server1'
+    publishers:
+      - pipeline: '{pipeline-next}'
+
+- job-template:
+    name: '{subsys}-upload-chef-server2'
+    publishers:
+      - pipeline: '{pipeline-next}'
+
+- job-template:
+    name: '{subsys}-upload-chef-server3'
+    publishers:
+      - pipeline: '{pipeline-next}'
