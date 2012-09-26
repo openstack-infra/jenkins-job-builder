@@ -24,8 +24,31 @@ import jenkins
 import re
 import pkg_resources
 import logging
+import copy
 
 logger = logging.getLogger(__name__)
+
+
+def deep_format(obj, paramdict):
+    """Apply the paramdict via str.format() to all string objects found within
+       the supplied obj. Lists and dicts are traversed recursively."""
+    # YAML serialisation was originally used to achieve this, but that places
+    # limitations on the values in paramdict - the post-format result must
+    # still be valid YAML (so substituting-in a string containing quotes, for
+    # example, is problematic).
+    if isinstance(obj, str):
+        ret = obj.format(**paramdict)
+    elif isinstance(obj, list):
+        ret = []
+        for item in obj:
+            ret.append(deep_format(item, paramdict))
+    elif isinstance(obj, dict):
+        ret = {}
+        for item in obj:
+            ret[item] = deep_format(obj[item], paramdict)
+    else:
+        ret = obj
+    return ret
 
 
 class YamlParser(object):
@@ -81,7 +104,13 @@ class YamlParser(object):
             self.getXMLForJob(job)
         for project in self.data.get('project', {}).values():
             logger.debug("XMLifying project '{0}'".format(project['name']))
-            for jobname in project.get('jobs', []):
+            for jobspec in project.get('jobs', []):
+                if isinstance(jobspec, dict):
+                    # Singleton dict containing dict of job-specific params
+                    jobname, jobparams = jobspec.items()[0]
+                else:
+                    jobname = jobspec
+                    jobparams = {}
                 job = self.getJob(jobname)
                 if job:
                     # Just naming an existing defined job
@@ -106,13 +135,15 @@ class YamlParser(object):
                 # see if it's a template
                 template = self.getJobTemplate(jobname)
                 if template:
-                    self.getXMLForTemplateJob(project, template)
+                    params = copy.deepcopy(project)
+                    params.update(deep_format(jobparams, project))
+                    logger.debug("Generating XML for template job {0}"
+                                 " (params {1})".format(
+                                     template['name'], params))
+                    self.getXMLForTemplateJob(params, template)
 
     def getXMLForTemplateJob(self, project, template):
-        s = yaml.dump(template, default_flow_style=False)
-        s = s.format(**project)
-        data = yaml.load(s)
-        self.getXMLForJob(data)
+        self.getXMLForJob(deep_format(template, project))
 
     def getXMLForJob(self, data):
         kind = data.get('project-type', 'freestyle')

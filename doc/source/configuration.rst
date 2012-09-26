@@ -90,6 +90,17 @@ template.  Any job templates listed under ``jobs:`` will be realized
 with those values.  The example above would create the job called
 'project-name-unit-tests' in Jenkins.
 
+The ``jobs:`` list can also allow for specifying job-specific
+substitutions as follows::
+
+  - project:
+    name: project-name
+    jobs:
+     - {name}-unit-tests:
+         mail-to: developer@nowhere.net
+     - {name}-perf-tests:
+         mail-to: projmanager@nowhere.net
+         
 Job Group
 ^^^^^^^^^
 
