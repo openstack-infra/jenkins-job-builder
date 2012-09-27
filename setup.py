@@ -52,6 +52,7 @@ setup(name='jenkins_job_builder',
             'file=jenkins_jobs.modules.parameters:file_param',
             'text=jenkins_jobs.modules.parameters:text_param',
             'label=jenkins_jobs.modules.parameters:label_param',
+            'choice=jenkins_jobs.modules.parameters:choice_param',
             ],
         'jenkins_jobs.notifications': [
             'http=jenkins_jobs.modules.notifications:http_endpoint',

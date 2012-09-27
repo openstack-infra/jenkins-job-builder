@@ -47,6 +47,7 @@ def base_param(parser, xml_parent, data, do_default, ptype):
             XML.SubElement(pdef, 'defaultValue').text = default
         else:
             XML.SubElement(pdef, 'defaultValue')
+    return pdef
 
 
 def string_param(parser, xml_parent, data):
@@ -146,6 +147,33 @@ def label_param(parser, xml_parent, data):
     """
     base_param(parser, xml_parent, data, True,
       'org.jvnet.jenkins.plugins.nodelabelparameter.LabelParameterDefinition')
+
+
+def choice_param(parser, xml_parent, data):
+    """yaml: choice
+    A single selection parameter.
+
+    :arg str name: the name of the parameter
+    :arg list choices: the available choices
+    :arg str description: a description of the parameter (optional)
+
+    Example::
+
+      parameters:
+        - choice:
+            name: project
+            choices:
+              - nova
+              - glance
+            description: "On which project to run?"
+    """
+    pdef = base_param(parser, xml_parent, data, False,
+                      'hudson.model.ChoiceParameterDefinition')
+    choices = XML.SubElement(pdef, 'choices',
+                             {'class': 'java.util.Arrays$ArrayList'})
+    a = XML.SubElement(choices, 'a', {'class': 'string-array'})
+    for choice in data['choices']:
+        XML.SubElement(a, 'string').text = choice
 
 
 class Parameters(jenkins_jobs.modules.base.Base):
