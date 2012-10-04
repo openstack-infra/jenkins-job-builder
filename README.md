@@ -32,5 +32,5 @@ For YAML support, you will need libyaml installed.
 
 Then install the required python packages using pip:
 
-    sudo pip install PyYAML jenkins
+    sudo pip install PyYAML python-jenkins
 
