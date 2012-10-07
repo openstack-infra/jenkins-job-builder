@@ -33,6 +33,7 @@ setup(name='jenkins_job_builder',
             ],
         'jenkins_jobs.builders': [
             'shell=jenkins_jobs.modules.builders:shell',
+            'ant=jenkins_jobs.modules.builders:ant',
             'trigger-builds=jenkins_jobs.modules.builders:trigger_builds',
             'builders-from=jenkins_jobs.modules.builders:builders_from',
             ],

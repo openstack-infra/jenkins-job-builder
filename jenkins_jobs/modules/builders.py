@@ -56,6 +56,57 @@ def shell(parser, xml_parent, data):
     XML.SubElement(shell, 'command').text = data
 
 
+def ant(parser, xml_parent, data):
+    """yaml: ant
+    Execute an ant target.  Requires the Jenkins `Ant Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Ant+Plugin>`_
+
+    To setup this builder you can either reference the list of targets
+    or use named parameters. Below is a description of both forms:
+
+    *1) Listing targets:*
+
+    After the ant directive, simply pass as argument a space separated list
+    of targets to build.
+
+    :Parameter: space separated list of Ant targets
+
+    Example to call two Ant targets::
+
+        builders:
+          - ant: "target1 target2"
+
+    The build file would be whatever the Jenkins Ant Plugin is set to use
+    per default (i.e build.xml in the workspace root).
+
+    *2) Using named parameters:*
+
+    :arg str targets: the space separated list of ANT targets.
+    :arg str buildfile: the path to the ANT build file.
+
+
+    Example specifying the build file too and several targets::
+
+        builders:
+          - ant:
+             targets: "debug test install"
+             buildfile: "build.xml"
+
+    """
+    ant = XML.SubElement(xml_parent, 'hudson.tasks.Ant')
+
+    if type(data) is str:
+        # Support for short form: -ant: "target"
+        data = {'targets': data}
+    for setting, value in data.iteritems():
+        if setting == 'targets':
+            targets = XML.SubElement(ant, 'targets')
+            targets.text = value
+        if setting == 'buildfile':
+            buildfile = XML.SubElement(ant, 'buildFile')
+            buildfile.text = value
+
+
 def trigger_builds(parser, xml_parent, data):
     """yaml: trigger-builds
     Trigger builds of other jobs.
