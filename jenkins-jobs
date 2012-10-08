@@ -4,6 +4,13 @@ import jenkins_jobs.builder
 import argparse
 import ConfigParser
 import logging
+import sys
+
+
+def confirm(question):
+    answer = raw_input('%s (Y/N): ' % question).upper().strip()
+    if not answer == 'Y':
+        sys.exit('Aborted')
 
 
 def main():
@@ -20,6 +27,9 @@ def main():
     parser_test.add_argument('name', help='name of job', nargs='?')
     parser_delete = subparser.add_parser('delete')
     parser_delete.add_argument('name', help='name of job', nargs='+')
+    subparser.add_parser('delete-all',
+            help='Delete *ALL* jobs from Jenkins server, including those '
+                 'jobs not managed Jenkins Job Builder.')
     parser.add_argument('--conf', dest='conf', help='Configuration file')
     parser.add_argument('-l', '--log_level', dest='log_level', default='info',
                         help="Log level (default: %(default)s)")
@@ -52,6 +62,11 @@ def main():
         for job in options.name:
             logger.info("Deleting job {0}".format(job))
             builder.delete_job(job)
+    elif options.command == 'delete-all':
+        confirm('Sure you want to delete *ALL* jobs from Jenkins server?\n'
+                '(including those not managed by Jenkins Job Builder)')
+        logger.info("Deleting all jobs")
+        builder.delete_all_jobs()
     elif options.command == 'update':
         logger.info("Updating jobs in {0} ({1})".format(options.path,
                           options.name))

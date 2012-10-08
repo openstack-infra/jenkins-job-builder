@@ -241,6 +241,9 @@ class Jenkins(object):
         if self.is_job(job_name):
             self.jenkins.delete_job(job_name)
 
+    def get_jobs(self):
+        return self.jenkins.get_jobs()
+
 
 class Builder(object):
     def __init__(self, jenkins_url, jenkins_user, jenkins_password,
@@ -253,6 +256,11 @@ class Builder(object):
         self.jenkins.delete_job(name)
         if(self.cache.is_cached(name)):
             self.cache.set(name, '')
+
+    def delete_all_jobs(self):
+        jobs = self.jenkins.get_jobs()
+        for job in jobs:
+            self.delete_job(job['name'])
 
     def update_job(self, fn, name=None, output_dir=None):
         if os.path.isdir(fn):
