@@ -36,6 +36,7 @@ Example::
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+import logging
 
 
 def archive(parser, xml_parent, data):
@@ -246,6 +247,144 @@ def junit(parser, xml_parent, data):
     XML.SubElement(junitresult, 'testResults').text = data['results']
     XML.SubElement(junitresult, 'keepLongStdio').text = "true"
     XML.SubElement(junitresult, 'testDataPublishers')
+
+
+def xunit(parser, xml_parent, data):
+    """yaml: xunit
+    Publish tests results.  Requires the Jenkins `xUnit Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/xUnit+Plugin>`_
+
+    :arg str thresholdmode: whether thresholds represents an absolute \
+    number of tests or a percentage. Either 'number' or 'percent', will \
+    default to 'number' if ommitted.
+
+    :arg dict thresholds: list containing the thresholds for both \
+    'failed' and 'skipped' tests. Each entry should in turn have a \
+    list of "threshold name: values". The threshold names are \
+    'unstable', 'unstablenew', 'failure', 'failurenew'. Omitting a \
+    value will resort on xUnit default value (should be 0).
+
+    :arg dict types: per framework configuration. The key should be \
+    one of the internal types we support:\
+    'aunit', 'boosttest', 'checktype', 'cpptest', 'cppunit', 'fpcunit', \
+    'junit', 'mstest', 'nunit', 'phpunit', 'tusar', 'unittest', 'valgrind'. \
+    The 'custom' type is not supported.
+
+    Each framework type can be configured using the following parameters:
+
+    :arg str pattern: An Ant pattern to look for Junit result files, \
+    relative to the workspace root.
+
+    :arg bool requireupdate: fail the build whenever fresh tests \
+    results have not been found (default: true).
+
+    :arg bool deleteoutput: delete temporary JUnit files (default: true)
+
+    :arg bool stoponerror: Fail the build whenever an error occur during \
+    a result file processing (default: true).
+
+
+    Example::
+
+        publishers:
+            - xunit:
+                thresholdmode: 'percent'
+                thresholds:
+                  - failed:
+                        unstable: 0
+                        unstablenew: 0
+                        failure: 0
+                        failurenew: 0
+                  - skipped:
+                        unstable: 0
+                        unstablenew: 0
+                        failure: 0
+                        failurenew: 0
+                types:
+                  - phpunit:
+                      pattern: junit.log
+                  - cppUnit:
+                      pattern: cppunit.log
+
+    """
+    logger = logging.getLogger(__name__)
+    xunit = XML.SubElement(xml_parent, 'xunit')
+
+    # Map our internal types to the XML element names used by Jenkins plugin
+    types_to_plugin_types = {
+            'aunit': 'AUnitJunitHudsonTestType',
+            'boosttest': 'AUnitJunitHudsonTestType',
+            'checktype': 'CheckType',
+            'cpptest': 'CppTestJunitHudsonTestType',
+            'cppunit': 'CppUnitJunitHudsonTestType',
+            'fpcunit': 'FPCUnitJunitHudsonTestType',
+            'junit': 'JUnitType',
+            'mstest': 'MSTestJunitHudsonTestType',
+            'nunit': 'NUnitJunitHudsonTestType',
+            'phpunit': 'PHPUnitJunitHudsonTestType',
+            'tusar': 'TUSARJunitHudsonTestType',
+            'unittest': 'UnitTestJunitHudsonTestType',
+            'valgrind': 'ValgrindJunitHudsonTestType',
+            # FIXME should implement the 'custom' type
+    }
+    implemented_types = types_to_plugin_types.keys()  # shortcut
+
+    # Unit framework we are going to generate xml for
+    supported_types = []
+
+    for configured_type in data['types']:
+        type_name = configured_type.keys()[0]
+        if type_name not in implemented_types:
+            logger.warn("Requested xUnit type '%s' is not yet supported" %
+                    type_name)
+        else:
+            # Append for generation
+            supported_types.append(configured_type)
+
+    # Generate XML for each of the supported framework types
+    for supported_type in supported_types:
+        framework_name = supported_type.keys()[0]
+        xmltypes = XML.SubElement(xunit, 'types')
+        xmlframework = XML.SubElement(xmltypes,
+            types_to_plugin_types[framework_name])
+
+        XML.SubElement(xmlframework, 'pattern').text = \
+            supported_type[framework_name].get('pattern', '')
+        XML.SubElement(xmlframework, 'failedIfNotNew').text = \
+            str(supported_type[framework_name].get(
+                'requireupdate', 'true')).lower()
+        XML.SubElement(xmlframework, 'deleteOutputFiles').text = \
+            str(supported_type[framework_name].get(
+                'deleteoutput', 'true')).lower()
+        XML.SubElement(xmlframework, 'stopProcessingIfError').text = \
+            str(supported_type[framework_name].get(
+                'stoponerror', 'true')).lower()
+
+    xmlthresholds = XML.SubElement(xunit, 'thresholds')
+    if 'thresholds' in data:
+        for t in data['thresholds']:
+            if not ('failed' in t or 'skipped' in t):
+                logger.warn(
+                     "Unrecognized threshold, should be 'failed' or 'skipped'")
+                continue
+            elname = "org.jenkinsci.plugins.xunit.threshold.%sThreshold" \
+                    % t.keys()[0].title()
+            el = XML.SubElement(xmlthresholds, elname)
+            for threshold_name, threshold_value in t.values()[0].items():
+                # Normalize and craft the element name for this threshold
+                elname = "%sThreshold" % threshold_name.lower().replace(
+                        'new', 'New')
+                XML.SubElement(el, elname).text = threshold_value
+
+    # Whether to use percent of exact number of tests.
+    # Thresholdmode is either:
+    # - 1 : absolute (number of tests), default.
+    # - 2 : relative (percentage of tests)
+    thresholdmode = '1'
+    if 'percent' == data.get('thresholdmode', 'number'):
+        thresholdmode = '2'
+    XML.SubElement(xunit, 'thresholdMode').text = \
+        thresholdmode
 
 
 def _violations_add_entry(xml_parent, name, data):
