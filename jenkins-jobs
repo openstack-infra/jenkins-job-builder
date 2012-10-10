@@ -4,6 +4,7 @@ import jenkins_jobs.builder
 import argparse
 import ConfigParser
 import logging
+import os
 import sys
 
 
@@ -40,10 +41,15 @@ def main():
     logging.basicConfig(level=options.log_level)
     logger = logging.getLogger()
 
+    conf = '/etc/jenkins_jobs/jenkins_jobs.ini'
     if options.conf:
         conf = options.conf
     else:
-        conf = '/etc/jenkins_jobs/jenkins_jobs.ini'
+        # Fallback to script directory
+        localconf = os.path.join(os.path.dirname(__file__),
+            'jenkins_jobs.ini')
+        if os.path.isfile(localconf):
+            conf = localconf
 
     if not options.command == 'test':
         logger.debug("Reading config from {0}".format(conf))
