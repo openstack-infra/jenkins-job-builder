@@ -521,17 +521,16 @@ def scp(parser, xml_parent, data):
 
 def pipeline(parser, xml_parent, data):
     """yaml: pipeline
-    Upload files via SCP
+    Specify a downstream project in a pipeline.
     Requires the Jenkins `Build Pipeline Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Build+Pipeline+Plugin>`_
 
-    :arg str downstreamProjectNames: name of the downstream projects
+    :Parameter: the name of the downstream project
 
     Example::
 
       publishers:
-        - pipleline:
-            downstreamProjectNames: 'deploy'
+        - pipleline: deploy
     """
     pippub = XML.SubElement(xml_parent,
                             'au.com.centrumsystems.hudson.plugin.'
