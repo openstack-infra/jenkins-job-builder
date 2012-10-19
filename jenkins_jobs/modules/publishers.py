@@ -1,4 +1,5 @@
 # Copyright 2012 Hewlett-Packard Development Company, L.P.
+# Copyright 2012 Varnish Software AS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -107,6 +108,52 @@ def trigger_parameterized_builds(parser, xml_parent, data):
         trigger_with_no_params = XML.SubElement(tconfig,
                                                 'triggerWithNoParameters')
         trigger_with_no_params.text = 'false'
+
+
+def trigger(parser, xml_parent, data):
+    """yaml: trigger
+    Trigger non-parametrised builds of other jobs.
+
+    :arg str project: name of the job to trigger
+    :arg str threshold: when to trigger the other job (default 'SUCCESS'),
+      alternatives: SUCCESS, UNSTABLE, FAILURE
+
+    Example::
+
+      publishers:
+        - trigger:
+            project: other_job
+    """
+    thresholds = {
+        'SUCCESS': {
+            'ordinal': '0',
+            'color': 'BLUE'
+            },
+        'UNSTABLE': {
+            'ordinal': '1',
+            'color': 'YELLOW'
+            },
+        'FAILURE': {
+            'ordinal': '2',
+            'color': 'RED'
+            }
+        }
+
+    tconfig = XML.SubElement(xml_parent, 'hudson.tasks.BuildTrigger')
+    childProjects = XML.SubElement(tconfig, 'childProjects')
+    childProjects.text = data['project']
+    tthreshold = XML.SubElement(tconfig, 'threshold')
+
+    threshold = data.get('threshold', 'SUCCESS')
+    if threshold not in thresholds.keys():
+        raise Exception("threshold must be one of " +
+                        ", ".join(threshold.keys()))
+    tname = XML.SubElement(tthreshold, 'name')
+    tname.text = threshold
+    tordinal = XML.SubElement(tthreshold, 'ordinal')
+    tordinal.text = thresholds[threshold]['ordinal']
+    tcolor = XML.SubElement(tthreshold, 'color')
+    tcolor.text = thresholds[threshold]['color']
 
 
 def coverage(parser, xml_parent, data):

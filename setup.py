@@ -64,6 +64,7 @@ setup(name='jenkins_job_builder',
             'archive=jenkins_jobs.modules.publishers:archive',
             'trigger-parameterized-builds='
                 'jenkins_jobs.modules.publishers:trigger_parameterized_builds',
+            'trigger=jenkins_jobs.modules.publishers:trigger',
             'coverage=jenkins_jobs.modules.publishers:coverage',
             'ftp=jenkins_jobs.modules.publishers:ftp',
             'junit=jenkins_jobs.modules.publishers:junit',
