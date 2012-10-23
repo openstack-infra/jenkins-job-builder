@@ -100,7 +100,21 @@ substitutions as follows::
          mail-to: developer@nowhere.net
      - {name}-perf-tests:
          mail-to: projmanager@nowhere.net
-         
+
+If a variable is a list, the job template will be realized with the
+variable set to each value in the list.  Multiple lists will lead to
+the template being realized with the cartesian product of those
+values.
+
+  - project:
+      name: project-name
+      pyver:
+       - 26
+       - 27
+      jobs:
+       - {name}-{pyver}
+
+
 Job Group
 ^^^^^^^^^
 

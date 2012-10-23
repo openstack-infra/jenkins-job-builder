@@ -25,6 +25,7 @@ import re
 import pkg_resources
 import logging
 import copy
+import itertools
 
 logger = logging.getLogger(__name__)
 
@@ -135,15 +136,27 @@ class YamlParser(object):
                 # see if it's a template
                 template = self.getJobTemplate(jobname)
                 if template:
-                    params = copy.deepcopy(project)
-                    params.update(deep_format(jobparams, project))
-                    logger.debug("Generating XML for template job {0}"
-                                 " (params {1})".format(
-                                     template['name'], params))
-                    self.getXMLForTemplateJob(params, template)
+                    d = {}
+                    d.update(project)
+                    d.update(jobparams)
+                    self.getXMLForTemplateJob(d, template)
 
     def getXMLForTemplateJob(self, project, template):
-        self.getXMLForJob(deep_format(template, project))
+        dimensions = []
+        for (k, v) in project.items():
+            if type(v) == list and k not in ['jobs']:
+                dimensions.append(zip([k] * len(v), v))
+        # XXX somewhat hackish to ensure we actually have a single
+        # pass through the loop
+        if len(dimensions) == 0:
+            dimensions = [(("", ""),)]
+        for values in itertools.product(*dimensions):
+            params = copy.deepcopy(project)
+            params.update(values)
+            logger.debug("Generating XML for template job {0}"
+                         " (params {1})".format(
+                             template['name'], params))
+            self.getXMLForJob(deep_format(template, params))
 
     def getXMLForJob(self, data):
         kind = data.get('project-type', 'freestyle')
