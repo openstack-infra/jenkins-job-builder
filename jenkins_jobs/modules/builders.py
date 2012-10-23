@@ -1,4 +1,5 @@
 # Copyright 2012 Hewlett-Packard Development Company, L.P.
+# Copyright 2012 Varnish Software AS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -54,6 +55,32 @@ def shell(parser, xml_parent, data):
     """
     shell = XML.SubElement(xml_parent, 'hudson.tasks.Shell')
     XML.SubElement(shell, 'command').text = data
+
+
+def copyartifact(parser, xml_parent, data):
+    """yaml: copyartifact
+
+    Copy artifact from another project.  Requires the Jenkins `Copy Artifact
+    plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Copy+Artifact+Plugin>`_
+
+    :arg str project: Project to copy from
+    :arg str filter: what files to copy
+    :arg str target: Target base directory for copy, blank means use workspace
+
+
+    Example::
+
+      builders:
+        - copyartifact:
+            project: foo
+            filter: *.tar.gz
+
+    """
+    t = XML.SubElement(xml_parent, 'hudson.plugins.copyartifact.CopyArtifact')
+    XML.SubElement(t, 'projectName').text = data["project"]
+    XML.SubElement(t, 'filter').text = data.get("filter", "")
+    XML.SubElement(t, 'target').text = data.get("project", "")
 
 
 def ant(parser, xml_parent, data):
