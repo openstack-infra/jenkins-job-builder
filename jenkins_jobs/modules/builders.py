@@ -167,14 +167,14 @@ def trigger_builds(parser, xml_parent, data):
         tconfig = XML.SubElement(configs,
             'hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig')
         tconfigs = XML.SubElement(tconfig, 'configs')
+        if(project_def.get('current-parameters')):
+            XML.SubElement(tconfigs,
+                 'hudson.plugins.parameterizedtrigger.CurrentBuildParameters')
         if 'predefined-parameters' in project_def:
             params = XML.SubElement(tconfigs,
               'hudson.plugins.parameterizedtrigger.PredefinedBuildParameters')
             properties = XML.SubElement(params, 'properties')
             properties.text = project_def['predefined-parameters']
-        if(project_def.get('current-parameters')):
-            XML.SubElement(tconfigs,
-                 'hudson.plugins.parameterizedtrigger.CurrentBuildParameters')
         if(len(list(tconfigs)) == 0):
             tconfigs.set('class', 'java.util.Collections$EmptyList')
         projects = XML.SubElement(tconfig, 'projects')
