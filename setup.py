@@ -54,6 +54,8 @@ setup(name='jenkins_job_builder',
             'text=jenkins_jobs.modules.parameters:text_param',
             'label=jenkins_jobs.modules.parameters:label_param',
             'choice=jenkins_jobs.modules.parameters:choice_param',
+            'validating-string=jenkins_jobs.modules.parameters:'
+              'validating_string_param',
             ],
         'jenkins_jobs.notifications': [
             'http=jenkins_jobs.modules.notifications:http_endpoint',

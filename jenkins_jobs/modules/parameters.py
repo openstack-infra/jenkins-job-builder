@@ -176,6 +176,36 @@ def choice_param(parser, xml_parent, data):
         XML.SubElement(a, 'string').text = choice
 
 
+def validating_string_param(parser, xml_parent, data):
+    """yaml: validating-string
+    A validating string parameter
+    Requires the Jenkins `Validating String Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/
+    Validating+String+Parameter+Plugin>`_
+
+    :arg str name: the name of the parameter
+    :arg str default: the default value of the parameter (optional)
+    :arg str description: a description of the parameter (optional)
+    :arg str regex: a regular expression to validate the string
+    :arg str msg: a message to display upon failed validation
+
+    Example::
+
+      parameters:
+        - validating-string:
+            name: FOO
+            default: bar
+            description: "A parameter named FOO, defaults to 'bar'."
+            regex: [A-Za-z]*
+            msg: Your entered value failed validation
+    """
+    pdef = base_param(parser, xml_parent, data, True,
+      'hudson.plugins.validating__string__parameter.'
+            'ValidatingStringParameterDefinition')
+    XML.SubElement(pdef, 'regex').text = data['regex']
+    XML.SubElement(pdef, 'failedValidationMessage').text = data['msg']
+
+
 class Parameters(jenkins_jobs.modules.base.Base):
     sequence = 21
 
