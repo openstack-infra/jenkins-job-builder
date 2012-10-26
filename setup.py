@@ -70,6 +70,7 @@ setup(name='jenkins_job_builder',
             'scp=jenkins_jobs.modules.publishers:scp',
             'pipeline=jenkins_jobs.modules.publishers:pipeline',
             'email=jenkins_jobs.modules.publishers:email',
+            'claim-build=jenkins_jobs.modules.publishers:claimbuild',
             ],
         'jenkins_jobs.scm': [
             'git=jenkins_jobs.modules.scm:git',

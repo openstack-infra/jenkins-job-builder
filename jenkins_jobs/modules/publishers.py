@@ -569,6 +569,21 @@ def email(parser, xml_parent, data):
         data.get('send-to-individuals', False)).lower()
 
 
+def claimbuild(parser, xml_parent, data):
+    """yaml: claim-build
+    Claim build failures
+    Requires the Jenkins `Claim Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Claim+plugin>`_
+
+    Example::
+
+      publishers:
+        - claim-build
+    """
+
+    XML.SubElement(xml_parent, 'hudson.plugins.claim.ClaimPublisher')
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
