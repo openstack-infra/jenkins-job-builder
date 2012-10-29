@@ -93,6 +93,21 @@ def ansicolor(parser, xml_parent, data):
                    'hudson.plugins.ansicolor.AnsiColorBuildWrapper')
 
 
+def mask_passwords(parser, xml_parent, data):
+    """yaml: mask-passwords
+    Hide passwords in the console log.
+    Requires the Jenkins `Mask Passwords Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Mask+Passwords+Plugin>`_
+
+    Example::
+
+      wrappers:
+        - mask-passwords
+    """
+    XML.SubElement(xml_parent,
+     'com.michelin.cio.hudson.plugins.maskpasswords.MaskPasswordsBuildWrapper')
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 
