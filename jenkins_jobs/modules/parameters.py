@@ -206,6 +206,38 @@ def validating_string_param(parser, xml_parent, data):
     XML.SubElement(pdef, 'failedValidationMessage').text = data['msg']
 
 
+def svn_tags_param(parser, xml_parent, data):
+    """yaml: svn-tags
+    A svn tag parameter
+    Requires the Jenkins `Parameterized Trigger Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/
+    Parameterized+Trigger+Plugin>`_
+
+    :arg str name: the name of the parameter
+    :arg str default: the default value of the parameter (optional)
+    :arg str description: a description of the parameter (optional)
+    :arg str url: the url to list tags from
+    :arg str filter: the regular expression to filter tags
+
+    Example::
+
+      parameters:
+        - svn-tags:
+            name: BRANCH_NAME
+            default: release
+            description: A parameter named BRANCH_NAME default is release
+            url: http://svn.example.com/repo
+            filter: [A-za-z0-9]*
+    """
+    pdef = base_param(parser, xml_parent, data, True,
+      'hudson.scm.listtagsparameter.ListSubversionTagsParameterDefinition')
+    XML.SubElement(pdef, 'tagsDir').text = data['url']
+    XML.SubElement(pdef, 'tagsFilter').text = data.get('filter', None)
+    XML.SubElement(pdef, 'reverseByDate').text = "true"
+    XML.SubElement(pdef, 'reverseByName').text = "false"
+    XML.SubElement(pdef, 'maxTags').text = "100"
+
+
 class Parameters(jenkins_jobs.modules.base.Base):
     sequence = 21
 

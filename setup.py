@@ -56,6 +56,7 @@ setup(name='jenkins_job_builder',
             'choice=jenkins_jobs.modules.parameters:choice_param',
             'validating-string=jenkins_jobs.modules.parameters:'
               'validating_string_param',
+            'svn-tags=jenkins_jobs.modules.parameters:svn_tags_param',
             ],
         'jenkins_jobs.notifications': [
             'http=jenkins_jobs.modules.notifications:http_endpoint',
@@ -77,6 +78,7 @@ setup(name='jenkins_job_builder',
             ],
         'jenkins_jobs.scm': [
             'git=jenkins_jobs.modules.scm:git',
+            'svn=jenkins_jobs.modules.scm:svn',
             ],
         'jenkins_jobs.triggers': [
             'gerrit=jenkins_jobs.modules.triggers:gerrit',
