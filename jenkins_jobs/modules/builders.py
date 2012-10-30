@@ -212,6 +212,30 @@ def builders_from(parser, xml_parent, data):
     XML.SubElement(pbs, 'projectName').text = data
 
 
+def inject(parser, xml_parent, data):
+    """yaml: inject
+    Inject an environment for the job.
+    Requires the Jenkins `EnvInject Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin>`_
+
+    :arg str properties-file: the name of the property file (optional)
+    :arg str properties-content: the properties content (optional)
+
+    Example::
+
+      builders:
+        - inject:
+            properties-file: example.prop
+            properties-content: EXAMPLE=foo-bar
+    """
+    eib = XML.SubElement(xml_parent, 'EnvInjectBuilder')
+    info = XML.SubElement(eib, 'info')
+    propfile = data.get('properties-file', '')
+    XML.SubElement(info, 'propertiesFilePath').text = propfile
+    propcontent = data.get('properties-content', '')
+    XML.SubElement(info, 'propertiesContent').text = propcontent
+
+
 class Builders(jenkins_jobs.modules.base.Base):
     sequence = 60
 
