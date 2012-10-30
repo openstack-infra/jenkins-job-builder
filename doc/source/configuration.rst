@@ -86,7 +86,7 @@ this::
   - project:
     name: project-name
     jobs:
-      - {name}-unit-tests
+      - '{name}-unit-tests'
 
 Any number of arbitrarily named additional fields may be specified,
 and they will be available for variable substitution in the job
@@ -98,17 +98,17 @@ The ``jobs:`` list can also allow for specifying job-specific
 substitutions as follows::
 
   - project:
-    name: project-name
-    jobs:
-     - {name}-unit-tests:
-         mail-to: developer@nowhere.net
-     - {name}-perf-tests:
-         mail-to: projmanager@nowhere.net
+      name: project-name
+      jobs:
+        - '{name}-unit-tests':
+          mail-to: developer@nowhere.net
+	- '{name}-perf-tests':
+          mail-to: projmanager@nowhere.net
 
 If a variable is a list, the job template will be realized with the
 variable set to each value in the list.  Multiple lists will lead to
 the template being realized with the cartesian product of those
-values.
+values.  Example::
 
   - project:
       name: project-name
@@ -116,8 +116,7 @@ values.
        - 26
        - 27
       jobs:
-       - {name}-{pyver}
-
+       - '{name}-{pyver}'
 
 Job Group
 ^^^^^^^^^
@@ -128,21 +127,21 @@ Job Group where you would normally use a `Job Template`_ and all of
 the Job Templates in the Job Group will be realized.  For example::
 
   - job-template:
-    name: '{name}-python-26'
+      name: '{name}-python-26'
 
   - job-template:
-    name: '{name}-python-27'
+      name: '{name}-python-27'
 
   - job-group:
-    name: python-jobs
-    jobs:
-      - '{name}-python-26'
-      - '{name}-python-27'
+      name: python-jobs
+      jobs:
+        - '{name}-python-26'
+        - '{name}-python-27'
 
   - project:
-    name: foo
-    jobs:
-      - python-jobs
+      name: foo
+      jobs:
+        - python-jobs
 
 Would cause the jobs `foo-python-26` and `foo-python-27` to be created
 in Jekins.
@@ -159,7 +158,7 @@ simple one now to illustrate the Macro functionality.  This snippet
 will instruct Jenkins to execute "make test" as part of the job::
 
   - job:
-    name: foo-test
+      name: foo-test
 
     builders:
       - shell: 'make test'
@@ -169,15 +168,14 @@ case, but could still be useful to centralize the definition of a
 commonly repeated task), the configuration would look like::
 
   - builder:
-    name: make-test
-    builders:
-      - shell: 'make test'
+      name: make-test
+      builders:
+        - shell: 'make test'
 
   - job:
-    name: foo-test
-
-    builders:
-      - make-test
+      name: foo-test
+      builders:
+        - make-test
 
 This allows you to create complex actions (and even sequences of
 actions) in YAML that look like first-class Jenkins Job Builder
@@ -195,8 +193,8 @@ definitions unless they specify a different Default object with the
 ``default`` attribute.  For example::
 
   - defaults:
-    name: global
-    description: 'Do not edit this job through the web!'
+      name: global
+      description: 'Do not edit this job through the web!'
 
 Will set the job description for every job created.
 
