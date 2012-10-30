@@ -108,6 +108,26 @@ def mask_passwords(parser, xml_parent, data):
      'com.michelin.cio.hudson.plugins.maskpasswords.MaskPasswordsBuildWrapper')
 
 
+def build_name(parser, xml_parent, data):
+    """yaml: build-name
+    Set the name of the build
+    Requires the Jenkins `Build Name Setter Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Build+Name+Setter+Plugin>`_
+
+    :arg str name: Name for the build.  Typically you would use a variable
+    from Jenkins in the name.  The syntax would be ${FOO} for the FOO variable.
+
+    Example::
+
+      wrappers:
+        - build-name:
+            name: Build-${FOO}
+    """
+    bsetter = XML.SubElement(xml_parent,
+               'org.jenkinsci.plugins.buildnamesetter.BuildNameSetter')
+    XML.SubElement(bsetter, 'template').text = data['name']
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 
