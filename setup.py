@@ -47,6 +47,7 @@ setup(name='jenkins_job_builder',
             'inject=jenkins_jobs.modules.properties:inject',
             'authenticated-build=jenkins_jobs.modules.properties:'
               'authenticated_build',
+            'authorization=jenkins_jobs.modules.properties:authorization',
             ],
         'jenkins_jobs.parameters': [
             'string=jenkins_jobs.modules.parameters:string_param',

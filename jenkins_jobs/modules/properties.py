@@ -138,6 +138,8 @@ def authenticated_build(parser, xml_parent, data):
     Specifies an authorization matrix where only authenticated users
     may trigger a build.
 
+    DEPRECATED
+
     Example::
 
       properties:
@@ -149,6 +151,64 @@ def authenticated_build(parser, xml_parent, data):
                         'hudson.security.AuthorizationMatrixProperty')
         XML.SubElement(security, 'permission').text = \
         'hudson.model.Item.Build:authenticated'
+
+
+def authorization(parser, xml_parent, data):
+    """yaml: authorization
+    Specifies an authorization matrix
+
+    The available rights are:
+      job-delete
+      job-configure
+      job-read
+      job-discover
+      job-build
+      job-workspace
+      job-cancel
+      run-delete
+      run-update
+      scm-tag
+
+    Example::
+
+      properties:
+        - authorization:
+            admin:
+              - job-delete
+              - job-configure
+              - job-read
+              - job-discover
+              - job-build
+              - job-workspace
+              - job-cancel
+              - run-delete
+              - run-update
+              - scm-tag
+            anonymous:
+              - job-discover
+              - job-read
+    """
+
+    mapping = {
+        'job-delete': 'hudson.model.Item.Delete',
+        'job-configure': 'hudson.model.Item.Configure',
+        'job-read': 'hudson.model.Item.Read',
+        'job-discover': 'hudson.model.Item.Discover',
+        'job-build': 'hudson.model.Item.Build',
+        'job-workspace': 'hudson.model.Item.Workspace',
+        'job-cancel': 'hudson.model.Item.Cancel',
+        'run-delete': 'hudson.model.Run.Delete',
+        'run-update': 'hudson.model.Run.Update',
+        'scm-tag': 'hudson.scm.SCM.Tag'
+        }
+
+    if data:
+        matrix = XML.SubElement(xml_parent,
+                        'hudson.security.AuthorizationMatrixProperty')
+        for (username, perms) in data.items():
+            for perm in perms:
+                pe = XML.SubElement(matrix, 'permission')
+                pe.text = "{0}:{1}".format(mapping[perm], username)
 
 
 class Properties(jenkins_jobs.modules.base.Base):
