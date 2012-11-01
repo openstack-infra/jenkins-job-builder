@@ -45,16 +45,52 @@ def git(self, xml_parent, data):
 
     :arg str url: URL of the git repository
     :arg list(str) branches: list of branch specifiers to build
+    :arg bool skip-tag: Skip tagging
+    :arg bool prune: Prune remote branches
+    :arg bool clean: Clean after checkout
+    :arg bool fastpoll: Use fast remote polling
+    :arg bool disable-submodules: Disable submodules
+    :arg bool recursive-submodules: Recursively update submodules
+    :arg bool use-author: Use author rather than committer in Jenkin's build
+      changeset
+    :arg bool wipe-workspace: Wipe out workspace before build
 
     Example::
 
       scm:
-        -git:
+        - git:
           url: https://example.com/project.git
           branches:
             - master
             - stable
     """
+
+    # XXX somebody should write the docs for those with option name =
+    # None so we have a sensible name/key for it.
+    mapping = [
+        # option, xml name, default value (text), attributes (hard coded)
+        ("disable-submodules", 'disableSubmodules', False),
+        ("recursive-submodules", 'recursiveSubmodules', False),
+        (None, 'doGenerateSubmoduleConfigurations', False),
+        ("use-author", 'authorOrCommitter', False),
+        ("clean", 'clean', False),
+        ("wipe-workspace", 'wipeOutWorkspace', True),
+        ("prune", 'pruneBranches', False),
+        ("fastpoll", 'remotePoll', False),
+        (None, 'buildChooser', '', {
+            'class': 'hudson.plugins.git.util.DefaultBuildChooser'}),
+        (None, 'gitTool', "Default"),
+        (None, 'submoduleCfg', '', {'class': 'list'}),
+        (None, 'relativeTargetDir', ''),
+        (None, 'reference', ''),
+        (None, 'excludedRegions', ''),
+        (None, 'excludedUsers', ''),
+        (None, 'gitConfigName', ''),
+        (None, 'gitConfigEmail', ''),
+        ('skip-tag', 'skipTag', False),
+        (None, 'scmName', ''),
+        ]
+
     scm = XML.SubElement(xml_parent,
                          'scm', {'class': 'hudson.plugins.git.GitSCM'})
     XML.SubElement(scm, 'configVersion').text = '2'
@@ -69,26 +105,18 @@ def git(self, xml_parent, data):
     for branch in branches:
         bspec = XML.SubElement(xml_branches, 'hudson.plugins.git.BranchSpec')
         XML.SubElement(bspec, 'name').text = branch
-    XML.SubElement(scm, 'disableSubmodules').text = 'false'
-    XML.SubElement(scm, 'recursiveSubmodules').text = 'false'
-    XML.SubElement(scm, 'doGenerateSubmoduleConfigurations').text = 'false'
-    XML.SubElement(scm, 'authorOrCommitter').text = 'false'
-    XML.SubElement(scm, 'clean').text = 'false'
-    XML.SubElement(scm, 'wipeOutWorkspace').text = 'true'
-    XML.SubElement(scm, 'pruneBranches').text = 'false'
-    XML.SubElement(scm, 'remotePoll').text = 'false'
-    XML.SubElement(scm, 'buildChooser',
-                   {'class': 'hudson.plugins.git.util.DefaultBuildChooser'})
-    XML.SubElement(scm, 'gitTool').text = 'Default'
-    XML.SubElement(scm, 'submoduleCfg', {'class': 'list'})
-    XML.SubElement(scm, 'relativeTargetDir')
-    XML.SubElement(scm, 'reference')
-    XML.SubElement(scm, 'excludedRegions')
-    XML.SubElement(scm, 'excludedUsers')
-    XML.SubElement(scm, 'gitConfigName')
-    XML.SubElement(scm, 'gitConfigEmail')
-    XML.SubElement(scm, 'skipTag').text = 'false'
-    XML.SubElement(scm, 'scmName')
+    for elem in mapping:
+        (optname, xmlname, val) = elem[:3]
+        attrs = {}
+        if len(elem) >= 4:
+            attrs = elem[3]
+        xe = XML.SubElement(scm, xmlname, attrs)
+        if optname and optname in data:
+            val = data[optname]
+        if type(val) == bool:
+            xe.text = str(val).lower()
+        else:
+            xe.text = val
 
 
 def svn(self, xml_parent, data):
