@@ -92,7 +92,7 @@ def bool_param(parser, xml_parent, data):
 
 
 def file_param(parser, xml_parent, data):
-    """yaml: bool
+    """yaml: file
     A file parameter.
 
     :arg str name: the target location for the file upload
@@ -110,7 +110,7 @@ def file_param(parser, xml_parent, data):
 
 
 def text_param(parser, xml_parent, data):
-    """yaml: string
+    """yaml: text
     A text parameter.
 
     :arg str name: the name of the parameter
