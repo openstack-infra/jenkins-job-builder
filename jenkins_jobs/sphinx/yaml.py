@@ -95,7 +95,7 @@ class YAMLFunctionDocumenter(FunctionDocumenter):
         if not FunctionDocumenter.can_document_member(member, membername,
                                                       isattr, parent):
             return False
-        if yaml_sig_re.match(member.__doc__):
+        if member.__doc__ is not None and yaml_sig_re.match(member.__doc__):
             return True
         return False
 

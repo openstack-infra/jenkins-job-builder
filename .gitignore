@@ -1,7 +1,11 @@
-*.pyc
 *.egg-info
-config
-.tox
+*.pyc
 .test
-doc/build
-doc/source/sourcecode
+.tox
+AUTHORS
+build/*
+ChangeLog
+config
+doc/build/*
+doc/source/*
+jenkins_jobs/versioninfo

@@ -1,0 +1,10 @@
+include AUTHORS
+include HACKING
+include LICENSE
+include README.rst
+include ChangeLog
+include tox.ini
+include jenkins_jobs/versioninfo
+recursive-include doc *
+recursive-include tests *
+recursive-include tools *
