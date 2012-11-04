@@ -100,11 +100,14 @@ def ant(parser, xml_parent, data):
     of targets to build.
 
     :Parameter: space separated list of Ant targets
+    :arg str ant-name: the name of the ant installation,
+        defaults to 'default' (optional)
 
     Example to call two Ant targets::
 
         builders:
           - ant: "target1 target2"
+             ant-name: "Standard Ant"
 
     The build file would be whatever the Jenkins Ant Plugin is set to use
     per default (i.e build.xml in the workspace root).
@@ -113,6 +116,8 @@ def ant(parser, xml_parent, data):
 
     :arg str targets: the space separated list of ANT targets.
     :arg str buildfile: the path to the ANT build file.
+    :arg str ant-name: the name of the ant installation,
+        defaults to 'default' (optional)
 
 
     Example specifying the build file too and several targets::
@@ -121,6 +126,7 @@ def ant(parser, xml_parent, data):
           - ant:
              targets: "debug test install"
              buildfile: "build.xml"
+             ant-name: "Standard Ant"
 
     """
     ant = XML.SubElement(xml_parent, 'hudson.tasks.Ant')
@@ -135,6 +141,7 @@ def ant(parser, xml_parent, data):
         if setting == 'buildfile':
             buildfile = XML.SubElement(ant, 'buildFile')
             buildfile.text = value
+    XML.SubElement(ant, 'antName').text = data.get('ant-name', 'default')
 
 
 def trigger_builds(parser, xml_parent, data):
