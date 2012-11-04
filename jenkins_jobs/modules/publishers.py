@@ -640,6 +640,103 @@ def claimbuild(parser, xml_parent, data):
     XML.SubElement(xml_parent, 'hudson.plugins.claim.ClaimPublisher')
 
 
+def base_email_ext(parser, xml_parent, data, ttype):
+    trigger = XML.SubElement(xml_parent,
+                 'hudson.plugins.emailext.plugins.trigger.' + ttype)
+    email = XML.SubElement(trigger, 'email')
+    XML.SubElement(email, 'recipientList').text = ''
+    XML.SubElement(email, 'subject').text = '$PROJECT_DEFAULT_SUBJECT'
+    XML.SubElement(email, 'body').text = '$PROJECT_DEFAULT_CONTENT'
+    XML.SubElement(email, 'sendToDevelopers').text = 'false'
+    XML.SubElement(email, 'sendToRequester').text = 'false'
+    XML.SubElement(email, 'includeCulprits').text = 'false'
+    XML.SubElement(email, 'sendToRecipientList').text = 'true'
+
+
+def email_ext(parser, xml_parent, data):
+    """yaml: email-ext
+    Extend Jenkin's built in email notification
+    Requires the Jenkins `Email-ext Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Email-ext+plugin>`_
+
+    :arg str recipients: Comma separated list of emails
+    :arg str subject: Subject for the email, can include variables like
+        ${BUILD_NUMBER} or even groovy or javascript code
+    :arg str body: Content for the body of the email, can include variables
+        like ${BUILD_NUMBER}, but the real magic is using groovy or
+        javascript to hook into the Jenkins API itself
+    :arg bool unstable: Send an email for an unstable result (default false)
+    :arg bool first-failure: Send an email for just the first failure
+        (default false)
+    :arg bool not-built: Send an email if not built (default false)
+    :arg bool aborted: Send an email if the build is aborted (default false)
+    :arg bool regression: Send an email if there is a regression
+        (default false)
+    :arg bool failure: Send an email if the build fails (default false)
+    :arg bool improvement: Send an email if the build improves (default false)
+    :arg bool still-failing: Send an email if the build is still failing
+        (default false)
+    :arg bool success: Send an email for a successful build (default false)
+    :arg bool fixed: Send an email if the build is fixed (default false)
+    :arg bool still-unstable: Send an email if the build is still unstable
+        (default false)
+    :arg bool pre-build: Send an email before the build (default false)
+
+    Example::
+
+      publishers:
+        - email-ext:
+            recipients: foo@example.com, bar@example.com
+            subject: Subject for Build ${BUILD_NUMBER}
+            body: The build has finished
+            unstable: true
+            first-failure: true
+            not-built: true
+            aborted: true
+            regression: true
+            failure: true
+            improvement: true
+            still-failing: true
+            success: true
+            fixed: true
+            still-unstable: true
+            pre-build: true
+    """
+    emailext = XML.SubElement(xml_parent,
+                  'hudson.plugins.emailext.ExtendedEmailPublisher')
+    XML.SubElement(emailext, 'recipientList').text = data['recipients']
+    ctrigger = XML.SubElement(emailext, 'configuredTriggers')
+    if data.get('unstable', False):
+        base_email_ext(parser, ctrigger, data, 'UnstableTrigger')
+    if data.get('first-failure', False):
+        base_email_ext(parser, ctrigger, data, 'FirstFailureTrigger')
+    if data.get('not-built', False):
+        base_email_ext(parser, ctrigger, data, 'NotBuiltTrigger')
+    if data.get('aborted', False):
+        base_email_ext(parser, ctrigger, data, 'AbortedTrigger')
+    if data.get('regression', False):
+        base_email_ext(parser, ctrigger, data, 'RegressionTrigger')
+    if data.get('failure', False):
+        base_email_ext(parser, ctrigger, data, 'FailureTrigger')
+    if data.get('improvement', False):
+        base_email_ext(parser, ctrigger, data, 'ImprovementTrigger')
+    if data.get('still-failing', False):
+        base_email_ext(parser, ctrigger, data, 'StillFailingTrigger')
+    if data.get('success', False):
+        base_email_ext(parser, ctrigger, data, 'SuccessTrigger')
+    if data.get('fixed', False):
+        base_email_ext(parser, ctrigger, data, 'FixedTrigger')
+    if data.get('still-unstable', False):
+        base_email_ext(parser, ctrigger, data, 'StillUnstableTrigger')
+    if data.get('pre-build', False):
+        base_email_ext(parser, ctrigger, data, 'PreBuildTrigger')
+    XML.SubElement(emailext, 'contentType').text = 'default'
+    XML.SubElement(emailext, 'defaultSubject').text = data.get('subject', '')
+    XML.SubElement(emailext, 'defaultContent').text = data.get('body', '')
+    XML.SubElement(emailext, 'attachmentsPattern').text = ''
+    XML.SubElement(emailext, 'presendScript').text = ''
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
