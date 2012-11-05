@@ -759,6 +759,24 @@ def fingerprint(parser, xml_parent, data):
         'record-artifacts', False)).lower()
 
 
+def aggregate_tests(parser, xml_parent, data):
+    """yaml: aggregate-tests
+    Aggregate downstream test results
+
+    :arg bool include-failed-builds: whether to include failed builds
+
+    Example::
+
+      publishers:
+        - aggregate-tests:
+            include-failed-builds: true
+    """
+    agg = XML.SubElement(xml_parent,
+             'hudson.tasks.test.AggregatedTestResultPublisher')
+    XML.SubElement(agg, 'includeFailedBuilds').text = str(data.get(
+             'include-failed-builds', False)).lower()
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
