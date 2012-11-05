@@ -65,7 +65,7 @@ def gerrit(parser, xml_parent, data):
 
     Example::
 
-      trigger:
+      triggers:
         - gerrit:
             triggerOnCommentAddedEvent: true
             triggerApprovalCategory: 'APRV'
@@ -129,10 +129,10 @@ def pollscm(parser, xml_parent, data):
 
     :Parameter: the polling interval (cron syntax)
 
-    Example:
+    Example::
 
-    trigger:
-      - pollscm: "\*/15 * * * \*"
+      triggers:
+        - pollscm: "\*/15 * * * \*"
     """
 
     scmtrig = XML.SubElement(xml_parent, 'hudson.triggers.SCMTrigger')
@@ -145,10 +145,10 @@ def timed(parser, xml_parent, data):
 
     :Parameter: when to run the job (cron syntax)
 
-    Example:
+    Example::
 
-    trigger:
-      - timed: "@midnight"
+      triggers:
+        - timed: "@midnight"
     """
     scmtrig = XML.SubElement(xml_parent, 'hudson.triggers.TimerTrigger')
     XML.SubElement(scmtrig, 'spec').text = data
