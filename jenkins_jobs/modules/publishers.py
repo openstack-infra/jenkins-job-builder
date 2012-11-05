@@ -737,6 +737,28 @@ def email_ext(parser, xml_parent, data):
     XML.SubElement(emailext, 'presendScript').text = ''
 
 
+def fingerprint(parser, xml_parent, data):
+    """yaml: fingerprint
+    Fingerprint files to track them across builds
+
+    :arg str files: files to fingerprint, follows the @includes of Ant fileset
+        (default is blank)
+    :arg bool record-artifacts: fingerprint all archived artifacts
+        (default false)
+
+    Example::
+
+      publishers:
+        - fingerprint:
+            files: builddir/test*.xml
+            record-artifacts: false
+    """
+    finger = XML.SubElement(xml_parent, 'hudson.tasks.Fingerprinter')
+    XML.SubElement(finger, 'targets').text = data.get('files', '')
+    XML.SubElement(finger, 'recordBuildArtifacts').text = str(data.get(
+        'record-artifacts', False)).lower()
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

@@ -78,6 +78,7 @@ setup(name='jenkins_job_builder',
             'email=jenkins_jobs.modules.publishers:email',
             'claim-build=jenkins_jobs.modules.publishers:claimbuild',
             'email-ext=jenkins_jobs.modules.publishers:email_ext',
+            'fingerprint=jenkins_jobs.modules.publishers:fingerprint',
             ],
         'jenkins_jobs.scm': [
             'git=jenkins_jobs.modules.scm:git',
