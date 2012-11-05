@@ -125,8 +125,14 @@ def svn(self, xml_parent, data):
 
     :arg str url: URL of the svn repository
     :arg str basedir: location relative to the workspace root to checkout to
+      (default '.')
     :arg str workspaceupdater: optional argument to specify
-         how to update the workspace
+      how to update the workspace (default wipeworkspace)
+    :arg list repos: list of repositories to checkout (optional)
+
+      :Repo: * **url** (`str`) -- URL for the repository
+             * **basedir** (`str`) -- Location relative to the workspace
+                                      root to checkout to (default '.')
 
     :workspaceupdater values:
              :wipeworkspace: - deletes the workspace before checking out
@@ -138,18 +144,30 @@ def svn(self, xml_parent, data):
 
       scm:
         - svn:
-           url: http://svn.example.com/repo
-           basedir: .
            workspaceupdater: update
+           repos:
+             - url: http://svn.example.com/repo
+               basedir: .
+             - url: http://svn.example.com/repo2
+               basedir: repo2
     """
-
     scm = XML.SubElement(xml_parent, 'scm', {'class':
               'hudson.scm.SubversionSCM'})
     locations = XML.SubElement(scm, 'locations')
-    module = XML.SubElement(locations,
+    if 'repos' in data:
+        repos = data['repos']
+        for repo in repos:
+            module = XML.SubElement(locations,
               'hudson.scm.SubversionSCM_-ModuleLocation')
-    XML.SubElement(module, 'remote').text = data['url']
-    XML.SubElement(module, 'local').text = data['basedir']
+            XML.SubElement(module, 'remote').text = repo['url']
+            XML.SubElement(module, 'local').text = repo.get('basedir', '.')
+    elif 'url' in data:
+        module = XML.SubElement(locations,
+           'hudson.scm.SubversionSCM_-ModuleLocation')
+        XML.SubElement(module, 'remote').text = data['url']
+        XML.SubElement(module, 'local').text = data.get('basedir', '.')
+    else:
+        raise Exception("A top level url or repos list must exist")
     updater = data.get('workspaceupdater', 'wipeworkspace')
     if updater == 'wipeworkspace':
         updaterclass = 'CheckoutUpdater'
