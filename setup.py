@@ -97,6 +97,7 @@ setup(name='jenkins_job_builder',
             'build-name=jenkins_jobs.modules.wrappers:build_name',
             'workspace-cleanup=jenkins_jobs.modules.wrappers:'
               'workspace_cleanup',
+            'port-allocator=jenkins_jobs.modules.wrappers:port_allocator',
             ],
         'jenkins_jobs.modules': [
             'assignednode=jenkins_jobs.modules.assignednode:AssignedNode',

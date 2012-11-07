@@ -166,6 +166,28 @@ def build_name(parser, xml_parent, data):
     XML.SubElement(bsetter, 'template').text = data['name']
 
 
+def port_allocator(parser, xml_parent, data):
+    """yaml: port-allocator
+    Assign unique TCP port numbers
+    Requires the Jenkins `Port Allocator Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Port+Allocator+Plugin>`_
+
+    :arg str name: Variable name of the port or a specific port number
+
+    Example::
+
+      wrappers:
+        - port-allocator:
+            name: SERVER_PORT
+    """
+    pa = XML.SubElement(xml_parent,
+            'org.jvnet.hudson.plugins.port__allocator.PortAllocator')
+    ports = XML.SubElement(pa, 'ports')
+    dpt = XML.SubElement(ports,
+             'org.jvnet.hudson.plugins.port__allocator.DefaultPortType')
+    XML.SubElement(dpt, 'name').text = data['name']
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 
