@@ -154,6 +154,8 @@ def trigger_builds(parser, xml_parent, data):
     :arg str project: the Jenkins project to trigger
     :arg str predefined-parameters:
       key/value pairs to be passed to the job (optional)
+    :arg bool block: whether to wait for the triggered jobs
+      to finish or not (default false)
 
     Example::
 
@@ -162,6 +164,7 @@ def trigger_builds(parser, xml_parent, data):
             - project: "build_started"
               predefined-parameters:
                 FOO="bar"
+              block: true
 
     """
     tbuilder = XML.SubElement(xml_parent,
@@ -194,6 +197,21 @@ def trigger_builds(parser, xml_parent, data):
         build_all_nodes_with_label = XML.SubElement(tconfig,
                                                     'buildAllNodesWithLabel')
         build_all_nodes_with_label.text = 'false'
+        block = project_def.get('block', False)
+        if(block):
+            block = XML.SubElement(tconfig, 'block')
+            bsft = XML.SubElement(block, 'buildStepFailureThreshold')
+            XML.SubElement(bsft, 'name').text = 'FAILURE'
+            XML.SubElement(bsft, 'ordinal').text = '2'
+            XML.SubElement(bsft, 'color').text = 'RED'
+            ut = XML.SubElement(block, 'unstableThreshold')
+            XML.SubElement(ut, 'name').text = 'UNSTABLE'
+            XML.SubElement(ut, 'ordinal').text = '1'
+            XML.SubElement(ut, 'color').text = 'Yellow'
+            ft = XML.SubElement(block, 'failureThreshold')
+            XML.SubElement(ft, 'name').text = 'FAILURE'
+            XML.SubElement(ft, 'ordinal').text = '2'
+            XML.SubElement(ft, 'color').text = 'RED'
     # If configs is empty, remove the entire tbuilder tree.
     if(len(configs) == 0):
         logger.debug("Pruning empty TriggerBuilder tree.")
