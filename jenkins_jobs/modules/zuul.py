@@ -45,6 +45,10 @@ import jenkins_jobs.modules.base
 ZUUL_PARAMETERS = [
     {'string':
          {'description': 'Zuul provided key to link builds with Gerrit events',
+          'name': 'ZUUL_UUID'}},
+    {'string':
+         {'description': 'Zuul provided key to link builds with Gerrit'
+             ' events (deprecated use ZUUL_UUID instead)',
           'name': 'UUID'}},
     {'string':
          {'description': 'Zuul pipeline triggering this job',
@@ -84,6 +88,10 @@ ZUUL_PARAMETERS = [
 ZUUL_POST_PARAMETERS = [
     {'string':
          {'description': 'Zuul provided key to link builds with Gerrit events',
+          'name': 'ZUUL_UUID'}},
+    {'string':
+         {'description': 'Zuul provided key to link builds with Gerrit'
+            ' events (deprecated use ZUUL_UUID instead)',
           'name': 'UUID'}},
     {'string':
          {'description': 'Zuul pipeline triggering this job',
