@@ -35,7 +35,6 @@ setuptools.setup(
     cmdclass=setup.get_cmdclass(),
     install_requires=requires,
     dependency_links=depend_links,
-    scripts=['jenkins-jobs'],
     zip_safe=False,
     classifiers=[
         'Environment :: Console',
@@ -46,6 +45,9 @@ setuptools.setup(
         'Programming Language :: Python'
     ],
     entry_points={
+      'console_scripts': [
+          'jenkins-jobs=jenkins_jobs.cmd:main',
+          ],
       'jenkins_jobs.projects': [
           'freestyle=jenkins_jobs.modules.project_freestyle:Freestyle',
           'maven=jenkins_jobs.modules.project_maven:Maven',
