@@ -56,6 +56,7 @@ setuptools.setup(
           'trigger-builds=jenkins_jobs.modules.builders:trigger_builds',
           'builders-from=jenkins_jobs.modules.builders:builders_from',
           'inject=jenkins_jobs.modules.builders:inject',
+          'artifact-resolver=jenkins_jobs.modules.builders:artifact_resolver',
           ],
       'jenkins_jobs.reporters': [
           'email=jenkins_jobs.modules.reporters:email',

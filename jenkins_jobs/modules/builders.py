@@ -261,6 +261,73 @@ def inject(parser, xml_parent, data):
     XML.SubElement(info, 'propertiesContent').text = propcontent
 
 
+def artifact_resolver(parser, xml_parent, data):
+    """yaml: artifact-resolver
+    Allows to resolve artifacts from a maven repository like nexus
+      (without having maven installed)
+    Requires the Jenkins `Repository Connector Plugin
+    <https://wiki.jenkins-ci.org/display/JENKINS/Repository+Connector+Plugin>`_
+
+    :arg bool fail-on-error: Whether to fail the build on error (default false)
+    :arg bool repository-logging: Enable repository logging (default false)
+    :arg str target-directory: Where to resolve artifacts to
+    :arg list artifacts: list of artifacts to resolve
+
+      :Artifact: * **group-id** (`str`) -- Group ID of the artifact
+                 * **artifact-id** (`str`) -- Artifact ID of the artifact
+                 * **version** (`str`) -- Version of the artifact
+                 * **classifier** (`str`) -- Classifier of the artifact
+                   (default '')
+                 * **extension** (`str`) -- Extension of the artifact
+                   (default 'jar')
+                 * **target-file-name** (`str`) -- What to name the artifact
+                   (default '')
+
+    Example::
+
+      builders:
+        - artifact-resolver:
+            fail-on-error: true
+            repository-logging: true
+            target-directory: foo
+            artifacts:
+              - group-id: commons-logging
+                artifact-id: commons-logging
+                version: 1.1
+                classifier: src
+                extension: jar
+                target-file-name: comm-log.jar
+              - group-id: commons-lang
+                artifact-id: commons-lang
+                version: 1.2
+    """
+    ar = XML.SubElement(xml_parent,
+      'org.jvnet.hudson.plugins.repositoryconnector.ArtifactResolver')
+    XML.SubElement(ar, 'targetDirectory').text = data['target-directory']
+    artifacttop = XML.SubElement(ar, 'artifacts')
+    artifacts = data['artifacts']
+    for artifact in artifacts:
+        rcartifact = XML.SubElement(artifacttop,
+          'org.jvnet.hudson.plugins.repositoryconnector.Artifact')
+        XML.SubElement(rcartifact, 'groupId').text = artifact['group-id']
+        XML.SubElement(rcartifact, 'artifactId').text = artifact['artifact-id']
+        XML.SubElement(rcartifact, 'classifier').text = artifact.get(
+          'classifier', '')
+        XML.SubElement(rcartifact, 'version').text = artifact['version']
+        XML.SubElement(rcartifact, 'extension').text = artifact.get(
+          'extension', 'jar')
+        XML.SubElement(rcartifact, 'targetFileName').text = artifact.get(
+          'target-file-name', '')
+    XML.SubElement(ar, 'failOnError').text = str(data.get('fail-on-error',
+      False)).lower()
+    XML.SubElement(ar, 'enableRepoLogging').text = str(data.get(
+      'repository-logging', False)).lower()
+    XML.SubElement(ar, 'snapshotUpdatePolicy').text = 'never'
+    XML.SubElement(ar, 'releaseUpdatePolicy').text = 'never'
+    XML.SubElement(ar, 'snapshotChecksumPolicy').text = 'warn'
+    XML.SubElement(ar, 'releaseChecksumPolicy').text = 'warn'
+
+
 class Builders(jenkins_jobs.modules.base.Base):
     sequence = 60
 
