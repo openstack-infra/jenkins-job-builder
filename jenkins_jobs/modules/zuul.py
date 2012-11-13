@@ -75,6 +75,9 @@ ZUUL_PARAMETERS = [
          {'description': 'Reference for the merged commit(s) to use',
           'name': 'ZUUL_REF'}},
     {'string':
+         {'description': 'The commit SHA1 at the head of ZUUL_REF',
+          'name': 'ZUUL_COMMIT'}},
+    {'string':
          {'description': 'List of included changes',
           'name': 'ZUUL_CHANGE_IDS'}},
     {'string':
