@@ -44,6 +44,7 @@ def git(self, xml_parent, data):
     <https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin>`_
 
     :arg str url: URL of the git repository
+    :arg str refspec: refspec to fetch
     :arg list(str) branches: list of branch specifiers to build
     :arg bool skip-tag: Skip tagging
     :arg bool prune: Prune remote branches
@@ -97,8 +98,11 @@ def git(self, xml_parent, data):
     user = XML.SubElement(scm, 'userRemoteConfigs')
     huser = XML.SubElement(user, 'hudson.plugins.git.UserRemoteConfig')
     XML.SubElement(huser, 'name').text = 'origin'
-    XML.SubElement(huser, 'refspec').text = \
-        '+refs/heads/*:refs/remotes/origin/*'
+    if 'refspec' in data:
+        refspec = data['refspec']
+    else:
+        refspec = '+refs/heads/*:refs/remotes/origin/*'
+    XML.SubElement(huser, 'refspec').text = refspec
     XML.SubElement(huser, 'url').text = data['url']
     xml_branches = XML.SubElement(scm, 'branches')
     branches = data.get('branches', ['**'])
