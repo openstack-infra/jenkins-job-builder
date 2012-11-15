@@ -27,12 +27,14 @@ the following format::
   url=JENKINS_URL
 
 **user**
-  This should be the name of a user previously defined in Jenkins with
-  the permissions necessary to read, create, delete, and configure
-  jobs.
+  This should be the name of a user previously defined in Jenkins.
+  Appropriate user permissions must be set under the Jenkins security
+  matrix: under the ``Global`` group of permissions, check ``Read``,
+  then under the ``Job`` group of permissions, check ``Create``,
+  ``Delete``, ``Configure`` and finally ``Read``.
 
 **password**
-  The API token for the user specified.  You cat get this through the
+  The API token for the user specified.  You can get this through the
   Jenkins management interface under ``People`` -> username ->
   ``Configure`` and then click the ``Show API Token`` button.
 
