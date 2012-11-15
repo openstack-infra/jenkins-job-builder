@@ -153,7 +153,8 @@ def build_name(parser, xml_parent, data):
     <https://wiki.jenkins-ci.org/display/JENKINS/Build+Name+Setter+Plugin>`_
 
     :arg str name: Name for the build.  Typically you would use a variable
-    from Jenkins in the name.  The syntax would be ${FOO} for the FOO variable.
+                   from Jenkins in the name.  The syntax would be ${FOO} for
+                   the FOO variable.
 
     Example::
 
