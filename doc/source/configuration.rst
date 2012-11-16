@@ -33,6 +33,11 @@ later.  There are a few basic optional fields for a Job definition::
       name: job-name
       project-type: freestyle
       defaults: global
+      disabled: false
+      concurrent: true
+      quiet-period: 5
+      block-downstream: false
+      block-upstream: false
 
 **project-type**
   Defaults to "freestyle", but "maven" can also be specified.
@@ -44,6 +49,28 @@ later.  There are a few basic optional fields for a Job definition::
   configuration of individual jobs is necessary.  If some jobs
   should not use the ``global`` defaults, use this field to specify a
   different set of defaults.
+
+**disabled**
+  Boolean value to set whether or not this job should be disabled in
+  Jenkins. Defaults to ``false`` (job will be enabled).
+
+**concurrent**
+  Boolean value to set whether or not Jenkins can run this job
+  concurrently. Defaults to ``false``.
+
+**quiet-period**
+  Number of seconds to wait between consecutive runs of this job.
+  Defaults to ``0``.
+
+**block-downstream**
+  Boolean value to set whether or not this job must block while
+  downstream jobs are running. Downstream jobs are determined
+  transitively. Defaults to ``false``.
+
+**block-upstream**
+  Boolean value to set whether or not this job must block while
+  upstream jobs are running. Upstream jobs are determined
+  transitively. Defaults to ``false``.
 
 .. _job-template:
 

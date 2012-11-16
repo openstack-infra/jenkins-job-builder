@@ -179,8 +179,18 @@ class YamlParser(object):
             XML.SubElement(xml, 'disabled').text = 'true'
         else:
             XML.SubElement(xml, 'disabled').text = 'false'
-        XML.SubElement(xml, 'blockBuildWhenDownstreamBuilding').text = 'false'
-        XML.SubElement(xml, 'blockBuildWhenUpstreamBuilding').text = 'false'
+        if data.get('block-downstream'):
+            XML.SubElement(xml,
+                    'blockBuildWhenDownstreamBuilding').text = 'true'
+        else:
+            XML.SubElement(xml,
+                    'blockBuildWhenDownstreamBuilding').text = 'false'
+        if data.get('block-upstream'):
+            XML.SubElement(xml,
+                    'blockBuildWhenUpstreamBuilding').text = 'true'
+        else:
+            XML.SubElement(xml,
+                    'blockBuildWhenUpstreamBuilding').text = 'false'
         if data.get('concurrent'):
             XML.SubElement(xml, 'concurrentBuild').text = 'true'
         else:
