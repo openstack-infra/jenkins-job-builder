@@ -1,4 +1,6 @@
-# Jenkins Job Builder #
+===================
+Jenkins Job Builder
+===================
 
 Jenkins Job Builder takes simple descriptions of Jenkins jobs in YAML format,
 and uses them to configure Jenkins. You can keep your job descriptions in human
@@ -6,24 +8,34 @@ readable text format in a version control system to make changes and auditing
 easier. It also has a flexible template system, so creating many similarly
 configured jobs is easy.
 
-To install:
-    sudo python setup.py install
+To install::
+
+    $ sudo python setup.py install
 
 Online documentation:
-- http://ci.openstack.org/jenkins-job-builder/
 
+ * http://ci.openstack.org/jenkins-job-builder/
 
-## Developers ##
-Bug report: https://bugs.launchpad.net/openstack-ci/
+Developers
+==========
+Bug report:
 
-Cloning: https://github.com/openstack-ci/jenkins-job-builder.git
+ * https://bugs.launchpad.net/openstack-ci/
 
-Patches are submitted via Gerrit at https://review.openstack.org/
+Cloning:
+
+ * https://github.com/openstack-ci/jenkins-job-builder.git
+
+Patches are submitted via Gerrit at:
+
+ * https://review.openstack.org/
 
 More details on how you can contribute is available on our wiki at:
-http://wiki.openstack.org/HowToContribute
 
-### Writing a patch ###
+ * http://wiki.openstack.org/HowToContribute
+
+Writing a patch
+===============
 
 We ask that all code submissions be pep8 and pyflakes clean.  The
 easiest way to do that is to run `tox` before submitting code for
@@ -45,14 +57,15 @@ This consistency will help users avoid simple mistakes when writing
 YAML, as well as developers when matching YAML components to Python
 implementation.
 
-## Installing without setup.py ##
+Installing without setup.py
+===========================
 
 For YAML support, you will need libyaml installed.
 
-    # Mac OS X:
-    brew install libyaml
+Mac OS X::
 
-Then install the required python packages using pip:
+    $ brew install libyaml
 
-    sudo pip install PyYAML python-jenkins
+Then install the required python packages using pip::
 
+    $ sudo pip install PyYAML python-jenkins
