@@ -83,7 +83,7 @@ def copyartifact(parser, xml_parent, data):
     t = XML.SubElement(xml_parent, 'hudson.plugins.copyartifact.CopyArtifact')
     XML.SubElement(t, 'projectName').text = data["project"]
     XML.SubElement(t, 'filter').text = data.get("filter", "")
-    XML.SubElement(t, 'target').text = data.get("project", "")
+    XML.SubElement(t, 'target').text = data.get("target", "")
 
 
 def ant(parser, xml_parent, data):
