@@ -1,11 +1,8 @@
-include AUTHORS
-include HACKING
-include LICENSE
-include README.rst
-include ChangeLog
-include tox.ini
 include jenkins_jobs/versioninfo
-recursive-include etc *
-recursive-include doc *
-recursive-include tests *
-recursive-include tools *
+include AUTHORS
+include ChangeLog
+
+exclude .gitignore
+exclude .gitreview
+
+global-exclude *.pyc
