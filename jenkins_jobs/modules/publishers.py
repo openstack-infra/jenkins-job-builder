@@ -397,7 +397,7 @@ def xunit(parser, xml_parent, data):
 
         XML.SubElement(xmlframework, 'pattern').text = \
             supported_type[framework_name].get('pattern', '')
-        XML.SubElement(xmlframework, 'failedIfNotNew').text = \
+        XML.SubElement(xmlframework, 'failIfNotNew').text = \
             str(supported_type[framework_name].get(
                 'requireupdate', 'true')).lower()
         XML.SubElement(xmlframework, 'deleteOutputFiles').text = \
