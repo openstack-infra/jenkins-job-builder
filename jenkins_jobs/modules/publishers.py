@@ -786,6 +786,92 @@ def aggregate_tests(parser, xml_parent, data):
         'include-failed-builds', False)).lower()
 
 
+def cppcheck(parser, xml_parent, data):
+    """yaml: cppcheck
+    Cppcheck result publisher
+    Requires the Jenkins `Cppcheck Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Cppcheck+Plugin>`_
+
+    :arg str pattern: file pattern for cppcheck xml report
+
+    for more optional parameters see the example
+
+    Example::
+
+      publishers:
+        - cppcheck:
+            pattern: "**/cppcheck.xml"
+            # the rest is optional
+            # build status (new) error count thresholds
+            thresholds:
+              unstable: 5
+              new-unstable: 5
+              failure: 7
+              new-failure: 3
+              # severities which count towards the threshold, default all true
+              severity:
+                error: true
+                warning: true
+                information: false
+            graph:
+              xysize: [500, 200]
+              # which errors to display, default only sum
+              display:
+                sum: false
+                error: true
+    """
+    cppextbase = XML.SubElement(xml_parent,
+                                'org.jenkinsci.plugins.cppcheck.'
+                                'CppcheckPublisher')
+    cppext = XML.SubElement(cppextbase, 'cppcheckConfig')
+    XML.SubElement(cppext, 'pattern').text = data['pattern']
+    XML.SubElement(cppext, 'ignoreBlankFiles').text = \
+        str(data.get('ignoreblankfiles', 'false')).lower()
+
+    csev = XML.SubElement(cppext, 'configSeverityEvaluation')
+    thrsh = data.get('thresholds', {})
+    XML.SubElement(csev, 'threshold').text = str(thrsh.get('unstable', ''))
+    XML.SubElement(csev, 'newThreshold').text = \
+        str(thrsh.get('new-unstable', ''))
+    XML.SubElement(csev, 'failureThreshold').text = \
+        str(thrsh.get('failure', ''))
+    XML.SubElement(csev, 'newFailureThreshold').text = \
+        str(thrsh.get('new-failure', ''))
+    XML.SubElement(csev, 'healthy').text = str(thrsh.get('healthy', ''))
+    XML.SubElement(csev, 'unHealthy').text = str(thrsh.get('unhealthy', ''))
+
+    sev = thrsh.get('severity', {})
+    XML.SubElement(csev, 'severityError').text = \
+        str(sev.get('error', 'true')).lower()
+    XML.SubElement(csev, 'severityWarning').text = \
+        str(sev.get('warning', 'true')).lower()
+    XML.SubElement(csev, 'severityStyle').text = \
+        str(sev.get('style', 'true')).lower()
+    XML.SubElement(csev, 'severityPerformance').text = \
+        str(sev.get('performance', 'true')).lower()
+    XML.SubElement(csev, 'severityInformation').text = \
+        str(sev.get('information', 'true')).lower()
+
+    graph = data.get('graph', {})
+    cgraph = XML.SubElement(cppext, 'configGraph')
+    x, y = graph.get('xysize', [500, 200])
+    XML.SubElement(cgraph, 'xSize').text = str(x)
+    XML.SubElement(cgraph, 'ySize').text = str(y)
+    gdisplay = graph.get('display', {})
+    XML.SubElement(cgraph, 'displayAllErrors').text = \
+        str(gdisplay.get('sum', 'true')).lower()
+    XML.SubElement(cgraph, 'displayErrorSeverity').text = \
+        str(gdisplay.get('error', 'false')).lower()
+    XML.SubElement(cgraph, 'displayWarningSeverity').text = \
+        str(gdisplay.get('warning', 'false')).lower()
+    XML.SubElement(cgraph, 'displayStyleSeverity').text = \
+        str(gdisplay.get('style', 'false')).lower()
+    XML.SubElement(cgraph, 'displayPerformanceSeverity').text = \
+        str(gdisplay.get('performance', 'false')).lower()
+    XML.SubElement(cgraph, 'displayInformationSeverity').text = \
+        str(gdisplay.get('information', 'false')).lower()
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

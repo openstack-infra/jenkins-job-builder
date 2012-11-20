@@ -105,6 +105,7 @@ setuptools.setup(
             'email-ext=jenkins_jobs.modules.publishers:email_ext',
             'fingerprint=jenkins_jobs.modules.publishers:fingerprint',
             'aggregate-tests=jenkins_jobs.modules.publishers:aggregate_tests',
+            'cppcheck=jenkins_jobs.modules.publishers:cppcheck',
         ],
         'jenkins_jobs.scm': [
             'git=jenkins_jobs.modules.scm:git',
