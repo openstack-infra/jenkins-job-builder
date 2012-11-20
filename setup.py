@@ -108,6 +108,7 @@ setuptools.setup(
             'aggregate-tests=jenkins_jobs.modules.publishers:aggregate_tests',
             'cppcheck=jenkins_jobs.modules.publishers:cppcheck',
             'logparser=jenkins_jobs.modules.publishers:logparser',
+            'copy-to-master=jenkins_jobs.modules.publishers:copy_to_master',
         ],
         'jenkins_jobs.scm': [
             'git=jenkins_jobs.modules.scm:git',
@@ -128,6 +129,7 @@ setuptools.setup(
             'workspace_cleanup',
             'port-allocator=jenkins_jobs.modules.wrappers:port_allocator',
             'locks=jenkins_jobs.modules.wrappers:locks',
+            'copy-to-slave=jenkins_jobs.modules.wrappers:copy_to_slave',
         ],
         'jenkins_jobs.modules': [
             'assignednode=jenkins_jobs.modules.assignednode:AssignedNode',

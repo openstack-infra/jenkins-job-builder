@@ -899,6 +899,41 @@ def logparser(parser, xml_parent, data):
     XML.SubElement(clog, 'parsingRulesPath').text = data.get('parse-rules', '')
 
 
+def copy_to_master(parser, xml_parent, data):
+    """yaml: copy-to-master
+    Copy files to master from slave
+    Requires the Jenkins `Copy To Slave Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Copy+To+Slave+Plugin>`_
+
+    :arg list includes: list of file patterns to copy
+    :arg list excludes: list of file patterns to exclude
+    :arg string destination: absolute path into which the files will be copied.
+                             If left blank they will be copied into the
+                             workspace of the current job
+
+    Example::
+
+      publishers:
+        - copy-to-master:
+            includes:
+              - file1
+              - file2*.txt
+            excludes:
+              - file2bad.txt
+    """
+    p = 'com.michelin.cio.hudson.plugins.copytoslave.CopyToMasterNotifier'
+    cm = XML.SubElement(xml_parent, p)
+
+    XML.SubElement(cm, 'includes').text = ','.join(data.get('includes', ['']))
+    XML.SubElement(cm, 'excludes').text = ','.join(data.get('excludes', ['']))
+
+    XML.SubElement(cm, 'destinationFolder').text = \
+        data.get('destination', '')
+
+    if data.get('destination', ''):
+        XML.SubElement(cm, 'overrideDestinationFolder').text = 'true'
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

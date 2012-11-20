@@ -220,6 +220,50 @@ def locks(parser, xml_parent, data):
         XML.Sublement(lockwrapper, 'name').text = lock
 
 
+def copy_to_slave(parser, xml_parent, data):
+    """yaml: copy-to-slave
+    Copy files to slave before build
+    Requires the Jenkins `Copy To Slave Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Copy+To+Slave+Plugin>`_
+
+    :arg list includes: list of file patterns to copy
+    :arg list excludes: list of file patterns to exclude
+    :arg bool flatten: flatten directory structure
+    :arg str relative-to: base location of includes/excludes,
+                          must be userContent ($JENKINS_HOME/userContent)
+                          home ($JENKINS_HOME) or workspace
+    :arg bool include-ant-excludes: exclude ant's default excludes
+
+    Example::
+
+      wrappers:
+        - copy-to-slave:
+            includes:
+              - file1
+              - file2*.txt
+            excludes:
+              - file2bad.txt
+    """
+    p = 'com.michelin.cio.hudson.plugins.copytoslave.CopyToSlaveBuildWrapper'
+    cs = XML.SubElement(xml_parent, p)
+
+    XML.SubElement(cs, 'includes').text = ','.join(data.get('includes', ['']))
+    XML.SubElement(cs, 'excludes').text = ','.join(data.get('excludes', ['']))
+    XML.SubElement(cs, 'flatten').text = \
+        str(data.get('flatten', 'false')).lower()
+    XML.SubElement(cs, 'includeAntExcludes').text = \
+        str(data.get('include-ant-excludes', 'false')).lower()
+
+    rel = str(data.get('relative-to', 'userContent'))
+    opt = ('userContent', 'home', 'workspace')
+    if rel not in opt:
+        raise ValueError('relative-to must be one of %r' % opt)
+    XML.SubElement(cs, 'relativeTo').text = rel
+
+    # seems to always be false, can't find it in source code
+    XML.SubElement(cs, 'hudsonHomeRelative').text = 'false'
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 
