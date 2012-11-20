@@ -872,6 +872,33 @@ def cppcheck(parser, xml_parent, data):
         str(gdisplay.get('information', 'false')).lower()
 
 
+def logparser(parser, xml_parent, data):
+    """yaml: logparser
+    Requires the Jenkins `Log Parser Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Log+Parser+Plugin>`_
+
+    :arg str parse-rules: full path to parse rules
+    :arg bool unstable-on-warning: mark build unstable on warning
+    :arg bool fail-on-error: mark build failed on error
+
+    Example::
+      publishers:
+        - logparser:
+            parse-rules: "/path/to/parserules"
+            unstable-on-warning: true
+            fail-on-error: true
+    """
+
+    clog = XML.SubElement(xml_parent,
+                          'hudson.plugins.logparser.LogParserPublisher')
+    XML.SubElement(clog, 'unstableOnWarning').text = \
+        str(data.get('unstable-on-warning', 'false')).lower()
+    XML.SubElement(clog, 'failBuildOnError').text = \
+        str(data.get('fail-on-error', 'false')).lower()
+    # v1.08: this must be the full path, the name of the rules is not enough
+    XML.SubElement(clog, 'parsingRulesPath').text = data.get('parse-rules', '')
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

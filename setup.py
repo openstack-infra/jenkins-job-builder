@@ -107,6 +107,7 @@ setuptools.setup(
             'fingerprint=jenkins_jobs.modules.publishers:fingerprint',
             'aggregate-tests=jenkins_jobs.modules.publishers:aggregate_tests',
             'cppcheck=jenkins_jobs.modules.publishers:cppcheck',
+            'logparser=jenkins_jobs.modules.publishers:logparser',
         ],
         'jenkins_jobs.scm': [
             'git=jenkins_jobs.modules.scm:git',
