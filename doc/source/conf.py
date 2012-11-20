@@ -216,7 +216,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'jenkinsjobbuilder', u'Jenkins Job Builder Documentation',
+    ('index', 'jenkins-jobs', u'Jenkins Job Builder Documentation',
      [u'Jenkins Job Builder Maintainers'], 1)
 ]
 
