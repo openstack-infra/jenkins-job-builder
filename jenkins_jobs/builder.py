@@ -246,7 +246,8 @@ class XmlJob(object):
 
 class CacheStorage(object):
     def __init__(self):
-        self.cachefilename = os.path.expanduser('~/.jenkins_jobs_cache.yml')
+        cache_dir = self.get_cache_dir()
+        self.cachefilename = os.path.join(cache_dir, 'jenkins_jobs_cache.yml')
         try:
             yfile = file(self.cachefilename, 'r')
         except IOError:
@@ -254,6 +255,18 @@ class CacheStorage(object):
             return
         self.data = yaml.load(yfile)
         yfile.close()
+
+    @staticmethod
+    def get_cache_dir():
+        home = os.path.expanduser('~')
+        if home == '~':
+            raise OSError('Could not locate home folder')
+        xdg_cache_home = os.environ.get('XDG_CACHE_HOME') or \
+            os.path.join(home, '.cache')
+        path = os.path.join(xdg_cache_home, 'jenkins_jobs')
+        if not os.path.isdir(path):
+            os.makedirs(path)
+        return path
 
     def set(self, job, md5):
         self.data[job] = md5
