@@ -90,7 +90,7 @@ def git(self, xml_parent, data):
         (None, 'gitConfigEmail', ''),
         ('skip-tag', 'skipTag', False),
         (None, 'scmName', ''),
-        ]
+    ]
 
     scm = XML.SubElement(xml_parent,
                          'scm', {'class': 'hudson.plugins.git.GitSCM'})
@@ -156,18 +156,18 @@ def svn(self, xml_parent, data):
                basedir: repo2
     """
     scm = XML.SubElement(xml_parent, 'scm', {'class':
-              'hudson.scm.SubversionSCM'})
+                         'hudson.scm.SubversionSCM'})
     locations = XML.SubElement(scm, 'locations')
     if 'repos' in data:
         repos = data['repos']
         for repo in repos:
             module = XML.SubElement(locations,
-              'hudson.scm.SubversionSCM_-ModuleLocation')
+                                    'hudson.scm.SubversionSCM_-ModuleLocation')
             XML.SubElement(module, 'remote').text = repo['url']
             XML.SubElement(module, 'local').text = repo.get('basedir', '.')
     elif 'url' in data:
         module = XML.SubElement(locations,
-           'hudson.scm.SubversionSCM_-ModuleLocation')
+                                'hudson.scm.SubversionSCM_-ModuleLocation')
         XML.SubElement(module, 'remote').text = data['url']
         XML.SubElement(module, 'local').text = data.get('basedir', '.')
     else:
@@ -182,7 +182,7 @@ def svn(self, xml_parent, data):
     elif updater == 'update':
         updaterclass = 'UpdateUpdater'
     XML.SubElement(scm, 'workspaceUpdater', {'class':
-                'hudson.scm.subversion.' + updaterclass})
+                   'hudson.scm.subversion.' + updaterclass})
 
 
 class SCM(jenkins_jobs.modules.base.Base):

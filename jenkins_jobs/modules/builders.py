@@ -168,21 +168,25 @@ def trigger_builds(parser, xml_parent, data):
 
     """
     tbuilder = XML.SubElement(xml_parent,
-                   'hudson.plugins.parameterizedtrigger.TriggerBuilder')
+                              'hudson.plugins.parameterizedtrigger.'
+                              'TriggerBuilder')
     configs = XML.SubElement(tbuilder, 'configs')
     for project_def in data:
         if 'project' not in project_def or project_def['project'] == '':
             logger.debug("No project specified - skipping trigger-build")
             continue
         tconfig = XML.SubElement(configs,
-            'hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig')
+                                 'hudson.plugins.parameterizedtrigger.'
+                                 'BlockableBuildTriggerConfig')
         tconfigs = XML.SubElement(tconfig, 'configs')
         if(project_def.get('current-parameters')):
             XML.SubElement(tconfigs,
-                 'hudson.plugins.parameterizedtrigger.CurrentBuildParameters')
+                           'hudson.plugins.parameterizedtrigger.'
+                           'CurrentBuildParameters')
         if 'predefined-parameters' in project_def:
             params = XML.SubElement(tconfigs,
-              'hudson.plugins.parameterizedtrigger.PredefinedBuildParameters')
+                                    'hudson.plugins.parameterizedtrigger.'
+                                    'PredefinedBuildParameters')
             properties = XML.SubElement(params, 'properties')
             properties.text = project_def['predefined-parameters']
         if(len(list(tconfigs)) == 0):
@@ -233,7 +237,7 @@ def builders_from(parser, xml_parent, data):
             - project: "base-build"
     """
     pbs = XML.SubElement(xml_parent,
-        'hudson.plugins.templateproject.ProxyBuilder')
+                         'hudson.plugins.templateproject.ProxyBuilder')
     XML.SubElement(pbs, 'projectName').text = data
 
 
@@ -302,26 +306,28 @@ def artifact_resolver(parser, xml_parent, data):
                 version: 1.2
     """
     ar = XML.SubElement(xml_parent,
-      'org.jvnet.hudson.plugins.repositoryconnector.ArtifactResolver')
+                        'org.jvnet.hudson.plugins.repositoryconnector.'
+                        'ArtifactResolver')
     XML.SubElement(ar, 'targetDirectory').text = data['target-directory']
     artifacttop = XML.SubElement(ar, 'artifacts')
     artifacts = data['artifacts']
     for artifact in artifacts:
         rcartifact = XML.SubElement(artifacttop,
-          'org.jvnet.hudson.plugins.repositoryconnector.Artifact')
+                                    'org.jvnet.hudson.plugins.'
+                                    'repositoryconnector.Artifact')
         XML.SubElement(rcartifact, 'groupId').text = artifact['group-id']
         XML.SubElement(rcartifact, 'artifactId').text = artifact['artifact-id']
         XML.SubElement(rcartifact, 'classifier').text = artifact.get(
-          'classifier', '')
+            'classifier', '')
         XML.SubElement(rcartifact, 'version').text = artifact['version']
         XML.SubElement(rcartifact, 'extension').text = artifact.get(
-          'extension', 'jar')
+            'extension', 'jar')
         XML.SubElement(rcartifact, 'targetFileName').text = artifact.get(
-          'target-file-name', '')
-    XML.SubElement(ar, 'failOnError').text = str(data.get('fail-on-error',
-      False)).lower()
+            'target-file-name', '')
+    XML.SubElement(ar, 'failOnError').text = str(data.get(
+        'fail-on-error', False)).lower()
     XML.SubElement(ar, 'enableRepoLogging').text = str(data.get(
-      'repository-logging', False)).lower()
+        'repository-logging', False)).lower()
     XML.SubElement(ar, 'snapshotUpdatePolicy').text = 'never'
     XML.SubElement(ar, 'releaseUpdatePolicy').text = 'never'
     XML.SubElement(ar, 'snapshotChecksumPolicy').text = 'warn'

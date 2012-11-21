@@ -181,16 +181,16 @@ class YamlParser(object):
             XML.SubElement(xml, 'disabled').text = 'false'
         if data.get('block-downstream'):
             XML.SubElement(xml,
-                    'blockBuildWhenDownstreamBuilding').text = 'true'
+                           'blockBuildWhenDownstreamBuilding').text = 'true'
         else:
             XML.SubElement(xml,
-                    'blockBuildWhenDownstreamBuilding').text = 'false'
+                           'blockBuildWhenDownstreamBuilding').text = 'false'
         if data.get('block-upstream'):
             XML.SubElement(xml,
-                    'blockBuildWhenUpstreamBuilding').text = 'true'
+                           'blockBuildWhenUpstreamBuilding').text = 'true'
         else:
             XML.SubElement(xml,
-                    'blockBuildWhenUpstreamBuilding').text = 'false'
+                           'blockBuildWhenUpstreamBuilding').text = 'false'
         if data.get('concurrent'):
             XML.SubElement(xml, 'concurrentBuild').text = 'true'
         else:
@@ -301,7 +301,7 @@ class Jenkins(object):
 
 class Builder(object):
     def __init__(self, jenkins_url, jenkins_user, jenkins_password,
-                      config=None):
+                 config=None):
         self.jenkins = Jenkins(jenkins_url, jenkins_user, jenkins_password)
         self.cache = CacheStorage()
         self.global_config = config

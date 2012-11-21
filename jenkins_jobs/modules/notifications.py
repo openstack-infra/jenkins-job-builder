@@ -52,7 +52,8 @@ def http_endpoint(parser, xml_parent, data):
           url: http://example.com/jenkins_endpoint
     """
     endpoint_element = XML.SubElement(xml_parent,
-                'com.tikal.hudson.plugins.notification.Endpoint')
+                                      'com.tikal.hudson.plugins.notification.'
+                                      'Endpoint')
     XML.SubElement(endpoint_element, 'protocol').text = 'HTTP'
     XML.SubElement(endpoint_element, 'url').text = data['url']
 
@@ -68,7 +69,9 @@ class Notifications(jenkins_jobs.modules.base.Base):
         notifications = data.get('notifications', [])
         if notifications:
             notify_element = XML.SubElement(properties,
-            'com.tikal.hudson.plugins.notification.HudsonNotificationProperty')
+                                            'com.tikal.hudson.plugins.'
+                                            'notification.'
+                                            'HudsonNotificationProperty')
             endpoints_element = XML.SubElement(notify_element, 'endpoints')
 
             for endpoint in notifications:

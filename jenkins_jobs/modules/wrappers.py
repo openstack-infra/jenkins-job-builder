@@ -52,7 +52,8 @@ def timeout(parser, xml_parent, data):
             fail: true
     """
     twrapper = XML.SubElement(xml_parent,
-        'hudson.plugins.build__timeout.BuildTimeoutWrapper')
+                              'hudson.plugins.build__timeout.'
+                              'BuildTimeoutWrapper')
     tminutes = XML.SubElement(twrapper, 'timeoutMinutes')
     tminutes.text = str(data['timeout'])
     failbuild = XML.SubElement(twrapper, 'failBuild')
@@ -105,7 +106,8 @@ def mask_passwords(parser, xml_parent, data):
         - mask-passwords
     """
     XML.SubElement(xml_parent,
-     'com.michelin.cio.hudson.plugins.maskpasswords.MaskPasswordsBuildWrapper')
+                   'com.michelin.cio.hudson.plugins.maskpasswords.'
+                   'MaskPasswordsBuildWrapper')
 
 
 def workspace_cleanup(parser, xml_parent, data):
@@ -127,7 +129,7 @@ def workspace_cleanup(parser, xml_parent, data):
     """
 
     p = XML.SubElement(xml_parent,
-                   'hudson.plugins.ws__cleanup.PreBuildCleanup')
+                       'hudson.plugins.ws__cleanup.PreBuildCleanup')
     p.set("plugin", "ws-cleanup@0.10")
     if "include" in data or "exclude" in data:
         patterns = XML.SubElement(p, 'patterns')
@@ -163,7 +165,8 @@ def build_name(parser, xml_parent, data):
             name: Build-${FOO}
     """
     bsetter = XML.SubElement(xml_parent,
-               'org.jenkinsci.plugins.buildnamesetter.BuildNameSetter')
+                             'org.jenkinsci.plugins.buildnamesetter.'
+                             'BuildNameSetter')
     XML.SubElement(bsetter, 'template').text = data['name']
 
 
@@ -182,10 +185,12 @@ def port_allocator(parser, xml_parent, data):
             name: SERVER_PORT
     """
     pa = XML.SubElement(xml_parent,
-            'org.jvnet.hudson.plugins.port__allocator.PortAllocator')
+                        'org.jvnet.hudson.plugins.port__allocator.'
+                        'PortAllocator')
     ports = XML.SubElement(pa, 'ports')
     dpt = XML.SubElement(ports,
-             'org.jvnet.hudson.plugins.port__allocator.DefaultPortType')
+                         'org.jvnet.hudson.plugins.port__allocator.'
+                         'DefaultPortType')
     XML.SubElement(dpt, 'name').text = data['name']
 
 
@@ -205,12 +210,13 @@ def locks(parser, xml_parent, data):
             - FOO2
     """
     lw = XML.SubElement(xml_parent,
-             'hudson.plugins.locksandlatches.LockWrapper')
+                        'hudson.plugins.locksandlatches.LockWrapper')
     locktop = XML.SubElement(lw, 'locks')
     locks = data
     for lock in locks:
         lockwrapper = XML.SubElement(locktop,
-              'hudson.plugins.locksandlatches.LockWrapper_-LockWaitConfig')
+                                     'hudson.plugins.locksandlatches.'
+                                     'LockWrapper_-LockWaitConfig')
         XML.Sublement(lockwrapper, 'name').text = lock
 
 

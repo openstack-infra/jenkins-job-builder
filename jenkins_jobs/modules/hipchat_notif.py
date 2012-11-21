@@ -69,11 +69,11 @@ class HipChat(jenkins_jobs.modules.base.Base):
             # ConfigParser (it could possibly be a regular 'dict' object which
             # doesn't have the right get() method).
             if(not isinstance(self.registry.global_config,
-                    ConfigParser.ConfigParser)):
+                              ConfigParser.ConfigParser)):
                 raise jenkins_jobs.errors.JenkinsJobsException(
-                           'HipChat requires a config object in the registry.')
+                    'HipChat requires a config object in the registry.')
             self.authToken = self.registry.global_config.get(
-                               'hipchat', 'authtoken')
+                'hipchat', 'authtoken')
             self.jenkinsUrl = self.registry.global_config.get('jenkins', 'url')
 
     def gen_xml(self, parser, xml_parent, data):
@@ -89,10 +89,11 @@ class HipChat(jenkins_jobs.modules.base.Base):
         if properties is None:
             properties = XML.SubElement(xml_parent, 'properties')
         pdefhip = XML.SubElement(properties,
-                'jenkins.plugins.hipchat.HipChatNotifier_-HipChatJobProperty')
+                                 'jenkins.plugins.hipchat.'
+                                 'HipChatNotifier_-HipChatJobProperty')
         XML.SubElement(pdefhip, 'room').text = hipchat['room']
         XML.SubElement(pdefhip, 'startNotification').text = str(
-                                hipchat.get('start-notify', 'false')).lower()
+            hipchat.get('start-notify', 'false')).lower()
 
         publishers = xml_parent.find('publishers')
         if publishers is None:

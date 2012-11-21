@@ -29,15 +29,16 @@ def main():
     parser_delete = subparser.add_parser('delete')
     parser_delete.add_argument('name', help='name of job', nargs='+')
     subparser.add_parser('delete-all',
-            help='Delete *ALL* jobs from Jenkins server, including those '
-                 'jobs not managed Jenkins Job Builder.')
+                         help='Delete *ALL* jobs from Jenkins server, '
+                         'including those jobs not managed Jenkins Job '
+                         'Builder.')
     parser.add_argument('--conf', dest='conf', help='Configuration file')
     parser.add_argument('-l', '--log_level', dest='log_level', default='info',
                         help="Log level (default: %(default)s)")
     options = parser.parse_args()
 
     options.log_level = getattr(logging, options.log_level.upper(),
-                                  logging.INFO)
+                                logging.INFO)
     logging.basicConfig(level=options.log_level)
     logger = logging.getLogger()
 
@@ -47,7 +48,7 @@ def main():
     else:
         # Fallback to script directory
         localconf = os.path.join(os.path.dirname(__file__),
-            'jenkins_jobs.ini')
+                                 'jenkins_jobs.ini')
         if os.path.isfile(localconf):
             conf = localconf
 
@@ -74,8 +75,8 @@ def main():
         logger.info("Deleting all jobs")
         builder.delete_all_jobs()
     elif options.command == 'update':
-        logger.info("Updating jobs in {0} ({1})".format(options.path,
-                          options.name))
+        logger.info("Updating jobs in {0} ({1})".format(
+            options.path, options.name))
         builder.update_job(options.path, options.name)
     elif options.command == 'test':
         builder.update_job(options.path, options.name,

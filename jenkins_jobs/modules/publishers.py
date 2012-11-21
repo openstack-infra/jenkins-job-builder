@@ -88,15 +88,18 @@ def trigger_parameterized_builds(parser, xml_parent, data):
             project: other_job
     """
     tbuilder = XML.SubElement(xml_parent,
-        'hudson.plugins.parameterizedtrigger.BuildTrigger')
+                              'hudson.plugins.parameterizedtrigger.'
+                              'BuildTrigger')
     configs = XML.SubElement(tbuilder, 'configs')
     for project_def in data:
         tconfig = XML.SubElement(configs,
-            'hudson.plugins.parameterizedtrigger.BuildTriggerConfig')
+                                 'hudson.plugins.parameterizedtrigger.'
+                                 'BuildTriggerConfig')
         tconfigs = XML.SubElement(tconfig, 'configs')
         if 'predefined-parameters' in project_def:
             params = XML.SubElement(tconfigs,
-              'hudson.plugins.parameterizedtrigger.PredefinedBuildParameters')
+                                    'hudson.plugins.parameterizedtrigger.'
+                                    'PredefinedBuildParameters')
             properties = XML.SubElement(params, 'properties')
             properties.text = project_def['predefined-parameters']
         else:
@@ -128,16 +131,16 @@ def trigger(parser, xml_parent, data):
         'SUCCESS': {
             'ordinal': '0',
             'color': 'BLUE'
-            },
+        },
         'UNSTABLE': {
             'ordinal': '1',
             'color': 'YELLOW'
-            },
+        },
         'FAILURE': {
             'ordinal': '2',
             'color': 'RED'
-            }
         }
+    }
 
     tconfig = XML.SubElement(xml_parent, 'hudson.tasks.BuildTrigger')
     childProjects = XML.SubElement(tconfig, 'childProjects')
@@ -173,8 +176,8 @@ def coverage(parser, xml_parent, data):
     XML.SubElement(cobertura, 'onlyStable').text = 'false'
     healthy = XML.SubElement(cobertura, 'healthyTarget')
     targets = XML.SubElement(healthy, 'targets', {
-            'class': 'enum-map',
-            'enum-type': 'hudson.plugins.cobertura.targets.CoverageMetric'})
+        'class': 'enum-map',
+        'enum-type': 'hudson.plugins.cobertura.targets.CoverageMetric'})
     entry = XML.SubElement(targets, 'entry')
     XML.SubElement(entry, 'hudson.plugins.cobertura.targets.CoverageMetric'
                    ).text = 'CONDITIONAL'
@@ -189,8 +192,8 @@ def coverage(parser, xml_parent, data):
     XML.SubElement(entry, 'int').text = '80'
     unhealthy = XML.SubElement(cobertura, 'unhealthyTarget')
     targets = XML.SubElement(unhealthy, 'targets', {
-            'class': 'enum-map',
-            'enum-type': 'hudson.plugins.cobertura.targets.CoverageMetric'})
+        'class': 'enum-map',
+        'enum-type': 'hudson.plugins.cobertura.targets.CoverageMetric'})
     entry = XML.SubElement(targets, 'entry')
     XML.SubElement(entry, 'hudson.plugins.cobertura.targets.CoverageMetric'
                    ).text = 'CONDITIONAL'
@@ -205,8 +208,8 @@ def coverage(parser, xml_parent, data):
     XML.SubElement(entry, 'int').text = '0'
     failing = XML.SubElement(cobertura, 'failingTarget')
     targets = XML.SubElement(failing, 'targets', {
-            'class': 'enum-map',
-            'enum-type': 'hudson.plugins.cobertura.targets.CoverageMetric'})
+        'class': 'enum-map',
+        'enum-type': 'hudson.plugins.cobertura.targets.CoverageMetric'})
     entry = XML.SubElement(targets, 'entry')
     XML.SubElement(entry, 'hudson.plugins.cobertura.targets.CoverageMetric'
                    ).text = 'CONDITIONAL'
@@ -246,7 +249,8 @@ def ftp(parser, xml_parent, data):
             excludes: '**/*.excludedfiletype'
     """
     outer_ftp = XML.SubElement(xml_parent,
-        'jenkins.plugins.publish__over__ftp.BapFtpPublisherPlugin')
+                               'jenkins.plugins.publish__over__ftp.'
+                               'BapFtpPublisherPlugin')
     XML.SubElement(outer_ftp, 'consolePrefix').text = 'FTP: '
     delegate = XML.SubElement(outer_ftp, 'delegate')
     publishers = XML.SubElement(delegate, 'publishers')
@@ -257,7 +261,8 @@ def ftp(parser, xml_parent, data):
 
     transfers = XML.SubElement(ftp, 'transfers')
     ftp_transfers = XML.SubElement(transfers,
-        'jenkins.plugins.publish__over__ftp.BapFtpTransfer')
+                                   'jenkins.plugins.publish__over__ftp.'
+                                   'BapFtpTransfer')
     XML.SubElement(ftp_transfers, 'remoteDirectory').text = data['target']
     XML.SubElement(ftp_transfers, 'sourceFiles').text = data['source']
     XML.SubElement(ftp_transfers, 'excludes').text = data['excludes']
@@ -273,8 +278,10 @@ def ftp(parser, xml_parent, data):
     XML.SubElement(delegate, 'failOnError').text = 'false'
     XML.SubElement(delegate, 'alwaysPublishFromMaster').text = 'false'
     XML.SubElement(delegate, 'hostConfigurationAccess',
-        {'class': 'jenkins.plugins.publish_over_ftp.BapFtpPublisherPlugin',
-         'reference': '../..'})
+                   {'class':
+                       'jenkins.plugins.publish_over_ftp.'
+                       'BapFtpPublisherPlugin',
+                    'reference': '../..'})
 
 
 def junit(parser, xml_parent, data):
@@ -359,20 +366,20 @@ def xunit(parser, xml_parent, data):
 
     # Map our internal types to the XML element names used by Jenkins plugin
     types_to_plugin_types = {
-            'aunit': 'AUnitJunitHudsonTestType',
-            'boosttest': 'AUnitJunitHudsonTestType',
-            'checktype': 'CheckType',
-            'cpptest': 'CppTestJunitHudsonTestType',
-            'cppunit': 'CppUnitJunitHudsonTestType',
-            'fpcunit': 'FPCUnitJunitHudsonTestType',
-            'junit': 'JUnitType',
-            'mstest': 'MSTestJunitHudsonTestType',
-            'nunit': 'NUnitJunitHudsonTestType',
-            'phpunit': 'PHPUnitJunitHudsonTestType',
-            'tusar': 'TUSARJunitHudsonTestType',
-            'unittest': 'UnitTestJunitHudsonTestType',
-            'valgrind': 'ValgrindJunitHudsonTestType',
-            # FIXME should implement the 'custom' type
+        'aunit': 'AUnitJunitHudsonTestType',
+        'boosttest': 'AUnitJunitHudsonTestType',
+        'checktype': 'CheckType',
+        'cpptest': 'CppTestJunitHudsonTestType',
+        'cppunit': 'CppUnitJunitHudsonTestType',
+        'fpcunit': 'FPCUnitJunitHudsonTestType',
+        'junit': 'JUnitType',
+        'mstest': 'MSTestJunitHudsonTestType',
+        'nunit': 'NUnitJunitHudsonTestType',
+        'phpunit': 'PHPUnitJunitHudsonTestType',
+        'tusar': 'TUSARJunitHudsonTestType',
+        'unittest': 'UnitTestJunitHudsonTestType',
+        'valgrind': 'ValgrindJunitHudsonTestType',
+        # FIXME should implement the 'custom' type
     }
     implemented_types = types_to_plugin_types.keys()  # shortcut
 
@@ -383,7 +390,7 @@ def xunit(parser, xml_parent, data):
         type_name = configured_type.keys()[0]
         if type_name not in implemented_types:
             logger.warn("Requested xUnit type '%s' is not yet supported" %
-                    type_name)
+                        type_name)
         else:
             # Append for generation
             supported_types.append(configured_type)
@@ -393,7 +400,7 @@ def xunit(parser, xml_parent, data):
         framework_name = supported_type.keys()[0]
         xmltypes = XML.SubElement(xunit, 'types')
         xmlframework = XML.SubElement(xmltypes,
-            types_to_plugin_types[framework_name])
+                                      types_to_plugin_types[framework_name])
 
         XML.SubElement(xmlframework, 'pattern').text = \
             supported_type[framework_name].get('pattern', '')
@@ -412,15 +419,15 @@ def xunit(parser, xml_parent, data):
         for t in data['thresholds']:
             if not ('failed' in t or 'skipped' in t):
                 logger.warn(
-                     "Unrecognized threshold, should be 'failed' or 'skipped'")
+                    "Unrecognized threshold, should be 'failed' or 'skipped'")
                 continue
             elname = "org.jenkinsci.plugins.xunit.threshold.%sThreshold" \
-                    % t.keys()[0].title()
+                % t.keys()[0].title()
             el = XML.SubElement(xmlthresholds, elname)
             for threshold_name, threshold_value in t.values()[0].items():
                 # Normalize and craft the element name for this threshold
                 elname = "%sThreshold" % threshold_name.lower().replace(
-                        'new', 'New')
+                    'new', 'New')
                 XML.SubElement(el, elname).text = threshold_value
 
     # Whether to use percent of exact number of tests.
@@ -487,7 +494,8 @@ def violations(parser, xml_parent, data):
               pattern: '**/pep8.txt'
     """
     violations = XML.SubElement(xml_parent,
-                    'hudson.plugins.violations.ViolationsPublisher')
+                                'hudson.plugins.violations.'
+                                'ViolationsPublisher')
     config = XML.SubElement(violations, 'config')
     suppressions = XML.SubElement(config, 'suppressions',
                                   {'class': 'tree-set'})
@@ -589,8 +597,8 @@ def pipeline(parser, xml_parent, data):
     """
     if data != '':
         pippub = XML.SubElement(xml_parent,
-                            'au.com.centrumsystems.hudson.plugin.'
-                            'buildpipeline.trigger.BuildPipelineTrigger')
+                                'au.com.centrumsystems.hudson.plugin.'
+                                'buildpipeline.trigger.BuildPipelineTrigger')
         XML.SubElement(pippub, 'downstreamProjectNames').text = data
 
 
@@ -642,7 +650,8 @@ def claimbuild(parser, xml_parent, data):
 
 def base_email_ext(parser, xml_parent, data, ttype):
     trigger = XML.SubElement(xml_parent,
-                 'hudson.plugins.emailext.plugins.trigger.' + ttype)
+                             'hudson.plugins.emailext.plugins.trigger.'
+                             + ttype)
     email = XML.SubElement(trigger, 'email')
     XML.SubElement(email, 'recipientList').text = ''
     XML.SubElement(email, 'subject').text = '$PROJECT_DEFAULT_SUBJECT'
@@ -703,7 +712,7 @@ def email_ext(parser, xml_parent, data):
             pre-build: true
     """
     emailext = XML.SubElement(xml_parent,
-                  'hudson.plugins.emailext.ExtendedEmailPublisher')
+                              'hudson.plugins.emailext.ExtendedEmailPublisher')
     XML.SubElement(emailext, 'recipientList').text = data['recipients']
     ctrigger = XML.SubElement(emailext, 'configuredTriggers')
     if data.get('unstable', False):
@@ -772,9 +781,9 @@ def aggregate_tests(parser, xml_parent, data):
             include-failed-builds: true
     """
     agg = XML.SubElement(xml_parent,
-             'hudson.tasks.test.AggregatedTestResultPublisher')
+                         'hudson.tasks.test.AggregatedTestResultPublisher')
     XML.SubElement(agg, 'includeFailedBuilds').text = str(data.get(
-             'include-failed-builds', False)).lower()
+        'include-failed-builds', False)).lower()
 
 
 class Publishers(jenkins_jobs.modules.base.Base):

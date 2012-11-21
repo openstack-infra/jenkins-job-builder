@@ -146,7 +146,8 @@ def label_param(parser, xml_parent, data):
             description: "The node on which to run the job"
     """
     base_param(parser, xml_parent, data, True,
-      'org.jvnet.jenkins.plugins.nodelabelparameter.LabelParameterDefinition')
+               'org.jvnet.jenkins.plugins.nodelabelparameter.'
+               'LabelParameterDefinition')
 
 
 def choice_param(parser, xml_parent, data):
@@ -200,8 +201,8 @@ def validating_string_param(parser, xml_parent, data):
             msg: Your entered value failed validation
     """
     pdef = base_param(parser, xml_parent, data, True,
-      'hudson.plugins.validating__string__parameter.'
-            'ValidatingStringParameterDefinition')
+                      'hudson.plugins.validating__string__parameter.'
+                      'ValidatingStringParameterDefinition')
     XML.SubElement(pdef, 'regex').text = data['regex']
     XML.SubElement(pdef, 'failedValidationMessage').text = data['msg']
 
@@ -230,7 +231,8 @@ def svn_tags_param(parser, xml_parent, data):
             filter: [A-za-z0-9]*
     """
     pdef = base_param(parser, xml_parent, data, True,
-      'hudson.scm.listtagsparameter.ListSubversionTagsParameterDefinition')
+                      'hudson.scm.listtagsparameter.'
+                      'ListSubversionTagsParameterDefinition')
     XML.SubElement(pdef, 'tagsDir').text = data['url']
     XML.SubElement(pdef, 'tagsFilter').text = data.get('filter', None)
     XML.SubElement(pdef, 'reverseByDate').text = "true"

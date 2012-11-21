@@ -49,7 +49,8 @@ def github(parser, xml_parent, data):
             url: https://github.com/openstack-ci/jenkins-job-builder/
     """
     github = XML.SubElement(xml_parent,
-               'com.coravy.hudson.plugins.github.GithubProjectProperty')
+                            'com.coravy.hudson.plugins.github.'
+                            'GithubProjectProperty')
     github_url = XML.SubElement(github, 'projectUrl')
     github_url.text = data['url']
 
@@ -73,7 +74,8 @@ def throttle(parser, xml_parent, data):
             max-total: 4
     """
     throttle = XML.SubElement(xml_parent,
-                 'hudson.plugins.throttleconcurrents.ThrottleJobProperty')
+                              'hudson.plugins.throttleconcurrents.'
+                              'ThrottleJobProperty')
     XML.SubElement(throttle, 'maxConcurrentPerNode').text = str(
         data.get('max-per-node', '0'))
     XML.SubElement(throttle, 'maxConcurrentTotal').text = str(
@@ -111,7 +113,7 @@ def inject(parser, xml_parent, data):
             properties-content: FOO=bar
     """
     inject = XML.SubElement(xml_parent,
-                 'EnvInjectJobProperty')
+                            'EnvInjectJobProperty')
     info = XML.SubElement(inject, 'info')
     XML.SubElement(info, 'propertiesFilePath').text = str(
         data.get('properties-file', ''))
@@ -148,9 +150,10 @@ def authenticated_build(parser, xml_parent, data):
     # TODO: generalize this
     if data:
         security = XML.SubElement(xml_parent,
-                        'hudson.security.AuthorizationMatrixProperty')
+                                  'hudson.security.'
+                                  'AuthorizationMatrixProperty')
         XML.SubElement(security, 'permission').text = \
-        'hudson.model.Item.Build:authenticated'
+            'hudson.model.Item.Build:authenticated'
 
 
 def authorization(parser, xml_parent, data):
@@ -200,11 +203,11 @@ def authorization(parser, xml_parent, data):
         'run-delete': 'hudson.model.Run.Delete',
         'run-update': 'hudson.model.Run.Update',
         'scm-tag': 'hudson.scm.SCM.Tag'
-        }
+    }
 
     if data:
         matrix = XML.SubElement(xml_parent,
-                        'hudson.security.AuthorizationMatrixProperty')
+                                'hudson.security.AuthorizationMatrixProperty')
         for (username, perms) in data.items():
             for perm in perms:
                 pe = XML.SubElement(matrix, 'permission')
