@@ -4,9 +4,9 @@ Configuration
 The job definitions for Jenkins Job Builder are kept in any number of
 YAML files, in whatever way you would like to organize them.  When you
 invoke ``jenkins-jobs`` you may specify either the path of a single
-YAML file, or a directory.  If you choose a directory, all of the
-.yaml (or .yml) files in that directory will be read, and all the jobs
-they define will be created or updated.
+YAML file, or a directory.  If you choose a directory, all of
+the .yaml (or .yml) files in that directory will be read, and all the
+jobs they define will be created or updated.
 
 Definitions
 -----------

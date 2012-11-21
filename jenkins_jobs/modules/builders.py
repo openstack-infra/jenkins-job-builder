@@ -263,7 +263,7 @@ def inject(parser, xml_parent, data):
 
 def artifact_resolver(parser, xml_parent, data):
     """yaml: artifact-resolver
-    Allows to resolve artifacts from a maven repository like nexus
+    Allows one to resolve artifacts from a maven repository like nexus
     (without having maven installed)
     Requires the Jenkins `Repository Connector Plugin
     <https://wiki.jenkins-ci.org/display/JENKINS/Repository+Connector+Plugin>`_

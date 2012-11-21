@@ -303,7 +303,7 @@ def xunit(parser, xml_parent, data):
 
     :arg str thresholdmode: whether thresholds represents an absolute \
     number of tests or a percentage. Either 'number' or 'percent', will \
-    default to 'number' if ommitted.
+    default to 'number' if omitted.
 
     :arg dict thresholds: list containing the thresholds for both \
     'failed' and 'skipped' tests. Each entry should in turn have a \
