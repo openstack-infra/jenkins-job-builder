@@ -62,6 +62,7 @@ setuptools.setup(
             'artifact-resolver=jenkins_jobs.modules.builders:'
             'artifact_resolver',
             'copyartifact=jenkins_jobs.modules.builders:copyartifact',
+            'gradle=jenkins_jobs.modules.builders:gradle',
         ],
         'jenkins_jobs.reporters': [
             'email=jenkins_jobs.modules.reporters:email',

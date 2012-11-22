@@ -334,6 +334,38 @@ def artifact_resolver(parser, xml_parent, data):
     XML.SubElement(ar, 'releaseChecksumPolicy').text = 'warn'
 
 
+def gradle(parser, xml_parent, data):
+    """yaml: gradle
+    Execute gradle tasks.  Requires the Jenkins 'Gradle Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Gradle+Plugin>`_
+
+    :arg str tasks: List of tasks to execute
+    :arg bool wrapper: use gradle wrapper (default false)
+    :arg bool executable: make gradlew executable (default false)
+
+    Example::
+
+      builders:
+        - gradle:
+            wrapper: true
+            executable: true
+            tasks: |
+                   init
+                   build
+                   tests
+    """
+    gradle = XML.SubElement(xml_parent, 'hudson.plugins.gradle.Gradle')
+    XML.SubElement(gradle, 'description').text = ''
+    XML.SubElement(gradle, 'switches').text = ''
+    XML.SubElement(gradle, 'tasks').text = data['tasks']
+    XML.SubElement(gradle, 'rootBuildScriptDir').text = ''
+    XML.SubElement(gradle, 'buildFile').text = ''
+    XML.SubElement(gradle, 'useWrapper').text = str(data.get(
+        'wrapper', False)).lower()
+    XML.SubElement(gradle, 'makeExecutable').text = str(data.get(
+        'executable', False)).lower()
+
+
 class Builders(jenkins_jobs.modules.base.Base):
     sequence = 60
 
