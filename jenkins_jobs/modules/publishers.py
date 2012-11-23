@@ -934,6 +934,20 @@ def copy_to_master(parser, xml_parent, data):
         XML.SubElement(cm, 'overrideDestinationFolder').text = 'true'
 
 
+def jira(parser, xml_parent, data):
+    """yaml: jira
+    Update relevant JIRA issues
+    Requires the Jenkins `JIRA Plugin
+    <https://wiki.jenkins-ci.org/display/JENKINS/JIRA+Plugin>`_
+
+    Example::
+
+      publishers:
+        - jira
+    """
+    XML.SubElement(xml_parent, 'hudson.plugins.jira.JiraIssueUpdater')
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
