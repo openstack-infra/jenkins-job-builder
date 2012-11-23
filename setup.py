@@ -131,6 +131,7 @@ setuptools.setup(
             'port-allocator=jenkins_jobs.modules.wrappers:port_allocator',
             'locks=jenkins_jobs.modules.wrappers:locks',
             'copy-to-slave=jenkins_jobs.modules.wrappers:copy_to_slave',
+            'inject=jenkins_jobs.modules.wrappers:inject',
         ],
         'jenkins_jobs.modules': [
             'assignednode=jenkins_jobs.modules.assignednode:AssignedNode',
