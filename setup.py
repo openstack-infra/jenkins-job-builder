@@ -52,6 +52,7 @@ setuptools.setup(
         'jenkins_jobs.projects': [
             'freestyle=jenkins_jobs.modules.project_freestyle:Freestyle',
             'maven=jenkins_jobs.modules.project_maven:Maven',
+            'matrix=jenkins_jobs.modules.project_matrix:Matrix',
         ],
         'jenkins_jobs.builders': [
             'shell=jenkins_jobs.modules.builders:shell',

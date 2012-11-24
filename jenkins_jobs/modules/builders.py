@@ -381,5 +381,5 @@ class Builders(jenkins_jobs.modules.base.Base):
         # Make sure freestyle projects always have a <builders> entry
         # or Jenkins v1.472 (at least) will NPE.
         project_type = data.get('project-type', 'freestyle')
-        if project_type == 'freestyle' and 'builders' not in data:
+        if project_type in ('freestyle', 'matrix') and 'builders' not in data:
             XML.SubElement(xml_parent, 'builders')
