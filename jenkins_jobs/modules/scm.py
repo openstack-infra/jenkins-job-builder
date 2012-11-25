@@ -46,6 +46,8 @@ def git(self, xml_parent, data):
     :arg str url: URL of the git repository
     :arg str refspec: refspec to fetch
     :arg list(str) branches: list of branch specifiers to build
+    :arg str basedir: location relative to the workspace root to clone to
+             (default: workspace)
     :arg bool skip-tag: Skip tagging
     :arg bool prune: Prune remote branches
     :arg bool clean: Clean after checkout
@@ -82,7 +84,7 @@ def git(self, xml_parent, data):
             'class': 'hudson.plugins.git.util.DefaultBuildChooser'}),
         (None, 'gitTool', "Default"),
         (None, 'submoduleCfg', '', {'class': 'list'}),
-        (None, 'relativeTargetDir', ''),
+        ('basedir', 'relativeTargetDir', ''),
         (None, 'reference', ''),
         (None, 'excludedRegions', ''),
         (None, 'excludedUsers', ''),
