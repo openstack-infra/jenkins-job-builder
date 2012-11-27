@@ -171,33 +171,6 @@ class YamlParser(object):
             break
 
     def gen_xml(self, xml, data):
-        XML.SubElement(xml, 'actions')
-        description = XML.SubElement(xml, 'description')
-        description.text = data.get('description', '')
-        XML.SubElement(xml, 'keepDependencies').text = 'false'
-        if data.get('disabled'):
-            XML.SubElement(xml, 'disabled').text = 'true'
-        else:
-            XML.SubElement(xml, 'disabled').text = 'false'
-        if data.get('block-downstream'):
-            XML.SubElement(xml,
-                           'blockBuildWhenDownstreamBuilding').text = 'true'
-        else:
-            XML.SubElement(xml,
-                           'blockBuildWhenDownstreamBuilding').text = 'false'
-        if data.get('block-upstream'):
-            XML.SubElement(xml,
-                           'blockBuildWhenUpstreamBuilding').text = 'true'
-        else:
-            XML.SubElement(xml,
-                           'blockBuildWhenUpstreamBuilding').text = 'false'
-        if data.get('concurrent'):
-            XML.SubElement(xml, 'concurrentBuild').text = 'true'
-        else:
-            XML.SubElement(xml, 'concurrentBuild').text = 'false'
-        if('quiet-period' in data):
-            XML.SubElement(xml, 'quietPeriod').text = str(data['quiet-period'])
-
         for module in self.registry.modules:
             if hasattr(module, 'gen_xml'):
                 module.gen_xml(self, xml, data)
