@@ -116,6 +116,7 @@ def ant(parser, xml_parent, data):
 
     :arg str targets: the space separated list of ANT targets.
     :arg str buildfile: the path to the ANT build file.
+    :arg list properties: Passed to ant script using -Dkey=value (optional)
     :arg str ant-name: the name of the ant installation,
         defaults to 'default' (optional)
 
@@ -126,6 +127,9 @@ def ant(parser, xml_parent, data):
           - ant:
              targets: "debug test install"
              buildfile: "build.xml"
+             properties:
+                builddir: "/tmp/"
+                failonerror: true
              ant-name: "Standard Ant"
 
     """
@@ -141,6 +145,14 @@ def ant(parser, xml_parent, data):
         if setting == 'buildfile':
             buildfile = XML.SubElement(ant, 'buildFile')
             buildfile.text = value
+        if setting == 'properties':
+            properties = data['properties']
+            prop_string = ''
+            for prop, val in properties.items():
+                prop_string += "%s=%s\n" % (prop, val)
+            prop_element = XML.SubElement(ant, 'properties')
+            prop_element.text = prop_string
+
     XML.SubElement(ant, 'antName').text = data.get('ant-name', 'default')
 
 
