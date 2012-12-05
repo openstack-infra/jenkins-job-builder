@@ -15,6 +15,14 @@
 """
 The Zuul module adds triggers that configure jobs for use with Zuul_.
 
+To change the Zuul notification URL, set a global default::
+
+  - defaults:
+    name: global
+    zuul-url: http://127.0.0.1:8001/jenkins_endpoint
+
+The above URL is the default.
+
 .. _Zuul: http://ci.openstack.org/zuul/
 """
 
@@ -128,10 +136,7 @@ ZUUL_POST_PARAMETERS = [
          'name': 'ZUUL_SHORT_NEWREV'}},
 ]
 
-ZUUL_NOTIFICATIONS = [
-    {'http':
-        {'url': 'http://127.0.0.1:8001/jenkins_endpoint'}}
-]
+DEFAULT_URL = 'http://127.0.0.1:8001/jenkins_endpoint'
 
 
 class Zuul(jenkins_jobs.modules.base.Base):
@@ -153,7 +158,16 @@ class Zuul(jenkins_jobs.modules.base.Base):
                 job['parameters'] = []
             if 'notifications' not in job:
                 job['notifications'] = []
-            job['notifications'].extend(ZUUL_NOTIFICATIONS)
+            # This isn't a good pattern, and somewhat violates the
+            # spirit of the global defaults, but Zuul is working on
+            # a better design that should obviate the need for most
+            # of this module, so this gets it doen with minimal
+            # intrusion to the rest of JJB.
+            if parser.data.get('defaults', {}).get('global'):
+                url = parser.data['defaults']['global'].get(
+                    'zuul-url', DEFAULT_URL)
+            notifications = [{'http': {'url': url}}]
+            job['notifications'].extend(notifications)
             if 'zuul' in job.get('triggers', []):
                 job['parameters'].extend(ZUUL_PARAMETERS)
                 job['triggers'].remove('zuul')
