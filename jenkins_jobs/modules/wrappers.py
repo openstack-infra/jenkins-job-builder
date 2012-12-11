@@ -296,6 +296,55 @@ def inject(parser, xml_parent, data):
     XML.SubElement(info, 'loadFilesFromMaster').text = 'false'
 
 
+def jclouds(parser, xml_parent, data):
+    """yaml: jclouds
+    :arg bool single-use: Whether or not to terminate the slave after use
+                          (default: False).
+    :arg list instances: The name of the jclouds template to create an
+                         instance from, and its parameters.
+    :arg str cloud-name: The name of the jclouds profile containing the
+                         specified template.
+    :arg int count: How many instances to create (default: 1).
+    :arg bool stop-on-terminate: Whether or not to suspend instead of terminate
+                                 the instance (default: False).
+
+    Example::
+      wrappers:
+        - jclouds:
+          single-use: True
+          instances:
+            - jenkins-dev-slave:
+                cloud-name: mycloud1
+                count: 1
+                stop-on-terminate: True
+            - jenkins-test-slave:
+                cloud-name: mycloud2
+                count: 2
+                stop-on-terminate: False
+    """
+    buildWrapper = XML.SubElement(xml_parent,
+                                  'jenkins.plugins.jclouds.compute.'
+                                  'JCloudsBuildWrapper')
+    instances = XML.SubElement(buildWrapper, 'instancesToRun')
+    if 'instances' in data:
+        for foo in data['instances']:
+            for template, params in foo.items():
+                instance = XML.SubElement(instances,
+                                          'jenkins.plugins.jclouds.compute.'
+                                          'InstancesToRun')
+                XML.SubElement(instance, 'templateName').text = template
+                XML.SubElement(instance, 'cloudName').text = \
+                    params.get('cloud-name', '')
+                XML.SubElement(instance, 'count').text = \
+                    str(params.get('count', 1))
+                XML.SubElement(instance, 'suspendOrTerminate').text = \
+                    str(params.get('stop-on-terminate', False)).lower()
+    if data.get('single-use'):
+        XML.SubElement(xml_parent,
+                       'jenkins.plugins.jclouds.compute.'
+                       'JCloudsOneOffSlave')
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 

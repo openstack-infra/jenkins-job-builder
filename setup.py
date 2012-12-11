@@ -133,6 +133,7 @@ setuptools.setup(
             'locks=jenkins_jobs.modules.wrappers:locks',
             'copy-to-slave=jenkins_jobs.modules.wrappers:copy_to_slave',
             'inject=jenkins_jobs.modules.wrappers:inject',
+            'jclouds=jenkins_jobs.modules.wrappers:jclouds',
         ],
         'jenkins_jobs.modules': [
             'general=jenkins_jobs.modules.general:General',
