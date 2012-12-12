@@ -209,6 +209,56 @@ actions) in YAML that look like first-class Jenkins Job Builder
 actions.  Not every attribute supports Macros, check the documentation
 for the action before you try to use a Macro for it.
 
+Macros can take parameters, letting you define a generic macro and more
+specific ones without having to duplicate code::
+
+    # The 'add' macro takes a 'number' parameter and will creates a
+    # job which prints 'Adding ' followed by the 'number' parameter:
+    - builder:
+        name: add
+        builders:
+         - shell: "echo Adding {number}"
+
+    # A specialized macro 'addtwo' reusing the 'add' macro but with
+    # a 'number' parameter hardcoded to 'two':
+    - builder:
+        name: addtwo
+        builders:
+         - add:
+            number: "two"
+
+    # Glue to have Jenkins Job Builder to expand this YAML example:
+    - job:
+        name: "testingjob"
+        builders:
+         # The specialized macro:
+         - addtwo
+         # Generic macro call with a parameter
+         - add:
+            number: "ZERO"
+         # Generic macro called without a parameter. Never do this!
+         # See below for the resulting wrong output :(
+         - add
+
+Then ``<builders />`` section of the generated job show up as::
+
+  <builders>
+    <hudson.tasks.Shell>
+      <command>echo Adding two</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>echo Adding ZERO</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>echo Adding {number}</command>
+    </hudson.tasks.Shell>
+  </builders>
+
+As you can see, the specialized macro ``addtwo`` reused the definition from
+the generic macro ``add``.  Whenever you forget a parameter from a macro,
+it will not be expanded and left as is, which will most probably cause havoc in
+your Jenkins builds.
+
 Defaults
 ^^^^^^^^
 
