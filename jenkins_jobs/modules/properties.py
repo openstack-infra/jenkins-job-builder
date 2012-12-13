@@ -65,13 +65,18 @@ def throttle(parser, xml_parent, data):
     :arg int max-per-node: max concurrent builds per node (default 0)
     :arg int max-total: max concurrent builds (default 0)
     :arg bool enabled: whether throttling is enabled (default True)
-    :arg str option: TODO: describe throttleOption
+    :arg str option: throttle `project` or `category`
+    :arg list categories: multiproject throttle categories
 
     Example::
 
       properties:
         - throttle:
             max-total: 4
+            categories:
+              - cat1
+              - cat2
+
     """
     throttle = XML.SubElement(xml_parent,
                               'hudson.plugins.throttleconcurrents.'
@@ -86,6 +91,12 @@ def throttle(parser, xml_parent, data):
         XML.SubElement(throttle, 'throttleEnabled').text = 'true'
     else:
         XML.SubElement(throttle, 'throttleEnabled').text = 'false'
+    cat = data.get('categories', [])
+    if cat:
+        cn = XML.SubElement(throttle, 'categories')
+        for c in cat:
+            XML.SubElement(cn, 'string').text = str(c)
+
     XML.SubElement(throttle, 'throttleOption').text = data.get('option')
     XML.SubElement(throttle, 'configVersion').text = '1'
 
