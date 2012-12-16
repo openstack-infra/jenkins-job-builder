@@ -1,4 +1,4 @@
 [gerrit]
 host=review.openstack.org
 port=29418
-project=openstack-ci/jenkins-job-builder.git
+project=openstack-infra/jenkins-job-builder.git
