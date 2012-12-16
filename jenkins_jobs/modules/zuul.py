@@ -118,6 +118,9 @@ ZUUL_POST_PARAMETERS = [
          'name': 'GERRIT_REFNAME'}},
     {'string':
         {'description': 'Name of updated reference triggering this job',
+         'name': 'ZUUL_REF'}},
+    {'string':
+        {'description': 'Name of updated reference triggering this job',
          'name': 'ZUUL_REFNAME'}},
     {'string':
         {'description': 'Zuul provided old reference for ref-updated',
