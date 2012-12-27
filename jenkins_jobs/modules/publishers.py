@@ -633,7 +633,7 @@ def email(parser, xml_parent, data):
         data.get('send-to-individuals', False)).lower()
 
 
-def claimbuild(parser, xml_parent, data):
+def claim_build(parser, xml_parent, data):
     """yaml: claim-build
     Claim build failures
     Requires the Jenkins `Claim Plugin.

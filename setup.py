@@ -103,7 +103,7 @@ setuptools.setup(
             'scp=jenkins_jobs.modules.publishers:scp',
             'pipeline=jenkins_jobs.modules.publishers:pipeline',
             'email=jenkins_jobs.modules.publishers:email',
-            'claim-build=jenkins_jobs.modules.publishers:claimbuild',
+            'claim-build=jenkins_jobs.modules.publishers:claim_build',
             'email-ext=jenkins_jobs.modules.publishers:email_ext',
             'fingerprint=jenkins_jobs.modules.publishers:fingerprint',
             'aggregate-tests=jenkins_jobs.modules.publishers:aggregate_tests',
