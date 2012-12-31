@@ -30,7 +30,7 @@ def main():
     parser_delete.add_argument('name', help='name of job', nargs='+')
     subparser.add_parser('delete-all',
                          help='Delete *ALL* jobs from Jenkins server, '
-                         'including those jobs not managed Jenkins Job '
+                         'including those not managed by Jenkins Job '
                          'Builder.')
     parser.add_argument('--conf', dest='conf', help='Configuration file')
     parser.add_argument('-l', '--log_level', dest='log_level', default='info',
