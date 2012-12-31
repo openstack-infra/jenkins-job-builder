@@ -217,7 +217,7 @@ def locks(parser, xml_parent, data):
         lockwrapper = XML.SubElement(locktop,
                                      'hudson.plugins.locksandlatches.'
                                      'LockWrapper_-LockWaitConfig')
-        XML.Sublement(lockwrapper, 'name').text = lock
+        XML.SubElement(lockwrapper, 'name').text = lock
 
 
 def copy_to_slave(parser, xml_parent, data):
