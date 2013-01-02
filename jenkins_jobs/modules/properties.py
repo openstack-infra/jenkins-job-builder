@@ -126,16 +126,18 @@ def inject(parser, xml_parent, data):
     inject = XML.SubElement(xml_parent,
                             'EnvInjectJobProperty')
     info = XML.SubElement(inject, 'info')
-    XML.SubElement(info, 'propertiesFilePath').text = str(
-        data.get('properties-file', ''))
-    XML.SubElement(info, 'propertiesContent').text = str(
-        data.get('properties-content', ''))
-    XML.SubElement(info, 'scriptFilePath').text = str(
-        data.get('script-file', ''))
-    XML.SubElement(info, 'scriptContent').text = str(
-        data.get('script-content', ''))
-    XML.SubElement(info, 'groovyScriptContent').text = str(
-        data.get('groovy-content', ''))
+
+    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
+        info, 'propertiesFilePath', data.get('properties-file'))
+    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
+        info, 'propertiesContent', data.get('properties-content'))
+    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
+        info, 'scriptFilePath', data.get('script-file'))
+    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
+        info, 'scriptContent', data.get('script-content'))
+    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
+        info, 'groovyScriptContent', data.get('groovy-content'))
+
     XML.SubElement(info, 'loadFilesFromMaster').text = str(
         data.get('load-from-master', 'false')).lower()
     XML.SubElement(inject, 'on').text = str(

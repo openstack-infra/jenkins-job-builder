@@ -270,30 +270,30 @@ def inject(parser, xml_parent, data):
     Requires the Jenkins `EnvInject Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin>`_
 
-    :arg str properties-file-path: path to the properties file (default '')
+    :arg str properties-file: path to the properties file (default '')
     :arg str properties-content: key value pair of properties (default '')
-    :arg str script-file-path: path to the script file (default '')
+    :arg str script-file: path to the script file (default '')
     :arg str script-content: contents of a script (default '')
 
     Example::
 
       wrappers:
         - inject:
-            properties-file-path: /usr/local/foo
+            properties-file: /usr/local/foo
             properties-content: PATH=/foo/bar
-            script-file-path: /usr/local/foo.sh
+            script-file: /usr/local/foo.sh
             script-content: echo $PATH
     """
     eib = XML.SubElement(xml_parent, 'EnvInjectBuildWrapper')
     info = XML.SubElement(eib, 'info')
-    XML.SubElement(info, 'propertiesFilePath').text = data.get(
-        'properties-file-path', '')
-    XML.SubElement(info, 'propertiesContent').text = data.get(
-        'properties-content', '')
-    XML.SubElement(info, 'scriptFilePath').text = data.get(
-        'script-file-path', '')
-    XML.SubElement(info, 'scriptContent').text = data.get(
-        'script-content', '')
+    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
+        info, 'propertiesFilePath', data.get('properties-file'))
+    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
+        info, 'propertiesContent', data.get('properties-content'))
+    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
+        info, 'scriptFilePath', data.get('script-file'))
+    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
+        info, 'scriptContent', data.get('script-content'))
     XML.SubElement(info, 'loadFilesFromMaster').text = 'false'
 
 
