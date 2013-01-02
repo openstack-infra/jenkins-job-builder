@@ -45,6 +45,7 @@ def git(self, xml_parent, data):
 
     :arg str url: URL of the git repository
     :arg str refspec: refspec to fetch
+    :arg str name: name to fetch
     :arg list(str) branches: list of branch specifiers to build
     :arg str basedir: location relative to the workspace root to clone to
              (default: workspace)
@@ -56,6 +57,7 @@ def git(self, xml_parent, data):
     :arg bool recursive-submodules: Recursively update submodules
     :arg bool use-author: Use author rather than committer in Jenkin's build
       changeset
+    :arg str git-tool: The name of the Git installation to use
     :arg bool wipe-workspace: Wipe out workspace before build
     :arg str browser: what repository browser to use (default '(Auto)')
     :arg str browser-url: url for the repository browser
@@ -97,7 +99,7 @@ def git(self, xml_parent, data):
         ("fastpoll", 'remotePoll', False),
         (None, 'buildChooser', '', {
             'class': 'hudson.plugins.git.util.DefaultBuildChooser'}),
-        (None, 'gitTool', "Default"),
+        ("git-tool", 'gitTool', "Default"),
         (None, 'submoduleCfg', '', {'class': 'list'}),
         ('basedir', 'relativeTargetDir', ''),
         (None, 'reference', ''),
@@ -114,7 +116,7 @@ def git(self, xml_parent, data):
     XML.SubElement(scm, 'configVersion').text = '2'
     user = XML.SubElement(scm, 'userRemoteConfigs')
     huser = XML.SubElement(user, 'hudson.plugins.git.UserRemoteConfig')
-    XML.SubElement(huser, 'name').text = 'origin'
+    XML.SubElement(huser, 'name').text = data.get('name', 'origin')
     if 'refspec' in data:
         refspec = data['refspec']
     else:
