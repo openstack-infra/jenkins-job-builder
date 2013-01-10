@@ -378,6 +378,22 @@ def gradle(parser, xml_parent, data):
         'executable', False)).lower()
 
 
+def batch(parser, xml_parent, data):
+    """yaml: batch
+    Execute a batch command.
+
+    :Parameter: the batch command to execute
+
+    Example::
+
+      builders:
+        - batch: "foo/foo.bat"
+
+    """
+    batch = XML.SubElement(xml_parent, 'hudson.tasks.BatchFile')
+    XML.SubElement(batch, 'command').text = data
+
+
 class Builders(jenkins_jobs.modules.base.Base):
     sequence = 60
 
