@@ -681,7 +681,7 @@ def email_ext(parser, xml_parent, data):
     :arg bool aborted: Send an email if the build is aborted (default false)
     :arg bool regression: Send an email if there is a regression
         (default false)
-    :arg bool failure: Send an email if the build fails (default false)
+    :arg bool failure: Send an email if the build fails (default true)
     :arg bool improvement: Send an email if the build improves (default false)
     :arg bool still-failing: Send an email if the build is still failing
         (default false)
@@ -713,7 +713,10 @@ def email_ext(parser, xml_parent, data):
     """
     emailext = XML.SubElement(xml_parent,
                               'hudson.plugins.emailext.ExtendedEmailPublisher')
-    XML.SubElement(emailext, 'recipientList').text = data['recipients']
+    if 'recipients' in data:
+        XML.SubElement(emailext, 'recipientList').text = data['recipients']
+    else:
+        XML.SubElement(emailext, 'recipientList').text = '$DEFAULT_RECIPIENTS'
     ctrigger = XML.SubElement(emailext, 'configuredTriggers')
     if data.get('unstable', False):
         base_email_ext(parser, ctrigger, data, 'UnstableTrigger')
@@ -725,7 +728,7 @@ def email_ext(parser, xml_parent, data):
         base_email_ext(parser, ctrigger, data, 'AbortedTrigger')
     if data.get('regression', False):
         base_email_ext(parser, ctrigger, data, 'RegressionTrigger')
-    if data.get('failure', False):
+    if data.get('failure', True):
         base_email_ext(parser, ctrigger, data, 'FailureTrigger')
     if data.get('improvement', False):
         base_email_ext(parser, ctrigger, data, 'ImprovementTrigger')
@@ -740,8 +743,10 @@ def email_ext(parser, xml_parent, data):
     if data.get('pre-build', False):
         base_email_ext(parser, ctrigger, data, 'PreBuildTrigger')
     XML.SubElement(emailext, 'contentType').text = 'default'
-    XML.SubElement(emailext, 'defaultSubject').text = data.get('subject', '')
-    XML.SubElement(emailext, 'defaultContent').text = data.get('body', '')
+    XML.SubElement(emailext, 'defaultSubject').text = data.get(
+        'subject', '$DEFAULT_SUBJECT')
+    XML.SubElement(emailext, 'defaultContent').text = data.get(
+        'body', '$DEFAULT_CONTENT')
     XML.SubElement(emailext, 'attachmentsPattern').text = ''
     XML.SubElement(emailext, 'presendScript').text = ''
 
