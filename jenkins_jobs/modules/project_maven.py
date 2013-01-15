@@ -20,7 +20,9 @@ attribute to the :ref:`Job` definition.
 
 It also requires a ``maven`` section in the :ref:`Job` definition.
 All of the fields below are required, except ``root-pom``, whose
-default is ``pom.xml``.
+default is ``pom.xml``, and ``maven-name`` which will default to being
+unset. Not setting ``maven-name`` appears to use the first maven
+install defined in the global jenkins config.
 
 Example::
 
@@ -34,6 +36,7 @@ Example::
         artifact-id: example-guide
       root-pom: doc/src/pom.xml
       goals: "clean generate-sources"
+      maven-name: Maven3
 """
 
 import xml.etree.ElementTree as XML
@@ -53,6 +56,10 @@ class Maven(jenkins_jobs.modules.base.Base):
         XML.SubElement(root_module, 'artifactId').text = \
             data['maven']['root-module']['artifact-id']
         XML.SubElement(xml_parent, 'goals').text = data['maven']['goals']
+
+        maven_name = data['maven'].get('maven-name')
+        if maven_name:
+            XML.SubElement(xml_parent, 'mavenName').text = maven_name
 
         XML.SubElement(xml_parent, 'rootPOM').text = \
             data['maven'].get('root-pom', 'pom.xml')
