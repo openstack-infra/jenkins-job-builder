@@ -259,6 +259,8 @@ the generic macro ``add``.  Whenever you forget a parameter from a macro,
 it will not be expanded and left as is, which will most probably cause havoc in
 your Jenkins builds.
 
+.. _defaults:
+
 Defaults
 ^^^^^^^^
 

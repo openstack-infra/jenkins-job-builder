@@ -28,9 +28,9 @@ later.  There are a few basic optional fields for a Job definition::
       Defaults to "freestyle", but "maven" can also be specified.
 
     * **defaults**:
-      Specifies a set of `Defaults`_ to use for this job, defaults to
+      Specifies a set of :ref:`defaults` to use for this job, defaults to
       ''global''.  If you have values that are common to all of your jobs,
-      create a ``global`` `Defaults`_ object to hold them, and no further
+      create a ``global`` :ref:`defaults` object to hold them, and no further
       configuration of individual jobs is necessary.  If some jobs
       should not use the ``global`` defaults, use this field to specify a
       different set of defaults.
