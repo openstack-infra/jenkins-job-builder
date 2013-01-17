@@ -1,1 +1,2 @@
 sphinx
+setuptools_git>=0.4

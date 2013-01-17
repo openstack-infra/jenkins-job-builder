@@ -34,7 +34,6 @@ setuptools.setup(
     include_package_data=True,
     cmdclass=setup.get_cmdclass(),
     install_requires=requires,
-    setup_requires=['setuptools_git>=0.4'],
     dependency_links=depend_links,
     zip_safe=False,
     classifiers=[
