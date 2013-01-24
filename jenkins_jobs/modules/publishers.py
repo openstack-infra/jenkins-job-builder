@@ -953,6 +953,26 @@ def jira(parser, xml_parent, data):
     XML.SubElement(xml_parent, 'hudson.plugins.jira.JiraIssueUpdater')
 
 
+def groovy_postbuild(parser, xml_parent, data):
+    """yaml: groovy-postbuild
+    Execute a groovy script.
+    Requires the Jenkins `Groovy Postbuild Plugin
+    <https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Postbuild+Plugin>`_
+
+    :Parameter: the groovy script to execute
+
+    Example::
+
+      publishers:
+        - groovy-postbuild: "manager.buildFailure()"
+
+    """
+    root_tag = 'org.jvnet.hudson.plugins.groovypostbuild.'\
+        'GroovyPostbuildRecorder'
+    groovy = XML.SubElement(xml_parent, root_tag)
+    XML.SubElement(groovy, 'groovyScript').text = data
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

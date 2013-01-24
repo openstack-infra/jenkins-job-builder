@@ -99,6 +99,8 @@ setuptools.setup(
             'ftp=jenkins_jobs.modules.publishers:ftp',
             'junit=jenkins_jobs.modules.publishers:junit',
             'xunit=jenkins_jobs.modules.publishers:xunit',
+            'groovy-postbuild=jenkins_jobs.modules.publishers:'
+            'groovy_postbuild',
             'violations=jenkins_jobs.modules.publishers:violations',
             'scp=jenkins_jobs.modules.publishers:scp',
             'pipeline=jenkins_jobs.modules.publishers:pipeline',
