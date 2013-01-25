@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import jenkins_jobs.builder
+import jenkins_jobs.errors
 import argparse
 import ConfigParser
 import logging
@@ -52,13 +53,18 @@ def main():
         if os.path.isfile(localconf):
             conf = localconf
 
-    if not options.command == 'test':
+    if os.path.isfile(conf):
         logger.debug("Reading config from {0}".format(conf))
         conffp = open(conf, 'r')
         config = ConfigParser.ConfigParser()
         config.readfp(conffp)
-    else:
+    elif options.command == 'test':
+        logger.debug("Not reading config for test output generation")
         config = {}
+    else:
+        raise jenkins_jobs.errors.JenkinsJobsException(
+            "A valid configuration file is required when not run as a test")
+
     logger.debug("Config: {0}".format(config))
     builder = jenkins_jobs.builder.Builder(config.get('jenkins', 'url'),
                                            config.get('jenkins', 'user'),

@@ -47,6 +47,7 @@ import jenkins_jobs.modules.base
 import jenkins_jobs.errors
 import logging
 import ConfigParser
+import sys
 
 logger = logging.getLogger(__name__)
 
@@ -65,15 +66,18 @@ class HipChat(jenkins_jobs.modules.base.Base):
            unless actually required.
         """
         if(not self.authToken):
-            # Verify that the config object in the registry is of type
-            # ConfigParser (it could possibly be a regular 'dict' object which
-            # doesn't have the right get() method).
-            if(not isinstance(self.registry.global_config,
-                              ConfigParser.ConfigParser)):
-                raise jenkins_jobs.errors.JenkinsJobsException(
-                    'HipChat requires a config object in the registry.')
-            self.authToken = self.registry.global_config.get(
-                'hipchat', 'authtoken')
+            try:
+                self.authToken = self.registry.global_config.get(
+                    'hipchat', 'authtoken')
+                # Require that the authtoken is non-null
+                if self.authToken == '':
+                    raise jenkins_jobs.errors.JenkinsJobsException(
+                        "Hipchat authtoken must not be a blank string")
+            except (ConfigParser.NoSectionError,
+                    jenkins_jobs.errors.JenkinsJobsException), e:
+                logger.fatal("The configuration file needs a hipchat section" +
+                             " containing authtoken:\n{0}".format(e))
+                sys.exit(1)
             self.jenkinsUrl = self.registry.global_config.get('jenkins', 'url')
 
     def gen_xml(self, parser, xml_parent, data):
