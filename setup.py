@@ -102,6 +102,7 @@ setuptools.setup(
             'groovy-postbuild=jenkins_jobs.modules.publishers:'
             'groovy_postbuild',
             'violations=jenkins_jobs.modules.publishers:violations',
+            'checkstyle=jenkins_jobs.modules.publishers:checkstyle',
             'scp=jenkins_jobs.modules.publishers:scp',
             'pipeline=jenkins_jobs.modules.publishers:pipeline',
             'email=jenkins_jobs.modules.publishers:email',

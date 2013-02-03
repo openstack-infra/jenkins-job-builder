@@ -527,6 +527,149 @@ def violations(parser, xml_parent, data):
     XML.SubElement(config, 'encoding').text = 'default'
 
 
+def checkstyle(parser, xml_parent, data):
+    """yaml: checkstyle
+    Publish trend reports with Checkstyle.
+    Requires the `Checkstyle Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Checkstyle+Plugin>`_
+
+    The checkstyle component accepts a dictionary with the
+    following values:
+
+    :arg str pattern: report filename pattern
+    :arg bool canRunOnFailed: also runs for failed builds
+     (instead of just stable or unstable builds)
+    :arg bool shouldDetectModules:
+    :arg int healthy: sunny threshold
+    :arg int unHealthy: stormy threshold
+    :arg str healthThreshold: Threshold priority for health status
+     (high: only high, normal: high and normal, low: all)
+    :arg dict thresholds
+        :arg dict unstable
+            :arg int totalAll
+            :arg int totalHigh
+            :arg int totalNormal
+            :arg int totalLow
+        :arg dict failed
+            :arg int totalAll
+            :arg int totalHigh
+            :arg int totalNormal
+            :arg int totalLow
+    :arg str defaultEncoding: encoding for parsing or showing files
+     (empty will use platform default)
+
+    Example::
+
+      publishers:
+        - checkstyle:
+            pattern: '**/checkstyle-result.xml'
+            healthy: 0
+            unHealthy: 100
+            healthThreshold: 'high'
+            thresholds:
+                unstable:
+                    totalHigh: 10
+                failed:
+                    totalHigh: 1
+    """
+    checkstyle = XML.SubElement(xml_parent,
+                                'hudson.plugins.checkstyle.'
+                                'CheckStylePublisher')
+
+    dval = data.get('healthy', None)
+    if dval:
+        XML.SubElement(checkstyle, 'healthy').text = str(dval)
+    else:
+        XML.SubElement(checkstyle, 'healthy')
+
+    dval = data.get('unHealthy', None)
+    if dval:
+        XML.SubElement(checkstyle, 'unHealthy').text = str(dval)
+    else:
+        XML.SubElement(checkstyle, 'unHealthy')
+
+    XML.SubElement(checkstyle, 'thresholdLimit').text = \
+        data.get('healthThreshold', 'low')
+
+    XML.SubElement(checkstyle, 'pluginName').text = '[CHECKSTYLE] '
+
+    XML.SubElement(checkstyle, 'defaultEncoding').text = \
+        data.get('defaultEncoding', '')
+
+    if data.get('canRunOnFailed', False):
+        XML.SubElement(checkstyle, 'canRunOnFailed').text = 'true'
+    else:
+        XML.SubElement(checkstyle, 'canRunOnFailed').text = 'false'
+
+    XML.SubElement(checkstyle, 'useStableBuildAsReference').text = 'false'
+
+    XML.SubElement(checkstyle, 'useDeltaValues').text = 'false'
+
+    dthresholds = data.get('thresholds', {})
+    dunstable = dthresholds.get('unstable', {})
+    dfailed = dthresholds.get('failed', {})
+    thresholds = XML.SubElement(checkstyle, 'thresholds')
+
+    dval = dunstable.get('totalAll', None)
+    if dval:
+        XML.SubElement(thresholds, 'unstableTotalAll').text = str(dval)
+    else:
+        XML.SubElement(thresholds, 'unstableTotalAll')
+
+    dval = dunstable.get('totalHigh', None)
+    if dval:
+        XML.SubElement(thresholds, 'unstableTotalHigh').text = str(dval)
+    else:
+        XML.SubElement(thresholds, 'unstableTotalHigh')
+
+    dval = dunstable.get('totalNormal', None)
+    if dval:
+        XML.SubElement(thresholds, 'unstableTotalNormal').text = str(dval)
+    else:
+        XML.SubElement(thresholds, 'unstableTotalNormal')
+
+    dval = dunstable.get('totalLow', None)
+    if dval:
+        XML.SubElement(thresholds, 'unstableTotalLow').text = str(dval)
+    else:
+        XML.SubElement(thresholds, 'unstableTotalLow')
+
+    dval = dfailed.get('totalAll', None)
+    if dval:
+        XML.SubElement(thresholds, 'failedTotalAll').text = str(dval)
+    else:
+        XML.SubElement(thresholds, 'failedTotalAll')
+
+    dval = dfailed.get('totalHigh', None)
+    if dval:
+        XML.SubElement(thresholds, 'failedTotalHigh').text = str(dval)
+    else:
+        XML.SubElement(thresholds, 'failedTotalHigh')
+
+    dval = dfailed.get('totalNormal', None)
+    if dval:
+        XML.SubElement(thresholds, 'failedTotalNormal').text = str(dval)
+    else:
+        XML.SubElement(thresholds, 'failedTotalNormal')
+
+    dval = dfailed.get('totalLow', None)
+    if dval:
+        XML.SubElement(thresholds, 'failedTotalLow').text = str(dval)
+    else:
+        XML.SubElement(thresholds, 'failedTotalLow')
+
+    if data.get('shouldDetectModules', False):
+        XML.SubElement(checkstyle, 'shouldDetectModules').text = 'true'
+    else:
+        XML.SubElement(checkstyle, 'shouldDetectModules').text = 'false'
+
+    XML.SubElement(checkstyle, 'dontComputeNew').text = 'true'
+
+    XML.SubElement(checkstyle, 'doNotResolveRelativePaths').text = 'false'
+
+    XML.SubElement(checkstyle, 'pattern').text = data.get('pattern', '')
+
+
 def scp(parser, xml_parent, data):
     """yaml: scp
     Upload files via SCP
