@@ -70,6 +70,35 @@ def copyartifact(parser, xml_parent, data):
     :arg str project: Project to copy from
     :arg str filter: what files to copy
     :arg str target: Target base directory for copy, blank means use workspace
+    :arg str which-build: which build to get artifacts from
+        (optional, default last-successful)
+    :arg str build-number: specifies the build number to get when
+        when specific-build is specified as which-build
+    :arg str permalink: specifies the permalink to get when
+        permalink is specified as which-build
+    :arg bool stable: specifies to get only last stable build when
+        last-successful is specified as which-build
+    :arg bool fallback-to-last-successful: specifies to fallback to
+        last successful build when upstream-build is specified as which-build
+    :arg string param: specifies to use a build parameter to get the build when
+        build-param is specified as which-build
+
+    :which-build values:
+        :last-successful:
+        :specific-build:
+        :last-saved:
+        :upstream-build:
+        :permalink:
+        :workspace-latest:
+        :build-param:
+
+    :permalink values:
+        :last:
+        :last-stable:
+        :last-successful:
+        :last-failed:
+        :last-unstable:
+        :last-unsuccessful:
 
 
     Example::
@@ -78,12 +107,54 @@ def copyartifact(parser, xml_parent, data):
         - copyartifact:
             project: foo
             filter: *.tar.gz
+            target: /home/foo
+            which-build: specific-build
+            build-number: 123
 
     """
     t = XML.SubElement(xml_parent, 'hudson.plugins.copyartifact.CopyArtifact')
     XML.SubElement(t, 'projectName').text = data["project"]
     XML.SubElement(t, 'filter').text = data.get("filter", "")
     XML.SubElement(t, 'target').text = data.get("target", "")
+    select = data.get('which-build', 'last-successful')
+    selectdict = {'last-successful': 'StatusBuildSelector',
+                  'specific-build': 'SpecificBuildSelector',
+                  'last-saved': 'SavedBuildSelector',
+                  'upstream-build': 'TriggeredBuildSelector',
+                  'permalink': 'PermalinkBuildSelector',
+                  'workspace-latest': 'WorkspaceSelector',
+                  'build-param': 'ParameterizedBuildSelector'}
+    if select not in selectdict:
+        raise Exception("which-build entered is not valid must be one of: " +
+                        "last-successful, specific-build, last-saved, " +
+                        "upstream-build, permalink, workspace-latest, " +
+                        " or build-param")
+    permalink = data.get('permalink', 'last')
+    permalinkdict = {'last': 'lastBuild',
+                     'last-stable': 'lastStableBuild',
+                     'last-successful': 'lastSuccessfulBuild',
+                     'last-failed': 'lastFailedBuild',
+                     'last-unstable': 'lastUnstableBuild',
+                     'last-unsuccessful': 'lastUnsuccessfulBuild'}
+    if permalink not in permalinkdict:
+        raise Exception("permalink entered is not valid must be one of: " +
+                        "last, last-stable, last-successful, last-failed, " +
+                        "last-unstable, or last-unsuccessful")
+    selector = XML.SubElement(t, 'selector',
+                                 {'class': 'hudson.plugins.copyartifact.' +
+                                 selectdict[select]})
+    if select == 'specific-build':
+        XML.SubElement(selector, 'buildNumber').text = data['build-number']
+    if select == 'last-successful':
+        XML.SubElement(selector, 'stable').text = str(
+            data.get('stable', 'false')).lower()
+    if select == 'upstream-build':
+        XML.SubElement(selector, 'fallbackToLastSuccessful').text = str(
+            data.get('fallback-to-last-successful', 'false')).lower()
+    if select == 'permalink':
+        XML.SubElement(selector, 'id').text = permalinkdict[permalink]
+    if select == 'build-param':
+        XML.SubElement(selector, 'parameterName').text = data['param']
 
 
 def ant(parser, xml_parent, data):
