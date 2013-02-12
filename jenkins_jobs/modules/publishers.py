@@ -85,7 +85,10 @@ def trigger_parameterized_builds(parser, xml_parent, data):
 
       publishers:
         - trigger-parameterized-builds:
-            project: other_job
+            - project: other_job, foo, bar
+              predefined-parameters: foo=bar
+            - project: other_job1, other_job2
+              predefined-parameters: BUILD_NUM=${BUILD_NUMBER}
     """
     tbuilder = XML.SubElement(xml_parent,
                               'hudson.plugins.parameterizedtrigger.'
