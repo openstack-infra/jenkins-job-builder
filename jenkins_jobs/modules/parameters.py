@@ -238,6 +238,7 @@ def svn_tags_param(parser, xml_parent, data):
     XML.SubElement(pdef, 'reverseByDate').text = "true"
     XML.SubElement(pdef, 'reverseByName').text = "false"
     XML.SubElement(pdef, 'maxTags').text = "100"
+    XML.SubElement(pdef, 'uuid').text = "1-1-1-1-1"
 
 
 class Parameters(jenkins_jobs.modules.base.Base):
