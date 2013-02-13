@@ -8,6 +8,8 @@ AUTHORS
 build/*
 ChangeLog
 config
+output
+etc/jenkins_jobs.ini
 dist/*
 doc/build/*
 doc/source/*
