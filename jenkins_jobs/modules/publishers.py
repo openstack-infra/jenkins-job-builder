@@ -79,6 +79,7 @@ def trigger_parameterized_builds(parser, xml_parent, data):
     :arg str project: name of the job to trigger
     :arg str predefined-parameters: parameters to pass to the other
       job (optional)
+    :arg str git-revision: Pass git revision to the other job (optional)
     :arg str condition: when to trigger the other job (default 'ALWAYS')
 
     Example::
@@ -89,6 +90,10 @@ def trigger_parameterized_builds(parser, xml_parent, data):
               predefined-parameters: foo=bar
             - project: other_job1, other_job2
               predefined-parameters: BUILD_NUM=${BUILD_NUMBER}
+            - project: yet_another_job
+              predefined-parameters: foo=bar
+              git-revision: true
+
     """
     tbuilder = XML.SubElement(xml_parent,
                               'hudson.plugins.parameterizedtrigger.'
@@ -99,12 +104,23 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                                  'hudson.plugins.parameterizedtrigger.'
                                  'BuildTriggerConfig')
         tconfigs = XML.SubElement(tconfig, 'configs')
-        if 'predefined-parameters' in project_def:
-            params = XML.SubElement(tconfigs,
-                                    'hudson.plugins.parameterizedtrigger.'
-                                    'PredefinedBuildParameters')
-            properties = XML.SubElement(params, 'properties')
-            properties.text = project_def['predefined-parameters']
+        if ('predefined-parameters' in project_def
+            or 'git-revision' in project_def):
+
+            if 'predefined-parameters' in project_def:
+                params = XML.SubElement(tconfigs,
+                                        'hudson.plugins.parameterizedtrigger.'
+                                        'PredefinedBuildParameters')
+                properties = XML.SubElement(params, 'properties')
+                properties.text = project_def['predefined-parameters']
+
+            if 'git-revision' in project_def and project_def['git-revision']:
+                params = XML.SubElement(tconfigs,
+                                        'hudson.plugins.git.'
+                                        'GitRevisionBuildParameters')
+                properties = XML.SubElement(params, 'combineQueuedCommits')
+                properties.text = 'false'
+
         else:
             tconfigs.set('class', 'java.util.Collections$EmptyList')
         projects = XML.SubElement(tconfig, 'projects')
