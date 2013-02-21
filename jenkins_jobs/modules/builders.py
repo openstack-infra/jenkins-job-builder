@@ -70,6 +70,7 @@ def copyartifact(parser, xml_parent, data):
     :arg str project: Project to copy from
     :arg str filter: what files to copy
     :arg str target: Target base directory for copy, blank means use workspace
+    :arg bool flatten: Flatten directories (default: false)
     :arg str which-build: which build to get artifacts from
         (optional, default last-successful)
     :arg str build-number: specifies the build number to get when
@@ -110,12 +111,15 @@ def copyartifact(parser, xml_parent, data):
             target: /home/foo
             which-build: specific-build
             build-number: 123
+            flatten: true
 
     """
     t = XML.SubElement(xml_parent, 'hudson.plugins.copyartifact.CopyArtifact')
     XML.SubElement(t, 'projectName').text = data["project"]
     XML.SubElement(t, 'filter').text = data.get("filter", "")
     XML.SubElement(t, 'target').text = data.get("target", "")
+    flatten = data.get("flatten", False)
+    XML.SubElement(t, 'flatten').text = str(flatten).lower()
     select = data.get('which-build', 'last-successful')
     selectdict = {'last-successful': 'StatusBuildSelector',
                   'specific-build': 'SpecificBuildSelector',
