@@ -194,6 +194,8 @@ def ant(parser, xml_parent, data):
     :arg list properties: Passed to ant script using -Dkey=value (optional)
     :arg str ant-name: the name of the ant installation,
         defaults to 'default' (optional)
+    :arg str java-opts: java options for ant, can have multiples,
+        must be in quotes (optional)
 
 
     Example specifying the build file too and several targets::
@@ -205,6 +207,9 @@ def ant(parser, xml_parent, data):
              properties:
                 builddir: "/tmp/"
                 failonerror: true
+             java-opts:
+                - "-ea"
+                - "-Xmx512m"
              ant-name: "Standard Ant"
 
     """
@@ -227,6 +232,13 @@ def ant(parser, xml_parent, data):
                 prop_string += "%s=%s\n" % (prop, val)
             prop_element = XML.SubElement(ant, 'properties')
             prop_element.text = prop_string
+        if setting == 'java-opts':
+            javaopts = data['java-opts']
+            jopt_string = ''
+            for jopt in javaopts:
+                jopt_string += jopt + "\n"
+            jopt_element = XML.SubElement(ant, 'antOpts')
+            jopt_element.text = jopt_string
 
     XML.SubElement(ant, 'antName').text = data.get('ant-name', 'default')
 
