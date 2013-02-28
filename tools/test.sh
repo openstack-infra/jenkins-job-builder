@@ -3,7 +3,7 @@
 # A simple script to verify that the XML output is unaltered after a change.
 
 # First, symlink "config" to the directory containing your config files
-# (eg openstack-ci-puppet/modules/openstack_project/files/jenkins_job_builder/config)
+# (eg openstack-infra/config/modules/openstack_project/files/jenkins_job_builder/config)
 
 # Before you start work, run "./test.sh save".
 # As you test your change, run "./test.sh" to see differences in XML output.

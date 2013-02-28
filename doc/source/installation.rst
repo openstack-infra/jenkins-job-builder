@@ -9,7 +9,7 @@ The OpenStack project uses puppet to manage its infrastructure
 systems, including Jenkins.  If you use Puppet, you can use the
 `OpenStack Jenkins module`__ to install Jenkins Job Builder.
 
-__ https://github.com/openstack/openstack-ci-puppet/tree/master/modules/jenkins
+__ https://github.com/openstack-infra/config/tree/master/modules/jenkins
 
 
 Configuration File
