@@ -81,6 +81,7 @@ def trigger_parameterized_builds(parser, xml_parent, data):
       job (optional)
     :arg str git-revision: Pass git revision to the other job (optional)
     :arg str condition: when to trigger the other job (default 'ALWAYS')
+    :arg str property-file: Use properties from file (optional)
 
     Example::
 
@@ -90,6 +91,7 @@ def trigger_parameterized_builds(parser, xml_parent, data):
               predefined-parameters: foo=bar
             - project: other_job1, other_job2
               predefined-parameters: BUILD_NUM=${BUILD_NUMBER}
+              property-file: version.prop
             - project: yet_another_job
               predefined-parameters: foo=bar
               git-revision: true
@@ -105,7 +107,8 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                                  'BuildTriggerConfig')
         tconfigs = XML.SubElement(tconfig, 'configs')
         if ('predefined-parameters' in project_def
-            or 'git-revision' in project_def):
+            or 'git-revision' in project_def
+            or 'property-file' in project_def):
 
             if 'predefined-parameters' in project_def:
                 params = XML.SubElement(tconfigs,
@@ -120,6 +123,12 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                                         'GitRevisionBuildParameters')
                 properties = XML.SubElement(params, 'combineQueuedCommits')
                 properties.text = 'false'
+            if 'property-file' in project_def and project_def['property-file']:
+                params = XML.SubElement(tconfigs,
+                                        'hudson.plugins.parameterizedtrigger.'
+                                        'FileBuildParameters')
+                properties = XML.SubElement(params, 'propertiesFile')
+                properties.text = project_def['property-file']
 
         else:
             tconfigs.set('class', 'java.util.Collections$EmptyList')
