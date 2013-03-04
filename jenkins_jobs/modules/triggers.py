@@ -154,6 +154,22 @@ def timed(parser, xml_parent, data):
     XML.SubElement(scmtrig, 'spec').text = data
 
 
+def github(parser, xml_parent, data):
+    """yaml: github
+    Trigger a job when github repository is pushed to
+    Requires the Jenkins `GitHub Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/GitHub+Plugin>`_
+
+    Example::
+
+      triggers:
+        - github
+    """
+    ghtrig = XML.SubElement(xml_parent, 'com.cloudbees.jenkins.'
+                            'GitHubPushTrigger')
+    XML.SubElement(ghtrig, 'spec').text = ''
+
+
 class Triggers(jenkins_jobs.modules.base.Base):
     sequence = 50
 

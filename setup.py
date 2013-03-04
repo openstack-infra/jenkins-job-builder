@@ -124,6 +124,7 @@ setuptools.setup(
             'gerrit=jenkins_jobs.modules.triggers:gerrit',
             'pollscm=jenkins_jobs.modules.triggers:pollscm',
             'timed=jenkins_jobs.modules.triggers:timed',
+            'github=jenkins_jobs.modules.triggers:github',
         ],
         'jenkins_jobs.wrappers': [
             'timeout=jenkins_jobs.modules.wrappers:timeout',
