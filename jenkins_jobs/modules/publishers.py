@@ -276,40 +276,20 @@ def ftp(parser, xml_parent, data):
             remove-prefix: 'base/source/dir'
             excludes: '**/*.excludedfiletype'
     """
-    outer_ftp = XML.SubElement(xml_parent,
-                               'jenkins.plugins.publish__over__ftp.'
-                               'BapFtpPublisherPlugin')
-    XML.SubElement(outer_ftp, 'consolePrefix').text = 'FTP: '
-    delegate = XML.SubElement(outer_ftp, 'delegate')
-    publishers = XML.SubElement(delegate, 'publishers')
-    ftp = XML.SubElement(publishers,
-                         'jenkins.plugins.publish__over__ftp.BapFtpPublisher')
-    XML.SubElement(ftp, 'configName').text = data['site']
-    XML.SubElement(ftp, 'verbose').text = 'true'
-
-    transfers = XML.SubElement(ftp, 'transfers')
-    ftp_transfers = XML.SubElement(transfers,
-                                   'jenkins.plugins.publish__over__ftp.'
-                                   'BapFtpTransfer')
-    XML.SubElement(ftp_transfers, 'remoteDirectory').text = data['target']
-    XML.SubElement(ftp_transfers, 'sourceFiles').text = data['source']
-    XML.SubElement(ftp_transfers, 'excludes').text = data['excludes']
-    XML.SubElement(ftp_transfers, 'removePrefix').text = data['remove-prefix']
-    XML.SubElement(ftp_transfers, 'remoteDirectorySDF').text = 'false'
-    XML.SubElement(ftp_transfers, 'flatten').text = 'false'
-    XML.SubElement(ftp_transfers, 'cleanRemote').text = 'false'
-    XML.SubElement(ftp_transfers, 'asciiMode').text = 'false'
-
-    XML.SubElement(ftp, 'useWorkspaceInPromotion').text = 'false'
-    XML.SubElement(ftp, 'usePromotionTimestamp').text = 'false'
-    XML.SubElement(delegate, 'continueOnError').text = 'false'
-    XML.SubElement(delegate, 'failOnError').text = 'false'
-    XML.SubElement(delegate, 'alwaysPublishFromMaster').text = 'false'
-    XML.SubElement(delegate, 'hostConfigurationAccess',
-                   {'class':
-                       'jenkins.plugins.publish_over_ftp.'
-                       'BapFtpPublisherPlugin',
-                    'reference': '../..'})
+    console_prefix = 'FTP: '
+    plugin_tag = 'jenkins.plugins.publish__over__ftp.BapFtpPublisherPlugin'
+    publisher_tag = 'jenkins.plugins.publish__over__ftp.BapFtpPublisher'
+    transfer_tag = 'jenkins.plugins.publish__over__ftp.BapFtpTransfer'
+    plugin_reference_tag = 'jenkins.plugins.publish_over_ftp.'    \
+        'BapFtpPublisherPlugin'
+    (_, transfer_node) = base_publish_over(xml_parent,
+                                           data,
+                                           console_prefix,
+                                           plugin_tag,
+                                           publisher_tag,
+                                           transfer_tag,
+                                           plugin_reference_tag)
+    XML.SubElement(transfer_node, 'asciiMode').text = 'false'
 
 
 def junit(parser, xml_parent, data):
