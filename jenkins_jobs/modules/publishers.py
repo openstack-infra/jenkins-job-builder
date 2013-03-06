@@ -1139,8 +1139,9 @@ def base_publish_over(xml_parent, data, console_prefix,
     transfersset = XML.SubElement(transfers, transferset_tag)
     XML.SubElement(transfersset, 'remoteDirectory').text = data['target']
     XML.SubElement(transfersset, 'sourceFiles').text = data['source']
-    XML.SubElement(transfersset, 'excludes').text = data['excludes']
-    XML.SubElement(transfersset, 'removePrefix').text = data['remove-prefix']
+    XML.SubElement(transfersset, 'excludes').text = data.get('excludes', '')
+    XML.SubElement(transfersset, 'removePrefix').text = \
+        data.get('remove-prefix', '')
     XML.SubElement(transfersset, 'remoteDirectorySDF').text = 'false'
     XML.SubElement(transfersset, 'flatten').text = 'false'
     XML.SubElement(transfersset, 'cleanRemote').text = 'false'
