@@ -1144,6 +1144,38 @@ def groovy_postbuild(parser, xml_parent, data):
     XML.SubElement(groovy, 'groovyScript').text = data
 
 
+def base_publish_over(xml_parent, data, console_prefix,
+                      plugin_tag, publisher_tag,
+                      transferset_tag, reference_plugin_tag):
+    outer = XML.SubElement(xml_parent, plugin_tag)
+    XML.SubElement(outer, 'consolePrefix').text = console_prefix
+    delegate = XML.SubElement(outer, 'delegate')
+    publishers = XML.SubElement(delegate, 'publishers')
+    inner = XML.SubElement(publishers, publisher_tag)
+    XML.SubElement(inner, 'configName').text = data['site']
+    XML.SubElement(inner, 'verbose').text = 'true'
+
+    transfers = XML.SubElement(inner, 'transfers')
+    transfersset = XML.SubElement(transfers, transferset_tag)
+    XML.SubElement(transfersset, 'remoteDirectory').text = data['target']
+    XML.SubElement(transfersset, 'sourceFiles').text = data['source']
+    XML.SubElement(transfersset, 'excludes').text = data['excludes']
+    XML.SubElement(transfersset, 'removePrefix').text = data['remove-prefix']
+    XML.SubElement(transfersset, 'remoteDirectorySDF').text = 'false'
+    XML.SubElement(transfersset, 'flatten').text = 'false'
+    XML.SubElement(transfersset, 'cleanRemote').text = 'false'
+
+    XML.SubElement(inner, 'useWorkspaceInPromotion').text = 'false'
+    XML.SubElement(inner, 'usePromotionTimestamp').text = 'false'
+    XML.SubElement(delegate, 'continueOnError').text = 'false'
+    XML.SubElement(delegate, 'failOnError').text = 'false'
+    XML.SubElement(delegate, 'alwaysPublishFromMaster').text = 'false'
+    XML.SubElement(delegate, 'hostConfigurationAccess',
+                   {'class': reference_plugin_tag,
+                    'reference': '../..'})
+    return (outer, transfersset)
+
+
 def cifs(parser, xml_parent, data):
     """yaml: cifs
     Upload files via CIFS.
@@ -1167,39 +1199,19 @@ def cifs(parser, xml_parent, data):
             remove-prefix: 'base/source/dir'
             excludes: '**/*.excludedfiletype'
     """
-    outer_cifs = XML.SubElement(xml_parent,
-                                'jenkins.plugins.publish__over__cifs.'
-                                'CifsPublisherPlugin')
-    XML.SubElement(outer_cifs, 'consolePrefix').text = 'CIFS: '
-    delegate = XML.SubElement(outer_cifs, 'delegate')
-    publishers = XML.SubElement(delegate, 'publishers')
-    cifs = XML.SubElement(publishers,
-                          'jenkins.plugins.publish__over__cifs.CifsPublisher')
-    XML.SubElement(cifs, 'configName').text = data['site']
-    XML.SubElement(cifs, 'verbose').text = 'true'
-
-    transfers = XML.SubElement(cifs, 'transfers')
-    cifs_transfers = XML.SubElement(transfers,
-                                    'jenkins.plugins.publish__over__cifs.'
-                                    'CifsTransfer')
-    XML.SubElement(cifs_transfers, 'remoteDirectory').text = data['target']
-    XML.SubElement(cifs_transfers, 'sourceFiles').text = data['source']
-    XML.SubElement(cifs_transfers, 'excludes').text = data['excludes']
-    XML.SubElement(cifs_transfers, 'removePrefix').text = data['remove-prefix']
-    XML.SubElement(cifs_transfers, 'remoteDirectorySDF').text = 'false'
-    XML.SubElement(cifs_transfers, 'flatten').text = 'false'
-    XML.SubElement(cifs_transfers, 'cleanRemote').text = 'false'
-
-    XML.SubElement(cifs, 'useWorkspaceInPromotion').text = 'false'
-    XML.SubElement(cifs, 'usePromotionTimestamp').text = 'false'
-    XML.SubElement(delegate, 'continueOnError').text = 'false'
-    XML.SubElement(delegate, 'failOnError').text = 'false'
-    XML.SubElement(delegate, 'alwaysPublishFromMaster').text = 'false'
-    XML.SubElement(delegate, 'hostConfigurationAccess',
-                   {'class':
-                       'jenkins.plugins.publish_over_cifs.'
-                       'CifsPublisherPlugin',
-                    'reference': '../..'})
+    console_prefix = 'CIFS: '
+    plugin_tag = 'jenkins.plugins.publish__over__cifs.CifsPublisherPlugin'
+    publisher_tag = 'jenkins.plugins.publish__over__cifs.CifsPublisher'
+    transfer_tag = 'jenkins.plugins.publish__over__cifs.CifsTransfer'
+    plugin_reference_tag = 'jenkins.plugins.publish_over_cifs.'    \
+        'CifsPublisherPlugin'
+    base_publish_over(xml_parent,
+                      data,
+                      console_prefix,
+                      plugin_tag,
+                      publisher_tag,
+                      transfer_tag,
+                      plugin_reference_tag)
 
 
 class Publishers(jenkins_jobs.modules.base.Base):
