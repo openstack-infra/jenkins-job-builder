@@ -1144,6 +1144,64 @@ def groovy_postbuild(parser, xml_parent, data):
     XML.SubElement(groovy, 'groovyScript').text = data
 
 
+def cifs(parser, xml_parent, data):
+    """yaml: cifs
+    Upload files via CIFS.
+    Requires the Jenkins `Publish over CIFS Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Publish+Over+CIFS+Plugin>`_
+
+    :arg str site: name of the cifs site/share
+    :arg str target: destination directory
+    :arg str source: source path specifier
+    :arg str excludes: excluded file pattern (optional)
+    :arg str remove-prefix: prefix to remove from uploaded file paths
+      (optional)
+
+    Example::
+
+      publishers:
+        - cifs:
+            site: 'cifs.share'
+            target: 'dest/dir'
+            source: 'base/source/dir/**'
+            remove-prefix: 'base/source/dir'
+            excludes: '**/*.excludedfiletype'
+    """
+    outer_cifs = XML.SubElement(xml_parent,
+                                'jenkins.plugins.publish__over__cifs.'
+                                'CifsPublisherPlugin')
+    XML.SubElement(outer_cifs, 'consolePrefix').text = 'CIFS: '
+    delegate = XML.SubElement(outer_cifs, 'delegate')
+    publishers = XML.SubElement(delegate, 'publishers')
+    cifs = XML.SubElement(publishers,
+                          'jenkins.plugins.publish__over__cifs.CifsPublisher')
+    XML.SubElement(cifs, 'configName').text = data['site']
+    XML.SubElement(cifs, 'verbose').text = 'true'
+
+    transfers = XML.SubElement(cifs, 'transfers')
+    cifs_transfers = XML.SubElement(transfers,
+                                    'jenkins.plugins.publish__over__cifs.'
+                                    'CifsTransfer')
+    XML.SubElement(cifs_transfers, 'remoteDirectory').text = data['target']
+    XML.SubElement(cifs_transfers, 'sourceFiles').text = data['source']
+    XML.SubElement(cifs_transfers, 'excludes').text = data['excludes']
+    XML.SubElement(cifs_transfers, 'removePrefix').text = data['remove-prefix']
+    XML.SubElement(cifs_transfers, 'remoteDirectorySDF').text = 'false'
+    XML.SubElement(cifs_transfers, 'flatten').text = 'false'
+    XML.SubElement(cifs_transfers, 'cleanRemote').text = 'false'
+
+    XML.SubElement(cifs, 'useWorkspaceInPromotion').text = 'false'
+    XML.SubElement(cifs, 'usePromotionTimestamp').text = 'false'
+    XML.SubElement(delegate, 'continueOnError').text = 'false'
+    XML.SubElement(delegate, 'failOnError').text = 'false'
+    XML.SubElement(delegate, 'alwaysPublishFromMaster').text = 'false'
+    XML.SubElement(delegate, 'hostConfigurationAccess',
+                   {'class':
+                       'jenkins.plugins.publish_over_cifs.'
+                       'CifsPublisherPlugin',
+                    'reference': '../..'})
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
