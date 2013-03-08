@@ -16,7 +16,11 @@
 """
 The SCM module allows you to specify the source code location for the
 project.  It adds the ``scm`` attribute to the :ref:`Job` definition,
-which accepts a single scm definiton.
+which accepts any number of scm definitions.
+
+Note: Adding more than one scm definition requires the Jenkins `Multiple
+SCMs plugin.
+<https://wiki.jenkins-ci.org/display/JENKINS/Multiple+SCMs+Plugin>`_
 
 **Component**: scm
   :Macro: scm
@@ -29,6 +33,9 @@ Example::
     scm:
       -git:
         url: https://example.com/project.git
+      -git:
+        url: https://example.org/otherproject.git
+        basedir: other
 
 """
 
@@ -232,6 +239,11 @@ class SCM(jenkins_jobs.modules.base.Base):
     def gen_xml(self, parser, xml_parent, data):
         scms = data.get('scm', [])
         if scms:
+            if len(scms) > 1:
+                class_name = 'org.jenkinsci.plugins.multiplescms.MultiSCM'
+                xml_attribs = {'class': class_name}
+                xml_parent = XML.SubElement(xml_parent, 'scm', xml_attribs)
+                xml_parent = XML.SubElement(xml_parent, 'scms')
             for scm in data.get('scm', []):
                 self._dispatch('scm', 'scm',
                                parser, xml_parent, scm)
