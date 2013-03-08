@@ -253,6 +253,9 @@ def trigger_builds(parser, xml_parent, data):
     :arg str project: the Jenkins project to trigger
     :arg str predefined-parameters:
       key/value pairs to be passed to the job (optional)
+    :arg bool current-parameters: Whether to include the
+      parameters passed to the current build to the
+      triggered job.
     :arg bool block: whether to wait for the triggered jobs
       to finish or not (default false)
 
