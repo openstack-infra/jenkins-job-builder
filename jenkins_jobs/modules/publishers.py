@@ -550,19 +550,20 @@ def checkstyle(parser, xml_parent, data):
     :arg bool shouldDetectModules:
     :arg int healthy: sunny threshold
     :arg int unHealthy: stormy threshold
-    :arg str healthThreshold: Threshold priority for health status
+    :arg str healthThreshold: threshold priority for health status
      (high: only high, normal: high and normal, low: all)
-    :arg dict thresholds
-        :arg dict unstable
-            :arg int totalAll
-            :arg int totalHigh
-            :arg int totalNormal
-            :arg int totalLow
-        :arg dict failed
-            :arg int totalAll
-            :arg int totalHigh
-            :arg int totalNormal
-            :arg int totalLow
+    :arg dict thresholds:
+        :thresholds:
+            * **unstable** (`dict`)
+                :unstable: * **totalAll** (`int`)
+                           * **totalHigh** (`int`)
+                           * **totalNormal** (`int`)
+                           * **totalLow** (`int`)
+            * **failed** (`dict`)
+                :failed: * **totalAll** (`int`)
+                         * **totalHigh** (`int`)
+                         * **totalNormal** (`int`)
+                         * **totalLow** (`int`)
     :arg str defaultEncoding: encoding for parsing or showing files
      (empty will use platform default)
 
