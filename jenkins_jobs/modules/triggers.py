@@ -62,6 +62,21 @@ def build_gerrit_triggers(xml_parent, data):
             str(data['triggerApprovalValue'])
 
 
+def build_gerrit_skip_votes(xml_parent, data):
+    outcomes = {'successful': 'onSuccessful',
+                'failed': 'onFailed',
+                'unstable': 'onUnstable',
+                'notbuilt': 'onNotBuilt'}
+
+    skip_vote_node = XML.SubElement(xml_parent, 'skipVote')
+    skip_vote = data.get('skipVote', {})
+    for result_kind, tag_name in outcomes.iteritems():
+        if skip_vote.get(result_kind, False):
+            XML.SubElement(skip_vote_node, tag_name).text = 'true'
+        else:
+            XML.SubElement(skip_vote_node, tag_name).text = 'false'
+
+
 def gerrit(parser, xml_parent, data):
     """yaml: gerrit
     Trigger on a Gerrit event.
@@ -90,6 +105,14 @@ def gerrit(parser, xml_parent, data):
                 * **branchComprareType** (`str`) -- ''PLAIN'' or ''ANT''
                 * **branchPattern** ('str') -- Branch name pattern to match
 
+    :arg dict skipVote: map of build outcomes for which Jenkins must skip
+        vote. Requires Gerrit Trigger Plugin version >= 2.7.0
+
+        :Outcome: * **successful** (`bool`)
+                  * **failed** (`bool`)
+                  * **unstable** (`bool`)
+                  * **notbuilt** (`bool`)
+
     You may select one or more gerrit events upon which to trigger.
     You must also supply at least one project and branch, optionally
     more.  If you select the comment-added trigger, you should alse
@@ -108,6 +131,11 @@ def gerrit(parser, xml_parent, data):
                 projectPattern: 'test-project'
                 branchCompareType: 'ANT'
                 branchPattern: '**'
+            skipVote:
+                successful: true
+                failed: true
+                unstable: true
+                notbuilt: true
     """
 
     projects = data['projects']
@@ -129,6 +157,7 @@ def gerrit(parser, xml_parent, data):
         XML.SubElement(gbranch, 'compareType').text = \
             project['branchCompareType']
         XML.SubElement(gbranch, 'pattern').text = project['branchPattern']
+    build_gerrit_skip_votes(gtrig, data)
     XML.SubElement(gtrig, 'silentMode').text = 'false'
     XML.SubElement(gtrig, 'escapeQuotes').text = 'true'
     build_gerrit_triggers(gtrig, data)

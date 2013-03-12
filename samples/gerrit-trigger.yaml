@@ -12,6 +12,12 @@
             triggerApprovalCategory: CRVW
             triggerApprovalValue: 2
             failureMessage:
+            skipVote:
+                successful: true
+                failed: false
+                # Missing outcome should default to false.
+                # unstable: false
+                notbuilt: true
             projects:
                 - projectCompareType: 'PLAIN'
                   projectPattern: 'myproject'
