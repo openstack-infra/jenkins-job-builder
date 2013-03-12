@@ -2,7 +2,9 @@
     name: test-gerrit-trigger
     triggers:
         - gerrit:
+            triggerOnChangeAbandonedEvent: true
             triggerOnChangeMergedEvent: true
+            triggerOnChangeRestoredEvent: true
             triggerOnCommentAddedEvent: true
             triggerOnDraftPublishedEvent: true
             triggerOnPatchsetUploadedEvent: true

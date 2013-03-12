@@ -36,7 +36,9 @@ import jenkins_jobs.modules.base
 
 def build_gerrit_triggers(xml_parent, data):
     available_simple_triggers = {
+        'triggerOnChangeAbandonedEvent': 'PluginChangeAbandonedEvent',
         'triggerOnChangeMergedEvent': 'PluginChangeMergedEvent',
+        'triggerOnChangeRestoredEvent': 'PluginChangeRestoredEvent',
         'triggerOnDraftPublishedEvent': 'PluginDraftPublishedEvent',
         'triggerOnPatchsetUploadedEvent': 'PluginPatchsetCreatedEvent',
         'triggerOnRefUpdatedEvent': 'PluginRefUpdatedEvent',
@@ -67,7 +69,11 @@ def gerrit(parser, xml_parent, data):
     <wiki.jenkins-ci.org/display/JENKINS/Gerrit+Trigger>`_ version >= 2.6.0.
 
     :arg bool triggerOnPatchsetUploadedEvent: Trigger on patchset upload
+    :arg bool triggerOnChangeAbandonedEvent: Trigger on change abandoned.
+        Requires Gerrit Trigger Plugin version >= 2.8.0
     :arg bool triggerOnChangeMergedEvent: Trigger on change merged
+    :arg bool triggerOnChangeRestoredEvent: Trigger on change restored.
+        Requires Gerrit Trigger Plugin version >= 2.8.0
     :arg bool triggerOnCommentAddedEvent: Trigger on comment added
     :arg bool triggerOnDraftPublishedEvent: Trigger on draft published event.
     :arg bool triggerOnRefUpdatedEvent: Trigger on ref-updated
