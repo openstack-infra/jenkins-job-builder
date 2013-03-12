@@ -1,0 +1,16 @@
+- job:
+    name: test-gerrit-trigger
+    triggers:
+        - gerrit:
+            triggerOnChangeMergedEvent: true
+            triggerOnCommentAddedEvent: true
+            triggerOnPatchsetUploadedEvent: true
+            triggerOnRefUpdatedEvent: false
+            triggerApprovalCategory: CRVW
+            triggerApprovalValue: 2
+            failureMessage:
+            projects:
+                - projectCompareType: 'PLAIN'
+                  projectPattern: 'myproject'
+                  branchCompareType: 'PLAIN'
+                  branchPattern: 'master'

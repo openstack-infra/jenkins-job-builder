@@ -99,19 +99,19 @@ def gerrit(parser, xml_parent, data):
     XML.SubElement(gtrig, 'silentMode').text = 'false'
     XML.SubElement(gtrig, 'escapeQuotes').text = 'true'
     XML.SubElement(gtrig, 'triggerOnPatchsetUploadedEvent').text = \
-        data['triggerOnPatchsetUploadedEvent']
+        str(data['triggerOnPatchsetUploadedEvent']).lower()
     XML.SubElement(gtrig, 'triggerOnChangeMergedEvent').text = \
-        data['triggerOnChangeMergedEvent']
+        str(data['triggerOnChangeMergedEvent']).lower()
     XML.SubElement(gtrig, 'triggerOnCommentAddedEvent').text = \
-        data['triggerOnCommentAddedEvent']
+        str(data['triggerOnCommentAddedEvent']).lower()
     XML.SubElement(gtrig, 'triggerOnRefUpdatedEvent').text = \
-        data['triggerOnRefUpdatedEvent']
+        str(data['triggerOnRefUpdatedEvent']).lower()
     if 'overrideVotes' in data and data['overrideVotes'] == 'true':
         XML.SubElement(gtrig, 'gerritBuildSuccessfulVerifiedValue').text = \
             str(data['gerritBuildSuccessfulVerifiedValue'])
         XML.SubElement(gtrig, 'gerritBuildFailedVerifiedValue').text = \
             str(data['gerritBuildFailedVerifiedValue'])
-    if data['triggerOnCommentAddedEvent'] == 'true':
+    if data['triggerOnCommentAddedEvent']:
         XML.SubElement(gtrig, 'commentAddedTriggerApprovalCategory').text = \
             data['triggerApprovalCategory']
         XML.SubElement(gtrig, 'commentAddedTriggerApprovalValue').text = \
