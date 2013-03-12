@@ -4,6 +4,7 @@
         - gerrit:
             triggerOnChangeMergedEvent: true
             triggerOnCommentAddedEvent: true
+            triggerOnDraftPublishedEvent: true
             triggerOnPatchsetUploadedEvent: true
             triggerOnRefUpdatedEvent: false
             triggerApprovalCategory: CRVW
