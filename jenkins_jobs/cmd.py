@@ -21,7 +21,7 @@ def main():
                                       dest='command')
     parser_update = subparser.add_parser('update')
     parser_update.add_argument('path', help='Path to YAML file or directory')
-    parser_update.add_argument('name', help='name of job', nargs='?')
+    parser_update.add_argument('names', help='name(s) of job(s)', nargs='+')
     parser_test = subparser.add_parser('test')
     parser_test.add_argument('path', help='Path to YAML file or directory')
     parser_test.add_argument('-o', dest='output_dir',
@@ -82,8 +82,8 @@ def main():
         builder.delete_all_jobs()
     elif options.command == 'update':
         logger.info("Updating jobs in {0} ({1})".format(
-            options.path, options.name))
-        builder.update_job(options.path, options.name)
+            options.path, options.names))
+        builder.update_job(options.path, options.names)
     elif options.command == 'test':
         builder.update_job(options.path, options.name,
                            output_dir=options.output_dir)
