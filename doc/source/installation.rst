@@ -66,12 +66,13 @@ can run::
 
   jenkins-jobs update /path/to/config
 
-Which will upload the configurations to Jenkins if needed.  Jenkins
-Job Builder maintains a cache of previously configured jobs, so that
-you can run that command as often as you like, and it will only update
-the configuration in Jenkins if the defined configuration has changed
-since the last time it was run.  Note: if you modify a job directly in
-Jenkins, jenkins-jobs will not know about it and will not update it.
+Which will upload the configurations to Jenkins if needed.  Jenkins Job
+Builder maintains, for each host, a cache of previously configured jobs,
+so that you can run that command as often as you like, and it will only
+update the configuration in Jenkins if the defined configuration has
+changed since the last time it was run.  Note: if you modify a job
+directly in Jenkins, jenkins-jobs will not know about it and will not
+update it.
 
 To update a specific list of jobs, simply pass them as additional
 arguments after the configuration path. To update Foo1 and Foo2 run::

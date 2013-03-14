@@ -228,9 +228,12 @@ class XmlJob(object):
 
 
 class CacheStorage(object):
-    def __init__(self):
+    def __init__(self, jenkins_url):
         cache_dir = self.get_cache_dir()
-        self.cachefilename = os.path.join(cache_dir, 'jenkins_jobs_cache.yml')
+        # One cache per remote Jenkins URL:
+        host_vary = re.sub('[^A-Za-z0-9\-\~]', '_', jenkins_url)
+        self.cachefilename = os.path.join(
+            cache_dir, 'cache-host-jobs-' + host_vary + '.yml')
         try:
             yfile = file(self.cachefilename, 'r')
         except IOError:
@@ -300,7 +303,7 @@ class Builder(object):
     def __init__(self, jenkins_url, jenkins_user, jenkins_password,
                  config=None):
         self.jenkins = Jenkins(jenkins_url, jenkins_user, jenkins_password)
-        self.cache = CacheStorage()
+        self.cache = CacheStorage(jenkins_url)
         self.global_config = config
 
     def delete_job(self, name):
