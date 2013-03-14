@@ -18,6 +18,7 @@
 import os
 import hashlib
 import yaml
+import json
 import xml.etree.ElementTree as XML
 from xml.dom import minidom
 import jenkins
@@ -160,13 +161,32 @@ class YamlParser(object):
         # pass through the loop
         if len(dimensions) == 0:
             dimensions = [(("", ""),)]
+        checksums = set([])
         for values in itertools.product(*dimensions):
             params = copy.deepcopy(project)
             params.update(values)
             logger.debug("Generating XML for template job {0}"
                          " (params {1})".format(
                              template['name'], params))
-            self.getXMLForJob(deep_format(template, params))
+            expanded = deep_format(template, params)
+
+            # Keep track of the resulting expansions to avoid
+            # regenerating the exact same job.  Whenever a project has
+            # different values for a parameter and that parameter is not
+            # used in the template, we ended up regenerating the exact
+            # same job.
+            # To achieve that we serialize the expanded template making
+            # sure the dict keys are always in the same order. Then we
+            # record the checksum in an unordered unique set which let
+            # us guarantee a group of parameters will not be added a
+            # second time.
+            uniq = json.dumps(expanded, sort_keys=True)
+            checksum = hashlib.md5(uniq).hexdigest()
+
+            # Lookup the checksum
+            if checksum not in checksums:
+                self.getXMLForJob(expanded)
+                checksums.add(checksum)
 
     def getXMLForJob(self, data):
         kind = data.get('project-type', 'freestyle')
