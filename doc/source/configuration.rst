@@ -36,6 +36,7 @@ later.  There are a few basic optional fields for a Job definition::
       disabled: false
       concurrent: true
       quiet-period: 5
+      workspace: /srv/build-area/job-name
       block-downstream: false
       block-upstream: false
 
@@ -61,6 +62,10 @@ later.  There are a few basic optional fields for a Job definition::
 **quiet-period**
   Number of seconds to wait between consecutive runs of this job.
   Defaults to ``0``.
+
+**workspace**
+  Path for a custom workspace. Defaults to Jenkins default
+  configuration.
 
 **block-downstream**
   Boolean value to set whether or not this job must block while

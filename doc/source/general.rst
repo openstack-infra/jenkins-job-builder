@@ -19,6 +19,7 @@ later.  There are a few basic optional fields for a Job definition::
       defaults: global
       disabled: false
       concurrent: true
+      workspace: /srv/build-area/job-name
       quiet-period: 5
       block-downstream: false
       block-upstream: false
@@ -42,6 +43,10 @@ later.  There are a few basic optional fields for a Job definition::
     * **concurrent**:
       Boolean value to set whether or not Jenkins can run this job
       concurrently. Defaults to ``false``.
+
+    * **workspace**:
+      Path for a custom workspace. Defaults to Jenkins default
+      configuration.
 
     * **quiet-period**:
       Number of seconds to wait between consecutive runs of this job.

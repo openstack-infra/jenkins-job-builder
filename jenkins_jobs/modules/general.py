@@ -78,6 +78,9 @@ class General(jenkins_jobs.modules.base.Base):
             XML.SubElement(xml, 'concurrentBuild').text = 'true'
         else:
             XML.SubElement(xml, 'concurrentBuild').text = 'false'
+        if 'workspace' in data:
+            XML.SubElement(xml, 'customWorkspace').text = \
+                str(data['workspace'])
         if('quiet-period' in data):
             XML.SubElement(xml, 'quietPeriod').text = str(data['quiet-period'])
         node = data.get('node', None)
