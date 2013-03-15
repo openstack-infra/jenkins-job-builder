@@ -1,0 +1,16 @@
+- project:
+    name: duplicates
+    version:
+      - 1.1
+    jobs:
+      - 'duplicates002_{version}'
+      - 'duplicates002_{version}':
+         version: 2.0
+
+- job-template:
+    name: 'duplicates002_{version}'
+    scm:
+      - git:
+         url: ssh://jenkins@review.openstack.org:29418/openstack-infra/jenkins-job-builder.git
+         branches:
+           - 'stable/{version}'

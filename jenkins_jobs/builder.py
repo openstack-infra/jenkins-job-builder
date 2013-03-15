@@ -155,12 +155,24 @@ class YamlParser(object):
                                                "named '{0}'. Missing indent?"
                                                .format(n))
                 name = dfn['name']
+                if name in group:
+                    self._handle_dups("Duplicate entry found: '{0}' is "
+                                      "already defined".format(name))
                 group[name] = dfn
                 self.data[cls] = group
 
     def parse(self, fn):
         with open(fn) as fp:
             self.parse_fp(fp)
+
+    def _handle_dups(self, message):
+
+        if not (self.config and self.config.has_section('job_builder') and
+                self.config.getboolean('job_builder', 'allow_duplicates')):
+            logger.error(message)
+            raise JenkinsJobsException(message)
+        else:
+            logger.warn(message)
 
     def getJob(self, name):
         job = self.data.get('job', {}).get(name, None)
@@ -206,6 +218,8 @@ class YamlParser(object):
             self.getXMLForJob(job)
         for project in self.data.get('project', {}).values():
             logger.debug("XMLifying project '{0}'".format(project['name']))
+            # use a set to check for duplicate job references in projects
+            seen = set()
             for jobspec in project.get('jobs', []):
                 if isinstance(jobspec, dict):
                     # Singleton dict containing dict of job-specific params
@@ -218,6 +232,11 @@ class YamlParser(object):
                 job = self.getJob(jobname)
                 if job:
                     # Just naming an existing defined job
+                    if jobname in seen:
+                        self._handle_dups("Duplicate job '{0}' specified "
+                                          "for project '{1}'".format(
+                                              jobname, project['name']))
+                    seen.add(jobname)
                     continue
                 # see if it's a job group
                 group = self.getJobGroup(jobname)
@@ -233,6 +252,12 @@ class YamlParser(object):
                             group_jobparams = {}
                         job = self.getJob(group_jobname)
                         if job:
+                            if group_jobname in seen:
+                                self._handle_dups(
+                                    "Duplicate job '{0}' specified for "
+                                    "project '{1}'".format(group_jobname,
+                                                           project['name']))
+                            seen.add(group_jobname)
                             continue
                         template = self.getJobTemplate(group_jobname)
                         # Allow a group to override parameters set by a project
@@ -257,6 +282,15 @@ class YamlParser(object):
                     raise JenkinsJobsException("Failed to find suitable "
                                                "template named '{0}'"
                                                .format(jobname))
+        # check for duplicate generated jobs
+        seen = set()
+        # walk the list in reverse so that last definition wins
+        for job in self.jobs[::-1]:
+            if job.name in seen:
+                self._handle_dups("Duplicate definitions for job '{0}' "
+                                  "specified".format(job.name))
+                self.jobs.remove(job)
+            seen.add(job.name)
 
     def getXMLForTemplateJob(self, project, template, jobs_filter=None):
         dimensions = []

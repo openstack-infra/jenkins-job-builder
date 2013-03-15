@@ -1,0 +1,16 @@
+- project:
+    name: duplicate-templates
+    jobs:
+        - '{name}-001'
+
+- job-template:
+    name: '{name}-001'
+    scm:
+      - git:
+         url: ssh://jenkins@review.openstack.org:29418/openstack-infra/jenkins-job-builder.git
+
+- job-template:
+    name: '{name}-001'
+    scm:
+      - git:
+         url: ssh://jenkins@review.openstack.org:29418/openstack-infra/git-review.git

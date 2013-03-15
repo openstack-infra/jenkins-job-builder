@@ -74,6 +74,12 @@ job_builder section
   (Optional) If set to True, jenkins job builder will search for job
   definition files recursively
 
+**allow_duplicates**
+  (Optional) By default `jenkins-jobs` will abort any time a duplicate macro,
+  template, job-group or job name is encountered as it cannot establish the
+  correct one to use. When this option is set to True, only a warning is
+  emitted.
+
 jenkins section
 ^^^^^^^^^^^^^^^
 

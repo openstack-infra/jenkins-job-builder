@@ -1,0 +1,13 @@
+- project:
+    name: duplicates
+    version:
+        - 1.1
+    jobs:
+        - 'duplicates002_1.1'
+        - 'duplicates002_1.1'
+
+- job:
+    name: duplicates002_1.1
+    scm:
+      - git:
+         url: ssh://jenkins@review.openstack.org:29418/openstack-infra/git-review.git
