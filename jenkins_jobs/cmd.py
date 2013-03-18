@@ -21,7 +21,7 @@ def main():
                                       dest='command')
     parser_update = subparser.add_parser('update')
     parser_update.add_argument('path', help='Path to YAML file or directory')
-    parser_update.add_argument('names', help='name(s) of job(s)', nargs='+')
+    parser_update.add_argument('names', help='name(s) of job(s)', nargs='?')
     parser_test = subparser.add_parser('test')
     parser_test.add_argument('path', help='Path to YAML file or directory')
     parser_test.add_argument('-o', dest='output_dir',
