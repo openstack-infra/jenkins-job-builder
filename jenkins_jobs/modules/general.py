@@ -87,6 +87,8 @@ class General(jenkins_jobs.modules.base.Base):
         if node:
             XML.SubElement(xml, 'assignedNode').text = node
             XML.SubElement(xml, 'canRoam').text = 'false'
+        else:
+            XML.SubElement(xml, 'canRoam').text = 'true'
         if 'logrotate' in data:
             lr_xml = XML.SubElement(xml, 'logRotator')
             logrotate = data['logrotate']
