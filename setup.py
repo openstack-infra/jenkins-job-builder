@@ -156,6 +156,7 @@ setuptools.setup(
         ],
         'jenkins_jobs.scm': [
             'git=jenkins_jobs.modules.scm:git',
+            'repo=jenkins_jobs.modules.scm:repo',
             'svn=jenkins_jobs.modules.scm:svn',
             'tfs=jenkins_jobs.modules.scm:tfs',
         ],
