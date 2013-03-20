@@ -126,6 +126,8 @@ setuptools.setup(
             'pollscm=jenkins_jobs.modules.triggers:pollscm',
             'timed=jenkins_jobs.modules.triggers:timed',
             'github=jenkins_jobs.modules.triggers:github',
+            'github-pull-request=jenkins_jobs.modules.triggers:'
+            'github_pull_request',
         ],
         'jenkins_jobs.wrappers': [
             'timeout=jenkins_jobs.modules.wrappers:timeout',
