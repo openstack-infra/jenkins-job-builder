@@ -1196,6 +1196,61 @@ def cifs(parser, xml_parent, data):
                       plugin_reference_tag)
 
 
+def sonar(parser, xml_parent, data):
+    """yaml: sonar
+    Sonar plugin support.
+    Requires the Jenkins `Sonar Plugin.
+    <http://docs.codehaus.org/pages/viewpage.action?pageId=116359341>`_
+
+    :arg str jdk: JDK to use (inherited from the job if omitted). (optional)
+    :arg str branch: branch onto which the analysis will be posted (optional)
+    :arg str language: source code language (optional)
+    :arg str maven-opts: options given to maven (optional)
+    :arg str additional-properties: sonar analysis parameters (optional)
+    :arg dict skip-global-triggers:
+        :Triggers: * **skip-when-scm-change** (`bool`): skip analysis when
+                     build triggered by scm
+                   * **skip-when-upstream-build** (`bool`): skip analysis when
+                     build triggered by an upstream build
+                   * **skip-when-envvar-defined** (`str`): skip analysis when
+                     the specified environment variable is set to true
+
+    This publisher supports the post-build action exposed by the Jenkins
+    Sonar Plugin, which is triggering a Sonar Analysis with Maven.
+
+    Example::
+
+      publishers:
+        - sonar:
+            jdk: MyJdk
+            branch: myBranch
+            language: java
+            maven-opts: -DskipTests
+            additional-properties: -DsonarHostURL=http://example.com/
+            skip-global-triggers:
+                skip-when-scm-change: true
+                skip-when-upstream-build: true
+                skip-when-envvar-defined: SKIP_SONAR
+    """
+    sonar = XML.SubElement(xml_parent, 'hudson.plugins.sonar.SonarPublisher')
+    if 'jdk' in data:
+        XML.SubElement(sonar, 'jdk').text = data['jdk']
+    XML.SubElement(sonar, 'branch').text = data.get('branch', '')
+    XML.SubElement(sonar, 'language').text = data.get('language', '')
+    XML.SubElement(sonar, 'mavenOpts').text = data.get('maven-opts', '')
+    XML.SubElement(sonar, 'jobAdditionalProperties').text = \
+        data.get('additional-properties', '')
+    if 'skip-global-triggers' in data:
+        data_triggers = data['skip-global-triggers']
+        triggers = XML.SubElement(sonar, 'triggers')
+        XML.SubElement(triggers, 'skipScmCause').text =   \
+            str(data_triggers.get('skip-when-scm-change', False)).lower()
+        XML.SubElement(triggers, 'skipUpstreamCause').text =  \
+            str(data_triggers.get('skip-when-upstream-build', False)).lower()
+        XML.SubElement(triggers, 'envVar').text =  \
+            data_triggers.get('skip-when-envvar-defined', '')
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

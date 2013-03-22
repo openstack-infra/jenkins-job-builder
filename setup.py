@@ -116,6 +116,7 @@ setuptools.setup(
             'copy-to-master=jenkins_jobs.modules.publishers:copy_to_master',
             'jira=jenkins_jobs.modules.publishers:jira',
             'cifs=jenkins_jobs.modules.publishers:cifs',
+            'sonar=jenkins_jobs.modules.publishers:sonar',
         ],
         'jenkins_jobs.scm': [
             'git=jenkins_jobs.modules.scm:git',
