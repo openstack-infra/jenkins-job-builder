@@ -64,6 +64,7 @@ setuptools.setup(
             'copyartifact=jenkins_jobs.modules.builders:copyartifact',
             'gradle=jenkins_jobs.modules.builders:gradle',
             'batch=jenkins_jobs.modules.builders:batch',
+            'maven-target=jenkins_jobs.modules.builders:maven_target',
         ],
         'jenkins_jobs.reporters': [
             'email=jenkins_jobs.modules.reporters:email',

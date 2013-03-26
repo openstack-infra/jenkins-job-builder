@@ -484,6 +484,33 @@ def batch(parser, xml_parent, data):
     XML.SubElement(batch, 'command').text = data
 
 
+def maven_target(parser, xml_parent, data):
+    """yaml: maven-target
+    Execute top-level Maven targets
+
+    :arg str goals: Goals to execute
+    :arg str properties: Properties for maven, can have multiples
+
+    Example::
+
+    builders:
+      - maven-target:
+          goals: clean
+          properties:
+            - foo=bar
+            - bar=foo
+    """
+    maven = XML.SubElement(xml_parent, 'hudson.tasks.Maven')
+    XML.SubElement(maven, 'targets').text = data['goals']
+    prop_string = '\n'.join(data.get('properties', []))
+    XML.SubElement(maven, 'properties').text = prop_string
+    XML.SubElement(maven, 'usePrivateRepository').text = 'false'
+    XML.SubElement(maven, 'settings', {
+                   'class': 'jenkins.mvn.DefaultSettingsProvider'})
+    XML.SubElement(maven, 'globalSettings', {
+                   'class': 'jenkins.mvn.DefaultGlobalSettingsProvider'})
+
+
 class Builders(jenkins_jobs.modules.base.Base):
     sequence = 60
 
