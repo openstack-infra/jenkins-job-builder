@@ -143,10 +143,20 @@ def gerrit(parser, xml_parent, data):
     :arg str failure-message: Message to leave on failure
     :arg list projects: list of projects to match
 
-      :Project: * **project-compare-type** (`str`) --  ''PLAIN'' or ''ANT''
+      :Project: * **project-compare-type** (`str`) --  ''PLAIN'', ''ANT'' or
+                  ''REG_EXP''
                 * **project-pattern** (`str`) -- Project name pattern to match
-                * **branch-compare-type** (`str`) -- ''PLAIN'' or ''ANT''
-                * **branch-pattern** ('str') -- Branch name pattern to match
+                * **branch-compare-type** (`str`) -- ''PLAIN'', ''ANT'' or
+                  ''REG_EXP''
+                * **branch-pattern** (`str`) -- Branch name pattern to match
+                * **file-paths** (`list`) -- List of file paths to match
+                  (optional)
+
+                  :File Path: * **compare-type** (`str`) -- ''PLAIN'', ''ANT''
+                                or ''REG_EXP'' (optional, defaults to
+                                ''PLAIN'')
+                              * **pattern** (`str`) -- File path pattern to
+                                match
 
     :arg dict skip-vote: map of build outcomes for which Jenkins must skip
         vote. Requires Gerrit Trigger Plugin version >= 2.7.0
@@ -178,6 +188,9 @@ def gerrit(parser, xml_parent, data):
                 project-pattern: 'test-project'
                 branch-compare-type: 'ANT'
                 branch-pattern: '**'
+                file-paths:
+                    - compare-type: ANT
+                      pattern: subdirectory/**
             skip-vote:
                 successful: true
                 failed: true
@@ -206,6 +219,17 @@ def gerrit(parser, xml_parent, data):
         XML.SubElement(gbranch, 'compareType').text = \
             project['branch-compare-type']
         XML.SubElement(gbranch, 'pattern').text = project['branch-pattern']
+        project_file_paths = project.get('file-paths', [])
+        if project_file_paths:
+            fps_tag = XML.SubElement(gproj, 'filePaths')
+            for file_path in project_file_paths:
+                fp_tag = XML.SubElement(fps_tag,
+                                        'com.sonyericsson.hudson.plugins.'
+                                        'gerrit.trigger.hudsontrigger.data.'
+                                        'FilePath')
+                XML.SubElement(fp_tag, 'compareType').text = \
+                    file_path.get('compare-type', 'PLAIN')
+                XML.SubElement(fp_tag, 'pattern').text = file_path['pattern']
     build_gerrit_skip_votes(gtrig, data)
     XML.SubElement(gtrig, 'silentMode').text = 'false'
     XML.SubElement(gtrig, 'escapeQuotes').text = 'true'

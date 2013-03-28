@@ -23,3 +23,6 @@
                   project-pattern: 'myproject'
                   branch-compare-type: 'PLAIN'
                   branch-pattern: 'master'
+                  file-paths:
+                      - compare-type: ANT
+                        pattern: subdirectory/**
