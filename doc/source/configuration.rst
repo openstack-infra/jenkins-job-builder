@@ -77,6 +77,11 @@ later.  There are a few basic optional fields for a Job definition::
   upstream jobs are running. Upstream jobs are determined
   transitively. Defaults to ``false``.
 
+**auth-token**
+  Specifies an authentication token that allows new builds to be
+  triggered by accessing a special predefined URL. Only those who
+  know the token will be able to trigger builds remotely.
+
 .. _job-template:
 
 Job Template
