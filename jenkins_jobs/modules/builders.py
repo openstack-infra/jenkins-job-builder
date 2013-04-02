@@ -83,23 +83,21 @@ def copyartifact(parser, xml_parent, data):
         last successful build when upstream-build is specified as which-build
     :arg string param: specifies to use a build parameter to get the build when
         build-param is specified as which-build
-
     :which-build values:
-        :last-successful:
-        :specific-build:
-        :last-saved:
-        :upstream-build:
-        :permalink:
-        :workspace-latest:
-        :build-param:
-
+      * **last-successful**
+      * **specific-build**
+      * **last-saved**
+      * **upstream-build**
+      * **permalink**
+      * **workspace-latest**
+      * **build-param**
     :permalink values:
-        :last:
-        :last-stable:
-        :last-successful:
-        :last-failed:
-        :last-unstable:
-        :last-unsuccessful:
+      * **last**
+      * **last-stable**
+      * **last-successful**
+      * **last-failed**
+      * **last-unstable**
+      * **last-unsuccessful**
 
 
     Example::
@@ -438,7 +436,7 @@ def artifact_resolver(parser, xml_parent, data):
 
 def gradle(parser, xml_parent, data):
     """yaml: gradle
-    Execute gradle tasks.  Requires the Jenkins 'Gradle Plugin.
+    Execute gradle tasks.  Requires the Jenkins `Gradle Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Gradle+Plugin>`_
 
     :arg str tasks: List of tasks to execute
@@ -498,12 +496,12 @@ def maven_target(parser, xml_parent, data):
 
     Example::
 
-    builders:
-      - maven-target:
-          goals: clean
-          properties:
-            - foo=bar
-            - bar=foo
+      builders:
+        - maven-target:
+            goals: clean
+            properties:
+              - foo=bar
+              - bar=foo
     """
     maven = XML.SubElement(xml_parent, 'hudson.tasks.Maven')
     XML.SubElement(maven, 'targets').text = data['goals']
