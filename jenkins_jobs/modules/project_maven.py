@@ -50,7 +50,7 @@ class Maven(jenkins_jobs.modules.base.Base):
         if 'maven' not in data:
             return None
         xml_parent = XML.Element('maven2-moduleset')
-        root_module = XML.SubElement(xml_parent, 'root_module')
+        root_module = XML.SubElement(xml_parent, 'rootModule')
         XML.SubElement(root_module, 'groupId').text = \
             data['maven']['root-module']['group-id']
         XML.SubElement(root_module, 'artifactId').text = \
