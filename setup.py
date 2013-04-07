@@ -80,6 +80,7 @@ setuptools.setup(
         ],
         'jenkins_jobs.parameters': [
             'string=jenkins_jobs.modules.parameters:string_param',
+            'password=jenkins_jobs.modules.parameters:password_param',
             'bool=jenkins_jobs.modules.parameters:bool_param',
             'file=jenkins_jobs.modules.parameters:file_param',
             'text=jenkins_jobs.modules.parameters:text_param',

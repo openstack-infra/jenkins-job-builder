@@ -70,6 +70,26 @@ def string_param(parser, xml_parent, data):
                'hudson.model.StringParameterDefinition')
 
 
+def password_param(parser, xml_parent, data):
+    """yaml: password
+    A password parameter.
+
+    :arg str name: the name of the parameter
+    :arg str default: the default value of the parameter (optional)
+    :arg str description: a description of the parameter (optional)
+
+    Example::
+
+      parameters:
+        - password:
+            name: FOO
+            default: 1HSC0Ts6E161FysGf+e1xasgsHkgleLh09JUTYnipPvw=
+            description: "A parameter named FOO."
+    """
+    base_param(parser, xml_parent, data, True,
+               'hudson.model.PasswordParameterDefinition')
+
+
 def bool_param(parser, xml_parent, data):
     """yaml: bool
     A boolean parameter.
