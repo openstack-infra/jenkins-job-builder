@@ -52,6 +52,7 @@ setuptools.setup(
             'freestyle=jenkins_jobs.modules.project_freestyle:Freestyle',
             'maven=jenkins_jobs.modules.project_maven:Maven',
             'matrix=jenkins_jobs.modules.project_matrix:Matrix',
+            'multijob=jenkins_jobs.modules.project_multijob:MultiJob',
         ],
         'jenkins_jobs.builders': [
             'shell=jenkins_jobs.modules.builders:shell',
@@ -65,6 +66,7 @@ setuptools.setup(
             'gradle=jenkins_jobs.modules.builders:gradle',
             'batch=jenkins_jobs.modules.builders:batch',
             'maven-target=jenkins_jobs.modules.builders:maven_target',
+            'multijob=jenkins_jobs.modules.builders:multijob',
         ],
         'jenkins_jobs.reporters': [
             'email=jenkins_jobs.modules.reporters:email',

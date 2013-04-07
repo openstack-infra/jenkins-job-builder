@@ -514,6 +514,106 @@ def maven_target(parser, xml_parent, data):
                    'class': 'jenkins.mvn.DefaultGlobalSettingsProvider'})
 
 
+def multijob(parser, xml_parent, data):
+    """yaml: multijob
+    Define a multijob phase. Requires the Jenkins `Multijob Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Multijob+Plugin>`_
+
+    This builder may only be used in \
+    :py:class:`jenkins_jobs.modules.project_multijob.MultiJob` projects.
+
+    :arg str name: MultiJob phase name
+    :arg str condition: when to trigger the other job (default 'SUCCESSFUL')
+    :arg list projects: list of projects to include in the MultiJob phase
+
+      :Project: * **name** (`str`) -- Project name
+                * **current-parameters** (`bool`) -- Pass current build
+                  parameters to the other job (default false)
+                * **git-revision** (`bool`) -- Pass current git-revision
+                  to the other job (default false)
+                * **property-file** (`str`) -- Pass properties from file
+                  to the other job (optional)
+                * **predefined-parameters** (`str`) -- Pass predefined
+                  parameters to the other job (optional)
+
+    Example::
+
+      builders:
+        - multijob:
+            name: PhaseOne
+            condition: SUCCESSFUL
+            projects:
+              - name: PhaseOneJobA
+                current-parameters: true
+                git-revision: true
+              - name: PhaseOneJobB
+                current-parameters: true
+                property-file: build.props
+        - multijob:
+            name: PhaseTwo
+            condition: UNSTABLE
+            projects:
+              - name: PhaseTwoJobA
+                current-parameters: true
+                predefined-parameters: foo=bar
+              - name: PhaseTwoJobB
+                current-parameters: false
+
+
+    """
+    builder = XML.SubElement(xml_parent, 'com.tikal.jenkins.plugins.multijob.'
+                                         'MultiJobBuilder')
+    XML.SubElement(builder, 'phaseName').text = data['name']
+
+    condition = data.get('condition', 'SUCCESSFUL')
+    XML.SubElement(builder, 'continuationCondition').text = condition
+
+    phaseJobs = XML.SubElement(builder, 'phaseJobs')
+
+    for project in data.get('projects', []):
+        phaseJob = XML.SubElement(phaseJobs, 'com.tikal.jenkins.plugins.'
+                                             'multijob.PhaseJobsConfig')
+
+        XML.SubElement(phaseJob, 'jobName').text = project['name']
+
+        # Pass through the current build params
+        currParams = str(project.get('current-parameters', False)).lower()
+        XML.SubElement(phaseJob, 'currParams').text = currParams
+
+        # Pass through other params
+        configs = XML.SubElement(phaseJob, 'configs')
+
+        # Git Revision
+        if project.get('git-revision', False):
+            param = XML.SubElement(configs,
+                                   'hudson.plugins.git.'
+                                   'GitRevisionBuildParameters')
+            combine = XML.SubElement(param, 'combineQueuedCommits')
+            combine.text = 'false'
+
+        # Properties File
+        properties_file = project.get('property-file', False)
+        if properties_file:
+            param = XML.SubElement(configs,
+                                   'hudson.plugins.parameterizedtrigger.'
+                                   'FileBuildParameters')
+
+            propertiesFile = XML.SubElement(param, 'propertiesFile')
+            propertiesFile.text = properties_file
+
+            failOnMissing = XML.SubElement(param, 'failTriggerOnMissing')
+            failOnMissing.text = 'true'
+
+        # Predefined Parameters
+        predefined_parameters = project.get('predefined-parameters', False)
+        if predefined_parameters:
+            param = XML.SubElement(configs,
+                                   'hudson.plugins.parameterizedtrigger.'
+                                   'PredefinedBuildParameters')
+            properties = XML.SubElement(param, 'properties')
+            properties.text = predefined_parameters
+
+
 class Builders(jenkins_jobs.modules.base.Base):
     sequence = 60
 
