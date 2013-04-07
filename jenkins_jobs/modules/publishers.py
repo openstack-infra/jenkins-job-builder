@@ -1251,6 +1251,27 @@ def sonar(parser, xml_parent, data):
             data_triggers.get('skip-when-envvar-defined', '')
 
 
+def join_trigger(parser, xml_parent, data):
+    """yaml: join-trigger
+    Trriiger a job after all the immediate downstream jobs have completed
+
+    :arg list projects: list of projects to trigger
+
+    Example::
+
+      publishers:
+        - join-trigger:
+            projects:
+              - project-one
+              - project-two
+    """
+    jointrigger = XML.SubElement(xml_parent, 'join.JoinTrigger')
+
+    # Simple Project List
+    joinProjectsText = ','.join(data.get('projects', ['']))
+    XML.SubElement(jointrigger, 'joinProjects').text = joinProjectsText
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
