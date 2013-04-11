@@ -726,6 +726,44 @@ def scp(parser, xml_parent, data):
             XML.SubElement(entry_e, 'copyAfterFailure').text = 'false'
 
 
+def ssh(parser, xml_parent, data):
+    """yaml: ssh
+    Upload files via SCP.
+    Requires the Jenkins `Publish over SSH Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Publish+Over+SSH+Plugin>`_
+
+    :arg str site: name of the ssh site
+    :arg str target: destination directory
+    :arg str source: source path specifier
+    :arg str excludes: excluded file pattern (optional)
+    :arg str remove-prefix: prefix to remove from uploaded file paths
+      (optional)
+
+    Example::
+
+      publishers:
+        - ssh:
+            site: 'server.example.com'
+            target: 'dest/dir'
+            source: 'base/source/dir/**'
+            remove-prefix: 'base/source/dir'
+            excludes: '**/*.excludedfiletype'
+    """
+    console_prefix = 'SSH: '
+    plugin_tag = 'jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin'
+    publisher_tag = 'jenkins.plugins.publish__over__ssh.BapSshPublisher'
+    transfer_tag = 'jenkins.plugins.publish__over__ssh.BapSshTransfer'
+    plugin_reference_tag = 'jenkins.plugins.publish_over_ssh.'    \
+        'BapSshPublisherPlugin'
+    base_publish_over(xml_parent,
+                      data,
+                      console_prefix,
+                      plugin_tag,
+                      publisher_tag,
+                      transfer_tag,
+                      plugin_reference_tag)
+
+
 def pipeline(parser, xml_parent, data):
     """yaml: pipeline
     Specify a downstream project in a pipeline.

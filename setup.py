@@ -109,6 +109,7 @@ setuptools.setup(
             'violations=jenkins_jobs.modules.publishers:violations',
             'checkstyle=jenkins_jobs.modules.publishers:checkstyle',
             'scp=jenkins_jobs.modules.publishers:scp',
+            'ssh=jenkins_jobs.modules.publishers:ssh',
             'pipeline=jenkins_jobs.modules.publishers:pipeline',
             'email=jenkins_jobs.modules.publishers:email',
             'claim-build=jenkins_jobs.modules.publishers:claim_build',
