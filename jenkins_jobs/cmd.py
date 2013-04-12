@@ -26,7 +26,7 @@ def main():
     parser_test.add_argument('path', help='Path to YAML file or directory')
     parser_test.add_argument('-o', dest='output_dir',
                              help='Path to output XML')
-    parser_test.add_argument('name', help='name of job', nargs='?')
+    parser_test.add_argument('name', help='name(s) of job(s)', nargs='*')
     parser_delete = subparser.add_parser('delete')
     parser_delete.add_argument('name', help='name of job', nargs='+')
     subparser.add_parser('delete-all',
