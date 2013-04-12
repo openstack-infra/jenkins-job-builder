@@ -101,7 +101,7 @@ class YamlParser(object):
         newdata.update(data)
         return newdata
 
-    def generateXML(self):
+    def generateXML(self, jobs_filter=None):
         changed = True
         while changed:
             changed = False
@@ -111,6 +111,8 @@ class YamlParser(object):
                         changed = True
 
         for job in self.data.get('job', {}).values():
+            if jobs_filter and job not in jobs_filter:
+                continue
             logger.debug("XMLifying job '{0}'".format(job['name']))
             job = self.applyDefaults(job)
             self.getXMLForJob(job)
@@ -142,7 +144,7 @@ class YamlParser(object):
                         # Except name, since the group's name is not useful
                         d['name'] = project['name']
                         if template:
-                            self.getXMLForTemplateJob(d, template)
+                            self.getXMLForTemplateJob(d, template, jobs_filter)
                     continue
                 # see if it's a template
                 template = self.getJobTemplate(jobname)
@@ -150,9 +152,9 @@ class YamlParser(object):
                     d = {}
                     d.update(project)
                     d.update(jobparams)
-                    self.getXMLForTemplateJob(d, template)
+                    self.getXMLForTemplateJob(d, template, jobs_filter)
 
-    def getXMLForTemplateJob(self, project, template):
+    def getXMLForTemplateJob(self, project, template, jobs_filter=None):
         dimensions = []
         for (k, v) in project.items():
             if type(v) == list and k not in ['jobs']:
@@ -165,9 +167,6 @@ class YamlParser(object):
         for values in itertools.product(*dimensions):
             params = copy.deepcopy(project)
             params.update(values)
-            logger.debug("Generating XML for template job {0}"
-                         " (params {1})".format(
-                             template['name'], params))
             expanded = deep_format(template, params)
 
             # Keep track of the resulting expansions to avoid
@@ -185,6 +184,16 @@ class YamlParser(object):
 
             # Lookup the checksum
             if checksum not in checksums:
+
+                # We also want to skip XML generation whenever the user did
+                # not ask for that job.
+                job_name = expanded.get('name')
+                if jobs_filter and job_name not in jobs_filter:
+                    continue
+
+                logger.debug("Generating XML for template job {0}"
+                             " (params {1})".format(
+                                 template['name'], params))
                 self.getXMLForJob(expanded)
                 checksums.add(checksum)
 
@@ -409,7 +418,9 @@ class Builder(object):
         for in_file in files_to_process:
             logger.debug("Parsing YAML file {0}".format(in_file))
             parser.parse(in_file)
-        parser.generateXML()
+        if names:
+            logger.debug("Will filter out jobs not in %s" % names)
+        parser.generateXML(names)
 
         parser.jobs.sort(lambda a, b: cmp(a.name, b.name))
 
