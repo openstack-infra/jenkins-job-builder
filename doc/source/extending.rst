@@ -65,3 +65,15 @@ wanted to add a new builder, all you need to do is write a function
 that conforms to the :ref:`Component Interface <component_interface>`,
 and then add that function to the appropriate entry point (via a
 setup.py file).
+
+.. _module_registry:
+
+Module Registry
+---------------
+
+All modules and their associated components are registered in the
+module registry. It can be accessed either from modules via the registry
+field, or via the parser parameter of components.
+
+.. autoclass:: jenkins_jobs.builder.ModuleRegistry
+   :members:

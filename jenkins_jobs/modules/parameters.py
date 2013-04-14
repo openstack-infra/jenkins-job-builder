@@ -264,6 +264,9 @@ def svn_tags_param(parser, xml_parent, data):
 class Parameters(jenkins_jobs.modules.base.Base):
     sequence = 21
 
+    component_type = 'parameter'
+    component_list_type = 'parameters'
+
     def gen_xml(self, parser, xml_parent, data):
         properties = xml_parent.find('properties')
         if properties is None:
@@ -275,5 +278,5 @@ class Parameters(jenkins_jobs.modules.base.Base):
                                    'hudson.model.ParametersDefinitionProperty')
             pdefs = XML.SubElement(pdefp, 'parameterDefinitions')
             for param in parameters:
-                self._dispatch('parameter', 'parameters',
-                               parser, pdefs, param)
+                self.registry.dispatch('parameter',
+                                       parser, pdefs, param)

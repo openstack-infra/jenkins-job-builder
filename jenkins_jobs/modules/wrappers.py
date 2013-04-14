@@ -350,9 +350,11 @@ def jclouds(parser, xml_parent, data):
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 
+    component_type = 'wrapper'
+    component_list_type = 'wrappers'
+
     def gen_xml(self, parser, xml_parent, data):
         wrappers = XML.SubElement(xml_parent, 'buildWrappers')
 
         for wrap in data.get('wrappers', []):
-            self._dispatch('wrapper', 'wrappers',
-                           parser, wrappers, wrap)
+            self.registry.dispatch('wrapper', parser, wrappers, wrap)

@@ -335,6 +335,9 @@ def github_pull_request(parser, xml_parent, data):
 class Triggers(jenkins_jobs.modules.base.Base):
     sequence = 50
 
+    component_type = 'trigger'
+    component_list_type = 'triggers'
+
     def gen_xml(self, parser, xml_parent, data):
         triggers = data.get('triggers', [])
         if not triggers:
@@ -342,5 +345,4 @@ class Triggers(jenkins_jobs.modules.base.Base):
 
         trig_e = XML.SubElement(xml_parent, 'triggers', {'class': 'vector'})
         for trigger in triggers:
-            self._dispatch('trigger', 'triggers',
-                           parser, trig_e, trigger)
+            self.registry.dispatch('trigger', parser, trig_e, trigger)

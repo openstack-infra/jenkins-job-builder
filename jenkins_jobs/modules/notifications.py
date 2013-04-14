@@ -61,6 +61,9 @@ def http_endpoint(parser, xml_parent, data):
 class Notifications(jenkins_jobs.modules.base.Base):
     sequence = 22
 
+    component_type = 'notification'
+    component_list_type = 'notifications'
+
     def gen_xml(self, parser, xml_parent, data):
         properties = xml_parent.find('properties')
         if properties is None:
@@ -75,5 +78,5 @@ class Notifications(jenkins_jobs.modules.base.Base):
             endpoints_element = XML.SubElement(notify_element, 'endpoints')
 
             for endpoint in notifications:
-                self._dispatch('notification', 'notifications',
-                               parser, endpoints_element, endpoint)
+                self.registry.dispatch('notification',
+                                       parser, endpoints_element, endpoint)

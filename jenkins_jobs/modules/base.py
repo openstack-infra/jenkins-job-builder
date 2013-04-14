@@ -14,8 +14,6 @@
 
 # Base class for a jenkins_jobs module
 
-import pkg_resources
-import yaml
 import xml.etree.ElementTree as XML
 
 
@@ -41,6 +39,20 @@ class Base(object):
     #: order of their sequence number in order to produce consistently
     #: ordered XML output.
     sequence = 10
+
+    #: The component type for components of this module.  This will be
+    #: used to look for macros (they are defined singularly, and should
+    #: not be plural).
+    #: Set both component_type and component_list_type to None if module
+    #: doesn't have components.
+    component_type = None
+
+    #: The component list type will be used to look up possible
+    #: implementations of the component type via entry points (entry
+    #: points provide a list of components, so it should be plural).
+    #: Set both component_type and component_list_type to None if module
+    #: doesn't have components.
+    component_list_type = None
 
     def __init__(self, registry):
         self.registry = registry
@@ -70,61 +82,3 @@ class Base(object):
         """
 
         pass
-
-    def _dispatch(self, component_type, component_list_type,
-                  parser, xml_parent,
-                  component, template_data={}):
-        """This is a private helper method that you can call from your
-        implementation of gen_xml.  It allows your module to define a
-        type of component, and benefit from extensibility via Python
-        entry points and Jenkins Job Builder :ref:`Macros <macro>`.
-
-        :arg string component_type: the name of the component
-          (e.g., `builder`)
-        :arg string component_list_type: the plural name of the component
-          type (e.g., `builders`)
-        :arg YAMLParser parser: the global YMAL Parser
-        :arg Element xml_parent: the parent XML element
-        :arg dict template_data: values that should be interpolated into
-          the component definition
-
-        The value of `component_list_type` will be used to look up
-        possible implementations of the component type via entry
-        points (entry points provide a list of components, so it
-        should be plural) while `component_type` will be used to look
-        for macros (they are defined singularly, and should not be
-        plural).
-
-        See the Publishers module for a simple example of how to use
-        this method.
-        """
-
-        if isinstance(component, dict):
-            # The component is a sigleton dictionary of name: dict(args)
-            name, component_data = component.items()[0]
-            if template_data:
-                # Template data contains values that should be interpolated
-                # into the component definition
-                s = yaml.dump(component_data, default_flow_style=False)
-                s = s.format(**template_data)
-                component_data = yaml.load(s)
-        else:
-            # The component is a simple string name, eg "run-tests"
-            name = component
-            component_data = {}
-
-        # Look for a component function defined in an entry point
-        for ep in pkg_resources.iter_entry_points(
-            group='jenkins_jobs.{0}'.format(component_list_type), name=name):
-            func = ep.load()
-            func(parser, xml_parent, component_data)
-        else:
-            # Otherwise, see if it's defined as a macro
-            component = parser.data.get(component_type, {}).get(name)
-            if component:
-                for b in component[component_list_type]:
-                    # Pass component_data in as template data to this function
-                    # so that if the macro is invoked with arguments,
-                    # the arguments are interpolated into the real defn.
-                    self._dispatch(component_type, component_list_type,
-                                   parser, xml_parent, b, component_data)

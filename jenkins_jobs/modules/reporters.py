@@ -71,6 +71,9 @@ def email(parser, xml_parent, data):
 class Reporters(jenkins_jobs.modules.base.Base):
     sequence = 55
 
+    component_type = 'reporter'
+    component_list_type = 'reporters'
+
     def gen_xml(self, parser, xml_parent, data):
         if 'reporters' not in data:
             return
@@ -81,5 +84,4 @@ class Reporters(jenkins_jobs.modules.base.Base):
         reporters = XML.SubElement(xml_parent, 'reporters')
 
         for action in data.get('reporters', []):
-            self._dispatch('reporter', 'reporters',
-                           parser, reporters, action)
+            self.registry.dispatch('reporter', parser, reporters, action)

@@ -617,14 +617,17 @@ def multijob(parser, xml_parent, data):
 class Builders(jenkins_jobs.modules.base.Base):
     sequence = 60
 
+    component_type = 'builder'
+    component_list_type = 'builders'
+
     def gen_xml(self, parser, xml_parent, data):
 
         for alias in ['prebuilders', 'builders', 'postbuilders']:
             if alias in data:
                 builders = XML.SubElement(xml_parent, alias)
                 for builder in data[alias]:
-                    self._dispatch('builder', 'builders',
-                                   parser, builders, builder)
+                    self.registry.dispatch('builder', parser, builders,
+                                           builder)
 
         # Make sure freestyle projects always have a <builders> entry
         # or Jenkins v1.472 (at least) will NPE.

@@ -236,6 +236,9 @@ def svn(self, xml_parent, data):
 class SCM(jenkins_jobs.modules.base.Base):
     sequence = 30
 
+    component_type = 'scm'
+    component_list_type = 'scm'
+
     def gen_xml(self, parser, xml_parent, data):
         scms = data.get('scm', [])
         if scms:
@@ -245,7 +248,6 @@ class SCM(jenkins_jobs.modules.base.Base):
                 xml_parent = XML.SubElement(xml_parent, 'scm', xml_attribs)
                 xml_parent = XML.SubElement(xml_parent, 'scms')
             for scm in data.get('scm', []):
-                self._dispatch('scm', 'scm',
-                               parser, xml_parent, scm)
+                self.registry.dispatch('scm', parser, xml_parent, scm)
         else:
             XML.SubElement(xml_parent, 'scm', {'class': 'hudson.scm.NullSCM'})

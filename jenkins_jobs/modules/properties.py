@@ -305,11 +305,13 @@ def extended_choice(parser, xml_parent, data):
 class Properties(jenkins_jobs.modules.base.Base):
     sequence = 20
 
+    component_type = 'property'
+    component_list_type = 'properties'
+
     def gen_xml(self, parser, xml_parent, data):
         properties = xml_parent.find('properties')
         if properties is None:
             properties = XML.SubElement(xml_parent, 'properties')
 
         for prop in data.get('properties', []):
-            self._dispatch('property', 'properties',
-                           parser, properties, prop)
+            self.registry.dispatch('property', parser, properties, prop)
