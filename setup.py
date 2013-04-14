@@ -67,6 +67,7 @@ setuptools.setup(
             'batch=jenkins_jobs.modules.builders:batch',
             'maven-target=jenkins_jobs.modules.builders:maven_target',
             'multijob=jenkins_jobs.modules.builders:multijob',
+            'conditional-step=jenkins_jobs.modules.builders:conditional_step',
         ],
         'jenkins_jobs.reporters': [
             'email=jenkins_jobs.modules.reporters:email',

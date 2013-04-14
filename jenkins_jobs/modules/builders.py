@@ -487,6 +487,156 @@ def batch(parser, xml_parent, data):
     XML.SubElement(batch, 'command').text = data
 
 
+def create_builders(parser, step):
+    dummy_parent = XML.Element("dummy")
+    parser.registry.dispatch('builder', parser, dummy_parent, step)
+    return list(dummy_parent)
+
+
+def conditional_step(parser, xml_parent, data):
+    """yaml: conditional_step
+    Conditionaly execute some build steps.  Requires the Jenkins `Conditional
+    BuildStep Plugin`_.
+
+    Depending on the number of declared steps, a `Conditional step (single)`
+    or a `Conditional steps (multiple)` is created in Jenkins.
+
+    :arg str condition-kind: Condition kind that must be verified before the
+      steps are executed. Valid values and their additional attributes are
+      described in the conditions_ table.
+    :arg str on-evaluation-failure: What should be the outcome of the build
+      if the evaluation of the condition fails. Possible values are `fail`,
+      `mark-unstable`, `run-and-mark-unstable`, `run` and `dont-run`.
+      Default is `fail`.
+    :arg list steps: List of steps to run if the condition is verified. Items
+      in the list can be any builder known by Jenkins Job Builder.
+
+    .. _conditions:
+
+    ================== ====================================================
+    Condition kind     Description
+    ================== ====================================================
+    always             Condition is always verified
+    never              Condition is never verified
+    boolean-expression Run the step if the expression expends to a
+                       representation of true
+
+                         :condition-expression: Expression to expand
+    shell              Run the step if the shell command succeed
+
+                         :condition-command: Shell command to execute
+    windows-shell      Similar to shell, except that commands will be
+                       executed by cmd, under Windows
+
+                         :condition-command: Command to execute
+    file-exists        Run the step if a file exists
+
+                         :condition-filename: Check existence of this file
+                         :condition-basedir: If condition-filename is
+                           relative, it will be considered relative to
+                           either `workspace`, `artifact-directory`,
+                           or `jenkins-home`. Default is `workspace`.
+    ================== ====================================================
+
+    Example::
+
+      builders:
+        - conditional_step:
+            condition-kind: boolean-expression
+            condition-expression: "${ENV,var=IS_STABLE_BRANCH}"
+            on-evaluation-failure: mark-unstable
+            steps:
+                - shell: "echo Making extra checks"
+
+    .. _Conditional BuildStep Plugin: https://wiki.jenkins-ci.org/display/
+        JENKINS/Conditional+BuildStep+Plugin
+    """
+
+    def build_condition(cdata):
+        kind = cdata['condition-kind']
+        ctag = XML.SubElement(root_tag, condition_tag)
+        if kind == "always":
+            ctag.set('class',
+                     'org.jenkins_ci.plugins.run_condition.core.AlwaysRun')
+        elif kind == "never":
+            ctag.set('class',
+                     'org.jenkins_ci.plugins.run_condition.core.NeverRun')
+        elif kind == "boolean-expression":
+            ctag.set('class',
+                     'org.jenkins_ci.plugins.run_condition.core.'
+                     'BooleanCondition')
+            XML.SubElement(ctag, "token").text = cdata['condition-expression']
+        elif kind == "shell":
+            ctag.set('class',
+                     'org.jenkins_ci.plugins.run_condition.contributed.'
+                     'ShellCondition')
+            XML.SubElement(ctag, "command").text = cdata['condition-command']
+        elif kind == "windows-shell":
+            ctag.set('class',
+                     'org.jenkins_ci.plugins.run_condition.contributed.'
+                     'BatchFileCondition')
+            XML.SubElement(ctag, "command").text = cdata['condition-command']
+        elif kind == "file-exists":
+            ctag.set('class',
+                     'org.jenkins_ci.plugins.run_condition.core.'
+                     'FileExistsCondition')
+            XML.SubElement(ctag, "file").text = cdata['condition-filename']
+            basedir = cdata.get('condition-basedir', 'workspace')
+            basedir_tag = XML.SubElement(ctag, "baseDir")
+            if "workspace" == basedir:
+                basedir_tag.set('class',
+                                'org.jenkins_ci.plugins.run_condition.common.'
+                                'BaseDirectory$Workspace')
+            elif "artifact-directory" == basedir:
+                basedir_tag.set('class',
+                                'org.jenkins_ci.plugins.run_condition.common.'
+                                'BaseDirectory$ArtifactsDir')
+            elif "jenkins-home" == basedir:
+                basedir_tag.set('class',
+                                'org.jenkins_ci.plugins.run_condition.common.'
+                                'BaseDirectory$JenkinsHome')
+
+    def build_step(parent, step):
+        for edited_node in create_builders(parser, step):
+            if not has_multiple_steps:
+                edited_node.set('class', edited_node.tag)
+                edited_node.tag = 'buildStep'
+            parent.append(edited_node)
+
+    cond_builder_tag = 'org.jenkinsci.plugins.conditionalbuildstep.'    \
+        'singlestep.SingleConditionalBuilder'
+    cond_builders_tag = 'org.jenkinsci.plugins.conditionalbuildstep.'   \
+        'ConditionalBuilder'
+    steps = data['steps']
+    has_multiple_steps = len(steps) > 1
+
+    if has_multiple_steps:
+        root_tag = XML.SubElement(xml_parent, cond_builders_tag)
+        steps_parent = XML.SubElement(root_tag, "conditionalbuilders")
+        condition_tag = "runCondition"
+    else:
+        root_tag = XML.SubElement(xml_parent, cond_builder_tag)
+        steps_parent = root_tag
+        condition_tag = "condition"
+
+    build_condition(data)
+    evaluation_classes_pkg = 'org.jenkins_ci.plugins.run_condition'
+    evaluation_classes = {
+        'fail': evaluation_classes_pkg + '.BuildStepRunner$Fail',
+        'mark-unstable': evaluation_classes_pkg + '.BuildStepRunner$Unstable',
+        'run-and-mark-unstable': evaluation_classes_pkg +
+        'BuildStepRunner$RunUnstable',
+        'run': evaluation_classes_pkg + '.BuildStepRunner$Run',
+        'dont-run': evaluation_classes_pkg + 'BuildStepRunner$DontRun',
+    }
+    evaluation_class = evaluation_classes[data.get('on-evaluation-failure',
+                                                   'fail')]
+    XML.SubElement(root_tag, "runner").set('class',
+                                           evaluation_class)
+    for step in steps:
+        build_step(steps_parent, step)
+
+
 def maven_target(parser, xml_parent, data):
     """yaml: maven-target
     Execute top-level Maven targets
