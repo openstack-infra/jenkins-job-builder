@@ -17,11 +17,12 @@
 The matrix project module handles creating Jenkins matrix
 projects. To create a matrix project specify ``matrix`` in the
 ``project-type`` attribute to the :ref:`Job` definition.
-Currently it only supports two axes which share the same
+Currently it only supports three axes which share the same
 internal YAML structure:
 
 * label expressions (``label-expression``)
 * user-defined values (``user-defined``)
+* slave name or label (``slave``)
 
 :Job Parameters:
     * **execution-strategy** (optional):
@@ -34,7 +35,7 @@ internal YAML structure:
     * **axes** (`list`):
         * **axis**:
             * **type** (`str`) -- axis type, must be either
-              'label-expression' or 'user-defined'.
+              'label-expression', 'user-defined' or 'slave'.
             * **name** (`str`) -- name of the axis
             * **values** (`list`) -- values of the axis
 
@@ -63,6 +64,12 @@ Example::
          values:
           - amd64
           - i386
+      - axis:
+         type: slave
+         name: nodes
+         values:
+          - node1
+          - node2
     builders:
       - shell: make && make check
 
@@ -95,6 +102,7 @@ class Matrix(jenkins_jobs.modules.base.Base):
     supported_axis = {
         'label-expression': 'hudson.matrix.LabelExpAxis',
         'user-defined': 'hudson.matrix.TextAxis',
+        'slave': 'hudson.matrix.LabelAxis',
     }
 
     def root_xml(self, data):
