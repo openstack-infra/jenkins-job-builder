@@ -487,6 +487,44 @@ def batch(parser, xml_parent, data):
     XML.SubElement(batch, 'command').text = data
 
 
+def msbuild(parser, xml_parent, data):
+    """yaml: msbuild
+    Build .NET project using msbuild.  Requires the `Jenkins MSBuild Plugin
+    <https://wiki.jenkins-ci.org/display/JENKINS/MSBuild+Plugin>`_.
+
+    :arg str msbuild-version: which msbuild configured in Jenkins to use
+      (optional)
+    :arg str solution-file: location of the solution file to build
+    :arg str extra-parameters: extra parameters to pass to msbuild (optional)
+    :arg bool pass-build-variables: should build variables be passed
+      to msbuild (defaults to true)
+    :arg bool continue-on-build-failure: should the build continue if
+      msbuild returns an error (defaults to false)
+
+    Example::
+
+      builders:
+        - msbuild:
+            solution-file: "MySolution.sln"
+            msbuild-version: "msbuild-4.0"
+            extra-parameters: "/maxcpucount:4"
+            pass-build-variables: False
+            continue-on-build-failure: True
+
+    """
+    msbuilder = XML.SubElement(xml_parent,
+                               'hudson.plugins.msbuild.MsBuildBuilder')
+    XML.SubElement(msbuilder, 'msBuildName').text = data.get('msbuild-version',
+                                                             '(Default)')
+    XML.SubElement(msbuilder, 'msBuildFile').text = data['solution-file']
+    XML.SubElement(msbuilder, 'cmdLineArgs').text = \
+        data.get('extra-parameters', '')
+    XML.SubElement(msbuilder, 'buildVariablesAsProperties').text = \
+        str(data.get('pass-build-variables', True)).lower()
+    XML.SubElement(msbuilder, 'continueOnBuildFailure').text = \
+        str(data.get('continue-on-build-failure', False)).lower()
+
+
 def create_builders(parser, step):
     dummy_parent = XML.Element("dummy")
     parser.registry.dispatch('builder', parser, dummy_parent, step)
