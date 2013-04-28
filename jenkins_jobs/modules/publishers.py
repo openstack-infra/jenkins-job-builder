@@ -261,10 +261,16 @@ def ftp(parser, xml_parent, data):
 
     :arg str site: name of the ftp site
     :arg str target: destination directory
+    :arg bool target-is-date-format: whether target is a date format. If true,
+      raw text should be quoted (defaults to False)
+    :arg bool clean-remote: should the remote directory be deleted before
+      transfering files (defaults to False)
     :arg str source: source path specifier
     :arg str excludes: excluded file pattern (optional)
     :arg str remove-prefix: prefix to remove from uploaded file paths
       (optional)
+    :arg bool fail-on-error: fail the build if an error occurs (defaults to
+      False).
 
     Example::
 
@@ -734,10 +740,16 @@ def ssh(parser, xml_parent, data):
 
     :arg str site: name of the ssh site
     :arg str target: destination directory
+    :arg bool target-is-date-format: whether target is a date format. If true,
+      raw text should be quoted (defaults to False)
+    :arg bool clean-remote: should the remote directory be deleted before
+      transfering files (defaults to False)
     :arg str source: source path specifier
     :arg str excludes: excluded file pattern (optional)
     :arg str remove-prefix: prefix to remove from uploaded file paths
       (optional)
+    :arg bool fail-on-error: fail the build if an error occurs (defaults to
+      False).
 
     Example::
 
@@ -1181,14 +1193,17 @@ def base_publish_over(xml_parent, data, console_prefix,
     XML.SubElement(transfersset, 'excludes').text = data.get('excludes', '')
     XML.SubElement(transfersset, 'removePrefix').text = \
         data.get('remove-prefix', '')
-    XML.SubElement(transfersset, 'remoteDirectorySDF').text = 'false'
+    XML.SubElement(transfersset, 'remoteDirectorySDF').text = \
+        str(data.get('target-is-date-format', False)).lower()
     XML.SubElement(transfersset, 'flatten').text = 'false'
-    XML.SubElement(transfersset, 'cleanRemote').text = 'false'
+    XML.SubElement(transfersset, 'cleanRemote').text = \
+        str(data.get('clean-remote', False)).lower()
 
     XML.SubElement(inner, 'useWorkspaceInPromotion').text = 'false'
     XML.SubElement(inner, 'usePromotionTimestamp').text = 'false'
     XML.SubElement(delegate, 'continueOnError').text = 'false'
-    XML.SubElement(delegate, 'failOnError').text = 'false'
+    XML.SubElement(delegate, 'failOnError').text = \
+        str(data.get('fail-on-error', False)).lower()
     XML.SubElement(delegate, 'alwaysPublishFromMaster').text = 'false'
     XML.SubElement(delegate, 'hostConfigurationAccess',
                    {'class': reference_plugin_tag,
@@ -1204,10 +1219,16 @@ def cifs(parser, xml_parent, data):
 
     :arg str site: name of the cifs site/share
     :arg str target: destination directory
+    :arg bool target-is-date-format: whether target is a date format. If true,
+      raw text should be quoted (defaults to False)
+    :arg bool clean-remote: should the remote directory be deleted before
+      transfering files (defaults to False)
     :arg str source: source path specifier
     :arg str excludes: excluded file pattern (optional)
     :arg str remove-prefix: prefix to remove from uploaded file paths
       (optional)
+    :arg bool fail-on-error: fail the build if an error occurs (defaults to
+      False).
 
     Example::
 
