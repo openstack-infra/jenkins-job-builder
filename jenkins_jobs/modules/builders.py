@@ -440,6 +440,7 @@ def gradle(parser, xml_parent, data):
     <https://wiki.jenkins-ci.org/display/JENKINS/Gradle+Plugin>`_
 
     :arg str tasks: List of tasks to execute
+    :arg str gradle-name: Use a custom gradle name (optional)
     :arg bool wrapper: use gradle wrapper (default false)
     :arg bool executable: make gradlew executable (default false)
     :arg list switches: Switches for gradle, can have multiples
@@ -448,6 +449,7 @@ def gradle(parser, xml_parent, data):
 
       builders:
         - gradle:
+            gradle-name: "gradle-1.2"
             wrapper: true
             executable: true
             switches:
@@ -463,6 +465,8 @@ def gradle(parser, xml_parent, data):
     XML.SubElement(gradle, 'tasks').text = data['tasks']
     XML.SubElement(gradle, 'rootBuildScriptDir').text = ''
     XML.SubElement(gradle, 'buildFile').text = ''
+    XML.SubElement(gradle, 'gradleName').text = data.get(
+        'gradle-name', '')
     XML.SubElement(gradle, 'useWrapper').text = str(data.get(
         'wrapper', False)).lower()
     XML.SubElement(gradle, 'makeExecutable').text = str(data.get(
