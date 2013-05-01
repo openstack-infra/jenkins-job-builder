@@ -685,11 +685,16 @@ def maven_target(parser, xml_parent, data):
 
     :arg str goals: Goals to execute
     :arg str properties: Properties for maven, can have multiples
+    :arg str pom: Location of pom.xml (defaults to pom.xml)
+    :arg str maven-version: Installation of maven which should be used
+      (optional)
 
     Example::
 
       builders:
         - maven-target:
+            maven-version: Maven3
+            pom: parent/pom.xml
             goals: clean
             properties:
               - foo=bar
@@ -699,6 +704,10 @@ def maven_target(parser, xml_parent, data):
     XML.SubElement(maven, 'targets').text = data['goals']
     prop_string = '\n'.join(data.get('properties', []))
     XML.SubElement(maven, 'properties').text = prop_string
+    if 'maven-version' in data:
+        XML.SubElement(maven, 'mavenName').text = str(data['maven-version'])
+    if 'pom' in data:
+        XML.SubElement(maven, 'pom').text = str(data['pom'])
     XML.SubElement(maven, 'usePrivateRepository').text = 'false'
     XML.SubElement(maven, 'settings', {
                    'class': 'jenkins.mvn.DefaultSettingsProvider'})
