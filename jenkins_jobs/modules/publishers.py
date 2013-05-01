@@ -871,11 +871,14 @@ def email_ext(parser, xml_parent, data):
     <https://wiki.jenkins-ci.org/display/JENKINS/Email-ext+plugin>`_
 
     :arg str recipients: Comma separated list of emails
+    :arg str reply-to: Comma separated list of emails that should be in
+        the Reply-To header for this project (default is $DEFAULT_RECIPIENTS)
     :arg str subject: Subject for the email, can include variables like
         ${BUILD_NUMBER} or even groovy or javascript code
     :arg str body: Content for the body of the email, can include variables
         like ${BUILD_NUMBER}, but the real magic is using groovy or
         javascript to hook into the Jenkins API itself
+    :arg bool attach-build-log: Include build log in the email (default false)
     :arg bool unstable: Send an email for an unstable result (default false)
     :arg bool first-failure: Send an email for just the first failure
         (default false)
@@ -898,8 +901,10 @@ def email_ext(parser, xml_parent, data):
       publishers:
         - email-ext:
             recipients: foo@example.com, bar@example.com
+            reply-to: foo@example.com
             subject: Subject for Build ${BUILD_NUMBER}
             body: The build has finished
+            attach-build-log: false
             unstable: true
             first-failure: true
             not-built: true
@@ -951,6 +956,10 @@ def email_ext(parser, xml_parent, data):
         'body', '$DEFAULT_CONTENT')
     XML.SubElement(emailext, 'attachmentsPattern').text = ''
     XML.SubElement(emailext, 'presendScript').text = ''
+    XML.SubElement(emailext, 'attachBuildLog').text = \
+        str(data.get('attach-build-log', False)).lower()
+    XML.SubElement(emailext, 'replyTo').text = data.get('reply-to',
+                                                        '$DEFAULT_RECIPIENTS')
 
 
 def fingerprint(parser, xml_parent, data):
