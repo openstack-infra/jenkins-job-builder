@@ -74,6 +74,7 @@ setuptools.setup(
             'email=jenkins_jobs.modules.reporters:email',
         ],
         'jenkins_jobs.properties': [
+            'promoted-build=jenkins_jobs.modules.properties:promoted_build',
             'github=jenkins_jobs.modules.properties:github',
             'throttle=jenkins_jobs.modules.properties:throttle',
             'inject=jenkins_jobs.modules.properties:inject',
