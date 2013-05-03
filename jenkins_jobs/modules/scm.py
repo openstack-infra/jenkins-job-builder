@@ -54,6 +54,11 @@ def git(self, xml_parent, data):
     :arg str refspec: refspec to fetch
     :arg str name: name to fetch
     :arg list(str) branches: list of branch specifiers to build
+    :arg dict merge:
+        :merge:
+            * **remote** (`string`) - name of repo that contains branch to
+                merge to (default 'origin')
+            * **branch** (`string`) - name of the branch to merge to
     :arg str basedir: location relative to the workspace root to clone to
              (default: workspace)
     :arg bool skip-tag: Skip tagging
@@ -135,6 +140,13 @@ def git(self, xml_parent, data):
     for branch in branches:
         bspec = XML.SubElement(xml_branches, 'hudson.plugins.git.BranchSpec')
         XML.SubElement(bspec, 'name').text = branch
+    if 'merge' in data:
+        merge = data['merge']
+        name = merge.get('remote', 'origin')
+        branch = merge['branch']
+        urc = XML.SubElement(scm, 'userMergeOptions')
+        XML.SubElement(urc, 'mergeRemote').text = name
+        XML.SubElement(urc, 'mergeTarget').text = branch
     for elem in mapping:
         (optname, xmlname, val) = elem[:3]
         attrs = {}
