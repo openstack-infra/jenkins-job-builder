@@ -806,6 +806,88 @@ def multijob(parser, xml_parent, data):
             properties.text = predefined_parameters
 
 
+def grails(parser, xml_parent, data):
+    """yaml: grails
+    Execute a grails build step. Requires the `Jenkins Grails Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Grails+Plugin>`_
+
+    :arg bool use-wrapper: Use a grails wrapper (default false)
+    :arg str name: Select a grails installation to use (optional)
+    :arg bool force-upgrade: Run 'grails upgrade --non-interactive'
+                             first (default false)
+    :arg bool non-interactive: append --non-interactive to all build targets
+                               (default false)
+    :arg str targets: Specify target(s) to run separated by spaces
+    :arg str server-port: Specify a value for the server.port system
+                          property (optional)
+    :arg str work-dir: Specify a value for the grails.work.dir system
+                       property (optional)
+    :arg str project-dir: Specify a value for the grails.project.work.dir
+                          system property (optional)
+    :arg str base-dir: Specify a path to the root of the Grails
+                       project (optional)
+    :arg str properties: Additional system properties to set (optional)
+    :arg bool plain-output: append --plain-output to all build targets
+                            (default false)
+    :arg bool stack-trace: append --stack-trace to all build targets
+                           (default false)
+    :arg bool verbose: append --verbose to all build targets
+                       (default false)
+    :arg bool refresh-dependencies: append --refresh-dependencies to all
+                                    build targets (default false)
+
+    Example::
+
+      builders:
+        - grails:
+            use-wrapper: "true"
+            name: "grails-2.2.2"
+            force-upgrade: "true"
+            non-interactive: "true"
+            targets: "war ear"
+            server-port: "8003"
+            work-dir: "./grails-work"
+            project-dir: "./project-work"
+            base-dir: "./grails/project"
+            properties: "program.name=foo"
+            plain-output: "true"
+            stack-trace: "true"
+            verbose: "true"
+            refresh-dependencies: "true"
+
+
+    """
+    grails = XML.SubElement(xml_parent, 'com.g2one.hudson.grails.'
+                                        'GrailsBuilder')
+    XML.SubElement(grails, 'targets').text = data['targets']
+    XML.SubElement(grails, 'name').text = data.get(
+        'name', '(Default)')
+    XML.SubElement(grails, 'grailsWorkDir').text = data.get(
+        'work-dir', '')
+    XML.SubElement(grails, 'projectWorkDir').text = data.get(
+        'project-dir', '')
+    XML.SubElement(grails, 'projectBaseDir').text = data.get(
+        'base-dir', '')
+    XML.SubElement(grails, 'serverPort').text = data.get(
+        'server-port', '')
+    XML.SubElement(grails, 'properties').text = data.get(
+        'properties', '')
+    XML.SubElement(grails, 'forceUpgrade').text = str(
+        data.get('force-upgrade', 'false')).lower()
+    XML.SubElement(grails, 'nonInteractive').text = str(
+        data.get('non-interactive', 'false')).lower()
+    XML.SubElement(grails, 'useWrapper').text = str(
+        data.get('use-wrapper', 'false')).lower()
+    XML.SubElement(grails, 'plainOutput').text = str(
+        data.get('plain-output', 'false')).lower()
+    XML.SubElement(grails, 'stackTrace').text = str(
+        data.get('stack-trace', 'false')).lower()
+    XML.SubElement(grails, 'verbose').text = str(
+        data.get('verbose', 'false')).lower()
+    XML.SubElement(grails, 'refreshDependencies').text = str(
+        data.get('refresh-dependencies', 'false')).lower()
+
+
 class Builders(jenkins_jobs.modules.base.Base):
     sequence = 60
 

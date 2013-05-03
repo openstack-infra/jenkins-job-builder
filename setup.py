@@ -67,6 +67,7 @@ setuptools.setup(
             'batch=jenkins_jobs.modules.builders:batch',
             'maven-target=jenkins_jobs.modules.builders:maven_target',
             'multijob=jenkins_jobs.modules.builders:multijob',
+            'grails=jenkins_jobs.modules.builders:grails',
             'conditional-step=jenkins_jobs.modules.builders:conditional_step',
             'msbuild=jenkins_jobs.modules.builders:msbuild',
         ],
