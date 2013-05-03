@@ -105,6 +105,7 @@ setuptools.setup(
             'jenkins_jobs.modules.publishers:trigger_parameterized_builds',
             'trigger=jenkins_jobs.modules.publishers:trigger',
             'coverage=jenkins_jobs.modules.publishers:coverage',
+            'cobertura=jenkins_jobs.modules.publishers:cobertura',
             'ftp=jenkins_jobs.modules.publishers:ftp',
             'junit=jenkins_jobs.modules.publishers:junit',
             'xunit=jenkins_jobs.modules.publishers:xunit',

@@ -189,7 +189,8 @@ def trigger(parser, xml_parent, data):
 
 def coverage(parser, xml_parent, data):
     """yaml: coverage
-    Generate a cobertura coverage report.
+    WARNING: The coverage function is deprecated. Instead, use the
+    cobertura function to generate a cobertura coverage report.
     Requires the Jenkins `Cobertura Coverage Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Cobertura+Plugin>`_
 
@@ -198,6 +199,9 @@ def coverage(parser, xml_parent, data):
       publishers:
         - coverage
     """
+    logger = logging.getLogger(__name__)
+    logger.warn("Coverage function is deprecated. Switch to cobertura.")
+
     cobertura = XML.SubElement(xml_parent,
                                'hudson.plugins.cobertura.CoberturaPublisher')
     XML.SubElement(cobertura, 'coberturaReportFile').text = '**/coverage.xml'
@@ -251,6 +255,118 @@ def coverage(parser, xml_parent, data):
                    ).text = 'METHOD'
     XML.SubElement(entry, 'int').text = '0'
     XML.SubElement(cobertura, 'sourceEncoding').text = 'ASCII'
+
+
+def cobertura(parser, xml_parent, data):
+    """yaml: cobertura
+    Generate a cobertura coverage report.
+    Requires the Jenkins `Cobertura Coverage Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Cobertura+Plugin>`_
+
+    :arg str report-file: This is a file name pattern that can be used
+                          to locate the cobertura xml report files (optional)
+    :arg bool only-stable: Include only stable builds (default false)
+    :arg bool fail-no-reports: fail builds if no coverage reports are found
+                               (default false)
+    :arg bool fail-unhealthy: Unhealthy projects will be failed
+                              (default false)
+    :arg bool fail-unstable: Unstable projects will be failed (default false)
+    :arg bool health-auto-update: Auto update threshold for health on
+                                  successful build (default false)
+    :arg bool stability-auto-update: Auto update threshold for stability on
+                                     successful build (default false)
+    :arg bool zoom-coverage-chart: Zoom the coverage chart and crop area below
+                                   the minimum and above the maximum coverage
+                                   of the past reports (default false)
+    :arg str source-encoding: Override the source encoding (default ASCII)
+    :arg dict targets:
+
+           :targets: (packages, files, classes, method, line, conditional)
+
+                * **healthy** (`int`): Healthy threshold (default 0)
+                * **unhealthy** (`int`): Unhealthy threshold (default 0)
+                * **failing** (`int`): Failing threshold (default 0)
+
+    Example::
+
+      publishers:
+        - cobertura:
+             report-file: "/reports/cobertura/coverage.xml"
+             only-stable: "true"
+             fail-no-reports: "true"
+             fail-unhealthy: "true"
+             fail-unstable: "true"
+             health-auto-update: "true"
+             stability-auto-update: "true"
+             zoom-coverage-chart: "true"
+             source-encoding: "Big5"
+             targets:
+                  - files:
+                      healthy: 10
+                      unhealthy: 20
+                      failing: 30
+                  - method:
+                      healthy: 50
+                      unhealthy: 40
+                      failing: 30
+
+
+    """
+    cobertura = XML.SubElement(xml_parent,
+                               'hudson.plugins.cobertura.CoberturaPublisher')
+    XML.SubElement(cobertura, 'coberturaReportFile').text = data.get(
+        'report-file', '**/coverage.xml')
+    XML.SubElement(cobertura, 'onlyStable').text = str(
+        data.get('only-stable', 'false')).lower()
+    XML.SubElement(cobertura, 'failUnhealthy').text = str(
+        data.get('fail-unhealthy', 'false')).lower()
+    XML.SubElement(cobertura, 'failUnstable').text = str(
+        data.get('fail-unstable', 'false')).lower()
+    XML.SubElement(cobertura, 'autoUpdateHealth').text = str(
+        data.get('health-auto-update', 'false')).lower()
+    XML.SubElement(cobertura, 'autoUpdateStability').text = str(
+        data.get('stability-auto-update', 'false')).lower()
+    XML.SubElement(cobertura, 'zoomCoverageChart').text = str(
+        data.get('zoom-coverage-chart', 'false')).lower()
+    XML.SubElement(cobertura, 'failNoReports').text = str(
+        data.get('fail-no-reports', 'false')).lower()
+    healthy = XML.SubElement(cobertura, 'healthyTarget')
+    targets = XML.SubElement(healthy, 'targets', {
+        'class': 'enum-map',
+        'enum-type': 'hudson.plugins.cobertura.targets.CoverageMetric'})
+    for item in data['targets']:
+        item_name = item.keys()[0]
+        item_values = item.get(item_name, 0)
+        entry = XML.SubElement(targets, 'entry')
+        XML.SubElement(entry,
+                       'hudson.plugins.cobertura.targets.'
+                       'CoverageMetric').text = str(item_name).upper()
+        XML.SubElement(entry, 'int').text = str(item_values.get('healthy', 0))
+    unhealthy = XML.SubElement(cobertura, 'unhealthyTarget')
+    targets = XML.SubElement(unhealthy, 'targets', {
+        'class': 'enum-map',
+        'enum-type': 'hudson.plugins.cobertura.targets.CoverageMetric'})
+    for item in data['targets']:
+        item_name = item.keys()[0]
+        item_values = item.get(item_name, 0)
+        entry = XML.SubElement(targets, 'entry')
+        XML.SubElement(entry, 'hudson.plugins.cobertura.targets.'
+                              'CoverageMetric').text = str(item_name).upper()
+        XML.SubElement(entry, 'int').text = str(item_values.get('unhealthy',
+                                                                0))
+    failing = XML.SubElement(cobertura, 'failingTarget')
+    targets = XML.SubElement(failing, 'targets', {
+        'class': 'enum-map',
+        'enum-type': 'hudson.plugins.cobertura.targets.CoverageMetric'})
+    for item in data['targets']:
+        item_name = item.keys()[0]
+        item_values = item.get(item_name, 0)
+        entry = XML.SubElement(targets, 'entry')
+        XML.SubElement(entry, 'hudson.plugins.cobertura.targets.'
+                              'CoverageMetric').text = str(item_name).upper()
+        XML.SubElement(entry, 'int').text = str(item_values.get('failing', 0))
+    XML.SubElement(cobertura, 'sourceEncoding').text = data.get(
+        'source-encoding', 'ASCII')
 
 
 def ftp(parser, xml_parent, data):
