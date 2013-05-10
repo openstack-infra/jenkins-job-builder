@@ -79,7 +79,10 @@ def trigger_parameterized_builds(parser, xml_parent, data):
     :arg str project: name of the job to trigger
     :arg str predefined-parameters: parameters to pass to the other
       job (optional)
-    :arg str git-revision: Pass git revision to the other job (optional)
+    :arg bool current-parameters: Whether to include the parameters passed
+      to the current build to the triggered job (optional)
+    :arg bool svn-revision: Pass svn revision to the triggered job (optional)
+    :arg bool git-revision: Pass git revision to the other job (optional)
     :arg str condition: when to trigger the other job (default 'ALWAYS')
     :arg str property-file: Use properties from file (optional)
 
@@ -108,7 +111,9 @@ def trigger_parameterized_builds(parser, xml_parent, data):
         tconfigs = XML.SubElement(tconfig, 'configs')
         if ('predefined-parameters' in project_def
             or 'git-revision' in project_def
-            or 'property-file' in project_def):
+            or 'property-file' in project_def
+            or 'current-parameters' in project_def
+            or 'svn-revision' in project_def):
 
             if 'predefined-parameters' in project_def:
                 params = XML.SubElement(tconfigs,
@@ -129,7 +134,15 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                                         'FileBuildParameters')
                 properties = XML.SubElement(params, 'propertiesFile')
                 properties.text = project_def['property-file']
-
+            if ('current-parameters' in project_def
+                and project_def['current-parameters']):
+                XML.SubElement(tconfigs,
+                               'hudson.plugins.parameterizedtrigger.'
+                               'CurrentBuildParameters')
+            if 'svn-revision' in project_def and project_def['svn-revision']:
+                XML.SubElement(tconfigs,
+                               'hudson.plugins.parameterizedtrigger.'
+                               'SubversionRevisionBuildParameters')
         else:
             tconfigs.set('class', 'java.util.Collections$EmptyList')
         projects = XML.SubElement(tconfig, 'projects')

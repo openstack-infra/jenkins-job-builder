@@ -254,6 +254,8 @@ def trigger_builds(parser, xml_parent, data):
     :arg bool current-parameters: Whether to include the
       parameters passed to the current build to the
       triggered job.
+    :arg bool svn-revision: Whether to pass the svn revision
+      to the triggered job
     :arg bool block: whether to wait for the triggered jobs
       to finish or not (default false)
 
@@ -283,6 +285,10 @@ def trigger_builds(parser, xml_parent, data):
             XML.SubElement(tconfigs,
                            'hudson.plugins.parameterizedtrigger.'
                            'CurrentBuildParameters')
+        if(project_def.get('svn-revision')):
+            XML.SubElement(tconfigs,
+                           'hudson.plugins.parameterizedtrigger.'
+                           'SubversionRevisionBuildParameters')
         if 'predefined-parameters' in project_def:
             params = XML.SubElement(tconfigs,
                                     'hudson.plugins.parameterizedtrigger.'
