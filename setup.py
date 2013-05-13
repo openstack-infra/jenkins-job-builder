@@ -127,6 +127,7 @@ setuptools.setup(
             'jira=jenkins_jobs.modules.publishers:jira',
             'cifs=jenkins_jobs.modules.publishers:cifs',
             'sonar=jenkins_jobs.modules.publishers:sonar',
+            'performance=jenkins_jobs.modules.publishers:performance',
             'join-trigger=jenkins_jobs.modules.publishers:join_trigger',
         ],
         'jenkins_jobs.scm': [
