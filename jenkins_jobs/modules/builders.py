@@ -232,9 +232,7 @@ def ant(parser, xml_parent, data):
             prop_element.text = prop_string
         if setting == 'java-opts':
             javaopts = data['java-opts']
-            jopt_string = ''
-            for jopt in javaopts:
-                jopt_string += jopt + "\n"
+            jopt_string = ' '.join(javaopts)
             jopt_element = XML.SubElement(ant, 'antOpts')
             jopt_element.text = jopt_string
 
