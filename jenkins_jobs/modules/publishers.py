@@ -1555,6 +1555,100 @@ def join_trigger(parser, xml_parent, data):
     XML.SubElement(jointrigger, 'joinProjects').text = joinProjectsText
 
 
+def jabber(parser, xml_parent, data):
+    """yaml: jabber
+    Integrates Jenkins with the Jabber/XMPP instant messaging protocol
+    Requires the Jenkins `Jabber Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Jabber+Plugin>`_
+
+    :arg bool notify-on-build-start: Whether to send notifications
+        to channels when a build starts (default false)
+    :arg bool notify-scm-committers: Whether to send notifications
+        to the users that are suspected of having broken this build
+        (default false)
+    :arg bool notify-scm-culprits: Also send notifications to 'culprits'
+        from previous unstable/failed builds (default false)
+    :arg bool notify-upstream-committers: Whether to send notifications to
+        upstream committers if no committers were found for a broken build
+        (default false)
+    :arg bool notify-scm-fixers: Whether to send notifications to the users
+        that have fixed a broken build (default false)
+    :arg list group-targets: List of group targets to notify
+    :arg list individual-targets: List of individual targets to notify
+    :arg dict strategy: When to send notifications (default all)
+
+        :strategy values:
+          * **all** -- Always
+          * **failure** -- On any failure
+          * **failure-fixed** -- On failure and fixes
+          * **change** -- Only on state change
+    :arg dict message: Channel notification message (default summary-scm)
+
+        :message  values:
+          * **summary-scm** -- Summary + SCM changes
+          * **summary** -- Just summary
+          * **summary-build** -- Summary and build parameters
+          * **summary-scm-fail** -- Summary, SCM changes, and failed tests
+
+    Example::
+
+      publishers:
+        - jabber:
+            notify-on-build-start: true
+            group-targets:
+              - "foo-room@conference-2-fooserver.foo.com"
+            individual-targets:
+              - "foo-user@conference-2-fooserver.foo.com"
+            strategy: all
+            message: summary-scm
+    """
+    j = XML.SubElement(xml_parent, 'hudson.plugins.jabber.im.transport.'
+                       'JabberPublisher')
+    t = XML.SubElement(j, 'targets')
+    if 'group-targets' in data:
+        for group in data['group-targets']:
+            gcimt = XML.SubElement(t, 'hudson.plugins.im.'
+                                   'GroupChatIMMessageTarget')
+            XML.SubElement(gcimt, 'name').text = group
+            XML.SubElement(gcimt, 'notificationOnly').text = 'false'
+    if 'individual-targets' in data:
+        for individual in data['individual-targets']:
+            dimt = XML.SubElement(t, 'hudson.plugins.im.'
+                                  'DefaultIMMessageTarget')
+            XML.SubElement(dimt, 'value').text = individual
+    strategy = data.get('strategy', 'all')
+    strategydict = {'all': 'ALL',
+                    'failure': 'ANY_FAILURE',
+                    'failure-fixed': 'FAILURE_AND_FIXED',
+                    'change': 'STATECHANGE_ONLY'}
+    if strategy not in strategydict:
+        raise Exception("Strategy entered is not valid, must be one of: " +
+                        "all, failure, failure-fixed, or change")
+    XML.SubElement(j, 'strategy').text = strategydict[strategy]
+    XML.SubElement(j, 'notifyOnBuildStart').text = str(
+        data.get('notify-on-build-start', 'false')).lower()
+    XML.SubElement(j, 'notifySuspects').text = str(
+        data.get('notify-scm-committers', 'false')).lower()
+    XML.SubElement(j, 'notifyCulprits').text = str(
+        data.get('notify-scm-culprits', 'false')).lower()
+    XML.SubElement(j, 'notifyFixers').text = str(
+        data.get('notify-scm-fixers', 'false')).lower()
+    XML.SubElement(j, 'notifyUpstreamCommitters').text = str(
+        data.get('notify-upstream-committers', 'false')).lower()
+    message = data.get('message', 'summary-scm')
+    messagedict = {'summary-scm': 'DefaultBuildToChatNotifier',
+                   'summary': 'SummaryOnlyBuildToChatNotifier',
+                   'summary-build': 'BuildParametersBuildToChatNotifier',
+                   'summary-scm-fail': 'PrintFailingTestsBuildToChatNotifier'}
+    if message not in messagedict:
+        raise Exception("Message entered is not valid, must be one of: " +
+                        "summary-scm, summary, summary-build " +
+                        "of summary-scm-fail")
+    XML.SubElement(j, 'buildToChatNotifier', {
+        'class': 'hudson.plugins.im.build_notify.' + messagedict[message]})
+    XML.SubElement(j, 'matrixMultiplier').text = 'ONLY_CONFIGURATIONS'
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

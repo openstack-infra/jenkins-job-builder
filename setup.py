@@ -129,6 +129,7 @@ setuptools.setup(
             'sonar=jenkins_jobs.modules.publishers:sonar',
             'performance=jenkins_jobs.modules.publishers:performance',
             'join-trigger=jenkins_jobs.modules.publishers:join_trigger',
+            'jabber=jenkins_jobs.modules.publishers:jabber',
         ],
         'jenkins_jobs.scm': [
             'git=jenkins_jobs.modules.scm:git',
