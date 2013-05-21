@@ -113,6 +113,9 @@ def copyartifact(parser, xml_parent, data):
 
     """
     t = XML.SubElement(xml_parent, 'hudson.plugins.copyartifact.CopyArtifact')
+    #'project' element is used for copy artifact version 1.26+
+    XML.SubElement(t, 'project').text = data["project"]
+    #'projectName' element is used for copy artifact version 1.25-
     XML.SubElement(t, 'projectName').text = data["project"]
     XML.SubElement(t, 'filter').text = data.get("filter", "")
     XML.SubElement(t, 'target').text = data.get("target", "")
