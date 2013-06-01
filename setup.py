@@ -136,6 +136,7 @@ setuptools.setup(
         'jenkins_jobs.scm': [
             'git=jenkins_jobs.modules.scm:git',
             'svn=jenkins_jobs.modules.scm:svn',
+            'tfs=jenkins_jobs.modules.scm:tfs',
         ],
         'jenkins_jobs.triggers': [
             'gerrit=jenkins_jobs.modules.triggers:gerrit',
