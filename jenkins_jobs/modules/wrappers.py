@@ -111,10 +111,12 @@ def mask_passwords(parser, xml_parent, data):
 
 
 def workspace_cleanup(parser, xml_parent, data):
-    """yaml: workspace-cleanup
+    """yaml: workspace-cleanup (pre-build)
 
     See `Workspace Cleanup Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Workspace+Cleanup+Plugin>`_
+
+    The post-build workspace-cleanup is available as a publisher.
 
     :arg list include: list of files to be included
     :arg list exclude: list of files to be excluded
@@ -130,7 +132,7 @@ def workspace_cleanup(parser, xml_parent, data):
 
     p = XML.SubElement(xml_parent,
                        'hudson.plugins.ws__cleanup.PreBuildCleanup')
-    p.set("plugin", "ws-cleanup@0.10")
+    p.set("plugin", "ws-cleanup@0.14")
     if "include" in data or "exclude" in data:
         patterns = XML.SubElement(p, 'patterns')
 

@@ -1649,6 +1649,79 @@ def jabber(parser, xml_parent, data):
     XML.SubElement(j, 'matrixMultiplier').text = 'ONLY_CONFIGURATIONS'
 
 
+def workspace_cleanup(parser, xml_parent, data):
+    """yaml: workspace-cleanup (post-build)
+
+    See `Workspace Cleanup Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Workspace+Cleanup+Plugin>`_
+
+    The pre-build workspace-cleanup is available as a wrapper.
+
+    :arg list include: list of files to be included
+    :arg list exclude: list of files to be excluded
+    :arg bool dirmatch: Apply pattern to directories too (default: false)
+    :arg list clean-if: clean depending on build status
+
+        :clean-if values:
+            * **success** (`bool`) (default: true)
+            * **unstable** (`bool`) (default: true)
+            * **failure** (`bool`) (default: true)
+            * **aborted** (`bool`) (default: true)
+            * **not-built** (`bool`)  (default: true)
+    :arg bool fail-build: Fail the build if the cleanup fails (default: true)
+    :arg bool clean-parent: Cleanup matrix parent workspace (default: false)
+
+    Example::
+
+      publishers:
+        - workspace-cleanup:
+            include:
+              - "*.zip"
+            clean-if:
+              - success: true
+              - not-built: false
+    """
+
+    p = XML.SubElement(xml_parent,
+                       'hudson.plugins.ws__cleanup.WsCleanup')
+    p.set("plugin", "ws-cleanup@0.14")
+    if "include" in data or "exclude" in data:
+        patterns = XML.SubElement(p, 'patterns')
+
+    for inc in data.get("include", []):
+        ptrn = XML.SubElement(patterns, 'hudson.plugins.ws__cleanup.Pattern')
+        XML.SubElement(ptrn, 'pattern').text = inc
+        XML.SubElement(ptrn, 'type').text = "INCLUDE"
+
+    for exc in data.get("exclude", []):
+        ptrn = XML.SubElement(patterns, 'hudson.plugins.ws__cleanup.Pattern')
+        XML.SubElement(ptrn, 'pattern').text = exc
+        XML.SubElement(ptrn, 'type').text = "EXCLUDE"
+
+    XML.SubElement(p, 'deleteDirs').text = \
+        str(data.get("dirmatch", "false")).lower()
+    XML.SubElement(p, 'cleanupMatrixParent').text = \
+        str(data.get("clean-parent", "false")).lower()
+
+    mask = {'success': 'cleanWhenSuccess', 'unstable': 'cleanWhenUnstable',
+            'failure': 'cleanWhenFailure', 'not-built': 'cleanWhenNotBuilt',
+            'aborted': 'cleanWhenAborted'}
+    clean = data.get('clean-if', [])
+    cdict = dict()
+    for d in clean:
+        cdict.update(d)
+    for k, v in mask.iteritems():
+        XML.SubElement(p, v).text = str(cdict.pop(k, True)).lower()
+
+    if len(cdict) > 0:
+        raise ValueError('clean-if must be one of: %r' % list(mask.keys()))
+
+    if str(data.get("fail-build", "false")).lower() == 'false':
+        XML.SubElement(p, 'notFailBuild').text = 'true'
+    else:
+        XML.SubElement(p, 'notFailBuild').text = 'false'
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

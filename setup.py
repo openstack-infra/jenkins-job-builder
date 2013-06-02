@@ -130,6 +130,8 @@ setuptools.setup(
             'performance=jenkins_jobs.modules.publishers:performance',
             'join-trigger=jenkins_jobs.modules.publishers:join_trigger',
             'jabber=jenkins_jobs.modules.publishers:jabber',
+            'workspace-cleanup=jenkins_jobs.modules.publishers:'
+            'workspace_cleanup',
         ],
         'jenkins_jobs.scm': [
             'git=jenkins_jobs.modules.scm:git',
