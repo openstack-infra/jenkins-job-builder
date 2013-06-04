@@ -161,6 +161,7 @@ setuptools.setup(
             'inject=jenkins_jobs.modules.wrappers:inject',
             'jclouds=jenkins_jobs.modules.wrappers:jclouds',
             'build-user-vars=jenkins_jobs.modules.wrappers:build_user_vars',
+            'release=jenkins_jobs.modules.wrappers:release',
         ],
         'jenkins_jobs.modules': [
             'general=jenkins_jobs.modules.general:General',

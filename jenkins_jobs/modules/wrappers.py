@@ -363,6 +363,69 @@ def build_user_vars(parser, xml_parent, data):
     XML.SubElement(xml_parent, 'org.jenkinsci.plugins.builduser.BuildUser')
 
 
+def release(parser, xml_parent, data):
+    """yaml: release
+    Add release build configuration
+    Requires the Jenkins `Release Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Release+Plugin>`_
+
+    :arg bool keep-forever: Keep build forever (default is 'true')
+    :arg bool override-build-parameters: Enable build-parameter override
+    :arg string version-template: Release version template
+    :arg list parameters: Release parameters (see the :ref:`Parameters` module)
+    :arg list pre-build: Pre-build steps (see the :ref:`Builders` module)
+    :arg list post-build: Post-build steps (see :ref:`Builders`)
+    :arg list post-success: Post successful-build steps (see :ref:`Builders`)
+    :arg list post-failed: Post failed-build steps (see :ref:`Builders`)
+
+    Example::
+
+      wrappers:
+        - release:
+            keep-forever: false
+            parameters:
+                - string:
+                    name: RELEASE_BRANCH
+                    default: ''
+                    description: Git branch to release from.
+            post-success:
+                - shell: |
+                    #!/bin/bash
+                    copy_build_artefacts.sh
+
+    """
+    relwrap = XML.SubElement(xml_parent,
+                             'hudson.plugins.release.ReleaseWrapper')
+    # For 'keep-forever', the sense of the XML flag is the opposite of
+    # the YAML flag.
+    no_keep_forever = 'false'
+    if str(data.get('keep-forever', 'true')).lower() == 'false':
+        no_keep_forever = 'true'
+    XML.SubElement(relwrap, 'doNotKeepLog').text = no_keep_forever
+    XML.SubElement(relwrap, 'overrideBuildParameters').text = str(
+        data.get('override-build-parameters', 'false')).lower()
+    XML.SubElement(relwrap, 'releaseVersionTemplate').text = data.get(
+        'version-template', '')
+    for param in data.get('parameters', []):
+        parser.registry.dispatch('parameter', parser,
+                                 XML.SubElement(relwrap,
+                                                'parameterDefinitions'),
+                                 param)
+
+    builder_steps = {
+        'pre-build': 'preBuildSteps',
+        'post-build': 'postBuildSteps',
+        'post-success': 'postSuccessfulBuildSteps',
+        'post-fail': 'postFailedBuildSteps',
+    }
+    for step in builder_steps.keys():
+        for builder in data.get(step, []):
+            parser.registry.dispatch('builder', parser,
+                                     XML.SubElement(relwrap,
+                                                    builder_steps[step]),
+                                     builder)
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 
