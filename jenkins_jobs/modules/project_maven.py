@@ -14,15 +14,23 @@
 
 
 """
-The Maven Project module handles creating Maven Jenkins projects.  To
-create a Maven project, specify ``maven`` in the ``project-type``
-attribute to the :ref:`Job` definition.
+The Maven Project module handles creating Maven Jenkins projects.
 
-It also requires a ``maven`` section in the :ref:`Job` definition.
-All of the fields below are required, except ``root-pom``, whose
-default is ``pom.xml``, and ``maven-name`` which will default to being
-unset. Not setting ``maven-name`` appears to use the first maven
-install defined in the global jenkins config.
+To create a Maven project, specify ``maven`` in the ``project-type``
+attribute to the :ref:`Job` definition. It also requires a ``maven`` section
+in the :ref:`Job` definition.
+
+:Job Parameters:
+    * **root-module**:
+        * **group-id** (`str`): GroupId. (required)
+        * **artifact-id** (`str`): ArtifactId. (required)
+    * **root-pom** (`str`): The path to the pom.xml file. (defaults to pom.xml)
+    * **goals** (`str`): Goals to execute. (required)
+    * **maven-name** (`str`): Installation of maven which should be used.
+      Not setting ``maven-name`` appears to use the first maven install
+      defined in the global jenkins config.
+    * **ignore-upstream-changes** (`bool`): Do not start a build whenever
+      a SNAPSHOT dependency is built or not. (defaults to true)
 
 Example::
 
@@ -61,12 +69,14 @@ class Maven(jenkins_jobs.modules.base.Base):
         if maven_name:
             XML.SubElement(xml_parent, 'mavenName').text = maven_name
 
+        XML.SubElement(xml_parent, 'ignoreUpstremChanges').text = str(
+            data['maven'].get('ignore-upstream-changes', 'true')).lower()
+
         XML.SubElement(xml_parent, 'rootPOM').text = \
             data['maven'].get('root-pom', 'pom.xml')
         XML.SubElement(xml_parent, 'aggregatorStyleBuild').text = 'true'
         XML.SubElement(xml_parent, 'incrementalBuild').text = 'false'
         XML.SubElement(xml_parent, 'perModuleEmail').text = 'true'
-        XML.SubElement(xml_parent, 'ignoreUpstremChanges').text = 'true'
         XML.SubElement(xml_parent, 'archivingDisabled').text = 'false'
         XML.SubElement(xml_parent, 'resolveDependencies').text = 'false'
         XML.SubElement(xml_parent, 'processPlugins').text = 'false'
