@@ -543,7 +543,7 @@ def create_builders(parser, step):
 
 
 def conditional_step(parser, xml_parent, data):
-    """yaml: conditional_step
+    """yaml: conditional-step
     Conditionaly execute some build steps.  Requires the Jenkins `Conditional
     BuildStep Plugin`_.
 
@@ -571,6 +571,11 @@ def conditional_step(parser, xml_parent, data):
                        representation of true
 
                          :condition-expression: Expression to expand
+    current-status     Run the build step if the current build status is
+                       within the configured range
+
+                         :condition-worst: Worst status
+                         :condition-best: Best status
     shell              Run the step if the shell command succeed
 
                          :condition-command: Shell command to execute
@@ -590,7 +595,7 @@ def conditional_step(parser, xml_parent, data):
     Example::
 
       builders:
-        - conditional_step:
+        - conditional-step:
             condition-kind: boolean-expression
             condition-expression: "${ENV,var=IS_STABLE_BRANCH}"
             on-evaluation-failure: mark-unstable
@@ -615,6 +620,14 @@ def conditional_step(parser, xml_parent, data):
                      'org.jenkins_ci.plugins.run_condition.core.'
                      'BooleanCondition')
             XML.SubElement(ctag, "token").text = cdata['condition-expression']
+        elif kind == "current-status":
+            ctag.set('class',
+                     'org.jenkins_ci.plugins.run_condition.core.'
+                     'StatusCondition')
+            wr = XML.SubElement(ctag, 'worstResult')
+            XML.SubElement(wr, "name").text = cdata['condition-worst']
+            br = XML.SubElement(ctag, 'bestResult')
+            XML.SubElement(br, "name").text = cdata['condition-best']
         elif kind == "shell":
             ctag.set('class',
                      'org.jenkins_ci.plugins.run_condition.contributed.'
