@@ -1722,6 +1722,37 @@ def workspace_cleanup(parser, xml_parent, data):
         XML.SubElement(p, 'notFailBuild').text = 'false'
 
 
+def maven_deploy(parser, xml_parent, data):
+    """yaml: maven-deploy
+    Deploy artifacts to Maven repository.
+
+    :arg str id: Repository ID
+    :arg str url: Repository URL
+    :arg bool unique-version: Assign unique versions to snapshots
+      (default true)
+    :arg bool deploy-unstable: Deploy even if the build is unstable
+      (default false)
+
+
+    Example::
+
+      publishers:
+        - maven-deploy:
+            id: example
+            url: http://repo.example.com/maven2/
+            unique-version: true
+            deploy-unstable: false
+    """
+
+    p = XML.SubElement(xml_parent, 'hudson.maven.RedeployPublisher')
+    XML.SubElement(p, 'id').text = data['id']
+    XML.SubElement(p, 'url').text = data['url']
+    XML.SubElement(p, 'uniqueVersion').text = str(
+        data.get('unique-version', 'true')).lower()
+    XML.SubElement(p, 'evenIfUnstable').text = str(
+        data.get('deploy-unstable', 'false')).lower()
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

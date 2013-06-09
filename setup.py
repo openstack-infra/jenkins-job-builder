@@ -132,6 +132,7 @@ setuptools.setup(
             'jabber=jenkins_jobs.modules.publishers:jabber',
             'workspace-cleanup=jenkins_jobs.modules.publishers:'
             'workspace_cleanup',
+            'maven-deploy=jenkins_jobs.modules.publishers:maven_deploy',
         ],
         'jenkins_jobs.scm': [
             'git=jenkins_jobs.modules.scm:git',
