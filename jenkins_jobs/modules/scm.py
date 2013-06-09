@@ -54,6 +54,8 @@ def git(self, xml_parent, data):
     :arg str refspec: refspec to fetch
     :arg str name: name to fetch
     :arg list(str) branches: list of branch specifiers to build
+    :arg list(str) excluded-users: list of users to ignore revisions from
+      when polling for changes. (if polling is enabled)
     :arg dict merge:
         :merge:
             * **remote** (`string`) - name of repo that contains branch to
@@ -116,7 +118,6 @@ def git(self, xml_parent, data):
         ('basedir', 'relativeTargetDir', ''),
         (None, 'reference', ''),
         (None, 'excludedRegions', ''),
-        (None, 'excludedUsers', ''),
         (None, 'gitConfigName', ''),
         (None, 'gitConfigEmail', ''),
         ('skip-tag', 'skipTag', False),
@@ -140,6 +141,8 @@ def git(self, xml_parent, data):
     for branch in branches:
         bspec = XML.SubElement(xml_branches, 'hudson.plugins.git.BranchSpec')
         XML.SubElement(bspec, 'name').text = branch
+    excluded_users = '\n'.join(data.get('excluded-users', []))
+    XML.SubElement(scm, 'excludedUsers').text = excluded_users
     if 'merge' in data:
         merge = data['merge']
         name = merge.get('remote', 'origin')
