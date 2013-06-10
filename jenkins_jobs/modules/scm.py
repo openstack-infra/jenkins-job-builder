@@ -56,6 +56,8 @@ def git(self, xml_parent, data):
     :arg list(str) branches: list of branch specifiers to build
     :arg list(str) excluded-users: list of users to ignore revisions from
       when polling for changes. (if polling is enabled)
+    :arg list(str) included-regions: list of file/folders to include
+    :arg list(str) excluded-regions: list of file/folders to exclude
     :arg dict merge:
         :merge:
             * **remote** (`string`) - name of repo that contains branch to
@@ -117,7 +119,6 @@ def git(self, xml_parent, data):
         (None, 'submoduleCfg', '', {'class': 'list'}),
         ('basedir', 'relativeTargetDir', ''),
         (None, 'reference', ''),
-        (None, 'excludedRegions', ''),
         (None, 'gitConfigName', ''),
         (None, 'gitConfigEmail', ''),
         ('skip-tag', 'skipTag', False),
@@ -143,6 +144,12 @@ def git(self, xml_parent, data):
         XML.SubElement(bspec, 'name').text = branch
     excluded_users = '\n'.join(data.get('excluded-users', []))
     XML.SubElement(scm, 'excludedUsers').text = excluded_users
+    if 'included-regions' in data:
+        include_string = '\n'.join(data['included-regions'])
+        XML.SubElement(scm, 'includedRegions').text = include_string
+    if 'excluded-regions' in data:
+        exclude_string = '\n'.join(data['excluded-regions'])
+        XML.SubElement(scm, 'excludedRegions').text = exclude_string
     if 'merge' in data:
         merge = data['merge']
         name = merge.get('remote', 'origin')
