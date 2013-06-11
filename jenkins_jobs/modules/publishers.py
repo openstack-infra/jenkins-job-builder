@@ -54,7 +54,7 @@ def archive(parser, xml_parent, data):
 
       publishers:
         - archive:
-            artifacts: *.tar.gz
+            artifacts: '*.tar.gz'
     """
     logger = logging.getLogger("%s:archive" % __name__)
     archiver = XML.SubElement(xml_parent, 'hudson.tasks.ArtifactArchiver')
