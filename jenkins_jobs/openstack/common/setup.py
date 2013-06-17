@@ -117,7 +117,12 @@ def write_requirements():
 
 
 def _run_shell_command(cmd):
-    output = subprocess.Popen(["/bin/sh", "-c", cmd],
+    if os.name == 'nt':
+        params = ["cmd", "/C"]
+    else:
+        params = ["/bin/sh", "-c"]
+    params.append(cmd)
+    output = subprocess.Popen(params,
                               stdout=subprocess.PIPE)
     out = output.communicate()
     if len(out) == 0:
