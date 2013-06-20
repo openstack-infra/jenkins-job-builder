@@ -302,6 +302,7 @@ The bulk of the job definitions come from the following modules.
    general
    builders
    hipchat
+   metadata
    notifications
    parameters
    properties

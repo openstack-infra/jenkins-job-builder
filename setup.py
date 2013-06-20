@@ -96,6 +96,11 @@ setuptools.setup(
             'validating_string_param',
             'svn-tags=jenkins_jobs.modules.parameters:svn_tags_param',
         ],
+        'jenkins_jobs.metadata': [
+            'string=jenkins_jobs.modules.metadata:string_metadata',
+            'number=jenkins_jobs.modules.metadata:number_metadata',
+            'date=jenkins_jobs.modules.metadata:date_metadata',
+        ],
         'jenkins_jobs.notifications': [
             'http=jenkins_jobs.modules.notifications:http_endpoint',
         ],
@@ -170,6 +175,7 @@ setuptools.setup(
             'builders=jenkins_jobs.modules.builders:Builders',
             'properties=jenkins_jobs.modules.properties:Properties',
             'parameters=jenkins_jobs.modules.parameters:Parameters',
+            'metadata=jenkins_jobs.modules.metadata:Metadata',
             'notifications=jenkins_jobs.modules.notifications:Notifications',
             'publishers=jenkins_jobs.modules.publishers:Publishers',
             'reporters=jenkins_jobs.modules.reporters:Reporters',
