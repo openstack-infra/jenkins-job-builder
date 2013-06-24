@@ -111,7 +111,7 @@ class YamlParser(object):
                         changed = True
 
         for job in self.data.get('job', {}).values():
-            if jobs_filter and job not in jobs_filter:
+            if jobs_filter and job['name'] not in jobs_filter:
                 continue
             logger.debug("XMLifying job '{0}'".format(job['name']))
             job = self.applyDefaults(job)
