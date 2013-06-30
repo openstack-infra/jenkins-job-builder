@@ -330,6 +330,29 @@ def extended_choice(parser, xml_parent, data):
         'default-property-key', '')
 
 
+def priority_sorter(parser, xml_parent, data):
+    """yaml: priority-sorter
+    Allows simple ordering of builds, using a configurable job priority.
+
+    Requires the Jenkins `Priority Sorter Plugin
+    <https://wiki.jenkins-ci.org/display/JENKINS/Priority+Sorter+Plugin>`_.
+
+    :arg int priority: Priority of the job.  Higher value means higher
+        priority, with 100 as the standard priority. (required)
+
+    Example::
+
+        properties:
+          - priority-sorter:
+              priority: 150
+    """
+    priority_sorter_tag = XML.SubElement(xml_parent,
+                                         'hudson.queueSorter.'
+                                         'PrioritySorterJobProperty')
+    XML.SubElement(priority_sorter_tag, 'priority').text = str(
+        data['priority'])
+
+
 class Properties(jenkins_jobs.modules.base.Base):
     sequence = 20
 
