@@ -92,6 +92,8 @@ def trigger_parameterized_builds(parser, xml_parent, data):
     :arg bool git-revision: Pass git revision to the other job (optional)
     :arg str condition: when to trigger the other job (default 'ALWAYS')
     :arg str property-file: Use properties from file (optional)
+    :arg str restrict-matrix-project: Filter that restricts the subset
+        of the combinations that the downstream project will run (optional)
 
     Example::
 
@@ -105,6 +107,7 @@ def trigger_parameterized_builds(parser, xml_parent, data):
             - project: yet_another_job
               predefined-parameters: foo=bar
               git-revision: true
+              restrict-matrix-project: label=="x86"
 
     """
     tbuilder = XML.SubElement(xml_parent,
@@ -120,7 +123,8 @@ def trigger_parameterized_builds(parser, xml_parent, data):
             or 'git-revision' in project_def
             or 'property-file' in project_def
             or 'current-parameters' in project_def
-            or 'svn-revision' in project_def):
+            or 'svn-revision' in project_def
+            or 'restrict-matrix-project' in project_def):
 
             if 'predefined-parameters' in project_def:
                 params = XML.SubElement(tconfigs,
@@ -150,6 +154,13 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                 XML.SubElement(tconfigs,
                                'hudson.plugins.parameterizedtrigger.'
                                'SubversionRevisionBuildParameters')
+            if ('restrict-matrix-project' in project_def
+                and project_def['restrict-matrix-project']):
+                subset = XML.SubElement(tconfigs,
+                                        'hudson.plugins.parameterizedtrigger.'
+                                        'matrix.MatrixSubsetBuildParameters')
+                XML.SubElement(subset, 'filter').text = \
+                    project_def['restrict-matrix-project']
         else:
             tconfigs.set('class', 'java.util.Collections$EmptyList')
         projects = XML.SubElement(tconfig, 'projects')
