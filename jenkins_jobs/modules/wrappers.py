@@ -299,6 +299,26 @@ def inject(parser, xml_parent, data):
     XML.SubElement(info, 'loadFilesFromMaster').text = 'false'
 
 
+def env_file(parser, xml_parent, data):
+    """yaml: env-file
+    Add or override environment variables to the whole build process
+    Requires the Jenkins `Environment File Plugin.
+    https://wiki.jenkins-ci.org/display/JENKINS/Envfile+Plugin`_
+
+    :arg str properties-file: path to the properties file (default '')
+
+    Example::
+
+      wrappers:
+        - env-file:
+            properties-file: ${WORKSPACE}/foo
+    """
+    eib = XML.SubElement(xml_parent,
+                         'hudson.plugins.envfile.EnvFileBuildWrapper')
+    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
+        eib, 'filePath', data.get('properties-file'))
+
+
 def jclouds(parser, xml_parent, data):
     """yaml: jclouds
     :arg bool single-use: Whether or not to terminate the slave after use

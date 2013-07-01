@@ -159,6 +159,7 @@ setuptools.setup(
             'locks=jenkins_jobs.modules.wrappers:locks',
             'copy-to-slave=jenkins_jobs.modules.wrappers:copy_to_slave',
             'inject=jenkins_jobs.modules.wrappers:inject',
+            'env-file=jenkins_jobs.modules.wrappers:env_file',
             'jclouds=jenkins_jobs.modules.wrappers:jclouds',
             'build-user-vars=jenkins_jobs.modules.wrappers:build_user_vars',
             'release=jenkins_jobs.modules.wrappers:release',
