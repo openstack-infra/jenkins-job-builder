@@ -233,6 +233,7 @@ def gerrit(parser, xml_parent, data):
     build_gerrit_skip_votes(gtrig, data)
     XML.SubElement(gtrig, 'silentMode').text = 'false'
     XML.SubElement(gtrig, 'escapeQuotes').text = 'true'
+    XML.SubElement(gtrig, 'dynamicTriggerConfiguration').text = 'false'
     build_gerrit_triggers(gtrig, data)
     if 'override-votes' in data and data['override-votes'] == 'true':
         XML.SubElement(gtrig, 'gerritBuildSuccessfulVerifiedValue').text = \
