@@ -163,6 +163,46 @@ def workspace_cleanup(parser, xml_parent, data):
     deldirs.text = str(data.get("dirmatch", "false")).lower()
 
 
+def rvm_env(parser, xml_parent, data):
+    """yaml: rvm-env
+    Set the RVM implementation
+    Requires the Jenkins `Rvm Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/RVM+Plugin>`_
+
+    :arg str implementation: Type of implementation. Syntax is RUBY[@GEMSET],
+                             such as '1.9.3' or 'jruby@foo'.
+
+    Example::
+
+      wrappers:
+        - rvm-env:
+            implementation: 1.9.3
+    """
+    rpo = XML.SubElement(xml_parent,
+                         'ruby-proxy-object')
+
+    ro_class = "Jenkins::Plugin::Proxies::BuildWrapper"
+    ro = XML.SubElement(rpo,
+                        'ruby-object',
+                        {'ruby-class': ro_class,
+                         'pluginid': 'rvm'})
+
+    o = XML.SubElement(ro,
+                       'object',
+                       {'ruby-class': 'RvmWrapper',
+                        'pluginid': 'rvm'})
+
+    XML.SubElement(o,
+                   'impl',
+                   {'pluginid': 'rvm',
+                    'ruby-class': 'String'}).text = data['implementation']
+
+    XML.SubElement(ro,
+                   'pluginid',
+                   {'pluginid': 'rvm',
+                    'ruby-class': 'String'}).text = "rvm"
+
+
 def build_name(parser, xml_parent, data):
     """yaml: build-name
     Set the name of the build
