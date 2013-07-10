@@ -78,6 +78,8 @@ def git(self, xml_parent, data):
     :arg str browser: what repository browser to use (default '(Auto)')
     :arg str browser-url: url for the repository browser
     :arg str choosing-strategy: Jenkins class for selecting what to build
+    :arg str git-config-name: Configure name for Git clone
+    :arg str git-config-email: Configure email for Git clone
 
     :browser values:
         :githubweb:
@@ -123,8 +125,8 @@ def git(self, xml_parent, data):
         (None, 'submoduleCfg', '', {'class': 'list'}),
         ('basedir', 'relativeTargetDir', ''),
         (None, 'reference', ''),
-        (None, 'gitConfigName', ''),
-        (None, 'gitConfigEmail', ''),
+        ("git-config-name", 'gitConfigName', ''),
+        ("git-config-email", 'gitConfigEmail', ''),
         ('skip-tag', 'skipTag', False),
         (None, 'scmName', ''),
     ]
