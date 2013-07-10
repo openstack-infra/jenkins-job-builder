@@ -316,7 +316,7 @@ def env_file(parser, xml_parent, data):
     """yaml: env-file
     Add or override environment variables to the whole build process
     Requires the Jenkins `Environment File Plugin.
-    https://wiki.jenkins-ci.org/display/JENKINS/Envfile+Plugin`_
+    <https://wiki.jenkins-ci.org/display/JENKINS/Envfile+Plugin>`_
 
     :arg str properties-file: path to the properties file (default '')
 
@@ -334,6 +334,11 @@ def env_file(parser, xml_parent, data):
 
 def jclouds(parser, xml_parent, data):
     """yaml: jclouds
+    Uses JClouds to provide slave launching on most of the currently
+    usable Cloud infrastructures.
+    Requires the Jenkins `JClouds Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/JClouds+Plugin>`_
+
     :arg bool single-use: Whether or not to terminate the slave after use
                           (default: False).
     :arg list instances: The name of the jclouds template to create an

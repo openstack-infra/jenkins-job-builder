@@ -309,9 +309,9 @@ def tfs(self, xml_parent, data):
 
         :web-access value:
             * **web-url** -- Enter the URL to the TSWA server. The plugin will
-            strip the last path (if any) of the URL when building URLs for
-            change set pages and other pages. (optional, default
-            uses server-url)
+              strip the last path (if any) of the URL when building URLs for
+              change set pages and other pages. (optional, default
+              uses server-url)
 
 
     Examples::
