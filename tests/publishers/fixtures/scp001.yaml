@@ -1,0 +1,9 @@
+# vim: sw=4 ts=4 et
+publishers:
+  - scp:
+      site: 'example.com'
+      files:
+        - target: 'dest/dir'
+          source: 'base/source/dir/**'
+          keep-hierarchy: true
+          copy-after-failure: true

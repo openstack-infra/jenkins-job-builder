@@ -3,6 +3,7 @@
 *.egg-info
 *.pyc
 .test
+.testrepository
 .tox
 AUTHORS
 build/*

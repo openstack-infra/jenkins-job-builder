@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<project>
+  <publishers>
+    <xunit>
+      <types>
+        <PHPUnitJunitHudsonTestType>
+          <pattern>junit.log</pattern>
+          <failIfNotNew>true</failIfNotNew>
+          <deleteOutputFiles>true</deleteOutputFiles>
+          <stopProcessingIfError>true</stopProcessingIfError>
+        </PHPUnitJunitHudsonTestType>
+        <CppUnitJunitHudsonTestType>
+          <pattern>cppunit.log</pattern>
+          <failIfNotNew>true</failIfNotNew>
+          <deleteOutputFiles>true</deleteOutputFiles>
+          <stopProcessingIfError>true</stopProcessingIfError>
+        </CppUnitJunitHudsonTestType>
+      </types>
+      <thresholds>
+        <org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
+          <failureThreshold/>
+          <unstableThreshold/>
+          <unstableNewThreshold/>
+          <failureNewThreshold/>
+        </org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
+        <org.jenkinsci.plugins.xunit.threshold.SkippedThreshold>
+          <failureThreshold/>
+          <unstableThreshold/>
+          <unstableNewThreshold/>
+          <failureNewThreshold/>
+        </org.jenkinsci.plugins.xunit.threshold.SkippedThreshold>
+      </thresholds>
+      <thresholdMode>2</thresholdMode>
+    </xunit>
+  </publishers>
+</project>

@@ -1,0 +1,21 @@
+# vim: sw=4 ts=4 et
+publishers:
+  - xunit:
+      thresholdmode: 'percent'
+      thresholds:
+          - failed:
+                unstable: 0
+                unstablenew: 0
+                failure: 0
+                failurenew: 0
+          - skipped:
+                unstable: 0
+                unstablenew: 0
+                failure: 0
+                failurenew: 0
+      types:
+          - phpunit:
+              pattern: "junit.log"
+              stoponerror: true
+          - cppunit:
+              pattern: "cppunit.log"
