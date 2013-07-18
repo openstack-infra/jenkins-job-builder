@@ -557,9 +557,9 @@ def xunit(parser, xml_parent, data):
             supported_types.append(configured_type)
 
     # Generate XML for each of the supported framework types
+    xmltypes = XML.SubElement(xunit, 'types')
     for supported_type in supported_types:
         framework_name = supported_type.keys()[0]
-        xmltypes = XML.SubElement(xunit, 'types')
         xmlframework = XML.SubElement(xmltypes,
                                       types_to_plugin_types[framework_name])
 
