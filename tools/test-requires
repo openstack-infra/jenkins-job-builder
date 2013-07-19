@@ -3,5 +3,5 @@ fixtures
 python-subunit
 sphinx
 setuptools_git>=0.4
-testtools
+testscenarios
 testrepository

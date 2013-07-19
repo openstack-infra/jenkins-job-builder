@@ -19,7 +19,7 @@
 
 import os
 import re
-import testtools
+from testscenarios.testcase import TestWithScenarios
 import unittest
 import xml.etree.ElementTree as XML
 import yaml
@@ -31,20 +31,12 @@ FIXTURES_PATH = os.path.join(
     os.path.dirname(__file__), 'fixtures')
 
 
-def load_tests(loader, tests, pattern):
-    return unittest.TestSuite(
-        build_test_case(xml, yamldef, files)
-        for xml, yamldef, files in get_fixtures()
-    )
-
-
-def get_fixtures():
-    """Returns a list of tuples containing, in order:
+def get_scenarios():
+    """Returns a list of scenarios, each scenario being described
+    by two parameters (yaml and xml filenames).
         - content of the fixture .xml file (aka expected)
-        - content of the fixture .yaml file
-        - list of the filenames
     """
-    fixtures = []
+    scenarios = []
     files = os.listdir(FIXTURES_PATH)
     yaml_files = [f for f in files if re.match(r'.*\.yaml$', f)]
 
@@ -56,54 +48,48 @@ def get_fixtures():
                 "No XML file named '%s' to match " +
                 "YAML file '%s'" % (xml_candidate, yaml_filename))
 
+        scenarios.append((yaml_filename, {
+            'yaml_filename': yaml_filename, 'xml_filename': xml_candidate
+        }))
+
+    return scenarios
+
+
+class TestCaseModulePublisher(TestWithScenarios):
+    scenarios = get_scenarios()
+
+    # unittest.TestCase settings:
+    maxDiff = None      # always dump text difference
+    longMessage = True  # keep normal error message when providing our
+
+    def __read_content(self):
         # Read XML content, assuming it is unicode encoded
-        xml_filename = os.path.join(FIXTURES_PATH, xml_candidate)
-        xml_content = u"%s" % open(xml_filename, 'r').read()
+        xml_filepath = os.path.join(FIXTURES_PATH, self.xml_filename)
+        xml_content = u"%s" % open(xml_filepath, 'r').read()
 
-        yaml_file = file(os.path.join(FIXTURES_PATH, yaml_filename), 'r')
-        yaml_content = yaml.load(yaml_file)
+        yaml_filepath = os.path.join(FIXTURES_PATH, self.yaml_filename)
+        with file(yaml_filepath, 'r') as yaml_file:
+            yaml_content = yaml.load(yaml_file)
 
-        fixtures.append((
-            xml_content,
-            yaml_content,
-            [xml_filename, yaml_filename],
-        ))
+        return (yaml_content, xml_content)
 
-    return fixtures
+    def test_yaml_snippet(self):
+        yaml_content, expected_xml = self.__read_content()
 
+        xml_project = XML.Element('project')  # root element
+        parser = YamlParser()
+        pub = publishers.Publishers(ModuleRegistry({}))
 
-# The class is wrapped in a def to prevent it from being discovered by
-# python-discover, it would try to load the class passing unexpected parameters
-# which breaks everything.
-def build_test_case(expected_xml, yaml, files):
-    class TestCaseModulePublisher(testtools.TestCase):
+        # Generate the XML tree directly with modules/publishers/*
+        pub.gen_xml(parser, xml_project, yaml_content)
 
-        # testtools.TestCase settings:
-        maxDiff = None      # always dump text difference
-        longMessage = True  # keep normal error message when providing our
+        # Prettify generated XML
+        pretty_xml = XmlJob(xml_project, 'fixturejob').output()
 
-        def __init__(self, expected_xml, yaml, files):
-            testtools.TestCase.__init__(self, 'test_yaml_snippet')
-            self.xml = expected_xml
-            self.yaml = yaml
-            self.files = files
-
-        def test_yaml_snippet(self):
-            xml_project = XML.Element('project')  # root element
-            parser = YamlParser()
-            pub = publishers.Publishers(ModuleRegistry({}))
-
-            # Generate the XML tree directly with modules/publishers/*
-            pub.gen_xml(parser, xml_project, self.yaml)
-
-            # Prettify generated XML
-            pretty_xml = XmlJob(xml_project, 'fixturejob').output()
-
-            self.assertMultiLineEqual(
-                self.xml, pretty_xml,
-                'Test inputs: %s' % ', '.join(self.files)
-            )
-    return TestCaseModulePublisher(expected_xml, yaml, files)
+        self.assertMultiLineEqual(
+            expected_xml, pretty_xml,
+            'Test inputs: %s, %s' % (self.yaml_filename, self.xml_filename)
+        )
 
 if __name__ == "__main__":
     unittest.main()
