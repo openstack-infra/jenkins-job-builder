@@ -312,3 +312,20 @@ The bulk of the job definitions come from the following modules.
    triggers
    wrappers
    zuul
+
+
+Module Execution
+----------------
+
+The jenkins job builder modules are executed in sequence.
+
+Generally the sequence is:
+    #. parameters/properties
+    #. scm
+    #. triggers
+    #. wrappers
+    #. prebuilders (maven only)
+    #. builders (maven, freestyle, matrix, etc..)
+    #. postbuilders (maven only)
+    #. publishers/reporters/notifications
+
