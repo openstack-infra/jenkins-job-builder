@@ -1,0 +1,14 @@
+This directory contains fixtures to test the publishers.
+
+The filename should start with a publisher name (example: xunit) and you must
+provide two files:
+ - .yaml : yaml snippet representing the publisher as it would be written
+           in jenkins job builder configuration file.
+ - .xml  : xml Jenkins snippet that should be rendered by the publisher
+
+Each yaml file MUST have a corresponding xml file.
+
+Once the YAML file has been parsed, it is prettify using python minidom
+which also means that:
+- your XML file must start with: <?xml version="1.0" ?>
+- self closing elements do not contains space eg: <element/>

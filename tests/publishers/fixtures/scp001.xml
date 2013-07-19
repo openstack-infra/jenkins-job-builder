@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<project>
+  <publishers>
+    <be.certipost.hudson.plugin.SCPRepositoryPublisher>
+      <siteName>example.com</siteName>
+      <entries>
+        <be.certipost.hudson.plugin.Entry>
+          <filePath>dest/dir</filePath>
+          <sourceFile>base/source/dir/**</sourceFile>
+          <keepHierarchy>true</keepHierarchy>
+          <copyConsoleLog>false</copyConsoleLog>
+          <copyAfterFailure>true</copyAfterFailure>
+        </be.certipost.hudson.plugin.Entry>
+      </entries>
+    </be.certipost.hudson.plugin.SCPRepositoryPublisher>
+  </publishers>
+</project>
