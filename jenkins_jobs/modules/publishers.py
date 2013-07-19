@@ -1894,6 +1894,70 @@ def tap(parser, xml_parent, data):
         data.get('todo-is-failure', True)).lower()
 
 
+def post_tasks(parser, xml_parent, data):
+    """yaml: post-tasks
+    Adds support to post build task plugin
+
+    See `Post Build Task` plugin:
+    <https://wiki.jenkins-ci.org/display/JENKINS/Post+build+task>`_
+
+    :arg dict task: Post build task definition
+    :arg list task[matches]: list of matches when to run the task
+    :arg dict task[matches][*]: match definition
+    :arg str task[matches][*][log-text]: text to match against the log
+    :arg str task[matches][*][operator]: operator to apply with the next match
+
+        :task[matches][*][operator] values (default 'AND'):
+            * **AND**
+            * **OR**
+
+    :arg bool task[escalate-status]: Escalate the task status to the job
+        (default 'false')
+    :arg bool task[run-if-job-successful]: Run only if the job was successful
+        (default 'false')
+    :arg str task[script]: Shell script to run (default '')
+
+    Example::
+
+        publishers:
+            - post-tasks:
+                - matches:
+                    - log-text: line to match
+                      operator: AND
+                    - log-text: line to match
+                      operator: OR
+                    - log-text: line to match
+                      operator: AND
+                  escalate-status: false
+                  run-if-job-successful:false
+                  script: |
+                    echo "Here goes the task script"
+    """
+
+    pb_xml = XML.SubElement(xml_parent,
+                            'hudson.plugins.postbuildtask.PostbuildTask')
+    tasks_xml = XML.SubElement(pb_xml, 'tasks')
+    for task in data:
+        task_xml = XML.SubElement(
+            tasks_xml,
+            'hudson.plugins.postbuildtask.TaskProperties')
+        matches_xml = XML.SubElement(task_xml, 'logTexts')
+        for match in task.get('matches', []):
+            lt_xml = XML.SubElement(
+                matches_xml,
+                'hudson.plugins.postbuildtask.LogProperties')
+            XML.SubElement(lt_xml, 'logText').text = str(
+                match.get('log-text', ''))
+            XML.SubElement(lt_xml, 'operator').text = str(
+                match.get('operator', 'AND')).upper()
+        XML.SubElement(task_xml, 'EscalateStatus').text = str(
+            task.get('escalate-status', False)).lower()
+        XML.SubElement(task_xml, 'RunIfJobSuccessful').text = str(
+            task.get('run-if-job-successful', False)).lower()
+        XML.SubElement(task_xml, 'script').text = str(
+            task.get('script', ''))
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
