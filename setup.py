@@ -141,6 +141,7 @@ setuptools.setup(
             'maven-deploy=jenkins_jobs.modules.publishers:maven_deploy',
             'tap=jenkins_jobs.modules.publishers:tap',
             'text-finder=jenkins_jobs.modules.publishers:text_finder',
+            'html-publisher=jenkins_jobs.modules.publishers:html_publisher',
         ],
         'jenkins_jobs.scm': [
             'git=jenkins_jobs.modules.scm:git',

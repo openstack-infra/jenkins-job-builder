@@ -1812,6 +1812,40 @@ def text_finder(parser, xml_parent, data):
     XML.SubElement(finder, 'unstableIfFound').text = unstable_if_found
 
 
+def html_publisher(parser, xml_parent, data):
+    """yaml: html-publisher
+    This plugin publishes HTML reports.
+
+    See `HTML Publisher Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/HTML+Publisher+Plugin>`_
+
+    :arg str name: Report name
+    :arg str dir: HTML directory to archive
+    :arg str files: Specify the pages to display
+    :arg bool keep-all: keep HTML reports for each past build (Default False)
+
+
+    Example::
+
+        publishers:
+            - html-publisher:
+                name: "some name"
+                dir: "path/"
+                files: "index.html"
+                keep-all: true
+    """
+
+    reporter = XML.SubElement(xml_parent, 'htmlpublisher.HtmlPublisher')
+    targets = XML.SubElement(reporter, 'reportTargets')
+    ptarget = XML.SubElement(targets, 'htmlpublisher.HtmlPublisherTarget')
+    XML.SubElement(ptarget, 'reportName').text = data['name']
+    XML.SubElement(ptarget, 'reportDir').text = data['dir']
+    XML.SubElement(ptarget, 'reportFiles').text = data['files']
+    keep_all = str(data.get('keep-all', 'false')).lower()
+    XML.SubElement(ptarget, 'keepAll').text = keep_all
+    XML.SubElement(ptarget, 'wrapperName').text = "htmlpublisher-wrapper.html"
+
+
 def tap(parser, xml_parent, data):
     """yaml: tap
     Adds support to TAP test result files
