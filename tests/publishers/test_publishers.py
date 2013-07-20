@@ -86,7 +86,7 @@ class TestCaseModulePublisher(TestWithScenarios):
         # Prettify generated XML
         pretty_xml = XmlJob(xml_project, 'fixturejob').output()
 
-        self.assertMultiLineEqual(
+        self.assertEqual(
             expected_xml, pretty_xml,
             'Test inputs: %s, %s' % (self.yaml_filename, self.xml_filename)
         )
