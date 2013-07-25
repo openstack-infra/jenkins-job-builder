@@ -77,6 +77,7 @@ def git(self, xml_parent, data):
     :arg bool wipe-workspace: Wipe out workspace before build
     :arg str browser: what repository browser to use (default '(Auto)')
     :arg str browser-url: url for the repository browser
+    :arg str choosing-strategy: Jenkins class for selecting what to build
 
     :browser values:
         :githubweb:
@@ -88,6 +89,11 @@ def git(self, xml_parent, data):
         :gitweb:
         :redmineweb:
         :viewgit:
+
+    :choosing-strategy values:
+        :default:
+        :inverse:
+        :gerrit:
 
     Example::
 
@@ -113,8 +119,6 @@ def git(self, xml_parent, data):
         ("wipe-workspace", 'wipeOutWorkspace', True),
         ("prune", 'pruneBranches', False),
         ("fastpoll", 'remotePoll', False),
-        (None, 'buildChooser', '', {
-            'class': 'hudson.plugins.git.util.DefaultBuildChooser'}),
         ("git-tool", 'gitTool', "Default"),
         (None, 'submoduleCfg', '', {'class': 'list'}),
         ('basedir', 'relativeTargetDir', ''),
@@ -124,6 +128,13 @@ def git(self, xml_parent, data):
         ('skip-tag', 'skipTag', False),
         (None, 'scmName', ''),
     ]
+
+    choosing_strategies = {
+        'default': 'hudson.plugins.git.util.DefaultBuildChooser',
+        'gerrit': ('com.sonyericsson.hudson.plugins.'
+                   'gerrit.trigger.hudsontrigger.GerritTriggerBuildChooser'),
+        'inverse': 'hudson.plugins.git.util.InverseBuildChooser',
+    }
 
     scm = XML.SubElement(xml_parent,
                          'scm', {'class': 'hudson.plugins.git.GitSCM'})
@@ -157,6 +168,15 @@ def git(self, xml_parent, data):
         urc = XML.SubElement(scm, 'userMergeOptions')
         XML.SubElement(urc, 'mergeRemote').text = name
         XML.SubElement(urc, 'mergeTarget').text = branch
+
+    try:
+        choosing_strategy = choosing_strategies[data.get('choosing-strategy',
+                                                         'default')]
+    except KeyError:
+        raise ValueError('Invalid choosing-strategy %r' %
+                         data.get('choosing-strategy'))
+    XML.SubElement(scm, 'buildChooser', {'class': choosing_strategy})
+
     for elem in mapping:
         (optname, xmlname, val) = elem[:3]
         attrs = {}
