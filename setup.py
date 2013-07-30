@@ -177,6 +177,8 @@ setuptools.setup(
             'sauce-ondemand=jenkins_jobs.modules.wrappers:sauce_ondemand',
             'rvm-env=jenkins_jobs.modules.wrappers:rvm_env',
             'pathignore=jenkins_jobs.modules.wrappers:pathignore',
+            ('pre-scm-buildstep='
+             'jenkins_jobs.modules.wrappers:pre_scm_buildstep'),
         ],
         'jenkins_jobs.modules': [
             'general=jenkins_jobs.modules.general:General',
