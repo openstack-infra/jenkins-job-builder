@@ -1770,6 +1770,48 @@ def maven_deploy(parser, xml_parent, data):
         data.get('deploy-unstable', 'false')).lower()
 
 
+def text_finder(parser, xml_parent, data):
+    """yaml: text-finder
+    This plugin lets you search keywords in the files you specified and
+    additionally check build status
+
+    See `Text-finder Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Text-finder+Plugin>`_
+
+    :arg str regexp: Specify a regular expression
+    :arg str fileset: Specify the path to search
+    :arg bool also-check-console-output:
+              Search the console output (default False)
+    :arg bool succeed-if-found:
+              Force a build to succeed if a string was found (default False)
+    :arg bool unstable-if-found:
+              Set build unstable instead of failing the build (default False)
+
+
+    Example::
+
+        publishers:
+            - text-finder:
+                regexp: "some string"
+                fileset: "file.txt"
+                also-check-console-output: true
+                succeed-if-found: false
+                unstable-if-found: false
+    """
+
+    finder = XML.SubElement(xml_parent,
+                            'hudson.plugins.textfinder.TextFinderPublisher')
+    if ('fileset' in data):
+        XML.SubElement(finder, 'fileSet').text = data['fileset']
+    XML.SubElement(finder, 'regexp').text = data['regexp']
+    check_output = str(data.get('also-check-console-output', 'false')).lower()
+    XML.SubElement(finder, 'alsoCheckConsoleOutput').text = check_output
+    succeed_if_found = str(data.get('succeed-if-found', 'false')).lower()
+    XML.SubElement(finder, 'succeedIfFound').text = succeed_if_found
+    unstable_if_found = str(data.get('unstable-if-found', 'false')).lower()
+    XML.SubElement(finder, 'unstableIfFound').text = unstable_if_found
+
+
 def tap(parser, xml_parent, data):
     """yaml: tap
     Adds support to TAP test result files
