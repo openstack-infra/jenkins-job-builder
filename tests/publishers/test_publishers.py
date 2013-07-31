@@ -17,10 +17,11 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import doctest
 import os
 import re
 from testscenarios.testcase import TestWithScenarios
-import unittest
+import testtools
 import xml.etree.ElementTree as XML
 import yaml
 
@@ -55,10 +56,10 @@ def get_scenarios():
     return scenarios
 
 
-class TestCaseModulePublisher(TestWithScenarios):
+class TestCaseModulePublisher(TestWithScenarios, testtools.TestCase):
     scenarios = get_scenarios()
 
-    # unittest.TestCase settings:
+    # TestCase settings:
     maxDiff = None      # always dump text difference
     longMessage = True  # keep normal error message when providing our
 
@@ -86,10 +87,10 @@ class TestCaseModulePublisher(TestWithScenarios):
         # Prettify generated XML
         pretty_xml = XmlJob(xml_project, 'fixturejob').output()
 
-        self.assertEqual(
-            expected_xml, pretty_xml,
-            'Test inputs: %s, %s' % (self.yaml_filename, self.xml_filename)
+        self.assertThat(
+            pretty_xml,
+            testtools.matchers.DocTestMatches(expected_xml,
+                                              doctest.ELLIPSIS |
+                                              doctest.NORMALIZE_WHITESPACE |
+                                              doctest.REPORT_NDIFF)
         )
-
-if __name__ == "__main__":
-    unittest.main()
