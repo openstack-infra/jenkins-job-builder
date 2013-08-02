@@ -1958,6 +1958,28 @@ def post_tasks(parser, xml_parent, data):
             task.get('script', ''))
 
 
+def xml_summary(parser, xml_parent, data):
+    """yaml: xml-summary
+    Adds support for the Summary Display Plugin
+
+    See `Summary Display Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Summary+Display+Plugin>`_
+
+    :arg str files: Files to parse (default '')
+
+    Example:
+
+        publishers:
+            - xml-summary:
+                files: '*_summary_report.xml'
+    """
+
+    summary = XML.SubElement(xml_parent,
+                             'hudson.plugins.summary__report.'
+                             'ACIPluginPublisher')
+    XML.SubElement(summary, 'name').text = data['files']
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
