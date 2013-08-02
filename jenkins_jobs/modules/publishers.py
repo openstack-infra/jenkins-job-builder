@@ -1980,6 +1980,68 @@ def xml_summary(parser, xml_parent, data):
     XML.SubElement(summary, 'name').text = data['files']
 
 
+def robot(parser, xml_parent, data):
+    """yaml: robot
+    Adds support for the Robot Framework Plugin
+
+    See `Robot Framework Plugin` plugin:
+    <https://wiki.jenkins-ci.org/display/JENKINS/Robot+Framework+Plugin>`_
+
+    :arg str output-path: Path to directory containing robot xml and html files
+        relative to build workspace. (default '')
+    :arg str log-file-link: Name of log or report file to be linked on jobs
+        front page (default '')
+    :arg str report-html: Name of the html file containing robot test report
+        (default 'report.html')
+    :arg str log-html: Name of the html file containing detailed robot test log
+        (default 'log.html')
+    :arg str output-xml: Name of the xml file containing robot output
+        (default 'output.xml')
+    :arg str pass-threshold: Minimum percentage of passed tests to consider
+        the build succesful (default 0.0)
+    :arg str unstable-threshold: Minimum percentage of passed test to
+        consider the build as not failed (default 0.0)
+    :arg bool only-critical: Take only critical tests into account when
+        checking the thresholds (default true)
+    :arg list other-files: list other files to archive (default '')
+
+    Example::
+
+        - publishers:
+            - robot:
+                output-path: reports/robot
+                log-file-link: report.html
+                report-html: report.html
+                log-html: log.html
+                output-xml: output.xml
+                pass-threshold: 80.0
+                unstable-threshold: 60.0
+                only-critical: false
+                other-files:
+                    - extra-file1.html
+                    - extra-file2.txt
+    """
+    parent = XML.SubElement(xml_parent, 'hudson.plugins.robot.RobotPublisher')
+    XML.SubElement(parent, 'outputPath').text = data['output-path']
+    XML.SubElement(parent, 'logFileLink').text = str(
+        data.get('log-file-link', ''))
+    XML.SubElement(parent, 'reportFileName').text = str(
+        data.get('report-html', 'report.html'))
+    XML.SubElement(parent, 'logFileName').text = str(
+        data.get('log-html', 'log.html'))
+    XML.SubElement(parent, 'outputFileName').text = str(
+        data.get('output-xml', 'output.xml'))
+    XML.SubElement(parent, 'passThreshold').text = str(
+        data.get('pass-threshold', 0.0))
+    XML.SubElement(parent, 'unstableThreshold').text = str(
+        data.get('unstable-threshold', 0.0))
+    XML.SubElement(parent, 'onlyCritical').text = str(
+        data.get('only-critical', True)).lower()
+    other_files = XML.SubElement(parent, 'otherFiles')
+    for other_file in data['other-files']:
+        XML.SubElement(other_files, 'string').text = str(other_file)
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
