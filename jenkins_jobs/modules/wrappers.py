@@ -609,6 +609,43 @@ def sauce_ondemand(parser, xml_parent, data):
     XML.SubElement(sauce, 'options').text = options
 
 
+def pathignore(parser, xml_parent, data):
+    """yaml: pathignore
+    This plugin allows SCM-triggered jobs to ignore
+    build requests if only certain paths have changed.
+
+    See `Pathignore Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Pathignore+Plugin>`_
+
+    :arg str ignored: A set of patterns to define ignored changes
+
+    Example::
+
+      wrappers:
+        - pathignore:
+            ignored: "docs, tests"
+    """
+    ruby = XML.SubElement(xml_parent, 'ruby-proxy-object')
+    robj = XML.SubElement(ruby, 'ruby-object', attrib={
+        'pluginid': 'pathignore',
+        'ruby-class': 'Jenkins::Plugin::Proxies::BuildWrapper'
+    })
+    pluginid = XML.SubElement(robj, 'pluginid', {
+        'pluginid': 'pathignore', 'ruby-class': 'String'
+    })
+    pluginid.text = 'pathignore'
+    obj = XML.SubElement(robj, 'object', {
+        'ruby-class': 'PathignoreWrapper', 'pluginid': 'pathignore'
+    })
+    ignored = XML.SubElement(obj, 'ignored__paths', {
+        'pluginid': 'pathignore', 'ruby-class': 'String'
+    })
+    ignored.text = data.get('ignored', '')
+    XML.SubElement(obj, 'invert__ignore', {
+        'ruby-class': 'FalseClass', 'pluginid': 'pathignore'
+    })
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 
