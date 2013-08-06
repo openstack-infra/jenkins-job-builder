@@ -74,6 +74,8 @@ def git(self, xml_parent, data):
     :arg bool use-author: Use author rather than committer in Jenkin's build
       changeset
     :arg str git-tool: The name of the Git installation to use
+    :arg str reference-repo: Path of the reference repo to use during clone
+    :arg str scm-name: The unique scm name for this Git SCM
     :arg bool wipe-workspace: Wipe out workspace before build
     :arg str browser: what repository browser to use (default '(Auto)')
     :arg str browser-url: url for the repository browser
@@ -124,11 +126,11 @@ def git(self, xml_parent, data):
         ("git-tool", 'gitTool', "Default"),
         (None, 'submoduleCfg', '', {'class': 'list'}),
         ('basedir', 'relativeTargetDir', ''),
-        (None, 'reference', ''),
+        ('reference-repo', 'reference', ''),
         ("git-config-name", 'gitConfigName', ''),
         ("git-config-email", 'gitConfigEmail', ''),
         ('skip-tag', 'skipTag', False),
-        (None, 'scmName', ''),
+        ('scm-name', 'scmName', ''),
     ]
 
     choosing_strategies = {
