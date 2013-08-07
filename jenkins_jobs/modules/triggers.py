@@ -140,7 +140,9 @@ def gerrit(parser, xml_parent, data):
     :arg int gerrit-build-successful-verified-value: Successful ''Verified''
         value
     :arg int gerrit-build-failed-verified-value: Failed ''Verified'' value
-    :arg str failure-message: Message to leave on failure
+    :arg str failure-message: Message to leave on failure (default '')
+    :arg str successful-message: Message to leave on success (default '')
+    :arg str unstable-message: Message to leave when unstable (default '')
     :arg list projects: list of projects to match
 
       :Project: * **project-compare-type** (`str`) --  ''PLAIN'', ''ANT'' or
@@ -165,6 +167,22 @@ def gerrit(parser, xml_parent, data):
                   * **failed** (`bool`)
                   * **unstable** (`bool`)
                   * **notbuilt** (`bool`)
+
+    :arg bool silent:  When silent mode is on there will be no communication
+        back to Gerrit, i.e. no build started/failed/successful approve
+        messages etc. If other non-silent jobs are triggered by the same
+        Gerrit event as this job, the result of this job's build will not be
+        counted in the end result of the other jobs. (default false)
+    :arg bool escape-quotes: escape quotes in the values of gerrit change
+        parameters (default true)
+    :arg bool no-name-and-email: Do not pass compound 'name and email'
+        parameters (default false)
+    :arg bool dynamic-trigger-enabled: Enable/disable the dynamic trigger
+        (default false)
+    :arg str dynamic-trigger-url: if you specify this option, the gerrit
+        trigger configuration will be fetched from there on a regular interval
+    :arg str custom-url: Custom URL for a message sent to gerrit. Build
+        details URL will be used if empty. (default '')
 
     You may select one or more gerrit events upon which to trigger.
     You must also supply at least one project and branch, optionally
@@ -196,6 +214,11 @@ def gerrit(parser, xml_parent, data):
                 failed: true
                 unstable: true
                 notbuilt: true
+            silent: false
+            escape-quotes: false
+            no-name-and-email: false
+            dynamic-trigger-enabled: true
+            dynamic-trigger-url: http://myhost/mytrigger
     """
 
     gerrit_handle_legacy_configuration(data)
@@ -231,21 +254,31 @@ def gerrit(parser, xml_parent, data):
                     file_path.get('compare-type', 'PLAIN')
                 XML.SubElement(fp_tag, 'pattern').text = file_path['pattern']
     build_gerrit_skip_votes(gtrig, data)
-    XML.SubElement(gtrig, 'silentMode').text = 'false'
-    XML.SubElement(gtrig, 'escapeQuotes').text = 'true'
-    XML.SubElement(gtrig, 'dynamicTriggerConfiguration').text = 'false'
+    XML.SubElement(gtrig, 'silentMode').text = str(
+        data.get('silent', False)).lower()
+    XML.SubElement(gtrig, 'escapeQuotes').text = str(
+        data.get('escape-quotes', True)).lower()
+    XML.SubElement(gtrig, 'noNameAndEmailParameters').text = str(
+        data.get('no-name-and-email', False)).lower()
+    XML.SubElement(gtrig, 'dynamicTriggerConfiguration').text = str(
+        data.get('dynamic-trigger-enabled', False))
+    XML.SubElement(gtrig, 'triggerConfigURL').text = str(
+        data.get('dynamic-trigger-url', ''))
     build_gerrit_triggers(gtrig, data)
     if 'override-votes' in data and data['override-votes'] == 'true':
         XML.SubElement(gtrig, 'gerritBuildSuccessfulVerifiedValue').text = \
             str(data['gerrit-build-successful-verified-value'])
         XML.SubElement(gtrig, 'gerritBuildFailedVerifiedValue').text = \
             str(data['gerrit-build-failed-verified-value'])
-    XML.SubElement(gtrig, 'buildStartMessage')
+    XML.SubElement(gtrig, 'buildStartMessage').text = str(
+        data.get('start-message', ''))
     XML.SubElement(gtrig, 'buildFailureMessage').text = \
         data.get('failure-message', '')
-    XML.SubElement(gtrig, 'buildSuccessfulMessage')
-    XML.SubElement(gtrig, 'buildUnstableMessage')
-    XML.SubElement(gtrig, 'customUrl')
+    XML.SubElement(gtrig, 'buildSuccessfulMessage').text = str(
+        data.get('successful-message', ''))
+    XML.SubElement(gtrig, 'buildUnstableMessage').text = str(
+        data.get('unstable-message', ''))
+    XML.SubElement(gtrig, 'customUrl').text = str(data.get('custom-url', ''))
 
 
 def pollscm(parser, xml_parent, data):
