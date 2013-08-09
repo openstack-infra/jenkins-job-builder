@@ -167,13 +167,13 @@ def inject(parser, xml_parent, data):
         info, 'groovyScriptContent', data.get('groovy-content'))
 
     XML.SubElement(info, 'loadFilesFromMaster').text = str(
-        data.get('load-from-master', 'false')).lower()
+        data.get('load-from-master', False)).lower()
     XML.SubElement(inject, 'on').text = str(
-        data.get('enabled', 'true')).lower()
+        data.get('enabled', True)).lower()
     XML.SubElement(inject, 'keepJenkinsSystemVariables').text = str(
-        data.get('keep-system-variables', 'true')).lower()
+        data.get('keep-system-variables', True)).lower()
     XML.SubElement(inject, 'keepBuildVariables').text = str(
-        data.get('keep-build-variables', 'true')).lower()
+        data.get('keep-build-variables', True)).lower()
 
 
 def authenticated_build(parser, xml_parent, data):
@@ -306,7 +306,7 @@ def extended_choice(parser, xml_parent, data):
     XML.SubElement(extended, 'name').text = data['name']
     XML.SubElement(extended, 'description').text = data.get('description', '')
     XML.SubElement(extended, 'quoteValue').text = str(data.get('quote-value',
-                                                      'false')).lower()
+                                                      False)).lower()
     XML.SubElement(extended, 'visibleItemCount').text = data.get(
         'visible-items', '5')
     choice = data.get('type', 'single-select')

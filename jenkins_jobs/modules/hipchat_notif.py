@@ -97,7 +97,7 @@ class HipChat(jenkins_jobs.modules.base.Base):
                                  'HipChatNotifier_-HipChatJobProperty')
         XML.SubElement(pdefhip, 'room').text = hipchat['room']
         XML.SubElement(pdefhip, 'startNotification').text = str(
-            hipchat.get('start-notify', 'false')).lower()
+            hipchat.get('start-notify', False)).lower()
 
         publishers = xml_parent.find('publishers')
         if publishers is None:

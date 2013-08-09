@@ -389,7 +389,7 @@ def tfs(self, xml_parent, data):
     XML.SubElement(tfs, 'userName').text = str(
         data.get('login', ''))
     XML.SubElement(tfs, 'useUpdate').text = str(
-        data.get('use-update', 'true'))
+        data.get('use-update', True))
     store = data.get('web-access', None)
     if 'web-access' in data and isinstance(store, list):
         web = XML.SubElement(tfs, 'repositoryBrowser', {'class': 'hudson.'

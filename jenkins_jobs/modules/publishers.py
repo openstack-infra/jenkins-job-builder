@@ -348,19 +348,19 @@ def cobertura(parser, xml_parent, data):
     XML.SubElement(cobertura, 'coberturaReportFile').text = data.get(
         'report-file', '**/coverage.xml')
     XML.SubElement(cobertura, 'onlyStable').text = str(
-        data.get('only-stable', 'false')).lower()
+        data.get('only-stable', False)).lower()
     XML.SubElement(cobertura, 'failUnhealthy').text = str(
-        data.get('fail-unhealthy', 'false')).lower()
+        data.get('fail-unhealthy', False)).lower()
     XML.SubElement(cobertura, 'failUnstable').text = str(
-        data.get('fail-unstable', 'false')).lower()
+        data.get('fail-unstable', False)).lower()
     XML.SubElement(cobertura, 'autoUpdateHealth').text = str(
-        data.get('health-auto-update', 'false')).lower()
+        data.get('health-auto-update', False)).lower()
     XML.SubElement(cobertura, 'autoUpdateStability').text = str(
-        data.get('stability-auto-update', 'false')).lower()
+        data.get('stability-auto-update', False)).lower()
     XML.SubElement(cobertura, 'zoomCoverageChart').text = str(
-        data.get('zoom-coverage-chart', 'false')).lower()
+        data.get('zoom-coverage-chart', False)).lower()
     XML.SubElement(cobertura, 'failNoReports').text = str(
-        data.get('fail-no-reports', 'false')).lower()
+        data.get('fail-no-reports', False)).lower()
     healthy = XML.SubElement(cobertura, 'healthyTarget')
     targets = XML.SubElement(healthy, 'targets', {
         'class': 'enum-map',
@@ -567,13 +567,13 @@ def xunit(parser, xml_parent, data):
             supported_type[framework_name].get('pattern', '')
         XML.SubElement(xmlframework, 'failIfNotNew').text = \
             str(supported_type[framework_name].get(
-                'requireupdate', 'true')).lower()
+                'requireupdate', True)).lower()
         XML.SubElement(xmlframework, 'deleteOutputFiles').text = \
             str(supported_type[framework_name].get(
-                'deleteoutput', 'true')).lower()
+                'deleteoutput', True)).lower()
         XML.SubElement(xmlframework, 'stopProcessingIfError').text = \
             str(supported_type[framework_name].get(
-                'stoponerror', 'true')).lower()
+                'stoponerror', True)).lower()
 
     xmlthresholds = XML.SubElement(xunit, 'thresholds')
     if 'thresholds' in data:
@@ -1189,7 +1189,7 @@ def cppcheck(parser, xml_parent, data):
     cppext = XML.SubElement(cppextbase, 'cppcheckConfig')
     XML.SubElement(cppext, 'pattern').text = data['pattern']
     XML.SubElement(cppext, 'ignoreBlankFiles').text = \
-        str(data.get('ignoreblankfiles', 'false')).lower()
+        str(data.get('ignoreblankfiles', False)).lower()
 
     csev = XML.SubElement(cppext, 'configSeverityEvaluation')
     thrsh = data.get('thresholds', {})
@@ -1205,15 +1205,15 @@ def cppcheck(parser, xml_parent, data):
 
     sev = thrsh.get('severity', {})
     XML.SubElement(csev, 'severityError').text = \
-        str(sev.get('error', 'true')).lower()
+        str(sev.get('error', True)).lower()
     XML.SubElement(csev, 'severityWarning').text = \
-        str(sev.get('warning', 'true')).lower()
+        str(sev.get('warning', True)).lower()
     XML.SubElement(csev, 'severityStyle').text = \
-        str(sev.get('style', 'true')).lower()
+        str(sev.get('style', True)).lower()
     XML.SubElement(csev, 'severityPerformance').text = \
-        str(sev.get('performance', 'true')).lower()
+        str(sev.get('performance', True)).lower()
     XML.SubElement(csev, 'severityInformation').text = \
-        str(sev.get('information', 'true')).lower()
+        str(sev.get('information', True)).lower()
 
     graph = data.get('graph', {})
     cgraph = XML.SubElement(cppext, 'configGraph')
@@ -1222,17 +1222,17 @@ def cppcheck(parser, xml_parent, data):
     XML.SubElement(cgraph, 'ySize').text = str(y)
     gdisplay = graph.get('display', {})
     XML.SubElement(cgraph, 'displayAllErrors').text = \
-        str(gdisplay.get('sum', 'true')).lower()
+        str(gdisplay.get('sum', True)).lower()
     XML.SubElement(cgraph, 'displayErrorSeverity').text = \
-        str(gdisplay.get('error', 'false')).lower()
+        str(gdisplay.get('error', False)).lower()
     XML.SubElement(cgraph, 'displayWarningSeverity').text = \
-        str(gdisplay.get('warning', 'false')).lower()
+        str(gdisplay.get('warning', False)).lower()
     XML.SubElement(cgraph, 'displayStyleSeverity').text = \
-        str(gdisplay.get('style', 'false')).lower()
+        str(gdisplay.get('style', False)).lower()
     XML.SubElement(cgraph, 'displayPerformanceSeverity').text = \
-        str(gdisplay.get('performance', 'false')).lower()
+        str(gdisplay.get('performance', False)).lower()
     XML.SubElement(cgraph, 'displayInformationSeverity').text = \
-        str(gdisplay.get('information', 'false')).lower()
+        str(gdisplay.get('information', False)).lower()
 
 
 def logparser(parser, xml_parent, data):
@@ -1255,9 +1255,9 @@ def logparser(parser, xml_parent, data):
     clog = XML.SubElement(xml_parent,
                           'hudson.plugins.logparser.LogParserPublisher')
     XML.SubElement(clog, 'unstableOnWarning').text = \
-        str(data.get('unstable-on-warning', 'false')).lower()
+        str(data.get('unstable-on-warning', False)).lower()
     XML.SubElement(clog, 'failBuildOnError').text = \
-        str(data.get('fail-on-error', 'false')).lower()
+        str(data.get('fail-on-error', False)).lower()
     # v1.08: this must be the full path, the name of the rules is not enough
     XML.SubElement(clog, 'parsingRulesPath').text = data.get('parse-rules', '')
 
@@ -1643,15 +1643,15 @@ def jabber(parser, xml_parent, data):
                         "all, failure, failure-fixed, or change")
     XML.SubElement(j, 'strategy').text = strategydict[strategy]
     XML.SubElement(j, 'notifyOnBuildStart').text = str(
-        data.get('notify-on-build-start', 'false')).lower()
+        data.get('notify-on-build-start', False)).lower()
     XML.SubElement(j, 'notifySuspects').text = str(
-        data.get('notify-scm-committers', 'false')).lower()
+        data.get('notify-scm-committers', False)).lower()
     XML.SubElement(j, 'notifyCulprits').text = str(
-        data.get('notify-scm-culprits', 'false')).lower()
+        data.get('notify-scm-culprits', False)).lower()
     XML.SubElement(j, 'notifyFixers').text = str(
-        data.get('notify-scm-fixers', 'false')).lower()
+        data.get('notify-scm-fixers', False)).lower()
     XML.SubElement(j, 'notifyUpstreamCommitters').text = str(
-        data.get('notify-upstream-committers', 'false')).lower()
+        data.get('notify-upstream-committers', False)).lower()
     message = data.get('message', 'summary-scm')
     messagedict = {'summary-scm': 'DefaultBuildToChatNotifier',
                    'summary': 'SummaryOnlyBuildToChatNotifier',
@@ -1716,9 +1716,9 @@ def workspace_cleanup(parser, xml_parent, data):
         XML.SubElement(ptrn, 'type').text = "EXCLUDE"
 
     XML.SubElement(p, 'deleteDirs').text = \
-        str(data.get("dirmatch", "false")).lower()
+        str(data.get("dirmatch", False)).lower()
     XML.SubElement(p, 'cleanupMatrixParent').text = \
-        str(data.get("clean-parent", "false")).lower()
+        str(data.get("clean-parent", False)).lower()
 
     mask = {'success': 'cleanWhenSuccess', 'unstable': 'cleanWhenUnstable',
             'failure': 'cleanWhenFailure', 'not-built': 'cleanWhenNotBuilt',
@@ -1733,7 +1733,7 @@ def workspace_cleanup(parser, xml_parent, data):
     if len(cdict) > 0:
         raise ValueError('clean-if must be one of: %r' % list(mask.keys()))
 
-    if str(data.get("fail-build", "false")).lower() == 'false':
+    if str(data.get("fail-build", False)).lower() == 'false':
         XML.SubElement(p, 'notFailBuild').text = 'true'
     else:
         XML.SubElement(p, 'notFailBuild').text = 'false'
@@ -1765,9 +1765,9 @@ def maven_deploy(parser, xml_parent, data):
     XML.SubElement(p, 'id').text = data['id']
     XML.SubElement(p, 'url').text = data['url']
     XML.SubElement(p, 'uniqueVersion').text = str(
-        data.get('unique-version', 'true')).lower()
+        data.get('unique-version', True)).lower()
     XML.SubElement(p, 'evenIfUnstable').text = str(
-        data.get('deploy-unstable', 'false')).lower()
+        data.get('deploy-unstable', False)).lower()
 
 
 def text_finder(parser, xml_parent, data):
@@ -1804,11 +1804,11 @@ def text_finder(parser, xml_parent, data):
     if ('fileset' in data):
         XML.SubElement(finder, 'fileSet').text = data['fileset']
     XML.SubElement(finder, 'regexp').text = data['regexp']
-    check_output = str(data.get('also-check-console-output', 'false')).lower()
+    check_output = str(data.get('also-check-console-output', False)).lower()
     XML.SubElement(finder, 'alsoCheckConsoleOutput').text = check_output
-    succeed_if_found = str(data.get('succeed-if-found', 'false')).lower()
+    succeed_if_found = str(data.get('succeed-if-found', False)).lower()
     XML.SubElement(finder, 'succeedIfFound').text = succeed_if_found
-    unstable_if_found = str(data.get('unstable-if-found', 'false')).lower()
+    unstable_if_found = str(data.get('unstable-if-found', False)).lower()
     XML.SubElement(finder, 'unstableIfFound').text = unstable_if_found
 
 
@@ -1841,7 +1841,7 @@ def html_publisher(parser, xml_parent, data):
     XML.SubElement(ptarget, 'reportName').text = data['name']
     XML.SubElement(ptarget, 'reportDir').text = data['dir']
     XML.SubElement(ptarget, 'reportFiles').text = data['files']
-    keep_all = str(data.get('keep-all', 'false')).lower()
+    keep_all = str(data.get('keep-all', False)).lower()
     XML.SubElement(ptarget, 'keepAll').text = keep_all
     XML.SubElement(ptarget, 'wrapperName').text = "htmlpublisher-wrapper.html"
 
