@@ -40,7 +40,7 @@ import jenkins_jobs.modules.base
 def base_param(parser, xml_parent, data, do_default, ptype):
     pdef = XML.SubElement(xml_parent, ptype)
     XML.SubElement(pdef, 'name').text = data['name']
-    XML.SubElement(pdef, 'description').text = data['description']
+    XML.SubElement(pdef, 'description').text = data.get('description', '')
     if do_default:
         default = data.get('default', None)
         if default:
