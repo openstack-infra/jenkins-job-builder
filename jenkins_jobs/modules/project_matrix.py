@@ -115,7 +115,7 @@ class Matrix(jenkins_jobs.modules.base.Base):
         XML.SubElement(root, 'combinationFilter').text = \
             str(ex_d.get('combination-filter', '')).rstrip()
         XML.SubElement(ex_r, 'runSequentially').text = \
-            str(ex_d.get('sequential', 'false')).lower()
+            str(ex_d.get('sequential', False)).lower()
         if 'touchstone' in ex_d:
             XML.SubElement(ex_r, 'touchStoneCombinationFilter').text = \
                 str(ex_d['touchstone'].get('expr', ''))

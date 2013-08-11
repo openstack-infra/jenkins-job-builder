@@ -161,7 +161,7 @@ def workspace_cleanup(parser, xml_parent, data):
         XML.SubElement(ptrn, 'type').text = "EXCLUDE"
 
     deldirs = XML.SubElement(p, 'deleteDirs')
-    deldirs.text = str(data.get("dirmatch", "false")).lower()
+    deldirs.text = str(data.get("dirmatch", False)).lower()
 
 
 def rvm_env(parser, xml_parent, data):
@@ -306,9 +306,9 @@ def copy_to_slave(parser, xml_parent, data):
     XML.SubElement(cs, 'includes').text = ','.join(data.get('includes', ['']))
     XML.SubElement(cs, 'excludes').text = ','.join(data.get('excludes', ['']))
     XML.SubElement(cs, 'flatten').text = \
-        str(data.get('flatten', 'false')).lower()
+        str(data.get('flatten', False)).lower()
     XML.SubElement(cs, 'includeAntExcludes').text = \
-        str(data.get('include-ant-excludes', 'false')).lower()
+        str(data.get('include-ant-excludes', False)).lower()
 
     rel = str(data.get('relative-to', 'userContent'))
     opt = ('userContent', 'home', 'workspace')
@@ -478,11 +478,11 @@ def release(parser, xml_parent, data):
     # For 'keep-forever', the sense of the XML flag is the opposite of
     # the YAML flag.
     no_keep_forever = 'false'
-    if str(data.get('keep-forever', 'true')).lower() == 'false':
+    if str(data.get('keep-forever', True)).lower() == 'false':
         no_keep_forever = 'true'
     XML.SubElement(relwrap, 'doNotKeepLog').text = no_keep_forever
     XML.SubElement(relwrap, 'overrideBuildParameters').text = str(
-        data.get('override-build-parameters', 'false')).lower()
+        data.get('override-build-parameters', False)).lower()
     XML.SubElement(relwrap, 'releaseVersionTemplate').text = data.get(
         'version-template', '')
     for param in data.get('parameters', []):

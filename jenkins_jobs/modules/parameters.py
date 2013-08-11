@@ -106,7 +106,7 @@ def bool_param(parser, xml_parent, data):
             default: false
             description: "A parameter named FOO, defaults to 'false'."
     """
-    data['default'] = str(data.get('default', 'false')).lower()
+    data['default'] = str(data.get('default', False)).lower()
     base_param(parser, xml_parent, data, True,
                'hudson.model.BooleanParameterDefinition')
 

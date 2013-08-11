@@ -152,10 +152,10 @@ def copyartifact(parser, xml_parent, data):
         XML.SubElement(selector, 'buildNumber').text = data['build-number']
     if select == 'last-successful':
         XML.SubElement(selector, 'stable').text = str(
-            data.get('stable', 'false')).lower()
+            data.get('stable', False)).lower()
     if select == 'upstream-build':
         XML.SubElement(selector, 'fallbackToLastSuccessful').text = str(
-            data.get('fallback-to-last-successful', 'false')).lower()
+            data.get('fallback-to-last-successful', False)).lower()
     if select == 'permalink':
         XML.SubElement(selector, 'id').text = permalinkdict[permalink]
     if select == 'build-param':
@@ -914,19 +914,19 @@ def grails(parser, xml_parent, data):
     XML.SubElement(grails, 'properties').text = data.get(
         'properties', '')
     XML.SubElement(grails, 'forceUpgrade').text = str(
-        data.get('force-upgrade', 'false')).lower()
+        data.get('force-upgrade', False)).lower()
     XML.SubElement(grails, 'nonInteractive').text = str(
-        data.get('non-interactive', 'false')).lower()
+        data.get('non-interactive', False)).lower()
     XML.SubElement(grails, 'useWrapper').text = str(
-        data.get('use-wrapper', 'false')).lower()
+        data.get('use-wrapper', False)).lower()
     XML.SubElement(grails, 'plainOutput').text = str(
-        data.get('plain-output', 'false')).lower()
+        data.get('plain-output', False)).lower()
     XML.SubElement(grails, 'stackTrace').text = str(
-        data.get('stack-trace', 'false')).lower()
+        data.get('stack-trace', False)).lower()
     XML.SubElement(grails, 'verbose').text = str(
-        data.get('verbose', 'false')).lower()
+        data.get('verbose', False)).lower()
     XML.SubElement(grails, 'refreshDependencies').text = str(
-        data.get('refresh-dependencies', 'false')).lower()
+        data.get('refresh-dependencies', False)).lower()
 
 
 class Builders(jenkins_jobs.modules.base.Base):

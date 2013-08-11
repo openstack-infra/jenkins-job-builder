@@ -79,7 +79,7 @@ class Maven(jenkins_jobs.modules.base.Base):
             XML.SubElement(xml_parent, 'mavenName').text = maven_name
 
         XML.SubElement(xml_parent, 'ignoreUpstremChanges').text = str(
-            data['maven'].get('ignore-upstream-changes', 'true')).lower()
+            data['maven'].get('ignore-upstream-changes', True)).lower()
 
         XML.SubElement(xml_parent, 'rootPOM').text = \
             data['maven'].get('root-pom', 'pom.xml')
