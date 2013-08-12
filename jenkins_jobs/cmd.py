@@ -49,6 +49,14 @@ def main():
     parser.add_argument('--conf', dest='conf', help='Configuration file')
     parser.add_argument('-l', '--log_level', dest='log_level', default='info',
                         help="Log level (default: %(default)s)")
+    parser.add_argument(
+        '--ignore-cache', action='store_true',
+        dest='ignore_cache', default=False,
+        help='Ignore the cache and update the jobs anyhow (that will only '
+             'flush the specified jobs cache)')
+    parser.add_argument(
+        '--flush-cache', action='store_true', dest='flush_cache',
+        default=False, help='Flush all the cache entries before updating')
     options = parser.parse_args()
 
     options.log_level = getattr(logging, options.log_level.upper(),
@@ -82,7 +90,9 @@ def main():
     builder = jenkins_jobs.builder.Builder(config.get('jenkins', 'url'),
                                            config.get('jenkins', 'user'),
                                            config.get('jenkins', 'password'),
-                                           config)
+                                           config,
+                                           ignore_cache=options.ignore_cache,
+                                           flush_cache=options.flush_cache)
 
     if options.command == 'delete':
         for job in options.name:

@@ -203,7 +203,7 @@ class YamlParser(object):
     def getXMLForJob(self, data):
         kind = data.get('project-type', 'freestyle')
         for ep in pkg_resources.iter_entry_points(
-            group='jenkins_jobs.projects', name=kind):
+                group='jenkins_jobs.projects', name=kind):
             Mod = ep.load()
             mod = Mod(self.registry)
             xml = mod.root_xml(data)
@@ -226,7 +226,7 @@ class ModuleRegistry(object):
         self.global_config = config
 
         for entrypoint in pkg_resources.iter_entry_points(
-            group='jenkins_jobs.modules'):
+                group='jenkins_jobs.modules'):
             Mod = entrypoint.load()
             mod = Mod(self)
             self.modules.append(mod)
@@ -288,7 +288,8 @@ class ModuleRegistry(object):
 
         # Look for a component function defined in an entry point
         for ep in pkg_resources.iter_entry_points(
-            group='jenkins_jobs.{0}'.format(component_list_type), name=name):
+                group='jenkins_jobs.{0}'.format(component_list_type),
+                name=name):
             func = ep.load()
             func(parser, xml_parent, component_data)
         else:
@@ -322,20 +323,18 @@ class XmlJob(object):
 
 
 class CacheStorage(object):
-    def __init__(self, jenkins_url):
+    def __init__(self, jenkins_url, flush=False):
         cache_dir = self.get_cache_dir()
         # One cache per remote Jenkins URL:
         host_vary = re.sub('[^A-Za-z0-9\-\~]', '_', jenkins_url)
         self.cachefilename = os.path.join(
             cache_dir, 'cache-host-jobs-' + host_vary + '.yml')
-        try:
-            yfile = file(self.cachefilename, 'r')
-        except IOError:
+        if flush or not os.path.isfile(self.cachefilename):
             self.data = {}
             return
-        self.data = yaml.load(yfile)
+        with file(self.cachefilename, 'r') as yfile:
+            self.data = yaml.load(yfile)
         logger.debug("Using cache: '{0}'".format(self.cachefilename))
-        yfile.close()
 
     @staticmethod
     def get_cache_dir():
@@ -395,10 +394,11 @@ class Jenkins(object):
 
 class Builder(object):
     def __init__(self, jenkins_url, jenkins_user, jenkins_password,
-                 config=None):
+                 config=None, ignore_cache=False, flush_cache=False):
         self.jenkins = Jenkins(jenkins_url, jenkins_user, jenkins_password)
-        self.cache = CacheStorage(jenkins_url)
+        self.cache = CacheStorage(jenkins_url, flush=flush_cache)
         self.global_config = config
+        self.ignore_cache = ignore_cache
 
     def delete_job(self, name):
         self.jenkins.delete_job(name)
@@ -442,11 +442,11 @@ class Builder(object):
                 continue
             md5 = job.md5()
             if (self.jenkins.is_job(job.name)
-                and not self.cache.is_cached(job.name)):
+                    and not self.cache.is_cached(job.name)):
                 old_md5 = self.jenkins.get_job_md5(job.name)
                 self.cache.set(job.name, old_md5)
 
-            if self.cache.has_changed(job.name, md5):
+            if self.cache.has_changed(job.name, md5) or self.ignore_cache:
                 self.jenkins.update_job(job.name, job.output())
                 self.cache.set(job.name, md5)
             else:
