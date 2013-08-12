@@ -62,21 +62,23 @@ class YamlParser(object):
 
     def parse(self, fn):
         data = yaml.load(open(fn))
-        for item in data:
-            cls, dfn = item.items()[0]
-            group = self.data.get(cls, {})
-            if len(item.items()) > 1:
-                n = None
-                for k, v in item.items():
-                    if k == "name":
-                        n = v
-                        break
-                # Syntax error
-                raise JenkinsJobsException("Syntax error, for item named "
-                                           "'{0}'. Missing indent?".format(n))
-            name = dfn['name']
-            group[name] = dfn
-            self.data[cls] = group
+        if data:
+            for item in data:
+                cls, dfn = item.items()[0]
+                group = self.data.get(cls, {})
+                if len(item.items()) > 1:
+                    n = None
+                    for k, v in item.items():
+                        if k == "name":
+                            n = v
+                            break
+                    # Syntax error
+                    raise JenkinsJobsException("Syntax error, for item "
+                                               "named '{0}'. Missing indent?"
+                                               .format(n))
+                name = dfn['name']
+                group[name] = dfn
+                self.data[cls] = group
 
     def getJob(self, name):
         job = self.data.get('job', {}).get(name, None)
