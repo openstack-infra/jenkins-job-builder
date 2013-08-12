@@ -42,8 +42,21 @@ def timeout(parser, xml_parent, data):
     Requires the Jenkins `Build Timeout Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Build-timeout+Plugin>`_
 
-    :arg int timeout: Abort the build after this number of minutes
     :arg bool fail: Mark the build as failed (default false)
+    :arg bool write-description: Write a message in the description
+        (default false)
+    :arg int timeout: Abort the build after this number of minutes (default 3)
+    :arg str type: Timeout type to use (default absolute)
+    :arg int elastic-percentage: Percentage of the three most recent builds
+        where to declare a timeout (default 0)
+    :arg int elastic-default-timeout: Timeout to use if there were no previous
+        builds (default 3)
+
+    :type values:
+     * **likely-stuck**
+     * **elastic**
+     * **absolute**
+
 
     Example::
 
@@ -51,18 +64,38 @@ def timeout(parser, xml_parent, data):
         - timeout:
             timeout: 90
             fail: true
+            type: absolute
+
+      wrappers:
+        - timeout:
+            fail: false
+            type: likely-stuck
+
+      wrappers:
+        - timeout:
+            fail: true
+            elastic-percentage: 150
+            elastic-default-min: 90
+            type: elastic
+
     """
     twrapper = XML.SubElement(xml_parent,
                               'hudson.plugins.build__timeout.'
                               'BuildTimeoutWrapper')
-    tminutes = XML.SubElement(twrapper, 'timeoutMinutes')
-    tminutes.text = str(data['timeout'])
-    failbuild = XML.SubElement(twrapper, 'failBuild')
-    fail = data.get('fail', False)
-    if fail:
-        failbuild.text = 'true'
-    else:
-        failbuild.text = 'false'
+    XML.SubElement(twrapper, 'timeoutMinutes').text = str(
+        data.get('timeout', 3))
+    XML.SubElement(twrapper, 'failBuild').text = str(
+        data.get('fail', 'false')).lower()
+    XML.SubElement(twrapper, 'writingDescription').text = str(
+        data.get('write-description', 'false')).lower()
+    XML.SubElement(twrapper, 'timeoutPercentage').text = str(
+        data.get('elastic-percentage', 0))
+    XML.SubElement(twrapper, 'timeoutMinutesElasticDefault').text = str(
+        data.get('elastic-default-timeout', 3))
+    tout_type = str(data.get('type', 'absolute')).lower()
+    if tout_type == 'likely-stuck':
+        tout_type == 'likelyStuck'
+    XML.SubElement(twrapper, 'timeoutType').text = tout_type
 
 
 def timestamps(parser, xml_parent, data):
