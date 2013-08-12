@@ -92,6 +92,8 @@ def trigger_parameterized_builds(parser, xml_parent, data):
     :arg bool git-revision: Pass git revision to the other job (optional)
     :arg str condition: when to trigger the other job (default 'ALWAYS')
     :arg str property-file: Use properties from file (optional)
+    :arg bool fail-on-missing: Blocks the triggering of the downstream jobs
+      if any of the files are not found in the workspace (default 'False')
     :arg str restrict-matrix-project: Filter that restricts the subset
         of the combinations that the downstream project will run (optional)
 
@@ -104,6 +106,7 @@ def trigger_parameterized_builds(parser, xml_parent, data):
             - project: other_job1, other_job2
               predefined-parameters: BUILD_NUM=${BUILD_NUMBER}
               property-file: version.prop
+              fail-on-missing: true
             - project: yet_another_job
               predefined-parameters: foo=bar
               git-revision: true
@@ -145,6 +148,9 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                                         'FileBuildParameters')
                 properties = XML.SubElement(params, 'propertiesFile')
                 properties.text = project_def['property-file']
+                failOnMissing = XML.SubElement(params, 'failTriggerOnMissing')
+                failOnMissing.text = str(project_def.get('fail-on-missing',
+                                                         False)).lower()
             if ('current-parameters' in project_def
                 and project_def['current-parameters']):
                 XML.SubElement(tconfigs,
@@ -892,6 +898,8 @@ def ssh(parser, xml_parent, data):
     :arg bool clean-remote: should the remote directory be deleted before
       transfering files (defaults to False)
     :arg str source: source path specifier
+    :arg str command: a command to execute on the remote server (optional)
+    :arg int timeout: timeout in milliseconds for the Exec command (optional)
     :arg str excludes: excluded file pattern (optional)
     :arg str remove-prefix: prefix to remove from uploaded file paths
       (optional)
@@ -907,6 +915,8 @@ def ssh(parser, xml_parent, data):
             source: 'base/source/dir/**'
             remove-prefix: 'base/source/dir'
             excludes: '**/*.excludedfiletype'
+            command: 'rm -r jenkins_$BUILD_NUMBER'
+            timeout: 1800000
     """
     console_prefix = 'SSH: '
     plugin_tag = 'jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin'
@@ -1346,6 +1356,10 @@ def base_publish_over(xml_parent, data, console_prefix,
     transfersset = XML.SubElement(transfers, transferset_tag)
     XML.SubElement(transfersset, 'remoteDirectory').text = data['target']
     XML.SubElement(transfersset, 'sourceFiles').text = data['source']
+    if 'command' in data:
+        XML.SubElement(transfersset, 'execCommand').text = data['command']
+    if 'timeout' in data:
+        XML.SubElement(transfersset, 'execTimeout').text = str(data['timeout'])
     XML.SubElement(transfersset, 'excludes').text = data.get('excludes', '')
     XML.SubElement(transfersset, 'removePrefix').text = \
         data.get('remove-prefix', '')

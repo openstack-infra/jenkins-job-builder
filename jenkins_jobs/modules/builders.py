@@ -762,6 +762,12 @@ def multijob(parser, xml_parent, data):
       :Project: * **name** (`str`) -- Project name
                 * **current-parameters** (`bool`) -- Pass current build
                   parameters to the other job (default false)
+                * **node-label-name** (`str`) -- Define a list of nodes
+                  on which the job should be allowed to be executed on.
+                  Requires NodeLabel Parameter Plugin (optional)
+                * **node-label** (`str`) -- Define a label
+                  of 'Restrict where this project can be run' on the fly.
+                  Requires NodeLabel Parameter Plugin (optional)
                 * **git-revision** (`bool`) -- Pass current git-revision
                   to the other job (default false)
                 * **property-file** (`str`) -- Pass properties from file
@@ -778,6 +784,8 @@ def multijob(parser, xml_parent, data):
             projects:
               - name: PhaseOneJobA
                 current-parameters: true
+                node-label-name: "vm_name"
+                node-label: "agent-${BUILD_NUMBER}"
                 git-revision: true
               - name: PhaseOneJobB
                 current-parameters: true
@@ -815,6 +823,15 @@ def multijob(parser, xml_parent, data):
 
         # Pass through other params
         configs = XML.SubElement(phaseJob, 'configs')
+
+        nodeLabelName = project.get('node-label-name')
+        nodeLabel = project.get('node-label')
+        if (nodeLabelName and nodeLabel):
+            node = XML.SubElement(
+                configs, 'org.jvnet.jenkins.plugins.nodelabelparameter.'
+                         'parameterizedtrigger.NodeLabelBuildParameter')
+            XML.SubElement(node, 'name').text = nodeLabelName
+            XML.SubElement(node, 'nodeLabel').text = nodeLabel
 
         # Git Revision
         if project.get('git-revision', False):
