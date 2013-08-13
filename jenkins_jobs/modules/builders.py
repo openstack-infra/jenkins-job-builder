@@ -1,4 +1,4 @@
-# opyright 2012 Hewlett-Packard Development Company, L.P.
+# Copyright 2012 Hewlett-Packard Development Company, L.P.
 # Copyright 2012 Varnish Software AS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -83,6 +83,8 @@ def copyartifact(parser, xml_parent, data):
         last successful build when upstream-build is specified as which-build
     :arg string param: specifies to use a build parameter to get the build when
         build-param is specified as which-build
+    :arg string parameter-filters: Filter matching jobs based on these
+        parameters (optional)
     :which-build values:
       * **last-successful**
       * **specific-build**
@@ -110,7 +112,7 @@ def copyartifact(parser, xml_parent, data):
             which-build: specific-build
             build-number: 123
             flatten: true
-
+            parameter-filters: PUBLISH=true
     """
     t = XML.SubElement(xml_parent, 'hudson.plugins.copyartifact.CopyArtifact')
     #'project' element is used for copy artifact version 1.26+
@@ -121,6 +123,7 @@ def copyartifact(parser, xml_parent, data):
     XML.SubElement(t, 'target').text = data.get("target", "")
     flatten = data.get("flatten", False)
     XML.SubElement(t, 'flatten').text = str(flatten).lower()
+    XML.SubElement(t, 'parameters').text = data.get("parameter-filters", "")
     select = data.get('which-build', 'last-successful')
     selectdict = {'last-successful': 'StatusBuildSelector',
                   'specific-build': 'SpecificBuildSelector',
