@@ -98,7 +98,10 @@ enclosing them in braces, e.g., ``{name}`` will substitute the
 variable `name`.  When using a variable in a string field, it is good
 practice to wrap the entire string in quotes, even if the rules of
 YAML syntax don't require it because the value of the variable may
-require quotes after substitution.
+require quotes after substitution. In the rare situation that you must
+encode braces within literals inside a template (for example a shell
+function definition in a builder), doubling the braces will prevent
+them from being interpreted as a template variable.
 
 You must include a variable in the ``name`` field of a Job Template
 (otherwise, every instance would have the same name).  For example::
