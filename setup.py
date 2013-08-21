@@ -180,6 +180,7 @@ setuptools.setup(
             'pathignore=jenkins_jobs.modules.wrappers:pathignore',
             ('pre-scm-buildstep='
              'jenkins_jobs.modules.wrappers:pre_scm_buildstep'),
+            'ansi-color=jenkins_jobs.modules.wrappers:ansi_color',
         ],
         'jenkins_jobs.modules': [
             'general=jenkins_jobs.modules.general:General',
