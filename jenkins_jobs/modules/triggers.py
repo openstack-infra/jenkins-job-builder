@@ -265,7 +265,8 @@ def gerrit(parser, xml_parent, data):
     XML.SubElement(gtrig, 'triggerConfigURL').text = str(
         data.get('dynamic-trigger-url', ''))
     build_gerrit_triggers(gtrig, data)
-    if 'override-votes' in data and data['override-votes'] == 'true':
+    override = str(data.get('override-votes', False)).lower()
+    if override == 'true':
         XML.SubElement(gtrig, 'gerritBuildSuccessfulVerifiedValue').text = \
             str(data['gerrit-build-successful-verified-value'])
         XML.SubElement(gtrig, 'gerritBuildFailedVerifiedValue').text = \
