@@ -75,7 +75,7 @@ def timeout(parser, xml_parent, data):
         - timeout:
             fail: true
             elastic-percentage: 150
-            elastic-default-min: 90
+            elastic-default-timeout: 90
             type: elastic
 
     """
@@ -94,7 +94,7 @@ def timeout(parser, xml_parent, data):
         data.get('elastic-default-timeout', 3))
     tout_type = str(data.get('type', 'absolute')).lower()
     if tout_type == 'likely-stuck':
-        tout_type == 'likelyStuck'
+        tout_type = 'likelyStuck'
     XML.SubElement(twrapper, 'timeoutType').text = tout_type
 
 
