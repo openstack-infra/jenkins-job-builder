@@ -1245,6 +1245,7 @@ def logparser(parser, xml_parent, data):
     :arg bool fail-on-error: mark build failed on error
 
     Example::
+
       publishers:
         - logparser:
             parse-rules: "/path/to/parserules"
@@ -1898,7 +1899,7 @@ def post_tasks(parser, xml_parent, data):
     """yaml: post-tasks
     Adds support to post build task plugin
 
-    See `Post Build Task` plugin:
+    See `Post Build Task plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Post+build+task>`_
 
     :arg dict task: Post build task definition
@@ -1967,7 +1968,7 @@ def xml_summary(parser, xml_parent, data):
 
     :arg str files: Files to parse (default '')
 
-    Example:
+    Example::
 
         publishers:
             - xml-summary:
@@ -2040,6 +2041,215 @@ def robot(parser, xml_parent, data):
     other_files = XML.SubElement(parent, 'otherFiles')
     for other_file in data['other-files']:
         XML.SubElement(other_files, 'string').text = str(other_file)
+
+
+def warnings(parser, xml_parent, data):
+    """yaml: warnings
+    Generate trend report for compiler warnings in the console log or
+    in log files.  Requires the Jenkins `Warnings Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Warnings+Plugin>`_
+
+    :arg list console-log-parsers: The parser to use to scan the console
+        log (default '')
+    :arg dict workspace-file-scanners:
+
+        :workspace-file-scanners:
+            * **file-pattern** (`str`) -- Fileset 'includes' setting that
+                specifies the files to scan for warnings
+            * **scanner** (`str`) -- The parser to use to scan the files
+                provided in workspace-file-pattern (default '')
+    :arg str files-to-include: Comma separated list of regular
+        expressions that specifies the files to include in the report
+        (based on their absolute filename). By default all files are
+        included
+    :arg str files-to-ignore: Comma separated list of regular expressions
+        that specifies the files to exclude from the report (based on their
+        absolute filename). (default '')
+    :arg bool run-always: By default, this plug-in runs only for stable or
+        unstable builds, but not for failed builds.  Set to true if the
+        plug-in should run even for failed builds.  (default false)
+    :arg bool detect-modules: Determines if Ant or Maven modules should be
+        detected for all files that contain warnings.  Activating this
+        option may increase your build time since the detector scans
+        the whole workspace for 'build.xml' or 'pom.xml' files in order
+        to assign the correct module names. (default false)
+    :arg bool resolve-relative-paths: Determines if relative paths in
+        warnings should be resolved using a time expensive operation that
+        scans the whole workspace for matching files.  Deactivate this
+        option if you encounter performance problems.  (default false)
+    :arg int health-threshold-high: The upper threshold for the build
+        health.  If left empty then no health report is created.  If
+        the actual number of warnings is between the provided
+        thresholds then the build health is interpolated (default '')
+    :arg int health-threshold-low: The lower threshold for the build
+        health.  See health-threshold-high.  (default '')
+    :arg dict health-priorities: Determines which warning priorities
+        should be considered when evaluating the build health (default
+        all-priorities)
+
+        :health-priorities values:
+          * **priority-high** -- Only priority high
+          * **high-and-normal** -- Priorities high and normal
+          * **all-priorities** -- All priorities
+    :arg dict total-thresholds: If the number of total warnings is greater
+        than one of these thresholds then a build is considered as unstable
+        or failed, respectively. (default '')
+
+        :total-thresholds:
+            * **unstable** (`dict`)
+                :unstable: * **total-all** (`int`)
+                           * **total-high** (`int`)
+                           * **total-normal** (`int`)
+                           * **total-low** (`int`)
+            * **failed** (`dict`)
+                :failed: * **total-all** (`int`)
+                         * **total-high** (`int`)
+                         * **total-normal** (`int`)
+                         * **total-low** (`int`)
+    :arg dict new-thresholds: If the specified number of new warnings exceeds
+        one of these thresholds then a build is considered as unstable or
+        failed, respectively.  (default '')
+
+        :new-thresholds:
+            * **unstable** (`dict`)
+                :unstable: * **new-all** (`int`)
+                           * **new-high** (`int`)
+                           * **new-normal** (`int`)
+                           * **new-low** (`int`)
+            * **failed** (`dict`)
+                :failed: * **new-all** (`int`)
+                         * **new-high** (`int`)
+                         * **new-normal** (`int`)
+                         * **new-high** (`int`)
+    :arg bool use-delta-for-new-warnings:  If set then the number of new
+        warnings is calculated by subtracting the total number of warnings
+        of the current build from the reference build. This may lead to wrong
+        results if you have both fixed and new warnings in a build. If not set,
+        then the number of new warnings is calculated by an asymmetric set
+        difference of the warnings in the current and reference build. This
+        will find all new warnings even if the number of total warnings is
+        decreasing. However, sometimes false positives will be reported due
+        to minor changes in a warning (refactoring of variable of method
+        names, etc.) (default false)
+    :arg bool only-use-stable-builds-as-reference: The number of new warnings
+        will be calculated based on the last stable build, allowing reverts
+        of unstable builds where the number of warnings was decreased.
+        (default false)
+    :arg str default-encoding: Default encoding when parsing or showing files
+        Leave empty to use default encoding of platform (default '')
+
+    Example::
+
+      publishers:
+        - warnings:
+            console-log-parsers:
+              - FxCop
+              - CodeAnalysis
+            workspace-file-scanners:
+              - file-pattern: '**/*.out'
+                scanner: 'AcuCobol Compiler
+              - file-pattern: '**/*.warnings'
+                scanner: FxCop
+            files-to-include: '[a-zA-Z]\.java,[a-zA-Z]\.cpp'
+            files-to-ignore: '[a-zA-Z]\.html,[a-zA-Z]\.js'
+            run-always: true
+            detect-modules: true
+            resolve-relative-paths: true
+            health-threshold-high: 50
+            health-threshold-low: 25
+            health-priorities: high-and-normal
+            total-thresholds:
+                unstable:
+                    total-all: 90
+                    total-high: 90
+                    total-normal: 40
+                    total-low: 30
+                failed:
+                    total-all: 100
+                    total-high: 100
+                    total-normal: 50
+                    total-low: 40
+            new-thresholds:
+                unstable:
+                    new-all: 100
+                    new-high: 50
+                    new-normal: 30
+                    new-low: 10
+                failed:
+                    new-all: 100
+                    new-high: 60
+                    new-normal: 50
+                    new-low: 40
+            use-delta-for-new-warnings: true
+            only-use-stable-builds-as-reference: true
+            default-encoding: ISO-8859-9
+    """
+
+    warnings = XML.SubElement(xml_parent,
+                              'hudson.plugins.warnings.'
+                              'WarningsPublisher')
+    console = XML.SubElement(warnings, 'consoleParsers')
+    for parser in data.get('console-log-parsers', []):
+        console_parser = XML.SubElement(console,
+                                        'hudson.plugins.warnings.'
+                                        'ConsoleParser')
+        XML.SubElement(console_parser, 'parserName').text = parser
+    workspace = XML.SubElement(warnings, 'parserConfigurations')
+    for wfs in data.get('workspace-file-scanners', []):
+        workspace_pattern = XML.SubElement(workspace,
+                                           'hudson.plugins.warnings.'
+                                           'ParserConfiguration')
+        XML.SubElement(workspace_pattern, 'pattern').text = \
+            wfs['file-pattern']
+        XML.SubElement(workspace_pattern, 'parserName').text = \
+            wfs['scanner']
+    warnings_to_include = data.get('files-to-include', '')
+    XML.SubElement(warnings, 'includePattern').text = warnings_to_include
+    warnings_to_ignore = data.get('files-to-ignore', '')
+    XML.SubElement(warnings, 'excludePattern').text = warnings_to_ignore
+    run_always = str(data.get('run-always', False)).lower()
+    XML.SubElement(warnings, 'canRunOnFailed').text = run_always
+    detect_modules = str(data.get('detect-modules', False)).lower()
+    XML.SubElement(warnings, 'shouldDetectModules').text = detect_modules
+    #Note the logic reversal (included here to match the GUI)
+    XML.SubElement(warnings, 'doNotResolveRelativePaths').text = \
+        str(not data.get('resolve-relative-paths', False)).lower()
+    health_threshold_high = str(data.get('health-threshold-high', ''))
+    XML.SubElement(warnings, 'healthy').text = health_threshold_high
+    health_threshold_low = str(data.get('health-threshold-low', ''))
+    XML.SubElement(warnings, 'unHealthy').text = health_threshold_low
+    prioritiesDict = {'priority-high': 'high',
+                      'high-and-normal': 'normal',
+                      'all-priorities': 'low'}
+    priority = data.get('health-priorities', 'all-priorities')
+    if priority not in prioritiesDict:
+        raise Exception("Health-Priority entered is not valid must be one " +
+                        "of: " + ",".join(prioritiesDict.keys()))
+    XML.SubElement(warnings, 'thresholdLimit').text = prioritiesDict[priority]
+    td = XML.SubElement(warnings, 'thresholds')
+    for base in ["total", "new"]:
+        thresholds = data.get("%s-thresholds" % base, {})
+        for status in ["unstable", "failed"]:
+            bystatus = thresholds.get(status, {})
+            for level in ["all", "high", "normal", "low"]:
+                val = str(bystatus.get("%s-%s" % (base, level), ''))
+                XML.SubElement(td, "%s%s%s" % (status,
+                               base.capitalize(), level.capitalize())
+                               ).text = val
+    if data.get('new-thresholds'):
+        XML.SubElement(warnings, 'dontComputeNew').text = 'false'
+        delta = data.get('use-delta-for-new-warnings', False)
+        XML.SubElement(warnings, 'useDeltaValues').text = str(delta).lower()
+        use_stable_builds = data.get('only-use-stable-builds-as-reference',
+                                     False)
+        XML.SubElement(warnings, 'useStableBuildAsReference').text = str(
+            use_stable_builds).lower()
+    else:
+        XML.SubElement(warnings, 'dontComputeNew').text = 'true'
+        XML.SubElement(warnings, 'useStableBuildAsReference').text = 'false'
+        XML.SubElement(warnings, 'useDeltaValues').text = 'false'
+    encoding = data.get('default-encoding', '')
+    XML.SubElement(warnings, 'defaultEncoding').text = encoding
 
 
 class Publishers(jenkins_jobs.modules.base.Base):
