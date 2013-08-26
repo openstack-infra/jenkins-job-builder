@@ -131,6 +131,7 @@ setuptools.setup(
             'maven-deploy=jenkins_jobs.modules.publishers:maven_deploy',
             'performance=jenkins_jobs.modules.publishers:performance',
             'pipeline=jenkins_jobs.modules.publishers:pipeline',
+            'plot=jenkins_jobs.modules.publishers:plot',
             'post-tasks=jenkins_jobs.modules.publishers:post_tasks',
             'robot=jenkins_jobs.modules.publishers:robot',
             'scp=jenkins_jobs.modules.publishers:scp',

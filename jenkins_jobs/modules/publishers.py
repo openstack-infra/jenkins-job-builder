@@ -2428,6 +2428,127 @@ def ircbot(parser, xml_parent, data):
     XML.SubElement(top, 'matrixMultiplier').text = matrix_dict.get(matrix)
 
 
+def plot(parser, xml_parent, data):
+    """yaml: plot
+    Plot provides generic plotting (or graphing).
+
+    Requires the Jenkins `Plot Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Plot+Plugin>`_
+
+    :arg str title: title for the graph
+                    (default: '')
+    :arg str yaxis: title of Y axis
+    :arg str group: name of the group to which the plot belongs
+    :arg int num-builds: number of builds to plot across
+                         (default: plot all builds)
+    :arg str style:  Specifies the graph style of the plot
+                     Can be: area, bar, bar3d, line, line3d, stackedArea,
+                     stackedbar, stackedbar3d, waterfall
+                     (default: 'line')
+    :arg bool use-description: When false, the X-axis labels are formed
+                               using build numbers and dates, and the
+                               corresponding tooltips contain the build
+                               descriptions. When enabled, the contents of
+                               the labels and tooltips are swapped, with the
+                               descriptions used as X-axis labels and the
+                               build number and date used for tooltips.
+                               (default: False)
+    :arg list series: list data series definitions
+
+      :Serie: * **file** (`str`) : CSV files to include
+              * **exclude** (`str`) : CSV files to exclude (default: empty)
+              * **url** (`str`) : for 'csv' and 'xml' file types
+                used when you click on a point (default: empty)
+              * **display-table** (`bool`) : for 'csv' file type
+                if true, original CSV will be shown above plot (default: False)
+              * **label** (`str`) : used by 'properties' file type
+                Specifies the legend label for this data series.
+                (default: empty)
+              * **format** (`str`) : Type of file where we get datas.
+                Can be: properties, csv, xml
+              * **xpath-type** (`str`) : The result type of the expression must
+                be supplied due to limitations in the java.xml.xpath parsing.
+                The result can be: NODE, NODESET, BOOLEAN, STRING, or NUMBER.
+                Strings and numbers will be converted to double. Boolean will
+                be converted to 1 for true, and 0 for false. (default: 'NODE')
+              * **xpath** (`str`) : used by 'xml' file type
+                Xpath which selects the values that should be plotted.
+
+    Example::
+
+      publishers:
+        - plot:
+            title: MyPlot
+            yaxis: Y
+            group: PlotGroup
+            num-builds: ''
+            style: line
+            use-description: false
+            series:
+                - file: graph-me-second.properties
+                  label: MyLabel
+                  format: properties
+                - file: graph-me-first.csv
+                  exclude: exclude-me-1.csv
+                  url: 'http://srv1'
+                  display-table: true
+                  format: csv
+                - file: graph-me-third.xml
+                  exclude: exclude-me-2.xml
+                  url: 'http://srv2'
+                  format: xml
+                  xpath-type: NODE
+                  xpath: '/*'
+
+    """
+    top = XML.SubElement(xml_parent, 'hudson.plugins.plot.PlotPublisher')
+    plots = XML.SubElement(top, 'plots')
+    plugin = XML.SubElement(plots, 'hudson.plugins.plot.Plot')
+    XML.SubElement(plugin, 'title').text = data.get('title', '')
+    XML.SubElement(plugin, 'yaxis').text = data['yaxis']
+    topseries = XML.SubElement(plugin, 'series')
+    series = data['series']
+    format_dict = {'properties': 'hudson.plugins.plot.PropertiesSeries',
+                   'csv': 'hudson.plugins.plot.CSVSeries',
+                   'xml': 'hudson.plugins.plot.XMLSeries'}
+    xpath_list = ['NODESET', 'NODE', 'STRING', 'BOOLEAN', 'NUMBER']
+    for serie in series:
+        format_data = serie.get('format')
+        if format_data not in format_dict:
+            raise Exception("format entered is not valid, must be one of: " +
+                            ", ".join(format_dict.keys()))
+        subserie = XML.SubElement(topseries, format_dict.get(format_data))
+        if format_data == 'properties':
+            XML.SubElement(subserie, 'file').text = serie.get('file')
+            XML.SubElement(subserie, 'label').text = serie.get('label', '')
+        if format_data == 'csv':
+            XML.SubElement(subserie, 'exclusionValues').text = \
+                serie.get('exclude', '')
+            XML.SubElement(subserie, 'url').text = serie.get('url', '')
+            XML.SubElement(subserie, 'displayTableFlag').text = \
+                str(data.get('display-table', False)).lower()
+        if format_data == 'xml':
+            XML.SubElement(subserie, 'url').text = serie.get('url', '')
+            XML.SubElement(subserie, 'xpathString').text = serie.get('xpath')
+            xpathtype = serie.get('xpath-type', 'NODE')
+            if xpathtype not in xpath_list:
+                raise Exception("XPath result entered is not valid, must be " +
+                                "one of: " + ", ".join(xpath_list))
+            XML.SubElement(subserie, 'nodeTypeString').text = xpathtype
+        XML.SubElement(subserie, 'fileType').text = serie.get('format')
+    XML.SubElement(plugin, 'group').text = data['group']
+    XML.SubElement(plugin, 'useDescr').text = \
+        str(data.get('use-description', False)).lower()
+    XML.SubElement(plugin, 'numBuilds').text = data.get('num-builds', '')
+    style_list = ['area', 'bar', 'bar3d', 'line', 'line3d', 'stackedArea',
+                  'stackedbar', 'stackedbar3d', 'waterfall']
+    style = data.get('style', 'line')
+    if style not in style_list:
+        raise Exception("style entered is not valid, must be one of: " +
+                        ", ".join(style_list))
+    XML.SubElement(plugin, 'style').text = style
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
