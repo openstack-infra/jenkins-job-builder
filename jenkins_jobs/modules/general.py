@@ -55,13 +55,17 @@ class General(jenkins_jobs.modules.base.Base):
         if jdk:
             XML.SubElement(xml, 'jdk').text = jdk
         XML.SubElement(xml, 'actions')
-        description = XML.SubElement(xml, 'description')
-        description.text = data.get('description', '')
+        desc_text = data.get('description', None)
+        if desc_text is not None:
+            description = XML.SubElement(xml, 'description')
+            description.text = desc_text
         XML.SubElement(xml, 'keepDependencies').text = 'false'
-        if data.get('disabled'):
-            XML.SubElement(xml, 'disabled').text = 'true'
-        else:
-            XML.SubElement(xml, 'disabled').text = 'false'
+        disabled = data.get('disabled', None)
+        if disabled is not None:
+            if disabled:
+                XML.SubElement(xml, 'disabled').text = 'true'
+            else:
+                XML.SubElement(xml, 'disabled').text = 'false'
         if data.get('block-downstream'):
             XML.SubElement(xml,
                            'blockBuildWhenDownstreamBuilding').text = 'true'
