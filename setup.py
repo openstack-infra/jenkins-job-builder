@@ -122,6 +122,7 @@ setuptools.setup(
             ('groovy-postbuild=jenkins_jobs.modules.publishers:'
              'groovy_postbuild'),
             'html-publisher=jenkins_jobs.modules.publishers:html_publisher',
+            'ircbot=jenkins_jobs.modules.publishers:ircbot',
             'jabber=jenkins_jobs.modules.publishers:jabber',
             'jira=jenkins_jobs.modules.publishers:jira',
             'join-trigger=jenkins_jobs.modules.publishers:join_trigger',
