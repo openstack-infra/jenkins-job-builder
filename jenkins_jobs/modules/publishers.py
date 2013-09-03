@@ -697,7 +697,7 @@ def violations(parser, xml_parent, data):
 def checkstyle(parser, xml_parent, data):
     """yaml: checkstyle
     Publish trend reports with Checkstyle.
-    Requires the `Checkstyle Plugin.
+    Requires the Jenkins `Checkstyle Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Checkstyle+Plugin>`_
 
     The checkstyle component accepts a dictionary with the
@@ -1684,7 +1684,7 @@ def jabber(parser, xml_parent, data):
 def workspace_cleanup(parser, xml_parent, data):
     """yaml: workspace-cleanup (post-build)
 
-    See `Workspace Cleanup Plugin.
+    Requires the Jenkins `Workspace Cleanup Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Workspace+Cleanup+Plugin>`_
 
     The pre-build workspace-cleanup is available as a wrapper.
@@ -1790,7 +1790,7 @@ def text_finder(parser, xml_parent, data):
     This plugin lets you search keywords in the files you specified and
     additionally check build status
 
-    See `Text-finder Plugin.
+    Requires the Jenkins `Text-finder Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Text-finder+Plugin>`_
 
     :arg str regexp: Specify a regular expression
@@ -1831,7 +1831,7 @@ def html_publisher(parser, xml_parent, data):
     """yaml: html-publisher
     This plugin publishes HTML reports.
 
-    See `HTML Publisher Plugin.
+    Requires the Jenkins `HTML Publisher Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/HTML+Publisher+Plugin>`_
 
     :arg str name: Report name
@@ -1865,7 +1865,7 @@ def tap(parser, xml_parent, data):
     """yaml: tap
     Adds support to TAP test result files
 
-    See `TAP Plugin.
+    Requires the Jenkins `TAP Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin>`_
 
     :arg str results: TAP test result files
@@ -1913,7 +1913,7 @@ def post_tasks(parser, xml_parent, data):
     """yaml: post-tasks
     Adds support to post build task plugin
 
-    See `Post Build Task plugin.
+    Requires the Jenkins `Post Build Task plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Post+build+task>`_
 
     :arg dict task: Post build task definition
@@ -1977,7 +1977,7 @@ def xml_summary(parser, xml_parent, data):
     """yaml: xml-summary
     Adds support for the Summary Display Plugin
 
-    See `Summary Display Plugin.
+    Requires the Jenkins `Summary Display Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Summary+Display+Plugin>`_
 
     :arg str files: Files to parse (default '')
@@ -1999,7 +1999,7 @@ def robot(parser, xml_parent, data):
     """yaml: robot
     Adds support for the Robot Framework Plugin
 
-    See `Robot Framework Plugin` plugin:
+    Requires the Jenkins `Robot Framework Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Robot+Framework+Plugin>`_
 
     :arg str output-path: Path to directory containing robot xml and html files
@@ -2270,7 +2270,7 @@ def sloccount(parser, xml_parent, data):
     """yaml: sloccount
     Generates the trend report for SLOCCount
 
-    See `SLOCCount Plugin page:
+    Requires the Jenkins `SLOCCount Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/SLOCCount+Plugin>`_
 
     :arg str report-files: Setting that specifies the generated raw

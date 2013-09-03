@@ -160,7 +160,7 @@ def mask_passwords(parser, xml_parent, data):
 def workspace_cleanup(parser, xml_parent, data):
     """yaml: workspace-cleanup (pre-build)
 
-    See `Workspace Cleanup Plugin.
+    Requires the Jenkins `Workspace Cleanup Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Workspace+Cleanup+Plugin>`_
 
     The post-build workspace-cleanup is available as a publisher.
@@ -542,7 +542,7 @@ def sauce_ondemand(parser, xml_parent, data):
     """yaml: sauce-ondemand
     Allows you to integrate Sauce OnDemand with Jenkins.  You can
     automate the setup and tear down of Sauce Connect and integrate
-    the Sauce OnDemand results videos per test.  Requires the `Sauce
+    the Sauce OnDemand results videos per test.  Requires the Jenkins `Sauce
     OnDemand Plugin
     <https://wiki.jenkins-ci.org/display/JENKINS/Sauce+OnDemand+Plugin>`_.
 
@@ -648,7 +648,7 @@ def pathignore(parser, xml_parent, data):
     This plugin allows SCM-triggered jobs to ignore
     build requests if only certain paths have changed.
 
-    See `Pathignore Plugin.
+    Requires the Jenkins `Pathignore Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Pathignore+Plugin>`_
 
     :arg str ignored: A set of patterns to define ignored changes
