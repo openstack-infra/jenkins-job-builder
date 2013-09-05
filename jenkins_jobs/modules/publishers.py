@@ -2455,7 +2455,7 @@ def plot(parser, xml_parent, data):
                                (default: False)
     :arg list series: list data series definitions
 
-      :Serie: * **file** (`str`) : CSV files to include
+      :Serie: * **file** (`str`) : files to include
               * **exclude** (`str`) : CSV files to exclude (default: empty)
               * **url** (`str`) : for 'csv' and 'xml' file types
                 used when you click on a point (default: empty)
@@ -2518,8 +2518,8 @@ def plot(parser, xml_parent, data):
             raise Exception("format entered is not valid, must be one of: " +
                             ", ".join(format_dict.keys()))
         subserie = XML.SubElement(topseries, format_dict.get(format_data))
+        XML.SubElement(subserie, 'file').text = serie.get('file')
         if format_data == 'properties':
-            XML.SubElement(subserie, 'file').text = serie.get('file')
             XML.SubElement(subserie, 'label').text = serie.get('label', '')
         if format_data == 'csv':
             XML.SubElement(subserie, 'exclusionValues').text = \
