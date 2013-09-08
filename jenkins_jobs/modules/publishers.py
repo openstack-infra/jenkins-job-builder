@@ -406,6 +406,88 @@ def cobertura(parser, xml_parent, data):
         'source-encoding', 'ASCII')
 
 
+def jacoco(parser, xml_parent, data):
+    """yaml: jacoco
+    Generate a JaCoCo coverage report.
+    Requires the Jenkins `JaCoCo Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/JaCoCo+Plugin>`_
+
+    :arg str exec-pattern: This is a file name pattern that can be used to
+                          locate the jacoco report files (default '**/**.exec')
+    :arg str class-pattern: This is a file name pattern that can be used
+                          to locate class files (default '**/classes')
+    :arg str source-pattern: This is a file name pattern that can be used
+                          to locate source files (default '**/src/main/java')
+    :arg bool update-build-status: Update the build according to the results
+                          (default False)
+    :arg str inclusion-pattern: This is a file name pattern that can be used
+                          to include certain class files (optional)
+    :arg str exclusion-pattern: This is a file name pattern that can be used
+                          to exclude certain class files (optional)
+    :arg dict targets:
+
+           :targets: (instruction, branch, complexity, line, method, class)
+
+                * **healthy** (`int`): Healthy threshold (default 0)
+                * **unhealthy** (`int`): Unhealthy threshold (default 0)
+
+    Example::
+
+      publishers:
+        - jacoco:
+            exec-pattern: "**/**.exec"
+            class-pattern: "**/classes"
+            source-pattern: "**/src/main/java"
+            status-update: true
+            targets:
+              - branch:
+                  healthy: 10
+                  unhealthy: 20
+              - method:
+                  healthy: 50
+                  unhealthy: 40
+
+    """
+
+    jacoco = XML.SubElement(xml_parent,
+                            'hudson.plugins.jacoco.JacocoPublisher')
+    XML.SubElement(jacoco, 'execPattern').text = data.get(
+        'exec-pattern', '**/**.exec')
+    XML.SubElement(jacoco, 'classPattern').text = data.get(
+        'class-pattern', '**/classes')
+    XML.SubElement(jacoco, 'sourcePattern').text = data.get(
+        'source-pattern', '**/src/main/java')
+    XML.SubElement(jacoco, 'changeBuildStatus').text = data.get(
+        'update-build-status', False)
+    XML.SubElement(jacoco, 'inclusionPattern').text = data.get(
+        'inclusion-pattern', '')
+    XML.SubElement(jacoco, 'exclusionPattern').text = data.get(
+        'exclusion-pattern', '')
+
+    itemsList = ['instruction',
+                 'branch',
+                 'complexity',
+                 'line',
+                 'method',
+                 'class']
+
+    for item in data['targets']:
+        item_name = item.keys()[0]
+        if item_name not in itemsList:
+            raise Exception("item entered is not valid must be one " +
+                            "of: " + ",".join(itemsList))
+        item_values = item.get(item_name, 0)
+
+        XML.SubElement(jacoco,
+                       'maximum' +
+                       item_name.capitalize() +
+                       'Coverage').text = str(item_values.get('healthy', 0))
+        XML.SubElement(jacoco,
+                       'minimum' +
+                       item_name.capitalize() +
+                       'Coverage').text = str(item_values.get('unhealthy', 0))
+
+
 def ftp(parser, xml_parent, data):
     """yaml: ftp
     Upload files via FTP.

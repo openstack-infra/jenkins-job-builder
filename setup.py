@@ -124,6 +124,7 @@ setuptools.setup(
             'html-publisher=jenkins_jobs.modules.publishers:html_publisher',
             'ircbot=jenkins_jobs.modules.publishers:ircbot',
             'jabber=jenkins_jobs.modules.publishers:jabber',
+            'jacoco=jenkins_jobs.modules.publishers:jacoco',
             'jira=jenkins_jobs.modules.publishers:jira',
             'join-trigger=jenkins_jobs.modules.publishers:join_trigger',
             'junit=jenkins_jobs.modules.publishers:junit',
