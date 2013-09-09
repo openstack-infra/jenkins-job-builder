@@ -134,7 +134,13 @@ class YamlParser(object):
                 # see if it's a job group
                 group = self.getJobGroup(jobname)
                 if group:
-                    for group_jobname in group['jobs']:
+                    for group_jobspec in group['jobs']:
+                        if isinstance(group_jobspec, dict):
+                            group_jobname, group_jobparams = \
+                                group_jobspec.items()[0]
+                        else:
+                            group_jobname = group_jobspec
+                            group_jobparams = {}
                         job = self.getJob(group_jobname)
                         if job:
                             continue
@@ -144,6 +150,7 @@ class YamlParser(object):
                         d.update(project)
                         d.update(jobparams)
                         d.update(group)
+                        d.update(group_jobparams)
                         # Except name, since the group's name is not useful
                         d['name'] = project['name']
                         if template:
