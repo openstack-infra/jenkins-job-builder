@@ -1,0 +1,16 @@
+# vim: sw=4 ts=4 et
+publishers:
+  - plot:
+      - title: 'Sample graph'
+        yaxis: ''
+        csv-file-name: 'persisted.csv'
+        group: 'bench'
+        numbuilds: '1'
+        style: 'line'
+        use-description: false
+        series:
+            - file: 'data.xml'
+              format: 'xml'
+              xpath: '/data/set[1]/values/*'
+              xpath-type: 'node'
+              display-table: false
