@@ -48,14 +48,14 @@ Running
 After it's installed and configured, you can invoke Jenkins Job
 Builder by running ``jenkins-jobs``.  You won't be able to do anything
 useful just yet without a configuration which is discussed in the next
-section).  But you should be able to get help on the various commands
-by running::
+section.
 
-  jenkins-jobs --help
-  jenkins-jobs update --help
-  jenkins-jobs test --help
-  (etc.)
+Usage
+^^^^^
+.. program-output:: jenkins-jobs --help
 
+Testing
+^^^^^^^
 Once you have a configuration defined, you can test it with::
 
   jenkins-jobs test /path/to/config -o /path/to/output

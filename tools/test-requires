@@ -6,3 +6,4 @@ setuptools_git>=0.4
 testscenarios
 testtools
 testrepository
+sphinxcontrib-programoutput
