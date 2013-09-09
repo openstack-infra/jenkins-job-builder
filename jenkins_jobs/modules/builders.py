@@ -949,6 +949,43 @@ def grails(parser, xml_parent, data):
         data.get('refresh-dependencies', False)).lower()
 
 
+def sbt(parser, xml_parent, data):
+    """yaml: sbt
+    Execute a sbt build step. Requires the Jenkins `Sbt Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/sbt+plugin>`_
+
+    :arg str name: Select a sbt installation to use. If no name is
+                   provided, the first in the list of defined SBT
+                   builders will be used. (default to first in list)
+    :arg str jvm-flags: Parameters to pass to the JVM (default '')
+    :arg str actions: Select the sbt tasks to execute (default '')
+    :arg str sbt-flags: Add flags to SBT launcher
+                        (default '-Dsbt.log.noformat=true')
+    :arg str subdir-path: Path relative to workspace to run sbt in (default '')
+
+    Example::
+
+      builders:
+        - sbt:
+            name: "default"
+            actions: "clean package"
+            jvm-flags: "-Xmx8G"
+
+    """
+    sbt = XML.SubElement(xml_parent, 'org.jvnet.hudson.plugins.'
+                                     'SbtPluginBuilder')
+    XML.SubElement(sbt, 'name').text = data.get(
+        'name', '')
+    XML.SubElement(sbt, 'jvmFlags').text = data.get(
+        'jvm-flags', '')
+    XML.SubElement(sbt, 'sbtFlags').text = data.get(
+        'sbt-flags', '-Dsbt.log.noformat=true')
+    XML.SubElement(sbt, 'actions').text = data.get(
+        'actions', '')
+    XML.SubElement(sbt, 'subdirPath').text = data.get(
+        'subdir-path', '')
+
+
 class Builders(jenkins_jobs.modules.base.Base):
     sequence = 60
 
