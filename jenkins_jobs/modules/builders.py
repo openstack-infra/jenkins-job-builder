@@ -702,9 +702,9 @@ def conditional_step(parser, xml_parent, data):
         'fail': evaluation_classes_pkg + '.BuildStepRunner$Fail',
         'mark-unstable': evaluation_classes_pkg + '.BuildStepRunner$Unstable',
         'run-and-mark-unstable': evaluation_classes_pkg +
-        'BuildStepRunner$RunUnstable',
+        '.BuildStepRunner$RunUnstable',
         'run': evaluation_classes_pkg + '.BuildStepRunner$Run',
-        'dont-run': evaluation_classes_pkg + 'BuildStepRunner$DontRun',
+        'dont-run': evaluation_classes_pkg + '.BuildStepRunner$DontRun',
     }
     evaluation_class = evaluation_classes[data.get('on-evaluation-failure',
                                                    'fail')]
