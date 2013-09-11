@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<project>
+  <publishers>
+    <hudson.plugins.plot.PlotPublisher>
+      <plots>
+        <hudson.plugins.plot.Plot>
+          <title>Sample graph</title>
+          <yaxis/>
+          <csvFileName>persisted.csv</csvFileName>
+          <series>
+            <hudson.plugins.plot.CSVSeries>
+              <file>data.csv</file>
+              <inclusionFlag>OFF</inclusionFlag>
+              <exclusionValues/>
+              <url/>
+              <displayTableFlag>false</displayTableFlag>
+              <fileType>csv</fileType>
+            </hudson.plugins.plot.CSVSeries>
+          </series>
+          <group>bench</group>
+          <useDescr>false</useDescr>
+          <numBuilds/>
+          <style>line</style>
+        </hudson.plugins.plot.Plot>
+      </plots>
+    </hudson.plugins.plot.PlotPublisher>
+  </publishers>
+</project>

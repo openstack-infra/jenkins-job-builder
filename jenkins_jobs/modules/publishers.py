@@ -39,6 +39,7 @@ import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 import logging
 import sys
+import random
 
 
 def archive(parser, xml_parent, data):
@@ -2535,10 +2536,23 @@ def plot(parser, xml_parent, data):
                                descriptions used as X-axis labels and the
                                build number and date used for tooltips.
                                (default: False)
+    :arg str csv-file-name: Use for choosing the file name in which the data
+                            will be persisted. If none specified and random
+                            name is generated as done in the Jenkins Plot
+                            plugin.
+                            (default: random generated .csv filename, same
+                            behaviour as the Jenkins Plot plugin)
     :arg list series: list data series definitions
 
       :Serie: * **file** (`str`) : files to include
-              * **exclude** (`str`) : CSV files to exclude (default: empty)
+              * **inclusion-flag** filtering mode for CSV files. Possible
+                values are:
+                  * **off** (default)
+                  * **include-by-string**
+                  * **exclude-by-string**
+                  * **include-by-column**
+                  * **exclude-by-column**
+              * **exclude** (`str`) : exclude pattern for CSV file.
               * **url** (`str`) : for 'csv' and 'xml' file types
                 used when you click on a point (default: empty)
               * **display-table** (`bool`) : for 'csv' file type
@@ -2550,85 +2564,110 @@ def plot(parser, xml_parent, data):
                 Can be: properties, csv, xml
               * **xpath-type** (`str`) : The result type of the expression must
                 be supplied due to limitations in the java.xml.xpath parsing.
-                The result can be: NODE, NODESET, BOOLEAN, STRING, or NUMBER.
+                The result can be: node, nodeset, boolean, string, or number.
                 Strings and numbers will be converted to double. Boolean will
-                be converted to 1 for true, and 0 for false. (default: 'NODE')
+                be converted to 1 for true, and 0 for false. (default: 'node')
               * **xpath** (`str`) : used by 'xml' file type
                 Xpath which selects the values that should be plotted.
+
 
     Example::
 
       publishers:
         - plot:
-            title: MyPlot
-            yaxis: Y
-            group: PlotGroup
-            num-builds: ''
-            style: line
-            use-description: false
-            series:
-                - file: graph-me-second.properties
-                  label: MyLabel
-                  format: properties
-                - file: graph-me-first.csv
-                  exclude: exclude-me-1.csv
-                  url: 'http://srv1'
-                  display-table: true
-                  format: csv
-                - file: graph-me-third.xml
-                  exclude: exclude-me-2.xml
-                  url: 'http://srv2'
-                  format: xml
-                  xpath-type: NODE
-                  xpath: '/*'
+            - title: MyPlot
+              yaxis: Y
+              group: PlotGroup
+              num-builds: ''
+              style: line
+              use-description: false
+              series:
+                  - file: graph-me-second.properties
+                    label: MyLabel
+                    format: properties
+                  - file: graph-me-first.csv
+                    url: 'http://srv1'
+                    inclusion-flag: 'off'
+                    display-table: true
+                    format: csv
+            - title: MyPlot2
+              yaxis: Y
+              group: PlotGroup
+              style: line
+              use-description: false
+              series:
+                  - file: graph-me-third.xml
+                    url: 'http://srv2'
+                    format: xml
+                    xpath-type: 'node'
+                    xpath: '/*'
 
     """
     top = XML.SubElement(xml_parent, 'hudson.plugins.plot.PlotPublisher')
     plots = XML.SubElement(top, 'plots')
-    plugin = XML.SubElement(plots, 'hudson.plugins.plot.Plot')
-    XML.SubElement(plugin, 'title').text = data.get('title', '')
-    XML.SubElement(plugin, 'yaxis').text = data['yaxis']
-    topseries = XML.SubElement(plugin, 'series')
-    series = data['series']
     format_dict = {'properties': 'hudson.plugins.plot.PropertiesSeries',
                    'csv': 'hudson.plugins.plot.CSVSeries',
                    'xml': 'hudson.plugins.plot.XMLSeries'}
-    xpath_list = ['NODESET', 'NODE', 'STRING', 'BOOLEAN', 'NUMBER']
-    for serie in series:
-        format_data = serie.get('format')
-        if format_data not in format_dict:
-            raise Exception("format entered is not valid, must be one of: " +
-                            ", ".join(format_dict.keys()))
-        subserie = XML.SubElement(topseries, format_dict.get(format_data))
-        XML.SubElement(subserie, 'file').text = serie.get('file')
-        if format_data == 'properties':
-            XML.SubElement(subserie, 'label').text = serie.get('label', '')
-        if format_data == 'csv':
-            XML.SubElement(subserie, 'exclusionValues').text = \
-                serie.get('exclude', '')
-            XML.SubElement(subserie, 'url').text = serie.get('url', '')
-            XML.SubElement(subserie, 'displayTableFlag').text = \
-                str(data.get('display-table', False)).lower()
-        if format_data == 'xml':
-            XML.SubElement(subserie, 'url').text = serie.get('url', '')
-            XML.SubElement(subserie, 'xpathString').text = serie.get('xpath')
-            xpathtype = serie.get('xpath-type', 'NODE')
-            if xpathtype not in xpath_list:
-                raise Exception("XPath result entered is not valid, must be " +
-                                "one of: " + ", ".join(xpath_list))
-            XML.SubElement(subserie, 'nodeTypeString').text = xpathtype
-        XML.SubElement(subserie, 'fileType').text = serie.get('format')
-    XML.SubElement(plugin, 'group').text = data['group']
-    XML.SubElement(plugin, 'useDescr').text = \
-        str(data.get('use-description', False)).lower()
-    XML.SubElement(plugin, 'numBuilds').text = data.get('num-builds', '')
-    style_list = ['area', 'bar', 'bar3d', 'line', 'line3d', 'stackedArea',
-                  'stackedbar', 'stackedbar3d', 'waterfall']
-    style = data.get('style', 'line')
-    if style not in style_list:
-        raise Exception("style entered is not valid, must be one of: " +
-                        ", ".join(style_list))
-    XML.SubElement(plugin, 'style').text = style
+    xpath_dict = {'nodeset': 'NODESET', 'node': 'NODE', 'string': 'STRING',
+                  'boolean': 'BOOLEAN', 'number': 'NUMBER'}
+    inclusion_dict = {'off': 'OFF',
+                      'include-by-string': 'INCLUDE_BY_STRING',
+                      'exclude-by-string': 'EXCLUDE_BY_STRING',
+                      'include-by-column': 'INCLUDE_BY_COLUMN',
+                      'exclude-by-column': 'EXCLUDE_BY_COLUMN'}
+    for plot in data:
+        plugin = XML.SubElement(plots, 'hudson.plugins.plot.Plot')
+        XML.SubElement(plugin, 'title').text = plot.get('title', '')
+        XML.SubElement(plugin, 'yaxis').text = plot['yaxis']
+        XML.SubElement(plugin, 'csvFileName').text = \
+            plot.get('csv-file-name', '%s.csv' % random.randrange(2 << 32))
+        topseries = XML.SubElement(plugin, 'series')
+        series = plot['series']
+        for serie in series:
+            format_data = serie.get('format')
+            if format_data not in format_dict:
+                raise Exception("format entered is not valid," +
+                                "must be one of:" +
+                                " , ".join(format_dict.keys()))
+            subserie = XML.SubElement(topseries, format_dict.get(format_data))
+            XML.SubElement(subserie, 'file').text = serie.get('file')
+            if format_data == 'properties':
+                XML.SubElement(subserie, 'label').text = serie.get('label', '')
+            if format_data == 'csv':
+                inclusion_flag = serie.get('inclusion-flag', 'off')
+                if inclusion_flag not in inclusion_dict:
+                    raise Exception("Inclusion flag result entered is not " +
+                                    " valid, must be one of: " +
+                                    ", ".join(inclusion_dict))
+                XML.SubElement(subserie, 'inclusionFlag').text = \
+                    inclusion_dict.get(inclusion_flag)
+                XML.SubElement(subserie, 'exclusionValues').text = \
+                    serie.get('exclude', '')
+                XML.SubElement(subserie, 'url').text = serie.get('url', '')
+                XML.SubElement(subserie, 'displayTableFlag').text = \
+                    str(plot.get('display-table', False)).lower()
+            if format_data == 'xml':
+                XML.SubElement(subserie, 'url').text = serie.get('url', '')
+                XML.SubElement(subserie, 'xpathString').text = \
+                    serie.get('xpath')
+                xpathtype = serie.get('xpath-type', 'node')
+                if xpathtype not in xpath_dict:
+                    raise Exception("XPath result entered is not valid, must" +
+                                    " be one of: " + ", ".join(xpath_dict))
+                XML.SubElement(subserie, 'nodeTypeString').text = \
+                    xpath_dict.get(xpathtype)
+            XML.SubElement(subserie, 'fileType').text = serie.get('format')
+        XML.SubElement(plugin, 'group').text = plot['group']
+        XML.SubElement(plugin, 'useDescr').text = \
+            str(plot.get('use-description', False)).lower()
+        XML.SubElement(plugin, 'numBuilds').text = plot.get('num-builds', '')
+        style_list = ['area', 'bar', 'bar3d', 'line', 'line3d', 'stackedArea',
+                      'stackedbar', 'stackedbar3d', 'waterfall']
+        style = plot.get('style', 'line')
+        if style not in style_list:
+            raise Exception("style entered is not valid, must be one of: " +
+                            ", ".join(style_list))
+        XML.SubElement(plugin, 'style').text = style
 
 
 class Publishers(jenkins_jobs.modules.base.Base):
