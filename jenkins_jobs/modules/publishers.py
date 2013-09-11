@@ -983,6 +983,7 @@ def ssh(parser, xml_parent, data):
     :arg str source: source path specifier
     :arg str command: a command to execute on the remote server (optional)
     :arg int timeout: timeout in milliseconds for the Exec command (optional)
+    :arg bool use-pty: run the exec command in pseudo TTY (defaults to False)
     :arg str excludes: excluded file pattern (optional)
     :arg str remove-prefix: prefix to remove from uploaded file paths
       (optional)
@@ -998,6 +999,7 @@ def ssh(parser, xml_parent, data):
             source: 'base/source/dir/**'
             remove-prefix: 'base/source/dir'
             excludes: '**/*.excludedfiletype'
+            use-pty: true
             command: 'rm -r jenkins_$BUILD_NUMBER'
             timeout: 1800000
     """
@@ -1444,6 +1446,9 @@ def base_publish_over(xml_parent, data, console_prefix,
         XML.SubElement(transfersset, 'execCommand').text = data['command']
     if 'timeout' in data:
         XML.SubElement(transfersset, 'execTimeout').text = str(data['timeout'])
+    if 'use-pty' in data:
+        XML.SubElement(transfersset, 'usePty').text = \
+            str(data.get('use-pty', False)).lower()
     XML.SubElement(transfersset, 'excludes').text = data.get('excludes', '')
     XML.SubElement(transfersset, 'removePrefix').text = \
         data.get('remove-prefix', '')
