@@ -353,6 +353,45 @@ def priority_sorter(parser, xml_parent, data):
         data['priority'])
 
 
+def build_blocker(parser, xml_parent, data):
+    """yaml: build-blocker
+    This plugin keeps the actual job in the queue
+    if at least one name of currently running jobs
+    is matching with one of the given regular expressions.
+
+    Requires the Jenkins `Build Blocker Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Build+Blocker+Plugin>`_
+
+    :arg bool use-build-blocker: Enable or disable build blocker
+        (optional, defaults to True)
+    :arg list blocking-jobs: One regular expression per line
+        to select blocking jobs by their names. (required)
+
+
+    Example::
+
+        properties:
+          - build-blocker:
+              use-build-blocker: true
+              blocking-jobs:
+                - ".*-deploy"
+                - "^maintainance.*"
+    """
+    blocker = XML.SubElement(xml_parent,
+                             'hudson.plugins.'
+                             'buildblocker.BuildBlockerProperty')
+    if data is None or 'blocking-jobs' not in data:
+        raise Exception('blocking-jobs field is missing')
+    elif data.get('blocking-jobs', None) is None:
+        raise Exception('blocking-jobs list must not be empty')
+    XML.SubElement(blocker, 'useBuildBlocker').text = str(
+        data.get('use-build-blocker', True)).lower()
+    jobs = ''
+    for value in data['blocking-jobs']:
+        jobs = jobs + value + '\n'
+    XML.SubElement(blocker, 'blockingJobs').text = jobs
+
+
 class Properties(jenkins_jobs.modules.base.Base):
     sequence = 20
 
