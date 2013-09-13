@@ -1,0 +1,22 @@
+# vim: sw=4 ts=4 et
+publishers:
+  - git:
+      push-merge: true
+      push-only-if-success: false
+      tags:
+          - tag:
+              remote: tagremotename
+              name: tagname
+              message: "some tag message"
+              create-tag: true
+              update-tag: true
+      branches:
+          - branch:
+              remote: branchremotename
+              name: "some/branch"
+      notes:
+          - note:
+              remote: remotename
+              message: "some note to push"
+              namespace: notenamespace
+              replace-note: true
