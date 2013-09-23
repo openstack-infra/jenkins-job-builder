@@ -13,5 +13,4 @@ output
 etc/jenkins_jobs.ini
 dist/*
 doc/build/*
-doc/source/*
 jenkins_jobs/versioninfo
