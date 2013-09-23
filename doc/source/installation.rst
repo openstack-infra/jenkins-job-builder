@@ -80,6 +80,6 @@ arguments after the configuration path. To update Foo1 and Foo2 run::
   jenkins-jobs update /path/to/config Foo1 Foo2
 
 
-.. Running:: Footnotes
+.. rubric:: Footnotes
 .. [#f1] The cache default location is at ``~/.cache/jenkins_jobs``, which
          can be overriden by setting the ``XDG_CACHE_HOME`` environment variable.
