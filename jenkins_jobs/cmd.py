@@ -35,6 +35,9 @@ def main():
     parser_update = subparser.add_parser('update')
     parser_update.add_argument('path', help='Path to YAML file or directory')
     parser_update.add_argument('names', help='name(s) of job(s)', nargs='*')
+    parser_update.add_argument('--delete-old', help='Delete obsolete jobs',
+                               action='store_true',
+                               dest='delete_old', default=False,)
     parser_test = subparser.add_parser('test')
     parser_test.add_argument('path', help='Path to YAML file or directory')
     parser_test.add_argument('-o', dest='output_dir',
@@ -106,7 +109,9 @@ def main():
     elif options.command == 'update':
         logger.info("Updating jobs in {0} ({1})".format(
             options.path, options.names))
-        builder.update_job(options.path, options.names)
+        jobs = builder.update_job(options.path, options.names)
+        if options.delete_old:
+            builder.delete_old_managed(keep=[x.name for x in jobs])
     elif options.command == 'test':
         builder.update_job(options.path, options.name,
                            output_dir=options.output_dir)
