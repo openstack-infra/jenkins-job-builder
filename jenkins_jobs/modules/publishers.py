@@ -539,17 +539,21 @@ def junit(parser, xml_parent, data):
     Publish JUnit test results.
 
     :arg str results: results filename
+    :arg bool keep-long-stdio: Retain long standard output/error in test
+      results (default true).
 
     Example::
 
       publishers:
         - junit:
             results: nosetests.xml
+            keep-long-stdio: false
     """
     junitresult = XML.SubElement(xml_parent,
                                  'hudson.tasks.junit.JUnitResultArchiver')
     XML.SubElement(junitresult, 'testResults').text = data['results']
-    XML.SubElement(junitresult, 'keepLongStdio').text = "true"
+    XML.SubElement(junitresult, 'keepLongStdio').text = str(
+        data.get('keep-long-stdio', True)).lower()
     XML.SubElement(junitresult, 'testDataPublishers')
 
 
