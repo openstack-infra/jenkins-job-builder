@@ -414,11 +414,12 @@ def jacoco(parser, xml_parent, data):
     <https://wiki.jenkins-ci.org/display/JENKINS/JaCoCo+Plugin>`_
 
     :arg str exec-pattern: This is a file name pattern that can be used to
-                          locate the jacoco report files (default '**/**.exec')
+                          locate the jacoco report files (default
+                          ``**/**.exec``)
     :arg str class-pattern: This is a file name pattern that can be used
-                          to locate class files (default '**/classes')
+                          to locate class files (default ``**/classes``)
     :arg str source-pattern: This is a file name pattern that can be used
-                          to locate source files (default '**/src/main/java')
+                          to locate source files (default ``**/src/main/java``)
     :arg bool update-build-status: Update the build according to the results
                           (default False)
     :arg str inclusion-pattern: This is a file name pattern that can be used
@@ -2556,11 +2557,13 @@ def plot(parser, xml_parent, data):
       :Serie: * **file** (`str`) : files to include
               * **inclusion-flag** filtering mode for CSV files. Possible
                 values are:
+
                   * **off** (default)
                   * **include-by-string**
                   * **exclude-by-string**
                   * **include-by-column**
                   * **exclude-by-column**
+
               * **exclude** (`str`) : exclude pattern for CSV file.
               * **url** (`str`) : for 'csv' and 'xml' file types
                 used when you click on a point (default: empty)
