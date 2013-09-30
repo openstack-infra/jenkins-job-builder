@@ -401,6 +401,7 @@ class Jenkins(object):
 
     def delete_job(self, job_name):
         if self.is_job(job_name):
+            logger.info("Deleting jenkins job {0}".format(job_name))
             self.jenkins.delete_job(job_name)
 
     def get_jobs(self):
