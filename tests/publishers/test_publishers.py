@@ -19,7 +19,6 @@
 
 import doctest
 import os
-import re
 from testscenarios.testcase import TestWithScenarios
 import testtools
 import xml.etree.ElementTree as XML
@@ -27,37 +26,14 @@ import yaml
 
 from jenkins_jobs.builder import XmlJob, YamlParser, ModuleRegistry
 from jenkins_jobs.modules import publishers
+from ..base import get_scenarios
 
 FIXTURES_PATH = os.path.join(
     os.path.dirname(__file__), 'fixtures')
 
 
-def get_scenarios():
-    """Returns a list of scenarios, each scenario being described
-    by two parameters (yaml and xml filenames).
-        - content of the fixture .xml file (aka expected)
-    """
-    scenarios = []
-    files = os.listdir(FIXTURES_PATH)
-    yaml_files = [f for f in files if re.match(r'.*\.yaml$', f)]
-
-    for yaml_filename in yaml_files:
-        xml_candidate = re.sub(r'\.yaml$', '.xml', yaml_filename)
-        # Make sure the yaml file has a xml counterpart
-        if xml_candidate not in files:
-            raise Exception(
-                "No XML file named '%s' to match " +
-                "YAML file '%s'" % (xml_candidate, yaml_filename))
-
-        scenarios.append((yaml_filename, {
-            'yaml_filename': yaml_filename, 'xml_filename': xml_candidate
-        }))
-
-    return scenarios
-
-
 class TestCaseModulePublisher(TestWithScenarios, testtools.TestCase):
-    scenarios = get_scenarios()
+    scenarios = get_scenarios(FIXTURES_PATH)
 
     # TestCase settings:
     maxDiff = None      # always dump text difference
