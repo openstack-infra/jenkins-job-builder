@@ -66,6 +66,7 @@ def git(self, xml_parent, data):
     :arg str basedir: location relative to the workspace root to clone to
              (default: workspace)
     :arg bool skip-tag: Skip tagging
+    :arg bool shallow-clone: Perform shallow clone
     :arg bool prune: Prune remote branches
     :arg bool clean: Clean after checkout
     :arg bool fastpoll: Use fast remote polling
@@ -131,6 +132,7 @@ def git(self, xml_parent, data):
         ("git-config-email", 'gitConfigEmail', ''),
         ('skip-tag', 'skipTag', False),
         ('scm-name', 'scmName', ''),
+        ("shallow-clone", "useShallowClone", False),
     ]
 
     choosing_strategies = {
