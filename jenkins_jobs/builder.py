@@ -41,7 +41,13 @@ def deep_format(obj, paramdict):
     # still be valid YAML (so substituting-in a string containing quotes, for
     # example, is problematic).
     if isinstance(obj, str):
-        ret = obj.format(**paramdict)
+        try:
+            ret = obj.format(**paramdict)
+        except KeyError as exc:
+            missing_key = exc.message
+            desc = "%s parameter missing to format %s\nGiven: %s" % (
+                   missing_key, obj, paramdict)
+            raise JenkinsJobsException(desc)
     elif isinstance(obj, list):
         ret = []
         for item in obj:
