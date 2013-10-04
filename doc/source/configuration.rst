@@ -41,7 +41,8 @@ later.  There are a few basic optional fields for a Job definition::
       block-upstream: false
 
 **project-type**
-  Defaults to "freestyle", but "maven" can also be specified.
+  Defaults to "freestyle", but "maven" as well as "multijob" or "flow"
+  can also be specified.
 
 **defaults**
   Specifies a set of `Defaults`_ to use for this job, defaults to
@@ -310,6 +311,7 @@ The bulk of the job definitions come from the following modules.
 .. toctree::
    :maxdepth: 2
 
+   project_flow
    project_freestyle
    project_maven
    project_matrix
