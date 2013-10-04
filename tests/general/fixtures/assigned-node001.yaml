@@ -1,0 +1,3 @@
+name: openstack-infra
+project-type: freestyle
+node: my-node-name
