@@ -217,6 +217,89 @@ def git(self, xml_parent, data):
         XML.SubElement(bc, 'url').text = data['browser-url']
 
 
+def repo(self, xml_parent, data):
+    """yaml: repo
+    Specifies the repo SCM repository for this job.
+    Requires the Jenkins `Repo Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Repo+Plugin>`_
+
+    :arg str manifest-url: URL of the repo manifest
+    :arg str manifest-branch: The branch of the manifest to use (optional)
+    :arg str manifest-file: Initial manifest file to use when initialising
+             (optional)
+    :arg str manifest-group: Only retrieve those projects in the manifest
+             tagged with the provided group name (optional)
+    :arg str destination-dir: Location relative to the workspace root to clone
+             under (optional)
+    :arg str repo-url: custom url to retrieve the repo application (optional)
+    :arg str mirror-dir: Path to mirror directory to reference when
+             initialising (optional)
+    :arg int jobs: Number of projects to fetch simultaneously (default 0)
+    :arg bool current-branch: Fetch only the current branch from the server
+              (default true)
+    :arg bool quiet: Make repo more quiet
+              (default true)
+    :arg str local-manifest: Contents of .repo/local_manifest.xml, written
+             prior to calling sync (optional)
+
+    Example::
+
+      scm:
+        - repo:
+            manifest-url: https://example.com/project/
+            manifest-branch: stable
+            manifest-file: repo.xml
+            manifest-group: drivers
+            destination-dir: build
+            repo-url: https://internal.net/projects/repo
+            mirror-dir: ~/git/project/
+            jobs: 3
+            current-branch: false
+            quiet: false
+            local-manifest: |
+              <?xml version="1.0" encoding="UTF-8"?>
+              <manifest>
+                <project path="external/project" name="org/project"
+                  remote="gerrit" revision="master" />
+              </manifest>
+    """
+
+    scm = XML.SubElement(xml_parent,
+                         'scm', {'class': 'hudson.plugins.repo.RepoScm'})
+
+    if 'manifest-url' in data:
+        XML.SubElement(scm, 'manifestRepositoryUrl').text = \
+            data['manifest-url']
+    else:
+        raise Exception("Must specify a manifest url")
+
+    mapping = [
+        # option, xml name, default value
+        ("manifest-branch", 'manifestBranch', ''),
+        ("manifest-file", 'manifestFile', ''),
+        ("manifest-group", 'manifestGroup', ''),
+        ("destination-dir", 'destinationDir', ''),
+        ("repo-url", 'repoUrl', ''),
+        ("mirror-dir", 'mirrorDir', ''),
+        ("jobs", 'jobs', 0),
+        ("current-branch", 'currentBranch', True),
+        ("quiet", 'quiet', True),
+        ("local-manifest", 'localManifest', ''),
+    ]
+
+    for elem in mapping:
+        (optname, xmlname, val) = elem
+        val = data.get(optname, val)
+        # Skip adding xml entry if default is empty string and no value given
+        if not val and elem[2] is '':
+            continue
+        xe = XML.SubElement(scm, xmlname)
+        if type(elem[2]) == bool:
+            xe.text = str(val).lower()
+        else:
+            xe.text = str(val)
+
+
 def svn(self, xml_parent, data):
     """yaml: svn
     Specifies the svn SCM repository for this job.
