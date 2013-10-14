@@ -71,6 +71,9 @@ def copyartifact(parser, xml_parent, data):
     :arg str filter: what files to copy
     :arg str target: Target base directory for copy, blank means use workspace
     :arg bool flatten: Flatten directories (default: false)
+    :arg bool optional: If the artifact is missing (for any reason) and
+        optional is true, the build won't fail because of this builder
+        (default: false)
     :arg str which-build: which build to get artifacts from
         (optional, default last-successful)
     :arg str build-number: specifies the build number to get when
@@ -111,6 +114,7 @@ def copyartifact(parser, xml_parent, data):
             target: /home/foo
             which-build: specific-build
             build-number: 123
+            optional: true
             flatten: true
             parameter-filters: PUBLISH=true
     """
@@ -123,6 +127,8 @@ def copyartifact(parser, xml_parent, data):
     XML.SubElement(t, 'target').text = data.get("target", "")
     flatten = data.get("flatten", False)
     XML.SubElement(t, 'flatten').text = str(flatten).lower()
+    optional = data.get('optional', False)
+    XML.SubElement(t, 'optional').text = str(optional).lower()
     XML.SubElement(t, 'parameters').text = data.get("parameter-filters", "")
     select = data.get('which-build', 'last-successful')
     selectdict = {'last-successful': 'StatusBuildSelector',
