@@ -16,6 +16,7 @@
 # under the License.
 
 import os
+from ConfigParser import ConfigParser
 from testtools import TestCase
 from testscenarios.testcase import TestWithScenarios
 from tests.base import get_scenarios, BaseTestCase
@@ -37,7 +38,14 @@ class TestCaseModuleYamlInclude(TestWithScenarios, TestCase, BaseTestCase):
 
         yaml_filepath = os.path.join(self.fixtures_path, self.yaml_filename)
 
-        parser = YamlParser()
+        if self.conf_filename:
+            config = ConfigParser()
+            conf_filepath = os.path.join(self.fixtures_path,
+                                         self.conf_filename)
+            config.readfp(open(conf_filepath))
+        else:
+            config = None
+        parser = YamlParser(config)
         parser.parse(yaml_filepath)
 
         # Generate the XML tree

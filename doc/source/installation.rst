@@ -46,6 +46,21 @@ the following format:
 .. literalinclude:: ../../etc/jenkins_jobs.ini-sample
    :language: ini
 
+job_builder section
+^^^^^^^^^^^^^^^^^^^
+
+**ignore_cache**
+  (Optional) If set to True, Jenkins Job Builder won't use any cache.
+
+**keep_descriptions**
+  By default `jenkins-jobs` will overwrite the jobs descriptions even if no
+  description has been defined explicitly.
+  When this option is set to True, that behavior changes and it will only
+  overwrite the description if you specified it in the yaml. False by default.
+
+jenkins section
+^^^^^^^^^^^^^^^
+
 **user**
   This should be the name of a user previously defined in Jenkins.
   Appropriate user permissions must be set under the Jenkins security
@@ -60,9 +75,6 @@ the following format:
 
 **url**
   The base URL for your Jenkins installation.
-
-**ignore_cache**
-  (Optional) If set to True, Jenkins Job Builder won't use any cache.
 
 
 Running

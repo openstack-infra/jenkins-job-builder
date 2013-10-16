@@ -66,14 +66,14 @@
          choosing-strategy: gerrit
 
 - project:
-    name: test
+    name: complete001
     version:
         - 1.2
     jobs:
-        - 'build_myproject_{version}'
+        - 'complete001_{version}'
 
 - job-template:
-    name: 'build_myproject_{version}'
+    name: 'complete001_{version}'
     scm:
       - gerrit-scm:
          project_pattern: openstack-infra/jenkins-job-builder

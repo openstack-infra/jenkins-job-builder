@@ -1,5 +1,10 @@
+[job_builder]
+ignore_cache=True
+keep_descriptions=False
+
 [jenkins]
 user=jenkins
 password=1234567890abcdef1234567890abcdef
 url=https://jenkins.example.com
-ignore_cache=True
+##### This is deprecated, use job_builder section instead
+#ignore_cache=True

@@ -1,0 +1,12 @@
+- project:
+    name: dont_overwrite_desc
+    jobs:
+        - 'dont_overwrite_desc'
+
+- job-template:
+    name: 'dont_overwrite_desc'
+    builders:
+      - shell: |
+         #!/usr/bin/env python
+         #
+         print("Doing something cool with python")

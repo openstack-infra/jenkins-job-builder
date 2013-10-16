@@ -1,0 +1,13 @@
+- project:
+    name: add_managed_to_desc
+    jobs:
+        - 'add_managed_to_desc'
+
+- job-template:
+    name: 'add_managed_to_desc'
+    description: 'My nice description'
+    builders:
+      - shell: |
+         #!/usr/bin/env python
+         #
+         print("Doing something cool with python")

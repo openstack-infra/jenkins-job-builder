@@ -18,6 +18,19 @@ import ConfigParser
 import logging
 import os
 import sys
+import cStringIO
+
+
+DEFAULT_CONF = """
+[job_builder]
+keep_descriptions=False
+ignore_cache=False
+
+[jenkins]
+url=http://localhost:8080/
+user=
+password=
+"""
 
 
 def confirm(question):
@@ -78,20 +91,15 @@ def main():
                                  'jenkins_jobs.ini')
         if os.path.isfile(localconf):
             conf = localconf
-
     config = ConfigParser.ConfigParser()
-    if os.path.isfile(conf):
+    ## Load default config always
+    config.readfp(cStringIO.StringIO(DEFAULT_CONF))
+    if options.command == 'test':
+        logger.debug("Not reading config for test output generation")
+    elif os.path.isfile(conf):
         logger.debug("Reading config from {0}".format(conf))
         conffp = open(conf, 'r')
         config.readfp(conffp)
-    elif options.command == 'test':
-        ## to avoid the 'no section' and 'no option' errors when testing
-        config.add_section("jenkins")
-        config.set("jenkins", "url", "http://localhost:8080")
-        config.set("jenkins", "user", None)
-        config.set("jenkins", "password", None)
-        config.set("jenkins", "ignore_cache", False)
-        logger.debug("Not reading config for test output generation")
     else:
         raise jenkins_jobs.errors.JenkinsJobsException(
             "A valid configuration file is required when not run as a test"
@@ -105,7 +113,12 @@ def main():
     if options.ignore_cache:
         ignore_cache = options.ignore_cache
     elif config.has_option('jenkins', 'ignore_cache'):
+        logging.warn('ignore_cache option should be moved to the [job_builder]'
+                     ' section in the config file, the one specified in the '
+                     '[jenkins] section will be ignored in the future')
         ignore_cache = config.get('jenkins', 'ignore_cache')
+    elif config.has_option('job_builder', 'ignore_cache'):
+        ignore_cache = config.get('job_builder', 'ignore_cache')
 
     # workaround for python 2.6 interpolation error
     # https://bugs.launchpad.net/openstack-ci/+bug/1259631
