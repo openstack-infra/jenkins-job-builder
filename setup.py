@@ -162,6 +162,7 @@ setuptools.setup(
             'tfs=jenkins_jobs.modules.scm:tfs',
         ],
         'jenkins_jobs.triggers': [
+            'build-result=jenkins_jobs.modules.triggers:build_result',
             'gerrit=jenkins_jobs.modules.triggers:gerrit',
             'github=jenkins_jobs.modules.triggers:github',
             ('github-pull-request=jenkins_jobs.modules.triggers:'
