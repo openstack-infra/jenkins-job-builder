@@ -1,0 +1,4 @@
+# Test for the defaults, only xml-location is required
+publishers:
+ - cloverphp:
+       xml-location: 'build/clover.xml'

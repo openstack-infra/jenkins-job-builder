@@ -1,0 +1,17 @@
+# Exercise all options with non defaults values
+publishers:
+ - cloverphp:
+       xml-location: 'build/clover.xml'
+       html:
+         dir: 'html'
+         archive: false
+       metric-targets:
+        - healthy:
+           method: 80
+           statement: 90
+        - unhealthy:
+           method: 40
+           statement: 50
+        - failing:
+           method: 10
+           statement: 20
