@@ -622,7 +622,7 @@ def xunit(parser, xml_parent, data):
     # Map our internal types to the XML element names used by Jenkins plugin
     types_to_plugin_types = {
         'aunit': 'AUnitJunitHudsonTestType',
-        'boosttest': 'AUnitJunitHudsonTestType',
+        'boosttest': 'BoostTestJunitHudsonTestType',
         'checktype': 'CheckType',
         'cpptest': 'CppTestJunitHudsonTestType',
         'cppunit': 'CppUnitJunitHudsonTestType',
