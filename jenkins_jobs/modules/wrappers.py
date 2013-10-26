@@ -386,6 +386,39 @@ def inject(parser, xml_parent, data):
     XML.SubElement(info, 'loadFilesFromMaster').text = 'false'
 
 
+def inject_passwords(parser, xml_parent, data):
+    """yaml: inject-passwords
+    Inject passwords to the build as environment variables.
+    Requires the Jenkins `EnvInject Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin>`_
+
+    :arg bool global: inject global passwords to the job
+    :arg list job-passwords: key value pair of job passwords
+
+        :Parameter: * **name** (`str`) Name of password
+                    * **password** (`str`) Encrypted password
+
+    Example::
+
+      wrappers:
+        - inject-passwords:
+            global: true
+            job-passwords:
+              - name: ADMIN
+                password: 0v8ZCNaHwq1hcx+sHwRLdg9424uBh4Pin0zO4sBIb+U=
+    """
+    eib = XML.SubElement(xml_parent, 'EnvInjectPasswordWrapper')
+    XML.SubElement(eib, 'injectGlobalPasswords').text = \
+        str(data.get('global', False)).lower()
+    entries = XML.SubElement(eib, 'passwordEntries')
+    passwords = data.get('job-passwords', [])
+    if passwords:
+        for password in passwords:
+            entry = XML.SubElement(entries, 'EnvInjectPasswordEntry')
+            XML.SubElement(entry, 'name').text = password['name']
+            XML.SubElement(entry, 'value').text = password['password']
+
+
 def env_file(parser, xml_parent, data):
     """yaml: env-file
     Add or override environment variables to the whole build process
