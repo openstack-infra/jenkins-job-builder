@@ -415,11 +415,11 @@ class Jenkins(object):
 
     def is_managed(self, job_name):
         xml = self.jenkins.get_job_config(job_name)
-        out = XML.fromstring(xml)
         try:
+            out = XML.fromstring(xml)
             description = out.find(".//description").text
             return description.endswith(MAGIC_MANAGE_STRING)
-        except AttributeError:
+        except (TypeError, AttributeError):
             pass
         return False
 
@@ -445,6 +445,9 @@ class Builder(object):
                 logger.info("Removing obsolete jenkins job {0}"
                             .format(job['name']))
                 self.delete_job(job['name'])
+            else:
+                logger.debug("Ignoring unmanaged jenkins job %s",
+                             job['name'])
 
     def delete_all_jobs(self):
         jobs = self.jenkins.get_jobs()
