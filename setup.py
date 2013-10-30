@@ -84,6 +84,7 @@ setuptools.setup(
             'extended-choice=jenkins_jobs.modules.properties:extended_choice',
             'github=jenkins_jobs.modules.properties:github',
             'inject=jenkins_jobs.modules.properties:inject',
+            'ownership=jenkins_jobs.modules.properties:ownership',
             'priority-sorter=jenkins_jobs.modules.properties:priority_sorter',
             'promoted-build=jenkins_jobs.modules.properties:promoted_build',
             'throttle=jenkins_jobs.modules.properties:throttle',
