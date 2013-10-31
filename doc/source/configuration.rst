@@ -185,7 +185,7 @@ the Job Templates in the Job Group will be realized.  For example::
         - python-jobs
 
 Would cause the jobs `foo-python-26` and `foo-python-27` to be created
-in Jekins.
+in Jenkins.
 
 The ``jobs:`` list can also allow for specifying job-specific
 substitutions as follows::

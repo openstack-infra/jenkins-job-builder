@@ -82,4 +82,4 @@ arguments after the configuration path. To update Foo1 and Foo2 run::
 
 .. rubric:: Footnotes
 .. [#f1] The cache default location is at ``~/.cache/jenkins_jobs``, which
-         can be overriden by setting the ``XDG_CACHE_HOME`` environment variable.
+         can be overridden by setting the ``XDG_CACHE_HOME`` environment variable.
