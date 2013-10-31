@@ -92,6 +92,14 @@ setuptools.setup(
         'jenkins_jobs.parameters': [
             'bool=jenkins_jobs.modules.parameters:bool_param',
             'choice=jenkins_jobs.modules.parameters:choice_param',
+            ('dynamic-choice=jenkins_jobs.modules.parameters:'
+             'dynamic_choice_param'),
+            ('dynamic-choice-scriptler=jenkins_jobs.modules.parameters:'
+             'dynamic_choice_scriptler_param'),
+            ('dynamic-string=jenkins_jobs.modules.parameters:'
+             'dynamic_string_param'),
+            ('dynamic-string-scriptler=jenkins_jobs.modules.parameters:'
+             'dynamic_string_scriptler_param'),
             'file=jenkins_jobs.modules.parameters:file_param',
             'label=jenkins_jobs.modules.parameters:label_param',
             'password=jenkins_jobs.modules.parameters:password_param',

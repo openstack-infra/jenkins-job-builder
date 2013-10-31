@@ -261,6 +261,184 @@ def svn_tags_param(parser, xml_parent, data):
     XML.SubElement(pdef, 'uuid').text = "1-1-1-1-1"
 
 
+def dynamic_choice_param(parser, xml_parent, data):
+    """yaml: dynamic-choice
+    Dynamic Choice Parameter
+    Requires the Jenkins `Jenkins Dynamic Parameter Plug-in.
+    <https://wiki.jenkins-ci.org/display/JENKINS/
+    Jenkins+Dynamic+Parameter+Plug-in>`_
+
+    :arg str name: the name of the parameter
+    :arg str description: a description of the parameter (optional)
+    :arg str script: Groovy expression which generates the potential choices.
+    :arg bool remote: the script will be executed on the slave where the build
+        is started (default is false)
+    :arg str classpath: class path for script (optional)
+    :arg bool read-only: user can't modify parameter once populated
+        (default is false)
+
+    Example::
+
+      parameters:
+        - dynamic-choice:
+            name: OPTIONS
+            description: "Available options"
+            script: "['optionA', 'optionB']"
+            remote: false
+            read-only: false
+    """
+    dynamic_param_common(parser, xml_parent, data, 'ChoiceParameterDefinition')
+
+
+def dynamic_string_param(parser, xml_parent, data):
+    """yaml: dynamic-string
+    Dynamic Parameter
+    Requires the Jenkins `Jenkins Dynamic Parameter Plug-in.
+    <https://wiki.jenkins-ci.org/display/JENKINS/
+    Jenkins+Dynamic+Parameter+Plug-in>`_
+
+    :arg str name: the name of the parameter
+    :arg str description: a description of the parameter (optional)
+    :arg str script: Groovy expression which generates the potential choices
+    :arg bool remote: the script will be executed on the slave where the build
+        is started (default is false)
+    :arg str classpath: class path for script (optional)
+    :arg bool read-only: user can't modify parameter once populated
+        (default is false)
+
+    Example::
+
+      parameters:
+        - dynamic-string:
+            name: FOO
+            description: "A parameter named FOO, defaults to 'bar'."
+            script: "bar"
+            remote: false
+            read-only: false
+    """
+    dynamic_param_common(parser, xml_parent, data, 'StringParameterDefinition')
+
+
+def dynamic_choice_scriptler_param(parser, xml_parent, data):
+    """yaml: dynamic-choice-scriptler
+    Dynamic Choice Parameter (Scriptler)
+    Requires the Jenkins `Jenkins Dynamic Parameter Plug-in.
+    <https://wiki.jenkins-ci.org/display/JENKINS/
+    Jenkins+Dynamic+Parameter+Plug-in>`_
+
+    :arg str name: the name of the parameter
+    :arg str description: a description of the parameter (optional)
+    :arg str script-id: Groovy script which generates the default value
+    :arg list parameters: parameters to corresponding script
+
+        :Parameter: * **name** (`str`) Parameter name
+                    * **value** (`str`) Parameter value
+    :arg bool remote: the script will be executed on the slave where the build
+        is started (default is false)
+    :arg bool read-only: user can't modify parameter once populated
+        (default is false)
+
+    Example::
+
+      parameters:
+        - dynamic-choice-scriptler:
+            name: OPTIONS
+            description: "Available options"
+            script-id: "scriptid.groovy"
+            parameters:
+              - name: param1
+                value: value1
+              - name: param2
+                value: value2
+            remote: false
+            read-only: false
+    """
+    dynamic_scriptler_param_common(parser, xml_parent, data,
+                                   'ScriptlerChoiceParameterDefinition')
+
+
+def dynamic_string_scriptler_param(parser, xml_parent, data):
+    """yaml: dynamic-string-scriptler
+    Dynamic Parameter (Scriptler)
+    Requires the Jenkins `Jenkins Dynamic Parameter Plug-in.
+    <https://wiki.jenkins-ci.org/display/JENKINS/
+    Jenkins+Dynamic+Parameter+Plug-in>`_
+
+    :arg str name: the name of the parameter
+    :arg str description: a description of the parameter (optional)
+    :arg str script-id: Groovy script which generates the default value
+    :arg list parameters: parameters to corresponding script
+
+        :Parameter: * **name** (`str`) Parameter name
+                    * **value** (`str`) Parameter value
+    :arg bool remote: the script will be executed on the slave where the build
+        is started (default is false)
+    :arg bool read-only: user can't modify parameter once populated
+        (default is false)
+
+    Example::
+
+      parameters:
+        - dynamic-string-scriptler:
+            name: FOO
+            description: "A parameter named FOO, defaults to 'bar'."
+            script-id: "scriptid.groovy"
+            parameters:
+              - name: param1
+                value: value1
+              - name: param2
+                value: value2
+            remote: false
+            read-only: false
+    """
+    dynamic_scriptler_param_common(parser, xml_parent, data,
+                                   'ScriptlerStringParameterDefinition')
+
+
+def dynamic_param_common(parser, xml_parent, data, ptype):
+    pdef = base_param(parser, xml_parent, data, False,
+                      'com.seitenbau.jenkins.plugins.dynamicparameter.'
+                      + ptype)
+    XML.SubElement(pdef, '__remote').text = str(
+        data.get('remote', False)).lower()
+    XML.SubElement(pdef, '__script').text = data.get('script', None)
+    localBaseDir = XML.SubElement(pdef, '__localBaseDirectory',
+                                  {'serialization': 'custom'})
+    filePath = XML.SubElement(localBaseDir, 'hudson.FilePath')
+    default = XML.SubElement(filePath, 'default')
+    XML.SubElement(filePath, 'boolean').text = "true"
+    XML.SubElement(default, 'remote').text = \
+        "/var/lib/jenkins/dynamic_parameter/classpath"
+    XML.SubElement(pdef, '__remoteBaseDirectory').text = \
+        "dynamic_parameter_classpath"
+    XML.SubElement(pdef, '__classPath').text = data.get('classpath', None)
+    XML.SubElement(pdef, 'readonlyInputField').text = str(
+        data.get('read-only', False)).lower()
+
+
+def dynamic_scriptler_param_common(parser, xml_parent, data, ptype):
+    pdef = base_param(parser, xml_parent, data, False,
+                      'com.seitenbau.jenkins.plugins.dynamicparameter.'
+                      'scriptler.' + ptype)
+    XML.SubElement(pdef, '__remote').text = str(
+        data.get('remote', False)).lower()
+    XML.SubElement(pdef, '__scriptlerScriptId').text = data.get(
+        'script-id', None)
+    parametersXML = XML.SubElement(pdef, '__parameters')
+    parameters = data.get('parameters', [])
+    if parameters:
+        for parameter in parameters:
+            parameterXML = XML.SubElement(parametersXML,
+                                          'com.seitenbau.jenkins.plugins.'
+                                          'dynamicparameter.scriptler.'
+                                          'ScriptlerParameterDefinition_'
+                                          '-ScriptParameter')
+            XML.SubElement(parameterXML, 'name').text = parameter['name']
+            XML.SubElement(parameterXML, 'value').text = parameter['value']
+    XML.SubElement(pdef, 'readonlyInputField').text = str(data.get(
+        'read-only', False)).lower()
+
+
 class Parameters(jenkins_jobs.modules.base.Base):
     sequence = 21
 
