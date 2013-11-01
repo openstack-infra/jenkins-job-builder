@@ -17,6 +17,8 @@
 The Logrotate section allows you to automatically remove old build
 history. It adds the ``logrotate`` attribute to the :ref:`Job`
 definition.
+All logrotate attributes have default "-1" value so you don't need to specify
+that explicitly
 
 Example::
 
@@ -99,10 +101,10 @@ class General(jenkins_jobs.modules.base.Base):
             lr_xml = XML.SubElement(xml, 'logRotator')
             logrotate = data['logrotate']
             lr_days = XML.SubElement(lr_xml, 'daysToKeep')
-            lr_days.text = str(logrotate['daysToKeep'])
+            lr_days.text = str(logrotate.get('daysToKeep', -1))
             lr_num = XML.SubElement(lr_xml, 'numToKeep')
-            lr_num.text = str(logrotate['numToKeep'])
+            lr_num.text = str(logrotate.get('numToKeep', -1))
             lr_adays = XML.SubElement(lr_xml, 'artifactDaysToKeep')
-            lr_adays.text = str(logrotate['artifactDaysToKeep'])
+            lr_adays.text = str(logrotate.get('artifactDaysToKeep', -1))
             lr_anum = XML.SubElement(lr_xml, 'artifactNumToKeep')
-            lr_anum.text = str(logrotate['artifactNumToKeep'])
+            lr_anum.text = str(logrotate.get('artifactNumToKeep', -1))
