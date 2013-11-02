@@ -140,6 +140,9 @@ def gerrit(parser, xml_parent, data):
     :arg int gerrit-build-successful-verified-value: Successful ''Verified''
         value
     :arg int gerrit-build-failed-verified-value: Failed ''Verified'' value
+    :arg int gerrit-build-successful-codereview-value: Successful
+        ''CodeReview'' value
+    :arg int gerrit-build-failed-codereview-value: Failed ''CodeReview'' value
     :arg str failure-message: Message to leave on failure (default '')
     :arg str successful-message: Message to leave on success (default '')
     :arg str unstable-message: Message to leave when unstable (default '')
@@ -267,10 +270,18 @@ def gerrit(parser, xml_parent, data):
     build_gerrit_triggers(gtrig, data)
     override = str(data.get('override-votes', False)).lower()
     if override == 'true':
-        XML.SubElement(gtrig, 'gerritBuildSuccessfulVerifiedValue').text = \
-            str(data['gerrit-build-successful-verified-value'])
-        XML.SubElement(gtrig, 'gerritBuildFailedVerifiedValue').text = \
-            str(data['gerrit-build-failed-verified-value'])
+        for yamlkey, xmlkey in [('gerrit-build-successful-verified-value',
+                                 'gerritBuildSuccessfulVerifiedValue'),
+                                ('gerrit-build-failed-verified-value',
+                                 'gerritBuildFailedVerifiedValue'),
+                                ('gerrit-build-successful-codereview-value',
+                                 'gerritBuildSuccesfulCodereviewValue'),
+                                ('gerrit-build-failed-codereview-value',
+                                 'gerritBuildFaiedCodeReviewValue')]:
+            if data.get(yamlkey) is not None:
+                # str(int(x)) makes input values like '+1' work
+                XML.SubElement(gtrig, xmlkey).text = str(
+                    int(data.get(yamlkey)))
     XML.SubElement(gtrig, 'buildStartMessage').text = str(
         data.get('start-message', ''))
     XML.SubElement(gtrig, 'buildFailureMessage').text = \
