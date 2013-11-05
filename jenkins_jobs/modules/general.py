@@ -25,10 +25,10 @@ Example::
   - job:
       name: test_job
       logrotate:
-      daysToKeep: 3
-      numToKeep: 20
-      artifactDaysToKeep: -1
-      artifactNumToKeep: -1
+        daysToKeep: 3
+        numToKeep: 20
+        artifactDaysToKeep: -1
+        artifactNumToKeep: -1
 
 The Assigned Node section allows you to specify which Jenkins node (or
 named group) should run the specified job. It adds the ``node``
