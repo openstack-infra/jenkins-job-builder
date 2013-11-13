@@ -155,6 +155,7 @@ setuptools.setup(
             'sloccount=jenkins_jobs.modules.publishers:sloccount',
             'sonar=jenkins_jobs.modules.publishers:sonar',
             'ssh=jenkins_jobs.modules.publishers:ssh',
+            'stash=jenkins_jobs.modules.publishers:stash',
             'tap=jenkins_jobs.modules.publishers:tap',
             'text-finder=jenkins_jobs.modules.publishers:text_finder',
             'trigger=jenkins_jobs.modules.publishers:trigger',

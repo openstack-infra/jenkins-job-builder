@@ -2874,6 +2874,40 @@ def build_publisher(parser, xml_parent, data):
         str(data.get('artifact-num-to-keep', -1))
 
 
+def stash(parser, xml_parent, data):
+    """yaml: stash
+    This plugin will configure the Jenkins Stash Notifier plugin to
+    notify Atlassian Stash after job completes.
+
+    Requires the Jenkins `StashNotifier Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/StashNotifier+Plugin>`_
+
+    :arg string url: Base url of Stash Server (Default: "")
+    :arg string username: Username of Stash Server (Default: "")
+    :arg string password: Password of Stash Server (Default: "")
+    :arg bool   ignore-ssl: Ignore unverified SSL certificate (Default: False)
+    :arg string commit-sha1: Commit SHA1 to notify (Default: "")
+    :arg bool   include-build-number: Include build number in key
+                (Default: False)
+
+    Example:
+
+    .. literalinclude:: ../../tests/publishers/fixtures/stash001.yaml
+    """
+
+    top = XML.SubElement(xml_parent,
+                         'org.jenkinsci.plugins.stashNotifier.StashNotifier')
+
+    XML.SubElement(top, 'stashServerBaseUrl').text = data.get('url', '')
+    XML.SubElement(top, 'stashUserName').text = data.get('username', '')
+    XML.SubElement(top, 'stashUserPassword').text = data.get('password', '')
+    XML.SubElement(top, 'ignoreUnverifiedSSLPeer').text = str(
+        data.get('ignore-ssl', False)).lower()
+    XML.SubElement(top, 'commitSha1').text = data.get('commit-sha1', '')
+    XML.SubElement(top, 'includeBuildNumberInKey').text = str(
+        data.get('include-build-number', False)).lower()
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
