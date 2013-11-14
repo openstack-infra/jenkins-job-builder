@@ -42,6 +42,7 @@ Example::
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+from jenkins_jobs.errors import JenkinsJobsException
 
 
 def git(self, xml_parent, data):
@@ -209,10 +210,10 @@ def git(self, xml_parent, data):
                    'viewgit': 'ViewGitWeb',
                    'auto': 'auto'}
     if browser not in browserdict:
-        raise Exception("Browser entered is not valid must be one of: " +
-                        "githubweb, fisheye, bitbucketweb, cgit, gitblit, " +
-                        "gitlab, gitoriousweb, gitweb, redmineweb, viewgit, " +
-                        "or auto")
+        raise JenkinsJobsException("Browser entered is not valid must be one "
+                                   "of: githubweb, fisheye, bitbucketweb, "
+                                   "cgit, gitblit, gitlab, gitoriousweb, "
+                                   "gitweb, redmineweb, viewgit, or auto")
     if browser != 'auto':
         bc = XML.SubElement(scm, 'browser', {'class':
                             'hudson.plugins.git.browser.' +
@@ -277,7 +278,7 @@ def repo(self, xml_parent, data):
         XML.SubElement(scm, 'manifestRepositoryUrl').text = \
             data['manifest-url']
     else:
-        raise Exception("Must specify a manifest url")
+        raise JenkinsJobsException("Must specify a manifest url")
 
     mapping = [
         # option, xml name, default value
@@ -354,7 +355,7 @@ def svn(self, xml_parent, data):
         XML.SubElement(module, 'remote').text = data['url']
         XML.SubElement(module, 'local').text = data.get('basedir', '.')
     else:
-        raise Exception("A top level url or repos list must exist")
+        raise JenkinsJobsException("A top level url or repos list must exist")
     updater = data.get('workspaceupdater', 'wipeworkspace')
     if updater == 'wipeworkspace':
         updaterclass = 'CheckoutUpdater'

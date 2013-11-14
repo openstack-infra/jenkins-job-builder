@@ -26,6 +26,7 @@ the build is complete.
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+from jenkins_jobs.errors import JenkinsJobsException
 import logging
 import sys
 import random
@@ -237,8 +238,8 @@ def trigger(parser, xml_parent, data):
 
     threshold = data.get('threshold', 'SUCCESS')
     if threshold not in thresholds.keys():
-        raise Exception("threshold must be one of " +
-                        ", ".join(threshold.keys()))
+        raise JenkinsJobsException("threshold must be one of %s" %
+                                   ", ".join(threshold.keys()))
     tname = XML.SubElement(tthreshold, 'name')
     tname.text = threshold
     tordinal = XML.SubElement(tthreshold, 'ordinal')
@@ -498,8 +499,8 @@ def jacoco(parser, xml_parent, data):
     for item in data['targets']:
         item_name = item.keys()[0]
         if item_name not in itemsList:
-            raise Exception("item entered is not valid must be one " +
-                            "of: " + ",".join(itemsList))
+            raise JenkinsJobsException("item entered is not valid must be "
+                                       "one of: %s" % ",".join(itemsList))
         item_values = item.get(item_name, 0)
 
         XML.SubElement(jacoco,
@@ -1765,8 +1766,9 @@ def jabber(parser, xml_parent, data):
                     'failure-fixed': 'FAILURE_AND_FIXED',
                     'change': 'STATECHANGE_ONLY'}
     if strategy not in strategydict:
-        raise Exception("Strategy entered is not valid, must be one of: " +
-                        "all, failure, failure-fixed, or change")
+        raise JenkinsJobsException("Strategy entered is not valid, must be " +
+                                   "one of: all, failure, failure-fixed, or "
+                                   "change")
     XML.SubElement(j, 'strategy').text = strategydict[strategy]
     XML.SubElement(j, 'notifyOnBuildStart').text = str(
         data.get('notify-on-build-start', False)).lower()
@@ -1784,9 +1786,9 @@ def jabber(parser, xml_parent, data):
                    'summary-build': 'BuildParametersBuildToChatNotifier',
                    'summary-scm-fail': 'PrintFailingTestsBuildToChatNotifier'}
     if message not in messagedict:
-        raise Exception("Message entered is not valid, must be one of: " +
-                        "summary-scm, summary, summary-build " +
-                        "of summary-scm-fail")
+        raise JenkinsJobsException("Message entered is not valid, must be one "
+                                   "of: summary-scm, summary, summary-build "
+                                   "or summary-scm-fail")
     XML.SubElement(j, 'buildToChatNotifier', {
         'class': 'hudson.plugins.im.build_notify.' + messagedict[message]})
     XML.SubElement(j, 'matrixMultiplier').text = 'ONLY_CONFIGURATIONS'
@@ -2348,8 +2350,9 @@ def warnings(parser, xml_parent, data):
                       'all-priorities': 'low'}
     priority = data.get('health-priorities', 'all-priorities')
     if priority not in prioritiesDict:
-        raise Exception("Health-Priority entered is not valid must be one " +
-                        "of: " + ",".join(prioritiesDict.keys()))
+        raise JenkinsJobsException("Health-Priority entered is not valid must "
+                                   "be one of: %s" %
+                                   ",".join(prioritiesDict.keys()))
     XML.SubElement(warnings, 'thresholdLimit').text = prioritiesDict[priority]
     td = XML.SubElement(warnings, 'thresholds')
     for base in ["total", "new"]:
@@ -2496,8 +2499,9 @@ def ircbot(parser, xml_parent, data):
                     'summary-scm-fail': 'PrintFailingTestsBuildToChatNotifier'}
     message = data.get('message-type', 'summary-scm')
     if message not in message_dict:
-        raise Exception("message-type entered is not valid, must be one of: " +
-                        "%s" % ", ".join(message_dict.keys()))
+        raise JenkinsJobsException("message-type entered is not valid, must "
+                                   "be one of: %s" %
+                                   ", ".join(message_dict.keys()))
     message = "hudson.plugins.im.build_notify." + message_dict.get(message)
     XML.SubElement(top, 'buildToChatNotifier', attrib={'class': message})
     strategy_dict = {'all': 'ALL',
@@ -2507,8 +2511,9 @@ def ircbot(parser, xml_parent, data):
                      'statechange-only': 'STATECHANGE_ONLY'}
     strategy = data.get('strategy', 'all')
     if strategy not in strategy_dict:
-        raise Exception("strategy entered is not valid, must be one of: %s" %
-                        ", ".join(strategy_dict.keys()))
+        raise JenkinsJobsException("strategy entered is not valid, must be "
+                                   "one of: %s" %
+                                   ", ".join(strategy_dict.keys()))
     XML.SubElement(top, 'strategy').text = strategy_dict.get(strategy)
     targets = XML.SubElement(top, 'targets')
     channels = data.get('channels', [])
@@ -2534,8 +2539,9 @@ def ircbot(parser, xml_parent, data):
                    'only-parent': 'ONLY_PARENT'}
     matrix = data.get('matrix-notifier', 'only_configurations')
     if matrix not in matrix_dict:
-        raise Exception("matrix-notifier entered is not valid, must be one " +
-                        "of: %s" % ", ".join(matrix_dict.keys()))
+        raise JenkinsJobsException("matrix-notifier entered is not valid, "
+                                   "must be one of: %s" %
+                                   ", ".join(matrix_dict.keys()))
     XML.SubElement(top, 'matrixMultiplier').text = matrix_dict.get(matrix)
 
 
@@ -2656,9 +2662,9 @@ def plot(parser, xml_parent, data):
         for serie in series:
             format_data = serie.get('format')
             if format_data not in format_dict:
-                raise Exception("format entered is not valid," +
-                                "must be one of:" +
-                                " , ".join(format_dict.keys()))
+                raise JenkinsJobsException("format entered is not valid, must "
+                                           "be one of: %s" %
+                                           " , ".join(format_dict.keys()))
             subserie = XML.SubElement(topseries, format_dict.get(format_data))
             XML.SubElement(subserie, 'file').text = serie.get('file')
             if format_data == 'properties':
@@ -2666,9 +2672,10 @@ def plot(parser, xml_parent, data):
             if format_data == 'csv':
                 inclusion_flag = serie.get('inclusion-flag', 'off')
                 if inclusion_flag not in inclusion_dict:
-                    raise Exception("Inclusion flag result entered is not " +
-                                    " valid, must be one of: " +
-                                    ", ".join(inclusion_dict))
+                    raise JenkinsJobsException("Inclusion flag result entered "
+                                               "is not valid, must be one of: "
+                                               "%s"
+                                               % ", ".join(inclusion_dict))
                 XML.SubElement(subserie, 'inclusionFlag').text = \
                     inclusion_dict.get(inclusion_flag)
                 XML.SubElement(subserie, 'exclusionValues').text = \
@@ -2682,8 +2689,9 @@ def plot(parser, xml_parent, data):
                     serie.get('xpath')
                 xpathtype = serie.get('xpath-type', 'node')
                 if xpathtype not in xpath_dict:
-                    raise Exception("XPath result entered is not valid, must" +
-                                    " be one of: " + ", ".join(xpath_dict))
+                    raise JenkinsJobsException("XPath result entered is not "
+                                               "valid, must be one of: %s" %
+                                               ", ".join(xpath_dict))
                 XML.SubElement(subserie, 'nodeTypeString').text = \
                     xpath_dict.get(xpathtype)
             XML.SubElement(subserie, 'fileType').text = serie.get('format')
@@ -2695,8 +2703,8 @@ def plot(parser, xml_parent, data):
                       'stackedbar', 'stackedbar3d', 'waterfall']
         style = plot.get('style', 'line')
         if style not in style_list:
-            raise Exception("style entered is not valid, must be one of: " +
-                            ", ".join(style_list))
+            raise JenkinsJobsException("style entered is not valid, must be "
+                                       "one of: %s" % ", ".join(style_list))
         XML.SubElement(plugin, 'style').text = style
 
 
@@ -2790,7 +2798,7 @@ def git(parser, xml_parent, data):
             opt, xmlopt, default_val = prop[:3]
             val = entity.get(opt, default_val)
             if val is None:
-                raise Exception('Required option missing: %s' % opt)
+                raise JenkinsJobsException('Required option missing: %s' % opt)
             if type(val) == bool:
                 val = str(val).lower()
             XML.SubElement(entity_xml, xmlopt).text = val

@@ -34,6 +34,7 @@ Example::
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+from jenkins_jobs.errors import JenkinsJobsException
 
 
 def ownership(parser, xml_parent, data):
@@ -351,8 +352,9 @@ def extended_choice(parser, xml_parent, data):
                   'radio': 'PT_RADIO',
                   'checkbox': 'PT_CHECKBOX'}
     if choice not in choicedict:
-        raise Exception("Type entered is not valid, must be one of: " +
-                        "single-select, multi-select, radio, or checkbox")
+        raise JenkinsJobsException("Type entered is not valid, must be one "
+                                   "of: single-select, multi-select, radio, "
+                                   "or checkbox")
     XML.SubElement(extended, 'type').text = choicedict[choice]
     XML.SubElement(extended, 'value').text = data.get('value', '')
     XML.SubElement(extended, 'propertyFile').text = data.get('property-file',
@@ -417,9 +419,9 @@ def build_blocker(parser, xml_parent, data):
                              'hudson.plugins.'
                              'buildblocker.BuildBlockerProperty')
     if data is None or 'blocking-jobs' not in data:
-        raise Exception('blocking-jobs field is missing')
+        raise JenkinsJobsException('blocking-jobs field is missing')
     elif data.get('blocking-jobs', None) is None:
-        raise Exception('blocking-jobs list must not be empty')
+        raise JenkinsJobsException('blocking-jobs list must not be empty')
     XML.SubElement(blocker, 'useBuildBlocker').text = str(
         data.get('use-build-blocker', True)).lower()
     jobs = ''

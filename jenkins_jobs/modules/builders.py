@@ -39,6 +39,7 @@ Example::
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+from jenkins_jobs.errors import JenkinsJobsException
 import logging
 
 logger = logging.getLogger(__name__)
@@ -139,10 +140,10 @@ def copyartifact(parser, xml_parent, data):
                   'workspace-latest': 'WorkspaceSelector',
                   'build-param': 'ParameterizedBuildSelector'}
     if select not in selectdict:
-        raise Exception("which-build entered is not valid must be one of: " +
-                        "last-successful, specific-build, last-saved, " +
-                        "upstream-build, permalink, workspace-latest, " +
-                        " or build-param")
+        raise JenkinsJobsException("which-build entered is not valid must be "
+                                   "one of: last-successful, specific-build, "
+                                   "last-saved, upstream-build, permalink, "
+                                   "workspace-latest, or build-param")
     permalink = data.get('permalink', 'last')
     permalinkdict = {'last': 'lastBuild',
                      'last-stable': 'lastStableBuild',
@@ -151,12 +152,13 @@ def copyartifact(parser, xml_parent, data):
                      'last-unstable': 'lastUnstableBuild',
                      'last-unsuccessful': 'lastUnsuccessfulBuild'}
     if permalink not in permalinkdict:
-        raise Exception("permalink entered is not valid must be one of: " +
-                        "last, last-stable, last-successful, last-failed, " +
-                        "last-unstable, or last-unsuccessful")
+        raise JenkinsJobsException("permalink entered is not valid must be "
+                                   "one of: last, last-stable, "
+                                   "last-successful, last-failed, "
+                                   "last-unstable, or last-unsuccessful")
     selector = XML.SubElement(t, 'selector',
-                                 {'class': 'hudson.plugins.copyartifact.' +
-                                 selectdict[select]})
+                              {'class': 'hudson.plugins.copyartifact.' +
+                               selectdict[select]})
     if select == 'specific-build':
         XML.SubElement(selector, 'buildNumber').text = data['build-number']
     if select == 'last-successful':

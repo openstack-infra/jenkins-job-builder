@@ -34,6 +34,7 @@ Example::
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+from jenkins_jobs.errors import JenkinsJobsException
 
 
 def email(parser, xml_parent, data):
@@ -79,7 +80,8 @@ class Reporters(jenkins_jobs.modules.base.Base):
             return
 
         if xml_parent.tag != 'maven2-moduleset':
-            raise Exception("Reporters may only be used for Maven modules.")
+            raise JenkinsJobsException("Reporters may only be used for Maven "
+                                       "modules.")
 
         reporters = XML.SubElement(xml_parent, 'reporters')
 
