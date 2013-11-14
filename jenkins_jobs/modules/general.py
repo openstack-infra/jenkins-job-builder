@@ -68,6 +68,8 @@ class General(jenkins_jobs.modules.base.Base):
                 XML.SubElement(xml, 'disabled').text = 'true'
             else:
                 XML.SubElement(xml, 'disabled').text = 'false'
+        if 'display-name' in data:
+            XML.SubElement(xml, 'displayName').text = data['display-name']
         if data.get('block-downstream'):
             XML.SubElement(xml,
                            'blockBuildWhenDownstreamBuilding').text = 'true'
@@ -89,7 +91,7 @@ class General(jenkins_jobs.modules.base.Base):
         if 'workspace' in data:
             XML.SubElement(xml, 'customWorkspace').text = \
                 str(data['workspace'])
-        if('quiet-period' in data):
+        if 'quiet-period' in data:
             XML.SubElement(xml, 'quietPeriod').text = str(data['quiet-period'])
         node = data.get('node', None)
         if node:

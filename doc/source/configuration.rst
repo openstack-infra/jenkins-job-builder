@@ -34,6 +34,7 @@ later.  There are a few basic optional fields for a Job definition::
       project-type: freestyle
       defaults: global
       disabled: false
+      display-name: 'Fancy job name'
       concurrent: true
       quiet-period: 5
       workspace: /srv/build-area/job-name
@@ -55,6 +56,13 @@ later.  There are a few basic optional fields for a Job definition::
 **disabled**
   Boolean value to set whether or not this job should be disabled in
   Jenkins. Defaults to ``false`` (job will be enabled).
+
+**display-name**
+  Optional name shown for the project throughout the Jenkins web GUI in place
+  of the actual job name.  The jenkins_jobs tool cannot fully remove this trait
+  once it is set, so use caution when setting it.  Setting it to the same
+  string as the project name is an effective un-set workaround.  Alternately,
+  the field can be cleared manually using the Jenkins web interface.
 
 **concurrent**
   Boolean value to set whether or not Jenkins can run this job
