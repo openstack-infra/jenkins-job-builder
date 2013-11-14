@@ -79,6 +79,7 @@ def git(self, xml_parent, data):
     :arg bool wipe-workspace: Wipe out workspace before build
     :arg str browser: what repository browser to use (default '(Auto)')
     :arg str browser-url: url for the repository browser
+    :arg str project-name: project name in Gitblit and ViewGit repobrowser
     :arg str choosing-strategy: Jenkins class for selecting what to build
     :arg str git-config-name: Configure name for Git clone
     :arg str git-config-email: Configure email for Git clone
@@ -215,6 +216,9 @@ def git(self, xml_parent, data):
                             'hudson.plugins.git.browser.' +
                             browserdict[browser]})
         XML.SubElement(bc, 'url').text = data['browser-url']
+        if browser in ['gitblit', 'viewgit']:
+            XML.SubElement(bc, 'projectName').text = str(
+                data.get('project-name', ''))
 
 
 def repo(self, xml_parent, data):
