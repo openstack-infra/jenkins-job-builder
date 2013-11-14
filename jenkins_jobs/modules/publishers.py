@@ -2810,6 +2810,52 @@ def git(parser, xml_parent, data):
             handle_entity_children(note['note'], xml_note, note_mappings)
 
 
+def build_publisher(parser, xml_parent, data):
+    """yaml: build-publisher
+    This plugin allows records from one Jenkins to be published
+    on another Jenkins.
+
+    Requires the Jenkins `Build Publisher Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Build+Publisher+Plugin>`_
+
+    :arg str servers: Specify the servers where to publish
+
+
+    Example::
+
+        publishers:
+            - build-publisher:
+                name: servername
+                publish-unstable-builds: true
+                publish-failed-builds: true
+                days-to-keep: -1
+                num-to-keep: -1
+                artifact-days-to-keep: -1
+                artifact-num-to-keep: -1
+
+    """
+
+    reporter = XML.SubElement(
+        xml_parent,
+        'hudson.plugins.build__publisher.BuildPublisher')
+
+    XML.SubElement(reporter, 'serverName').text = data['name']
+    XML.SubElement(reporter, 'publishUnstableBuilds').text = \
+        str(data.get('publish-unstable-builds', True)).lower()
+    XML.SubElement(reporter, 'publishFailedBuilds').text = \
+        str(data.get('publish-failed-builds', True)).lower()
+
+    logrotator = XML.SubElement(reporter, 'logRotator')
+    XML.SubElement(logrotator, 'daysToKeep').text = \
+        str(data.get('days-to-keep', -1))
+    XML.SubElement(logrotator, 'numToKeep').text = \
+        str(data.get('num-to-keep', -1))
+    XML.SubElement(logrotator, 'artifactDaysToKeep').text = \
+        str(data.get('artifact-days-to-keep', -1))
+    XML.SubElement(logrotator, 'artifactNumToKeep').text = \
+        str(data.get('artifact-num-to-keep', -1))
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
