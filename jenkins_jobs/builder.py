@@ -135,7 +135,7 @@ class YamlParser(object):
 
         for job in self.data.get('job', {}).values():
             if jobs_filter and not matches(job['name'], jobs_filter):
-                logger.debug("Ignoring job {}".format(job['name']))
+                logger.debug("Ignoring job {0}".format(job['name']))
                 continue
             logger.debug("XMLifying job '{0}'".format(job['name']))
             job = self.applyDefaults(job)
