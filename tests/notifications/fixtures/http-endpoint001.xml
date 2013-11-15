@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<project>
+  <properties>
+    <com.tikal.hudson.plugins.notification.HudsonNotificationProperty>
+      <endpoints>
+        <com.tikal.hudson.plugins.notification.Endpoint>
+          <protocol>HTTP</protocol>
+          <url>http://example.com/jenkins_endpoint</url>
+        </com.tikal.hudson.plugins.notification.Endpoint>
+      </endpoints>
+    </com.tikal.hudson.plugins.notification.HudsonNotificationProperty>
+  </properties>
+</project>

@@ -1,0 +1,12 @@
+scm:
+  - repo:
+      manifest-url: https://example.com/project/
+      manifest-branch: stable
+      manifest-file: repo.xml
+      manifest-group: drivers
+      destination-dir: build
+      repo-url: https://internal.net/projects/repo
+      mirror-dir: ~/git/project/
+      jobs: 3
+      current-branch: false
+      quiet: false

@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<project>
+  <buildWrappers>
+    <hudson.plugins.envfile.EnvFileBuildWrapper>
+      <filePath>/tmp/foo.txt</filePath>
+    </hudson.plugins.envfile.EnvFileBuildWrapper>
+  </buildWrappers>
+</project>

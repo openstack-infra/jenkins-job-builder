@@ -49,7 +49,7 @@ def http_endpoint(parser, xml_parent, data):
 
       notifications:
         - http:
-          url: http://example.com/jenkins_endpoint
+            url: http://example.com/jenkins_endpoint
     """
     endpoint_element = XML.SubElement(xml_parent,
                                       'com.tikal.hudson.plugins.notification.'

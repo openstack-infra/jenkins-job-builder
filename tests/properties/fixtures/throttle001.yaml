@@ -1,0 +1,6 @@
+properties:
+  - throttle:
+      max-total: 4
+      categories:
+        - cat1
+        - cat2
