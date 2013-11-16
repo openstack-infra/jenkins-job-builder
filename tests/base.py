@@ -40,7 +40,7 @@ def get_scenarios(fixtures_path):
         # Make sure the yaml file has a xml counterpart
         if xml_candidate not in files:
             raise Exception(
-                "No XML file named '%s' to match " +
+                "No XML file named '%s' to match "
                 "YAML file '%s'" % (xml_candidate, yaml_filename))
 
         scenarios.append((yaml_filename, {
