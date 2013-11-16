@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.emotional__jenkins.EmotionalJenkinsPublisher/>
+  </publishers>
+</project>
