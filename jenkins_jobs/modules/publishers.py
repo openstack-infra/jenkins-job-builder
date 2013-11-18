@@ -26,12 +26,12 @@ Example::
 
   job:
     name: test_job
-
     publishers:
       - scp:
           site: 'example.com'
-          source: 'doc/build/html/**/*'
-          target_path: 'project'
+          files:
+            - target: 'dest/dir'
+              source: 'base/source/dir/**'
 """
 
 
@@ -947,8 +947,11 @@ def scp(parser, xml_parent, data):
       publishers:
         - scp:
             site: 'example.com'
-            target: 'dest/dir'
-            source: 'base/source/dir/**'
+            files:
+              - target: 'dest/dir'
+                source: 'base/source/dir/**'
+                keep-hierarchy: true
+                copy-after-failure: true
     """
     site = data['site']
     scp = XML.SubElement(xml_parent,
