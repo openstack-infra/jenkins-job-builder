@@ -21,17 +21,6 @@ the build is complete.
 **Component**: publishers
   :Macro: publisher
   :Entry Point: jenkins_jobs.publishers
-
-Example::
-
-  job:
-    name: test_job
-    publishers:
-      - scp:
-          site: 'example.com'
-          files:
-            - target: 'dest/dir'
-              source: 'base/source/dir/**'
 """
 
 
@@ -942,16 +931,9 @@ def scp(parser, xml_parent, data):
     :arg bool copy-console: copy the console log (default false); if
       specified, omit 'target'
 
-    Example::
+    Example:
 
-      publishers:
-        - scp:
-            site: 'example.com'
-            files:
-              - target: 'dest/dir'
-                source: 'base/source/dir/**'
-                keep-hierarchy: true
-                copy-after-failure: true
+    .. literalinclude:: ../../tests/publishers/fixtures/scp001.yaml
     """
     site = data['site']
     scp = XML.SubElement(xml_parent,
