@@ -130,6 +130,8 @@ setuptools.setup(
             'cppcheck=jenkins_jobs.modules.publishers:cppcheck',
             'email=jenkins_jobs.modules.publishers:email',
             'email-ext=jenkins_jobs.modules.publishers:email_ext',
+            ('emotional-jenkins=jenkins_jobs.modules.publishers:'
+             'emotional_jenkins'),
             'fingerprint=jenkins_jobs.modules.publishers:fingerprint',
             'ftp=jenkins_jobs.modules.publishers:ftp',
             'git=jenkins_jobs.modules.publishers:git',
