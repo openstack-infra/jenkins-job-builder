@@ -146,6 +146,8 @@ class YamlParser(object):
                 if isinstance(jobspec, dict):
                     # Singleton dict containing dict of job-specific params
                     jobname, jobparams = jobspec.items()[0]
+                    if not isinstance(jobparams, dict):
+                        jobparams = {}
                 else:
                     jobname = jobspec
                     jobparams = {}
@@ -160,6 +162,8 @@ class YamlParser(object):
                         if isinstance(group_jobspec, dict):
                             group_jobname, group_jobparams = \
                                 group_jobspec.items()[0]
+                            if not isinstance(group_jobparams, dict):
+                                group_jobparams = {}
                         else:
                             group_jobname = group_jobspec
                             group_jobparams = {}
