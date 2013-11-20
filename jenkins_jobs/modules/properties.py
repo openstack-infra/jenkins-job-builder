@@ -428,6 +428,40 @@ def build_blocker(parser, xml_parent, data):
     XML.SubElement(blocker, 'blockingJobs').text = jobs
 
 
+def batch_tasks(parser, xml_parent, data):
+    """yaml: batch-tasks
+    Batch tasks can be tasks for events like releases, integration, archiving,
+    etc. In this way, anyone in the project team can execute them in a way that
+    leaves a record.
+
+    A batch task consists of a shell script and a name. When you execute
+    a build, the shell script gets run on the workspace, just like a build.
+    Batch tasks and builds "lock" the workspace, so when one of those
+    activities is in progress, all the others will block in the queue.
+
+    Requires the Jenkins `Batch Task Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Batch+Task+Plugin>`_
+
+    :arg list batch-tasks: Batch tasks.
+
+        :Task: * **name** (`str`) Task name.
+               * **script** (`str`) Task script.
+
+    Example:
+
+    .. literalinclude:: ../../tests/properties/fixtures/batch-task.yaml
+
+    """
+    pdef = XML.SubElement(xml_parent,
+                          'hudson.plugins.batch__task.BatchTaskProperty')
+    tasks = XML.SubElement(pdef, 'tasks')
+    for task in data:
+        batch_task = XML.SubElement(tasks,
+                                    'hudson.plugins.batch__task.BatchTask')
+        XML.SubElement(batch_task, 'name').text = task['name']
+        XML.SubElement(batch_task, 'script').text = task['script']
+
+
 class Properties(jenkins_jobs.modules.base.Base):
     sequence = 20
 
