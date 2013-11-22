@@ -1,0 +1,6 @@
+builders:
+  - trigger-builds:
+    - project: "build_started"
+      predefined-parameters:
+        FOO="bar"
+      block: true

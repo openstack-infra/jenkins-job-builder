@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<project>
+  <properties>
+    <hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+      <maxConcurrentPerNode>0</maxConcurrentPerNode>
+      <maxConcurrentTotal>4</maxConcurrentTotal>
+      <throttleEnabled>true</throttleEnabled>
+      <categories>
+        <string>cat1</string>
+        <string>cat2</string>
+      </categories>
+      <throttleOption/>
+      <configVersion>1</configVersion>
+    </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+  </properties>
+</project>

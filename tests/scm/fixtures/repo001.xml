@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<project>
+  <scm class="hudson.plugins.repo.RepoScm">
+    <manifestRepositoryUrl>https://example.com/project/</manifestRepositoryUrl>
+    <manifestBranch>stable</manifestBranch>
+    <manifestFile>repo.xml</manifestFile>
+    <manifestGroup>drivers</manifestGroup>
+    <destinationDir>build</destinationDir>
+    <repoUrl>https://internal.net/projects/repo</repoUrl>
+    <mirrorDir>~/git/project/</mirrorDir>
+    <jobs>3</jobs>
+    <currentBranch>false</currentBranch>
+    <quiet>false</quiet>
+  </scm>
+</project>

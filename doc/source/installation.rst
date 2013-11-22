@@ -11,6 +11,25 @@ systems, including Jenkins.  If you use Puppet, you can use the
 
 __ https://github.com/openstack-infra/config/tree/master/modules/jenkins
 
+Documentation
+-------------
+
+Documentation have been included and are in the 'doc' folder. To generate docs
+locally execute the command::
+
+    tox -e venv -- python setup.py build_sphinx
+
+Unit Tests
+----------
+
+Unit tests have been included and are in the 'tests' folder.  We recently
+started including unit tests as examples in our documentation so to keep the
+examples up to date it is very important that we include a unit tests for
+every module.  You can run the unit tests by execute the command::
+
+    tox -epy27
+
+*Note - view tox.ini to run test on other versions of python
 
 Configuration File
 ------------------
@@ -54,15 +73,18 @@ Usage
 ^^^^^
 .. program-output:: jenkins-jobs --help
 
-Testing
-^^^^^^^
-Once you have a configuration defined, you can test it with::
+Testing JJB
+^^^^^^^^^^^
+Once you have a configuration defined, you can test the job builder by running::
 
   jenkins-jobs test /path/to/config -o /path/to/output
 
 That will write XML files to the output directory for all of the jobs
-defined in the configuration directory.  When you're satisfied, you
-can run::
+defined in the configuration directory.  
+
+Updating Jenkins
+^^^^^^^^^^^^^^^^
+When you're satisfied with the generated xml from the test, you can run::
 
   jenkins-jobs update /path/to/config
 

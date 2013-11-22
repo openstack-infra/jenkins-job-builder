@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-#
 # Joint copyright:
 #  - Copyright 2012,2013 Wikimedia Foundation
 #  - Copyright 2012,2013 Antoine "hashar" Musso
@@ -18,13 +16,13 @@
 # under the License.
 
 import os
-from testscenarios.testcase import TestWithScenarios
 from testtools import TestCase
+from testscenarios.testcase import TestWithScenarios
 from jenkins_jobs.modules import scm
 from tests.base import get_scenarios, BaseTestCase
 
 
-class TestCaseModuleScm(TestWithScenarios, TestCase, BaseTestCase):
+class TestCaseModuleSCM(TestWithScenarios, TestCase, BaseTestCase):
     fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
     scenarios = get_scenarios(fixtures_path)
     klass = scm.SCM

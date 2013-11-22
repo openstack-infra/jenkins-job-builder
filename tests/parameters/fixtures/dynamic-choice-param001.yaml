@@ -1,0 +1,7 @@
+parameters:
+  - dynamic-choice:
+      name: OPTIONS
+      description: "Available options"
+      script: "['optionA', 'optionB']"
+      remote: false
+      read-only: false
