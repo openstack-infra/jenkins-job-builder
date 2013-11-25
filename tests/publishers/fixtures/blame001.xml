@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<project>
+  <publishers>
+    <hudson.plugins.blame__upstream__commiters.BlameUpstreamCommitersPublisher/>
+  </publishers>
+</project>
+
