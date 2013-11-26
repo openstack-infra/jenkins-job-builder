@@ -77,6 +77,24 @@ def archive(parser, xml_parent, data):
         latest.text = 'false'
 
 
+def blame_upstream(parser, xml_parent, data):
+    """yaml: blame-upstream
+    Notify upstream commiters when build fails
+    Requires the Jenkins `Blame upstream commiters Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/
+    Blame+Upstream+Committers+Plugin>`_
+
+    Example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/blame001.yaml
+
+    """
+
+    XML.SubElement(xml_parent,
+                   'hudson.plugins.blame__upstream__commiters.'
+                   'BlameUpstreamCommitersPublisher')
+
+
 def emotional_jenkins(parser, xml_parent, data):
     """yaml: emotional-jenkins
     Emotional Jenkins.
