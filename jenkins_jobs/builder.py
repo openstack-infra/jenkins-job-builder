@@ -189,6 +189,10 @@ class YamlParser(object):
                     d.update(project)
                     d.update(jobparams)
                     self.getXMLForTemplateJob(d, template, jobs_filter)
+                else:
+                    raise JenkinsJobsException("Failed to find suitable "
+                                               "template named '{0}'"
+                                               .format(jobname))
 
     def getXMLForTemplateJob(self, project, template, jobs_filter=None):
         dimensions = []
@@ -327,11 +331,16 @@ class ModuleRegistry(object):
             component_data = {}
 
         # Look for a component function defined in an entry point
-        for ep in pkg_resources.iter_entry_points(
-                group='jenkins_jobs.{0}'.format(component_list_type),
-                name=name):
-            func = ep.load()
+        eps = list(pkg_resources.iter_entry_points(
+            group='jenkins_jobs.{0}'.format(component_list_type), name=name))
+
+        if len(eps) == 1:
+            func = eps[0].load()
             func(parser, xml_parent, component_data)
+        elif len(eps) > 1:
+            raise JenkinsJobsException("Duplicate entry point found for "
+                                       "component type: '{0}', name: '{1}'".
+                                       format(component_type, name))
         else:
             # Otherwise, see if it's defined as a macro
             component = parser.data.get(component_type, {}).get(name)
@@ -342,6 +351,10 @@ class ModuleRegistry(object):
                     # the arguments are interpolated into the real defn.
                     self.dispatch(component_type,
                                   parser, xml_parent, b, component_data)
+            else:
+                raise JenkinsJobsException("Unknown entry point or macro '{0}'"
+                                           " for component type: '{1}'.".
+                                           format(name, component_type))
 
 
 class XmlJob(object):
