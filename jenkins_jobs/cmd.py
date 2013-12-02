@@ -90,17 +90,26 @@ def main():
         config.set("jenkins", "url", "http://localhost:8080")
         config.set("jenkins", "user", None)
         config.set("jenkins", "password", None)
+        config.set("jenkins", "ignore_cache", False)
         logger.debug("Not reading config for test output generation")
     else:
         raise jenkins_jobs.errors.JenkinsJobsException(
             "A valid configuration file is required when not run as a test")
 
     logger.debug("Config: {0}".format(config))
+
+    # check the ignore_cache setting: first from command line,
+    # if not present check from ini file
+    ignore_cache = False
+    if options.ignore_cache:
+        ignore_cache = options.ignore_cache
+    elif config.has_option('jenkins', 'ignore_cache'):
+        ignore_cache = config.get('jenkins', 'ignore_cache')
     builder = jenkins_jobs.builder.Builder(config.get('jenkins', 'url'),
                                            config.get('jenkins', 'user'),
                                            config.get('jenkins', 'password'),
                                            config,
-                                           ignore_cache=options.ignore_cache,
+                                           ignore_cache=ignore_cache,
                                            flush_cache=options.flush_cache)
 
     if options.command == 'delete':

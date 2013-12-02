@@ -2,3 +2,4 @@
 user=jenkins
 password=1234567890abcdef1234567890abcdef
 url=https://jenkins.example.com
+ignore_cache=True
