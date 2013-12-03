@@ -1053,7 +1053,7 @@ def pipeline(parser, xml_parent, data):
     Example::
 
       publishers:
-        - pipleline: deploy
+        - pipeline: deploy
 
     You can build pipeline jobs that are re-usable in different pipelines by
     using a :ref:`job-template` to define the pipeline jobs,
