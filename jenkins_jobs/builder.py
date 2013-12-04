@@ -263,6 +263,8 @@ class YamlParser(object):
 
 
 class ModuleRegistry(object):
+    entry_points_cache = {}
+
     def __init__(self, config):
         self.modules = []
         self.modules_by_component_type = {}
@@ -331,16 +333,24 @@ class ModuleRegistry(object):
             component_data = {}
 
         # Look for a component function defined in an entry point
-        eps = list(pkg_resources.iter_entry_points(
-            group='jenkins_jobs.{0}'.format(component_list_type), name=name))
+        cache_key = '%s:%s' % (component_list_type, name)
+        eps = ModuleRegistry.entry_points_cache.get(cache_key)
+        if eps is None:
+            eps = list(pkg_resources.iter_entry_points(
+                       group='jenkins_jobs.{0}'.format(component_list_type),
+                       name=name))
+            if len(eps) > 1:
+                raise JenkinsJobsException(
+                    "Duplicate entry point found for component type: '{0}',"
+                    "name: '{1}'".format(component_type, name))
+            elif len(eps) == 1:
+                ModuleRegistry.entry_points_cache[cache_key] = eps
+                logger.debug("Cached entry point %s = %s", cache_key,
+                             ModuleRegistry.entry_points_cache[cache_key])
 
         if len(eps) == 1:
             func = eps[0].load()
             func(parser, xml_parent, component_data)
-        elif len(eps) > 1:
-            raise JenkinsJobsException("Duplicate entry point found for "
-                                       "component type: '{0}', name: '{1}'".
-                                       format(component_type, name))
         else:
             # Otherwise, see if it's defined as a macro
             component = parser.data.get(component_type, {}).get(name)
