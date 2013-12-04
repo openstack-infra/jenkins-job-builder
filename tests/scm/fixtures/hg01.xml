@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <scm class="hudson.plugins.mercurial.MercurialSCM">
+    <source>ssh://hg@hg/repo</source>
+    <revisionType>BRANCH</revisionType>
+    <revision>default</revision>
+    <clean>false</clean>
+    <modules/>
+    <disableChangeLog>false</disableChangeLog>
+  </scm>
+</project>

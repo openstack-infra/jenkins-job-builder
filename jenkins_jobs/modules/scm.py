@@ -660,6 +660,106 @@ def workspace(parser, xml_parent, data):
         XML.SubElement(workspace, 'criteria').text = criteria
 
 
+def hg(self, xml_parent, data):
+    """yaml: hg
+    Specifies the mercurial SCM repository for this job.
+    Requires the Jenkins `Mercurial Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Mercurial+Plugin>`_
+
+    :arg str url: URL of the hg repository
+    :arg str credentials-id: ID of credentials to use to connect (optional)
+    :arg str revision-type: revision type to use (default 'branch')
+    :arg str revision: the branch or tag name you would like to track
+      (default 'default')
+    :arg list(str) modules: reduce unnecessary builds by specifying a list of
+      "modules" within the repository. A module is a directory name within the
+      repository that this project lives in. (default '')
+    :arg bool clean: wipe any local modifications or untracked files in the
+      repository checkout (default false)
+    :arg str subdir: check out the Mercurial repository into this
+      subdirectory of the job's workspace (optional)
+    :arg bool disable-changelog: do not calculate the Mercurial changelog
+      for each build (default false)
+    :arg str browser: what repository browser to use (default 'auto')
+    :arg str browser-url: url for the repository browser
+      (required if browser is set)
+
+    :browser values:
+        :fisheye:
+        :bitbucketweb:
+        :googlecode:
+        :hgweb:
+        :kilnhg:
+        :rhodecode:
+        :rhodecodelegacy:
+
+    Example:
+
+    .. literalinclude:: ../../tests/scm/fixtures/hg02.yaml
+    """
+    scm = XML.SubElement(xml_parent, 'scm', {'class':
+                         'hudson.plugins.mercurial.MercurialSCM'})
+    if 'url' in data:
+        XML.SubElement(scm, 'source').text = data['url']
+    else:
+        raise JenkinsJobsException("A top level url must exist")
+
+    if 'credentials-id' in data:
+        XML.SubElement(scm, 'credentialsId').text = data['credentials-id']
+
+    revision_type_dict = {
+        'branch': 'BRANCH',
+        'tag': 'TAG',
+    }
+    try:
+        revision_type = revision_type_dict[data.get('revision-type', 'branch')]
+    except KeyError:
+        raise JenkinsJobsException('Invalid revision-type %r' %
+                                   data.get('revision-type'))
+    XML.SubElement(scm, 'revisionType').text = revision_type
+
+    XML.SubElement(scm, 'revision').text = data.get('revision', 'default')
+
+    if 'subdir' in data:
+        XML.SubElement(scm, 'subdir').text = data['subdir']
+
+    xc = XML.SubElement(scm, 'clean')
+    xc.text = str(data.get('clean', False)).lower()
+
+    modules = data.get('modules', '')
+    if isinstance(modules, list):
+        modules = " ".join(modules)
+    XML.SubElement(scm, 'modules').text = modules
+
+    xd = XML.SubElement(scm, 'disableChangeLog')
+    xd.text = str(data.get('disable-changelog', False)).lower()
+
+    browser = data.get('browser', 'auto')
+    browserdict = {
+        'auto': '',
+        'bitbucket': 'BitBucket',
+        'fisheye': 'FishEye',
+        'googlecode': 'GoogleCode',
+        'hgweb': 'HgWeb',
+        'kilnhg': 'KilnHG',
+        'rhodecode': 'RhodeCode',
+        'rhodecode-pre-1.2.0': 'RhodeCodeLegacy'
+    }
+
+    if browser not in browserdict:
+        raise JenkinsJobsException("Browser entered is not valid must be one "
+                                   "of: %s" % ", ".join(browserdict.keys()))
+    if browser != 'auto':
+        bc = XML.SubElement(scm, 'browser', {'class':
+                            'hudson.plugins.mercurial.browser.' +
+                            browserdict[browser]})
+        if 'browser-url' in data:
+            XML.SubElement(bc, 'url').text = data['browser-url']
+        else:
+            raise JenkinsJobsException("A browser-url must be specified along "
+                                       "with browser.")
+
+
 class SCM(jenkins_jobs.modules.base.Base):
     sequence = 30
 
