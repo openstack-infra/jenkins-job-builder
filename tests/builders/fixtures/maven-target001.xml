@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<project>
+  <builders>
+    <hudson.tasks.Maven>
+      <targets>clean verify</targets>
+      <properties>skipTest=true</properties>
+      <mavenName>mvn30</mavenName>
+      <usePrivateRepository>true</usePrivateRepository>
+      <settings class="jenkins.mvn.DefaultSettingsProvider"/>
+      <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
+    </hudson.tasks.Maven>
+  </builders>
+</project>

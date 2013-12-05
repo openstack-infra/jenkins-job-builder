@@ -729,19 +729,18 @@ def maven_target(parser, xml_parent, data):
     :arg str goals: Goals to execute
     :arg str properties: Properties for maven, can have multiples
     :arg str pom: Location of pom.xml (defaults to pom.xml)
+    :arg bool private-repository: Use private maven repository for this
+      job (defaults to false)
     :arg str maven-version: Installation of maven which should be used
       (optional)
+    :arg str java-opts: java options for maven, can have multiples,
+        must be in quotes (optional)
+    :arg str settings: Path to use as user settings.xml (optional)
+    :arg str global-settings: Path to use as global settings.xml (optional)
 
-    Example::
+    Example:
 
-      builders:
-        - maven-target:
-            maven-version: Maven3
-            pom: parent/pom.xml
-            goals: clean
-            properties:
-              - foo=bar
-              - bar=foo
+    .. literalinclude:: ../../tests/builders/fixtures/maven-target-doc.yaml
     """
     maven = XML.SubElement(xml_parent, 'hudson.tasks.Maven')
     XML.SubElement(maven, 'targets').text = data['goals']
@@ -751,11 +750,30 @@ def maven_target(parser, xml_parent, data):
         XML.SubElement(maven, 'mavenName').text = str(data['maven-version'])
     if 'pom' in data:
         XML.SubElement(maven, 'pom').text = str(data['pom'])
-    XML.SubElement(maven, 'usePrivateRepository').text = 'false'
-    XML.SubElement(maven, 'settings', {
-                   'class': 'jenkins.mvn.DefaultSettingsProvider'})
-    XML.SubElement(maven, 'globalSettings', {
-                   'class': 'jenkins.mvn.DefaultGlobalSettingsProvider'})
+    use_private = str(data.get('private-repository', False)).lower()
+    XML.SubElement(maven, 'usePrivateRepository').text = use_private
+    if 'java-opts' in data:
+        javaoptions = ' '.join(data.get('java-opts', []))
+        XML.SubElement(maven, 'jvmOptions').text = javaoptions
+    if 'settings' in data:
+        settings = XML.SubElement(maven, 'settings',
+                                  {'class':
+                                   'jenkins.mvn.FilePathSettingsProvider'})
+        XML.SubElement(settings, 'path').text = data.get('settings')
+    else:
+        XML.SubElement(maven, 'settings',
+                       {'class':
+                        'jenkins.mvn.DefaultSettingsProvider'})
+    if 'global-settings' in data:
+        provider = 'jenkins.mvn.FilePathGlobalSettingsProvider'
+        global_settings = XML.SubElement(maven, 'globalSettings',
+                                         {'class': provider})
+        XML.SubElement(global_settings, 'path').text = data.get(
+            'global-settings')
+    else:
+        XML.SubElement(maven, 'globalSettings',
+                       {'class':
+                        'jenkins.mvn.DefaultGlobalSettingsProvider'})
 
 
 def multijob(parser, xml_parent, data):
