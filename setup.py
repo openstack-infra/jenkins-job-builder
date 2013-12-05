@@ -80,6 +80,7 @@ setuptools.setup(
             ('authenticated-build=jenkins_jobs.modules.properties:'
              'authenticated_build'),
             'authorization=jenkins_jobs.modules.properties:authorization',
+            'batch-tasks=jenkins_jobs.modules.properties:batch_tasks',
             'build-blocker=jenkins_jobs.modules.properties:build_blocker',
             'extended-choice=jenkins_jobs.modules.properties:extended_choice',
             'github=jenkins_jobs.modules.properties:github',

@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<project>
+  <properties>
+    <hudson.plugins.batch__task.BatchTaskProperty>
+      <tasks>
+        <hudson.plugins.batch__task.BatchTask>
+          <name>release</name>
+          <script>mvn -B release:prepare release:perform</script>
+        </hudson.plugins.batch__task.BatchTask>
+        <hudson.plugins.batch__task.BatchTask>
+          <name>say hello</name>
+          <script>echo &quot;Hello world&quot;</script>
+        </hudson.plugins.batch__task.BatchTask>
+      </tasks>
+    </hudson.plugins.batch__task.BatchTaskProperty>
+  </properties>
+</project>
