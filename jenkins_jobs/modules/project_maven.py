@@ -60,9 +60,9 @@ class Maven(jenkins_jobs.modules.base.Base):
     sequence = 0
 
     def root_xml(self, data):
-        if 'maven' not in data:
-            return None
         xml_parent = XML.Element('maven2-moduleset')
+        if 'maven' not in data:
+            return xml_parent
         root_module = XML.SubElement(xml_parent, 'rootModule')
         XML.SubElement(root_module, 'groupId').text = \
             data['maven']['root-module']['group-id']

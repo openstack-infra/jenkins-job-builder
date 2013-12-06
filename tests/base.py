@@ -76,7 +76,20 @@ class BaseTestCase(object):
 
         yaml_content, expected_xml = self.__read_content()
 
-        xml_project = XML.Element('project')  # root element
+        root_element = XML.Element('project')
+        if ('project-type' in yaml_content):
+            if (yaml_content['project-type'] == "maven"):
+                root_element = XML.Element('maven2-moduleset')
+            if (yaml_content['project-type'] == "matrix"):
+                root_element = XML.Element('matrix-project')
+            if (yaml_content['project-type'] == "flow"):
+                root_element = XML.Element('com.cloudbees.plugins.flow.'
+                                           'BuildFlow')
+            if (yaml_content['project-type'] == "multijob"):
+                root_element = XML.Element('com.tikal.jenkins.plugins.'
+                                           'multijob.MultiJobProject')
+
+        xml_project = root_element
         parser = YamlParser()
         pub = self.klass(ModuleRegistry({}))
 
