@@ -2916,6 +2916,45 @@ def stash(parser, xml_parent, data):
         data.get('include-build-number', False)).lower()
 
 
+def description_setter(parser, xml_parent, data):
+    """yaml: description-setter
+    This plugin sets the description for each build,
+    based upon a RegEx test of the build log file.
+
+    Requires the Jenkins `Description Setter Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Description+Setter+Plugin>`_
+
+    :arg str regexp: A RegEx which is used to scan the build log file
+    :arg str regexp-for-failed: A RegEx which is used for failed builds
+        (optional)
+    :arg str description: The description to set on the build (optional)
+    :arg str description-for-failed: The description to set on
+        the failed builds (optional)
+    :arg bool set-for-matrix: Also set the description on
+        a multi-configuration build (Default False)
+
+    Example:
+
+    .. literalinclude:: ../../tests/publishers/fixtures/description-setter.yaml
+
+    """
+
+    descriptionsetter = XML.SubElement(
+        xml_parent,
+        'hudson.plugins.descriptionsetter.DescriptionSetterPublisher')
+    XML.SubElement(descriptionsetter, 'regexp').text = data.get('regexp', '')
+    XML.SubElement(descriptionsetter, 'regexpForFailed').text = \
+        data.get('regexp-for-failed', '')
+    if 'description' in data:
+        XML.SubElement(descriptionsetter, 'description').text = \
+            data['description']
+    if 'description-for-failed' in data:
+        XML.SubElement(descriptionsetter, 'descriptionForFailed').text = \
+            data['description-for-failed']
+    for_matrix = str(data.get('set-for-matrix', False)).lower()
+    XML.SubElement(descriptionsetter, 'setForMatrix').text = for_matrix
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
