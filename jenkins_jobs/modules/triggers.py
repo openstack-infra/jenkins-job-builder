@@ -348,24 +348,22 @@ def github_pull_request(parser, xml_parent, data):
     GitHub+pull+request+builder+plugin>`_
 
     :arg list admin-list: the users with admin rights (optional)
-    :arg string cron: cron syntax of when to run (optional)
     :arg list white-list: users whose pull requests build (optional)
     :arg list org-list: orgs whose users should be white listed (optional)
+    :arg string cron: cron syntax of when to run (optional)
+    :arg string trigger-phrase: when filled, commenting this phrase
+        in the pull request will trigger a build (optional)
+    :arg bool only-trigger-phrase: only commenting the trigger phrase
+        in the pull request will trigger a build (default false)
+    :arg bool github-hooks: use github hook (default false)
+    :arg bool permit-all: build every pull request automatically
+        without asking (default false)
+    :arg bool auto-close-on-fail: close failed pull request automatically
+        (default false)
 
-    Example::
+    Example:
 
-      triggers:
-        - github-pull-request:
-            admin-list:
-              - user1
-              - user2
-            cron: * * * * *
-            white-list:
-              - user3
-              - user4
-            org-list:
-              - org1
-              - org2
+    .. literalinclude:: ../../tests/triggers/fixtures/github-pull-request.yaml
     """
     ghprb = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.ghprb.'
                            'GhprbTrigger')
@@ -377,6 +375,16 @@ def github_pull_request(parser, xml_parent, data):
     org_string = "\n".join(data.get('org-list', []))
     XML.SubElement(ghprb, 'orgslist').text = org_string
     XML.SubElement(ghprb, 'cron').text = data.get('cron', '')
+    XML.SubElement(ghprb, 'triggerPhrase').text = \
+        data.get('trigger-phrase', '')
+    XML.SubElement(ghprb, 'onlyTriggerPhrase').text = str(
+        data.get('only-trigger-phrase', False)).lower()
+    XML.SubElement(ghprb, 'useGitHubHooks').text = str(
+        data.get('github-hooks', False)).lower()
+    XML.SubElement(ghprb, 'permitAll').text = str(
+        data.get('permit-all', False)).lower()
+    XML.SubElement(ghprb, 'autoCloseFailedPullRequests').text = str(
+        data.get('auto-close-on-fail', False)).lower()
 
 
 def build_result(parser, xml_parent, data):
