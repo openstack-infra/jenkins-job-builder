@@ -1,0 +1,7 @@
+publishers:
+  - description-setter:
+      regexp: ".*(<a href=.*a>)"
+      regexp-for-failed: ".*(<a href=.*a>)"
+      description: "some description"
+      description-for-failed: "another description"
+      set-for-matrix: true

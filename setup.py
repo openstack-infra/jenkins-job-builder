@@ -130,6 +130,8 @@ setuptools.setup(
             'copy-to-master=jenkins_jobs.modules.publishers:copy_to_master',
             'coverage=jenkins_jobs.modules.publishers:coverage',
             'cppcheck=jenkins_jobs.modules.publishers:cppcheck',
+            ('description-setter=jenkins_jobs.modules.publishers:'
+             'description_setter'),
             'email=jenkins_jobs.modules.publishers:email',
             'email-ext=jenkins_jobs.modules.publishers:email_ext',
             ('emotional-jenkins=jenkins_jobs.modules.publishers:'

@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<project>
+  <publishers>
+    <hudson.plugins.descriptionsetter.DescriptionSetterPublisher>
+      <regexp>.*(&lt;a href=.*a&gt;)</regexp>
+      <regexpForFailed>.*(&lt;a href=.*a&gt;)</regexpForFailed>
+      <description>some description</description>
+      <descriptionForFailed>another description</descriptionForFailed>
+      <setForMatrix>true</setForMatrix>
+    </hudson.plugins.descriptionsetter.DescriptionSetterPublisher>
+  </publishers>
+</project>
