@@ -29,7 +29,7 @@ every module.  You can run the unit tests by execute the command::
 
     tox -epy27
 
-*Note - view tox.ini to run test on other versions of python
+* Note - view tox.ini to run test on other versions of python
 
 Configuration File
 ------------------
