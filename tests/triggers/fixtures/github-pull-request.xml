@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.ghprb.GhprbTrigger>
+      <spec>* * * * *</spec>
+      <adminlist>user1
+        user2</adminlist>
+      <whitelist>user3
+        user4</whitelist>
+      <orgslist>org1
+        org2</orgslist>
+      <cron>* * * * *</cron>
+      <triggerPhrase>retest this please</triggerPhrase>
+      <onlyTriggerPhrase>true</onlyTriggerPhrase>
+      <useGitHubHooks>true</useGitHubHooks>
+      <permitAll>false</permitAll>
+      <autoCloseFailedPullRequests>false</autoCloseFailedPullRequests>
+    </org.jenkinsci.plugins.ghprb.GhprbTrigger>
+  </triggers>
+</project>
