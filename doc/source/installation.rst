@@ -44,6 +44,7 @@ the following format::
   user=USERNAME
   password=PASSWORD
   url=JENKINS_URL
+  ignore_cache=IGNORE_CACHE_FLAG
 
 **user**
   This should be the name of a user previously defined in Jenkins.
@@ -59,6 +60,10 @@ the following format::
 
 **url**
   The base URL for your Jenkins installation.
+
+**ignore_cache**
+  (Optional) If set to True, jenkins job builder
+  won't be using any cache.
 
 
 Running
