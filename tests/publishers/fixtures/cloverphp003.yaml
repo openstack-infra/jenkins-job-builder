@@ -1,0 +1,10 @@
+# Specify only method or statement
+# Does not specify failling
+publishers:
+ - cloverphp:
+       xml-location: 'build/clover.xml'
+       metric-targets:
+        - healthy:
+           method: 77
+        - unhealthy:
+           statement: 88

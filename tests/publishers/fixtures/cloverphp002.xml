@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.cloverphp.CloverPHPPublisher>
+      <publishHtmlReport>true</publishHtmlReport>
+      <reportDir>html</reportDir>
+      <xmlLocation>build/clover.xml</xmlLocation>
+      <disableArchiving>true</disableArchiving>
+      <healthyTarget>
+        <methodCoverage>80</methodCoverage>
+        <statementCoverage>90</statementCoverage>
+      </healthyTarget>
+      <unhealthyTarget>
+        <methodCoverage>40</methodCoverage>
+        <statementCoverage>50</statementCoverage>
+      </unhealthyTarget>
+      <failingTarget>
+        <methodCoverage>10</methodCoverage>
+        <statementCoverage>20</statementCoverage>
+      </failingTarget>
+    </org.jenkinsci.plugins.cloverphp.CloverPHPPublisher>
+  </publishers>
+</project>

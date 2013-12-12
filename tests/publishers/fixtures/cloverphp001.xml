@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.cloverphp.CloverPHPPublisher>
+      <publishHtmlReport>false</publishHtmlReport>
+      <xmlLocation>build/clover.xml</xmlLocation>
+      <disableArchiving>false</disableArchiving>
+      <healthyTarget>
+        <methodCoverage>70</methodCoverage>
+        <statementCoverage>80</statementCoverage>
+      </healthyTarget>
+      <unhealthyTarget/>
+      <failingTarget/>
+    </org.jenkinsci.plugins.cloverphp.CloverPHPPublisher>
+  </publishers>
+</project>
