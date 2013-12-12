@@ -1,0 +1,14 @@
+builders:
+        - maven-target:
+            maven-version: Maven3
+            pom: parent/pom.xml
+            goals: clean
+            private-repository: true
+            properties:
+              - foo=bar
+              - bar=foo
+            java-opts:
+              - "-Xms512m -Xmx1024m"
+              - "-XX:PermSize=128m -XX:MaxPermSize=256m"
+            settings: mvn/settings.xml              
+            global-settings: mvn/globalsettings.xml

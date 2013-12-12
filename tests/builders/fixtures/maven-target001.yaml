@@ -1,0 +1,7 @@
+builders:
+      - maven-target:
+          maven-version: mvn30
+          goals: clean verify
+          private-repository: true
+          properties:
+            - skipTest=true
