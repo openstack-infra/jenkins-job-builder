@@ -90,6 +90,34 @@ Examples:
 For all the multi file includes, the files are simply appended using a newline
 character.
 
+
+To allow for job templates to perform substitution on the path names, when a
+filename containing a python format placeholder is encountered, lazy loading
+support is enabled, where instead of returning the contents back during yaml
+parsing, it is delayed until the variable substitution is performed.
+
+Example:
+
+    .. literalinclude:: /../../tests/yamlparser/fixtures/lazy-load-jobs001.yaml
+
+    using a list of files:
+
+    .. literalinclude::
+        /../../tests/yamlparser/fixtures/lazy-load-jobs-multi001.yaml
+
+.. note::
+
+    Because lazy-loading involves performing the substitution on the file
+    name, it means that jenkins-job-builder can not call the variable
+    substitution on the contents of the file. This means that the
+    ``!include-raw:`` tag will behave as though ``!include-raw-escape:`` tag
+    was used instead whenever name substitution on the filename is to be
+    performed.
+
+    Given the behaviour described above, when substitution is to be performed
+    on any filename passed via ``!include-raw-escape:`` the tag will be
+    automatically converted to ``!include-raw:`` and no escaping will be
+    performed.
 """
 
 import functools
@@ -249,9 +277,14 @@ class YamlInclude(BaseYAMLObject):
         return filename
 
     @classmethod
-    def _open_file(cls, loader, scalar_node):
-        filename = cls._find_file(loader.construct_yaml_str(scalar_node),
-                                  loader.search_path)
+    def _open_file(cls, loader, node):
+        node_str = loader.construct_yaml_str(node)
+        try:
+            node_str.format()
+        except KeyError:
+            return cls._lazy_load(loader, cls.yaml_tag, node)
+
+        filename = cls._find_file(node_str, loader.search_path)
         try:
             with io.open(filename, 'r', encoding='utf-8') as f:
                 return f.read()
@@ -262,18 +295,32 @@ class YamlInclude(BaseYAMLObject):
 
     @classmethod
     def _from_file(cls, loader, node):
-        data = yaml.load(cls._open_file(loader, node),
+        contents = cls._open_file(loader, node)
+        if isinstance(contents, LazyLoader):
+            return contents
+
+        data = yaml.load(contents,
                          functools.partial(cls.yaml_loader,
                                            search_path=loader.search_path))
         return data
+
+    @classmethod
+    def _lazy_load(cls, loader, tag, node_str):
+        logger.info("Lazy loading of file template '{0}' enabled"
+                    .format(node_str))
+        return LazyLoader((cls, loader, node_str))
 
     @classmethod
     def from_yaml(cls, loader, node):
         if isinstance(node, yaml.ScalarNode):
             return cls._from_file(loader, node)
         elif isinstance(node, yaml.SequenceNode):
-            return u'\n'.join(cls._from_file(loader, scalar_node)
-                              for scalar_node in node.value)
+            contents = [cls._from_file(loader, scalar_node)
+                        for scalar_node in node.value]
+            if any(isinstance(s, LazyLoader) for s in contents):
+                return LazyLoaderCollection(contents)
+
+            return u'\n'.join(contents)
         else:
             raise yaml.constructor.ConstructorError(
                 None, None, "expected either a sequence or scalar node, but "
@@ -293,7 +340,15 @@ class YamlIncludeRawEscape(YamlIncludeRaw):
 
     @classmethod
     def from_yaml(cls, loader, node):
-        return loader.escape_callback(YamlIncludeRaw.from_yaml(loader, node))
+        data = YamlIncludeRaw.from_yaml(loader, node)
+        if isinstance(data, LazyLoader):
+            logger.warn("Replacing %s tag with %s since lazy loading means "
+                        "file contents will not be deep formatted for "
+                        "variable substitution.", cls.yaml_tag,
+                        YamlIncludeRaw.yaml_tag)
+            return data
+        else:
+            return loader.escape_callback(data)
 
 
 class DeprecatedTag(BaseYAMLObject):
@@ -318,6 +373,36 @@ class YamlIncludeRawDeprecated(DeprecatedTag):
 class YamlIncludeRawEscapeDeprecated(DeprecatedTag):
     yaml_tag = u'!include-raw-escape'
     _new = YamlIncludeRawEscape
+
+
+class LazyLoaderCollection(object):
+    """Helper class to format a collection of LazyLoader objects"""
+    def __init__(self, sequence):
+        self._data = sequence
+
+    def format(self, *args, **kwargs):
+        return u'\n'.join(item.format(*args, **kwargs) for item in self._data)
+
+
+class LazyLoader(object):
+    """Helper class to provide lazy loading of files included using !include*
+    tags where the path to the given file contains unresolved placeholders.
+    """
+
+    def __init__(self, data):
+        # str subclasses can only have one argument, so assume it is a tuple
+        # being passed and unpack as needed
+        self._cls, self._loader, self._node = data
+
+    def __str__(self):
+        return "%s %s" % (self._cls.yaml_tag, self._node.value)
+
+    def __repr__(self):
+        return "%s %s" % (self._cls.yaml_tag, self._node.value)
+
+    def format(self, *args, **kwargs):
+        self._node.value = self._node.value.format(*args, **kwargs)
+        return self._cls.from_yaml(self._loader, self._node)
 
 
 def load(stream, **kwargs):

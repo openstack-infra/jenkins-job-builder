@@ -1,0 +1,20 @@
+- wrapper:
+    !include: lazy-load-jobs-timeout.yaml.inc
+
+- project:
+    name: test
+    num: "002"
+    version:
+      - 1.1
+    jobs:
+      - 'build_myproject_{version}'
+
+- job-template:
+    name: 'build_myproject_{version}'
+    wrappers:
+      !include: lazy-load-wrappers-{version}.yaml.inc
+    builders:
+      - shell:
+          !include-raw:
+            - lazy-load-scripts/echo_vars_{version}.sh
+            - include-raw{num}-cool.sh
