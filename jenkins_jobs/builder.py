@@ -16,6 +16,7 @@
 # Manage jobs in Jenkins server
 
 import os
+import sys
 import hashlib
 import yaml
 import json
@@ -32,6 +33,41 @@ from jenkins_jobs.errors import JenkinsJobsException
 
 logger = logging.getLogger(__name__)
 MAGIC_MANAGE_STRING = "<!-- Managed by Jenkins Job Builder -->"
+
+
+# Python 2.6's minidom toprettyxml produces broken output by adding extraneous
+# whitespace around data. This patches the broken implementation with one taken
+# from 2.7
+def writexml(self, writer, indent="", addindent="", newl=""):
+    # indent = current indentation
+    # addindent = indentation to add to higher levels
+    # newl = newline string
+    writer.write(indent + "<" + self.tagName)
+
+    attrs = self._get_attributes()
+    a_names = attrs.keys()
+    a_names.sort()
+
+    for a_name in a_names:
+        writer.write(" %s=\"" % a_name)
+        minidom._write_data(writer, attrs[a_name].value)
+        writer.write("\"")
+    if self.childNodes:
+        writer.write(">")
+        if (len(self.childNodes) == 1 and
+                self.childNodes[0].nodeType == minidom.Node.TEXT_NODE):
+            self.childNodes[0].writexml(writer, '', '', '')
+        else:
+            writer.write(newl)
+            for node in self.childNodes:
+                node.writexml(writer, indent + addindent, addindent, newl)
+            writer.write(indent)
+        writer.write("</%s>%s" % (self.tagName, newl))
+    else:
+        writer.write("/>%s" % (newl))
+
+if sys.hexversion < 0x02070000:
+    minidom.Element.writexml = writexml
 
 
 def deep_format(obj, paramdict):
@@ -239,8 +275,8 @@ class YamlParser(object):
 
     def getXMLForJob(self, data):
         kind = data.get('project-type', 'freestyle')
-        data["description"] = data.get("description", "") + \
-            self.get_managed_string()
+        data["description"] = (data.get("description", "") +
+                               self.get_managed_string()).lstrip()
         for ep in pkg_resources.iter_entry_points(
                 group='jenkins_jobs.projects', name=kind):
             Mod = ep.load()
@@ -375,14 +411,9 @@ class XmlJob(object):
     def md5(self):
         return hashlib.md5(self.output()).hexdigest()
 
-    # Pretty printing ideas from
-    # http://stackoverflow.com/questions/749796/pretty-printing-xml-in-python
-    pretty_text_re = re.compile('>\n\s+([^<>\s].*?)\n\s+</', re.DOTALL)
-
     def output(self):
         out = minidom.parseString(XML.tostring(self.xml))
-        out = out.toprettyxml(indent='  ', encoding='utf-8')
-        return self.pretty_text_re.sub('>\g<1></', out)
+        return out.toprettyxml(indent='  ', encoding='utf-8')
 
 
 class CacheStorage(object):

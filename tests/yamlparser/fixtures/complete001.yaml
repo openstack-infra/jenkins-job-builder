@@ -1,0 +1,92 @@
+- wrapper:
+    name: timeout-wrapper
+    wrappers:
+      - timeout:
+          fail: true
+          elastic-percentage: 150
+          elastic-default-timeout: 90
+          type: elastic
+
+- wrapper:
+    name: pre-scm-shell-ant
+    wrappers:
+      - pre-scm-buildstep:
+          - shell: |
+              #!/bin/bash
+              echo "Doing somethiung cool"
+          - shell: |
+              #!/bin/zsh
+              echo "Doing somethin cool with zsh"
+          - ant: "target1 target2"
+            ant-name: "Standard Ant"
+          - inject:
+               properties-file: example.prop
+               properties-content: EXAMPLE=foo-bar
+
+- wrapper:
+    name: copy-files
+    wrappers:
+      - copy-to-slave:
+          includes:
+            - file1
+            - file2*.txt
+          excludes:
+            - file2bad.txt
+
+- trigger:
+    name: gerrit-review
+    triggers:
+      - gerrit:
+         triggerOnPatchsetUploadedEvent: true
+         triggerOnChangeMergedEvent: false
+         triggerOnRefUpdatedEvent: false
+         triggerOnCommentAddedEvent: false
+         overrideVotes: true
+         gerritBuildSuccessfulVerifiedValue: 1
+         gerritBuildFailedVerifiedValue: -1
+         projects:
+           - projectCompareType: 'PLAIN'
+             projectPattern: '{project_pattern}'
+             branchCompareType: 'ANT'
+             branchPattern: '**'
+         failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+
+- scm:
+    name: gerrit-scm
+    scm:
+      - git:
+         url: ssh://jenkins@review.openstack.org:29418/{project_pattern}.git
+         branches:
+          - origin/**
+         name: origin
+         prune: true
+         clean: true
+         browser: gitweb
+         browser-url: http://review.openstack.org/gitweb?p={project_pattern}.git
+         choosing-strategy: gerrit
+
+- project:
+    name: test
+    version:
+        - 1.2
+    jobs:
+        - 'build_myproject_{version}'
+
+- job-template:
+    name: 'build_myproject_{version}'
+    scm:
+      - gerrit-scm:
+         project_pattern: openstack-infra/jenkins-job-builder
+    triggers:
+      - gerrit-review:
+         project_pattern: openstack-infra/jenkins-job-builder
+    wrappers:
+      - timeout-wrapper
+      - pre-scm-shell-ant
+      - copy-files
+    builders:
+      - shell: |
+         #!/usr/bin/env python
+         #
+         print("Doing something cool with python")
+
