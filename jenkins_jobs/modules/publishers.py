@@ -2942,6 +2942,20 @@ def git(parser, xml_parent, data):
             handle_entity_children(note['note'], xml_note, note_mappings)
 
 
+def github_notifier(parser, xml_parent, data):
+    """yaml: github-notifier
+    Set build status on Github commit.
+    Requires the Jenkins `Github Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/GitHub+Plugin>`_
+
+    Example:
+
+    .. literalinclude:: ../../tests/publishers/fixtures/github-notifier.yaml
+    """
+    XML.SubElement(xml_parent,
+                   'com.cloudbees.jenkins.GitHubCommitNotifier')
+
+
 def build_publisher(parser, xml_parent, data):
     """yaml: build-publisher
     This plugin allows records from one Jenkins to be published

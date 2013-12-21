@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<project>
+  <publishers>
+    <com.cloudbees.jenkins.GitHubCommitNotifier/>
+  </publishers>
+</project>

@@ -140,6 +140,7 @@ setuptools.setup(
             'fingerprint=jenkins_jobs.modules.publishers:fingerprint',
             'ftp=jenkins_jobs.modules.publishers:ftp',
             'git=jenkins_jobs.modules.publishers:git',
+            'github-notifier=jenkins_jobs.modules.publishers:github_notifier',
             ('groovy-postbuild=jenkins_jobs.modules.publishers:'
              'groovy_postbuild'),
             'html-publisher=jenkins_jobs.modules.publishers:html_publisher',
