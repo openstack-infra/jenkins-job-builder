@@ -17,6 +17,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import codecs
 import os
 import re
 import doctest
@@ -61,7 +62,7 @@ class BaseTestCase(object):
     def __read_content(self):
         # Read XML content, assuming it is unicode encoded
         xml_filepath = os.path.join(self.fixtures_path, self.xml_filename)
-        xml_content = u"%s" % open(xml_filepath, 'r').read()
+        xml_content = u"%s" % codecs.open(xml_filepath, 'r', 'utf-8').read()
 
         yaml_filepath = os.path.join(self.fixtures_path, self.yaml_filename)
         with file(yaml_filepath, 'r') as yaml_file:
@@ -83,7 +84,8 @@ class BaseTestCase(object):
         pub.gen_xml(parser, xml_project, yaml_content)
 
         # Prettify generated XML
-        pretty_xml = XmlJob(xml_project, 'fixturejob').output()
+        pretty_xml = unicode(XmlJob(xml_project, 'fixturejob').output(),
+                             'utf-8')
 
         self.assertThat(
             pretty_xml,

@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <project>
   <scm class="hudson.plugins.git.GitSCM">
     <configVersion>2</configVersion>

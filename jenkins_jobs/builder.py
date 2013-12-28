@@ -381,7 +381,7 @@ class XmlJob(object):
 
     def output(self):
         out = minidom.parseString(XML.tostring(self.xml))
-        out = out.toprettyxml(indent='  ')
+        out = out.toprettyxml(indent='  ', encoding='utf-8')
         return self.pretty_text_re.sub('>\g<1></', out)
 
 

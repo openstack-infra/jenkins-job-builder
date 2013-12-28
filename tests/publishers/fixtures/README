@@ -10,5 +10,5 @@ Each yaml file MUST have a corresponding xml file.
 
 Once the YAML file has been parsed, it is prettify using python minidom
 which also means that:
-- your XML file must start with: <?xml version="1.0" ?>
+- your XML file must start with: <?xml version="1.0" encoding="utf-8"?>
 - self closing elements do not contains space eg: <element/>
