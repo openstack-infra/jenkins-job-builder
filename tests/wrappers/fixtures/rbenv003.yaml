@@ -1,0 +1,10 @@
+wrappers:
+  - rbenv:
+      ruby-version: 2.0.0-p353
+      ignore-local-version: false
+      preinstall-gem-list: "bundler,rake"
+      rbenv-root: "$HOME/.rbenv"
+      rbenv-repo: "https://github.com/sstephenson/rbenv.git"
+      rbenv-branch: "master"
+      ruby-build-repo: "https://github.com/sstephenson/ruby-build.git"
+      ruby-build-branch: "master"
