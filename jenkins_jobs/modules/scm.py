@@ -26,17 +26,6 @@ SCMs plugin.
   :Macro: scm
   :Entry Point: jenkins_jobs.scm
 
-Example::
-
-  job:
-    name: test_job
-    scm:
-      -git:
-        url: https://example.com/project.git
-      -git:
-        url: https://example.org/otherproject.git
-        basedir: other
-
 """
 
 
@@ -105,16 +94,9 @@ def git(self, xml_parent, data):
         :inverse:
         :gerrit:
 
-    Example::
+    Example:
 
-      scm:
-        - git:
-          url: https://example.com/project.git
-          branches:
-            - master
-            - stable
-          browser: githubweb
-          browser-url: http://github.com/foo/example.git
+    .. literalinclude:: /../../tests/scm/fixtures/git001.yaml
     """
 
     # XXX somebody should write the docs for those with option name =
@@ -261,26 +243,9 @@ def repo(self, xml_parent, data):
     :arg str local-manifest: Contents of .repo/local_manifest.xml, written
              prior to calling sync (optional)
 
-    Example::
+    Example:
 
-      scm:
-        - repo:
-            manifest-url: https://example.com/project/
-            manifest-branch: stable
-            manifest-file: repo.xml
-            manifest-group: drivers
-            destination-dir: build
-            repo-url: https://internal.net/projects/repo
-            mirror-dir: ~/git/project/
-            jobs: 3
-            current-branch: false
-            quiet: false
-            local-manifest: |
-              <?xml version="1.0" encoding="UTF-8"?>
-              <manifest>
-                <project path="external/project" name="org/project"
-                  remote="gerrit" revision="master" />
-              </manifest>
+    .. literalinclude:: /../../tests/scm/fixtures/repo001.yaml
     """
 
     scm = XML.SubElement(xml_parent,

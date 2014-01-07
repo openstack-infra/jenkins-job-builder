@@ -10,3 +10,9 @@ scm:
       jobs: 3
       current-branch: false
       quiet: false
+      local-manifest: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <manifest>
+          <project path="external/project" name="org/project"
+            remote="gerrit" revision="master" />
+        </manifest>

@@ -11,5 +11,11 @@
     <jobs>3</jobs>
     <currentBranch>false</currentBranch>
     <quiet>false</quiet>
+    <localManifest>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;manifest&gt;
+  &lt;project path=&quot;external/project&quot; name=&quot;org/project&quot;
+    remote=&quot;gerrit&quot; revision=&quot;master&quot; /&gt;
+&lt;/manifest&gt;
+</localManifest>
   </scm>
 </project>
