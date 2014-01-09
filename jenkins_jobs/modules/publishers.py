@@ -1160,12 +1160,16 @@ def pipeline(parser, xml_parent, data):
     Requires the Jenkins `Build Pipeline Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Build+Pipeline+Plugin>`_
 
-    :Parameter: the name of the downstream project
+    :arg str project: the name of the downstream project
+    :arg str predefined-parameters: parameters to pass to the other
+      job (optional)
+    :arg bool current-parameters: Whether to include the parameters passed
+      to the current build to the triggered job (optional)
 
-    Example::
+    Example:
 
-      publishers:
-        - pipeline: deploy
+    .. literalinclude:: ../../tests/publishers/fixtures/pipeline002.yaml
+
 
     You can build pipeline jobs that are re-usable in different pipelines by
     using a :ref:`job-template` to define the pipeline jobs,
@@ -1175,11 +1179,27 @@ def pipeline(parser, xml_parent, data):
 
     See 'samples/pipeline.yaml' for an example pipeline implementation.
     """
-    if data != '':
+    if 'project' in data and data['project'] != '':
         pippub = XML.SubElement(xml_parent,
                                 'au.com.centrumsystems.hudson.plugin.'
                                 'buildpipeline.trigger.BuildPipelineTrigger')
-        XML.SubElement(pippub, 'downstreamProjectNames').text = data
+
+        configs = XML.SubElement(pippub, 'configs')
+
+        if 'predefined-parameters' in data:
+            params = XML.SubElement(configs,
+                                    'hudson.plugins.parameterizedtrigger.'
+                                    'PredefinedBuildParameters')
+            properties = XML.SubElement(params, 'properties')
+            properties.text = data['predefined-parameters']
+
+        if ('current-parameters' in data
+            and data['current-parameters']):
+            XML.SubElement(configs,
+                           'hudson.plugins.parameterizedtrigger.'
+                           'CurrentBuildParameters')
+
+        XML.SubElement(pippub, 'downstreamProjectNames').text = data['project']
 
 
 def email(parser, xml_parent, data):
