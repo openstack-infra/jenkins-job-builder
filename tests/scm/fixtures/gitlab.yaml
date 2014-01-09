@@ -1,0 +1,8 @@
+scm:
+  - git:
+      url: "git@gitlab.example.com:foo/bar.git"
+      branches:
+        - origin/master
+      browser: gitlab
+      browser-url: "https://gitlab.example.com/foo/bar/"
+      browser-version: "5.2"

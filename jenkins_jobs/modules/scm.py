@@ -81,6 +81,7 @@ def git(self, xml_parent, data):
     :arg bool wipe-workspace: Wipe out workspace before build
     :arg str browser: what repository browser to use (default '(Auto)')
     :arg str browser-url: url for the repository browser
+    :arg str browser-version: version of the repository browser (GitLab)
     :arg str project-name: project name in Gitblit and ViewGit repobrowser
     :arg str choosing-strategy: Jenkins class for selecting what to build
     :arg str git-config-name: Configure name for Git clone
@@ -222,6 +223,9 @@ def git(self, xml_parent, data):
         if browser in ['gitblit', 'viewgit']:
             XML.SubElement(bc, 'projectName').text = str(
                 data.get('project-name', ''))
+        if browser == 'gitlab':
+            XML.SubElement(bc, 'version').text = str(
+                data.get('browser-version', '0.0'))
 
 
 def repo(self, xml_parent, data):
