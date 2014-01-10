@@ -1,0 +1,4 @@
+project-type: maven
+maven:
+  root-pom: pom.xml
+  goals: deploy
