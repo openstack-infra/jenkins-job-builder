@@ -347,8 +347,8 @@ Generally the sequence is:
     #. scm
     #. triggers
     #. wrappers
-    #. prebuilders (maven only)
+    #. prebuilders (maven only, configured like :ref:`builders`)
     #. builders (maven, freestyle, matrix, etc..)
-    #. postbuilders (maven only)
+    #. postbuilders (maven only, configured like :ref:`builders`)
     #. publishers/reporters/notifications
 
