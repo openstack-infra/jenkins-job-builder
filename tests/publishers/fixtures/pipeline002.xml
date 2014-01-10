@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<project>
+  <publishers>
+    <au.com.centrumsystems.hudson.plugin.buildpipeline.trigger.BuildPipelineTrigger>
+      <configs>
+        <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+          <properties>foo=bar</properties>
+        </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+        <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
+      </configs>
+      <downstreamProjectNames>test_project</downstreamProjectNames>
+    </au.com.centrumsystems.hudson.plugin.buildpipeline.trigger.BuildPipelineTrigger>
+  </publishers>
+</project>
