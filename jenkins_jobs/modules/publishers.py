@@ -2002,7 +2002,8 @@ def maven_deploy(parser, xml_parent, data):
     """
 
     p = XML.SubElement(xml_parent, 'hudson.maven.RedeployPublisher')
-    XML.SubElement(p, 'id').text = data['id']
+    if 'id' in data:
+        XML.SubElement(p, 'id').text = data['id']
     XML.SubElement(p, 'url').text = data['url']
     XML.SubElement(p, 'uniqueVersion').text = str(
         data.get('unique-version', True)).lower()

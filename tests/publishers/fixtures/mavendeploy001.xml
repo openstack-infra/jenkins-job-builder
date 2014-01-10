@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<project>
+  <publishers>
+    <hudson.maven.RedeployPublisher>
+      <url>file:///path/to/repo</url>
+      <uniqueVersion>true</uniqueVersion>
+      <evenIfUnstable>false</evenIfUnstable>
+    </hudson.maven.RedeployPublisher>
+  </publishers>
+</project>
