@@ -451,7 +451,7 @@ def batch_tasks(parser, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: ../../tests/properties/fixtures/batch-task.yaml
+    .. literalinclude:: /../../tests/properties/fixtures/batch-task.yaml
 
     """
     pdef = XML.SubElement(xml_parent,
