@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.tasks.junit.JUnitResultArchiver>
+      <testResults>nosetests-example.xml</testResults>
+      <keepLongStdio>false</keepLongStdio>
+      <testDataPublishers>
+        <de.esailors.jenkins.teststability.StabilityTestDataPublisher/>
+      </testDataPublishers>
+    </hudson.tasks.junit.JUnitResultArchiver>
+  </publishers>
+</project>

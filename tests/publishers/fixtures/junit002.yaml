@@ -1,0 +1,5 @@
+publishers:
+- junit:
+    results: nosetests-example.xml
+    keep-long-stdio: false
+    test-stability: true
