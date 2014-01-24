@@ -1,0 +1,4 @@
+wrappers:
+  - rbenv:
+      ruby-version: 2.0.0-p353
+      ignore-local-version: true

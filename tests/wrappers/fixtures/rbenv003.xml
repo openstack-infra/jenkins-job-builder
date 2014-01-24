@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <ruby-proxy-object>
+      <ruby-object pluginid="rbenv" ruby-class="Jenkins::Tasks::BuildWrapperProxy">
+        <pluginid pluginid="rbenv" ruby-class="String">rbenv</pluginid>
+        <object pluginid="rbenv" ruby-class="RbenvWrapper">
+          <gem__list pluginid="rbenv" ruby-class="String">bundler,rake</gem__list>
+          <rbenv__root pluginid="rbenv" ruby-class="String">$HOME/.rbenv</rbenv__root>
+          <rbenv__repository pluginid="rbenv" ruby-class="String">https://github.com/sstephenson/rbenv.git</rbenv__repository>
+          <rbenv__revision pluginid="rbenv" ruby-class="String">master</rbenv__revision>
+          <ruby__build__repository pluginid="rbenv" ruby-class="String">https://github.com/sstephenson/ruby-build.git</ruby__build__repository>
+          <ruby__build__revision pluginid="rbenv" ruby-class="String">master</ruby__build__revision>
+          <version pluginid="rbenv" ruby-class="String">2.0.0-p353</version>
+          <ignore__local__version pluginid="rbenv" ruby-class="FalseClass"/>
+        </object>
+      </ruby-object>
+    </ruby-proxy-object>
+  </buildWrappers>
+</project>
