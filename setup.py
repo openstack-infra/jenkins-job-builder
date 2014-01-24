@@ -152,6 +152,7 @@ setuptools.setup(
             'junit=jenkins_jobs.modules.publishers:junit',
             'logparser=jenkins_jobs.modules.publishers:logparser',
             'maven-deploy=jenkins_jobs.modules.publishers:maven_deploy',
+            'sitemonitor=jenkins_jobs.modules.publishers:sitemonitor',
             'performance=jenkins_jobs.modules.publishers:performance',
             'pipeline=jenkins_jobs.modules.publishers:pipeline',
             'plot=jenkins_jobs.modules.publishers:plot',
