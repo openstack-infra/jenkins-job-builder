@@ -923,6 +923,34 @@ def logstash(parser, xml_parent, data):
         key_sub_element.text = str(redis_config.get('key', 'logstash'))
 
 
+def delivery_pipeline(parser, xml_parent, data):
+    """yaml: delivery-pipeline
+    If enabled the job will create a version based on the template.
+    The version will be set to the environment variable PIPELINE_VERSION and
+    will also be set in the downstream jobs.
+
+    Requires the Jenkins `Delivery Pipeline Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Delivery+Pipeline+Plugin>`_
+
+    :arg str version-template: Template for generated version e.g
+        1.0.${BUILD_NUMBER} (default: '')
+    :arg bool set-display-name: Set the generated version as the display name
+        for the build (default: false)
+
+    Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/delivery-pipeline1.yaml
+
+    """
+    pvc = XML.SubElement(xml_parent,
+                         'se.diabol.jenkins.pipeline.'
+                         'PipelineVersionContributor')
+    XML.SubElement(pvc, 'versionTemplate').text = data.get(
+        'version-template', '')
+    XML.SubElement(pvc, 'updateDisplayName').text = str(data.get(
+        'set-display-name', False)).lower()
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 
