@@ -52,6 +52,7 @@ def git(self, xml_parent, data):
     <https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin>`_
 
     :arg str url: URL of the git repository
+    :arg str credentials-id: ID of credentials to use to connect (optional)
     :arg str refspec: refspec to fetch
     :arg str name: name to fetch
     :arg list(str) branches: list of branch specifiers to build
@@ -158,6 +159,8 @@ def git(self, xml_parent, data):
         refspec = '+refs/heads/*:refs/remotes/origin/*'
     XML.SubElement(huser, 'refspec').text = refspec
     XML.SubElement(huser, 'url').text = data['url']
+    if 'credentials-id' in data:
+        XML.SubElement(huser, 'credentialsId').text = data['credentials-id']
     xml_branches = XML.SubElement(scm, 'branches')
     branches = data.get('branches', ['**'])
     for branch in branches:

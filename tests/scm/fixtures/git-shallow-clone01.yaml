@@ -2,6 +2,7 @@
 scm:
   - git:
       url: https://github.com/openstack-infra/jenkins-job-builder.git
+      credentials-id: "43ed1990-46e5-4ed0-bfda-8d83e5cdd65f"
       branches:
         - master
       clean: true
