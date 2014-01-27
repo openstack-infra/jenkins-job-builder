@@ -22,8 +22,8 @@ in the :ref:`Job` definition.
 
 :Job Parameters:
     * **root-module**:
-        * **group-id** (`str`): GroupId. (required)
-        * **artifact-id** (`str`): ArtifactId. (required)
+        * **group-id** (`str`): GroupId.
+        * **artifact-id** (`str`): ArtifactId.
     * **root-pom** (`str`): The path to the pom.xml file. (defaults to pom.xml)
     * **goals** (`str`): Goals to execute. (required)
     * **maven-opts** (`str`): Java options to pass to maven (aka MAVEN_OPTS)
@@ -63,11 +63,12 @@ class Maven(jenkins_jobs.modules.base.Base):
         xml_parent = XML.Element('maven2-moduleset')
         if 'maven' not in data:
             return xml_parent
-        root_module = XML.SubElement(xml_parent, 'rootModule')
-        XML.SubElement(root_module, 'groupId').text = \
-            data['maven']['root-module']['group-id']
-        XML.SubElement(root_module, 'artifactId').text = \
-            data['maven']['root-module']['artifact-id']
+        if 'root-module' in data['maven']:
+            root_module = XML.SubElement(xml_parent, 'rootModule')
+            XML.SubElement(root_module, 'groupId').text = \
+                data['maven']['root-module']['group-id']
+            XML.SubElement(root_module, 'artifactId').text = \
+                data['maven']['root-module']['artifact-id']
         XML.SubElement(xml_parent, 'goals').text = data['maven']['goals']
 
         maven_opts = data['maven'].get('maven-opts')
