@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <maven2-moduleset>
   <goals>deploy</goals>
+  <localRepository class="hudson.maven.local_repo.PerJobLocalRepositoryLocator"/>
   <ignoreUpstremChanges>true</ignoreUpstremChanges>
   <rootPOM>pom.xml</rootPOM>
   <aggregatorStyleBuild>true</aggregatorStyleBuild>

@@ -30,6 +30,9 @@ in the :ref:`Job` definition.
     * **maven-name** (`str`): Installation of maven which should be used.
       Not setting ``maven-name`` appears to use the first maven install
       defined in the global jenkins config.
+    * **private-repository** ('str'): Whether to use a private maven repository
+      Possible values are `default`, `local-to-workspace` and
+      `local-to-executor`.
     * **ignore-upstream-changes** (`bool`): Do not start a build whenever
       a SNAPSHOT dependency is built or not. (defaults to true)
     * **automatic-archiving** (`bool`): Activate automatic artifact archiving
@@ -59,6 +62,15 @@ import jenkins_jobs.modules.base
 class Maven(jenkins_jobs.modules.base.Base):
     sequence = 0
 
+    choices_private_repo = {
+        'default':
+        'hudson.maven.local_repo.DefaultLocalRepositoryLocator',
+        'local-to-workspace':
+        'hudson.maven.local_repo.PerJobLocalRepositoryLocator',
+        'local-to-executor':
+        'hudson.maven.local_repo.PerExecutorLocalRepositoryLocator',
+    }
+
     def root_xml(self, data):
         xml_parent = XML.Element('maven2-moduleset')
         if 'maven' not in data:
@@ -78,6 +90,18 @@ class Maven(jenkins_jobs.modules.base.Base):
         maven_name = data['maven'].get('maven-name')
         if maven_name:
             XML.SubElement(xml_parent, 'mavenName').text = maven_name
+
+        private_repo = data['maven'].get('private-repository')
+        if private_repo:
+            if private_repo not in self.choices_private_repo.keys():
+                raise ValueError('Not a valid private-repository "%s", '
+                                 'must be one of "%s"' %
+                                 (private_repo,
+                                  ", ".join(self.choices_private_repo.keys())))
+            XML.SubElement(xml_parent,
+                           'localRepository',
+                           attrib={'class':
+                                   self.choices_private_repo[private_repo]})
 
         XML.SubElement(xml_parent, 'ignoreUpstremChanges').text = str(
             data['maven'].get('ignore-upstream-changes', True)).lower()
