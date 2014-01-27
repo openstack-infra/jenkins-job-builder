@@ -43,5 +43,9 @@ class Flow(jenkins_jobs.modules.base.Base):
 
     def root_xml(self, data):
         xml_parent = XML.Element('com.cloudbees.plugins.flow.BuildFlow')
-        XML.SubElement(xml_parent, 'dsl').text = data['dsl']
+        if 'dsl' in data:
+            XML.SubElement(xml_parent, 'dsl').text = data['dsl']
+        else:
+            XML.SubElement(xml_parent, 'dsl').text = ''
+
         return xml_parent
