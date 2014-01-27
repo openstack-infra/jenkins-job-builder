@@ -25,6 +25,10 @@ import testtools
 import xml.etree.ElementTree as XML
 import yaml
 from jenkins_jobs.builder import XmlJob, YamlParser, ModuleRegistry
+from jenkins_jobs.modules import (project_flow,
+                                  project_matrix,
+                                  project_maven,
+                                  project_multijob)
 
 
 def get_scenarios(fixtures_path):
@@ -75,21 +79,21 @@ class BaseTestCase(object):
             return
 
         yaml_content, expected_xml = self.__read_content()
-
-        root_element = XML.Element('project')
+        project = None
         if ('project-type' in yaml_content):
             if (yaml_content['project-type'] == "maven"):
-                root_element = XML.Element('maven2-moduleset')
-            if (yaml_content['project-type'] == "matrix"):
-                root_element = XML.Element('matrix-project')
-            if (yaml_content['project-type'] == "flow"):
-                root_element = XML.Element('com.cloudbees.plugins.flow.'
-                                           'BuildFlow')
-            if (yaml_content['project-type'] == "multijob"):
-                root_element = XML.Element('com.tikal.jenkins.plugins.'
-                                           'multijob.MultiJobProject')
+                project = project_maven.Maven(None)
+            elif (yaml_content['project-type'] == "matrix"):
+                project = project_matrix.Matrix(None)
+            elif (yaml_content['project-type'] == "flow"):
+                project = project_flow.Flow(None)
+            elif (yaml_content['project-type'] == "multijob"):
+                project = project_multijob.MultiJob(None)
 
-        xml_project = root_element
+        if project:
+            xml_project = project.root_xml(yaml_content)
+        else:
+            xml_project = XML.Element('project')
         parser = YamlParser()
         pub = self.klass(ModuleRegistry({}))
 

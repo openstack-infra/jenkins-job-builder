@@ -1,0 +1,7 @@
+project-type: maven
+maven:
+  root-pom: pom.xml
+  goals: deploy
+  root-module:
+    group-id: gabba.gabba
+    artifact-id: hey
