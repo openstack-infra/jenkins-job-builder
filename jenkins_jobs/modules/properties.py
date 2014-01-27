@@ -37,6 +37,31 @@ import jenkins_jobs.modules.base
 from jenkins_jobs.errors import JenkinsJobsException
 
 
+def builds_chain_fingerprinter(parser, xml_parent, data):
+    """yaml: builds-chain-fingerprinter
+    Builds chain fingerprinter.
+    Requires the Jenkins `Builds chain fingerprinter Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Builds+chain+fingerprinter>`_
+
+    :arg bool per-builds-chain: enable builds hierarchy fingerprinting
+        (default False)
+    :arg bool per-job-chain: enable jobs hierarchy fingerprinting
+        (default False)
+
+    Example:
+
+    .. literalinclude:: /../../tests/properties/fixtures/fingerprinter.yaml
+    """
+    fingerprinter = XML.SubElement(xml_parent,
+                                   'org.jenkinsci.plugins.'
+                                   'buildschainfingerprinter.'
+                                   'AutomaticFingerprintJobProperty')
+    XML.SubElement(fingerprinter, 'isPerBuildsChainEnabled').text = str(
+        data.get('per-builds-chain', False)).lower()
+    XML.SubElement(fingerprinter, 'isPerJobsChainEnabled').text = str(
+        data.get('per-job-chain', False)).lower()
+
+
 def ownership(parser, xml_parent, data):
     """yaml: ownership
     Plugin provides explicit ownership for jobs and slave nodes.
