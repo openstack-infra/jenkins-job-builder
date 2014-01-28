@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <ruby-proxy-object>
+      <ruby-object pluginid="ci-skip" ruby-class="Jenkins::Tasks::BuildWrapperProxy">
+        <pluginid pluginid="ci-skip" ruby-class="String">ci-skip</pluginid>
+        <object pluginid="ci-skip" ruby-class="CiSkipWrapper">
+          <ci__skip pluginid="ci-skip" ruby-class="NilClass"/>
+        </object>
+      </ruby-object>
+    </ruby-proxy-object>
+  </buildWrappers>
+</project>

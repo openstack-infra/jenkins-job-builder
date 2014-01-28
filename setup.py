@@ -21,7 +21,6 @@ requires = setup.parse_requirements()
 test_requires = setup.parse_requirements(['tools/test-requires'])
 depend_links = setup.parse_dependency_links()
 
-
 setuptools.setup(
     name='jenkins-job-builder',
     version=version.canonical_version_string(always=True),
@@ -193,6 +192,7 @@ setuptools.setup(
             'ansicolor=jenkins_jobs.modules.wrappers:ansicolor',
             'build-name=jenkins_jobs.modules.wrappers:build_name',
             'build-user-vars=jenkins_jobs.modules.wrappers:build_user_vars',
+            'ci-skip=jenkins_jobs.modules.wrappers:ci_skip',
             'copy-to-slave=jenkins_jobs.modules.wrappers:copy_to_slave',
             'env-file=jenkins_jobs.modules.wrappers:env_file',
             'inject=jenkins_jobs.modules.wrappers:inject',
