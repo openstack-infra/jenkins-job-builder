@@ -99,7 +99,7 @@ def emotional_jenkins(parser, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: ../../tests/publishers/fixtures/emotional-jenkins.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/emotional-jenkins.yaml
     """
     XML.SubElement(xml_parent,
                    'org.jenkinsci.plugins.emotional__jenkins.'
@@ -288,11 +288,11 @@ def cloverphp(parser, xml_parent, data):
 
     Minimal example:
 
-      .. literalinclude:: ../../tests/publishers/fixtures/cloverphp001.yaml
+      .. literalinclude:: /../../tests/publishers/fixtures/cloverphp001.yaml
 
     Full example:
 
-      .. literalinclude:: ../../tests/publishers/fixtures/cloverphp002.yaml
+      .. literalinclude:: /../../tests/publishers/fixtures/cloverphp002.yaml
 
     """
     cloverphp = XML.SubElement(
@@ -1089,7 +1089,7 @@ def scp(parser, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: ../../tests/publishers/fixtures/scp001.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/scp001.yaml
     """
     site = data['site']
     scp = XML.SubElement(xml_parent,
@@ -1178,7 +1178,7 @@ def pipeline(parser, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: ../../tests/publishers/fixtures/pipeline002.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/pipeline002.yaml
 
 
     You can build pipeline jobs that are re-usable in different pipelines by
@@ -2987,7 +2987,7 @@ def github_notifier(parser, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: ../../tests/publishers/fixtures/github-notifier.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/github-notifier.yaml
     """
     XML.SubElement(xml_parent,
                    'com.cloudbees.jenkins.GitHubCommitNotifier')
@@ -3057,7 +3057,7 @@ def stash(parser, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: ../../tests/publishers/fixtures/stash001.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/stash001.yaml
     """
 
     top = XML.SubElement(xml_parent,
@@ -3092,7 +3092,8 @@ def description_setter(parser, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: ../../tests/publishers/fixtures/description-setter.yaml
+    .. literalinclude::
+       /../../tests/publishers/fixtures/description-setter.yaml
 
     """
 

@@ -363,7 +363,7 @@ def github_pull_request(parser, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: ../../tests/triggers/fixtures/github-pull-request.yaml
+    .. literalinclude:: /../../tests/triggers/fixtures/github-pull-request.yaml
     """
     ghprb = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.ghprb.'
                            'GhprbTrigger')

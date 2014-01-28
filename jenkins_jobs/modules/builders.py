@@ -740,7 +740,7 @@ def maven_target(parser, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: ../../tests/builders/fixtures/maven-target-doc.yaml
+    .. literalinclude:: /../../tests/builders/fixtures/maven-target-doc.yaml
     """
     maven = XML.SubElement(xml_parent, 'hudson.tasks.Maven')
     XML.SubElement(maven, 'targets').text = data['goals']
