@@ -677,20 +677,30 @@ def junit(parser, xml_parent, data):
     :arg str results: results filename
     :arg bool keep-long-stdio: Retain long standard output/error in test
       results (default true).
+    :arg bool test-stability: Add historical information about test
+        results stability (default false).
+        Requires the Jenkins `Test stability Plugin
+        <https://wiki.jenkins-ci.org/display/JENKINS/Test+stability+plugin>`_.
 
-    Example::
+    Minimal example using defaults:
 
-      publishers:
-        - junit:
-            results: nosetests.xml
-            keep-long-stdio: false
+    .. literalinclude::  /../../tests/publishers/fixtures/junit001.yaml
+
+    Full example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/junit002.yaml
+
     """
     junitresult = XML.SubElement(xml_parent,
                                  'hudson.tasks.junit.JUnitResultArchiver')
     XML.SubElement(junitresult, 'testResults').text = data['results']
     XML.SubElement(junitresult, 'keepLongStdio').text = str(
         data.get('keep-long-stdio', True)).lower()
-    XML.SubElement(junitresult, 'testDataPublishers')
+    datapublisher = XML.SubElement(junitresult, 'testDataPublishers')
+    if str(data.get('test-stability', False)).lower() == 'true':
+        XML.SubElement(datapublisher,
+                       'de.esailors.jenkins.teststability'
+                       '.StabilityTestDataPublisher')
 
 
 def xunit(parser, xml_parent, data):
