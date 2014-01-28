@@ -320,7 +320,7 @@ def rbenv(parser, xml_parent, data):
     XML.SubElement(o,
                    'ignore__local__version',
                    {'ruby-class': ignore_local_class,
-                   'pluginid': 'rbenv'})
+                    'pluginid': 'rbenv'})
 
 
 def build_name(parser, xml_parent, data):
@@ -745,7 +745,7 @@ def sauce_ondemand(parser, xml_parent, data):
         XML.SubElement(info, 'isWebDriver').text = 'false'
         XML.SubElement(sauce, 'seleniumBrowsers',
                        {'reference': '../seleniumInformation/'
-                       'seleniumBrowsers'})
+                        'seleniumBrowsers'})
     if atype == 'webdriver':
         browsers = XML.SubElement(info, 'webDriverBrowsers')
         for platform in data['platforms']:
@@ -753,7 +753,7 @@ def sauce_ondemand(parser, xml_parent, data):
         XML.SubElement(info, 'isWebDriver').text = 'true'
         XML.SubElement(sauce, 'webDriverBrowsers',
                        {'reference': '../seleniumInformation/'
-                       'webDriverBrowsers'})
+                        'webDriverBrowsers'})
     XML.SubElement(sauce, 'launchSauceConnectOnSlave').text = str(data.get(
         'launch-sauce-connect-on-slave', False)).lower()
     protocol = data.get('https-protocol', '')

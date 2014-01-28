@@ -110,7 +110,7 @@ class Matrix(jenkins_jobs.modules.base.Base):
 
         ex_r = XML.SubElement(root, 'executionStrategy',
                               {'class': 'hudson.matrix.'
-                              'DefaultMatrixExecutionStrategyImpl'})
+                               'DefaultMatrixExecutionStrategyImpl'})
         ex_d = data.get('execution-strategy', {})
         XML.SubElement(root, 'combinationFilter').text = \
             str(ex_d.get('combination-filter', '')).rstrip()

@@ -26,6 +26,7 @@ the build is complete.
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+from jenkins_jobs.modules import hudson_model
 from jenkins_jobs.errors import JenkinsJobsException
 import logging
 import sys
@@ -216,42 +217,26 @@ def trigger(parser, xml_parent, data):
     :arg str threshold: when to trigger the other job (default 'SUCCESS'),
       alternatives: SUCCESS, UNSTABLE, FAILURE
 
-    Example::
+    Example:
 
-      publishers:
-        - trigger:
-            project: other_job
+    .. literalinclude:: /../../tests/publishers/fixtures/trigger_success.yaml
     """
-    thresholds = {
-        'SUCCESS': {
-            'ordinal': '0',
-            'color': 'BLUE'
-        },
-        'UNSTABLE': {
-            'ordinal': '1',
-            'color': 'YELLOW'
-        },
-        'FAILURE': {
-            'ordinal': '2',
-            'color': 'RED'
-        }
-    }
-
     tconfig = XML.SubElement(xml_parent, 'hudson.tasks.BuildTrigger')
     childProjects = XML.SubElement(tconfig, 'childProjects')
     childProjects.text = data['project']
     tthreshold = XML.SubElement(tconfig, 'threshold')
 
     threshold = data.get('threshold', 'SUCCESS')
-    if threshold not in thresholds.keys():
+    supported_thresholds = ['SUCCESS', 'UNSTABLE', 'FAILURE']
+    if threshold not in supported_thresholds:
         raise JenkinsJobsException("threshold must be one of %s" %
-                                   ", ".join(threshold.keys()))
+                                   ", ".join(supported_thresholds))
     tname = XML.SubElement(tthreshold, 'name')
-    tname.text = threshold
+    tname.text = hudson_model.THRESHOLDS[threshold]['name']
     tordinal = XML.SubElement(tthreshold, 'ordinal')
-    tordinal.text = thresholds[threshold]['ordinal']
+    tordinal.text = hudson_model.THRESHOLDS[threshold]['ordinal']
     tcolor = XML.SubElement(tthreshold, 'color')
-    tcolor.text = thresholds[threshold]['color']
+    tcolor.text = hudson_model.THRESHOLDS[threshold]['color']
 
 
 def cloverphp(parser, xml_parent, data):
@@ -3093,7 +3078,7 @@ def description_setter(parser, xml_parent, data):
     Example:
 
     .. literalinclude::
-       /../../tests/publishers/fixtures/description-setter.yaml
+       /../../tests/publishers/fixtures/description-setter001.yaml
 
     """
 
