@@ -22,8 +22,10 @@ import logging
 import os
 import re
 import doctest
+import operator
 import testtools
 import xml.etree.ElementTree as XML
+from ConfigParser import ConfigParser
 import yaml
 from jenkins_jobs.builder import XmlJob, YamlParser, ModuleRegistry
 from jenkins_jobs.modules import (project_flow,
@@ -112,6 +114,43 @@ class BaseTestCase(object):
         # Prettify generated XML
         pretty_xml = unicode(XmlJob(xml_project, 'fixturejob').output(),
                              'utf-8')
+
+        self.assertThat(
+            pretty_xml,
+            testtools.matchers.DocTestMatches(expected_xml,
+                                              doctest.ELLIPSIS |
+                                              doctest.NORMALIZE_WHITESPACE |
+                                              doctest.REPORT_NDIFF)
+        )
+
+
+class SingleJobTestCase(BaseTestCase):
+    def test_yaml_snippet(self):
+        if not self.xml_filename or not self.yaml_filename:
+            return
+
+        xml_filepath = os.path.join(self.fixtures_path, self.xml_filename)
+        expected_xml = u"%s" % open(xml_filepath, 'r').read()
+
+        yaml_filepath = os.path.join(self.fixtures_path, self.yaml_filename)
+
+        if self.conf_filename:
+            config = ConfigParser()
+            conf_filepath = os.path.join(self.fixtures_path,
+                                         self.conf_filename)
+            config.readfp(open(conf_filepath))
+        else:
+            config = None
+        parser = YamlParser(config)
+        parser.parse(yaml_filepath)
+
+        # Generate the XML tree
+        parser.generateXML()
+
+        parser.jobs.sort(key=operator.attrgetter('name'))
+
+        # Prettify generated XML
+        pretty_xml = "\n".join(job.output() for job in parser.jobs)
 
         self.assertThat(
             pretty_xml,

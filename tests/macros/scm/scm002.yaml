@@ -1,0 +1,12 @@
+- scm:
+    name: repository
+    scm:
+      - git:
+         url: ssh://jenkins@review.openstack.org:29418/repository.git
+         branches:
+          - origin/master
+
+- job:
+    name: my-job
+    scm:
+      - repository

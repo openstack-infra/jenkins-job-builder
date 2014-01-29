@@ -1,0 +1,26 @@
+- scm:
+    name: first-scm
+    scm:
+      - git:
+         url: ssh://jenkins@review.openstack.org:29418/first.git
+         branches:
+          - origin/master
+
+- scm:
+    name: second-scm
+    scm:
+      - git:
+         url: ssh://jenkins@review.openstack.org:29418/second.git
+         branches:
+          - origin/master
+
+- scm:
+    name: first-and-second
+    scm:
+      - first-scm
+      - second-scm
+
+- job:
+    name: my-job
+    scm:
+      - first-and-second

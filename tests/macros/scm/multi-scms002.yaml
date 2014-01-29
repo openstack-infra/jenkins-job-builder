@@ -1,0 +1,33 @@
+- scm:
+    name: first-scm
+    scm:
+      - repo:
+         manifest-url: https://example.com/project/
+         manifest-branch: stable
+         manifest-file: repo.xml
+         manifest-group: drivers
+         destination-dir: build
+         repo-url: https://internal.net/projects/repo
+         mirror-dir: ~/git/project/
+         jobs: 3
+         current-branch: false
+         quiet: false
+
+- scm:
+    name: second-scm
+    scm:
+      - git:
+         url: ssh://jenkins@review.openstack.org:29418/second.git
+         branches:
+          - origin/master
+
+- scm:
+    name: first-and-second
+    scm:
+      - first-scm
+      - second-scm
+
+- job:
+    name: my-job
+    scm:
+      - first-and-second
