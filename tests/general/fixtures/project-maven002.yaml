@@ -2,3 +2,4 @@ project-type: maven
 maven:
   root-pom: pom.xml
   goals: deploy
+  private-repository: local-to-workspace
