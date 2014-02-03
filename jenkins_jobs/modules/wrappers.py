@@ -36,6 +36,35 @@ import jenkins_jobs.modules.base
 from jenkins_jobs.modules.builders import create_builders
 
 
+def ci_skip(parser, xml_parent, data):
+    """yaml: ci-skip
+    Skip making a build for certain push.
+    Just add [ci skip] into your commit's message to let Jenkins know,
+    that you do not want to perform build for the next push.
+    Requires the Jenkins `Ci Skip Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Ci+Skip+Plugin>`_
+
+    Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/ci-skip001.yaml
+    """
+    rpobj = XML.SubElement(xml_parent, 'ruby-proxy-object')
+    robj = XML.SubElement(rpobj, 'ruby-object', attrib={
+        'pluginid': 'ci-skip',
+        'ruby-class': 'Jenkins::Tasks::BuildWrapperProxy'
+    })
+    pluginid = XML.SubElement(robj, 'pluginid', {
+        'pluginid': 'ci-skip', 'ruby-class': 'String'
+    })
+    pluginid.text = 'ci-skip'
+    obj = XML.SubElement(robj, 'object', {
+        'ruby-class': 'CiSkipWrapper', 'pluginid': 'ci-skip'
+    })
+    ciskip = XML.SubElement(obj, 'ci__skip', {
+        'pluginid': 'ci-skip', 'ruby-class': 'NilClass'
+    })
+
+
 def timeout(parser, xml_parent, data):
     """yaml: timeout
     Abort the build if it runs too long.
