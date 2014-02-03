@@ -3093,7 +3093,7 @@ def description_setter(parser, xml_parent, data):
     Example:
 
     .. literalinclude::
-       /../../tests/publishers/fixtures/description-setter.yaml
+       /../../tests/publishers/fixtures/description-setter001.yaml
 
     """
 
