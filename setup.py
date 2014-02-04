@@ -202,6 +202,7 @@ setuptools.setup(
             'inject-passwords=jenkins_jobs.modules.wrappers:inject_passwords',
             'jclouds=jenkins_jobs.modules.wrappers:jclouds',
             'locks=jenkins_jobs.modules.wrappers:locks',
+            'logstash=jenkins_jobs.modules.wrappers:logstash',
             'mask-passwords=jenkins_jobs.modules.wrappers:mask_passwords',
             'pathignore=jenkins_jobs.modules.wrappers:pathignore',
             'port-allocator=jenkins_jobs.modules.wrappers:port_allocator',
