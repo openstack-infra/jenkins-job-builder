@@ -35,9 +35,9 @@ logger = logging.getLogger(__name__)
 MAGIC_MANAGE_STRING = "<!-- Managed by Jenkins Job Builder -->"
 
 
-# Python 2.6's minidom toprettyxml produces broken output by adding extraneous
-# whitespace around data. This patches the broken implementation with one taken
-# from 2.7
+# Python <= 2.7.3's minidom toprettyxml produces broken output by adding
+# extraneous whitespace around data. This patches the broken implementation
+# with one taken from Python > 2.7.3.
 def writexml(self, writer, indent="", addindent="", newl=""):
     # indent = current indentation
     # addindent = indentation to add to higher levels
@@ -66,7 +66,7 @@ def writexml(self, writer, indent="", addindent="", newl=""):
     else:
         writer.write("/>%s" % (newl))
 
-if sys.hexversion < 0x02070000:
+if sys.version_info[:3] <= (2, 7, 3):
     minidom.Element.writexml = writexml
 
 
