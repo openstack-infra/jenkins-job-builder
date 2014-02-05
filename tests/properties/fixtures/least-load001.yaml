@@ -1,0 +1,3 @@
+properties:
+  - least-load:
+      disabled: True
