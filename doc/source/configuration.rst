@@ -146,6 +146,22 @@ with those values.  The example above would create the job called
 The ``jobs:`` list can also allow for specifying job-specific
 substitutions as follows::
 
+  - job-template:
+      name: '{name}-unit-tests'
+      builders:
+        - shell: unittest
+      publishers:
+        - email:
+            recipients: '{mail-to}'
+
+  - job-template:
+      name: '{name}-perf-tests'
+      builders:
+        - shell: perftest
+      publishers:
+        - email:
+            recipients: '{mail-to}'
+
   - project:
       name: project-name
       jobs:
