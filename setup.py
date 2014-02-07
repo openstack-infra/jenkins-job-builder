@@ -127,6 +127,7 @@ setuptools.setup(
             'checkstyle=jenkins_jobs.modules.publishers:checkstyle',
             'cifs=jenkins_jobs.modules.publishers:cifs',
             'claim-build=jenkins_jobs.modules.publishers:claim_build',
+            'clone-workspace=jenkins_jobs.modules.publishers:clone_workspace',
             'cloverphp=jenkins_jobs.modules.publishers:cloverphp',
             'cobertura=jenkins_jobs.modules.publishers:cobertura',
             'copy-to-master=jenkins_jobs.modules.publishers:copy_to_master',
