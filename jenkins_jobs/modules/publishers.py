@@ -636,7 +636,7 @@ def ftp(parser, xml_parent, data):
     :arg bool target-is-date-format: whether target is a date format. If true,
       raw text should be quoted (defaults to False)
     :arg bool clean-remote: should the remote directory be deleted before
-      transfering files (defaults to False)
+      transferring files (defaults to False)
     :arg str source: source path specifier
     :arg str excludes: excluded file pattern (optional)
     :arg str remove-prefix: prefix to remove from uploaded file paths
@@ -1125,7 +1125,7 @@ def ssh(parser, xml_parent, data):
     :arg bool target-is-date-format: whether target is a date format. If true,
       raw text should be quoted (defaults to False)
     :arg bool clean-remote: should the remote directory be deleted before
-      transfering files (defaults to False)
+      transferring files (defaults to False)
     :arg str source: source path specifier
     :arg str command: a command to execute on the remote server (optional)
     :arg int timeout: timeout in milliseconds for the Exec command (optional)
@@ -1647,7 +1647,7 @@ def cifs(parser, xml_parent, data):
     :arg bool target-is-date-format: whether target is a date format. If true,
       raw text should be quoted (defaults to False)
     :arg bool clean-remote: should the remote directory be deleted before
-      transfering files (defaults to False)
+      transferring files (defaults to False)
     :arg str source: source path specifier
     :arg str excludes: excluded file pattern (optional)
     :arg str remove-prefix: prefix to remove from uploaded file paths
@@ -2269,7 +2269,7 @@ def robot(parser, xml_parent, data):
     :arg str output-xml: Name of the xml file containing robot output
         (default 'output.xml')
     :arg str pass-threshold: Minimum percentage of passed tests to consider
-        the build succesful (default 0.0)
+        the build successful (default 0.0)
     :arg str unstable-threshold: Minimum percentage of passed test to
         consider the build as not failed (default 0.0)
     :arg bool only-critical: Take only critical tests into account when

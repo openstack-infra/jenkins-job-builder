@@ -189,7 +189,7 @@ def gerrit(parser, xml_parent, data):
 
     You may select one or more gerrit events upon which to trigger.
     You must also supply at least one project and branch, optionally
-    more.  If you select the comment-added trigger, you should alse
+    more.  If you select the comment-added trigger, you should also
     indicate which approval category and value you want to trigger the
     job.
 
@@ -275,7 +275,7 @@ def gerrit(parser, xml_parent, data):
                                 ('gerrit-build-failed-verified-value',
                                  'gerritBuildFailedVerifiedValue'),
                                 ('gerrit-build-successful-codereview-value',
-                                 'gerritBuildSuccesfulCodereviewValue'),
+                                 'gerritBuildSuccessfulCodereviewValue'),
                                 ('gerrit-build-failed-codereview-value',
                                  'gerritBuildFaiedCodeReviewValue')]:
             if data.get(yamlkey) is not None:

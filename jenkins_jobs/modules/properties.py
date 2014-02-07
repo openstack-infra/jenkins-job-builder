@@ -438,7 +438,7 @@ def build_blocker(parser, xml_parent, data):
               use-build-blocker: true
               blocking-jobs:
                 - ".*-deploy"
-                - "^maintainance.*"
+                - "^maintenance.*"
     """
     blocker = XML.SubElement(xml_parent,
                              'hudson.plugins.'
