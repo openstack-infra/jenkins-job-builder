@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <jenkins.plugins.shiningpanda.builders.VirtualenvBuilder>
+      <pythonName>System-CPython-2.7</pythonName>
+      <home>virtvenv1</home>
+      <clear>true</clear>
+      <useDistribute>true</useDistribute>
+      <systemSitePackages>true</systemSitePackages>
+      <nature>shell</nature>
+      <command>python setup.py build</command>
+      <ignoreExitCode>true</ignoreExitCode>
+    </jenkins.plugins.shiningpanda.builders.VirtualenvBuilder>
+  </builders>
+</project>

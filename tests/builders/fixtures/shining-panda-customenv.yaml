@@ -1,0 +1,9 @@
+builders:
+    - shining-panda:
+        build-environment: custom
+        home: /usr/local/lib/custom-python-27
+        nature: xshell
+        command: |
+            cd $HOME/build
+            python setup.py build
+        ignore-exit-code: true

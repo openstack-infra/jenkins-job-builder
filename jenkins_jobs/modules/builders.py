@@ -1052,3 +1052,126 @@ class Builders(jenkins_jobs.modules.base.Base):
         project_type = data.get('project-type', 'freestyle')
         if project_type in ('freestyle', 'matrix') and 'builders' not in data:
             XML.SubElement(xml_parent, 'builders')
+
+
+def shining_panda(parser, xml_parent, data):
+    """yaml: shining-panda
+    Execute a command inside various python environments. Requires the Jenkins
+    `ShiningPanda plugin
+    <https://wiki.jenkins-ci.org/display/JENKINS/ShiningPanda+Plugin>`_.
+
+    :arg str build-environment: Building environment to set up (Required).
+
+        :build-environment values:
+            * **python**: Use a python installation configured in Jenkins.
+            * **custom**: Use a manually installed python.
+            * **virtualenv**: Create a virtualenv
+
+    For the **python** environment
+
+    :arg str python-version: Name of the python installation to use.
+        Must match one of the configured installations on server \
+        configuration
+        (default: System-CPython-2.7)
+
+    For the **custom** environment:
+
+    :arg str home: path to the home folder of the custom installation \
+        (Required)
+
+    For the **virtualenv** environment:
+
+    :arg str python-version: Name of the python installation to use.
+        Must match one of the configured installations on server \
+        configuration
+        (default: System-CPython-2.7)
+    :arg str name: Name of this virtualenv. Two virtualenv builders with \
+        the same name will use the same virtualenv installation (optional)
+    :arg bool clear: If true, delete and recreate virtualenv on each build.
+        (default: false)
+    :arg bool use-distribute: if true use distribute, if false use \
+        setuptools. (default: true)
+    :arg bool system-site-packages: if true, give access to the global
+        site-packages directory to the virtualenv. (default: false)
+
+    Common to all environments:
+
+    :arg str nature: Nature of the command field. (default: shell)
+
+        :nature values:
+            * **shell**: execute the Command contents with default shell
+            * **xshell**: like **shell** but performs platform conversion \
+                first
+            * **python**: execute the Command contents with the Python \
+                executable
+
+    :arg str command: The command to execute
+    :arg bool ignore-exit-code: mark the build as failure if any of the
+        commands exits with a non-zero exit code. (default: false)
+
+    Examples:
+
+    .. literalinclude:: \
+        /../../tests/builders/fixtures/shining-panda-pythonenv.yaml
+
+    .. literalinclude:: \
+        /../../tests/builders/fixtures/shining-panda-customenv.yaml
+
+    .. literalinclude:: \
+        /../../tests/builders/fixtures/shining-panda-virtualenv.yaml
+    """
+
+    pluginelementpart = 'jenkins.plugins.shiningpanda.builders.'
+    buildenvdict = {'custom': 'CustomPythonBuilder',
+                    'virtualenv': 'VirtualenvBuilder',
+                    'python': 'PythonBuilder'}
+    envs = (buildenvdict.keys())
+
+    try:
+        buildenv = data['build-environment']
+    except KeyError:
+        raise JenkinsJobsException("A build-environment is required")
+
+    if buildenv not in envs:
+        errorstring = ("build-environment '%s' is invalid. Must be one of %s."
+                       % (buildenv, ', '.join("'{0}'".format(env)
+                                              for env in envs)))
+        raise JenkinsJobsException(errorstring)
+
+    t = XML.SubElement(xml_parent, '%s%s' %
+                       (pluginelementpart, buildenvdict[buildenv]))
+
+    if buildenv in ('python', 'virtualenv'):
+        XML.SubElement(t, 'pythonName').text = data.get("python-version",
+                                                        "System-CPython-2.7")
+
+    if buildenv in ('custom'):
+        try:
+            homevalue = data["home"]
+        except KeyError:
+            raise JenkinsJobsException("'home' argument is required for the"
+                                       " 'custom' environment")
+        XML.SubElement(t, 'home').text = homevalue
+
+    if buildenv in ('virtualenv'):
+        XML.SubElement(t, 'home').text = data.get("name", "")
+        clear = data.get("clear", False)
+        XML.SubElement(t, 'clear').text = str(clear).lower()
+        use_distribute = data.get('use-distribute', False)
+        XML.SubElement(t, 'useDistribute').text = str(use_distribute).lower()
+        system_site_packages = data.get('system-site-packages', False)
+        XML.SubElement(t, 'systemSitePackages').text = str(
+            system_site_packages).lower()
+
+    # Common arguments
+    nature = data.get('nature', 'shell')
+    naturetuple = ('shell', 'xshell', 'python')
+    if nature not in naturetuple:
+        errorstring = ("nature '%s' is not valid: must be one of %s."
+                       % (nature, ', '.join("'{0}'".format(naturevalue)
+                                            for naturevalue in naturetuple)))
+        raise JenkinsJobsException(errorstring)
+    XML.SubElement(t, 'nature').text = nature
+    XML.SubElement(t, 'command').text = data.get("command", "")
+    ignore_exit_code = data.get('ignore-exit-code', False)
+    XML.SubElement(t, 'ignoreExitCode').text = str(ignore_exit_code).lower()

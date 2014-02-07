@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <jenkins.plugins.shiningpanda.builders.PythonBuilder>
+      <pythonName>System-CPython-2.7</pythonName>
+      <nature>python</nature>
+      <command>setup.py build</command>
+      <ignoreExitCode>false</ignoreExitCode>
+    </jenkins.plugins.shiningpanda.builders.PythonBuilder>
+  </builders>
+</project>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <jenkins.plugins.shiningpanda.builders.CustomPythonBuilder>
+      <home>/usr/local/lib/custom-python-27</home>
+      <nature>xshell</nature>
+      <command>cd $HOME/build
+python setup.py build
+</command>
+      <ignoreExitCode>true</ignoreExitCode>
+    </jenkins.plugins.shiningpanda.builders.CustomPythonBuilder>
+  </builders>
+</project>
