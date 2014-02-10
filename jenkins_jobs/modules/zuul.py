@@ -62,20 +62,11 @@ ZUUL_PARAMETERS = [
         {'description': 'Zuul pipeline triggering this job',
          'name': 'ZUUL_PIPELINE'}},
     {'string':
-        {'description': 'Zuul provided project name',
-         'name': 'GERRIT_PROJECT'}},
-    {'string':
         {'description': 'Branch name of triggering project',
          'name': 'ZUUL_PROJECT'}},
     {'string':
-        {'description': 'Zuul provided branch name',
-         'name': 'GERRIT_BRANCH'}},
-    {'string':
         {'description': 'Branch name of triggering change',
          'name': 'ZUUL_BRANCH'}},
-    {'string':
-        {'description': 'Zuul provided list of dependent changes to merge',
-         'name': 'GERRIT_CHANGES'}},
     {'string':
         {'description': 'List of dependent changes to merge',
          'name': 'ZUUL_CHANGES'}},
@@ -108,14 +99,8 @@ ZUUL_POST_PARAMETERS = [
         {'description': 'Zuul pipeline triggering this job',
          'name': 'ZUUL_PIPELINE'}},
     {'string':
-        {'description': 'Zuul provided project name',
-         'name': 'GERRIT_PROJECT'}},
-    {'string':
         {'description': 'Branch name of triggering project',
          'name': 'ZUUL_PROJECT'}},
-    {'string':
-        {'description': 'Zuul provided ref name',
-         'name': 'GERRIT_REFNAME'}},
     {'string':
         {'description': 'Name of updated reference triggering this job',
          'name': 'ZUUL_REF'}},
@@ -123,14 +108,8 @@ ZUUL_POST_PARAMETERS = [
         {'description': 'Name of updated reference triggering this job',
          'name': 'ZUUL_REFNAME'}},
     {'string':
-        {'description': 'Zuul provided old reference for ref-updated',
-         'name': 'GERRIT_OLDREV'}},
-    {'string':
         {'description': 'Old SHA at this reference',
          'name': 'ZUUL_OLDREV'}},
-    {'string':
-        {'description': 'Zuul provided new reference for ref-updated',
-         'name': 'GERRIT_NEWREV'}},
     {'string':
         {'description': 'New SHA at this reference',
          'name': 'ZUUL_NEWREV'}},
