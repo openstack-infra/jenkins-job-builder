@@ -1,0 +1,7 @@
+builders:
+      - conditional-step:
+          condition-kind: current-status
+          condition-worst: SUCCESS
+          condition-best: FAILURE
+          steps:
+              - shell: "sl"
