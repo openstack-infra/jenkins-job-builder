@@ -79,7 +79,11 @@ def deep_format(obj, paramdict):
     # example, is problematic).
     if isinstance(obj, str):
         try:
-            ret = obj.format(**paramdict)
+            result = re.match('^{obj:(?P<key>\w+)}$', obj)
+            if result is not None:
+                ret = paramdict[result.group("key")]
+            else:
+                ret = obj.format(**paramdict)
         except KeyError as exc:
             missing_key = exc.message
             desc = "%s parameter missing to format %s\nGiven: %s" % (

@@ -123,6 +123,12 @@ define a template that you can use to create jobs with a `Project`_
 definition.  It's name will depend on what is supplied to the
 `Project`_.
 
+If you want to use lists or dicts variables you can use ``{obj:key}``.
+
+For example:
+
+.. literalinclude::  /../../tests/yamlparser/fixtures/custom_distri.yaml
+
 .. _project:
 
 Project
