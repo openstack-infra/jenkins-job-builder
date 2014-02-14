@@ -169,6 +169,7 @@ setuptools.setup(
             'plot=jenkins_jobs.modules.publishers:plot',
             'post-tasks=jenkins_jobs.modules.publishers:post_tasks',
             'robot=jenkins_jobs.modules.publishers:robot',
+            'ruby-metrics=jenkins_jobs.modules.publishers:ruby_metrics',
             'scp=jenkins_jobs.modules.publishers:scp',
             'sloccount=jenkins_jobs.modules.publishers:sloccount',
             'sonar=jenkins_jobs.modules.publishers:sonar',

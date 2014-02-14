@@ -1,0 +1,12 @@
+publishers:
+  - ruby-metrics:
+      report-dir: "coverage/rcov"
+      target:
+        - total-coverage:
+             healthy: 80
+             unhealthy: 0
+             unstable: 0
+        - code-coverage:
+             healthy: 80
+             unhealthy: 0
+             unstable: 0
