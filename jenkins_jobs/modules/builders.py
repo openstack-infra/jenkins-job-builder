@@ -571,7 +571,7 @@ def create_builders(parser, step):
 
 def conditional_step(parser, xml_parent, data):
     """yaml: conditional-step
-    Conditionaly execute some build steps.  Requires the Jenkins `Conditional
+    Conditionally execute some build steps.  Requires the Jenkins `Conditional
     BuildStep Plugin <https://wiki.jenkins-ci.org/display/ \
     JENKINS/Conditional+BuildStep+Plugin>`_.
 
