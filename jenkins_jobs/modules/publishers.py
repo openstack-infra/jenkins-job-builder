@@ -1359,6 +1359,12 @@ def email_ext(parser, xml_parent, data):
     :arg bool still-unstable: Send an email if the build is still unstable
         (default false)
     :arg bool pre-build: Send an email before the build (default false)
+    :arg str matrix-trigger: If using matrix projects, when to trigger
+
+        :matrix-trigger values:
+            * **both**
+            * **only-parent**
+            * **only-configurations**
 
     Example::
 
@@ -1381,6 +1387,7 @@ def email_ext(parser, xml_parent, data):
             fixed: true
             still-unstable: true
             pre-build: true
+            matrix-trigger: only-configurations
     """
     emailext = XML.SubElement(xml_parent,
                               'hudson.plugins.emailext.ExtendedEmailPublisher')
@@ -1424,6 +1431,18 @@ def email_ext(parser, xml_parent, data):
         str(data.get('attach-build-log', False)).lower()
     XML.SubElement(emailext, 'replyTo').text = data.get('reply-to',
                                                         '$DEFAULT_RECIPIENTS')
+    matrix_dict = {'both': 'BOTH',
+                   'only-configurations': 'ONLY_CONFIGURATIONS',
+                   'only-parent': 'ONLY_PARENT'}
+    matrix_trigger = data.get('matrix-trigger', None)
+    ## If none defined, then do not create entry
+    if matrix_trigger is not None:
+        if matrix_trigger not in matrix_dict:
+            raise JenkinsJobsException("matrix-trigger entered is not valid, "
+                                       "must be one of: %s" %
+                                       ", ".join(matrix_dict.keys()))
+        XML.SubElement(emailext, 'matrixTriggerMode').text = \
+            matrix_dict.get(matrix_trigger)
 
 
 def fingerprint(parser, xml_parent, data):
