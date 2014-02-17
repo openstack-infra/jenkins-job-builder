@@ -2169,6 +2169,7 @@ def html_publisher(parser, xml_parent, data):
     :arg str dir: HTML directory to archive
     :arg str files: Specify the pages to display
     :arg bool keep-all: keep HTML reports for each past build (Default False)
+    :arg bool allow-missing: Allow missing HTML reports (Default False)
 
 
     Example::
@@ -2179,6 +2180,7 @@ def html_publisher(parser, xml_parent, data):
                 dir: "path/"
                 files: "index.html"
                 keep-all: true
+                allow-missing: true
     """
 
     reporter = XML.SubElement(xml_parent, 'htmlpublisher.HtmlPublisher')
@@ -2189,6 +2191,8 @@ def html_publisher(parser, xml_parent, data):
     XML.SubElement(ptarget, 'reportFiles').text = data['files']
     keep_all = str(data.get('keep-all', False)).lower()
     XML.SubElement(ptarget, 'keepAll').text = keep_all
+    allow_missing = str(data.get('allow-missing', False)).lower()
+    XML.SubElement(ptarget, 'allowMissing').text = allow_missing
     XML.SubElement(ptarget, 'wrapperName').text = "htmlpublisher-wrapper.html"
 
 
