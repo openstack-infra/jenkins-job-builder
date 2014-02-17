@@ -489,6 +489,30 @@ def batch_tasks(parser, xml_parent, data):
         XML.SubElement(batch_task, 'script').text = task['script']
 
 
+def heavy_job(parser, xml_parent, data):
+    """yaml: heavy-job
+    This plugin allows you to define "weight" on each job,
+    and making each job consume that many executors
+
+    Requires the Jenkins `Heavy Job Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Heavy+Job+Plugin>`_
+
+    :arg int weight: Specify the total number of executors
+        that this job should occupy (defaults to 1)
+
+
+    Example:
+
+    .. literalinclude:: /../../tests/properties/fixtures/heavy-job.yaml
+
+    """
+    heavyjob = XML.SubElement(xml_parent,
+                              'hudson.plugins.'
+                              'heavy__job.HeavyJobProperty')
+    XML.SubElement(heavyjob, 'weight').text = str(
+        data.get('weight', 1))
+
+
 class Properties(jenkins_jobs.modules.base.Base):
     sequence = 20
 
