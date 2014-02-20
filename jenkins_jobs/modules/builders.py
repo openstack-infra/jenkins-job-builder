@@ -273,6 +273,8 @@ def trigger_builds(parser, xml_parent, data):
       to the triggered job
     :arg bool block: whether to wait for the triggered jobs
       to finish or not (default false)
+    :arg bool same-node: Use the same node for the triggered builds that was
+      used for this build (optional)
 
     Example:
 
@@ -298,6 +300,10 @@ def trigger_builds(parser, xml_parent, data):
             XML.SubElement(tconfigs,
                            'hudson.plugins.parameterizedtrigger.'
                            'SubversionRevisionBuildParameters')
+        if(project_def.get('same-node')):
+            XML.SubElement(tconfigs,
+                           'hudson.plugins.parameterizedtrigger.'
+                           'NodeParameters')
         if 'property-file' in project_def:
             params = XML.SubElement(tconfigs,
                                     'hudson.plugins.parameterizedtrigger.'
