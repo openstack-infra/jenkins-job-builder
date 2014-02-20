@@ -3292,6 +3292,72 @@ def testng(parser, xml_parent, data):
         'escape-exception-msg', True))
 
 
+def artifact_deployer(parser, xml_parent, data):
+    """yaml: artifact-deployer
+    This plugin makes it possible to copy artifacts to remote locations.
+
+    Requires the Jenkins `ArtifactDeployer Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/ArtifactDeployer+Plugin>`_
+
+    :arg list entries:
+        :entries:
+            * **files** (`str`) - files to deploy
+            * **basedir** (`str`) - the dir from files are deployed
+            * **excludes** (`str`) - the mask to exclude files
+            * **remote** (`str`) - a remote output directory
+            * **flatten** (`bool`) - ignore the source directory structure
+              (Default: False)
+            * **delete-remote** (`bool`) - clean-up remote directory
+              before deployment (Default: False)
+            * **delete-remote-artifacts** (`bool`) - delete remote artifacts
+              when the build is deleted (Default: False)
+            * **fail-no-files** (`bool`) - fail build if there are no files
+              (Default: False)
+            * **groovy-script** (`str`) - execute a Groovy script
+              before a build is deleted
+
+    :arg bool deploy-if-fail: Deploy if the build is failed (Default: False)
+
+    Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/artifact-dep.yaml
+
+    """
+
+    deployer = XML.SubElement(xml_parent,
+                              'org.jenkinsci.plugins.artifactdeployer.'
+                              'ArtifactDeployerPublisher')
+    if data is None or 'entries' not in data:
+        raise Exception('entries field is missing')
+    elif data.get('entries', None) is None:
+        entries = XML.SubElement(deployer, 'entries', {'class': 'empty-list'})
+    else:
+        entries = XML.SubElement(deployer, 'entries')
+        for entry in data.get('entries'):
+            deployer_entry = XML.SubElement(
+                entries,
+                'org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry')
+            XML.SubElement(deployer_entry, 'includes').text = \
+                entry.get('files')
+            XML.SubElement(deployer_entry, 'basedir').text = \
+                entry.get('basedir')
+            XML.SubElement(deployer_entry, 'excludes').text = \
+                entry.get('excludes')
+            XML.SubElement(deployer_entry, 'remote').text = entry.get('remote')
+            XML.SubElement(deployer_entry, 'flatten').text = \
+                str(entry.get('flatten', False)).lower()
+            XML.SubElement(deployer_entry, 'deleteRemote').text = \
+                str(entry.get('delete-remote', False)).lower()
+            XML.SubElement(deployer_entry, 'deleteRemoteArtifacts').text = \
+                str(entry.get('delete-remote-artifacts', False)).lower()
+            XML.SubElement(deployer_entry, 'failNoFilesDeploy').text = \
+                str(entry.get('fail-no-files', False)).lower()
+            XML.SubElement(deployer_entry, 'groovyExpression').text = \
+                entry.get('groovy-script')
+    deploy_if_fail = str(data.get('deploy-if-fail', False)).lower()
+    XML.SubElement(deployer, 'deployEvenBuildFail').text = deploy_if_fail
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

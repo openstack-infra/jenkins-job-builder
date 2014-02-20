@@ -124,6 +124,8 @@ setuptools.setup(
         'jenkins_jobs.publishers': [
             'aggregate-tests=jenkins_jobs.modules.publishers:aggregate_tests',
             'archive=jenkins_jobs.modules.publishers:archive',
+            ('artifact-deployer=jenkins_jobs.modules.publishers:'
+             'artifact_deployer'),
             'blame-upstream=jenkins_jobs.modules.publishers:blame_upstream',
             'build-publisher=jenkins_jobs.modules.publishers:build_publisher',
             'checkstyle=jenkins_jobs.modules.publishers:checkstyle',

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher>
+      <entries>
+        <org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry>
+          <includes>*.tar.gz</includes>
+          <basedir>/opt/data</basedir>
+          <excludes>*tmp*</excludes>
+          <remote>/home/test/</remote>
+          <flatten>true</flatten>
+          <deleteRemote>true</deleteRemote>
+          <deleteRemoteArtifacts>true</deleteRemoteArtifacts>
+          <failNoFilesDeploy>true</failNoFilesDeploy>
+          <groovyExpression>print 123</groovyExpression>
+        </org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry>
+      </entries>
+      <deployEvenBuildFail>true</deployEvenBuildFail>
+    </org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher>
+  </publishers>
+</project>

@@ -1,0 +1,13 @@
+publishers:
+  - artifact-deployer:
+      entries:
+        - files: '*.tar.gz'
+          basedir: '/opt/data'
+          excludes: '*tmp*'
+          remote: '/home/test/'
+          flatten: true
+          delete-remote: true
+          delete-remote-artifacts: true
+          fail-no-files: true
+          groovy-script: 'print 123'
+      deploy-if-fail: true
