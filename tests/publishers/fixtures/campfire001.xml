@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.campfire.CampfireNotifier>
+      <campfire>
+        <subdomain>sub</subdomain>
+        <token>TOKEN</token>
+        <ssl>true</ssl>
+      </campfire>
+      <room>
+        <name>room</name>
+        <campfire reference="../../campfire"/>
+      </room>
+    </hudson.plugins.campfire.CampfireNotifier>
+  </publishers>
+</project>

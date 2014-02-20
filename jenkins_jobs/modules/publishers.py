@@ -92,6 +92,51 @@ def blame_upstream(parser, xml_parent, data):
                    'BlameUpstreamCommitersPublisher')
 
 
+def campfire(parser, xml_parent, data):
+    """yaml: campfire
+    Send build notifications to Campfire rooms.
+    Requires the Jenkins `Campfire Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Campfire+Plugin
+
+    Campfire notifications global default values must be configured for
+    the Jenkins instance. Default values will be used if no specific
+    values are specified for each job, so all config params are optional.
+
+    :arg str subdomain: override the default campfire subdomain
+    :arg str token: override the default API token
+    :arg bool ssl: override the default 'use SSL'
+    :arg str room: override the default room name
+
+    Example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/campfire001.yaml
+
+    """
+
+    root = XML.SubElement(xml_parent,
+                          'hudson.plugins.campfire.'
+                          'CampfireNotifier')
+
+    campfire = XML.SubElement(root, 'campfire')
+
+    if ('subdomain' in data and data['subdomain']):
+        subdomain = XML.SubElement(campfire, 'subdomain')
+        subdomain.text = data['subdomain']
+    if ('token' in data and data['token']):
+        token = XML.SubElement(campfire, 'token')
+        token.text = data['token']
+    if ('ssl' in data):
+        ssl = XML.SubElement(campfire, 'ssl')
+        ssl.text = str(data['ssl']).lower()
+
+    if ('room' in data and data['room']):
+        room = XML.SubElement(root, 'room')
+        name = XML.SubElement(room, 'name')
+        name.text = data['room']
+
+        XML.SubElement(room, 'campfire reference="../../campfire"')
+
+
 def emotional_jenkins(parser, xml_parent, data):
     """yaml: emotional-jenkins
     Emotional Jenkins.
