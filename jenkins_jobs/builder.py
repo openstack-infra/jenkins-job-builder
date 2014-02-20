@@ -120,6 +120,10 @@ class YamlParser(object):
     def parse(self, fn):
         data = yaml.load(open(fn))
         if data:
+            if not isinstance(data, list):
+                raise JenkinsJobsException(
+                    "The topmost collection in file '{fname}' must be a list,"
+                    " not a {cls}".format(fname=fn, cls=type(data)))
             for item in data:
                 cls, dfn = item.items()[0]
                 group = self.data.get(cls, {})
