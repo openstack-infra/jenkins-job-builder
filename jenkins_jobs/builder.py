@@ -28,8 +28,10 @@ import jenkins
 import re
 from pprint import pformat
 import logging
+import time
 
 from jenkins_jobs.constants import MAGIC_MANAGE_STRING
+from jenkins_jobs.parallel import parallelize
 from jenkins_jobs.parser import YamlParser
 
 logger = logging.getLogger(__name__)
@@ -141,6 +143,7 @@ class Jenkins(object):
     def __init__(self, url, user, password):
         self.jenkins = jenkins.Jenkins(url, user, password)
 
+    @parallelize
     def update_job(self, job_name, xml):
         if self.is_job(job_name):
             logger.info("Reconfiguring jenkins job {0}".format(job_name))
@@ -285,8 +288,9 @@ class Builder(object):
             logger.info("Removing jenkins job(s): %s" % ", ".join(jobs))
         for job in jobs:
             self.jenkins.delete_job(job)
-            if(self.cache.is_cached(job)):
+            if self.cache.is_cached(job):
                 self.cache.set(job, '')
+        self.cache.save()
 
     def delete_all_jobs(self):
         jobs = self.jenkins.get_jobs()
@@ -294,10 +298,23 @@ class Builder(object):
         for job in jobs:
             self.delete_job(job['name'])
 
-    def update_job(self, input_fn, jobs_glob=None, output=None):
+    @parallelize
+    def changed(self, job):
+        md5 = job.md5()
+        changed = self.ignore_cache or self.cache.has_changed(job.name, md5)
+        if not changed:
+            logger.debug("'{0}' has not changed".format(job.name))
+        return changed
+
+    def update_jobs(self, input_fn, jobs_glob=None, output=None,
+                    n_workers=None):
+        orig = time.time()
         self.load_files(input_fn)
         self.parser.expandYaml(jobs_glob)
         self.parser.generateXML()
+        step = time.time()
+        logging.debug('%d XML files generated in %ss',
+                      len(self.parser.jobs), str(step - orig))
 
         logger.info("Number of jobs generated:  %d", len(self.parser.xml_jobs))
         self.parser.xml_jobs.sort(key=operator.attrgetter('name'))
@@ -311,9 +328,8 @@ class Builder(object):
                 if not os.path.isdir(output):
                     raise
 
-        updated_jobs = 0
-        for job in self.parser.xml_jobs:
-            if output:
+        if output:
+            for job in self.parser.xml_jobs:
                 if hasattr(output, 'write'):
                     # `output` is a file-like object
                     logger.info("Job name:  %s", job.name)
@@ -334,17 +350,54 @@ class Builder(object):
                 f = open(output_fn, 'w')
                 f.write(job.output())
                 f.close()
-                continue
-            md5 = job.md5()
-            if (self.jenkins.is_job(job.name)
-                    and not self.cache.is_cached(job.name)):
-                old_md5 = self.jenkins.get_job_md5(job.name)
-                self.cache.set(job.name, old_md5)
+            return self.parser.xml_jobs, len(self.parser.xml_jobs)
 
-            if self.cache.has_changed(job.name, md5) or self.ignore_cache:
-                self.jenkins.update_job(job.name, job.output())
-                updated_jobs += 1
-                self.cache.set(job.name, md5)
+        # Filter out the jobs that did not change
+        logging.debug('Filtering %d jobs for changed jobs',
+                      len(self.parser.xml_jobs))
+        step = time.time()
+        jobs = [job for job in self.parser.xml_jobs
+                if self.changed(job)]
+        logging.debug("Filtered for changed jobs in %ss",
+                      (time.time() - step))
+
+        if not jobs:
+            return [], 0
+
+        # Update the jobs
+        logging.debug('Updating jobs')
+        step = time.time()
+        p_params = [{'job': job} for job in jobs]
+        results = self.parallel_update_job(
+            n_workers=n_workers,
+            parallelize=p_params)
+        logging.debug("Parsing results")
+        # generalize the result parsing, as a parallelized job always returns a
+        # list
+        if len(p_params) in (1, 0):
+            results = [results]
+        for result in results:
+            if isinstance(result, Exception):
+                raise result
             else:
-                logger.debug("'{0}' has not changed".format(job.name))
-        return self.parser.xml_jobs, updated_jobs
+                # update in-memory cache
+                j_name, j_md5 = result
+                self.cache.set(j_name, j_md5)
+        # write cache to disk
+        self.cache.save()
+        logging.debug("Updated %d jobs in %ss",
+                      len(jobs),
+                      time.time() - step)
+        logging.debug("Total run took %ss", (time.time() - orig))
+        return jobs, len(jobs)
+
+    @parallelize
+    def parallel_update_job(self, job):
+        self.jenkins.update_job(job.name, job.output())
+        return (job.name, job.md5())
+
+    def update_job(self, input_fn, jobs_glob=None, output=None):
+        logging.warn('Current update_job function signature is deprecated and '
+                     'will change in future versions to the signature of the '
+                     'new parallel_update_job')
+        return self.update_jobs(input_fn, jobs_glob, output)
