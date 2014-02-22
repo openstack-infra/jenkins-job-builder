@@ -87,6 +87,7 @@ setuptools.setup(
             'github=jenkins_jobs.modules.properties:github',
             'heavy-job=jenkins_jobs.modules.properties:heavy_job',
             'inject=jenkins_jobs.modules.properties:inject',
+            'least-load=jenkins_jobs.modules.properties:least_load',
             'ownership=jenkins_jobs.modules.properties:ownership',
             'priority-sorter=jenkins_jobs.modules.properties:priority_sorter',
             'promoted-build=jenkins_jobs.modules.properties:promoted_build',

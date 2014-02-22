@@ -145,6 +145,26 @@ def github(parser, xml_parent, data):
     github_url.text = data['url']
 
 
+def least_load(parser, xml_parent, data):
+    """yaml: least-load
+    Enables the Least Load Plugin.
+    Requires the Jenkins `Least Load Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Least+Load+Plugin>`_
+
+    :arg bool disabled: whether or not leastload is disabled (default True)
+
+    Example::
+
+    .. literalinclude:: /../../tests/properties/fixtures/least_load002.yaml
+    """
+    least = XML.SubElement(xml_parent,
+                           'org.bstick12.jenkinsci.plugins.leastload.'
+                           'LeastLoadDisabledProperty')
+
+    XML.SubElement(least, 'leastLoadDisabled').text = str(
+        data.get('disabled', True)).lower()
+
+
 def throttle(parser, xml_parent, data):
     """yaml: throttle
     Throttles the number of builds for this job.
