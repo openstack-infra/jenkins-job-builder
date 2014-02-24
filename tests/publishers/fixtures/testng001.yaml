@@ -1,0 +1,5 @@
+publishers:
+    - testng:
+        pattern: "**/target/surefire-reports/testng-results.xml"
+        escape-test-description: false
+        escape-exception-msg: true

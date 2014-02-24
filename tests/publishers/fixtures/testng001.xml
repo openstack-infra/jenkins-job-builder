@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.testng.Publisher>
+      <reportFilenamePattern>**/target/surefire-reports/testng-results.xml</reportFilenamePattern>
+      <escapeTestDescp>False</escapeTestDescp>
+      <escapeExceptionMsg>True</escapeExceptionMsg>
+    </hudson.plugins.testng.Publisher>
+  </publishers>
+</project>

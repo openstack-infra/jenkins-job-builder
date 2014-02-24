@@ -169,6 +169,7 @@ setuptools.setup(
             'ssh=jenkins_jobs.modules.publishers:ssh',
             'stash=jenkins_jobs.modules.publishers:stash',
             'tap=jenkins_jobs.modules.publishers:tap',
+            'testng=jenkins_jobs.modules.publishers:testng',
             'text-finder=jenkins_jobs.modules.publishers:text_finder',
             'trigger=jenkins_jobs.modules.publishers:trigger',
             ('trigger-parameterized-builds='
