@@ -140,7 +140,7 @@
       <contentType>default</contentType>
       <defaultSubject>Subject for Build ${BUILD_NUMBER}</defaultSubject>
       <defaultContent>The build has finished</defaultContent>
-      <attachmentsPattern/>
+      <attachmentsPattern>*/foo*.log</attachmentsPattern>
       <presendScript/>
       <attachBuildLog>false</attachBuildLog>
       <replyTo>foo@example.com</replyTo>
