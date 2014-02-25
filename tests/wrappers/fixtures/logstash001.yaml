@@ -1,0 +1,10 @@
+wrappers:
+  - logstash:
+      use-redis: True
+      redis:
+        host: 'localhost'
+        port: 6379
+        database-number: 0
+        database-password: 'password'
+        data-type: 'list'
+        key: 'logstash'

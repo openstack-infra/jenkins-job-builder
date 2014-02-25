@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <jenkins.plugins.logstash.LogstashBuildWrapper plugin="logstash@0.8.0">
+      <useRedis>false</useRedis>
+    </jenkins.plugins.logstash.LogstashBuildWrapper>
+  </buildWrappers>
+</project>

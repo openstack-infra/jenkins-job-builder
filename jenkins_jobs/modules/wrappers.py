@@ -863,6 +863,66 @@ def pre_scm_buildstep(parser, xml_parent, data):
             bs.append(edited_node)
 
 
+def logstash(parser, xml_parent, data):
+    """yaml: logstash build wrapper
+    Dump the Jenkins console output to Logstash
+    Requires the Jenkins `logstash plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Logstash+Plugin>`_
+
+    :arg use-redis: Boolean to use Redis. (default: true)
+    :arg redis: Redis config params
+
+        :Parameter: * **host** (`str`) Redis hostname\
+        (default 'localhost')
+        :Parameter: * **port** (`int`) Redis port number (default 6397)
+        :Parameter: * **database-number** (`int`)\
+        Redis database number (default 0)
+        :Parameter: * **database-password** (`str`)\
+        Redis database password (default '')
+        :Parameter: * **data-type** (`str`)\
+        Redis database type (default 'list')
+        :Parameter: * **key** (`str`) Redis key (default 'logstash')
+
+    Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/logstash001.yaml
+
+    """
+    logstash = XML.SubElement(xml_parent,
+                              'jenkins.plugins.logstash.'
+                              'LogstashBuildWrapper')
+    logstash.set('plugin', 'logstash@0.8.0')
+
+    redis_bool = XML.SubElement(logstash, 'useRedis')
+    redis_bool.text = str(data.get('use-redis', True)).lower()
+
+    if data.get('use-redis'):
+        redis_config = data.get('redis', {})
+        redis_sub_element = XML.SubElement(logstash, 'redis')
+
+        host_sub_element = XML.SubElement(redis_sub_element, 'host')
+        host_sub_element.text = str(
+            redis_config.get('host', 'localhost'))
+
+        port_sub_element = XML.SubElement(redis_sub_element, 'port')
+        port_sub_element.text = str(redis_config.get('port', '6379'))
+
+        database_numb_sub_element = XML.SubElement(redis_sub_element, 'numb')
+        database_numb_sub_element.text = \
+            str(redis_config.get('database-number', '0'))
+
+        database_pass_sub_element = XML.SubElement(redis_sub_element, 'pass')
+        database_pass_sub_element.text = \
+            str(redis_config.get('database-password', ''))
+
+        data_type_sub_element = XML.SubElement(redis_sub_element, 'dataType')
+        data_type_sub_element.text = \
+            str(redis_config.get('data-type', 'list'))
+
+        key_sub_element = XML.SubElement(redis_sub_element, 'key')
+        key_sub_element.text = str(redis_config.get('key', 'logstash'))
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 
