@@ -9,9 +9,9 @@
             <recipientList/>
             <subject>$PROJECT_DEFAULT_SUBJECT</subject>
             <body>$PROJECT_DEFAULT_CONTENT</body>
-            <sendToDevelopers>false</sendToDevelopers>
-            <sendToRequester>false</sendToRequester>
-            <includeCulprits>false</includeCulprits>
+            <sendToDevelopers>true</sendToDevelopers>
+            <sendToRequester>true</sendToRequester>
+            <includeCulprits>true</includeCulprits>
             <sendToRecipientList>true</sendToRecipientList>
           </email>
         </hudson.plugins.emailext.plugins.trigger.AlwaysTrigger>
@@ -20,9 +20,9 @@
             <recipientList/>
             <subject>$PROJECT_DEFAULT_SUBJECT</subject>
             <body>$PROJECT_DEFAULT_CONTENT</body>
-            <sendToDevelopers>false</sendToDevelopers>
-            <sendToRequester>false</sendToRequester>
-            <includeCulprits>false</includeCulprits>
+            <sendToDevelopers>true</sendToDevelopers>
+            <sendToRequester>true</sendToRequester>
+            <includeCulprits>true</includeCulprits>
             <sendToRecipientList>true</sendToRecipientList>
           </email>
         </hudson.plugins.emailext.plugins.trigger.UnstableTrigger>
@@ -31,9 +31,9 @@
             <recipientList/>
             <subject>$PROJECT_DEFAULT_SUBJECT</subject>
             <body>$PROJECT_DEFAULT_CONTENT</body>
-            <sendToDevelopers>false</sendToDevelopers>
-            <sendToRequester>false</sendToRequester>
-            <includeCulprits>false</includeCulprits>
+            <sendToDevelopers>true</sendToDevelopers>
+            <sendToRequester>true</sendToRequester>
+            <includeCulprits>true</includeCulprits>
             <sendToRecipientList>true</sendToRecipientList>
           </email>
         </hudson.plugins.emailext.plugins.trigger.FirstFailureTrigger>
@@ -42,9 +42,9 @@
             <recipientList/>
             <subject>$PROJECT_DEFAULT_SUBJECT</subject>
             <body>$PROJECT_DEFAULT_CONTENT</body>
-            <sendToDevelopers>false</sendToDevelopers>
-            <sendToRequester>false</sendToRequester>
-            <includeCulprits>false</includeCulprits>
+            <sendToDevelopers>true</sendToDevelopers>
+            <sendToRequester>true</sendToRequester>
+            <includeCulprits>true</includeCulprits>
             <sendToRecipientList>true</sendToRecipientList>
           </email>
         </hudson.plugins.emailext.plugins.trigger.NotBuiltTrigger>
@@ -53,9 +53,9 @@
             <recipientList/>
             <subject>$PROJECT_DEFAULT_SUBJECT</subject>
             <body>$PROJECT_DEFAULT_CONTENT</body>
-            <sendToDevelopers>false</sendToDevelopers>
-            <sendToRequester>false</sendToRequester>
-            <includeCulprits>false</includeCulprits>
+            <sendToDevelopers>true</sendToDevelopers>
+            <sendToRequester>true</sendToRequester>
+            <includeCulprits>true</includeCulprits>
             <sendToRecipientList>true</sendToRecipientList>
           </email>
         </hudson.plugins.emailext.plugins.trigger.AbortedTrigger>
@@ -64,9 +64,9 @@
             <recipientList/>
             <subject>$PROJECT_DEFAULT_SUBJECT</subject>
             <body>$PROJECT_DEFAULT_CONTENT</body>
-            <sendToDevelopers>false</sendToDevelopers>
-            <sendToRequester>false</sendToRequester>
-            <includeCulprits>false</includeCulprits>
+            <sendToDevelopers>true</sendToDevelopers>
+            <sendToRequester>true</sendToRequester>
+            <includeCulprits>true</includeCulprits>
             <sendToRecipientList>true</sendToRecipientList>
           </email>
         </hudson.plugins.emailext.plugins.trigger.RegressionTrigger>
@@ -75,9 +75,9 @@
             <recipientList/>
             <subject>$PROJECT_DEFAULT_SUBJECT</subject>
             <body>$PROJECT_DEFAULT_CONTENT</body>
-            <sendToDevelopers>false</sendToDevelopers>
-            <sendToRequester>false</sendToRequester>
-            <includeCulprits>false</includeCulprits>
+            <sendToDevelopers>true</sendToDevelopers>
+            <sendToRequester>true</sendToRequester>
+            <includeCulprits>true</includeCulprits>
             <sendToRecipientList>true</sendToRecipientList>
           </email>
         </hudson.plugins.emailext.plugins.trigger.FailureTrigger>
@@ -86,9 +86,9 @@
             <recipientList/>
             <subject>$PROJECT_DEFAULT_SUBJECT</subject>
             <body>$PROJECT_DEFAULT_CONTENT</body>
-            <sendToDevelopers>false</sendToDevelopers>
-            <sendToRequester>false</sendToRequester>
-            <includeCulprits>false</includeCulprits>
+            <sendToDevelopers>true</sendToDevelopers>
+            <sendToRequester>true</sendToRequester>
+            <includeCulprits>true</includeCulprits>
             <sendToRecipientList>true</sendToRecipientList>
           </email>
         </hudson.plugins.emailext.plugins.trigger.ImprovementTrigger>
@@ -97,9 +97,9 @@
             <recipientList/>
             <subject>$PROJECT_DEFAULT_SUBJECT</subject>
             <body>$PROJECT_DEFAULT_CONTENT</body>
-            <sendToDevelopers>false</sendToDevelopers>
-            <sendToRequester>false</sendToRequester>
-            <includeCulprits>false</includeCulprits>
+            <sendToDevelopers>true</sendToDevelopers>
+            <sendToRequester>true</sendToRequester>
+            <includeCulprits>true</includeCulprits>
             <sendToRecipientList>true</sendToRecipientList>
           </email>
         </hudson.plugins.emailext.plugins.trigger.StillFailingTrigger>
@@ -108,9 +108,9 @@
             <recipientList/>
             <subject>$PROJECT_DEFAULT_SUBJECT</subject>
             <body>$PROJECT_DEFAULT_CONTENT</body>
-            <sendToDevelopers>false</sendToDevelopers>
-            <sendToRequester>false</sendToRequester>
-            <includeCulprits>false</includeCulprits>
+            <sendToDevelopers>true</sendToDevelopers>
+            <sendToRequester>true</sendToRequester>
+            <includeCulprits>true</includeCulprits>
             <sendToRecipientList>true</sendToRecipientList>
           </email>
         </hudson.plugins.emailext.plugins.trigger.SuccessTrigger>
@@ -119,9 +119,9 @@
             <recipientList/>
             <subject>$PROJECT_DEFAULT_SUBJECT</subject>
             <body>$PROJECT_DEFAULT_CONTENT</body>
-            <sendToDevelopers>false</sendToDevelopers>
-            <sendToRequester>false</sendToRequester>
-            <includeCulprits>false</includeCulprits>
+            <sendToDevelopers>true</sendToDevelopers>
+            <sendToRequester>true</sendToRequester>
+            <includeCulprits>true</includeCulprits>
             <sendToRecipientList>true</sendToRecipientList>
           </email>
         </hudson.plugins.emailext.plugins.trigger.FixedTrigger>
@@ -130,9 +130,9 @@
             <recipientList/>
             <subject>$PROJECT_DEFAULT_SUBJECT</subject>
             <body>$PROJECT_DEFAULT_CONTENT</body>
-            <sendToDevelopers>false</sendToDevelopers>
-            <sendToRequester>false</sendToRequester>
-            <includeCulprits>false</includeCulprits>
+            <sendToDevelopers>true</sendToDevelopers>
+            <sendToRequester>true</sendToRequester>
+            <includeCulprits>true</includeCulprits>
             <sendToRecipientList>true</sendToRecipientList>
           </email>
         </hudson.plugins.emailext.plugins.trigger.StillUnstableTrigger>
@@ -141,9 +141,9 @@
             <recipientList/>
             <subject>$PROJECT_DEFAULT_SUBJECT</subject>
             <body>$PROJECT_DEFAULT_CONTENT</body>
-            <sendToDevelopers>false</sendToDevelopers>
-            <sendToRequester>false</sendToRequester>
-            <includeCulprits>false</includeCulprits>
+            <sendToDevelopers>true</sendToDevelopers>
+            <sendToRequester>true</sendToRequester>
+            <includeCulprits>true</includeCulprits>
             <sendToRecipientList>true</sendToRecipientList>
           </email>
         </hudson.plugins.emailext.plugins.trigger.PreBuildTrigger>

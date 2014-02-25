@@ -21,3 +21,8 @@ publishers:
       still-unstable: true
       pre-build: true
       matrix-trigger: only-configurations
+      send-to:
+        - developers
+        - requester
+        - culprits
+        - recipients
