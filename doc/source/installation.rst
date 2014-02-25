@@ -17,7 +17,9 @@ Documentation
 Documentation have been included and are in the 'doc' folder. To generate docs
 locally execute the command::
 
-    tox -e venv -- python setup.py build_sphinx
+    tox -e doc
+
+The generated documentation is then available under ``doc/build/html/index.html``.
 
 Unit Tests
 ----------
