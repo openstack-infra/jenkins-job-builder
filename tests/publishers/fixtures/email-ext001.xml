@@ -137,7 +137,7 @@
           </email>
         </hudson.plugins.emailext.plugins.trigger.PreBuildTrigger>
       </configuredTriggers>
-      <contentType>default</contentType>
+	  <contentType>text/html</contentType>
       <defaultSubject>Subject for Build ${BUILD_NUMBER}</defaultSubject>
       <defaultContent>The build has finished</defaultContent>
       <attachmentsPattern>*/foo*.log</attachmentsPattern>
