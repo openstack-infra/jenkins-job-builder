@@ -60,7 +60,7 @@ def ci_skip(parser, xml_parent, data):
     obj = XML.SubElement(robj, 'object', {
         'ruby-class': 'CiSkipWrapper', 'pluginid': 'ci-skip'
     })
-    ciskip = XML.SubElement(obj, 'ci__skip', {
+    XML.SubElement(obj, 'ci__skip', {
         'pluginid': 'ci-skip', 'ruby-class': 'NilClass'
     })
 
