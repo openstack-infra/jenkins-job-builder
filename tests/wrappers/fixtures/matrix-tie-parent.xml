@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<matrix-project>
+  <executionStrategy class="hudson.matrix.DefaultMatrixExecutionStrategyImpl">
+    <runSequentially>false</runSequentially>
+  </executionStrategy>
+  <combinationFilter/>
+  <axes/>
+  <buildWrappers>
+    <matrixtieparent.BuildWrapperMtp>
+      <labelName>Unix</labelName>
+    </matrixtieparent.BuildWrapperMtp>
+  </buildWrappers>
+</matrix-project>
