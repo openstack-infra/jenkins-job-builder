@@ -96,7 +96,7 @@ def campfire(parser, xml_parent, data):
     """yaml: campfire
     Send build notifications to Campfire rooms.
     Requires the Jenkins `Campfire Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Campfire+Plugin
+    <https://wiki.jenkins-ci.org/display/JENKINS/Campfire+Plugin>`_
 
     Campfire notifications global default values must be configured for
     the Jenkins instance. Default values will be used if no specific
