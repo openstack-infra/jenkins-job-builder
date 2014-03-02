@@ -1,0 +1,4 @@
+wrappers:
+    - delivery-pipeline:
+        version-template: 1.0.0-${BUILD_NUMBER}
+        set-display-name: true

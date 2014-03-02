@@ -92,6 +92,8 @@ setuptools.setup(
             'priority-sorter=jenkins_jobs.modules.properties:priority_sorter',
             'promoted-build=jenkins_jobs.modules.properties:promoted_build',
             'throttle=jenkins_jobs.modules.properties:throttle',
+            ('delivery-pipeline=jenkins_jobs.modules.properties:'
+            'delivery_pipeline'),
         ],
         'jenkins_jobs.parameters': [
             'bool=jenkins_jobs.modules.parameters:bool_param',
@@ -224,6 +226,8 @@ setuptools.setup(
             'timestamps=jenkins_jobs.modules.wrappers:timestamps',
             ('workspace-cleanup=jenkins_jobs.modules.wrappers:'
              'workspace_cleanup'),
+            ('delivery-pipeline=jenkins_jobs.modules.wrappers:'
+             'delivery_pipeline'),
         ],
         'jenkins_jobs.modules': [
             'builders=jenkins_jobs.modules.builders:Builders',
