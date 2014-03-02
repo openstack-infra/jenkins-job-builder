@@ -68,6 +68,8 @@ setuptools.setup(
             'maven-target=jenkins_jobs.modules.builders:maven_target',
             'msbuild=jenkins_jobs.modules.builders:msbuild',
             'multijob=jenkins_jobs.modules.builders:multijob',
+            ('shining-panda=jenkins_jobs.modules.builders:'
+             'shining_panda'),
             'sbt=jenkins_jobs.modules.builders:sbt',
             'shell=jenkins_jobs.modules.builders:shell',
             'trigger-builds=jenkins_jobs.modules.builders:trigger_builds',

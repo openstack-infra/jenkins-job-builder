@@ -1,0 +1,11 @@
+builders:
+    - shining-panda:
+        build-environment: virtualenv
+        python-version: System-CPython-2.7
+        nature: shell
+        command: python setup.py build
+        name: virtvenv1
+        clear: true
+        use-distribute: true
+        system-site-packages: true
+        ignore-exit-code: true

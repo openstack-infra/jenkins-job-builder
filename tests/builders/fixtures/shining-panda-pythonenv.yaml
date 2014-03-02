@@ -1,0 +1,7 @@
+builders:
+    - shining-panda:
+        build-environment: python
+        python-version: System-CPython-2.7
+        nature: python
+        command: setup.py build
+        ignore-exit-code: false
