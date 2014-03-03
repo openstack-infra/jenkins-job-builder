@@ -1411,28 +1411,9 @@ def email_ext(parser, xml_parent, data):
             * **only-parent**
             * **only-configurations**
 
-    Example::
+    Example:
 
-      publishers:
-        - email-ext:
-            recipients: foo@example.com, bar@example.com
-            reply-to: foo@example.com
-            subject: Subject for Build ${BUILD_NUMBER}
-            body: The build has finished
-            attach-build-log: false
-            unstable: true
-            first-failure: true
-            not-built: true
-            aborted: true
-            regression: true
-            failure: true
-            improvement: true
-            still-failing: true
-            success: true
-            fixed: true
-            still-unstable: true
-            pre-build: true
-            matrix-trigger: only-configurations
+    .. literalinclude:: /../../tests/publishers/fixtures/email-ext001.yaml
     """
     emailext = XML.SubElement(xml_parent,
                               'hudson.plugins.emailext.ExtendedEmailPublisher')

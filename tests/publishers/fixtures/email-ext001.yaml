@@ -1,0 +1,20 @@
+publishers:
+  - email-ext:
+      recipients: foo@example.com, bar@example.com
+      reply-to: foo@example.com
+      subject: Subject for Build ${BUILD_NUMBER}
+      body: The build has finished
+      attach-build-log: false
+      unstable: true
+      first-failure: true
+      not-built: true
+      aborted: true
+      regression: true
+      failure: true
+      improvement: true
+      still-failing: true
+      success: true
+      fixed: true
+      still-unstable: true
+      pre-build: true
+      matrix-trigger: only-configurations
