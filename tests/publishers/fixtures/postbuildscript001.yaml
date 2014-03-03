@@ -1,0 +1,13 @@
+publishers:
+    - postbuildscript:
+        generic-script:
+            - '/tmp/one.sh'
+            - '/tmp/two.sh'
+        groovy-script:
+            - '/tmp/one.groovy'
+            - '/tmp/two.groovy'
+        groovy:
+            - "/** This is some inlined groovy */"
+            - "/** Some more inlined groovy */"
+        onsuccess: False
+        onfailure: True
