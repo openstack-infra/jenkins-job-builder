@@ -969,6 +969,34 @@ def matrix_tie_parent(parser, xml_parent, data):
     XML.SubElement(mtp, 'labelName').text = data['node']
 
 
+def exclusion(parser, xml_parent, data):
+    """yaml: exclusion
+    Add a resource to use for critical sections to establish a mutex on. If
+    another job specifies the same resource, the second job will wait for the
+    blocked resource to become available.
+
+    Requires the Jenkins `Exclusion Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Exclusion-Plugin>`_
+
+    :arg list resources: List of resources to add for exclusion
+
+    Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/exclusion002.yaml
+
+    """
+    exl = XML.SubElement(xml_parent,
+                         'org.jvnet.hudson.plugins.exclusion.IdAllocator')
+    exl.set('plugin', 'Exclusion')
+    ids = XML.SubElement(exl, 'ids')
+    resources = data.get('resources', [])
+    for resource in resources:
+        dit = \
+            XML.SubElement(ids,
+                           'org.jvnet.hudson.plugins.exclusion.DefaultIdType')
+        XML.SubElement(dit, 'name').text = str(resource).upper()
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 

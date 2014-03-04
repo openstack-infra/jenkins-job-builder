@@ -1048,6 +1048,64 @@ def sbt(parser, xml_parent, data):
         'subdir-path', '')
 
 
+def critical_block_start(parser, xml_parent, data):
+    """yaml: critical-block-start
+    Designate the start of a critical block. Must be used in conjuction with
+    critical-block-end.
+
+    Must also add a build wrapper (exclusion), specifying the resources that
+    control the critical block. Otherwise, this will have no effect.
+
+    Requires Jenkins `Exclusion Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Exclusion-Plugin>`_
+
+    Example::
+
+      wrappers:
+        - exclusion:
+            resources:
+              myresource1
+      builders:
+        - critical-block-start
+        - ... other builders
+        - critical-block-end
+
+    """
+    cbs = \
+        XML.SubElement(xml_parent,
+                       'org.jvnet.hudson.plugins.exclusion.CriticalBlockStart')
+    cbs.set('plugin', 'Exclusion')
+
+
+def critical_block_end(parser, xml_parent, data):
+    """yaml: critical-block-end
+    Designate the end of a critical block. Must be used in conjuction with
+    critical-block-start.
+
+    Must also add a build wrapper (exclusion), specifying the resources that
+    control the critical block. Otherwise, this will have no effect.
+
+    Requires Jenkins `Exclusion Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Exclusion-Plugin>`_
+
+    Example::
+
+      wrappers:
+        - exclusion:
+            resources:
+              myresource1
+      builders:
+        - critical-block-start
+        - ... other builders
+        - critical-block-end
+
+    """
+    cbs = \
+        XML.SubElement(xml_parent,
+                       'org.jvnet.hudson.plugins.exclusion.CriticalBlockEnd')
+    cbs.set('plugin', 'Exclusion')
+
+
 class Builders(jenkins_jobs.modules.base.Base):
     sequence = 60
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <org.jvnet.hudson.plugins.exclusion.IdAllocator plugin="Exclusion">
+      <ids>
+        <org.jvnet.hudson.plugins.exclusion.DefaultIdType>
+          <name>MYRESOURCE1</name>
+        </org.jvnet.hudson.plugins.exclusion.DefaultIdType>
+        <org.jvnet.hudson.plugins.exclusion.DefaultIdType>
+          <name>MYRESOURCE2</name>
+        </org.jvnet.hudson.plugins.exclusion.DefaultIdType>
+      </ids>
+    </org.jvnet.hudson.plugins.exclusion.IdAllocator>
+  </buildWrappers>
+</project>
