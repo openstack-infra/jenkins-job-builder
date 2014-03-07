@@ -3272,10 +3272,9 @@ def testng(parser, xml_parent, data):
     :arg bool escape-exception-msg: escapes the test method's exception
       messages. (Default True)
 
-    Example::
+    Example:
 
-    .. literalinclude::
-       /../../tests/publishers/fixtures/testng001.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/testng001.yaml
 
     """
 
