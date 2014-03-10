@@ -2736,25 +2736,9 @@ def ircbot(parser, xml_parent, data):
             * **only-configurations** (default)
             * **only-parent**
 
-    Example::
+    Example:
 
-      publishers:
-        - ircbot:
-            strategy: all
-            notify-start: false
-            notify-committers: false
-            notify-culprits: false
-            notify-upstream: false
-            notify-fixers: false
-            message-type: summary-scm
-            channels:
-                - name: '#jenkins-channel1'
-                  password: secrete
-                  notify-only: false
-                - name: '#jenkins-channel2'
-                  notify-only: true
-            matrix-notifier: only-configurations
-
+    .. literalinclude:: /../../tests/publishers/fixtures/ircbot001.yaml
     """
     top = XML.SubElement(xml_parent, 'hudson.plugins.ircbot.IrcPublisher')
     message_dict = {'summary-scm': 'DefaultBuildToChatNotifier',
@@ -2801,7 +2785,7 @@ def ircbot(parser, xml_parent, data):
     matrix_dict = {'all': 'ALL',
                    'only-configurations': 'ONLY_CONFIGURATIONS',
                    'only-parent': 'ONLY_PARENT'}
-    matrix = data.get('matrix-notifier', 'only_configurations')
+    matrix = data.get('matrix-notifier', 'only-configurations')
     if matrix not in matrix_dict:
         raise JenkinsJobsException("matrix-notifier entered is not valid, "
                                    "must be one of: %s" %
