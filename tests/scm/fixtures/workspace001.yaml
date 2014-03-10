@@ -1,0 +1,4 @@
+scm:
+  - workspace:
+      parent-job: my-upstream-job
+      criteria: Any
