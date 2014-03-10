@@ -135,6 +135,7 @@ setuptools.setup(
             'checkstyle=jenkins_jobs.modules.publishers:checkstyle',
             'campfire=jenkins_jobs.modules.publishers:campfire',
             'cifs=jenkins_jobs.modules.publishers:cifs',
+            'cigame=jenkins_jobs.modules.publishers:cigame',
             'claim-build=jenkins_jobs.modules.publishers:claim_build',
             'clone-workspace=jenkins_jobs.modules.publishers:clone_workspace',
             'cloverphp=jenkins_jobs.modules.publishers:cloverphp',
