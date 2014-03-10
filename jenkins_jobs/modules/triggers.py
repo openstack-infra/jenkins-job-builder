@@ -326,7 +326,7 @@ def timed(parser, xml_parent, data):
 
 def github(parser, xml_parent, data):
     """yaml: github
-    Trigger a job when github repository is pushed to
+    Trigger a job when github repository is pushed to.
     Requires the Jenkins `GitHub Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/GitHub+Plugin>`_
 
@@ -342,7 +342,7 @@ def github(parser, xml_parent, data):
 
 def github_pull_request(parser, xml_parent, data):
     """yaml: github-pull-request
-    Build pull requests in github and report results
+    Build pull requests in github and report results.
     Requires the Jenkins `GitHub Pull Request Builder Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/
     GitHub+pull+request+builder+plugin>`_
@@ -390,7 +390,7 @@ def github_pull_request(parser, xml_parent, data):
 def build_result(parser, xml_parent, data):
     """yaml: build-result
     Configure jobB to monitor jobA build result. A build is scheduled if there
-    is a new build result matches your criteria (unstable, failure, ...)
+    is a new build result that matches your criteria (unstable, failure, ...).
     Requires the Jenkins `BuildResultTrigger Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/BuildResultTrigger+Plugin>`_
 
