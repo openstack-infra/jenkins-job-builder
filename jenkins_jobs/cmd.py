@@ -105,9 +105,21 @@ def main():
         ignore_cache = options.ignore_cache
     elif config.has_option('jenkins', 'ignore_cache'):
         ignore_cache = config.get('jenkins', 'ignore_cache')
+
+    # workaround for python 2.6 interpolation error
+    # https://bugs.launchpad.net/openstack-ci/+bug/1259631
+    try:
+        user = config.get('jenkins', 'user')
+    except (TypeError, ConfigParser.NoOptionError):
+        user = None
+    try:
+        password = config.get('jenkins', 'password')
+    except (TypeError, ConfigParser.NoOptionError):
+        password = None
+
     builder = jenkins_jobs.builder.Builder(config.get('jenkins', 'url'),
-                                           config.get('jenkins', 'user'),
-                                           config.get('jenkins', 'password'),
+                                           user,
+                                           password,
                                            config,
                                            ignore_cache=ignore_cache,
                                            flush_cache=options.flush_cache)
