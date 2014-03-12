@@ -1,0 +1,10 @@
+scm:
+  - git:
+      remotes:
+        - internal:
+            url: ssh://git@internal.example.com/foobar.git
+            credentials-id: 01234567-89ab-cdef-0123-456789abcdef
+        - github:
+            url: https://github.com/exampleuser/foobar.git
+      branches:
+        - github/master
