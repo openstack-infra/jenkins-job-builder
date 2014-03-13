@@ -554,6 +554,27 @@ def delivery_pipeline(parser, xml_parent, data):
     XML.SubElement(pipeline, 'taskName').text = data.get('task', '')
 
 
+def zeromq_event(parser, xml_parent, data):
+    """yaml: zeromq-event
+    This is a Jenkins plugin that will publish Jenkins Job run events
+    (start, complete, finish) to a ZMQ PUB socket.
+
+    Requires the Jenkins `ZMQ Event Publisher.
+    <https://git.openstack.org/cgit/openstack-infra/zmq-event-publisher>`_
+
+    Example:
+
+    .. literalinclude:: \
+            /../../tests/properties/fixtures/zeromq-event.yaml
+
+    """
+
+    zmq_event = XML.SubElement(xml_parent,
+                               'org.jenkinsci.plugins.'
+                               'ZMQEventPublisher.HudsonNotificationProperty')
+    XML.SubElement(zmq_event, 'enabled').text = 'true'
+
+
 class Properties(jenkins_jobs.modules.base.Base):
     sequence = 20
 

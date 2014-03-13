@@ -94,6 +94,7 @@ setuptools.setup(
             'priority-sorter=jenkins_jobs.modules.properties:priority_sorter',
             'promoted-build=jenkins_jobs.modules.properties:promoted_build',
             'throttle=jenkins_jobs.modules.properties:throttle',
+            'zeromq-event=jenkins_jobs.modules.properties:zeromq_event',
             ('delivery-pipeline=jenkins_jobs.modules.properties:'
             'delivery_pipeline'),
         ],
