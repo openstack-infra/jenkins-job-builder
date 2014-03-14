@@ -3369,6 +3369,53 @@ def artifact_deployer(parser, xml_parent, data):
     XML.SubElement(deployer, 'deployEvenBuildFail').text = deploy_if_fail
 
 
+def ruby_metrics(parser, xml_parent, data):
+    """yaml: ruby-metrics
+    Rcov plugin parses rcov html report files and
+    shows it in Jenkins with a trend graph.
+
+    Requires the Jenkins `Ruby metrics plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Ruby+metrics+plugin>`_
+
+    :arg str report-dir: Relative path to the coverage report directory
+    :arg dict targets:
+
+           :targets: (total-coverage, code-coverage)
+
+                * **healthy** (`int`): Healthy threshold
+                * **unhealthy** (`int`): Unhealthy threshold
+                * **unstable** (`int`): Unstable threshold
+
+    Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/ruby-metrics.yaml
+
+    """
+
+    metrics = XML.SubElement(
+        xml_parent,
+        'hudson.plugins.rubyMetrics.rcov.RcovPublisher')
+    report_dir = data.get('report-dir', '')
+    XML.SubElement(metrics, 'reportDir').text = report_dir
+    targets = XML.SubElement(metrics, 'targets')
+    if 'target' in data:
+        for t in data['target']:
+            if not ('code-coverage' in t or 'total-coverage' in t):
+                raise JenkinsJobsException('Unrecognized target name')
+            el = XML.SubElement(
+                targets,
+                'hudson.plugins.rubyMetrics.rcov.model.MetricTarget')
+            if 'total-coverage' in t:
+                XML.SubElement(el, 'metric').text = 'TOTAL_COVERAGE'
+            else:
+                XML.SubElement(el, 'metric').text = 'CODE_COVERAGE'
+            for threshold_name, threshold_value in t.values()[0].items():
+                elname = threshold_name.lower()
+                XML.SubElement(el, elname).text = str(threshold_value)
+    else:
+        raise JenkinsJobsException('Coverage metric targets must be set')
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
