@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <scm class="hudson.scm.SubversionSCM">
+    <locations>
+      <hudson.scm.SubversionSCM_-ModuleLocation>
+        <remote>http://svn.apache.org/repos/asf/spamassassin/trunk</remote>
+        <local>.</local>
+      </hudson.scm.SubversionSCM_-ModuleLocation>
+    </locations>
+    <workspaceUpdater class="hudson.scm.subversion.CheckoutUpdater"/>
+    <excludedRegions>/region3/.*\.jpg
+/region4</excludedRegions>
+    <includedRegions>/region1/.*\.cpp
+/region2</includedRegions>
+    <excludedUsers>user1
+user2</excludedUsers>
+    <excludedRevprop>propname</excludedRevprop>
+    <excludedCommitMessages>test-msg
+test-msg2</excludedCommitMessages>
+    <ignoreDirPropChanges>true</ignoreDirPropChanges>
+    <filterChangelog>true</filterChangelog>
+  </scm>
+</project>

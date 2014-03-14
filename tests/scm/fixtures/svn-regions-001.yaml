@@ -1,0 +1,19 @@
+scm:
+  - svn:
+      url: http://svn.apache.org/repos/asf/spamassassin/trunk
+      workspaceupdater: wipeworkspace
+      included-regions:
+          - /region1/.*\.cpp
+          - /region2
+      excluded-regions:
+          - /region3/.*\.jpg
+          - /region4
+      excluded-users:
+          - user1
+          - user2
+      excluded-commit-messages:
+          - test-msg
+          - test-msg2
+      exclusion-revprop-name: propname
+      filter-changelog: true
+      ignore-property-changes-on-directories: true

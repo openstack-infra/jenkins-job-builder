@@ -1,0 +1,8 @@
+scm:
+  - svn:
+     workspaceupdater: update
+     repos:
+       - url: http://svn.example.com/repo
+         basedir: .
+       - url: http://svn.example.com/repo2
+         basedir: repo2
