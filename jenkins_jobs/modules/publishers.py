@@ -1392,6 +1392,7 @@ def email_ext(parser, xml_parent, data):
         javascript to hook into the Jenkins API itself
     :arg bool attach-build-log: Include build log in the email (default false)
     :arg str attachments: pattern of files to include as attachment (optional)
+    :arg bool always: Send an email for every result (default false)
     :arg bool unstable: Send an email for an unstable result (default false)
     :arg bool first-failure: Send an email for just the first failure
         (default false)
@@ -1426,6 +1427,8 @@ def email_ext(parser, xml_parent, data):
     else:
         XML.SubElement(emailext, 'recipientList').text = '$DEFAULT_RECIPIENTS'
     ctrigger = XML.SubElement(emailext, 'configuredTriggers')
+    if data.get('always', False):
+        base_email_ext(parser, ctrigger, data, 'AlwaysTrigger')
     if data.get('unstable', False):
         base_email_ext(parser, ctrigger, data, 'UnstableTrigger')
     if data.get('first-failure', False):

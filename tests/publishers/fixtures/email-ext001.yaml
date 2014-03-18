@@ -7,6 +7,7 @@ publishers:
       body: The build has finished
       attach-build-log: false
       attachments: "*/foo*.log"
+      always: true
       unstable: true
       first-failure: true
       not-built: true

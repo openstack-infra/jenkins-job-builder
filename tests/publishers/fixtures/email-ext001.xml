@@ -4,6 +4,17 @@
     <hudson.plugins.emailext.ExtendedEmailPublisher>
       <recipientList>foo@example.com, bar@example.com</recipientList>
       <configuredTriggers>
+        <hudson.plugins.emailext.plugins.trigger.AlwaysTrigger>
+          <email>
+            <recipientList/>
+            <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+            <body>$PROJECT_DEFAULT_CONTENT</body>
+            <sendToDevelopers>false</sendToDevelopers>
+            <sendToRequester>false</sendToRequester>
+            <includeCulprits>false</includeCulprits>
+            <sendToRecipientList>true</sendToRecipientList>
+          </email>
+        </hudson.plugins.emailext.plugins.trigger.AlwaysTrigger>
         <hudson.plugins.emailext.plugins.trigger.UnstableTrigger>
           <email>
             <recipientList/>
