@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <scm class="hudson.plugins.cloneworkspace.CloneWorkspaceSCM">
+    <parentJobName>my-upstream-job</parentJobName>
+    <criteria>Any</criteria>
+  </scm>
+</project>
