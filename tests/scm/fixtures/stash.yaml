@@ -1,0 +1,7 @@
+scm:
+  - git:
+      url: "ssh://git@stash.example.com:/foo/bar.git"
+      branches:
+        - origin/master
+      browser: stash
+      browser-url: "https://stash.example.com/projects/foo/repos/bar/"
