@@ -475,6 +475,36 @@ def build_blocker(parser, xml_parent, data):
     XML.SubElement(blocker, 'blockingJobs').text = jobs
 
 
+def copyartifact(parser, xml_parent, data):
+    """yaml: copyartifact
+    Specify a list of projects that have access to copy the artifacts of
+    this project.
+
+    Requires the Jenkins `Copy Artifact plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Copy+Artifact+Plugin>`_
+
+    :arg string projects: comma separated list of projects that can copy
+        artifacts of this project. Wild card character '*' is available.
+
+
+    Example:
+
+    .. literalinclude:: \
+            /../../tests/properties/fixtures/copyartifact.yaml
+
+    """
+    copyartifact = XML.SubElement(xml_parent,
+                                  'hudson.plugins.'
+                                  'copyartifact.'
+                                  'CopyArtifactPermissionProperty',
+                                  plugin='copyartifact')
+    if not data or not data.get('projects', None):
+        raise JenkinsJobsException("projects string must exist and "
+                                   "not be empty")
+    projectlist = XML.SubElement(copyartifact, 'projectNameList')
+    XML.SubElement(projectlist, 'string').text = data.get('projects')
+
+
 def batch_tasks(parser, xml_parent, data):
     """yaml: batch-tasks
     Batch tasks can be tasks for events like releases, integration, archiving,
