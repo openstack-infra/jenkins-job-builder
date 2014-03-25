@@ -1,0 +1,16 @@
+publishers:
+  - ircbot:
+      strategy: all
+      notify-start: false
+      notify-committers: false
+      notify-culprits: false
+      notify-upstream: false
+      notify-fixers: false
+      message-type: summary-scm
+      channels:
+          - name: '#jenkins-channel1'
+            password: secrete
+            notify-only: false
+          - name: '#jenkins-channel2'
+            notify-only: true
+      matrix-notifier: only-configurations
