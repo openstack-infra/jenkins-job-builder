@@ -1,0 +1,4 @@
+properties:
+  - slave-utilization:
+      slave-percentage: 40
+      single-instance-per-slave: false
