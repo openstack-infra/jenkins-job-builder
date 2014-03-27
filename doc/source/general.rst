@@ -24,6 +24,7 @@ later.  There are a few basic optional fields for a Job definition::
       quiet-period: 5
       block-downstream: false
       block-upstream: false
+      retry-count: 3
 
 :Job Parameters:
     * **project-type**:
@@ -75,6 +76,10 @@ later.  There are a few basic optional fields for a Job definition::
       Specifies an authentication token that allows new builds to be
       triggered by accessing a special predefined URL. Only those who
       know the token will be able to trigger builds remotely.
+
+    * **retry-count**:
+      If a build fails to checkout from the repository, Jenkins will
+      retry the specified number of times before giving up.
 
 .. automodule:: general
    :members:

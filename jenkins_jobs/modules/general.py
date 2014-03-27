@@ -99,6 +99,10 @@ class General(jenkins_jobs.modules.base.Base):
             XML.SubElement(xml, 'canRoam').text = 'false'
         else:
             XML.SubElement(xml, 'canRoam').text = 'true'
+        if 'retry-count' in data:
+            XML.SubElement(xml, 'scmCheckoutRetryCount').text = \
+                str(data['retry-count'])
+
         if 'logrotate' in data:
             lr_xml = XML.SubElement(xml, 'logRotator')
             logrotate = data['logrotate']
