@@ -17,6 +17,7 @@ import argparse
 import ConfigParser
 import logging
 import os
+import platform
 import sys
 
 
@@ -39,8 +40,9 @@ def main():
                                action='store_true',
                                dest='delete_old', default=False,)
     parser_test = subparser.add_parser('test')
-    parser_test.add_argument('path', help='path to YAML file or directory')
-    parser_test.add_argument('-o', dest='output_dir', required=True,
+    parser_test.add_argument('path', help='path to YAML file or directory',
+                             nargs='?', default=sys.stdin)
+    parser_test.add_argument('-o', dest='output_dir', default=sys.stdout,
                              help='path to output XML')
     parser_test.add_argument('name', help='name(s) of job(s)', nargs='*')
     parser_delete = subparser.add_parser('delete')
@@ -125,6 +127,14 @@ def main():
                                            ignore_cache=ignore_cache,
                                            flush_cache=options.flush_cache)
 
+    if options.path == sys.stdin:
+        logger.debug("Input file is stdin")
+        if options.path.isatty():
+            key = 'CTRL+Z' if platform.system() == 'Windows' else 'CTRL+D'
+            logger.warn(
+                "Reading configuration from STDIN. Press %s to end input.",
+                key)
+
     if options.command == 'delete':
         for job in options.name:
             logger.info("Deleting jobs in [{0}]".format(job))
@@ -142,7 +152,7 @@ def main():
             builder.delete_old_managed(keep=[x.name for x in jobs])
     elif options.command == 'test':
         builder.update_job(options.path, options.name,
-                           output_dir=options.output_dir)
+                           output=options.output_dir)
 
 if __name__ == '__main__':
     sys.path.insert(0, '.')
