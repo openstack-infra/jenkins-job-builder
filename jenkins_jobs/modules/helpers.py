@@ -242,3 +242,113 @@ def cloudformation_stack(xml_parent, stack, xml_tag, stacks, region_dict):
             XML.SubElement(step, 'cloudFormationRecipe').text = stack['recipe']
         except KeyError as e:
             raise MissingAttributeError(e.args[0])
+
+
+def include_exclude_patterns(xml_parent, data, yaml_prefix,
+                             xml_elem_name):
+    xml_element = XML.SubElement(xml_parent, xml_elem_name)
+    XML.SubElement(xml_element, 'includePatterns').text = ','.join(
+        data.get(yaml_prefix + '-include-patterns', []))
+    XML.SubElement(xml_element, 'excludePatterns').text = ','.join(
+        data.get(yaml_prefix + '-exclude-patterns', []))
+
+
+def artifactory_deployment_patterns(xml_parent, data):
+    include_exclude_patterns(xml_parent, data, 'deployment',
+                             'artifactDeploymentPatterns')
+
+
+def artifactory_env_vars_patterns(xml_parent, data):
+    include_exclude_patterns(xml_parent, data, 'env-vars',
+                             'envVarsPatterns')
+
+
+def artifactory_optional_props(xml_parent, data, target):
+    optional_str_props = [
+        ('scopes', 'scopes'),
+        ('violationRecipients', 'violation-recipients'),
+        ('blackDuckAppName', 'black-duck-app-name'),
+        ('blackDuckAppVersion', 'black-duck-app-version'),
+        ('blackDuckReportRecipients', 'black-duck-report-recipients'),
+        ('blackDuckScopes', 'black-duck-scopes')
+    ]
+
+    for (xml_prop, yaml_prop) in optional_str_props:
+        XML.SubElement(xml_parent, xml_prop).text = data.get(
+            yaml_prop, '')
+
+    common_bool_props = [
+        # xml property name, yaml property name, default value
+        ('deployArtifacts', 'deploy-artifacts', True),
+        ('discardOldBuilds', 'discard-old-builds', False),
+        ('discardBuildArtifacts', 'discard-build-artifacts', False),
+        ('deployBuildInfo', 'publish-build-info', False),
+        ('includeEnvVars', 'env-vars-include', False),
+        ('runChecks', 'run-checks', False),
+        ('includePublishArtifacts', 'include-publish-artifacts', False),
+        ('licenseAutoDiscovery', 'license-auto-discovery', True),
+        ('enableIssueTrackerIntegration', 'enable-issue-tracker-integration',
+            False),
+        ('aggregateBuildIssues', 'aggregate-build-issues', False),
+        ('blackDuckRunChecks', 'black-duck-run-checks', False),
+        ('blackDuckIncludePublishedArtifacts',
+            'black-duck-include-published-artifacts', False),
+        ('autoCreateMissingComponentRequests',
+            'auto-create-missing-component-requests', True),
+        ('autoDiscardStaleComponentRequests',
+            'auto-discard-stale-component-requests', True),
+        ('filterExcludedArtifactsFromBuild',
+            'filter-excluded-artifacts-from-build', False)
+    ]
+
+    for (xml_prop, yaml_prop, default_value) in common_bool_props:
+        XML.SubElement(xml_parent, xml_prop).text = str(data.get(
+            yaml_prop, default_value)).lower()
+
+    if 'wrappers' in target:
+        wrapper_bool_props = [
+            ('enableResolveArtifacts', 'enable-resolve-artifacts', False),
+            ('disableLicenseAutoDiscovery',
+                'disable-license-auto-discovery', False),
+            ('recordAllDependencies',
+                'record-all-dependencies', False)
+        ]
+
+        for (xml_prop, yaml_prop, default_value) in wrapper_bool_props:
+            XML.SubElement(xml_parent, xml_prop).text = str(data.get(
+                yaml_prop, default_value)).lower()
+
+    if 'publishers' in target:
+        publisher_bool_props = [
+            ('evenIfUnstable', 'even-if-unstable', False),
+            ('passIdentifiedDownstream', 'pass-identified-downstream', False),
+            ('allowPromotionOfNonStagedBuilds',
+                'allow-promotion-of-non-staged-builds', False)
+        ]
+
+        for (xml_prop, yaml_prop, default_value) in publisher_bool_props:
+            XML.SubElement(xml_parent, xml_prop).text = str(data.get(
+                yaml_prop, default_value)).lower()
+
+
+def artifactory_common_details(details, data):
+    XML.SubElement(details, 'artifactoryName').text = data.get('name', '')
+    XML.SubElement(details, 'artifactoryUrl').text = data.get('url', '')
+
+
+def artifactory_repository(xml_parent, data, target):
+    if 'release' in target:
+        XML.SubElement(xml_parent, 'keyFromText').text = data.get(
+            'deploy-release-repo-key', '')
+        XML.SubElement(xml_parent, 'keyFromSelect').text = data.get(
+            'deploy-release-repo-key', '')
+        XML.SubElement(xml_parent, 'dynamicMode').text = str(
+            data.get('deploy-dynamic-mode', False)).lower()
+
+    if 'snapshot' in target:
+        XML.SubElement(xml_parent, 'keyFromText').text = data.get(
+            'deploy-snapshot-repo-key', '')
+        XML.SubElement(xml_parent, 'keyFromSelect').text = data.get(
+            'deploy-snapshot-repo-key', '')
+        XML.SubElement(xml_parent, 'dynamicMode').text = str(
+            data.get('deploy-dynamic-mode', False)).lower()
