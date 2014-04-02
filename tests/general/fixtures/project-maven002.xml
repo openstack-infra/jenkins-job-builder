@@ -12,8 +12,8 @@
   <processPlugins>false</processPlugins>
   <mavenValidationLevel>-1</mavenValidationLevel>
   <runHeadless>false</runHeadless>
-  <settingConfigId/>
-  <globalSettingConfigId/>
+  <settings class="jenkins.mvn.DefaultSettingsProvider"/>
+  <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
   <runPostStepsIfResult>
     <name>FAILURE</name>
     <ordinal>2</ordinal>

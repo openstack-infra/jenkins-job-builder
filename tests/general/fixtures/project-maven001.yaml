@@ -5,3 +5,5 @@ maven:
   root-module:
     group-id: gabba.gabba
     artifact-id: hey
+  settings: test
+  global-settings: test

@@ -15,8 +15,12 @@
   <processPlugins>false</processPlugins>
   <mavenValidationLevel>-1</mavenValidationLevel>
   <runHeadless>false</runHeadless>
-  <settingConfigId/>
-  <globalSettingConfigId/>
+  <settings class="jenkins.mvn.FilePathSettingsProvider">
+    <path>test</path>
+  </settings>
+  <globalSettings class="jenkins.mvn.FilePathGlobalSettingsProvider">
+    <path>test</path>
+  </globalSettings>
   <runPostStepsIfResult>
     <name>FAILURE</name>
     <ordinal>2</ordinal>
