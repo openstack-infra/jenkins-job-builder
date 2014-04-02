@@ -20,15 +20,6 @@ Wrappers can alter the way the build is run as well as the build output.
   :Macro: wrapper
   :Entry Point: jenkins_jobs.wrappers
 
-Example::
-
-  job:
-    name: test_job
-
-    wrappers:
-      - timeout:
-          timeout: 90
-          fail: true
 """
 
 import xml.etree.ElementTree as XML
@@ -75,6 +66,8 @@ def timeout(parser, xml_parent, data):
     :arg bool write-description: Write a message in the description
         (default false)
     :arg int timeout: Abort the build after this number of minutes (default 3)
+    :arg str timeout-var: Export an environment variable to reference the
+        timeout value (optional)
     :arg str type: Timeout type to use (default absolute)
     :arg int elastic-percentage: Percentage of the three most recent builds
         where to declare a timeout (default 0)
@@ -86,33 +79,22 @@ def timeout(parser, xml_parent, data):
      * **elastic**
      * **absolute**
 
+    Example:
 
-    Example::
+    .. literalinclude:: /../../tests/wrappers/fixtures/timeout001.yaml
 
-      wrappers:
-        - timeout:
-            timeout: 90
-            fail: true
-            type: absolute
+    .. literalinclude:: /../../tests/wrappers/fixtures/timeout002.yaml
 
-      wrappers:
-        - timeout:
-            fail: false
-            type: likely-stuck
-
-      wrappers:
-        - timeout:
-            fail: true
-            elastic-percentage: 150
-            elastic-default-timeout: 90
-            type: elastic
-
+    .. literalinclude:: /../../tests/wrappers/fixtures/timeout003.yaml
     """
     twrapper = XML.SubElement(xml_parent,
                               'hudson.plugins.build__timeout.'
                               'BuildTimeoutWrapper')
     XML.SubElement(twrapper, 'timeoutMinutes').text = str(
         data.get('timeout', 3))
+    timeout_env_var = data.get('timeout-var')
+    if timeout_env_var:
+        XML.SubElement(twrapper, 'timeoutEnvVar').text = str(timeout_env_var)
     XML.SubElement(twrapper, 'failBuild').text = str(
         data.get('fail', 'false')).lower()
     XML.SubElement(twrapper, 'writingDescription').text = str(
