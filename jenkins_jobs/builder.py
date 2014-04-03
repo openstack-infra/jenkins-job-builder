@@ -559,20 +559,37 @@ class Builder(object):
     def load_files(self, fn):
         self.parser = YamlParser(self.global_config)
 
-        if hasattr(fn, 'read'):
-            self.parser.parse_fp(fn)
-            return
+        # handle deprecated behavior
+        if not hasattr(fn, '__iter__'):
+            logger.warning(
+                'Passing single elements for the `fn` argument in '
+                'Builder.load_files is deprecated. Please update your code '
+                'to use a list as support for automatic conversion will be '
+                'removed in a future version.')
+            fn = [fn]
 
-        if os.path.isdir(fn):
-            files_to_process = [os.path.join(fn, f)
-                                for f in os.listdir(fn)
-                                if (f.endswith('.yml') or f.endswith('.yaml'))]
-        else:
-            files_to_process = [fn]
+        files_to_process = []
+        for path in fn:
+            if os.path.isdir(path):
+                files_to_process.extend([os.path.join(path, f)
+                                         for f in os.listdir(path)
+                                         if (f.endswith('.yml')
+                                             or f.endswith('.yaml'))])
+            else:
+                files_to_process.append(path)
 
         for in_file in files_to_process:
-            logger.debug("Parsing YAML file {0}".format(in_file))
-            self.parser.parse(in_file)
+            # use of ask-for-permissions instead of ask-for-forgiveness
+            # performs better when low use cases.
+            if hasattr(in_file, 'name'):
+                fname = in_file.name
+            else:
+                fname = in_file
+            logger.debug("Parsing YAML file {0}".format(fname))
+            if hasattr(in_file, 'read'):
+                self.parser.parse_fp(in_file)
+            else:
+                self.parser.parse(in_file)
 
     def delete_old_managed(self, keep):
         jobs = self.jenkins.get_jobs()
