@@ -5,7 +5,7 @@ To install Jenkins Job Builder, run::
 
   sudo python setup.py install
 
-The OpenStack project uses puppet to manage its infrastructure
+The OpenStack project uses Puppet to manage its infrastructure
 systems, including Jenkins.  If you use Puppet, you can use the
 `OpenStack Jenkins module`__ to install Jenkins Job Builder.
 
@@ -14,7 +14,7 @@ __ https://github.com/openstack-infra/config/tree/master/modules/jenkins
 Documentation
 -------------
 
-Documentation have been included and are in the 'doc' folder. To generate docs
+Documentation is included in the ``doc`` folder. To generate docs
 locally execute the command::
 
     tox -e doc
@@ -24,29 +24,26 @@ The generated documentation is then available under ``doc/build/html/index.html`
 Unit Tests
 ----------
 
-Unit tests have been included and are in the 'tests' folder.  We recently
+Unit tests have been included and are in the ``tests`` folder.  We recently
 started including unit tests as examples in our documentation so to keep the
-examples up to date it is very important that we include a unit tests for
-every module.  You can run the unit tests by execute the command::
+examples up to date it is very important that we include unit tests for
+every module.  To run the unit tests, execute the command::
 
-    tox -epy27
+    tox -e py27
 
-* Note - view tox.ini to run test on other versions of python
+* Note: View ``tox.ini`` to run tests on other versions of Python.
 
 Configuration File
 ------------------
 
 After installation, you will need to create a configuration file.  By
-default, `jenkins-jobs` looks in
+default, ``jenkins-jobs`` looks in
 ``/etc/jenkins_jobs/jenkins_jobs.ini`` but you may specify an
-alternate location when running `jenkins-jobs`.  The file should have
-the following format::
+alternate location when running ``jenkins-jobs``.  The file should have
+the following format:
 
-  [jenkins]
-  user=USERNAME
-  password=PASSWORD
-  url=JENKINS_URL
-  ignore_cache=IGNORE_CACHE_FLAG
+.. literalinclude:: ../../etc/jenkins_jobs.ini-sample
+   :language: ini
 
 **user**
   This should be the name of a user previously defined in Jenkins.
@@ -86,16 +83,16 @@ Once you have a configuration defined, you can test the job builder by running::
 
   jenkins-jobs test /path/to/config -o /path/to/output
 
-That will write XML files to the output directory for all of the jobs
-defined in the configuration directory.  
+which will write XML files to the output directory for all of the jobs
+defined in the configuration directory.
 
 Updating Jenkins
 ^^^^^^^^^^^^^^^^
-When you're satisfied with the generated xml from the test, you can run::
+When you're satisfied with the generated XML from the test, you can run::
 
   jenkins-jobs update /path/to/config
 
-Which will upload the configurations to Jenkins if needed.  Jenkins Job
+which will upload the configurations to Jenkins if needed.  Jenkins Job
 Builder maintains, for each host, a cache [#f1]_ of previously configured jobs,
 so that you can run that command as often as you like, and it will only
 update the configuration in Jenkins if the defined configuration has
