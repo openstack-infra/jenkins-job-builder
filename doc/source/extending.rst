@@ -8,6 +8,14 @@ attributes to existing components, a new module to support a Jenkins
 plugin, or include locally defined methods to deal with an
 idiosyncratic build system.
 
+The Builder
+-----------
+
+The ``Builder`` class manages Jenkins jobs. It's responsible for
+creating/deleting/updating jobs and can be called from your application. You
+can pass it a filename or an open file-like object that represents your YAML
+configuration. See the ``jenkins_jobs/builder.py`` file for more details.
+
 XML Processing
 --------------
 
