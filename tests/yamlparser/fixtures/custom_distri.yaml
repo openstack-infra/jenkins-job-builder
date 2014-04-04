@@ -1,0 +1,22 @@
+- project:
+    name: test_custom_distri
+    distributions: !!python/tuple [precise, jessie]
+    architectures: !!python/tuple &architectures
+      - amd64
+      - i386
+    axis_a:
+        type: user-defined
+        name: architectures
+        values: *architectures
+    jobs:
+      - '{name}-source'
+
+- job-template:
+      name: '{name}-source'
+      project-type: matrix
+      axes:
+        - axis:
+            type: user-defined
+            name: distribution
+            values: '{obj:distributions}'
+        - axis: '{obj:axis_a}'
