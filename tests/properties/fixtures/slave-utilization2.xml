@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <com.suryagaddipati.jenkins.SlaveUtilizationProperty>
+      <needsExclusiveAccessToNode>false</needsExclusiveAccessToNode>
+      <slaveUtilizationPercentage>0</slaveUtilizationPercentage>
+      <singleInstancePerSlave>true</singleInstancePerSlave>
+    </com.suryagaddipati.jenkins.SlaveUtilizationProperty>
+  </properties>
+</project>
