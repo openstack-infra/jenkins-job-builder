@@ -153,9 +153,9 @@ def least_load(parser, xml_parent, data):
 
     :arg bool disabled: whether or not leastload is disabled (default True)
 
-    Example::
+    Example:
 
-    .. literalinclude:: /../../tests/properties/fixtures/least_load002.yaml
+    .. literalinclude:: /../../tests/properties/fixtures/least-load002.yaml
     """
     least = XML.SubElement(xml_parent,
                            'org.bstick12.jenkinsci.plugins.leastload.'
