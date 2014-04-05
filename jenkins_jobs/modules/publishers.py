@@ -1060,19 +1060,14 @@ def checkstyle(parser, xml_parent, data):
     :arg str defaultEncoding: encoding for parsing or showing files
      (empty will use platform default)
 
-    Example::
+    Example:
 
-      publishers:
-        - checkstyle:
-            pattern: '**/checkstyle-result.xml'
-            healthy: 0
-            unHealthy: 100
-            healthThreshold: 'high'
-            thresholds:
-                unstable:
-                    totalHigh: 10
-                failed:
-                    totalHigh: 1
+    .. literalinclude::  /../../tests/publishers/fixtures/checkstyle001.yaml
+
+    Full example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/checkstyle002.yaml
+
     """
     checkstyle = XML.SubElement(xml_parent,
                                 'hudson.plugins.checkstyle.'
