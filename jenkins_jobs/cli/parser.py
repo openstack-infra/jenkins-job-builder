@@ -81,7 +81,7 @@ def create_parser():
 
     subparser = parser.add_subparsers(
         dest='command',
-        help="update, test or delete job")
+        help="update, test, list or delete job")
 
     extension_manager = extension.ExtensionManager(
         namespace='jjb.cli.subcommands',
