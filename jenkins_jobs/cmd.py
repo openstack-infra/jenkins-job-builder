@@ -15,6 +15,7 @@
 
 import argparse
 from six.moves import configparser, StringIO
+import fnmatch
 import logging
 import os
 import platform
@@ -33,6 +34,7 @@ DEFAULT_CONF = """
 keep_descriptions=False
 ignore_cache=False
 recursive=False
+exclude=.*
 allow_duplicates=False
 
 [jenkins]
@@ -51,11 +53,28 @@ def confirm(question):
         sys.exit('Aborted')
 
 
-def recurse_path(root):
+def recurse_path(root, excludes=None):
+    if excludes is None:
+        excludes = []
+
     basepath = os.path.realpath(root)
     pathlist = [basepath]
 
+    patterns = [e for e in excludes if os.path.sep not in e]
+    absolute = [e for e in excludes if os.path.isabs(e)]
+    relative = [e for e in excludes if os.path.sep in e and
+                not os.path.isabs(e)]
     for root, dirs, files in os.walk(basepath, topdown=True):
+        dirs[:] = [
+            d for d in dirs
+            if not any([fnmatch.fnmatch(d, pattern) for pattern in patterns])
+            if not any([fnmatch.fnmatch(os.path.abspath(os.path.join(root, d)),
+                                        path)
+                        for path in absolute])
+            if not any([fnmatch.fnmatch(os.path.relpath(os.path.join(root, d)),
+                                        path)
+                        for path in relative])
+        ]
         pathlist.extend([os.path.join(root, path) for path in dirs])
 
     return pathlist
@@ -68,6 +87,10 @@ def create_parser():
     recursive_parser.add_argument('-r', '--recursive', action='store_true',
                                   dest='recursive', default=False,
                                   help='look for yaml files recursively')
+    recursive_parser.add_argument('-x', '--exclude', dest='exclude',
+                                  action='append', default=[],
+                                  help='paths to exclude when using recursive'
+                                       ' search, uses standard globbing.')
     subparser = parser.add_subparsers(help='update, test or delete job',
                                       dest='command')
 
@@ -95,7 +118,7 @@ def create_parser():
 
     # subparser: delete
 
-    parser_delete = subparser.add_parser('delete')
+    parser_delete = subparser.add_parser('delete', parents=[recursive_parser])
     parser_delete.add_argument('name', help='name of job', nargs='+')
     parser_delete.add_argument('-p', '--path', default=None,
                                help='colon-separated list of paths to'
@@ -233,10 +256,13 @@ def execute(options, config):
         do_recurse = (getattr(options, 'recursive', False) or
                       config.getboolean('job_builder', 'recursive'))
 
+        excludes = [e for elist in options.exclude
+                    for e in elist.split(os.pathsep)] or \
+            config.get('job_builder', 'exclude').split(os.pathsep)
         paths = []
         for path in options.path:
             if do_recurse and os.path.isdir(path):
-                paths.extend(recurse_path(path))
+                paths.extend(recurse_path(path, excludes))
             else:
                 paths.append(path)
         options.path = paths
