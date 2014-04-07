@@ -167,6 +167,12 @@ values.  Example::
       jobs:
        - '{name}-{pyver}'
 
+If there are templates being realized that differ only in the variable
+used for its name (thus not a use case for job-specific substitutions),
+additional variables can be specified for project variables. Example::
+
+.. literalinclude::  /../../tests/yamlparser/fixtures/templates002.yaml
+
 Job Group
 ^^^^^^^^^
 

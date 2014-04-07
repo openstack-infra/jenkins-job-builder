@@ -257,7 +257,17 @@ class YamlParser(object):
         checksums = set([])
         for values in itertools.product(*dimensions):
             params = copy.deepcopy(project)
-            params.update(values)
+
+            expanded_values = {}
+            for (k, v) in values:
+                if isinstance(v, dict):
+                    inner_key = v.iterkeys().next()
+                    expanded_values[k] = inner_key
+                    expanded_values.update(v[inner_key])
+                else:
+                    expanded_values[k] = v
+
+            params.update(expanded_values)
             expanded = deep_format(template, params)
 
             # Keep track of the resulting expansions to avoid
