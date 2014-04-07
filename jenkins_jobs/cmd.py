@@ -94,7 +94,8 @@ def main():
         logger.debug("Not reading config for test output generation")
     else:
         raise jenkins_jobs.errors.JenkinsJobsException(
-            "A valid configuration file is required when not run as a test")
+            "A valid configuration file is required when not run as a test"
+            "\n{0} is not a valid .ini file".format(conf))
 
     logger.debug("Config: {0}".format(config))
 
