@@ -264,6 +264,8 @@ def trigger_builds(parser, xml_parent, data):
     :arg str project: the Jenkins project to trigger
     :arg str predefined-parameters:
       key/value pairs to be passed to the job (optional)
+    :arg str property-file:
+      Pass properties from file to the other job (optional)
     :arg bool current-parameters: Whether to include the
       parameters passed to the current build to the
       triggered job.
@@ -296,6 +298,14 @@ def trigger_builds(parser, xml_parent, data):
             XML.SubElement(tconfigs,
                            'hudson.plugins.parameterizedtrigger.'
                            'SubversionRevisionBuildParameters')
+        if 'property-file' in project_def:
+            params = XML.SubElement(tconfigs,
+                                    'hudson.plugins.parameterizedtrigger.'
+                                    'FileBuildParameters')
+            propertiesFile = XML.SubElement(params, 'propertiesFile')
+            propertiesFile.text = project_def['property-file']
+            failOnMissing = XML.SubElement(params, 'failTriggerOnMissing')
+            failOnMissing.text = 'true'
         if 'predefined-parameters' in project_def:
             params = XML.SubElement(tconfigs,
                                     'hudson.plugins.parameterizedtrigger.'
