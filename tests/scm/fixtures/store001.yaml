@@ -1,0 +1,11 @@
+scm:
+  - store:
+      script: someStoreScript
+      repository: StoreRepository
+      version-regex: "[0-9]+"
+      minimum-blessing: Integrated
+      parcel-builder-file: parcelBuilderInput
+      pundles:
+        - package: SomePackage
+        - package: AnotherPackage
+        - bundle: SomeBundle

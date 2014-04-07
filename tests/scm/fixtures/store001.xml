@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <scm class="org.jenkinsci.plugins.visualworks_store.StoreSCM">
+    <scriptName>someStoreScript</scriptName>
+    <repositoryName>StoreRepository</repositoryName>
+    <pundles>
+      <org.jenkinsci.plugins.visualworks_store.PundleSpec>
+        <name>SomePackage</name>
+        <pundleType>PACKAGE</pundleType>
+      </org.jenkinsci.plugins.visualworks_store.PundleSpec>
+      <org.jenkinsci.plugins.visualworks_store.PundleSpec>
+        <name>AnotherPackage</name>
+        <pundleType>PACKAGE</pundleType>
+      </org.jenkinsci.plugins.visualworks_store.PundleSpec>
+      <org.jenkinsci.plugins.visualworks_store.PundleSpec>
+        <name>SomeBundle</name>
+        <pundleType>BUNDLE</pundleType>
+      </org.jenkinsci.plugins.visualworks_store.PundleSpec>
+    </pundles>
+    <versionRegex>[0-9]+</versionRegex>
+    <minimumBlessingLevel>Integrated</minimumBlessingLevel>
+    <generateParcelBuilderInputFile>true</generateParcelBuilderInputFile>
+    <parcelBuilderInputFilename>parcelBuilderInput</parcelBuilderInputFilename>
+  </scm>
+</project>
