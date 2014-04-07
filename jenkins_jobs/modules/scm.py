@@ -79,14 +79,17 @@ def git(self, xml_parent, data):
     :arg str git-config-email: Configure email for Git clone
 
     :browser values:
-        :githubweb:
-        :fisheye:
+        :auto:
         :bitbucketweb:
+        :cgit:
+        :fisheye:
         :gitblit:
+        :githubweb:
         :gitlab:
         :gitoriousweb:
         :gitweb:
         :redmineweb:
+        :stash:
         :viewgit:
 
     :choosing-strategy values:
@@ -189,22 +192,23 @@ def git(self, xml_parent, data):
         XML.SubElement(scm, 'localBranch').text = data['local-branch']
 
     browser = data.get('browser', 'auto')
-    browserdict = {'githubweb': 'GithubWeb',
-                   'fisheye': 'FisheyeGitRepositoryBrowser',
+    browserdict = {'auto': 'auto',
                    'bitbucketweb': 'BitbucketWeb',
                    'cgit': 'CGit',
+                   'fisheye': 'FisheyeGitRepositoryBrowser',
                    'gitblit': 'GitBlitRepositoryBrowser',
+                   'githubweb': 'GithubWeb',
                    'gitlab': 'GitLab',
                    'gitoriousweb': 'GitoriousWeb',
                    'gitweb': 'GitWeb',
                    'redmineweb': 'RedmineWeb',
-                   'viewgit': 'ViewGitWeb',
-                   'auto': 'auto'}
+                   'stash': 'Stash',
+                   'viewgit': 'ViewGitWeb'}
     if browser not in browserdict:
+        valid = sorted(browserdict.keys())
         raise JenkinsJobsException("Browser entered is not valid must be one "
-                                   "of: githubweb, fisheye, bitbucketweb, "
-                                   "cgit, gitblit, gitlab, gitoriousweb, "
-                                   "gitweb, redmineweb, viewgit, or auto")
+                                   "of: %s or %s." % (", ".join(valid[:-1]),
+                                                      valid[-1]))
     if browser != 'auto':
         bc = XML.SubElement(scm, 'browser', {'class':
                             'hudson.plugins.git.browser.' +
