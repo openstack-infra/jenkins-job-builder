@@ -14,7 +14,7 @@
 
 
 """
-Triggers define what causes a jenkins job to start buliding.
+Triggers define what causes a Jenkins job to start building.
 
 **Component**: triggers
   :Macro: trigger
@@ -176,18 +176,18 @@ def gerrit(parser, xml_parent, data):
         messages etc. If other non-silent jobs are triggered by the same
         Gerrit event as this job, the result of this job's build will not be
         counted in the end result of the other jobs. (default false)
-    :arg bool escape-quotes: escape quotes in the values of gerrit change
+    :arg bool escape-quotes: escape quotes in the values of Gerrit change
         parameters (default true)
     :arg bool no-name-and-email: Do not pass compound 'name and email'
         parameters (default false)
     :arg bool dynamic-trigger-enabled: Enable/disable the dynamic trigger
         (default false)
-    :arg str dynamic-trigger-url: if you specify this option, the gerrit
+    :arg str dynamic-trigger-url: if you specify this option, the Gerrit
         trigger configuration will be fetched from there on a regular interval
-    :arg str custom-url: Custom URL for a message sent to gerrit. Build
+    :arg str custom-url: Custom URL for a message sent to Gerrit. Build
         details URL will be used if empty. (default '')
 
-    You may select one or more gerrit events upon which to trigger.
+    You may select one or more Gerrit events upon which to trigger.
     You must also supply at least one project and branch, optionally
     more.  If you select the comment-added trigger, you should also
     indicate which approval category and value you want to trigger the
