@@ -14,25 +14,25 @@ To install::
 
 Online documentation:
 
- * http://ci.openstack.org/jenkins-job-builder/
+* http://ci.openstack.org/jenkins-job-builder/
 
 Developers
 ==========
 Bug report:
 
- * https://bugs.launchpad.net/openstack-ci/
+* https://bugs.launchpad.net/openstack-ci/
 
 Cloning:
 
- * https://github.com/openstack-infra/jenkins-job-builder.git
+* https://github.com/openstack-infra/jenkins-job-builder.git
 
 Patches are submitted via Gerrit at:
 
- * https://review.openstack.org/
+* https://review.openstack.org/
 
 More details on how you can contribute is available on our wiki at:
 
- * http://wiki.openstack.org/HowToContribute
+* http://wiki.openstack.org/HowToContribute
 
 Writing a patch
 ===============
@@ -46,12 +46,12 @@ patchsets.
 When creating new YAML components, please observe the following style
 conventions:
 
- * All YAML identifiers (including component names and arguments)
-   should be lower-case and multiple word identifiers should use
-   hyphens.  E.g., "build-trigger".
- * The Python functions that implement components should have the same
-   name as the YAML keyword, but should use underscores instead of
-   hyphens. E.g., "build_trigger".
+* All YAML identifiers (including component names and arguments)
+  should be lower-case and multiple word identifiers should use
+  hyphens.  E.g., "build-trigger".
+* The Python functions that implement components should have the same
+  name as the YAML keyword, but should use underscores instead of
+  hyphens. E.g., "build_trigger".
 
 This consistency will help users avoid simple mistakes when writing
 YAML, as well as developers when matching YAML components to Python
