@@ -19,7 +19,8 @@ locally execute the command::
 
     tox -e doc
 
-The generated documentation is then available under ``doc/build/html/index.html``.
+The generated documentation is then available under
+``doc/build/html/index.html``.
 
 Unit Tests
 ----------
@@ -39,7 +40,7 @@ Configuration File
 After installation, you will need to create a configuration file.  By
 default, ``jenkins-jobs`` looks in
 ``/etc/jenkins_jobs/jenkins_jobs.ini`` but you may specify an
-alternate location when running ``jenkins-jobs``.  The file should have
+alternative location when running ``jenkins-jobs``.  The file should have
 the following format:
 
 .. literalinclude:: ../../etc/jenkins_jobs.ini-sample
@@ -61,8 +62,7 @@ the following format:
   The base URL for your Jenkins installation.
 
 **ignore_cache**
-  (Optional) If set to True, jenkins job builder
-  won't be using any cache.
+  (Optional) If set to True, Jenkins Job Builder won't use any cache.
 
 
 Running
@@ -108,4 +108,5 @@ arguments after the configuration path. To update Foo1 and Foo2 run::
 
 .. rubric:: Footnotes
 .. [#f1] The cache default location is at ``~/.cache/jenkins_jobs``, which
-         can be overridden by setting the ``XDG_CACHE_HOME`` environment variable.
+         can be overridden by setting the ``XDG_CACHE_HOME`` environment
+         variable.
