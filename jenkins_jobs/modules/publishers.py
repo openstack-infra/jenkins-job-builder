@@ -348,11 +348,11 @@ def clone_workspace(parser, xml_parent, data):
     else:
         XML.SubElement(cloneworkspace, 'archiveMethod').text = archive_method
 
-    XML.SubElement(
-        cloneworkspace,
-        'overrideDefaultExcludes').text = str(data.get(
-            'override-default-excludes',
-            False)).lower()
+    override_default_excludes_str = str(
+        data.get('override-default-excludes', False)).lower()
+    override_default_excludes_elem = XML.SubElement(
+        cloneworkspace, 'overrideDefaultExcludes')
+    override_default_excludes_elem.text = override_default_excludes_str
 
 
 def cloverphp(parser, xml_parent, data):
