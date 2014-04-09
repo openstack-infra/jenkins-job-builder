@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <hudson.plugins.copyartifact.CopyArtifactPermissionProperty plugin="copyartifact">
+      <projectNameList>
+        <string>foo*</string>
+      </projectNameList>
+    </hudson.plugins.copyartifact.CopyArtifactPermissionProperty>
+  </properties>
+</project>
