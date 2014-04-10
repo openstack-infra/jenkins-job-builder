@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.doxygen.DoxygenArchiver>
+      <doxyfilePath>Doxyfile</doxyfilePath>
+      <keepAll>false</keepAll>
+      <folderWhereYouRunDoxygen>build</folderWhereYouRunDoxygen>
+    </hudson.plugins.doxygen.DoxygenArchiver>
+  </publishers>
+</project>
