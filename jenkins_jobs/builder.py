@@ -121,13 +121,14 @@ class YamlParser(object):
         self.data = {}
         self.jobs = []
 
-    def parse(self, fn):
-        data = yaml.load(open(fn))
+    def parse_fp(self, fp):
+        data = yaml.load(fp)
         if data:
             if not isinstance(data, list):
                 raise JenkinsJobsException(
                     "The topmost collection in file '{fname}' must be a list,"
-                    " not a {cls}".format(fname=fn, cls=type(data)))
+                    " not a {cls}".format(fname=getattr(fp, 'name', fp),
+                                          cls=type(data)))
             for item in data:
                 cls, dfn = item.items()[0]
                 group = self.data.get(cls, {})
@@ -144,6 +145,10 @@ class YamlParser(object):
                 name = dfn['name']
                 group[name] = dfn
                 self.data[cls] = group
+
+    def parse(self, fn):
+        with open(fn) as fp:
+            self.parse_fp(fp)
 
     def getJob(self, name):
         job = self.data.get('job', {}).get(name, None)
@@ -514,13 +519,19 @@ class Builder(object):
         self.ignore_cache = ignore_cache
 
     def load_files(self, fn):
+        self.parser = YamlParser(self.global_config)
+
+        if hasattr(fn, 'read'):
+            self.parser.parse_fp(fn)
+            return
+
         if os.path.isdir(fn):
             files_to_process = [os.path.join(fn, f)
                                 for f in os.listdir(fn)
                                 if (f.endswith('.yml') or f.endswith('.yaml'))]
         else:
             files_to_process = [fn]
-        self.parser = YamlParser(self.global_config)
+
         for in_file in files_to_process:
             logger.debug("Parsing YAML file {0}".format(in_file))
             self.parser.parse(in_file)
