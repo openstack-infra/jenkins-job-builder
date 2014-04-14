@@ -34,6 +34,13 @@ every module.  To run the unit tests, execute the command::
 
 * Note: View ``tox.ini`` to run tests on other versions of Python.
 
+Test Coverage
+-------------
+
+To measure test coverage, execute the command::
+
+    tox -e cover
+
 Configuration File
 ------------------
 
