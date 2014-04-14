@@ -24,4 +24,5 @@ triggers:
       no-name-and-email: false
       dynamic-trigger-enabled: true
       dynamic-trigger-url: http://myhost/mytrigger
+      trigger-for-unreviewed-patches: true
       server-name: my-server

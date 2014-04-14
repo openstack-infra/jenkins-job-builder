@@ -52,6 +52,7 @@
       <noNameAndEmailParameters>false</noNameAndEmailParameters>
       <dynamicTriggerConfiguration>True</dynamicTriggerConfiguration>
       <triggerConfigURL>http://myhost/mytrigger</triggerConfigURL>
+      <allowTriggeringUnreviewedPatches>false</allowTriggeringUnreviewedPatches>
       <triggerOnEvents>
         <com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.events.PluginCommentAddedEvent>
           <verdictCategory>APRV</verdictCategory>

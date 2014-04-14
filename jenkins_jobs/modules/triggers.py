@@ -195,6 +195,9 @@ def gerrit(parser, xml_parent, data):
         (default false)
     :arg str dynamic-trigger-url: if you specify this option, the Gerrit
         trigger configuration will be fetched from there on a regular interval
+    :arg bool trigger-for-unreviewed-patches: trigger patchset-created events
+        for changes that were uploaded while connection to Gerrit was down
+        (default false). Requires Gerrit Trigger Plugin version >= 2.11.0
     :arg str custom-url: Custom URL for a message sent to Gerrit. Build
         details URL will be used if empty. (default '')
     :arg str server-name: Name of the server to trigger on, or ''__ANY__'' to
@@ -281,6 +284,8 @@ def gerrit(parser, xml_parent, data):
         data.get('dynamic-trigger-enabled', False))
     XML.SubElement(gtrig, 'triggerConfigURL').text = str(
         data.get('dynamic-trigger-url', ''))
+    XML.SubElement(gtrig, 'allowTriggeringUnreviewedPatches').text = str(
+        data.get('trigger-for-unreviewed-patches', False)).lower()
     build_gerrit_triggers(gtrig, data)
     override = str(data.get('override-votes', False)).lower()
     if override == 'true':

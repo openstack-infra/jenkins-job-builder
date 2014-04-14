@@ -71,6 +71,7 @@
       <noNameAndEmailParameters>false</noNameAndEmailParameters>
       <dynamicTriggerConfiguration>False</dynamicTriggerConfiguration>
       <triggerConfigURL/>
+      <allowTriggeringUnreviewedPatches>false</allowTriggeringUnreviewedPatches>
       <triggerOnEvents>
         <com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.events.PluginPatchsetCreatedEvent/>
       </triggerOnEvents>
