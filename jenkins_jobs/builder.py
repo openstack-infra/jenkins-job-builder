@@ -580,6 +580,11 @@ class Builder(object):
                 if names:
                     print job.output()
                     continue
+                try:
+                    os.makedirs(output_dir)
+                except OSError:
+                    if not os.path.isdir(output_dir):
+                        raise
                 fn = os.path.join(output_dir, job.name)
                 logger.debug("Writing XML to '{0}'".format(fn))
                 f = open(fn, 'w')
