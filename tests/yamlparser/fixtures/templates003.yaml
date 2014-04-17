@@ -1,0 +1,29 @@
+- defaults:
+    name: Foo
+    disabled: false
+    block-downstream: false
+    block-upstream: false
+    wrappers:
+      - timestamps
+
+- defaults:
+    name: Bar
+    disabled: false
+    block-downstream: false
+    block-upstream: true
+    wrappers:
+      - timestamps
+      - workspace-cleanup
+
+- job-template:
+    name: '{component}-Test'
+    project-type: freestyle
+    defaults: '{component}'
+
+- project:
+    name: Test-project
+    component:
+      - Foo
+      - Bar
+    jobs:
+      - '{component}-Test'
