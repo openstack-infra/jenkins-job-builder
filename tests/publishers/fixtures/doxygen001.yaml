@@ -1,0 +1,5 @@
+publishers:
+  - doxygen:
+      doxyfile: "Doxyfile"
+      keepall: false
+      folder: "build"

@@ -3249,6 +3249,33 @@ def description_setter(parser, xml_parent, data):
     XML.SubElement(descriptionsetter, 'setForMatrix').text = for_matrix
 
 
+def doxygen(parser, xml_parent, data):
+    """yaml: doxygen
+    This plugin parses the Doxygen descriptor (Doxyfile) and provides a link to
+    the generated Doxygen documentation.
+
+    Requires the Jenkins `Doxygen Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Doxygen+Plugin>`_
+
+    :arg str doxyfile: The doxyfile path
+    :arg bool keepall: Retain doxygen generation for each successful build
+        (default: false)
+    :arg str folder: Folder where you run doxygen (default: '')
+
+    Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/doxygen001.yaml
+
+    """
+    p = XML.SubElement(xml_parent, 'hudson.plugins.doxygen.DoxygenArchiver')
+    if not data['doxyfile']:
+        raise JenkinsJobsException("The path to a doxyfile must be specified.")
+    XML.SubElement(p, 'doxyfilePath').text = str(data.get("doxyfile"))
+    XML.SubElement(p, 'keepAll').text = str(data.get("keepall", False)).lower()
+    XML.SubElement(p, 'folderWhereYouRunDoxygen').text = \
+        str(data.get("folder", ""))
+
+
 def sitemonitor(parser, xml_parent, data):
     """yaml: sitemonitor
     This plugin checks the availability of an url.
