@@ -18,6 +18,7 @@
 # under the License.
 
 import codecs
+import logging
 import os
 import re
 import doctest
@@ -62,6 +63,8 @@ class BaseTestCase(object):
     # TestCase settings:
     maxDiff = None      # always dump text difference
     longMessage = True  # keep normal error message when providing our
+
+    logging.basicConfig()
 
     def __read_content(self):
         # Read XML content, assuming it is unicode encoded
