@@ -1,0 +1,3 @@
+publishers:
+  - fitnesse:
+      results: "fitnesse-results/**/*.xml"

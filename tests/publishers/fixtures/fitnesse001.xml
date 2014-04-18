@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.fitnesse.FitnesseResultsRecorder>
+      <fitnessePathToXmlResultsIn>fitnesse-results/**/*.xml</fitnessePathToXmlResultsIn>
+    </hudson.plugins.fitnesse.FitnesseResultsRecorder>
+  </publishers>
+</project>

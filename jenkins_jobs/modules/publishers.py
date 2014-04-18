@@ -3443,6 +3443,27 @@ def ruby_metrics(parser, xml_parent, data):
         raise JenkinsJobsException('Coverage metric targets must be set')
 
 
+def fitnesse(parser, xml_parent, data):
+    """yaml: fitnesse
+    Publish Fitnesse test results
+
+    Requires the Jenkins `Fitnesse plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Fitnesse+Plugin>`_
+
+    :arg str results: path specifier for results files
+
+    Example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/fitnesse001.yaml
+
+    """
+    fitnesse = XML.SubElement(
+        xml_parent,
+        'hudson.plugins.fitnesse.FitnesseResultsRecorder')
+    results = data.get('results', '')
+    XML.SubElement(fitnesse, 'fitnessePathToXmlResultsIn').text = results
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
