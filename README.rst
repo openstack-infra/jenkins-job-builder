@@ -24,11 +24,13 @@ Bug report:
 
 Cloning:
 
-* https://github.com/openstack-infra/jenkins-job-builder.git
+* https://git.openstack.org/openstack-infra/jenkins-job-builder
 
 Patches are submitted via Gerrit at:
 
 * https://review.openstack.org/
+
+Please do not submit GitHub pull requests, they will be automatically closed.
 
 More details on how you can contribute is available on our wiki at:
 
