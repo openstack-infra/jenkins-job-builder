@@ -1,5 +1,7 @@
 # Copyright 2012 Hewlett-Packard Development Company, L.P.
 # Copyright 2012 Varnish Software AS
+# Copyright 2013-2014 Antoine "hashar" Musso
+# Copyright 2013-2014 Wikimedia Foundation Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -2379,6 +2381,86 @@ def post_tasks(parser, xml_parent, data):
             task.get('run-if-job-successful', False)).lower()
         XML.SubElement(task_xml, 'script').text = str(
             task.get('script', ''))
+
+
+def postbuildscript(parser, xml_parent, data):
+    """yaml: postbuildscript
+    Executes additional builders, script or Groovy after the build is
+    complete.
+
+    Requires the Jenkins `Post Build Script plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/PostBuildScript+Plugin>`_
+
+    :arg list generic-script: Paths to Batch/Shell scripts
+    :arg list groovy-script: Paths to Groovy scripts
+    :arg list groovy: Inline Groovy
+    :arg bool onsuccess: Builders are run if the build succeed
+                         (default False)
+    :arg bool onfailure: Builders are run if the build fail
+                         (default True)
+
+    The `onsuccess` and `onfailure` options are confusing. If you want
+    the post build to always run regardless of the build status, you
+    should set them both to `false`.
+
+    Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/\
+postbuildscript001.yaml
+
+    You can also execute :doc:`builders </builders>`:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/\
+postbuildscript002.yaml
+    """
+
+    pbs_xml = XML.SubElement(
+        xml_parent,
+        'org.jenkinsci.plugins.postbuildscript.PostBuildScript')
+
+    # Shell/Groovy in a file
+    script_types = {
+        'generic': 'GenericScript',
+        'groovy': 'GroovyScriptFile',
+    }
+    for script_type in script_types.keys():
+        if script_type + '-script' not in data:
+            continue
+
+        scripts_xml = XML.SubElement(pbs_xml, script_type + 'ScriptFileList')
+        for shell_scripts in [data.get(script_type + '-script', [])]:
+            for shell_script in shell_scripts:
+                script_xml = XML.SubElement(
+                    scripts_xml,
+                    'org.jenkinsci.plugins.postbuildscript.'
+                    + script_types[script_type])
+                file_path_xml = XML.SubElement(script_xml, 'filePath')
+                file_path_xml.text = shell_script
+
+    # Inlined Groovy
+    if 'groovy' in data:
+        groovy_inline_xml = XML.SubElement(pbs_xml, 'groovyScriptContentList')
+        for groovy in data.get('groovy', []):
+            groovy_xml = XML.SubElement(
+                groovy_inline_xml,
+                'org.jenkinsci.plugins.postbuildscript.GroovyScriptContent'
+            )
+            groovy_content = XML.SubElement(groovy_xml, 'content')
+            groovy_content.text = groovy
+
+    # Inject builders
+    if 'builders' in data:
+        build_steps_xml = XML.SubElement(pbs_xml, 'buildSteps')
+        for builder in data.get('builders', []):
+            parser.registry.dispatch('builder', parser, build_steps_xml,
+                                     builder)
+
+    # When to run the build? Note the plugin let one specify both options
+    # although they are antinomic
+    success_xml = XML.SubElement(pbs_xml, 'scriptOnlyIfSuccess')
+    success_xml.text = str(data.get('onsuccess', True)).lower()
+    failure_xml = XML.SubElement(pbs_xml, 'scriptOnlyIfFailure')
+    failure_xml.text = str(data.get('onfailure', False)).lower()
 
 
 def xml_summary(parser, xml_parent, data):
