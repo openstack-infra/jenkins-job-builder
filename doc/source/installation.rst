@@ -86,6 +86,11 @@ Once you have a configuration defined, you can test the job builder by running::
 which will write XML files to the output directory for all of the jobs
 defined in the configuration directory.
 
+If you want to run a simple test with just a single YAML file and see the XML
+output on stdout::
+
+  jenkins-jobs test /path/to/config
+
 Updating Jenkins
 ^^^^^^^^^^^^^^^^
 When you're satisfied with the generated XML from the test, you can run::
