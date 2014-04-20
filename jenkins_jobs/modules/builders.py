@@ -231,7 +231,7 @@ def ant(parser, xml_parent, data):
     if type(data) is str:
         # Support for short form: -ant: "target"
         data = {'targets': data}
-    for setting, value in data.iteritems():
+    for setting, value in sorted(data.iteritems()):
         if setting == 'targets':
             targets = XML.SubElement(ant, 'targets')
             targets.text = value
