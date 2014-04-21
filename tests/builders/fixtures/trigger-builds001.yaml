@@ -3,4 +3,6 @@ builders:
     - project: "build_started"
       predefined-parameters:
         FOO="bar"
+      current-parameters: true
+      svn-revision: true
       block: true
