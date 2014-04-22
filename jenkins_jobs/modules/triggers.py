@@ -197,6 +197,9 @@ def gerrit(parser, xml_parent, data):
         trigger configuration will be fetched from there on a regular interval
     :arg str custom-url: Custom URL for a message sent to Gerrit. Build
         details URL will be used if empty. (default '')
+    :arg str server-name: Name of the server to trigger on, or ''__ANY__'' to
+        trigger on any configured Gerrit server (default '__ANY__').  Requires
+        Gerrit Trigger Plugin version >= 2.11.0
 
     You may select one or more Gerrit events upon which to trigger.
     You must also supply at least one project and branch, optionally
@@ -210,7 +213,7 @@ def gerrit(parser, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: /../../tests/triggers/fixtures/gerrit003.yaml
+    .. literalinclude:: /../../tests/triggers/fixtures/gerrit004.yaml
     """
 
     logger = logging.getLogger("%s:gerrit" % __name__)
@@ -302,6 +305,8 @@ def gerrit(parser, xml_parent, data):
     XML.SubElement(gtrig, 'buildUnstableMessage').text = str(
         data.get('unstable-message', ''))
     XML.SubElement(gtrig, 'customUrl').text = str(data.get('custom-url', ''))
+    XML.SubElement(gtrig, 'serverName').text = str(
+        data.get('server-name', '__ANY__'))
 
 
 def pollscm(parser, xml_parent, data):
