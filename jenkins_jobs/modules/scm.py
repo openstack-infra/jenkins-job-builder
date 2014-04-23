@@ -144,7 +144,7 @@ def git(self, xml_parent, data):
     XML.SubElement(scm, 'configVersion').text = '2'
     user = XML.SubElement(scm, 'userRemoteConfigs')
     if 'remotes' not in data:
-        data['remotes'] = [{data.get('name', 'origin'): data}]
+        data['remotes'] = [{data.get('name', 'origin'): data.copy()}]
     for remoteData in data['remotes']:
         huser = XML.SubElement(user, 'hudson.plugins.git.UserRemoteConfig')
         remoteName = remoteData.keys()[0]
