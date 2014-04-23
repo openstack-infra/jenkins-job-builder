@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jvnet.hudson.plugins.exclusion.CriticalBlockStart plugin="Exclusion"/>
+    <org.jvnet.hudson.plugins.exclusion.CriticalBlockEnd plugin="Exclusion"/>
+  </builders>
+</project>

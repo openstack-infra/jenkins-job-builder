@@ -1,0 +1,6 @@
+wrappers:
+  - exclusion:
+      resources:
+          - myResource1
+          - MyresoUrce2
+          - myReSoUrCe3
