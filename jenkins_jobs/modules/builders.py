@@ -62,6 +62,22 @@ def shell(parser, xml_parent, data):
     XML.SubElement(shell, 'command').text = data
 
 
+def python(parser, xml_parent, data):
+    """yaml: python
+    Execute a python command. Requires the Jenkins `Python plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Python+Plugin>`_
+
+    :arg str parameter: the python command to execute
+
+    Example:
+
+    .. literalinclude:: /../../tests/builders/fixtures/python.yaml
+
+    """
+    python = XML.SubElement(xml_parent, 'hudson.plugins.python.Python')
+    XML.SubElement(python, 'command').text = data
+
+
 def copyartifact(parser, xml_parent, data):
     """yaml: copyartifact
 
