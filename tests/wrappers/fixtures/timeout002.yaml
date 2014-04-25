@@ -1,0 +1,4 @@
+wrappers:
+  - timeout:
+      fail: false
+      type: likely-stuck

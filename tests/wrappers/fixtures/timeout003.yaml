@@ -1,0 +1,7 @@
+ wrappers:
+    - timeout:
+        timeout-var: 'BUILD_TIMEOUT'
+        fail: true
+        elastic-percentage: 150
+        elastic-default-timeout: 90
+        type: elastic
