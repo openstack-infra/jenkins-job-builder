@@ -50,12 +50,11 @@ def shell(parser, xml_parent, data):
     """yaml: shell
     Execute a shell command.
 
-    :Parameter: the shell command to execute
+    :arg str parameter: the shell command to execute
 
-    Example::
+    Example:
 
-      builders:
-        - shell: "make test"
+    .. literalinclude:: /../../tests/builders/fixtures/shell.yaml
 
     """
     shell = XML.SubElement(xml_parent, 'hudson.tasks.Shell')

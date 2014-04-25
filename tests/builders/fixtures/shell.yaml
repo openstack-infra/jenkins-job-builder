@@ -1,0 +1,2 @@
+builders:
+  - shell: "make test"
