@@ -122,18 +122,10 @@ def copyartifact(parser, xml_parent, data):
       * **last-unsuccessful**
 
 
-    Example::
+    Example:
 
-      builders:
-        - copyartifact:
-            project: foo
-            filter: *.tar.gz
-            target: /home/foo
-            which-build: specific-build
-            build-number: 123
-            optional: true
-            flatten: true
-            parameter-filters: PUBLISH=true
+    .. literalinclude:: ../../tests/builders/fixtures/copy-artifact001.yaml
+       :language: yaml
     """
     t = XML.SubElement(xml_parent, 'hudson.plugins.copyartifact.CopyArtifact')
     # Warning: this only works with copy artifact version 1.26+,
@@ -383,11 +375,10 @@ def builders_from(parser, xml_parent, data):
 
     :arg str projectName: the name of the other project
 
-    Example::
+    Example:
 
-      builders:
-        - builders-from:
-            - project: "base-build"
+    .. literalinclude:: ../../tests/builders/fixtures/builders-from.yaml
+       :language: yaml
     """
     pbs = XML.SubElement(xml_parent,
                          'hudson.plugins.templateproject.ProxyBuilder')
@@ -440,23 +431,10 @@ def artifact_resolver(parser, xml_parent, data):
                  * **target-file-name** (`str`) -- What to name the artifact
                    (default '')
 
-    Example::
+    Example:
 
-      builders:
-        - artifact-resolver:
-            fail-on-error: true
-            repository-logging: true
-            target-directory: foo
-            artifacts:
-              - group-id: commons-logging
-                artifact-id: commons-logging
-                version: 1.1
-                classifier: src
-                extension: jar
-                target-file-name: comm-log.jar
-              - group-id: commons-lang
-                artifact-id: commons-lang
-                version: 1.2
+    .. literalinclude:: ../../tests/builders/fixtures/artifact-resolver.yaml
+       :language: yaml
     """
     ar = XML.SubElement(xml_parent,
                         'org.jvnet.hudson.plugins.repositoryconnector.'
@@ -505,22 +483,10 @@ def gradle(parser, xml_parent, data):
         root) here, such as ${workspace}/parent/ instead of just
         ${workspace}.
 
-    Example::
+    Example:
 
-      builders:
-        - gradle:
-            gradle-name: "gradle-1.2"
-            wrapper: true
-            executable: true
-            use-root-dir: true
-            root-build-script-dir: ${workspace}/tests
-            switches:
-              - "-g /foo/bar/.gradle"
-              - "-PmavenUserName=foobar"
-            tasks: |
-                   init
-                   build
-                   tests
+    .. literalinclude:: ../../tests/builders/fixtures/gradle.yaml
+       :language: yaml
     """
     gradle = XML.SubElement(xml_parent, 'hudson.plugins.gradle.Gradle')
     XML.SubElement(gradle, 'description').text = ''
@@ -570,16 +536,10 @@ def msbuild(parser, xml_parent, data):
     :arg bool continue-on-build-failure: should the build continue if
       msbuild returns an error (defaults to false)
 
-    Example::
+    Example:
 
-      builders:
-        - msbuild:
-            solution-file: "MySolution.sln"
-            msbuild-version: "msbuild-4.0"
-            extra-parameters: "/maxcpucount:4"
-            pass-build-variables: False
-            continue-on-build-failure: True
-
+    .. literalinclude:: ../../tests/builders/fixtures/msbuild.yaml
+       :language: yaml
     """
     msbuilder = XML.SubElement(xml_parent,
                                'hudson.plugins.msbuild.MsBuildBuilder')
@@ -855,32 +815,10 @@ def multijob(parser, xml_parent, data):
                 * **predefined-parameters** (`str`) -- Pass predefined
                   parameters to the other job (optional)
 
-    Example::
+    Example:
 
-      builders:
-        - multijob:
-            name: PhaseOne
-            condition: SUCCESSFUL
-            projects:
-              - name: PhaseOneJobA
-                current-parameters: true
-                node-label-name: "vm_name"
-                node-label: "agent-${BUILD_NUMBER}"
-                git-revision: true
-              - name: PhaseOneJobB
-                current-parameters: true
-                property-file: build.props
-        - multijob:
-            name: PhaseTwo
-            condition: UNSTABLE
-            projects:
-              - name: PhaseTwoJobA
-                current-parameters: true
-                predefined-parameters: foo=bar
-              - name: PhaseTwoJobB
-                current-parameters: false
-
-
+    .. literalinclude:: ../../tests/builders/fixtures/multibuild.yaml
+       :language: yaml
     """
     builder = XML.SubElement(xml_parent, 'com.tikal.jenkins.plugins.multijob.'
                                          'MultiJobBuilder')
@@ -974,26 +912,10 @@ def grails(parser, xml_parent, data):
     :arg bool refresh-dependencies: append --refresh-dependencies to all
                                     build targets (default false)
 
-    Example::
+    Example:
 
-      builders:
-        - grails:
-            use-wrapper: "true"
-            name: "grails-2.2.2"
-            force-upgrade: "true"
-            non-interactive: "true"
-            targets: "war ear"
-            server-port: "8003"
-            work-dir: "./grails-work"
-            project-dir: "./project-work"
-            base-dir: "./grails/project"
-            properties: "program.name=foo"
-            plain-output: "true"
-            stack-trace: "true"
-            verbose: "true"
-            refresh-dependencies: "true"
-
-
+    .. literalinclude:: ../../tests/builders/fixtures/grails.yaml
+       :language: yaml
     """
     grails = XML.SubElement(xml_parent, 'com.g2one.hudson.grails.'
                                         'GrailsBuilder')
@@ -1040,14 +962,10 @@ def sbt(parser, xml_parent, data):
                         (default '-Dsbt.log.noformat=true')
     :arg str subdir-path: Path relative to workspace to run sbt in (default '')
 
-    Example::
+    Example:
 
-      builders:
-        - sbt:
-            name: "default"
-            actions: "clean package"
-            jvm-flags: "-Xmx8G"
-
+    .. literalinclude:: ../../tests/builders/fixtures/sbt.yaml
+       :language: yaml
     """
     sbt = XML.SubElement(xml_parent, 'org.jvnet.hudson.plugins.'
                                      'SbtPluginBuilder')

@@ -1,0 +1,14 @@
+builders:
+  - gradle:
+      gradle-name: "gradle-1.2"
+      wrapper: true
+      executable: true
+      use-root-dir: true
+      root-build-script-dir: ${workspace}/tests
+      switches:
+        - "-g /foo/bar/.gradle"
+        - "-PmavenUserName=foobar"
+      tasks: |
+             init
+             build
+             tests

@@ -1,0 +1,15 @@
+builders:
+  - artifact-resolver:
+      fail-on-error: true
+      repository-logging: true
+      target-directory: foo
+      artifacts:
+        - group-id: commons-logging
+          artifact-id: commons-logging
+          version: "1.1"
+          classifier: src
+          extension: jar
+          target-file-name: comm-log.jar
+        - group-id: commons-lang
+          artifact-id: commons-lang
+          version: "1.2"

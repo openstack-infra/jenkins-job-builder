@@ -1,0 +1,7 @@
+builders:
+  - msbuild:
+      solution-file: "MySolution.sln"
+      msbuild-version: "msbuild-4.0"
+      extra-parameters: "/maxcpucount:4"
+      pass-build-variables: False
+      continue-on-build-failure: True

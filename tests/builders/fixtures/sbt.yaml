@@ -1,0 +1,5 @@
+builders:
+  - sbt:
+      name: "default"
+      actions: "clean package"
+      jvm-flags: "-Xmx8G"
