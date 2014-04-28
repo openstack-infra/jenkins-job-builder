@@ -1,0 +1,6 @@
+builders:
+  - trigger-builds:
+    - project: "build_started"
+      property-file: propfile.txt
+      property-file-fail-on-missing: false
+      block: true

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.plugins.parameterizedtrigger.TriggerBuilder>
+      <configs>
+        <hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
+          <configs class="java.util.Collections$EmptyList"/>
+          <configFactories>
+            <hudson.plugins.parameterizedtrigger.CounterBuildParameterFactory>
+              <from>0</from>
+              <to>5</to>
+              <step>1</step>
+              <paramExpr>EXAMPLE=NICE
+HELLO=WORLD
+</paramExpr>
+              <validationFail>SKIP</validationFail>
+            </hudson.plugins.parameterizedtrigger.CounterBuildParameterFactory>
+          </configFactories>
+          <projects>build_started</projects>
+          <condition>ALWAYS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+          <buildAllNodesWithLabel>false</buildAllNodesWithLabel>
+          <block>
+            <buildStepFailureThreshold>
+              <name>FAILURE</name>
+              <ordinal>2</ordinal>
+              <color>RED</color>
+            </buildStepFailureThreshold>
+            <unstableThreshold>
+              <name>UNSTABLE</name>
+              <ordinal>1</ordinal>
+              <color>YELLOW</color>
+            </unstableThreshold>
+            <failureThreshold>
+              <name>FAILURE</name>
+              <ordinal>2</ordinal>
+              <color>RED</color>
+            </failureThreshold>
+          </block>
+        </hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
+      </configs>
+    </hudson.plugins.parameterizedtrigger.TriggerBuilder>
+  </builders>
+</project>

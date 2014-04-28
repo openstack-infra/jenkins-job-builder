@@ -1,0 +1,13 @@
+builders:
+  - trigger-builds:
+    - project: "build_started"
+      parameter-factories:
+        - factory: counterbuild
+          from: 0
+          to: 5
+          step: 1
+          validation-fail: SKIP
+          parameters: |
+            EXAMPLE=NICE
+            HELLO=WORLD
+      block: true
