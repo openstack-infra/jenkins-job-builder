@@ -15,6 +15,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from jenkins_jobs.openstack.common import version as common_version
+from pbr.version import VersionInfo
 
-version_info = common_version.VersionInfo('jenkins_jobs')
+version_info = VersionInfo('jenkins_jobs')
