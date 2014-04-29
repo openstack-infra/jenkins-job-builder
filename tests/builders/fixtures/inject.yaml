@@ -1,0 +1,4 @@
+builders:
+  - inject:
+      properties-file: example.prop
+      properties-content: EXAMPLE=foo-bar

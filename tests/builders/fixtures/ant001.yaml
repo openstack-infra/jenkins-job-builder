@@ -1,0 +1,2 @@
+builders:
+  - ant: "target1 target2"
