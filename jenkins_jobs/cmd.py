@@ -118,9 +118,9 @@ def main():
         logging.warn('ignore_cache option should be moved to the [job_builder]'
                      ' section in the config file, the one specified in the '
                      '[jenkins] section will be ignored in the future')
-        ignore_cache = config.get('jenkins', 'ignore_cache')
+        ignore_cache = config.getboolean('jenkins', 'ignore_cache')
     elif config.has_option('job_builder', 'ignore_cache'):
-        ignore_cache = config.get('job_builder', 'ignore_cache')
+        ignore_cache = config.getboolean('job_builder', 'ignore_cache')
 
     # workaround for python 2.6 interpolation error
     # https://bugs.launchpad.net/openstack-ci/+bug/1259631
