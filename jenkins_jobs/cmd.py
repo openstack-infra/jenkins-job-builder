@@ -140,7 +140,7 @@ def main():
                                            ignore_cache=ignore_cache,
                                            flush_cache=options.flush_cache)
 
-    if options.path == sys.stdin:
+    if hasattr(options, 'path') and options.path == sys.stdin:
         logger.debug("Input file is stdin")
         if options.path.isatty():
             key = 'CTRL+Z' if platform.system() == 'Windows' else 'CTRL+D'
