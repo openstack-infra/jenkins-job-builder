@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jvnet.hudson.plugins.SbtPluginBuilder>
+      <name>default</name>
+      <jvmFlags>-Xmx8G</jvmFlags>
+      <sbtFlags>-Dsbt.log.noformat=true</sbtFlags>
+      <actions>clean package</actions>
+      <subdirPath/>
+    </org.jvnet.hudson.plugins.SbtPluginBuilder>
+  </builders>
+</project>
