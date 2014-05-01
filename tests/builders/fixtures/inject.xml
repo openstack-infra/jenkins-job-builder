@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <EnvInjectBuilder>
+      <info>
+        <propertiesFilePath>example.prop</propertiesFilePath>
+        <propertiesContent>EXAMPLE=foo-bar</propertiesContent>
+      </info>
+    </EnvInjectBuilder>
+  </builders>
+</project>

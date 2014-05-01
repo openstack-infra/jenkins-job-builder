@@ -1,0 +1,2 @@
+builders:
+  - batch: "foo/foo.bat"

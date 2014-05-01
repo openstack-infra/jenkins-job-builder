@@ -55,6 +55,7 @@ def shell(parser, xml_parent, data):
     Example:
 
     .. literalinclude:: /../../tests/builders/fixtures/shell.yaml
+       :language: yaml
 
     """
     shell = XML.SubElement(xml_parent, 'hudson.tasks.Shell')
@@ -71,6 +72,7 @@ def python(parser, xml_parent, data):
     Example:
 
     .. literalinclude:: /../../tests/builders/fixtures/python.yaml
+       :language: yaml
 
     """
     python = XML.SubElement(xml_parent, 'hudson.plugins.python.Python')
@@ -195,14 +197,11 @@ def ant(parser, xml_parent, data):
     of targets to build.
 
     :Parameter: space separated list of Ant targets
-    :arg str ant-name: the name of the ant installation,
-        defaults to 'default' (optional)
 
-    Example to call two Ant targets::
+    Example to call two Ant targets:
 
-        builders:
-          - ant: "target1 target2"
-             ant-name: "Standard Ant"
+    .. literalinclude:: ../../tests/builders/fixtures/ant001.yaml
+       :language: yaml
 
     The build file would be whatever the Jenkins Ant Plugin is set to use
     per default (i.e build.xml in the workspace root).
@@ -218,20 +217,10 @@ def ant(parser, xml_parent, data):
         must be in quotes (optional)
 
 
-    Example specifying the build file too and several targets::
+    Example specifying the build file too and several targets:
 
-        builders:
-          - ant:
-             targets: "debug test install"
-             buildfile: "build.xml"
-             properties:
-                builddir: "/tmp/"
-                failonerror: true
-             java-opts:
-                - "-ea"
-                - "-Xmx512m"
-             ant-name: "Standard Ant"
-
+    .. literalinclude:: ../../tests/builders/fixtures/ant002.yaml
+       :language: yaml
     """
     ant = XML.SubElement(xml_parent, 'hudson.tasks.Ant')
 
@@ -286,6 +275,7 @@ def trigger_builds(parser, xml_parent, data):
     Example:
 
     .. literalinclude:: /../../tests/builders/fixtures/trigger-builds001.yaml
+       :language: yaml
     """
     tbuilder = XML.SubElement(xml_parent,
                               'hudson.plugins.parameterizedtrigger.'
@@ -394,12 +384,10 @@ def inject(parser, xml_parent, data):
     :arg str properties-file: the name of the property file (optional)
     :arg str properties-content: the properties content (optional)
 
-    Example::
+    Example:
 
-      builders:
-        - inject:
-            properties-file: example.prop
-            properties-content: EXAMPLE=foo-bar
+    .. literalinclude:: ../../tests/builders/fixtures/inject.yaml
+       :language: yaml
     """
     eib = XML.SubElement(xml_parent, 'EnvInjectBuilder')
     info = XML.SubElement(eib, 'info')
@@ -512,11 +500,10 @@ def batch(parser, xml_parent, data):
 
     :Parameter: the batch command to execute
 
-    Example::
+    Example:
 
-      builders:
-        - batch: "foo/foo.bat"
-
+    .. literalinclude:: ../../tests/builders/fixtures/batch.yaml
+       :language: yaml
     """
     batch = XML.SubElement(xml_parent, 'hudson.tasks.BatchFile')
     XML.SubElement(batch, 'command').text = data
@@ -618,6 +605,7 @@ def conditional_step(parser, xml_parent, data):
 
     .. literalinclude:: \
     /../../tests/builders/fixtures/conditional-step-success-failure.yaml
+       :language: yaml
     """
     def build_condition(cdata):
         kind = cdata['condition-kind']
@@ -752,6 +740,7 @@ def maven_target(parser, xml_parent, data):
     Example:
 
     .. literalinclude:: /../../tests/builders/fixtures/maven-target-doc.yaml
+       :language: yaml
     """
     maven = XML.SubElement(xml_parent, 'hudson.tasks.Maven')
     XML.SubElement(maven, 'targets').text = data['goals']
@@ -1120,12 +1109,15 @@ def shining_panda(parser, xml_parent, data):
 
     .. literalinclude:: \
         /../../tests/builders/fixtures/shining-panda-pythonenv.yaml
+       :language: yaml
 
     .. literalinclude:: \
         /../../tests/builders/fixtures/shining-panda-customenv.yaml
+       :language: yaml
 
     .. literalinclude:: \
         /../../tests/builders/fixtures/shining-panda-virtualenv.yaml
+       :language: yaml
     """
 
     pluginelementpart = 'jenkins.plugins.shiningpanda.builders.'

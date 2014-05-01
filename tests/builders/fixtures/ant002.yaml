@@ -1,0 +1,11 @@
+builders:
+  - ant:
+     targets: "debug test install"
+     buildfile: "build.xml"
+     properties:
+        builddir: "/tmp/"
+        failonerror: true
+     java-opts:
+        - "-ea"
+        - "-Xmx512m"
+     ant-name: "Standard Ant"

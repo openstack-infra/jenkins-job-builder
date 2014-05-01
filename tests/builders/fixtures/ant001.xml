@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.tasks.Ant>
+      <targets>target1 target2</targets>
+      <antName>default</antName>
+    </hudson.tasks.Ant>
+  </builders>
+</project>

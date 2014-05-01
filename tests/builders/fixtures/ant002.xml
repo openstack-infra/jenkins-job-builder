@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.tasks.Ant>
+      <buildFile>build.xml</buildFile>
+      <antOpts>-ea -Xmx512m</antOpts>
+      <properties>failonerror=True
+builddir=/tmp/
+</properties>
+      <targets>debug test install</targets>
+      <antName>Standard Ant</antName>
+    </hudson.tasks.Ant>
+  </builders>
+</project>
