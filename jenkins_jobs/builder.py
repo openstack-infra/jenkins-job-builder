@@ -15,6 +15,7 @@
 
 # Manage jobs in Jenkins server
 
+import errno
 import os
 import sys
 import hashlib
@@ -591,7 +592,15 @@ class Builder(object):
                 if hasattr(output, 'write'):
                     # `output` is a file-like object
                     logger.debug("Writing XML to '{0}'".format(output))
-                    output.write(job.output())
+                    try:
+                        output.write(job.output())
+                    except IOError as exc:
+                        if exc.errno == errno.EPIPE:
+                            # EPIPE could happen if piping output to something
+                            # that doesn't read the whole input (e.g.: the UNIX
+                            # `head` command)
+                            return
+                        raise
                     continue
 
                 output_dir = output
