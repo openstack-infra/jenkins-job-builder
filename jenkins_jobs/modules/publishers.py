@@ -2394,10 +2394,15 @@ def postbuildscript(parser, xml_parent, data):
     :arg list generic-script: Paths to Batch/Shell scripts
     :arg list groovy-script: Paths to Groovy scripts
     :arg list groovy: Inline Groovy
-    :arg bool onsuccess: Builders are run if the build succeed
+    :arg list builders: Any supported builders, see :doc:`builders`.
+    :arg bool onsuccess: Scripts and builders are run only if the build succeed
                          (default False)
-    :arg bool onfailure: Builders are run if the build fail
+    :arg bool onfailure: Scripts and builders are run only if the build fail
                          (default True)
+    :arg str execute-on: For matrix projects, scripts can be run after each
+                         axis is built (`axes`), after all axis of the matrix
+                         are built (`matrix`) or after each axis AND the matrix
+                         are built (`both`).
 
     The `onsuccess` and `onfailure` options are confusing. If you want
     the post build to always run regardless of the build status, you
@@ -2412,6 +2417,12 @@ postbuildscript001.yaml
 
     .. literalinclude:: /../../tests/publishers/fixtures/\
 postbuildscript002.yaml
+
+    Run once after the whole matrix (all axes) is built:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/\
+postbuildscript003.yaml
+
     """
 
     pbs_xml = XML.SubElement(
@@ -2461,6 +2472,21 @@ postbuildscript002.yaml
     success_xml.text = str(data.get('onsuccess', True)).lower()
     failure_xml = XML.SubElement(pbs_xml, 'scriptOnlyIfFailure')
     failure_xml.text = str(data.get('onfailure', False)).lower()
+
+    # TODO: we may want to avoid setting "execute-on" on non-matrix jobs,
+    # either by skipping this part or by raising an error to let the user know
+    # an attempt was made to set execute-on on a non-matrix job. There are
+    # currently no easy ways to check for this though.
+    if 'execute-on' in data:
+        valid_values = ('matrix', 'axes', 'both')
+        execute_on = data['execute-on'].lower()
+        if execute_on not in valid_values:
+            raise JenkinsJobsException(
+                'execute-on must be one of %s, got %s' %
+                valid_values, execute_on
+            )
+        execute_on_xml = XML.SubElement(pbs_xml, 'executeOn')
+        execute_on_xml.text = execute_on.upper()
 
 
 def xml_summary(parser, xml_parent, data):

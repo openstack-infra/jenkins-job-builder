@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.postbuildscript.PostBuildScript>
+      <buildSteps>
+        <hudson.tasks.Shell>
+          <command>echo &quot;Shell execution&quot;</command>
+        </hudson.tasks.Shell>
+      </buildSteps>
+      <scriptOnlyIfSuccess>true</scriptOnlyIfSuccess>
+      <scriptOnlyIfFailure>false</scriptOnlyIfFailure>
+      <executeOn>MATRIX</executeOn>
+    </org.jenkinsci.plugins.postbuildscript.PostBuildScript>
+  </publishers>
+</project>
