@@ -37,22 +37,14 @@ in the :ref:`Job` definition.
       a SNAPSHOT dependency is built or not. (defaults to true)
     * **automatic-archiving** (`bool`): Activate automatic artifact archiving
       (defaults to true).
+    * **settings** (`str`): Path to custom maven settings file (optional)
+    * **global-settings** (`str`): Path to custom maven global settings file
+      (optional)
 
-Example::
+Example:
 
-  job:
-    name: doc_job
-    project-type: maven
+    .. literalinclude:: /../../tests/general/fixtures/project-maven001.yaml
 
-    maven:
-      root-module:
-        group-id: org.example.docs
-        artifact-id: example-guide
-      root-pom: doc/src/pom.xml
-      goals: "clean generate-sources"
-      maven-opts: '-Dmyvar=/path/somewhere'
-      maven-name: Maven3
-      automatic-archiving: true
 """
 
 import xml.etree.ElementTree as XML
@@ -69,6 +61,17 @@ class Maven(jenkins_jobs.modules.base.Base):
         'hudson.maven.local_repo.PerJobLocalRepositoryLocator',
         'local-to-executor':
         'hudson.maven.local_repo.PerExecutorLocalRepositoryLocator',
+    }
+
+    settings = {
+        'default-settings':
+        'jenkins.mvn.DefaultSettingsProvider',
+        'settings':
+        'jenkins.mvn.FilePathSettingsProvider',
+        'default-global-settings':
+        'jenkins.mvn.DefaultGlobalSettingsProvider',
+        'global-settings':
+        'jenkins.mvn.FilePathGlobalSettingsProvider',
     }
 
     def root_xml(self, data):
@@ -117,8 +120,26 @@ class Maven(jenkins_jobs.modules.base.Base):
         XML.SubElement(xml_parent, 'processPlugins').text = 'false'
         XML.SubElement(xml_parent, 'mavenValidationLevel').text = '-1'
         XML.SubElement(xml_parent, 'runHeadless').text = 'false'
-        XML.SubElement(xml_parent, 'settingConfigId')
-        XML.SubElement(xml_parent, 'globalSettingConfigId')
+        if 'settings' in data['maven']:
+            settings = XML.SubElement(xml_parent, 'settings',
+                                      {'class':
+                                       self.settings['settings']})
+            XML.SubElement(settings, 'path').text = str(
+                data['maven'].get('settings', ''))
+        else:
+            XML.SubElement(xml_parent, 'settings',
+                           {'class':
+                            self.settings['default-settings']})
+        if 'global-settings' in data['maven']:
+            settings = XML.SubElement(xml_parent, 'globalSettings',
+                                      {'class':
+                                       self.settings['global-settings']})
+            XML.SubElement(settings, 'path').text = str(
+                data['maven'].get('global-settings', ''))
+        else:
+            XML.SubElement(xml_parent, 'globalSettings',
+                           {'class':
+                            self.settings['default-global-settings']})
 
         run_post_steps = XML.SubElement(xml_parent, 'runPostStepsIfResult')
         XML.SubElement(run_post_steps, 'name').text = 'FAILURE'
