@@ -152,29 +152,7 @@ with those values.  The example above would create the job called
 The ``jobs:`` list can also allow for specifying job-specific
 substitutions as follows::
 
-  - job-template:
-      name: '{name}-unit-tests'
-      builders:
-        - shell: unittest
-      publishers:
-        - email:
-            recipients: '{mail-to}'
-
-  - job-template:
-      name: '{name}-perf-tests'
-      builders:
-        - shell: perftest
-      publishers:
-        - email:
-            recipients: '{mail-to}'
-
-  - project:
-      name: project-name
-      jobs:
-        - '{name}-unit-tests':
-            mail-to: developer@nowhere.net
-        - '{name}-perf-tests':
-            mail-to: projmanager@nowhere.net
+.. literalinclude::  /../../tests/yamlparser/fixtures/templates001.yaml
 
 If a variable is a list, the job template will be realized with the
 variable set to each value in the list.  Multiple lists will lead to
