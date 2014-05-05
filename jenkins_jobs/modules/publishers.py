@@ -1075,18 +1075,10 @@ def checkstyle(parser, xml_parent, data):
                                 'hudson.plugins.checkstyle.'
                                 'CheckStylePublisher')
 
-    dval = data.get('healthy', None)
-    if dval:
-        XML.SubElement(checkstyle, 'healthy').text = str(dval)
-    else:
-        XML.SubElement(checkstyle, 'healthy')
-
-    dval = data.get('unHealthy', None)
-    if dval:
-        XML.SubElement(checkstyle, 'unHealthy').text = str(dval)
-    else:
-        XML.SubElement(checkstyle, 'unHealthy')
-
+    XML.SubElement(checkstyle, 'healthy').text = str(
+        data.get('healthy', ''))
+    XML.SubElement(checkstyle, 'unHealthy').text = str(
+        data.get('unHealthy', ''))
     XML.SubElement(checkstyle, 'thresholdLimit').text = \
         data.get('healthThreshold', 'low')
 
@@ -1095,10 +1087,8 @@ def checkstyle(parser, xml_parent, data):
     XML.SubElement(checkstyle, 'defaultEncoding').text = \
         data.get('defaultEncoding', '')
 
-    if data.get('canRunOnFailed', False):
-        XML.SubElement(checkstyle, 'canRunOnFailed').text = 'true'
-    else:
-        XML.SubElement(checkstyle, 'canRunOnFailed').text = 'false'
+    XML.SubElement(checkstyle, 'canRunOnFailed').text = str(
+        data.get('canRunOnFailed', False)).lower()
 
     XML.SubElement(checkstyle, 'useStableBuildAsReference').text = 'false'
 
@@ -1109,58 +1099,26 @@ def checkstyle(parser, xml_parent, data):
     dfailed = dthresholds.get('failed', {})
     thresholds = XML.SubElement(checkstyle, 'thresholds')
 
-    dval = dunstable.get('totalAll', None)
-    if dval:
-        XML.SubElement(thresholds, 'unstableTotalAll').text = str(dval)
-    else:
-        XML.SubElement(thresholds, 'unstableTotalAll')
+    XML.SubElement(thresholds, 'unstableTotalAll').text = str(
+        dunstable.get('totalAll', ''))
+    XML.SubElement(thresholds, 'unstableTotalHigh').text = str(
+        dunstable.get('totalHigh', ''))
+    XML.SubElement(thresholds, 'unstableTotalNormal').text = str(
+        dunstable.get('totalNormal', ''))
+    XML.SubElement(thresholds, 'unstableTotalLow').text = str(
+        dunstable.get('totalLow', ''))
 
-    dval = dunstable.get('totalHigh', None)
-    if dval:
-        XML.SubElement(thresholds, 'unstableTotalHigh').text = str(dval)
-    else:
-        XML.SubElement(thresholds, 'unstableTotalHigh')
+    XML.SubElement(thresholds, 'failedTotalAll').text = str(
+        dfailed.get('totalAll', ''))
+    XML.SubElement(thresholds, 'failedTotalHigh').text = str(
+        dfailed.get('totalHigh', ''))
+    XML.SubElement(thresholds, 'failedTotalNormal').text = str(
+        dfailed.get('totalNormal', ''))
+    XML.SubElement(thresholds, 'failedTotalLow').text = str(
+        dfailed.get('totalLow', ''))
 
-    dval = dunstable.get('totalNormal', None)
-    if dval:
-        XML.SubElement(thresholds, 'unstableTotalNormal').text = str(dval)
-    else:
-        XML.SubElement(thresholds, 'unstableTotalNormal')
-
-    dval = dunstable.get('totalLow', None)
-    if dval:
-        XML.SubElement(thresholds, 'unstableTotalLow').text = str(dval)
-    else:
-        XML.SubElement(thresholds, 'unstableTotalLow')
-
-    dval = dfailed.get('totalAll', None)
-    if dval:
-        XML.SubElement(thresholds, 'failedTotalAll').text = str(dval)
-    else:
-        XML.SubElement(thresholds, 'failedTotalAll')
-
-    dval = dfailed.get('totalHigh', None)
-    if dval:
-        XML.SubElement(thresholds, 'failedTotalHigh').text = str(dval)
-    else:
-        XML.SubElement(thresholds, 'failedTotalHigh')
-
-    dval = dfailed.get('totalNormal', None)
-    if dval:
-        XML.SubElement(thresholds, 'failedTotalNormal').text = str(dval)
-    else:
-        XML.SubElement(thresholds, 'failedTotalNormal')
-
-    dval = dfailed.get('totalLow', None)
-    if dval:
-        XML.SubElement(thresholds, 'failedTotalLow').text = str(dval)
-    else:
-        XML.SubElement(thresholds, 'failedTotalLow')
-
-    if data.get('shouldDetectModules', False):
-        XML.SubElement(checkstyle, 'shouldDetectModules').text = 'true'
-    else:
-        XML.SubElement(checkstyle, 'shouldDetectModules').text = 'false'
+    XML.SubElement(checkstyle, 'shouldDetectModules').text = \
+        str(data.get('shouldDetectModules', False)).lower()
 
     XML.SubElement(checkstyle, 'dontComputeNew').text = 'true'
 

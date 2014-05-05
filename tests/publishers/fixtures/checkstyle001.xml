@@ -2,7 +2,7 @@
 <project>
   <publishers>
     <hudson.plugins.checkstyle.CheckStylePublisher>
-      <healthy/>
+      <healthy>0</healthy>
       <unHealthy>100</unHealthy>
       <thresholdLimit>high</thresholdLimit>
       <pluginName>[CHECKSTYLE] </pluginName>
