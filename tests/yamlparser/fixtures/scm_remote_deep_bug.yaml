@@ -1,0 +1,19 @@
+- defaults:
+    name: 'scm_remote_deep_bug_defs'
+    scm:
+        - git:
+            url: 'http://example.org/'
+
+- job:
+    name: 'scm_remote_deep_bug_job'
+    defaults: 'scm_remote_deep_bug_defs'
+
+- job-template:
+    name: 'scm_remote_deep_bug_tpl'
+    defaults: 'scm_remote_deep_bug_defs'
+
+- project:
+    name: 'scm_remote_deep_bug_jobs'
+    jobs:
+        - 'scm_remote_deep_bug_tpl'
+
