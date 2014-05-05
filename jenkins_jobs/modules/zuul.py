@@ -143,13 +143,13 @@ class Zuul(jenkins_jobs.modules.base.Base):
             # This isn't a good pattern, and somewhat violates the
             # spirit of the global defaults, but Zuul is working on
             # a better design that should obviate the need for most
-            # of this module, so this gets it doen with minimal
+            # of this module, so this gets it done with minimal
             # intrusion to the rest of JJB.
             if parser.data.get('defaults', {}).get('global'):
                 url = parser.data['defaults']['global'].get(
                     'zuul-url', DEFAULT_URL)
-            notifications = [{'http': {'url': url}}]
-            job['notifications'].extend(notifications)
+                notifications = [{'http': {'url': url}}]
+                job['notifications'].extend(notifications)
             if 'zuul' in job.get('triggers', []):
                 job['parameters'].extend(ZUUL_PARAMETERS)
                 job['triggers'].remove('zuul')
