@@ -21,6 +21,8 @@ import platform
 import sys
 import cStringIO
 
+from jenkins_jobs.builder import Builder
+from jenkins_jobs.errors import JenkinsJobsException
 
 DEFAULT_CONF = """
 [job_builder]
@@ -47,8 +49,6 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
 
-    import jenkins_jobs.builder
-    import jenkins_jobs.errors
     parser = argparse.ArgumentParser()
     subparser = parser.add_subparsers(help='update, test or delete job',
                                       dest='command')
@@ -109,10 +109,14 @@ def main(argv=None):
         conffp = open(conf, 'r')
         config.readfp(conffp)
     else:
-        raise jenkins_jobs.errors.JenkinsJobsException(
+        raise JenkinsJobsException(
             "A valid configuration file is required when not run as a test"
             "\n{0} is not a valid .ini file".format(conf))
 
+    execute(options, config, logger)
+
+
+def execute(options, config, logger):
     logger.debug("Config: {0}".format(config))
 
     # check the ignore_cache setting: first from command line,
@@ -139,12 +143,12 @@ def main(argv=None):
     except (TypeError, ConfigParser.NoOptionError):
         password = None
 
-    builder = jenkins_jobs.builder.Builder(config.get('jenkins', 'url'),
-                                           user,
-                                           password,
-                                           config,
-                                           ignore_cache=ignore_cache,
-                                           flush_cache=options.flush_cache)
+    builder = Builder(config.get('jenkins', 'url'),
+                      user,
+                      password,
+                      config,
+                      ignore_cache=ignore_cache,
+                      flush_cache=options.flush_cache)
 
     if hasattr(options, 'path') and options.path == sys.stdin:
         logger.debug("Input file is stdin")
