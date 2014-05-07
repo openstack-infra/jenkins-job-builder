@@ -888,8 +888,8 @@ def xunit(parser, xml_parent, data):
     :arg dict types: per framework configuration. The key should be \
     one of the internal types we support:\
     'aunit', 'boosttest', 'checktype', 'cpptest', 'cppunit', 'ctest', \
-    'embunit', 'fpcunit', 'junit', 'mstest', 'nunit', 'phpunit', 'tusar', \
-    'unittest', 'valgrind'.
+    'embunit', 'fpcunit', 'gtest', 'junit', 'mstest', 'nunit', 'phpunit', \
+    'tusar', 'unittest', 'valgrind'.
 
     The 'custom' type is not supported.
 
@@ -929,6 +929,7 @@ def xunit(parser, xml_parent, data):
         'ctest': 'CTestType',
         'embunit': 'EmbUnitType',  # since plugin v1.84
         'fpcunit': 'FPCUnitJunitHudsonTestType',
+        'gtest': 'GoogleTestType',
         'junit': 'JUnitType',
         'mstest': 'MSTestJunitHudsonTestType',
         'nunit': 'NUnitJunitHudsonTestType',

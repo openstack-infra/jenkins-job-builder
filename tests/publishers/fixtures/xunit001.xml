@@ -17,6 +17,13 @@
           <skipNoTestFiles>false</skipNoTestFiles>
           <stopProcessingIfError>true</stopProcessingIfError>
         </CppUnitJunitHudsonTestType>
+        <GoogleTestType>
+          <pattern>gtest.log</pattern>
+          <failIfNotNew>true</failIfNotNew>
+          <deleteOutputFiles>true</deleteOutputFiles>
+          <skipNoTestFiles>false</skipNoTestFiles>
+          <stopProcessingIfError>true</stopProcessingIfError>
+        </GoogleTestType>
       </types>
       <thresholds>
         <org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
