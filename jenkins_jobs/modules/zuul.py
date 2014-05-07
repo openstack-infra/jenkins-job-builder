@@ -62,6 +62,9 @@ ZUUL_PARAMETERS = [
         {'description': 'Zuul pipeline triggering this job',
          'name': 'ZUUL_PIPELINE'}},
     {'string':
+        {'description': 'URL of Zuul\'s git repos accessible to workers',
+         'name': 'ZUUL_URL'}},
+    {'string':
         {'description': 'Branch name of triggering project',
          'name': 'ZUUL_PROJECT'}},
     {'string':
@@ -98,6 +101,9 @@ ZUUL_POST_PARAMETERS = [
     {'string':
         {'description': 'Zuul pipeline triggering this job',
          'name': 'ZUUL_PIPELINE'}},
+    {'string':
+        {'description': 'URL of Zuul\'s git repos accessible to workers',
+         'name': 'ZUUL_URL'}},
     {'string':
         {'description': 'Branch name of triggering project',
          'name': 'ZUUL_PROJECT'}},
