@@ -103,17 +103,17 @@ def deep_format(obj, paramdict):
     return ret
 
 
-def matches(what, where):
+def matches(what, glob_patterns):
     """
-    Checks if the given string matches against the given list of glob patterns
+    Checks if the given string, ``what``, matches any of the glob patterns in
+    the iterable, ``glob_patterns``
 
-    :arg str what: String that we want to test if matches
-    :arg list where: list of glob patters to match
+    :arg str what: String that we want to test if it matches a pattern
+    :arg iterable glob_patterns: glob patterns to match (list, tuple, set,
+    etc.)
     """
-    for pattern in where:
-        if re.match(fnmatch.translate(pattern), what):
-            return True
-    return False
+    return any(fnmatch.fnmatch(what, glob_pattern)
+               for glob_pattern in glob_patterns)
 
 
 class YamlParser(object):
