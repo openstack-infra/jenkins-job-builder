@@ -380,7 +380,7 @@ class ModuleRegistry(object):
             .component_list_type
 
         if isinstance(component, dict):
-            # The component is a sigleton dictionary of name: dict(args)
+            # The component is a singleton dictionary of name: dict(args)
             name, component_data = component.items()[0]
             if template_data:
                 # Template data contains values that should be interpolated
