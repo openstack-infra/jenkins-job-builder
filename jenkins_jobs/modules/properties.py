@@ -28,7 +28,7 @@ Example::
 
     properties:
       - github:
-          url: https://github.com/openstack-ci/jenkins-job-builder/
+          url: https://github.com/openstack-infra/jenkins-job-builder/
 """
 
 
@@ -136,7 +136,7 @@ def github(parser, xml_parent, data):
 
       properties:
         - github:
-            url: https://github.com/openstack-ci/jenkins-job-builder/
+            url: https://github.com/openstack-infra/jenkins-job-builder/
     """
     github = XML.SubElement(xml_parent,
                             'com.coravy.hudson.plugins.github.'
