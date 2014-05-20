@@ -1,0 +1,23 @@
+- job-template:
+    name: '{name}-unit-tests'
+    builders:
+    - shell: unittest
+    publishers:
+    - email:
+        recipients: '{mail-to}'
+
+- job-template:
+    name: '{name}-perf-tests'
+    builders:
+    - shell: perftest
+    publishers:
+    - email:
+        recipients: '{mail-to}'
+
+- project:
+    name: project-name
+    jobs:
+    - '{name}-unit-tests':
+        mail-to: developer@nowhere.net
+    - '{name}-perf-tests':
+        mail-to: projmanager@nowhere.net
