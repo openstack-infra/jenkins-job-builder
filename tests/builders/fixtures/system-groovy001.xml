@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.plugins.groovy.SystemGroovy>
+      <scriptSource class="hudson.plugins.groovy.FileScriptSource">
+        <scriptFile>test.groovy</scriptFile>
+      </scriptSource>
+      <bindings/>
+      <classpath/>
+    </hudson.plugins.groovy.SystemGroovy>
+  </builders>
+</project>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.plugins.groovy.SystemGroovy>
+      <scriptSource class="hudson.plugins.groovy.StringScriptSource">
+        <command>Some command</command>
+      </scriptSource>
+      <bindings>Some bindings</bindings>
+      <classpath>Some classpath</classpath>
+    </hudson.plugins.groovy.SystemGroovy>
+  </builders>
+</project>

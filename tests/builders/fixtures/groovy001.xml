@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.plugins.groovy.Groovy>
+      <scriptSource class="hudson.plugins.groovy.FileScriptSource">
+        <scriptFile>test.groovy</scriptFile>
+      </scriptSource>
+      <groovyName>(Default)</groovyName>
+      <parameters/>
+      <scriptParameters/>
+      <properties/>
+      <javaOpts/>
+      <classPath/>
+    </hudson.plugins.groovy.Groovy>
+  </builders>
+</project>

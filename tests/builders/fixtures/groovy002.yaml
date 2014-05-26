@@ -1,0 +1,8 @@
+builders:
+  - groovy:
+      command: "Some command"
+      version: "Groovy 1.2"
+      parameters: "parameters"
+      script-parameters: "script parameters"
+      properties: "properties"
+      java-opts: "java opts"

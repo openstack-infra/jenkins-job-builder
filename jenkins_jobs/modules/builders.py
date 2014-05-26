@@ -494,6 +494,104 @@ def gradle(parser, xml_parent, data):
         'use-root-dir', False)).lower()
 
 
+def _groovy_common_scriptSource(data):
+    """Helper function to generate the XML element common to groovy builders
+    """
+
+    scriptSource = XML.Element("scriptSource")
+    if 'command' in data and 'file' in data:
+        raise JenkinsJobsException("Use just one of 'command' or 'file'")
+
+    if 'command' in data:
+        command = XML.SubElement(scriptSource, 'command')
+        command.text = str(data['command'])
+        scriptSource.set('class', 'hudson.plugins.groovy.StringScriptSource')
+    elif 'file' in data:
+        scriptFile = XML.SubElement(scriptSource, 'scriptFile')
+        scriptFile.text = str(data['file'])
+        scriptSource.set('class', 'hudson.plugins.groovy.FileScriptSource')
+    else:
+        raise JenkinsJobsException("A groovy command or file is required")
+
+    return scriptSource
+
+
+def groovy(parser, xml_parent, data):
+    """yaml: groovy
+    Execute a groovy script or command.
+    Requires the Jenkins `Groovy Plugin
+    <https://wiki.jenkins-ci.org/display/JENKINS/Groovy+plugin>`_
+
+    :arg str file: Groovy file to run.
+      (Alternative: you can chose a command instead)
+    :arg str command: Groovy command to run.
+      (Alternative: you can chose a script file instead)
+    :arg str version: Groovy version to use. (default '(Default)')
+    :arg str parameters: Parameters for the Groovy executable. (optional)
+    :arg str script-parameters: These parameters will be passed to the script.
+      (optional)
+    :arg str properties: Instead of passing properties using the -D parameter
+      you can define them here. (optional)
+    :arg str java-opts: Direct access to JAVA_OPTS. Properties allows only
+      -D properties, while sometimes also other properties like -XX need to
+      be setup. It can be done here. This line is appended at the end of
+      JAVA_OPTS string. (optional)
+    :arg str class-path: Specify script classpath here. Each line is one
+      class path item. (optional)
+
+    Examples:
+
+    .. literalinclude:: ../../tests/builders/fixtures/groovy001.yaml
+       :language: yaml
+    .. literalinclude:: ../../tests/builders/fixtures/groovy002.yaml
+       :language: yaml
+    """
+
+    root_tag = 'hudson.plugins.groovy.Groovy'
+    groovy = XML.SubElement(xml_parent, root_tag)
+
+    groovy.append(_groovy_common_scriptSource(data))
+    XML.SubElement(groovy, 'groovyName').text = \
+        str(data.get('version', "(Default)"))
+    XML.SubElement(groovy, 'parameters').text = str(data.get('parameters', ""))
+    XML.SubElement(groovy, 'scriptParameters').text = \
+        str(data.get('script-parameters', ""))
+    XML.SubElement(groovy, 'properties').text = str(data.get('properties', ""))
+    XML.SubElement(groovy, 'javaOpts').text = str(data.get('java-opts', ""))
+    XML.SubElement(groovy, 'classPath').text = str(data.get('class-path', ""))
+
+
+def system_groovy(parser, xml_parent, data):
+    """yaml: system-groovy
+    Execute a system groovy script or command.
+    Requires the Jenkins `Groovy Plugin
+    <https://wiki.jenkins-ci.org/display/JENKINS/Groovy+plugin>`_
+
+    :arg str file: Groovy file to run.
+      (Alternative: you can chose a command instead)
+    :arg str command: Groovy command to run.
+      (Alternative: you can chose a script file instead)
+    :arg str bindings: Define variable bindings (in the properties file
+      format). Specified variables can be addressed from the script. (optional)
+    :arg str class-path: Specify script classpath here. Each line is one class
+      path item. (optional)
+
+    Examples:
+
+    .. literalinclude:: ../../tests/builders/fixtures/system-groovy001.yaml
+       :language: yaml
+    .. literalinclude:: ../../tests/builders/fixtures/system-groovy002.yaml
+       :language: yaml
+    """
+
+    root_tag = 'hudson.plugins.groovy.SystemGroovy'
+    sysgroovy = XML.SubElement(xml_parent, root_tag)
+    sysgroovy.append(_groovy_common_scriptSource(data))
+    XML.SubElement(sysgroovy, 'bindings').text = str(data.get('bindings', ""))
+    XML.SubElement(sysgroovy, 'classpath').text = \
+        str(data.get('class-path', ""))
+
+
 def batch(parser, xml_parent, data):
     """yaml: batch
     Execute a batch command.

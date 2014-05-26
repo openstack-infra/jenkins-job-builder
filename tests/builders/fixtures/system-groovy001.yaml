@@ -1,0 +1,3 @@
+builders:
+  - system-groovy:
+      file: "test.groovy"
