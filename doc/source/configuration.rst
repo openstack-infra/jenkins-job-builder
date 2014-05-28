@@ -152,7 +152,14 @@ with those values.  The example above would create the job called
 The ``jobs:`` list can also allow for specifying job-specific
 substitutions as follows::
 
-.. literalinclude::  /../../tests/yamlparser/fixtures/templates001.yaml
+  - project:
+      name: project-name
+      jobs:
+        - '{name}-unit-tests':
+            mail-to: developer@nowhere.net
+        - '{name}-perf-tests':
+            mail-to: projmanager@nowhere.net
+
 
 If a variable is a list, the job template will be realized with the
 variable set to each value in the list.  Multiple lists will lead to
@@ -162,10 +169,10 @@ values.  Example::
   - project:
       name: project-name
       pyver:
-       - 26
-       - 27
+        - 26
+        - 27
       jobs:
-       - '{name}-{pyver}'
+        - '{name}-{pyver}'
 
 Job Group
 ^^^^^^^^^
@@ -173,38 +180,12 @@ Job Group
 If you have several Job Templates that should all be realized
 together, you can define a Job Group to collect them.  Simply use the
 Job Group where you would normally use a `Job Template`_ and all of
-the Job Templates in the Job Group will be realized.  For example::
+the Job Templates in the Job Group will be realized.  For example:
 
-  - job-template:
-      name: '{name}-python-26'
+.. literalinclude::  /../../tests/yamlparser/fixtures/templates001.yaml
 
-  - job-template:
-      name: '{name}-python-27'
-
-  - job-group:
-      name: python-jobs
-      jobs:
-        - '{name}-python-26'
-        - '{name}-python-27'
-
-  - project:
-      name: foo
-      jobs:
-        - python-jobs
-
-Would cause the jobs `foo-python-26` and `foo-python-27` to be created
+Would cause the jobs `project-name-unit-tests` and `project-name-perf-tests` to be created
 in Jenkins.
-
-The ``jobs:`` list can also allow for specifying job-specific
-substitutions as follows::
-
-  - job-group:
-      name: job-group-name
-      jobs:
-        - '{name}-build':
-            pipeline-next: '{name}-upload'
-        - '{name}-upload':
-            pipeline-next: ''
 
 .. _macro:
 
