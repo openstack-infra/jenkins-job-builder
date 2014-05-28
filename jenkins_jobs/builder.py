@@ -170,6 +170,9 @@ class YamlParser(object):
     def applyDefaults(self, data):
         whichdefaults = data.get('defaults', 'global')
         defaults = self.data.get('defaults', {}).get(whichdefaults, {})
+        if defaults == {} and whichdefaults != 'global':
+            raise JenkinsJobsException("Unknown defaults set: '{0}'"
+                                       .format(whichdefaults))
         newdata = {}
         newdata.update(defaults)
         newdata.update(data)
