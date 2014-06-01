@@ -1,0 +1,5 @@
+properties:
+    - authorization:
+        anonymous:
+            - job-read
+            - job-extended-read
