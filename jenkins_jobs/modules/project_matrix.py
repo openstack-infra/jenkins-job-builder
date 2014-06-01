@@ -24,6 +24,13 @@ internal YAML structure:
 * user-defined values (``user-defined``)
 * slave name or label (``slave``)
 
+The module supports also dynamic axis:
+
+* dynamic (``dynamic``)
+
+Requires the Jenkins `dynamic axis Plugin.
+<https://wiki.jenkins-ci.org/display/JENKINS/DynamicAxis+Plugin>`_
+
 :Job Parameters:
     * **execution-strategy** (optional):
         * **combination-filter** (`str`): axes selection filter
@@ -70,6 +77,11 @@ Example::
          values:
           - node1
           - node2
+      - axis:
+         type: dynamic
+         name: config
+         values:
+          - config_list
     builders:
       - shell: make && make check
 
@@ -103,6 +115,7 @@ class Matrix(jenkins_jobs.modules.base.Base):
         'label-expression': 'hudson.matrix.LabelExpAxis',
         'user-defined': 'hudson.matrix.TextAxis',
         'slave': 'hudson.matrix.LabelAxis',
+        'dynamic': 'ca.silvermaplesolutions.jenkins.plugins.daxis.DynamicAxis',
     }
 
     def root_xml(self, data):
@@ -143,7 +156,13 @@ class Matrix(jenkins_jobs.modules.base.Base):
             name, values = axis['name'], axis['values']
             XML.SubElement(lbl_root, 'name').text = str(name)
             v_root = XML.SubElement(lbl_root, 'values')
-            for v in values:
-                XML.SubElement(v_root, 'string').text = str(v)
+            if axis['type'] == "dynamic":
+                XML.SubElement(v_root, 'string').text = str(values[0])
+                XML.SubElement(lbl_root, 'varName').text = str(values[0])
+                v_root = XML.SubElement(lbl_root, 'axisValues')
+                XML.SubElement(v_root, 'string').text = 'default'
+            else:
+                for v in values:
+                    XML.SubElement(v_root, 'string').text = str(v)
 
         return root

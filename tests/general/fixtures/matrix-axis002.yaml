@@ -1,0 +1,14 @@
+name: matrix-test002
+project-type: matrix
+axes:
+    - axis:
+        type: dynamic
+        name: config
+        values:
+            - config_list
+    - axis:
+        type: user-defined
+        name: arch
+        values:
+            - arm64
+            - amd64
