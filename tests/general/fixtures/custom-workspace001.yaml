@@ -1,0 +1,3 @@
+project-type: freestyle
+workspace: foo
+child-workspace: bar

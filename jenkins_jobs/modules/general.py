@@ -56,6 +56,10 @@ Example:
       Path for a custom workspace. Defaults to Jenkins default
       configuration.
 
+    * **child-workspace**:
+      Path for a child custom workspace. Defaults to Jenkins default
+      configuration. This parameter is only valid for matrix type jobs.
+
     * **quiet-period**:
       Number of seconds to wait between consecutive runs of this job.
       Defaults to ``0``.
@@ -139,6 +143,9 @@ class General(jenkins_jobs.modules.base.Base):
         if 'workspace' in data:
             XML.SubElement(xml, 'customWorkspace').text = \
                 str(data['workspace'])
+        if (xml.tag == 'matrix-project') and ('child-workspace' in data):
+            XML.SubElement(xml, 'childCustomWorkspace').text = \
+                str(data['child-workspace'])
         if 'quiet-period' in data:
             XML.SubElement(xml, 'quietPeriod').text = str(data['quiet-period'])
         node = data.get('node', None)
