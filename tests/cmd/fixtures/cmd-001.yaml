@@ -1,0 +1,8 @@
+- job-template:
+    name: 'foo-job'
+    description: 'a simple job'
+
+- project:
+    name: foo-project
+    jobs:
+      - foo-job:
