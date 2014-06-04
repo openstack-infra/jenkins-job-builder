@@ -287,6 +287,7 @@ def authorization(parser, xml_parent, data):
       job-delete
       job-configure
       job-read
+      job-extended-read
       job-discover
       job-build
       job-workspace
@@ -313,12 +314,14 @@ def authorization(parser, xml_parent, data):
             anonymous:
               - job-discover
               - job-read
+              - job-extended-read
     """
 
     mapping = {
         'job-delete': 'hudson.model.Item.Delete',
         'job-configure': 'hudson.model.Item.Configure',
         'job-read': 'hudson.model.Item.Read',
+        'job-extended-read': 'hudson.model.Item.ExtendedRead',
         'job-discover': 'hudson.model.Item.Discover',
         'job-build': 'hudson.model.Item.Build',
         'job-workspace': 'hudson.model.Item.Workspace',
