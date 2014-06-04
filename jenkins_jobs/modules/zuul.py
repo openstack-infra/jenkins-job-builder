@@ -35,6 +35,8 @@ The above URL is the default.
 http://ci.openstack.org/zuul/launchers.html#zuul-parameters
 """
 
+import itertools
+
 
 def zuul():
     """yaml: zuul
@@ -152,8 +154,8 @@ class Zuul(jenkins_jobs.modules.base.Base):
 
     def handle_data(self, parser):
         changed = False
-        jobs = (parser.data.get('job', {}).values() +
-                parser.data.get('job-template', {}).values())
+        jobs = itertools.chain(parser.data.get('job', {}).values(),
+                               parser.data.get('job-template', {}).values())
         for job in jobs:
             triggers = job.get('triggers')
             if not triggers:

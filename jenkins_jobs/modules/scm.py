@@ -161,9 +161,9 @@ remoteName/\*')
         data['remotes'] = [{data.get('name', 'origin'): data.copy()}]
     for remoteData in data['remotes']:
         huser = XML.SubElement(user, 'hudson.plugins.git.UserRemoteConfig')
-        remoteName = remoteData.keys()[0]
+        remoteName = next(iter(remoteData.keys()))
         XML.SubElement(huser, 'name').text = remoteName
-        remoteParams = remoteData.values()[0]
+        remoteParams = next(iter(remoteData.values()))
         if 'refspec' in remoteParams:
             refspec = remoteParams['refspec']
         else:
@@ -368,7 +368,7 @@ def store(parser, xml_parent, data):
     pundles = XML.SubElement(scm, 'pundles')
     for pundle_spec in pundle_specs:
         pundle = XML.SubElement(pundles, '{0}.PundleSpec'.format(namespace))
-        pundle_type = pundle_spec.keys()[0]
+        pundle_type = next(iter(pundle_spec))
         pundle_name = pundle_spec[pundle_type]
         if pundle_type not in valid_pundle_types:
             raise JenkinsJobsException(
@@ -507,9 +507,9 @@ def tfs(parser, xml_parent, data):
         server.
     :arg str login: The user name that is registered on the server. The user
         name must contain the name and the domain name. Entered as
-        domain\\\user or user\@domain (optional).
+        domain\\\\user or user\@domain (optional).
         **NOTE**: You must enter in at least two slashes for the
-        domain\\\user format in JJB YAML. It will be rendered normally.
+        domain\\\\user format in JJB YAML. It will be rendered normally.
     :arg str use-update: If true, Hudson will not delete the workspace at end
         of each build. This causes the artifacts from the previous build to
         remain when a new build starts. (default true)
