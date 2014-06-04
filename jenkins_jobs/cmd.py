@@ -24,6 +24,9 @@ import cStringIO
 from jenkins_jobs.builder import Builder
 from jenkins_jobs.errors import JenkinsJobsException
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger()
+
 DEFAULT_CONF = """
 [job_builder]
 keep_descriptions=False
@@ -42,12 +45,7 @@ def confirm(question):
         sys.exit('Aborted')
 
 
-def main(argv=None):
-    # We default argv to None and assign to sys.argv[1:] below because having
-    # an argument default value be a mutable type in Python is a gotcha. See
-    # http://bit.ly/1o18Vff
-    if argv is None:
-        argv = sys.argv[1:]
+def create_parser():
 
     parser = argparse.ArgumentParser()
     subparser = parser.add_subparsers(help='update, test or delete job',
@@ -83,12 +81,30 @@ def main(argv=None):
     parser.add_argument(
         '--flush-cache', action='store_true', dest='flush_cache',
         default=False, help='flush all the cache entries before updating')
-    options = parser.parse_args(argv)
 
-    options.log_level = getattr(logging, options.log_level.upper(),
-                                logging.INFO)
-    logging.basicConfig(level=options.log_level)
-    logger = logging.getLogger()
+    return parser
+
+
+def main(argv=None):
+
+    # We default argv to None and assign to sys.argv[1:] below because having
+    # an argument default value be a mutable type in Python is a gotcha. See
+    # http://bit.ly/1o18Vff
+    if argv is None:
+        argv = sys.argv[1:]
+
+    parser = create_parser()
+    options = parser.parse_args(argv)
+    if (options.log_level is not None):
+        options.log_level = getattr(logging, options.log_level.upper(),
+                                    logger.getEffectiveLevel())
+        logger.setLevel(options.log_level)
+
+    config = setup_config_settings(options)
+    execute(options, config)
+
+
+def setup_config_settings(options):
 
     conf = '/etc/jenkins_jobs/jenkins_jobs.ini'
     if options.conf:
@@ -113,10 +129,10 @@ def main(argv=None):
             "A valid configuration file is required when not run as a test"
             "\n{0} is not a valid .ini file".format(conf))
 
-    execute(options, config, logger)
+    return config
 
 
-def execute(options, config, logger):
+def execute(options, config):
     logger.debug("Config: {0}".format(config))
 
     # check the ignore_cache setting: first from command line,
