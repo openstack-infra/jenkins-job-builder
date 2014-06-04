@@ -439,7 +439,7 @@ def cloverphp(parser, xml_parent, data):
 
     metrics = data.get('metric-targets', [])
     # list of dicts to dict
-    metrics = dict(kv for m in metrics for kv in m.iteritems())
+    metrics = dict(kv for m in metrics for kv in m.items())
 
     # Populate defaults whenever nothing has been filled by user.
     for default in default_metrics.keys():
@@ -889,7 +889,7 @@ def xunit(parser, xml_parent, data):
     supported_types = []
 
     for configured_type in data['types']:
-        type_name = configured_type.keys()[0]
+        type_name = next(iter(configured_type.keys()))
         if type_name not in implemented_types:
             logger.warn("Requested xUnit type '%s' is not yet supported",
                         type_name)
@@ -900,7 +900,7 @@ def xunit(parser, xml_parent, data):
     # Generate XML for each of the supported framework types
     xmltypes = XML.SubElement(xunit, 'types')
     for supported_type in supported_types:
-        framework_name = supported_type.keys()[0]
+        framework_name = next(iter(supported_type.keys()))
         xmlframework = XML.SubElement(xmltypes,
                                       types_to_plugin_types[framework_name])
 
@@ -924,9 +924,10 @@ def xunit(parser, xml_parent, data):
                     "Unrecognized threshold, should be 'failed' or 'skipped'")
                 continue
             elname = "org.jenkinsci.plugins.xunit.threshold.%sThreshold" \
-                % t.keys()[0].title()
+                % next(iter(t.keys())).title()
             el = XML.SubElement(xmlthresholds, elname)
-            for threshold_name, threshold_value in t.values()[0].items():
+            for threshold_name, threshold_value in \
+                    next(iter(t.values())).items():
                 # Normalize and craft the element name for this threshold
                 elname = "%sThreshold" % threshold_name.lower().replace(
                     'new', 'New')
@@ -3509,7 +3510,8 @@ def ruby_metrics(parser, xml_parent, data):
                 XML.SubElement(el, 'metric').text = 'TOTAL_COVERAGE'
             else:
                 XML.SubElement(el, 'metric').text = 'CODE_COVERAGE'
-            for threshold_name, threshold_value in t.values()[0].items():
+            for threshold_name, threshold_value in \
+                    next(iter(t.values())).items():
                 elname = threshold_name.lower()
                 XML.SubElement(el, elname).text = str(threshold_value)
     else:

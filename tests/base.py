@@ -26,7 +26,7 @@ import json
 import operator
 import testtools
 import xml.etree.ElementTree as XML
-from ConfigParser import ConfigParser
+from six.moves import configparser
 import jenkins_jobs.local_yaml as yaml
 from jenkins_jobs.builder import XmlJob, YamlParser, ModuleRegistry
 from jenkins_jobs.modules import (project_flow,
@@ -86,7 +86,7 @@ class BaseTestCase(object):
 
     def _read_yaml_content(self):
         yaml_filepath = os.path.join(self.fixtures_path, self.in_filename)
-        with file(yaml_filepath, 'r') as yaml_file:
+        with open(yaml_filepath, 'r') as yaml_file:
             yaml_content = yaml.load(yaml_file)
         return yaml_content
 
@@ -118,8 +118,7 @@ class BaseTestCase(object):
         pub.gen_xml(parser, xml_project, yaml_content)
 
         # Prettify generated XML
-        pretty_xml = unicode(XmlJob(xml_project, 'fixturejob').output(),
-                             'utf-8')
+        pretty_xml = XmlJob(xml_project, 'fixturejob').output().decode('utf-8')
 
         self.assertThat(
             pretty_xml,
@@ -137,7 +136,7 @@ class SingleJobTestCase(BaseTestCase):
         yaml_filepath = os.path.join(self.fixtures_path, self.in_filename)
 
         if self.conf_filename:
-            config = ConfigParser()
+            config = configparser.ConfigParser()
             conf_filepath = os.path.join(self.fixtures_path,
                                          self.conf_filename)
             config.readfp(open(conf_filepath))
@@ -152,8 +151,8 @@ class SingleJobTestCase(BaseTestCase):
         parser.jobs.sort(key=operator.attrgetter('name'))
 
         # Prettify generated XML
-        pretty_xml = unicode("\n".join(job.output() for job in parser.jobs),
-                             'utf-8')
+        pretty_xml = u"\n".join(job.output().decode('utf-8')
+                                for job in parser.jobs)
 
         self.assertThat(
             pretty_xml,
