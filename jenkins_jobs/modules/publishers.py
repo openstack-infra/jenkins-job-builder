@@ -1191,6 +1191,8 @@ def ssh(parser, xml_parent, data):
       (optional)
     :arg bool fail-on-error: fail the build if an error occurs (defaults to
       False).
+    :arg bool always-publish-from-master: transfer the files through the master
+      before being sent to the remote server (defaults to False)
 
     Example::
 
@@ -1722,7 +1724,8 @@ def base_publish_over(xml_parent, data, console_prefix,
     XML.SubElement(delegate, 'continueOnError').text = 'false'
     XML.SubElement(delegate, 'failOnError').text = \
         str(data.get('fail-on-error', False)).lower()
-    XML.SubElement(delegate, 'alwaysPublishFromMaster').text = 'false'
+    XML.SubElement(delegate, 'alwaysPublishFromMaster').text = \
+        str(data.get('always-publish-from-master', False)).lower()
     XML.SubElement(delegate, 'hostConfigurationAccess',
                    {'class': reference_plugin_tag,
                     'reference': '../..'})
