@@ -53,6 +53,7 @@ from jenkins_jobs.modules.helpers import config_file_provider_settings
 from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 from jenkins_jobs.modules.helpers import copyartifact_build_selector
 from jenkins_jobs.modules import hudson_model
+from jenkins_jobs.modules.publishers import ssh
 
 logger = logging.getLogger(__name__)
 
@@ -2057,6 +2058,35 @@ def critical_block_end(parser, xml_parent, data):
     cbs = XML.SubElement(
         xml_parent, 'org.jvnet.hudson.plugins.exclusion.CriticalBlockEnd')
     cbs.set('plugin', 'Exclusion')
+
+
+def publish_over_ssh(parser, xml_parent, data):
+    """yaml: publish-over-ssh
+    Send files or execute commands over SSH.
+    Requires the Jenkins :jenkins-wiki:`Publish over SSH Plugin
+    <Publish+Over+SSH+Plugin>`.
+
+    :arg str site: name of the ssh site
+    :arg str target: destination directory
+    :arg bool target-is-date-format: whether target is a date format. If true,
+        raw text should be quoted (default false)
+    :arg bool clean-remote: should the remote directory be deleted before
+        transferring files (default false)
+    :arg str source: source path specifier
+    :arg str command: a command to execute on the remote server (optional)
+    :arg int timeout: timeout in milliseconds for the Exec command (optional)
+    :arg bool use-pty: run the exec command in pseudo TTY (default false)
+    :arg str excludes: excluded file pattern (optional)
+    :arg str remove-prefix: prefix to remove from uploaded file paths
+        (optional)
+    :arg bool fail-on-error: fail the build if an error occurs (default false)
+
+    Example:
+
+    .. literalinclude:: /../../tests/builders/fixtures/publish-over-ssh.yaml
+       :language: yaml
+    """
+    ssh(parser, xml_parent, data)
 
 
 class Builders(jenkins_jobs.modules.base.Base):

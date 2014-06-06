@@ -12,14 +12,14 @@
               <jenkins.plugins.publish__over__ssh.BapSshTransfer>
                 <remoteDirectory>dest/dir</remoteDirectory>
                 <sourceFiles>base/source/dir/**</sourceFiles>
-                <execCommand>rm -r jenkins_$BUILD_NUMBER</execCommand>
-                <execTimeout>1800000</execTimeout>
-                <usePty>true</usePty>
                 <excludes>**/*.excludedfiletype</excludes>
                 <removePrefix>base/source/dir</removePrefix>
                 <remoteDirectorySDF>false</remoteDirectorySDF>
                 <flatten>true</flatten>
                 <cleanRemote>false</cleanRemote>
+                <execCommand>rm -r jenkins_$BUILD_NUMBER</execCommand>
+                <execTimeout>1800000</execTimeout>
+                <usePty>true</usePty>
               </jenkins.plugins.publish__over__ssh.BapSshTransfer>
             </transfers>
             <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
