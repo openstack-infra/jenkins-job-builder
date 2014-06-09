@@ -1366,6 +1366,8 @@ def email_ext(parser, xml_parent, data):
     :arg bool regression: Send an email if there is a regression
         (default false)
     :arg bool failure: Send an email if the build fails (default true)
+    :arg bool second-failure: Send an email for the second failure
+        (default false)
     :arg bool improvement: Send an email if the build improves (default false)
     :arg bool still-failing: Send an email if the build is still failing
         (default false)
@@ -1414,6 +1416,8 @@ def email_ext(parser, xml_parent, data):
         base_email_ext(parser, ctrigger, data, 'RegressionTrigger')
     if data.get('failure', True):
         base_email_ext(parser, ctrigger, data, 'FailureTrigger')
+    if data.get('second-failure', False):
+        base_email_ext(parser, ctrigger, data, 'SecondFailureTrigger')
     if data.get('improvement', False):
         base_email_ext(parser, ctrigger, data, 'ImprovementTrigger')
     if data.get('still-failing', False):
