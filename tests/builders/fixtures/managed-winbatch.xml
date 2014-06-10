@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jenkinsci.plugins.managedscripts.WinBatchBuildStep>
+      <command>org.jenkinsci.plugins.managedscripts.WinBatchConfig1402391729132</command>
+      <buildStepArgs>
+        <string>arg1</string>
+        <string>arg2</string>
+      </buildStepArgs>
+    </org.jenkinsci.plugins.managedscripts.WinBatchBuildStep>
+  </builders>
+</project>
