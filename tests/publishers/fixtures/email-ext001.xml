@@ -152,7 +152,7 @@
       <defaultSubject>Subject for Build ${BUILD_NUMBER}</defaultSubject>
       <defaultContent>The build has finished</defaultContent>
       <attachmentsPattern>*/foo*.log</attachmentsPattern>
-      <presendScript/>
+      <presendScript>cancel=true</presendScript>
       <attachBuildLog>false</attachBuildLog>
       <replyTo>foo@example.com</replyTo>
       <matrixTriggerMode>ONLY_CONFIGURATIONS</matrixTriggerMode>
