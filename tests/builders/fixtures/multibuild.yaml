@@ -20,3 +20,4 @@ builders:
           predefined-parameters: foo=bar
         - name: PhaseTwoJobB
           current-parameters: false
+          kill-phase-on: UNSTABLE

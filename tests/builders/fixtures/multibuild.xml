@@ -47,6 +47,7 @@
           <jobName>PhaseTwoJobB</jobName>
           <currParams>false</currParams>
           <configs/>
+          <killPhaseOnJobResultCondition>UNSTABLE</killPhaseOnJobResultCondition>
         </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
       </phaseJobs>
     </com.tikal.jenkins.plugins.multijob.MultiJobBuilder>
