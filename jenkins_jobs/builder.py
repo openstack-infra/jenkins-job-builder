@@ -270,6 +270,7 @@ class YamlParser(object):
         checksums = set([])
         for values in itertools.product(*dimensions):
             params = copy.deepcopy(project)
+            params = self.applyDefaults(params)
 
             expanded_values = {}
             for (k, v) in values:
