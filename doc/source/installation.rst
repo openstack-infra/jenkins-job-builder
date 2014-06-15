@@ -65,6 +65,11 @@ job_builder section
   When this option is set to True, that behavior changes and it will only
   overwrite the description if you specified it in the yaml. False by default.
 
+**include_path**
+  (Optional) Can be set to a ':' delimited list of paths, which jenkins
+  job builder will search for any files specified by the custom application
+  yaml tags 'include', 'include-raw' and 'include-raw-escaped'.
+
 jenkins section
 ^^^^^^^^^^^^^^^
 

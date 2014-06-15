@@ -31,6 +31,7 @@ import copy
 import itertools
 import fnmatch
 from jenkins_jobs.errors import JenkinsJobsException
+import local_yaml
 
 logger = logging.getLogger(__name__)
 MAGIC_MANAGE_STRING = "<!-- Managed by Jenkins Job Builder -->"
@@ -122,9 +123,15 @@ class YamlParser(object):
         self.jobs = []
         self.config = config
         self.registry = ModuleRegistry(self.config)
+        self.path = ["."]
+        if self.config:
+            if config.has_section('job_builder') and \
+                    config.has_option('job_builder', 'include_path'):
+                self.path = config.get('job_builder',
+                                       'include_path').split(':')
 
     def parse_fp(self, fp):
-        data = yaml.load(fp)
+        data = local_yaml.load(fp, search_path=self.path)
         if data:
             if not isinstance(data, list):
                 raise JenkinsJobsException(
