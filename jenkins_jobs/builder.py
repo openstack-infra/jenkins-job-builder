@@ -303,11 +303,14 @@ class YamlParser(object):
 
     def getXMLForJob(self, data):
         kind = data.get('project-type', 'freestyle')
+
+        keep_desc = False
         if self.config:
-            keep_desc = self.config.getboolean('job_builder',
-                                               'keep_descriptions')
-        else:
-            keep_desc = False
+            if self.config.has_section('job_builder') and \
+                    self.config.has_option('job_builder', 'keep_descriptions'):
+                keep_desc = self.config.getboolean('job_builder',
+                                                   'keep_descriptions')
+
         if keep_desc:
             description = data.get("description", None)
         else:
