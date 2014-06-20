@@ -261,6 +261,18 @@ For example:
 .. literalinclude:: /../../tests/yamlparser/fixtures/second_order_parameter_interpolation002.yaml
 
 
+By default JJB will fail if it tries to interpolate a variable that was not
+defined, but you can change that behaviour and allow empty variables with the
+allow_empty_variables configuration option.
+
+For example, having a configuration file with tha toption enabled:
+
+.. literalinclude:: /../../tests/yamlparser/fixtures/allow_empty_variables.conf
+
+Will prevent JJb from failing if there are any non-initialized variables used
+and replace them with the empty string instead.
+
+
 Yaml Anchors & Aliases
 ^^^^^^^^^^^^^^^^^^^^^^
 

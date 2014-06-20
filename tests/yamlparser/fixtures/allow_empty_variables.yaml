@@ -1,0 +1,10 @@
+- project:
+    name: allow_empty_variables
+    jobs:
+        - 'allow_empty_variables'
+
+- job-template:
+    name: 'allow_empty_variables'
+    builders:
+      - shell: |
+         echo "This should be empty: {my_empty_var}"
