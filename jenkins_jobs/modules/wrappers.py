@@ -611,7 +611,7 @@ def release(parser, xml_parent, data):
     Requires the Jenkins `Release Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Release+Plugin>`_
 
-    :arg bool keep-forever: Keep build forever (default is 'true')
+    :arg bool keep-forever: Keep build forever (default true)
     :arg bool override-build-parameters: Enable build-parameter override
     :arg string version-template: Release version template
     :arg list parameters: Release parameters (see the :ref:`Parameters` module)

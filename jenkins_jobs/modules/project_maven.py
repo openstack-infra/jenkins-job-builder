@@ -24,7 +24,7 @@ in the :ref:`Job` definition.
     * **root-module**:
         * **group-id** (`str`): GroupId.
         * **artifact-id** (`str`): ArtifactId.
-    * **root-pom** (`str`): The path to the pom.xml file. (defaults to pom.xml)
+    * **root-pom** (`str`): The path to the pom.xml file. (default 'pom.xml')
     * **goals** (`str`): Goals to execute. (required)
     * **maven-opts** (`str`): Java options to pass to maven (aka MAVEN_OPTS)
     * **maven-name** (`str`): Installation of maven which should be used.
@@ -34,9 +34,9 @@ in the :ref:`Job` definition.
       Possible values are `default`, `local-to-workspace` and
       `local-to-executor`.
     * **ignore-upstream-changes** (`bool`): Do not start a build whenever
-      a SNAPSHOT dependency is built or not. (defaults to true)
+      a SNAPSHOT dependency is built or not. (default true)
     * **automatic-archiving** (`bool`): Activate automatic artifact archiving
-      (defaults to true).
+      (default true).
     * **settings** (`str`): Path to custom maven settings file (optional)
     * **global-settings** (`str`): Path to custom maven global settings file
       (optional)

@@ -737,15 +737,14 @@ def ftp(parser, xml_parent, data):
     :arg str site: name of the ftp site
     :arg str target: destination directory
     :arg bool target-is-date-format: whether target is a date format. If true,
-      raw text should be quoted (defaults to False)
+      raw text should be quoted (default false)
     :arg bool clean-remote: should the remote directory be deleted before
-      transferring files (defaults to False)
+      transferring files (default false)
     :arg str source: source path specifier
     :arg str excludes: excluded file pattern (optional)
     :arg str remove-prefix: prefix to remove from uploaded file paths
       (optional)
-    :arg bool fail-on-error: fail the build if an error occurs (defaults to
-      False).
+    :arg bool fail-on-error: fail the build if an error occurs (default false).
 
     Example::
 
@@ -1179,20 +1178,19 @@ def ssh(parser, xml_parent, data):
     :arg str site: name of the ssh site
     :arg str target: destination directory
     :arg bool target-is-date-format: whether target is a date format. If true,
-      raw text should be quoted (defaults to False)
+      raw text should be quoted (default false)
     :arg bool clean-remote: should the remote directory be deleted before
-      transferring files (defaults to False)
+      transferring files (default false)
     :arg str source: source path specifier
     :arg str command: a command to execute on the remote server (optional)
     :arg int timeout: timeout in milliseconds for the Exec command (optional)
-    :arg bool use-pty: run the exec command in pseudo TTY (defaults to False)
+    :arg bool use-pty: run the exec command in pseudo TTY (default false)
     :arg str excludes: excluded file pattern (optional)
     :arg str remove-prefix: prefix to remove from uploaded file paths
       (optional)
-    :arg bool fail-on-error: fail the build if an error occurs (defaults to
-      False).
+    :arg bool fail-on-error: fail the build if an error occurs (default false).
     :arg bool always-publish-from-master: transfer the files through the master
-      before being sent to the remote server (defaults to False)
+      before being sent to the remote server (defaults false)
 
     Example::
 
@@ -1348,7 +1346,7 @@ def email_ext(parser, xml_parent, data):
 
     :arg str recipients: Comma separated list of emails
     :arg str reply-to: Comma separated list of emails that should be in
-        the Reply-To header for this project (default is $DEFAULT_RECIPIENTS)
+        the Reply-To header for this project (default $DEFAULT_RECIPIENTS)
     :arg str content-type: The content type of the emails sent. If not set, the
         Jenkins plugin uses the value set on the main configuration page.
         Possible values: 'html', 'text' or 'default' (default 'default')
@@ -1474,7 +1472,7 @@ def fingerprint(parser, xml_parent, data):
     Fingerprint files to track them across builds
 
     :arg str files: files to fingerprint, follows the @includes of Ant fileset
-        (default is blank)
+        (default blank)
     :arg bool record-artifacts: fingerprint all archived artifacts
         (default false)
 
@@ -1745,15 +1743,14 @@ def cifs(parser, xml_parent, data):
     :arg str site: name of the cifs site/share
     :arg str target: destination directory
     :arg bool target-is-date-format: whether target is a date format. If true,
-      raw text should be quoted (defaults to False)
+      raw text should be quoted (default false)
     :arg bool clean-remote: should the remote directory be deleted before
-      transferring files (defaults to False)
+      transferring files (default false)
     :arg str source: source path specifier
     :arg str excludes: excluded file pattern (optional)
     :arg str remove-prefix: prefix to remove from uploaded file paths
       (optional)
-    :arg bool fail-on-error: fail the build if an error occurs (defaults to
-      False).
+    :arg bool fail-on-error: fail the build if an error occurs (default false).
 
     Example::
 

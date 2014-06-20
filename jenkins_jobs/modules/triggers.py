@@ -160,7 +160,7 @@ def gerrit(parser, xml_parent, data):
                   (optional)
 
                   :Branch: * **branch-compare-type** (`str`) -- ''PLAIN'',
-                             ''ANT'' or ''REG_EXP'' (optional, defaults to
+                             ''ANT'' or ''REG_EXP'' (optional) (default
                              ''PLAIN'')
                            * **branch-pattern** (`str`) -- Branch name pattern
                              to match
@@ -169,8 +169,7 @@ def gerrit(parser, xml_parent, data):
                   (optional)
 
                   :File Path: * **compare-type** (`str`) -- ''PLAIN'', ''ANT''
-                                or ''REG_EXP'' (optional, defaults to
-                                ''PLAIN'')
+                                or ''REG_EXP'' (optional) (default ''PLAIN'')
                               * **pattern** (`str`) -- File path pattern to
                                 match
 

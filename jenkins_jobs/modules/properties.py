@@ -449,7 +449,7 @@ def build_blocker(parser, xml_parent, data):
     <https://wiki.jenkins-ci.org/display/JENKINS/Build+Blocker+Plugin>`_
 
     :arg bool use-build-blocker: Enable or disable build blocker
-        (optional, defaults to True)
+        (optional) (default true)
     :arg list blocking-jobs: One regular expression per line
         to select blocking jobs by their names. (required)
 
@@ -551,7 +551,7 @@ def heavy_job(parser, xml_parent, data):
     <https://wiki.jenkins-ci.org/display/JENKINS/Heavy+Job+Plugin>`_
 
     :arg int weight: Specify the total number of executors
-        that this job should occupy (defaults to 1)
+        that this job should occupy (default 1)
 
 
     Example:

@@ -212,7 +212,7 @@ def ant(parser, xml_parent, data):
     :arg str buildfile: the path to the ANT build file.
     :arg list properties: Passed to ant script using -Dkey=value (optional)
     :arg str ant-name: the name of the ant installation,
-        defaults to 'default' (optional)
+        (default 'default') (optional)
     :arg str java-opts: java options for ant, can have multiples,
         must be in quotes (optional)
 
@@ -519,9 +519,9 @@ def msbuild(parser, xml_parent, data):
     :arg str solution-file: location of the solution file to build
     :arg str extra-parameters: extra parameters to pass to msbuild (optional)
     :arg bool pass-build-variables: should build variables be passed
-      to msbuild (defaults to true)
+      to msbuild (default true)
     :arg bool continue-on-build-failure: should the build continue if
-      msbuild returns an error (defaults to false)
+      msbuild returns an error (default false)
 
     Example:
 
@@ -727,9 +727,9 @@ def maven_target(parser, xml_parent, data):
 
     :arg str goals: Goals to execute
     :arg str properties: Properties for maven, can have multiples
-    :arg str pom: Location of pom.xml (defaults to pom.xml)
+    :arg str pom: Location of pom.xml (default 'pom.xml')
     :arg bool private-repository: Use private maven repository for this
-      job (defaults to false)
+      job (default false)
     :arg str maven-version: Installation of maven which should be used
       (optional)
     :arg str java-opts: java options for maven, can have multiples,

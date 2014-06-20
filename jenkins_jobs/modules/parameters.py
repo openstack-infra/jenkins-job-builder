@@ -272,10 +272,10 @@ def dynamic_choice_param(parser, xml_parent, data):
     :arg str description: a description of the parameter (optional)
     :arg str script: Groovy expression which generates the potential choices.
     :arg bool remote: the script will be executed on the slave where the build
-        is started (default is false)
+        is started (default false)
     :arg str classpath: class path for script (optional)
     :arg bool read-only: user can't modify parameter once populated
-        (default is false)
+        (default false)
 
     Example::
 
@@ -301,10 +301,10 @@ def dynamic_string_param(parser, xml_parent, data):
     :arg str description: a description of the parameter (optional)
     :arg str script: Groovy expression which generates the potential choices
     :arg bool remote: the script will be executed on the slave where the build
-        is started (default is false)
+        is started (default false)
     :arg str classpath: class path for script (optional)
     :arg bool read-only: user can't modify parameter once populated
-        (default is false)
+        (default false)
 
     Example::
 
@@ -334,9 +334,9 @@ def dynamic_choice_scriptler_param(parser, xml_parent, data):
         :Parameter: * **name** (`str`) Parameter name
                     * **value** (`str`) Parameter value
     :arg bool remote: the script will be executed on the slave where the build
-        is started (default is false)
+        is started (default false)
     :arg bool read-only: user can't modify parameter once populated
-        (default is false)
+        (default false)
 
     Example::
 
@@ -372,9 +372,9 @@ def dynamic_string_scriptler_param(parser, xml_parent, data):
         :Parameter: * **name** (`str`) Parameter name
                     * **value** (`str`) Parameter value
     :arg bool remote: the script will be executed on the slave where the build
-        is started (default is false)
+        is started (default false)
     :arg bool read-only: user can't modify parameter once populated
-        (default is false)
+        (default false)
 
     Example::
 
