@@ -22,6 +22,7 @@ publishers:
       still-unstable: true
       pre-build: true
       matrix-trigger: only-configurations
+      presend-script: "cancel=true"
       send-to:
         - developers
         - requester

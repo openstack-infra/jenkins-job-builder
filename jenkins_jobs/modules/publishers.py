@@ -1376,6 +1376,8 @@ def email_ext(parser, xml_parent, data):
     :arg bool still-unstable: Send an email if the build is still unstable
         (default false)
     :arg bool pre-build: Send an email before the build (default false)
+    :arg str presend-script: A Groovy script executed prior sending the mail.
+        (default '')
     :arg str matrix-trigger: If using matrix projects, when to trigger
 
         :matrix-trigger values:
@@ -1448,7 +1450,8 @@ def email_ext(parser, xml_parent, data):
         'body', '$DEFAULT_CONTENT')
     XML.SubElement(emailext, 'attachmentsPattern').text = data.get(
         'attachments', '')
-    XML.SubElement(emailext, 'presendScript').text = ''
+    XML.SubElement(emailext, 'presendScript').text = data.get(
+        'presend-script', '')
     XML.SubElement(emailext, 'attachBuildLog').text = \
         str(data.get('attach-build-log', False)).lower()
     XML.SubElement(emailext, 'replyTo').text = data.get('reply-to',
