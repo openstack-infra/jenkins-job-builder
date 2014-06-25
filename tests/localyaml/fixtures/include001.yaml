@@ -1,0 +1,4 @@
+- job:
+    name: test-job-1
+    builders:
+      !include include001.yaml.inc

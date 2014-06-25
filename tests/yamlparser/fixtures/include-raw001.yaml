@@ -1,0 +1,10 @@
+- job:
+    name: test-job-2
+    properties:
+      - inject:
+          keep-build-variables: true
+          keep-system-variables: true
+    builders:
+      - shell:
+          !include-raw ../../localyaml/fixtures/include-raw001-hello-world.sh
+

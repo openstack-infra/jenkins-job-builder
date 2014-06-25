@@ -1,6 +1,7 @@
 [job_builder]
 ignore_cache=True
 keep_descriptions=False
+include_path=.:scripts:~/git/
 
 [jenkins]
 user=jenkins

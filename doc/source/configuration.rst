@@ -302,6 +302,12 @@ For example:
 .. literalinclude::  /../../tests/yamlparser/fixtures/custom_distri.yaml
 
 
+Custom Yaml Tags
+----------------
+
+.. automodule:: jenkins_jobs.local_yaml
+
+
 Modules
 -------
 

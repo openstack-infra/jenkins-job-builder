@@ -1,0 +1,22 @@
+# vim: sw=4 ts=4 et
+- job-template:
+    name: 'test-job-{num}'
+    project-type: freestyle
+    node: my-test-node
+    disabled: false
+    quiet-period: 1
+    properties:
+      - inject:
+          keep-build-variables: true
+          keep-system-variables: true
+    builders:
+      - shell:
+          !include-raw-escape include-raw-escape001-echo-vars.sh
+
+
+- project:
+    name: test-job-template-1
+    num: 1
+    jobs:
+      - 'test-job-{num}'
+
