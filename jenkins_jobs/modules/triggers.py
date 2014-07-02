@@ -407,6 +407,39 @@ def github_pull_request(parser, xml_parent, data):
         data.get('auto-close-on-fail', False)).lower()
 
 
+def gitlab_merge_request(parser, xml_parent, data):
+    """yaml: gitlab-merge-request
+    Build merge requests in gitlab and report results.
+    Requires the Jenkins `Gitlab MergeRequest Builder Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/
+    Gitlab+Merge+Request+Builder+Plugin>`_
+
+    :arg string cron: cron syntax of when to run (required)
+    :arg string project-path: gitlab-relative path to project (required)
+
+    Example:
+
+    .. literalinclude:: \
+        /../../tests/triggers/fixtures/gitlab-merge-request.yaml
+    """
+    ghprb = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.gitlab.'
+                           'GitlabBuildTrigger')
+    if not data.get('cron', None):
+        raise jenkins_jobs.errors.JenkinsJobsException(
+            'gitlab-merge-request is missing "cron"')
+    if not data.get('project-path', None):
+        raise jenkins_jobs.errors.JenkinsJobsException(
+            'gitlab-merge-request is missing "project-path"')
+
+    # Because of a design limitation in the GitlabBuildTrigger Jenkins plugin
+    # both 'spec' and '__cron' have to be set to the same value to have them
+    # take effect. Also, cron and projectPath are prefixed with underscores
+    # in the plugin, but spec is not.
+    XML.SubElement(ghprb, 'spec').text = data.get('cron')
+    XML.SubElement(ghprb, '__cron').text = data.get('cron')
+    XML.SubElement(ghprb, '__projectPath').text = data.get('project-path')
+
+
 def build_result(parser, xml_parent, data):
     """yaml: build-result
     Configure jobB to monitor jobA build result. A build is scheduled if there

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.gitlab.GitlabBuildTrigger>
+      <spec>* * * * *</spec>
+      <__cron>* * * * *</__cron>
+      <__projectPath>test/project</__projectPath>
+    </org.jenkinsci.plugins.gitlab.GitlabBuildTrigger>
+  </triggers>
+</project>
