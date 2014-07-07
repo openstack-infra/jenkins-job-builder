@@ -1,0 +1,28 @@
+triggers:
+  - pollurl:
+      cron: '* * * * *'
+      polling-node: 'label expression'
+      urls:
+        - url: 'http://example.com/url1'
+          proxy: false
+          timeout: 442
+          username: username
+          password: sekr3t
+          check-status: 202
+          check-etag: false
+          check-date: true
+          check-content:
+            - simple: true
+            - json:
+              - '$..author'
+              - '$.store..price'
+        - url: 'http://example.com/url2'
+          proxy: true
+          check-etag: true
+          check-content:
+            - simple: false
+            - xml:
+              - '//author'
+              - '/store//price'
+            - text:
+              - '\d+'
