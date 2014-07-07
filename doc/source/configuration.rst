@@ -298,6 +298,11 @@ definitions unless they specify a different Default object with the
 
 Will set the job description for every job created.
 
+Template variables can also be used to specify an appropriate set of
+defaults for each generated job:
+
+.. literalinclude::  /../../tests/yamlparser/fixtures/templates003.yaml
+
 .. _advanced:
 
 Advanced
