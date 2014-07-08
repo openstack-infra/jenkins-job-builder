@@ -118,12 +118,12 @@ def setup_config_settings(options):
     config = ConfigParser.ConfigParser()
     ## Load default config always
     config.readfp(cStringIO.StringIO(DEFAULT_CONF))
-    if options.command == 'test':
-        logger.debug("Not reading config for test output generation")
-    elif os.path.isfile(conf):
+    if os.path.isfile(conf):
         logger.debug("Reading config from {0}".format(conf))
         conffp = open(conf, 'r')
         config.readfp(conffp)
+    elif options.command == 'test':
+        logger.debug("Not requiring config for test output generation")
     else:
         raise JenkinsJobsException(
             "A valid configuration file is required when not run as a test"
