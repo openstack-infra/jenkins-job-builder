@@ -901,10 +901,13 @@ def multijob(parser, xml_parent, data):
                   to the other job (optional)
                 * **predefined-parameters** (`str`) -- Pass predefined
                   parameters to the other job (optional)
+                * **kill-phase-on** (`str`) -- Stop the phase execution
+                  on specific job status. Can be 'FAILURE', 'UNSTABLE',
+                  'NEVER'. (optional)
 
     Example:
 
-    .. literalinclude:: ../../tests/builders/fixtures/multibuild.yaml
+    .. literalinclude:: /../../tests/builders/fixtures/multibuild.yaml
        :language: yaml
     """
     builder = XML.SubElement(xml_parent, 'com.tikal.jenkins.plugins.multijob.'
@@ -915,6 +918,8 @@ def multijob(parser, xml_parent, data):
     XML.SubElement(builder, 'continuationCondition').text = condition
 
     phaseJobs = XML.SubElement(builder, 'phaseJobs')
+
+    kill_status_list = ('FAILURE', 'UNSTABLE', 'NEVER')
 
     for project in data.get('projects', []):
         phaseJob = XML.SubElement(phaseJobs, 'com.tikal.jenkins.plugins.'
@@ -967,6 +972,19 @@ def multijob(parser, xml_parent, data):
                                    'PredefinedBuildParameters')
             properties = XML.SubElement(param, 'properties')
             properties.text = predefined_parameters
+
+        # Kill phase on job status
+        kill_status = project.get('kill-phase-on')
+        if kill_status is not None:
+            kill_status = kill_status.upper()
+            if kill_status not in kill_status_list:
+                raise JenkinsJobsException(
+                    'multijob kill-phase-on must be one of: %s'
+                    + ','.join(kill_status_list))
+            XML.SubElement(
+                phaseJob,
+                'killPhaseOnJobResultCondition'
+            ).text = kill_status
 
 
 def grails(parser, xml_parent, data):
