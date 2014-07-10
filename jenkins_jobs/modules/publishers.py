@@ -1346,7 +1346,7 @@ def email_ext(parser, xml_parent, data):
 
     :arg str recipients: Comma separated list of emails
     :arg str reply-to: Comma separated list of emails that should be in
-        the Reply-To header for this project (default $DEFAULT_RECIPIENTS)
+        the Reply-To header for this project (default $DEFAULT_REPLYTO)
     :arg str content-type: The content type of the emails sent. If not set, the
         Jenkins plugin uses the value set on the main configuration page.
         Possible values: 'html', 'text' or 'default' (default 'default')
@@ -1455,7 +1455,7 @@ def email_ext(parser, xml_parent, data):
     XML.SubElement(emailext, 'attachBuildLog').text = \
         str(data.get('attach-build-log', False)).lower()
     XML.SubElement(emailext, 'replyTo').text = data.get('reply-to',
-                                                        '$DEFAULT_RECIPIENTS')
+                                                        '$DEFAULT_REPLYTO')
     matrix_dict = {'both': 'BOTH',
                    'only-configurations': 'ONLY_CONFIGURATIONS',
                    'only-parent': 'ONLY_PARENT'}
