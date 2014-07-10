@@ -1,0 +1,7 @@
+builders:
+  - managed-script:
+      script-id: org.jenkinsci.plugins.managedscripts.ScriptConfig1401886156431
+      type: script
+      args:
+        - arg1
+        - arg2

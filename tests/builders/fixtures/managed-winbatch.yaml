@@ -1,0 +1,7 @@
+builders:
+  - managed-script:
+      script-id: org.jenkinsci.plugins.managedscripts.WinBatchConfig1402391729132
+      type: batch
+      args:
+        - arg1
+        - arg2
