@@ -309,6 +309,69 @@ def repo(self, xml_parent, data):
             xe.text = str(val)
 
 
+def store(self, xml_parent, data):
+    """yaml: store
+    Specifies the Visualworks Smalltalk Store repository for this job.
+    Requires the Jenkins `Visualworks Smalltalk Store Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/
+    Visualworks+Smalltalk+Store+Plugin>`_
+
+    :arg str script: name of the Store script to run
+    :arg str repository: name of the Store repository
+    :arg str version-regex: regular expression that specifies which pundle
+             versions should be considered (optional)
+    :arg str minimum-blessing: minimum blessing level to consider (optional)
+    :arg str parcel-builder-file: name of the file to generate as input to
+             a later parcel building step (optional - if not specified, then
+             no parcel builder file will be generated)
+    :arg list pundles:
+
+        :(package or bundle): (`dict`): A package or bundle to check
+
+    Example:
+
+    .. literalinclude:: /../../tests/scm/fixtures/store001.yaml
+    """
+    namespace = 'org.jenkinsci.plugins.visualworks_store'
+    scm = XML.SubElement(xml_parent, 'scm',
+                         {'class': '{0}.StoreSCM'.format(namespace)})
+    if 'script' in data:
+        XML.SubElement(scm, 'scriptName').text = data['script']
+    else:
+        raise JenkinsJobsException("Must specify a script name")
+    if 'repository' in data:
+        XML.SubElement(scm, 'repositoryName').text = data['repository']
+    else:
+        raise JenkinsJobsException("Must specify a repository name")
+    pundle_specs = data.get('pundles', [])
+    if not pundle_specs:
+        raise JenkinsJobsException("At least one pundle must be specified")
+    valid_pundle_types = ['package', 'bundle']
+    pundles = XML.SubElement(scm, 'pundles')
+    for pundle_spec in pundle_specs:
+        pundle = XML.SubElement(pundles, '{0}.PundleSpec'.format(namespace))
+        pundle_type = pundle_spec.keys()[0]
+        pundle_name = pundle_spec[pundle_type]
+        if pundle_type not in valid_pundle_types:
+            raise JenkinsJobsException(
+                'pundle type must be must be one of: '
+                + ', '.join(valid_pundle_types))
+        else:
+            XML.SubElement(pundle, 'name').text = pundle_name
+            XML.SubElement(pundle, 'pundleType').text = pundle_type.upper()
+    if 'version-regex' in data:
+        XML.SubElement(scm, 'versionRegex').text = data['version-regex']
+    if 'minimum-blessing' in data:
+        XML.SubElement(scm, 'minimumBlessingLevel').text = \
+            data['minimum-blessing']
+    if 'parcel-builder-file' in data:
+        XML.SubElement(scm, 'generateParcelBuilderInputFile').text = 'true'
+        XML.SubElement(scm, 'parcelBuilderInputFilename').text = \
+            data['parcel-builder-file']
+    else:
+        XML.SubElement(scm, 'generateParcelBuilderInputFile').text = 'false'
+
+
 def svn(self, xml_parent, data):
     """yaml: svn
     Specifies the svn SCM repository for this job.
