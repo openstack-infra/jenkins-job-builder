@@ -43,7 +43,7 @@ echo &quot;Doing somethin cool with zsh&quot;
         </hudson.tasks.Shell>
         <hudson.tasks.Ant>
           <targets>target1 target2</targets>
-          <antName>default</antName>
+          <antName>Standard Ant</antName>
         </hudson.tasks.Ant>
         <EnvInjectBuilder>
           <info>
