@@ -891,7 +891,7 @@ def xunit(parser, xml_parent, data):
     for configured_type in data['types']:
         type_name = configured_type.keys()[0]
         if type_name not in implemented_types:
-            logger.warn("Requested xUnit type '%s' is not yet supported" %
+            logger.warn("Requested xUnit type '%s' is not yet supported",
                         type_name)
         else:
             # Append for generation
