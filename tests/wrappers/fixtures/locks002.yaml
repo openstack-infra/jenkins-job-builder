@@ -1,0 +1,4 @@
+wrappers:
+    - locks:
+        - FOO
+        - FOO2
