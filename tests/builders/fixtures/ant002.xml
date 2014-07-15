@@ -4,8 +4,8 @@
     <hudson.tasks.Ant>
       <buildFile>build.xml</buildFile>
       <antOpts>-ea -Xmx512m</antOpts>
-      <properties>failonerror=True
-builddir=/tmp/
+      <properties>builddir=/tmp/
+failonerror=True
 </properties>
       <targets>debug test install</targets>
       <antName>Standard Ant</antName>

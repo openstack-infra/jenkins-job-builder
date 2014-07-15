@@ -1,43 +1,43 @@
 [
     {
         "job": {
+            "name": "test-job-1",
             "builders": [
                 {
                     "copyartifact": {
-                        "filter": "*.tar.gz",
                         "project": "foo",
-                        "parameter-filters": "PUBLISH=true",
+                        "filter": "*.tar.gz",
                         "target": "/home/foo",
-                        "flatten": true,
+                        "which-build": "last-successful",
                         "optional": true,
-                        "which-build": "last-successful"
+                        "flatten": true,
+                        "parameter-filters": "PUBLISH=true"
                     }
                 },
                 {
                     "copyartifact": {
                         "project": "bar",
-                        "parameter-filters": "PUBLISH=true",
-                        "target": "/home/foo",
-                        "build-number": 123,
-                        "which-build": "specific-build",
                         "filter": "*.tar.gz",
+                        "target": "/home/foo",
+                        "which-build": "specific-build",
+                        "optional": true,
                         "flatten": true,
-                        "optional": true
+                        "parameter-filters": "PUBLISH=true",
+                        "build-number": 123
                     }
                 },
                 {
                     "copyartifact": {
-                        "filter": "*.tar.gz",
                         "project": "baz",
-                        "parameter-filters": "PUBLISH=true",
+                        "filter": "*.tar.gz",
                         "target": "/home/foo",
-                        "flatten": true,
+                        "which-build": "upstream-build",
                         "optional": true,
-                        "which-build": "upstream-build"
+                        "flatten": true,
+                        "parameter-filters": "PUBLISH=true"
                     }
                 }
-            ],
-            "name": "test-job-1"
+            ]
         }
     }
 ]

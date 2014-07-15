@@ -54,16 +54,58 @@ Example:
 """
 
 import codecs
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
 import functools
 import logging
 import re
 import os
 import yaml
+from yaml.constructor import BaseConstructor
 
 logger = logging.getLogger(__name__)
 
 
-class LocalLoader(yaml.Loader):
+class OrderedConstructor(BaseConstructor):
+    """The default constructor class for PyYAML loading uses standard python
+    dictionaries which can have randomized ordering enabled (default in
+    CPython from version 3.3). The order of the XML elements being outputted
+    is both important for tests and for ensuring predictable generation based
+    on the source. This subclass overrides this behaviour to ensure that all
+    dict's created make use of OrderedDict to have iteration of keys to always
+    follow the order in which the keys were inserted/created.
+    """
+
+    def construct_yaml_map(self, node):
+        data = OrderedDict()
+        yield data
+        value = self.construct_mapping(node)
+
+        if isinstance(node, yaml.MappingNode):
+            self.flatten_mapping(node)
+        else:
+            raise yaml.constructor.ConstructorError(
+                None, None,
+                'expected a mapping node, but found %s' % node.id,
+                node.start_mark)
+
+        mapping = OrderedDict()
+        for key_node, value_node in node.value:
+            key = self.construct_object(key_node, deep=False)
+            try:
+                hash(key)
+            except TypeError as exc:
+                raise yaml.constructor.ConstructorError(
+                    'while constructing a mapping', node.start_mark,
+                    'found unacceptable key (%s)' % exc, key_node.start_mark)
+            value = self.construct_object(value_node, deep=False)
+            mapping[key] = value
+        data.update(mapping)
+
+
+class LocalLoader(OrderedConstructor, yaml.Loader):
     """Subclass for yaml.Loader which handles the local tags 'include',
     'include-raw' and 'include-raw-escaped' to specify a file to include data
     from and whether to parse it as additional yaml, treat it as a data blob
@@ -115,6 +157,11 @@ class LocalLoader(yaml.Loader):
         self.add_constructor('!include-raw', self._include_raw_tag)
         self.add_constructor('!include-raw-escape',
                              self._include_raw_escape_tag)
+
+        # constructor to preserve order of maps and ensure that the order of
+        # keys returned is consistent across multiple python versions
+        self.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
+                             type(self).construct_yaml_map)
 
         if isinstance(self.stream, file):
             self.search_path.add(os.path.normpath(

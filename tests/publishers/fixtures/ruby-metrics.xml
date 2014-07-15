@@ -7,14 +7,14 @@
         <hudson.plugins.rubyMetrics.rcov.model.MetricTarget>
           <metric>TOTAL_COVERAGE</metric>
           <healthy>80</healthy>
-          <unstable>0</unstable>
           <unhealthy>0</unhealthy>
+          <unstable>0</unstable>
         </hudson.plugins.rubyMetrics.rcov.model.MetricTarget>
         <hudson.plugins.rubyMetrics.rcov.model.MetricTarget>
           <metric>CODE_COVERAGE</metric>
           <healthy>80</healthy>
-          <unstable>0</unstable>
           <unhealthy>0</unhealthy>
+          <unstable>0</unstable>
         </hudson.plugins.rubyMetrics.rcov.model.MetricTarget>
       </targets>
     </hudson.plugins.rubyMetrics.rcov.RcovPublisher>

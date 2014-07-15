@@ -107,14 +107,14 @@ def build_gerrit_triggers(xml_parent, data):
 
 
 def build_gerrit_skip_votes(xml_parent, data):
-    outcomes = {'successful': 'onSuccessful',
-                'failed': 'onFailed',
-                'unstable': 'onUnstable',
-                'notbuilt': 'onNotBuilt'}
+    outcomes = [('successful', 'onSuccessful'),
+                ('failed', 'onFailed'),
+                ('unstable', 'onUnstable'),
+                ('notbuilt', 'onNotBuilt')]
 
     skip_vote_node = XML.SubElement(xml_parent, 'skipVote')
     skip_vote = data.get('skip-vote', {})
-    for result_kind, tag_name in outcomes.iteritems():
+    for result_kind, tag_name in outcomes:
         if skip_vote.get(result_kind, False):
             XML.SubElement(skip_vote_node, tag_name).text = 'true'
         else:

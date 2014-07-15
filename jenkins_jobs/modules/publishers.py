@@ -2399,7 +2399,7 @@ postbuildscript003.yaml
         'generic': 'GenericScript',
         'groovy': 'GroovyScriptFile',
     }
-    for script_type in script_types.keys():
+    for script_type in sorted(script_types.keys()):
         if script_type + '-script' not in data:
             continue
 
