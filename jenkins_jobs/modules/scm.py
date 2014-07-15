@@ -80,6 +80,7 @@ def git(self, xml_parent, data):
     :arg str reference-repo: Path of the reference repo to use during clone
     :arg str scm-name: The unique scm name for this Git SCM
     :arg bool wipe-workspace: Wipe out workspace before build
+    :arg bool ignore-notify: Ignore notifyCommit URL accesses (default false)
     :arg str browser: what repository browser to use (default '(Auto)')
     :arg str browser-url: url for the repository browser
     :arg str browser-version: version of the repository browser (GitLab)
@@ -133,6 +134,7 @@ def git(self, xml_parent, data):
         ('skip-tag', 'skipTag', False),
         ('scm-name', 'scmName', ''),
         ("shallow-clone", "useShallowClone", False),
+        ("ignore-notify", "ignoreNotifyCommit", False),
     ]
 
     choosing_strategies = {

@@ -36,6 +36,7 @@
     <skipTag>false</skipTag>
     <scmName/>
     <useShallowClone>false</useShallowClone>
+    <ignoreNotifyCommit>false</ignoreNotifyCommit>
     <browser class="hudson.plugins.git.browser.GithubWeb">
       <url>http://github.com/foo/example.git</url>
     </browser>
