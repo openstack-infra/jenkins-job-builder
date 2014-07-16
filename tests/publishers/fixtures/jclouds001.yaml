@@ -1,0 +1,6 @@
+publishers:
+  - jclouds:
+      profile: hp
+      files: '*.tar.gz'
+      container: jenkins
+      basedir:
