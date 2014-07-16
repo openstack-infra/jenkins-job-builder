@@ -1,0 +1,4 @@
+triggers:
+  - gitlab-merge-request:
+      cron: '* * * * *'
+      project-path: 'test/project'
