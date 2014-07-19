@@ -1,0 +1,4 @@
+wrappers:
+  - logfilesize:
+      set-own: true
+      size: 2048
