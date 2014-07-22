@@ -32,6 +32,7 @@ Example::
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+from jenkins_jobs.modules import hudson_model
 import logging
 import re
 
@@ -505,6 +506,52 @@ def build_result(parser, xml_parent, data):
                                            'plugins.buildresulttrigger.model.'
                                            'CheckedResult')
             XML.SubElement(model_checked, 'checked').text = result_dict[result]
+
+
+def reverse(parser, xml_parent, data):
+    """yaml: reverse
+    This trigger can be configured in the UI using the checkbox with the
+    following text: 'Build after other projects are built'.
+
+    Set up a trigger so that when some other projects finish building, a new
+    build is scheduled for this project. This is convenient for running an
+    extensive test after a build is complete, for example.
+
+    This configuration complements the "Build other projects" section in the
+    "Post-build Actions" of an upstream project, but is preferable when you
+    want to configure the downstream project.
+
+    :arg str jobs: List (comma separated) of jobs to watch.
+    :arg str result: Build results to monitor for between the following
+      options: success, unstable and failure. (default 'success').
+
+    Example:
+
+    .. literalinclude:: /../../tests/triggers/fixtures/reverse.yaml
+    """
+    reserveBuildTrigger = XML.SubElement(
+        xml_parent, 'jenkins.triggers.ReverseBuildTrigger')
+
+    supported_thresholds = ['SUCCESS', 'UNSTABLE', 'FAILURE']
+
+    XML.SubElement(reserveBuildTrigger, 'spec').text = ''
+    XML.SubElement(reserveBuildTrigger, 'upstreamProjects').text = \
+        data.get('jobs')
+
+    threshold = XML.SubElement(reserveBuildTrigger, 'threshold')
+    result = data.get('result').upper()
+    if result not in supported_thresholds:
+        raise jenkins_jobs.errors.JenkinsJobsException(
+            "Choice should be one of the following options: %s." %
+            ", ".join(supported_thresholds))
+    XML.SubElement(threshold, 'name').text = \
+        hudson_model.THRESHOLDS[result]['name']
+    XML.SubElement(threshold, 'ordinal').text = \
+        hudson_model.THRESHOLDS[result]['ordinal']
+    XML.SubElement(threshold, 'color').text = \
+        hudson_model.THRESHOLDS[result]['color']
+    XML.SubElement(threshold, 'completeBuild').text = \
+        str(hudson_model.THRESHOLDS[result]['complete']).lower()
 
 
 def script(parser, xml_parent, data):
