@@ -14,10 +14,15 @@
     - email:
         recipients: '{mail-to}'
 
-- project:
-    name: project-name
+- job-group:
+    name: '{name}-tests'
     jobs:
     - '{name}-unit-tests':
         mail-to: developer@nowhere.net
     - '{name}-perf-tests':
         mail-to: projmanager@nowhere.net
+
+- project:
+    name: project-name
+    jobs:
+    - '{name}-tests'
