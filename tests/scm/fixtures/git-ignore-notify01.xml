@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-  <actions/>
-  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
-  <keepDependencies>false</keepDependencies>
-  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
-  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-  <concurrentBuild>false</concurrentBuild>
-  <canRoam>true</canRoam>
-  <properties/>
   <scm class="hudson.plugins.git.GitSCM">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
         <name>origin</name>
         <refspec>+refs/heads/*:refs/remotes/origin/*</refspec>
-        <url>ssh://jenkins@review.openstack.org:29418/repository.git</url>
+        <url>https://github.com/openstack-infra/jenkins-job-builder.git</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-        <name>origin/master</name>
+        <name>master</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <excludedUsers/>
@@ -28,7 +20,7 @@
     <recursiveSubmodules>false</recursiveSubmodules>
     <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
     <authorOrCommitter>false</authorOrCommitter>
-    <clean>false</clean>
+    <clean>true</clean>
     <wipeOutWorkspace>true</wipeOutWorkspace>
     <pruneBranches>false</pruneBranches>
     <remotePoll>false</remotePoll>
@@ -41,9 +33,6 @@
     <skipTag>false</skipTag>
     <scmName/>
     <useShallowClone>false</useShallowClone>
-    <ignoreNotifyCommit>false</ignoreNotifyCommit>
+    <ignoreNotifyCommit>true</ignoreNotifyCommit>
   </scm>
-  <builders/>
-  <publishers/>
-  <buildWrappers/>
 </project>

@@ -43,6 +43,7 @@
         <skipTag>false</skipTag>
         <scmName/>
         <useShallowClone>false</useShallowClone>
+        <ignoreNotifyCommit>false</ignoreNotifyCommit>
       </scm>
       <scm class="hudson.plugins.git.GitSCM">
         <configVersion>2</configVersion>
@@ -77,6 +78,7 @@
         <skipTag>false</skipTag>
         <scmName/>
         <useShallowClone>false</useShallowClone>
+        <ignoreNotifyCommit>false</ignoreNotifyCommit>
       </scm>
     </scms>
   </scm>
