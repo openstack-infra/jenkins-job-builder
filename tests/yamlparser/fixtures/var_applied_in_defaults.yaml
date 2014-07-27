@@ -1,0 +1,13 @@
+- defaults:
+    name: 'global'
+    builders:
+        - shell: "make {make-target}"
+
+- job-template:
+    name: 'build-project'
+
+- project:
+    name: 'project'
+    make-target: 'all'
+    jobs:
+        - 'build-project'
