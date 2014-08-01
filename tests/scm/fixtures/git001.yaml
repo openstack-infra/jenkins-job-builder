@@ -6,3 +6,4 @@ scm:
         - stable
       browser: githubweb
       browser-url: http://github.com/foo/example.git
+      timeout: 20

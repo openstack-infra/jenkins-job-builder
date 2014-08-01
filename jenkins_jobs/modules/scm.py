@@ -96,6 +96,7 @@ remoteName/\*')
       (default 'default')
     :arg str git-config-name: Configure name for Git clone (optional)
     :arg str git-config-email: Configure email for Git clone (optional)
+    :arg str timeout: Timeout for git commands in minutes (optional)
 
     :browser values:
         :auto:
@@ -221,6 +222,13 @@ remoteName/\*')
 
     if 'local-branch' in data:
         XML.SubElement(scm, 'localBranch').text = data['local-branch']
+
+    if 'timeout' in data:
+        ext = XML.SubElement(scm, 'extensions')
+        co = XML.SubElement(ext,
+                            'hudson.plugins.git.extensions.impl.'
+                            'CheckoutOption')
+        XML.SubElement(co, 'timeout').text = str(data['timeout'])
 
     browser = data.get('browser', 'auto')
     browserdict = {'auto': 'auto',
