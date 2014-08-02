@@ -30,6 +30,10 @@ Example:
 
     .. literalinclude:: /../../tests/localyaml/fixtures/include001.yaml
 
+    contents of include001.yaml.inc:
+
+    .. literalinclude:: /../../tests/yamlparser/fixtures/include001.yaml.inc
+
 
 The tag ``!include-raw`` will treat the following file as a data blob, which
 should be read into the calling yaml construct without any further parsing.
@@ -38,6 +42,16 @@ Any data in a file included through this tag, will be treated as string data.
 Example:
 
     .. literalinclude:: /../../tests/localyaml/fixtures/include-raw001.yaml
+
+    contents of include-raw001-hello-world.sh:
+
+    .. literalinclude::
+        /../../tests/localyaml/fixtures/include-raw001-hello-world.sh
+
+    contents of include-raw001-vars.sh:
+
+    .. literalinclude::
+        /../../tests/localyaml/fixtures/include-raw001-vars.sh
 
 
 The tag ``!include-raw-escape`` treats the given file as a data blob, which
@@ -50,6 +64,16 @@ Example:
 
     .. literalinclude::
         /../../tests/localyaml/fixtures/include-raw-escaped001.yaml
+
+    contents of include-raw001-hello-world.sh:
+
+    .. literalinclude::
+        /../../tests/localyaml/fixtures/include-raw001-hello-world.sh
+
+    contents of include-raw001-vars.sh:
+
+    .. literalinclude::
+        /../../tests/localyaml/fixtures/include-raw001-vars.sh
 
 """
 
