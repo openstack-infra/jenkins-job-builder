@@ -22,7 +22,7 @@ Contents:
    :maxdepth: 3
 
    installation
-   configuration
+   definition
    extending
 
 Indices and tables
