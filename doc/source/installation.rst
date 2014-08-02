@@ -101,19 +101,21 @@ Usage
 ^^^^^
 .. program-output:: jenkins-jobs --help
 
-Testing JJB
-^^^^^^^^^^^
-Once you have a configuration defined, you can test the job builder by running::
+Test Mode
+^^^^^^^^^
+Once you have a configuration defined, you can run the job builder in test mode.
 
-  jenkins-jobs test /path/to/config -o /path/to/output
+If you want to run a simple test with just a single YAML configuration file
+and see the XML output on stdout::
+
+  jenkins-jobs test /path/to/foo.yaml
+
+You can also pass JJB a directory containing multiple configuration files::
+
+  jenkins-jobs test /path/to/configs -o /path/to/output
 
 which will write XML files to the output directory for all of the jobs
-defined in the configuration directory.
-
-If you want to run a simple test with just a single YAML file and see the XML
-output on stdout::
-
-  jenkins-jobs test /path/to/config
+defined in the configs directory.
 
 Updating Jenkins
 ^^^^^^^^^^^^^^^^
