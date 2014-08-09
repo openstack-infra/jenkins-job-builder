@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.valgrind.ValgrindPublisher>
+      <valgrindPublisherConfig>
+        <pattern>test.xml</pattern>
+        <unstableThresholdInvalidReadWrite>1</unstableThresholdInvalidReadWrite>
+        <unstableThresholdDefinitelyLost>2</unstableThresholdDefinitelyLost>
+        <unstableThresholdTotal>3</unstableThresholdTotal>
+        <failThresholdInvalidReadWrite>4</failThresholdInvalidReadWrite>
+        <failThresholdDefinitelyLost>5</failThresholdDefinitelyLost>
+        <failThresholdTotal>6</failThresholdTotal>
+        <publishResultsForAbortedBuilds>true</publishResultsForAbortedBuilds>
+        <publishResultsForFailedBuilds>true</publishResultsForFailedBuilds>
+      </valgrindPublisherConfig>
+    </org.jenkinsci.plugins.valgrind.ValgrindPublisher>
+  </publishers>
+</project>
