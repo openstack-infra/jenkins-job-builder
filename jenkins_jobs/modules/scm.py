@@ -45,8 +45,9 @@ def git(self, xml_parent, data):
 
     :arg str url: URL of the git repository
     :arg str credentials-id: ID of credentials to use to connect (optional)
-    :arg str refspec: refspec to fetch
-    :arg str name: name to fetch
+    :arg str refspec: refspec to fetch (default '+refs/heads/\*:refs/remotes/\
+remoteName/\*')
+    :arg str name: name to fetch (default 'origin')
     :arg list(str) remotes: list of remotes to set up (optional, only needed if
       multiple remotes need to be set up)
 
@@ -54,12 +55,12 @@ def git(self, xml_parent, data):
                  * **refspec** (`string`) - refspec to fetch (optional)
                  * **credentials-id** - ID of credentials to use to connect
                      (optional)
-    :arg list(str) branches: list of branch specifiers to build
+    :arg list(str) branches: list of branch specifiers to build (default '**')
     :arg list(str) excluded-users: list of users to ignore revisions from
-      when polling for changes. (if polling is enabled)
-    :arg list(str) included-regions: list of file/folders to include
-    :arg list(str) excluded-regions: list of file/folders to exclude
-    :arg str local-branch: Checkout/merge to local branch
+      when polling for changes. (if polling is enabled, optional)
+    :arg list(str) included-regions: list of file/folders to include (optional)
+    :arg list(str) excluded-regions: list of file/folders to exclude (optional)
+    :arg str local-branch: Checkout/merge to local branch (optional)
     :arg dict merge:
         :merge:
             * **remote** (`string`) - name of repo that contains branch to
@@ -67,27 +68,34 @@ def git(self, xml_parent, data):
             * **branch** (`string`) - name of the branch to merge to
     :arg str basedir: location relative to the workspace root to clone to
              (default: workspace)
-    :arg bool skip-tag: Skip tagging
-    :arg bool shallow-clone: Perform shallow clone
-    :arg bool prune: Prune remote branches
-    :arg bool clean: Clean after checkout
-    :arg bool fastpoll: Use fast remote polling
-    :arg bool disable-submodules: Disable submodules
-    :arg bool recursive-submodules: Recursively update submodules
+    :arg bool skip-tag: Skip tagging (default false)
+    :arg bool shallow-clone: Perform shallow clone (default false)
+    :arg bool prune: Prune remote branches (default false)
+    :arg bool clean: Clean after checkout (default false)
+    :arg bool fastpoll: Use fast remote polling (default false)
+    :arg bool disable-submodules: Disable submodules (default false)
+    :arg bool recursive-submodules: Recursively update submodules (default
+      false)
     :arg bool use-author: Use author rather than committer in Jenkin's build
-      changeset
-    :arg str git-tool: The name of the Git installation to use
+      changeset (default false)
+    :arg str git-tool: The name of the Git installation to use (default
+      'Default')
     :arg str reference-repo: Path of the reference repo to use during clone
-    :arg str scm-name: The unique scm name for this Git SCM
-    :arg bool wipe-workspace: Wipe out workspace before build
+      (optional)
+    :arg str scm-name: The unique scm name for this Git SCM (optional)
+    :arg bool wipe-workspace: Wipe out workspace before build (default true)
     :arg bool ignore-notify: Ignore notifyCommit URL accesses (default false)
     :arg str browser: what repository browser to use (default '(Auto)')
-    :arg str browser-url: url for the repository browser
-    :arg str browser-version: version of the repository browser (GitLab)
+    :arg str browser-url: url for the repository browser (required if browser
+      is not '(Auto)', no default)
+    :arg str browser-version: version of the repository browser (GitLab only,
+      default '0.0')
     :arg str project-name: project name in Gitblit and ViewGit repobrowser
+      (optional)
     :arg str choosing-strategy: Jenkins class for selecting what to build
-    :arg str git-config-name: Configure name for Git clone
-    :arg str git-config-email: Configure email for Git clone
+      (default 'default')
+    :arg str git-config-name: Configure name for Git clone (optional)
+    :arg str git-config-email: Configure email for Git clone (optional)
 
     :browser values:
         :auto:
