@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <com.synopsys.arc.jenkins.plugins.ownership.wrappers.OwnershipBuildWrapper>
+      <injectNodeOwnership>true</injectNodeOwnership>
+      <injectJobOwnership>true</injectJobOwnership>
+    </com.synopsys.arc.jenkins.plugins.ownership.wrappers.OwnershipBuildWrapper>
+  </buildWrappers>
+</project>

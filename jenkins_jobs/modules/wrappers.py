@@ -519,6 +519,31 @@ def inject(parser, xml_parent, data):
     XML.SubElement(info, 'loadFilesFromMaster').text = 'false'
 
 
+def inject_ownership_variables(parser, xml_parent, data):
+    """yaml: inject-ownership-variables
+    Inject ownership variables to the build as environment variables.
+    Requires the Jenkins `EnvInject Plugin and Jenkins Ownership plugin
+    <https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin>
+    <https://wiki.jenkins-ci.org/display/JENKINS/Ownership+Plugin>`_
+
+    :arg bool job-variables: inject job ownership variables to the job
+        (default false)
+    :arg bool node-variables: inject node ownership variables to the job
+        (default false)
+
+    Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/ownership001.yaml
+
+    """
+    ownership = XML.SubElement(xml_parent, 'com.synopsys.arc.jenkins.plugins.'
+                               'ownership.wrappers.OwnershipBuildWrapper')
+    XML.SubElement(ownership, 'injectNodeOwnership').text = \
+        str(data.get('node-variables', False)).lower()
+    XML.SubElement(ownership, 'injectJobOwnership').text = \
+        str(data.get('job-variables', False)).lower()
+
+
 def inject_passwords(parser, xml_parent, data):
     """yaml: inject-passwords
     Inject passwords to the build as environment variables.
