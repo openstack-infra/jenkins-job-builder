@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.urltrigger.URLTrigger>
+      <spec>* * * * *</spec>
+      <labelRestriction>true</labelRestriction>
+      <triggerLabel>label expression</triggerLabel>
+      <entries>
+        <org.jenkinsci.plugins.urltrigger.URLTriggerEntry>
+          <url>http://example.com/url1</url>
+          <proxyActivated>false</proxyActivated>
+          <username>username</username>
+          <password>sekr3t</password>
+          <checkStatus>true</checkStatus>
+          <statusCode>202</statusCode>
+          <timeout>442</timeout>
+          <checkETag>false</checkETag>
+          <checkLastModificationDate>true</checkLastModificationDate>
+          <inspectingContent>true</inspectingContent>
+          <contentTypes>
+            <org.jenkinsci.plugins.urltrigger.content.SimpleContentType/>
+            <org.jenkinsci.plugins.urltrigger.content.JSONContentType>
+              <jsonPaths>
+                <org.jenkinsci.plugins.urltrigger.content.JSONContentEntry>
+                  <jsonPath>$..author</jsonPath>
+                </org.jenkinsci.plugins.urltrigger.content.JSONContentEntry>
+                <org.jenkinsci.plugins.urltrigger.content.JSONContentEntry>
+                  <jsonPath>$.store..price</jsonPath>
+                </org.jenkinsci.plugins.urltrigger.content.JSONContentEntry>
+              </jsonPaths>
+            </org.jenkinsci.plugins.urltrigger.content.JSONContentType>
+          </contentTypes>
+        </org.jenkinsci.plugins.urltrigger.URLTriggerEntry>
+        <org.jenkinsci.plugins.urltrigger.URLTriggerEntry>
+          <url>http://example.com/url2</url>
+          <proxyActivated>true</proxyActivated>
+          <checkStatus>false</checkStatus>
+          <statusCode>200</statusCode>
+          <timeout>300</timeout>
+          <checkETag>true</checkETag>
+          <checkLastModificationDate>false</checkLastModificationDate>
+          <inspectingContent>true</inspectingContent>
+          <contentTypes>
+            <org.jenkinsci.plugins.urltrigger.content.XMLContentType>
+              <xPaths>
+                <org.jenkinsci.plugins.urltrigger.content.XMLContentEntry>
+                  <xPath>//author</xPath>
+                </org.jenkinsci.plugins.urltrigger.content.XMLContentEntry>
+                <org.jenkinsci.plugins.urltrigger.content.XMLContentEntry>
+                  <xPath>/store//price</xPath>
+                </org.jenkinsci.plugins.urltrigger.content.XMLContentEntry>
+              </xPaths>
+            </org.jenkinsci.plugins.urltrigger.content.XMLContentType>
+            <org.jenkinsci.plugins.urltrigger.content.TEXTContentType>
+              <regExElements>
+                <org.jenkinsci.plugins.urltrigger.content.TEXTContentEntry>
+                  <regEx>\d+</regEx>
+                </org.jenkinsci.plugins.urltrigger.content.TEXTContentEntry>
+              </regExElements>
+            </org.jenkinsci.plugins.urltrigger.content.TEXTContentType>
+          </contentTypes>
+        </org.jenkinsci.plugins.urltrigger.URLTriggerEntry>
+      </entries>
+    </org.jenkinsci.plugins.urltrigger.URLTrigger>
+  </triggers>
+</project>
