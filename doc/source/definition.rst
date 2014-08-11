@@ -1,5 +1,5 @@
-Configuration
-=============
+Job Definitions
+===============
 
 The job definitions for Jenkins Job Builder are kept in any number of
 YAML files, in whatever way you would like to organize them.  When you

@@ -105,36 +105,36 @@ Test Mode
 ^^^^^^^^^
 Once you have a configuration defined, you can run the job builder in test mode.
 
-If you want to run a simple test with just a single YAML configuration file
+If you want to run a simple test with just a single YAML job definition file
 and see the XML output on stdout::
 
   jenkins-jobs test /path/to/foo.yaml
 
-You can also pass JJB a directory containing multiple configuration files::
+You can also pass JJB a directory containing multiple job definition files::
 
-  jenkins-jobs test /path/to/configs -o /path/to/output
+  jenkins-jobs test /path/to/defs -o /path/to/output
 
 which will write XML files to the output directory for all of the jobs
-defined in the configs directory.
+defined in the defs directory.
 
 Updating Jenkins
 ^^^^^^^^^^^^^^^^
 When you're satisfied with the generated XML from the test, you can run::
 
-  jenkins-jobs update /path/to/config
+  jenkins-jobs update /path/to/defs
 
-which will upload the configurations to Jenkins if needed.  Jenkins Job
+which will upload the job definitions to Jenkins if needed.  Jenkins Job
 Builder maintains, for each host, a cache [#f1]_ of previously configured jobs,
 so that you can run that command as often as you like, and it will only
-update the configuration in Jenkins if the defined configuration has
+update the jobs configurations in Jenkins if the defined definitions has
 changed since the last time it was run.  Note: if you modify a job
 directly in Jenkins, jenkins-jobs will not know about it and will not
 update it.
 
 To update a specific list of jobs, simply pass them as additional
-arguments after the configuration path. To update Foo1 and Foo2 run::
+arguments after the job definition path. To update Foo1 and Foo2 run::
 
-  jenkins-jobs update /path/to/config Foo1 Foo2
+  jenkins-jobs update /path/to/defs Foo1 Foo2
 
 
 .. rubric:: Footnotes
