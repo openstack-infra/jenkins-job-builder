@@ -83,3 +83,18 @@ class CmdTests(testtools.TestCase):
                                           'r',
                                           'utf-8').read()
         self.assertEqual(console_out.getvalue(), xml_content)
+
+    def test_config_with_test(self):
+        """
+        Run test mode and pass a config file
+        """
+        args = self.parser.parse_args(['--conf',
+                                       os.path.join(self.fixtures_path,
+                                                    'cmd-001.conf'),
+                                       'test',
+                                       os.path.join(self.fixtures_path,
+                                                    'cmd-001.yaml'),
+                                       'foo-job'])
+        config = cmd.setup_config_settings(args)
+        self.assertEqual(config.get('jenkins', 'url'),
+                         "http://test-jenkins.with.non.default.url:8080/")
