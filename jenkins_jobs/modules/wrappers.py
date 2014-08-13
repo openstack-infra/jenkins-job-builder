@@ -648,27 +648,17 @@ def release(parser, xml_parent, data):
 
     :arg bool keep-forever: Keep build forever (default true)
     :arg bool override-build-parameters: Enable build-parameter override
-    :arg string version-template: Release version template
+        (default false)
+    :arg string version-template: Release version template (default '')
     :arg list parameters: Release parameters (see the :ref:`Parameters` module)
     :arg list pre-build: Pre-build steps (see the :ref:`Builders` module)
     :arg list post-build: Post-build steps (see :ref:`Builders`)
     :arg list post-success: Post successful-build steps (see :ref:`Builders`)
     :arg list post-failed: Post failed-build steps (see :ref:`Builders`)
 
-    Example::
+    Example:
 
-      wrappers:
-        - release:
-            keep-forever: false
-            parameters:
-                - string:
-                    name: RELEASE_BRANCH
-                    default: ''
-                    description: Git branch to release from.
-            post-success:
-                - shell: |
-                    #!/bin/bash
-                    copy_build_artefacts.sh
+    .. literalinclude:: /../../tests/wrappers/fixtures/release001.yaml
 
     """
     relwrap = XML.SubElement(xml_parent,
@@ -683,11 +673,11 @@ def release(parser, xml_parent, data):
         data.get('override-build-parameters', False)).lower()
     XML.SubElement(relwrap, 'releaseVersionTemplate').text = data.get(
         'version-template', '')
-    for param in data.get('parameters', []):
-        parser.registry.dispatch('parameter', parser,
-                                 XML.SubElement(relwrap,
-                                                'parameterDefinitions'),
-                                 param)
+    parameters = data.get('parameters', [])
+    if parameters:
+        pdef = XML.SubElement(relwrap, 'parameterDefinitions')
+        for param in parameters:
+            parser.registry.dispatch('parameter', parser, pdef, param)
 
     builder_steps = {
         'pre-build': 'preBuildSteps',
