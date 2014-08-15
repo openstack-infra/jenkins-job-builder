@@ -1,0 +1,4 @@
+builders:
+  - change-assembly-version:
+        version: "1.2.3"
+        assembly-file: "AFile"

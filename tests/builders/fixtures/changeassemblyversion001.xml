@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jenkinsci.plugins.changeassemblyversion.ChangeAssemblyVersion>
+      <task>1.2.3</task>
+      <assemblyFile>AFile</assemblyFile>
+    </org.jenkinsci.plugins.changeassemblyversion.ChangeAssemblyVersion>
+  </builders>
+</project>
