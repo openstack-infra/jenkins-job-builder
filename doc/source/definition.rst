@@ -108,6 +108,8 @@ If you need several jobs defined that are nearly identical, except
 perhaps in their names, SCP targets, etc., then you may use a Job
 Template to specify the particulars of the job, and then use a
 `Project`_ to realize the job with appropriate variable substitution.
+Any variables not specified at the project level will be inherited from
+the `Defaults`_.
 
 A Job Template has the same syntax as a `Job`_, but you may add
 variables anywhere in the definition.  Variables are indicated by
@@ -297,6 +299,12 @@ definitions unless they specify a different Default object with the
       description: 'Do not edit this job through the web!'
 
 Will set the job description for every job created.
+
+You can define variables that will be realized in a `Job Template`.
+
+.. literalinclude::  /../../tests/yamlparser/fixtures/template_honor_defaults.yaml
+
+Would create jobs ``build-i386`` and ``build-amd64``.
 
 .. _advanced:
 
