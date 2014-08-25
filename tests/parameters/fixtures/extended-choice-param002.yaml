@@ -1,0 +1,14 @@
+parameters:
+  - extended-choice:
+      name: OPTIONS
+      description: "Available options"
+      property-file: /home/foo/property.prop
+      property-key: key
+      quote-value: true
+      type: multi-select
+      value: "foo|bar|select"
+      visible-items: 2
+      multi-select-delimiter: '|'
+      default-value: foo
+      default-property-file: /home/property.prop
+      default-property-key: fookey
