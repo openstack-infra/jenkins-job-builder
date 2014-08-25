@@ -24,6 +24,7 @@ Wrappers can alter the way the build is run as well as the build output.
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.modules.builders import create_builders
 
 
@@ -1012,6 +1013,32 @@ def exclusion(parser, xml_parent, data):
             XML.SubElement(ids,
                            'org.jvnet.hudson.plugins.exclusion.DefaultIdType')
         XML.SubElement(dit, 'name').text = str(resource).upper()
+
+
+def ssh_agent_credentials(parser, xml_parent, data):
+    """yaml: ssh-agent-credentials
+    Sets up the user for the ssh agent plugin for jenkins.
+
+    Requires the Jenkins `SSH-Agent Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/SSH-Agent-Plugin>`_
+
+    :arg str user: The user id of the jenkins user credentials (required)
+
+    Example:
+
+    .. literalinclude::
+            /../../tests/wrappers/fixtures/ssh-agent-credentials001.yaml
+
+    """
+
+    entry_xml = XML.SubElement(
+        xml_parent,
+        'com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper')
+
+    try:
+        XML.SubElement(entry_xml, 'user').text = data['user']
+    except KeyError:
+        raise JenkinsJobsException("Missing 'user' for ssh-agent-credentials")
 
 
 class Wrappers(jenkins_jobs.modules.base.Base):
