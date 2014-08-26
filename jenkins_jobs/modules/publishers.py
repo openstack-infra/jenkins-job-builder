@@ -3537,6 +3537,64 @@ def fitnesse(parser, xml_parent, data):
     XML.SubElement(fitnesse, 'fitnessePathToXmlResultsIn').text = results
 
 
+def valgrind(parser, xml_parent, data):
+    """yaml: valgrind
+    This plugin publishes Valgrind Memcheck XML results.
+
+    Requires the Jenkins `Valgrind Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Valgrind+Plugin>`_
+
+    :arg str pattern: Filename pattern to locate the Valgrind XML report files
+        (required)
+    :arg dict thresholds: Mark build as failed or unstable if the number of
+        errors exceeds a threshold. All threshold values are optional.
+
+        :thresholds:
+            * **unstable** (`dict`)
+                :unstable: * **invalid-read-write** (`int`)
+                           * **definitely-lost** (`int`)
+                           * **total** (`int`)
+            * **failed** (`dict`)
+                :failed: * **invalid-read-write** (`int`)
+                         * **definitely-lost** (`int`)
+                         * **total** (`int`)
+    :arg bool publish-if-aborted: Publish results for aborted builds
+      (default false)
+    :arg bool publish-if-failed: Publish results for failed builds
+      (default false)
+
+    Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/valgrind001.yaml
+
+    """
+    p = XML.SubElement(xml_parent,
+                       'org.jenkinsci.plugins.valgrind.ValgrindPublisher')
+    p = XML.SubElement(p, 'valgrindPublisherConfig')
+
+    if 'pattern' not in data:
+        raise JenkinsJobsException("A filename pattern must be specified.")
+
+    XML.SubElement(p, 'pattern').text = data['pattern']
+
+    dthresholds = data.get('thresholds', {})
+
+    for threshold in ['unstable', 'failed']:
+        dthreshold = dthresholds.get(threshold, {})
+        threshold = threshold.replace('failed', 'fail')
+        XML.SubElement(p, '%sThresholdInvalidReadWrite' % threshold).text \
+            = str(dthreshold.get('invalid-read-write', ''))
+        XML.SubElement(p, '%sThresholdDefinitelyLost' % threshold).text \
+            = str(dthreshold.get('definitely-lost', ''))
+        XML.SubElement(p, '%sThresholdTotal' % threshold).text \
+            = str(dthreshold.get('total', ''))
+
+    XML.SubElement(p, 'publishResultsForAbortedBuilds').text = str(
+        data.get('publish-if-aborted', False)).lower()
+    XML.SubElement(p, 'publishResultsForFailedBuilds').text = str(
+        data.get('publish-if-failed', False)).lower()
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
