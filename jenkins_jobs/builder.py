@@ -517,6 +517,13 @@ class XmlJob(object):
 
 
 class CacheStorage(object):
+    # ensure each instance of the class has a reference to the required
+    # modules so that they are available to be used when the destructor
+    # is being called since python will not guarantee that it won't have
+    # removed global module references during teardown.
+    _yaml = yaml
+    _logger = logger
+
     def __init__(self, jenkins_url, flush=False):
         cache_dir = self.get_cache_dir()
         # One cache per remote Jenkins URL:
@@ -525,9 +532,9 @@ class CacheStorage(object):
             cache_dir, 'cache-host-jobs-' + host_vary + '.yml')
         if flush or not os.path.isfile(self.cachefilename):
             self.data = {}
-            return
-        with file(self.cachefilename, 'r') as yfile:
-            self.data = yaml.load(yfile)
+        else:
+            with file(self.cachefilename, 'r') as yfile:
+                self.data = yaml.load(yfile)
         logger.debug("Using cache: '{0}'".format(self.cachefilename))
 
     @staticmethod
@@ -544,9 +551,6 @@ class CacheStorage(object):
 
     def set(self, job, md5):
         self.data[job] = md5
-        yfile = file(self.cachefilename, 'w')
-        yaml.dump(self.data, yfile)
-        yfile.close()
 
     def is_cached(self, job):
         if job in self.data:
@@ -557,6 +561,24 @@ class CacheStorage(object):
         if job in self.data and self.data[job] == md5:
             return False
         return True
+
+    def save(self):
+        # check we initialized sufficiently in case called via __del__
+        # due to an exception occurring in the __init__
+        if getattr(self, 'data', None) is not None:
+            try:
+                with open(self.cachefilename, 'w') as yfile:
+                    self._yaml.dump(self.data, yfile)
+            except Exception as e:
+                self._logger.error("Failed to write to cache file '%s' on "
+                                   "exit: %s" % (self.cachefilename, e))
+            else:
+                self._logger.info("Cache saved")
+                self._logger.debug("Cache written out to '%s'" %
+                                   self.cachefilename)
+
+    def __del__(self):
+        self.save()
 
 
 class Jenkins(object):
