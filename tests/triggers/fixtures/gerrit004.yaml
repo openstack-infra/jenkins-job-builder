@@ -14,6 +14,9 @@ triggers:
           file-paths:
               - compare-type: ANT
                 pattern: subdirectory/**
+          topics:
+              - compare-type: ANT
+                pattern: refactor-xy**
       skip-vote:
           successful: true
           failed: true

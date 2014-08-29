@@ -175,6 +175,14 @@ def gerrit(parser, xml_parent, data):
                               * **pattern** (`str`) -- File path pattern to
                                 match
 
+                * **topics** (`list`) -- List of topics to match
+                  (optional)
+
+                  :File Path: * **compare-type** (`str`) -- ''PLAIN'', ''ANT''
+                                or ''REG_EXP'' (optional) (default ''PLAIN'')
+                              * **pattern** (`str`) -- Topic name pattern to
+                                match
+
     :arg dict skip-vote: map of build outcomes for which Jenkins must skip
         vote. Requires Gerrit Trigger Plugin version >= 2.7.0
 
@@ -274,6 +282,19 @@ def gerrit(parser, xml_parent, data):
                 XML.SubElement(fp_tag, 'compareType').text = \
                     file_path.get('compare-type', 'PLAIN')
                 XML.SubElement(fp_tag, 'pattern').text = file_path['pattern']
+
+        topics = project.get('topics', [])
+        if topics:
+            topics_tag = XML.SubElement(gproj, 'topics')
+            for topic in topics:
+                topic_tag = XML.SubElement(topics_tag,
+                                           'com.sonyericsson.hudson.plugins.'
+                                           'gerrit.trigger.hudsontrigger.data.'
+                                           'Topic')
+                XML.SubElement(topic_tag, 'compareType').text = \
+                    topic.get('compare-type', 'PLAIN')
+                XML.SubElement(topic_tag, 'pattern').text = topic['pattern']
+
     build_gerrit_skip_votes(gtrig, data)
     XML.SubElement(gtrig, 'silentMode').text = str(
         data.get('silent', False)).lower()
