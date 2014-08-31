@@ -10,5 +10,7 @@ publishers:
           invalid-read-write: 4
           definitely-lost: 5
           total: 6
+      fail-no-reports: true
+      fail-invalid-reports: true
       publish-if-aborted: true
       publish-if-failed: true
