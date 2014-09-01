@@ -3558,6 +3558,10 @@ def valgrind(parser, xml_parent, data):
                 :failed: * **invalid-read-write** (`int`)
                          * **definitely-lost** (`int`)
                          * **total** (`int`)
+    :arg bool fail-no-reports: Fail build if no reports are found
+      (default false)
+    :arg bool fail-invalid-reports: Fail build if reports are malformed
+      (default false)
     :arg bool publish-if-aborted: Publish results for aborted builds
       (default false)
     :arg bool publish-if-failed: Publish results for failed builds
@@ -3589,6 +3593,10 @@ def valgrind(parser, xml_parent, data):
         XML.SubElement(p, '%sThresholdTotal' % threshold).text \
             = str(dthreshold.get('total', ''))
 
+    XML.SubElement(p, 'failBuildOnMissingReports').text = str(
+        data.get('fail-no-reports', False)).lower()
+    XML.SubElement(p, 'failBuildOnInvalidReports').text = str(
+        data.get('fail-invalid-reports', False)).lower()
     XML.SubElement(p, 'publishResultsForAbortedBuilds').text = str(
         data.get('publish-if-aborted', False)).lower()
     XML.SubElement(p, 'publishResultsForFailedBuilds').text = str(

@@ -10,6 +10,8 @@
         <failThresholdInvalidReadWrite>4</failThresholdInvalidReadWrite>
         <failThresholdDefinitelyLost>5</failThresholdDefinitelyLost>
         <failThresholdTotal>6</failThresholdTotal>
+        <failBuildOnMissingReports>true</failBuildOnMissingReports>
+        <failBuildOnInvalidReports>true</failBuildOnInvalidReports>
         <publishResultsForAbortedBuilds>true</publishResultsForAbortedBuilds>
         <publishResultsForFailedBuilds>true</publishResultsForFailedBuilds>
       </valgrindPublisherConfig>
