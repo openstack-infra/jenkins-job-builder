@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <com.lookout.jenkins.EnvironmentScript>
+        <script>echo foo=bar</script>
+        <onlyRunOnParent>true</onlyRunOnParent>
+    </com.lookout.jenkins.EnvironmentScript>
+  </buildWrappers>
+</project>
