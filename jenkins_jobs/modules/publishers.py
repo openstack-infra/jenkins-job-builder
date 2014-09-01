@@ -2396,40 +2396,45 @@ postbuildscript003.yaml
 
     # Shell/Groovy in a file
     script_types = {
-        'generic': 'GenericScript',
-        'groovy': 'GroovyScriptFile',
+        'generic-script': 'GenericScript',
+        'groovy-script': 'GroovyScriptFile',
     }
-    for script_type in sorted(script_types.keys()):
-        if script_type + '-script' not in data:
-            continue
 
-        scripts_xml = XML.SubElement(pbs_xml, script_type + 'ScriptFileList')
-        for shell_scripts in [data.get(script_type + '-script', [])]:
-            for shell_script in shell_scripts:
+    # Assuming yaml preserves order of input data make sure
+    # corresponding XML steps are generated in the same order
+    build_scripts = [(k, v) for k, v in data.items()
+                     if k in script_types or k in ['groovy', 'builders']]
+
+    for step, script_data in build_scripts:
+        if step in script_types:
+            scripts_xml = XML.SubElement(pbs_xml, step[:-len('-script')] +
+                                         'ScriptFileList')
+            for shell_script in script_data:
                 script_xml = XML.SubElement(
                     scripts_xml,
                     'org.jenkinsci.plugins.postbuildscript.'
-                    + script_types[script_type])
+                    + script_types[step])
                 file_path_xml = XML.SubElement(script_xml, 'filePath')
                 file_path_xml.text = shell_script
 
-    # Inlined Groovy
-    if 'groovy' in data:
-        groovy_inline_xml = XML.SubElement(pbs_xml, 'groovyScriptContentList')
-        for groovy in data.get('groovy', []):
-            groovy_xml = XML.SubElement(
-                groovy_inline_xml,
-                'org.jenkinsci.plugins.postbuildscript.GroovyScriptContent'
-            )
-            groovy_content = XML.SubElement(groovy_xml, 'content')
-            groovy_content.text = groovy
+        # Inlined Groovy
+        if step == 'groovy':
+            groovy_inline_xml = XML.SubElement(pbs_xml,
+                                               'groovyScriptContentList')
+            for groovy in script_data:
+                groovy_xml = XML.SubElement(
+                    groovy_inline_xml,
+                    'org.jenkinsci.plugins.postbuildscript.GroovyScriptContent'
+                )
+                groovy_content = XML.SubElement(groovy_xml, 'content')
+                groovy_content.text = groovy
 
-    # Inject builders
-    if 'builders' in data:
-        build_steps_xml = XML.SubElement(pbs_xml, 'buildSteps')
-        for builder in data.get('builders', []):
-            parser.registry.dispatch('builder', parser, build_steps_xml,
-                                     builder)
+        # Inject builders
+        if step == 'builders':
+            build_steps_xml = XML.SubElement(pbs_xml, 'buildSteps')
+            for builder in script_data:
+                parser.registry.dispatch('builder', parser, build_steps_xml,
+                                         builder)
 
     # When to run the build? Note the plugin let one specify both options
     # although they are antinomic
