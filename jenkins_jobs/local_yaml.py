@@ -53,6 +53,7 @@ Example:
 
 """
 
+import codecs
 import functools
 import logging
 import re
@@ -140,7 +141,7 @@ class LocalLoader(yaml.Loader):
     def _include_raw_tag(self, loader, node):
         filename = self._find_file(loader.construct_yaml_str(node))
         try:
-            with open(filename, 'r') as f:
+            with codecs.open(filename, 'r', 'utf-8') as f:
                 data = f.read()
         except:
             logger.error("Failed to include file using search path: '{0}'"

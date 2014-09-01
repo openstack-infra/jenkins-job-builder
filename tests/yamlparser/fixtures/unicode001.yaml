@@ -1,0 +1,12 @@
+- wrapper:
+    name: unicode-wrapper
+    wrappers:
+      - pre-scm-buildstep:
+          - shell: |
+              #!/bin/bash
+              echo "Unicode! ☃"
+
+- job:
+    name: test-unicode-wrapper
+    wrappers:
+        - unicode-wrapper

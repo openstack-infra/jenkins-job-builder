@@ -78,22 +78,24 @@ class BaseTestCase(object):
 
     logging.basicConfig()
 
-    def _read_content(self):
+    def _read_utf8_content(self):
         # Read XML content, assuming it is unicode encoded
         xml_filepath = os.path.join(self.fixtures_path, self.out_filename)
         xml_content = u"%s" % codecs.open(xml_filepath, 'r', 'utf-8').read()
+        return xml_content
 
+    def _read_yaml_content(self):
         yaml_filepath = os.path.join(self.fixtures_path, self.in_filename)
         with file(yaml_filepath, 'r') as yaml_file:
             yaml_content = yaml.load(yaml_file)
-
-        return (yaml_content, xml_content)
+        return yaml_content
 
     def test_yaml_snippet(self):
         if not self.out_filename or not self.in_filename:
             return
 
-        yaml_content, expected_xml = self._read_content()
+        expected_xml = self._read_utf8_content()
+        yaml_content = self._read_yaml_content()
         project = None
         if ('project-type' in yaml_content):
             if (yaml_content['project-type'] == "maven"):
@@ -130,11 +132,7 @@ class BaseTestCase(object):
 
 class SingleJobTestCase(BaseTestCase):
     def test_yaml_snippet(self):
-        if not self.out_filename or not self.in_filename:
-            return
-
-        xml_filepath = os.path.join(self.fixtures_path, self.out_filename)
-        expected_xml = u"%s" % open(xml_filepath, 'r').read()
+        expected_xml = self._read_utf8_content()
 
         yaml_filepath = os.path.join(self.fixtures_path, self.in_filename)
 
@@ -154,7 +152,8 @@ class SingleJobTestCase(BaseTestCase):
         parser.jobs.sort(key=operator.attrgetter('name'))
 
         # Prettify generated XML
-        pretty_xml = "\n".join(job.output() for job in parser.jobs)
+        pretty_xml = unicode("\n".join(job.output() for job in parser.jobs),
+                             'utf-8')
 
         self.assertThat(
             pretty_xml,
@@ -168,10 +167,8 @@ class SingleJobTestCase(BaseTestCase):
 class JsonTestCase(BaseTestCase):
 
     def test_yaml_snippet(self):
-        if not self.out_filename or not self.in_filename:
-            return
-
-        yaml_content, expected_json = self._read_content()
+        expected_json = self._read_utf8_content()
+        yaml_content = self._read_yaml_content()
 
         pretty_json = json.dumps(yaml_content, indent=4,
                                  separators=(',', ': '))

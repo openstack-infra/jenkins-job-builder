@@ -82,7 +82,7 @@ def deep_format(obj, paramdict):
     # limitations on the values in paramdict - the post-format result must
     # still be valid YAML (so substituting-in a string containing quotes, for
     # example, is problematic).
-    if isinstance(obj, str):
+    if isinstance(obj, basestring):
         try:
             result = re.match('^{obj:(?P<key>\w+)}$', obj)
             if result is not None:
@@ -464,7 +464,7 @@ class XmlJob(object):
         return hashlib.md5(self.output()).hexdigest()
 
     def output(self):
-        out = minidom.parseString(XML.tostring(self.xml))
+        out = minidom.parseString(XML.tostring(self.xml, encoding='UTF-8'))
         return out.toprettyxml(indent='  ', encoding='utf-8')
 
 
