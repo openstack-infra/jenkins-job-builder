@@ -18,15 +18,15 @@
       </types>
       <thresholds>
         <org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
-          <failureThreshold/>
           <unstableThreshold/>
           <unstableNewThreshold/>
+          <failureThreshold/>
           <failureNewThreshold/>
         </org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
         <org.jenkinsci.plugins.xunit.threshold.SkippedThreshold>
-          <failureThreshold/>
           <unstableThreshold/>
           <unstableNewThreshold/>
+          <failureThreshold/>
           <failureNewThreshold/>
         </org.jenkinsci.plugins.xunit.threshold.SkippedThreshold>
       </thresholds>
