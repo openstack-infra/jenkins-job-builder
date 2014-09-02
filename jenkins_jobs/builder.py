@@ -17,7 +17,6 @@
 
 import errno
 import os
-import operator
 import sys
 import hashlib
 import yaml
@@ -32,9 +31,8 @@ import logging
 import copy
 import itertools
 import fnmatch
-import six
 from jenkins_jobs.errors import JenkinsJobsException
-import jenkins_jobs.local_yaml as local_yaml
+import local_yaml
 
 logger = logging.getLogger(__name__)
 MAGIC_MANAGE_STRING = "<!-- Managed by Jenkins Job Builder -->"
@@ -84,7 +82,7 @@ def deep_format(obj, paramdict):
     # limitations on the values in paramdict - the post-format result must
     # still be valid YAML (so substituting-in a string containing quotes, for
     # example, is problematic).
-    if hasattr(obj, 'format'):
+    if isinstance(obj, basestring):
         try:
             result = re.match('^{obj:(?P<key>\w+)}$', obj)
             if result is not None:
@@ -144,7 +142,7 @@ class YamlParser(object):
                     " not a {cls}".format(fname=getattr(fp, 'name', fp),
                                           cls=type(data)))
             for item in data:
-                cls, dfn = next(iter(item.items()))
+                cls, dfn = item.items()[0]
                 group = self.data.get(cls, {})
                 if len(item.items()) > 1:
                     n = None
@@ -211,7 +209,7 @@ class YamlParser(object):
             for jobspec in project.get('jobs', []):
                 if isinstance(jobspec, dict):
                     # Singleton dict containing dict of job-specific params
-                    jobname, jobparams = jobspec.popitem()
+                    jobname, jobparams = jobspec.items()[0]
                     if not isinstance(jobparams, dict):
                         jobparams = {}
                 else:
@@ -227,7 +225,7 @@ class YamlParser(object):
                     for group_jobspec in group['jobs']:
                         if isinstance(group_jobspec, dict):
                             group_jobname, group_jobparams = \
-                                group_jobspec.popitem()
+                                group_jobspec.items()[0]
                             if not isinstance(group_jobparams, dict):
                                 group_jobparams = {}
                         else:
@@ -277,7 +275,7 @@ class YamlParser(object):
             expanded_values = {}
             for (k, v) in values:
                 if isinstance(v, dict):
-                    inner_key = next(iter(v))
+                    inner_key = v.iterkeys().next()
                     expanded_values[k] = inner_key
                     expanded_values.update(v[inner_key])
                 else:
@@ -297,8 +295,6 @@ class YamlParser(object):
             # us guarantee a group of parameters will not be added a
             # second time.
             uniq = json.dumps(expanded, sort_keys=True)
-            if six.PY3:
-                uniq = uniq.encode('utf-8')
             checksum = hashlib.md5(uniq).hexdigest()
 
             # Lookup the checksum
@@ -368,7 +364,7 @@ class ModuleRegistry(object):
             Mod = entrypoint.load()
             mod = Mod(self)
             self.modules.append(mod)
-            self.modules.sort(key=operator.attrgetter('sequence'))
+            self.modules.sort(lambda a, b: cmp(a.sequence, b.sequence))
             if mod.component_type is not None:
                 self.modules_by_component_type[mod.component_type] = mod
 
@@ -412,7 +408,7 @@ class ModuleRegistry(object):
 
         if isinstance(component, dict):
             # The component is a singleton dictionary of name: dict(args)
-            name, component_data = next(iter(component.items()))
+            name, component_data = component.items()[0]
             if template_data:
                 # Template data contains values that should be interpolated
                 # into the component definition
@@ -614,7 +610,7 @@ class Builder(object):
         self.load_files(input_fn)
         self.parser.generateXML(names)
 
-        self.parser.jobs.sort(key=operator.attrgetter('name'))
+        self.parser.jobs.sort(lambda a, b: cmp(a.name, b.name))
 
         for job in self.parser.jobs:
             if names and not matches(job.name, names):

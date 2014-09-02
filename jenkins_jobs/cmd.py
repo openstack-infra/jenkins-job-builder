@@ -14,11 +14,12 @@
 # under the License.
 
 import argparse
-from six.moves import configparser, StringIO
+import ConfigParser
 import logging
 import os
 import platform
 import sys
+import cStringIO
 
 from jenkins_jobs.builder import Builder
 from jenkins_jobs.errors import JenkinsJobsException
@@ -94,8 +95,6 @@ def main(argv=None):
 
     parser = create_parser()
     options = parser.parse_args(argv)
-    if not options.command:
-        parser.error("Must specify a 'command' to be performed")
     if (options.log_level is not None):
         options.log_level = getattr(logging, options.log_level.upper(),
                                     logger.getEffectiveLevel())
@@ -116,9 +115,9 @@ def setup_config_settings(options):
                                  'jenkins_jobs.ini')
         if os.path.isfile(localconf):
             conf = localconf
-    config = configparser.ConfigParser()
+    config = ConfigParser.ConfigParser()
     ## Load default config always
-    config.readfp(StringIO(DEFAULT_CONF))
+    config.readfp(cStringIO.StringIO(DEFAULT_CONF))
     if os.path.isfile(conf):
         logger.debug("Reading config from {0}".format(conf))
         conffp = open(conf, 'r')
@@ -153,11 +152,11 @@ def execute(options, config):
     # https://bugs.launchpad.net/openstack-ci/+bug/1259631
     try:
         user = config.get('jenkins', 'user')
-    except (TypeError, configparser.NoOptionError):
+    except (TypeError, ConfigParser.NoOptionError):
         user = None
     try:
         password = config.get('jenkins', 'password')
-    except (TypeError, configparser.NoOptionError):
+    except (TypeError, ConfigParser.NoOptionError):
         password = None
 
     builder = Builder(config.get('jenkins', 'url'),
