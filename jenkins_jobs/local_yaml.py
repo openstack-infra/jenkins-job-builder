@@ -163,7 +163,7 @@ class LocalLoader(OrderedConstructor, yaml.Loader):
         self.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
                              type(self).construct_yaml_map)
 
-        if isinstance(self.stream, file):
+        if hasattr(self.stream, 'name'):
             self.search_path.add(os.path.normpath(
                 os.path.dirname(self.stream.name)))
         self.search_path.add(os.path.normpath(os.path.curdir))
