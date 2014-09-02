@@ -597,6 +597,27 @@ def env_file(parser, xml_parent, data):
         eib, 'filePath', data.get('properties-file'))
 
 
+def env_script(parser, xml_parent, data):
+    """yaml: env-script
+    Add or override environment variables to the whole build process.
+    Requires the Jenkins `Environment Script Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Environment+Script+Plugin>`_
+
+    :arg script-content: The script to run (default: '')
+    :arg only-run-on-parent: Only applicable for Matrix Jobs. If true, run only
+      on the matrix parent job (default: false)
+
+    Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/env-script001.yaml
+
+    """
+    el = XML.SubElement(xml_parent, 'com.lookout.jenkins.EnvironmentScript')
+    XML.SubElement(el, 'script').text = data.get('script-content', '')
+    only_on_parent = str(data.get('only-run-on-parent', False)).lower()
+    XML.SubElement(el, 'onlyRunOnParent').text = only_on_parent
+
+
 def jclouds(parser, xml_parent, data):
     """yaml: jclouds
     Uses JClouds to provide slave launching on most of the currently
