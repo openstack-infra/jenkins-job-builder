@@ -91,7 +91,7 @@ def build_gerrit_triggers(xml_parent, data):
         'hudsontrigger.events'
 
     trigger_on_events = XML.SubElement(xml_parent, 'triggerOnEvents')
-    for config_key, tag_name in available_simple_triggers.items():
+    for config_key, tag_name in available_simple_triggers.iteritems():
         if data.get(config_key, False):
             XML.SubElement(trigger_on_events,
                            '%s.%s' % (tag_namespace, tag_name))
@@ -453,7 +453,7 @@ def pollurl(parser, xml_parent, data):
             str(bool(check_content)).lower()
         content_types = XML.SubElement(entry, 'contentTypes')
         for entry in check_content:
-            type_name = next(iter(entry.keys()))
+            type_name = entry.keys()[0]
             if type_name not in valid_content_types:
                 raise JenkinsJobsException('check-content must be one of : %s'
                                            % ', '.join(valid_content_types.
