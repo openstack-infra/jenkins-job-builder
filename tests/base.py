@@ -51,8 +51,8 @@ def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml'):
         if output_candidate not in files:
             raise Exception(
                 "No {0} file named '{1}' to match {2} file '{3}'"
-                .format(out_ext.toupper(), output_candidate,
-                        in_ext.toupper(), input_filename))
+                .format(out_ext.upper(), output_candidate,
+                        in_ext.upper(), input_filename))
 
         conf_candidate = re.sub(r'\.yaml$', '.conf', input_filename)
         # If present, add the configuration file
