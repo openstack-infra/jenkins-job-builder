@@ -1,0 +1,7 @@
+wrappers:
+  - config-file-provider:
+      files:
+        - file-id: org.jenkinsci.plugins.configfiles.custom.CustomConfig1234
+        - file-id: org.jenkinsci.plugins.configfiles.custom.CustomConfig5678
+          target: /foo.txt
+          variable: varName
