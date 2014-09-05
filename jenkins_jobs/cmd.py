@@ -36,6 +36,9 @@ ignore_cache=False
 url=http://localhost:8080/
 user=
 password=
+
+[hipchat]
+authtoken=dummy
 """
 
 
