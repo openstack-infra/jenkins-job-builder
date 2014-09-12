@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.plugins.powershell.PowerShell>
+      <command>foo/foo.ps1</command>
+    </hudson.plugins.powershell.PowerShell>
+  </builders>
+</project>
