@@ -286,6 +286,9 @@ def trigger_builds(parser, xml_parent, data):
       key/value pairs to be passed to the job (optional)
     :arg str property-file:
       Pass properties from file to the other job (optional)
+    :arg bool property-file-fail-on-missing:
+      Don't trigger if any files are missing (optional)
+      (default true)
     :arg bool current-parameters: Whether to include the
       parameters passed to the current build to the
       triggered job.
@@ -295,10 +298,44 @@ def trigger_builds(parser, xml_parent, data):
       to finish or not (default false)
     :arg bool same-node: Use the same node for the triggered builds that was
       used for this build (optional)
+    :arg list parameter-factories: list of parameter factories
 
-    Example:
+      :Factory: * **factory** (`str`) **filebuild** -- For every property file,
+                  invoke one build
+                * **file-pattern** (`str`) -- File wildcard pattern
+                * **no-files-found-action** (`str`) -- Action to perform when
+                  no files found  (optional) ['FAIL', 'SKIP', 'NOPARMS']
+                  (default 'SKIP')
+
+      :Factory: * **factory** (`str`) **binaryfile** -- For every matching
+                  file, invoke one build
+                * **file-pattern** (`str`) -- Artifact ID of the artifact
+                * **no-files-found-action** (`str`) -- Action to perform when
+                  no files found  (optional) ['FAIL', 'SKIP', 'NOPARMS']
+                  (default 'SKIP')
+
+      :Factory: * **factory** (`str`) **counterbuild** -- Invoke i=0...N builds
+                * **from** (`int`) -- Artifact ID of the artifact
+                * **to** (`int`) -- Version of the artifact
+                * **step** (`int`) -- Classifier of the artifact
+                * **parameters** (`str`) -- KEY=value pairs, one per line
+                  (default '')
+                * **validation-fail** (`str`) -- Action to perform when
+                  stepping validation fails  (optional)
+                  ['FAIL', 'SKIP', 'NOPARMS']
+                  (default 'FAIL')
+
+    Examples:
+
+    Basic usage.
 
     .. literalinclude:: /../../tests/builders/fixtures/trigger-builds001.yaml
+       :language: yaml
+
+    Example with all supported parameter factories.
+
+    .. literalinclude:: \
+    /../../tests/builders/fixtures/trigger-builds-configfactory-multi.yaml
        :language: yaml
     """
     tbuilder = XML.SubElement(xml_parent,
@@ -331,8 +368,11 @@ def trigger_builds(parser, xml_parent, data):
                                     'FileBuildParameters')
             propertiesFile = XML.SubElement(params, 'propertiesFile')
             propertiesFile.text = project_def['property-file']
-            failOnMissing = XML.SubElement(params, 'failTriggerOnMissing')
-            failOnMissing.text = 'true'
+            failTriggerOnMissing = XML.SubElement(params,
+                                                  'failTriggerOnMissing')
+            failTriggerOnMissing.text = str(project_def.get(
+                'property-file-fail-on-missing', True)).lower()
+
         if 'predefined-parameters' in project_def:
             params = XML.SubElement(tconfigs,
                                     'hudson.plugins.parameterizedtrigger.'
@@ -341,6 +381,67 @@ def trigger_builds(parser, xml_parent, data):
             properties.text = project_def['predefined-parameters']
         if(len(list(tconfigs)) == 0):
             tconfigs.set('class', 'java.util.Collections$EmptyList')
+
+        if 'parameter-factories' in project_def:
+            fconfigs = XML.SubElement(tconfig, 'configFactories')
+
+            supported_factories = ['filebuild', 'binaryfile', 'counterbuild']
+            supported_actions = ['SKIP', 'NOPARMS', 'FAIL']
+            for factory in project_def['parameter-factories']:
+
+                if factory['factory'] not in supported_factories:
+                    raise JenkinsJobsException("factory must be one of %s" %
+                                               ", ".join(supported_factories))
+
+                if factory['factory'] == 'filebuild':
+                    params = XML.SubElement(
+                        fconfigs,
+                        'hudson.plugins.parameterizedtrigger.'
+                        'FileBuildParameterFactory')
+                if factory['factory'] == 'binaryfile':
+                    params = XML.SubElement(
+                        fconfigs,
+                        'hudson.plugins.parameterizedtrigger.'
+                        'BinaryFileParameterFactory')
+                    parameterName = XML.SubElement(params, 'parameterName')
+                    parameterName.text = factory['parameter-name']
+                if (factory['factory'] == 'filebuild' or
+                    factory['factory'] == 'binaryfile'):
+                    filePattern = XML.SubElement(params, 'filePattern')
+                    filePattern.text = factory['file-pattern']
+                    noFilesFoundAction = XML.SubElement(
+                        params,
+                        'noFilesFoundAction')
+                    noFilesFoundActionValue = str(factory.get(
+                        'no-files-found-action', 'SKIP'))
+                    if noFilesFoundActionValue not in supported_actions:
+                        raise JenkinsJobsException(
+                            "no-files-found-action must be one of %s" %
+                            ", ".join(supported_actions))
+                    noFilesFoundAction.text = noFilesFoundActionValue
+                if factory['factory'] == 'counterbuild':
+                    params = XML.SubElement(
+                        fconfigs,
+                        'hudson.plugins.parameterizedtrigger.'
+                        'CounterBuildParameterFactory')
+                    fromProperty = XML.SubElement(params, 'from')
+                    fromProperty.text = str(factory['from'])
+                    toProperty = XML.SubElement(params, 'to')
+                    toProperty.text = str(factory['to'])
+                    stepProperty = XML.SubElement(params, 'step')
+                    stepProperty.text = str(factory['step'])
+                    paramExpr = XML.SubElement(params, 'paramExpr')
+                    paramExpr.text = str(factory.get(
+                        'parameters', ''))
+                    validationFail = XML.SubElement(params, 'validationFail')
+                    validationFailValue = str(factory.get(
+                        'validation-fail', 'FAIL'))
+                    if validationFailValue not in supported_actions:
+                        raise JenkinsJobsException(
+                            "validation-fail action must be one of %s" %
+                            ", ".join(supported_actions))
+                    validationFail.text = validationFailValue
+
         projects = XML.SubElement(tconfig, 'projects')
         projects.text = project_def['project']
         condition = XML.SubElement(tconfig, 'condition')

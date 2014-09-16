@@ -1,0 +1,18 @@
+builders:
+  - trigger-builds:
+    - project: "build_started"
+      predefined-parameters:
+        FOO="bar"
+      current-parameters: true
+      svn-revision: true
+      parameter-factories:
+        - factory: filebuild
+          file-pattern: propfile*.txt
+        - factory: binaryfile
+          parameter-name: filename
+          file-pattern: otherpropfile*.txt
+        - factory: counterbuild
+          from: 0
+          to: 5
+          step: 1
+      block: true
