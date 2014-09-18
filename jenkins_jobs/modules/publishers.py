@@ -2867,6 +2867,88 @@ def sonar(registry, xml_parent, data):
     helpers.config_file_provider_settings(sonar, data)
 
 
+def sounds(parser, xml_parent, data):
+    """yaml: sounds
+    Play audio clips locally through sound hardware,
+    remotely by piping them through an operating system command,
+    or simultaneously through all browsers on a Jenkins page.
+
+    Requires the Jenkins :jenkins-wiki:`Jenkins Sounds plugin
+    <Jenkins+Sounds+plugin>`
+
+    :arg dict success: Play on success
+
+        :success:
+            .. _sound_and_cond:
+
+            * **sound** (`str`) - Sound name
+            * **from** (`list`) - Previous build result (default is all)
+                :from values:
+                    * **success**
+                    * **unstable**
+                    * **failure**
+                    * **not_build**
+                    * **aborted**
+
+    :arg dict unstable: Play on unstable.
+        Specifying sound and conditions see :ref:`above <sound_and_cond>`.
+    :arg dict failure: Play on failure.
+        Specifying sound and conditions see :ref:`above <sound_and_cond>`.
+    :arg dict not_build: Play on not build.
+        Specifying sound and conditions see :ref:`above <sound_and_cond>`.
+    :arg dict aborted: Play on aborted.
+        Specifying sound and conditions see :ref:`above <sound_and_cond>`.
+
+    Minimal example using defaults:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/sounds001.yaml
+       :language: yaml
+
+    Full example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/sounds003.yaml
+       :language: yaml
+    """
+
+    mapping_dict = {'success': hudson_model.SUCCESS,
+                    'unstable': hudson_model.UNSTABLE,
+                    'failure': hudson_model.FAILURE,
+                    'not_build': hudson_model.NOTBUILD,
+                    'aborted': hudson_model.ABORTED}
+    sounds = XML.SubElement(xml_parent, 'net.hurstfrost.hudson.'
+                                        'sounds.HudsonSoundsNotifier')
+    events = XML.SubElement(sounds, 'soundEvents')
+    for status, v in data.items():
+        try:
+            model = mapping_dict[status]
+        except KeyError:
+            raise InvalidAttributeError('build status', status, mapping_dict)
+
+        event = XML.SubElement(events,
+                               'net.hurstfrost.hudson.sounds.'
+                               'HudsonSoundsNotifier_-SoundEvent')
+        XML.SubElement(event, 'soundId').text = v['sound']
+        to_result = XML.SubElement(event, 'toResult')
+        XML.SubElement(to_result, 'name').text = model['name']
+        XML.SubElement(to_result, 'ordinal').text = model['ordinal']
+        XML.SubElement(to_result, 'color').text = model['color']
+        XML.SubElement(to_result, 'completeBuild').text = str(
+            model['complete']).lower()
+
+        from_results = XML.SubElement(event, 'fromResults')
+        results = ['not_build', 'success', 'aborted', 'failure', 'unstable']
+        if 'from' in v:
+            results = v['from']
+        for result in results:
+            model = mapping_dict[result]
+            from_result = XML.SubElement(from_results, 'hudson.model.Result')
+            XML.SubElement(from_result, 'name').text = model['name']
+            XML.SubElement(from_result, 'ordinal').text = model['ordinal']
+            XML.SubElement(from_result, 'color').text = model['color']
+            XML.SubElement(from_result, 'completeBuild').text = str(
+                model['complete']).lower()
+
+
 def performance(registry, xml_parent, data):
     """yaml: performance
     Publish performance test results from jmeter and junit.
