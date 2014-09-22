@@ -70,6 +70,10 @@ job_builder section
   job builder will search for any files specified by the custom application
   yaml tags 'include', 'include-raw' and 'include-raw-escaped'.
 
+**recursive**
+  (Optional) If set to True, jenkins job builder will search for job
+  definition files recursively
+
 jenkins section
 ^^^^^^^^^^^^^^^
 

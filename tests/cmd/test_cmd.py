@@ -98,3 +98,37 @@ class CmdTests(testtools.TestCase):
         config = cmd.setup_config_settings(args)
         self.assertEqual(config.get('jenkins', 'url'),
                          "http://test-jenkins.with.non.default.url:8080/")
+
+    @mock.patch('jenkins_jobs.cmd.Builder.update_job')
+    @mock.patch('jenkins_jobs.cmd.os.path.isdir')
+    @mock.patch('jenkins_jobs.cmd.os.walk')
+    def test_recursive_path_option(self, os_walk_mock, isdir_mock,
+                                   update_job_mock):
+        """
+        Test handling of recursive path option
+        """
+
+        os_walk_mock.return_value = [
+            ('/jjb_configs', ('dir1', 'dir2', 'dir3'), ()),
+            ('/jjb_configs/dir1', ('bar',), ()),
+            ('/jjb_configs/dir2', ('baz',), ()),
+            ('/jjb_configs/dir3', (), ()),
+            ('/jjb_configs/dir1/bar', (), ()),
+            ('/jjb_configs/dir2/baz', (), ()),
+        ]
+        isdir_mock.return_value = True
+        paths = [path for path, _, _ in os_walk_mock.return_value]
+
+        args = self.parser.parse_args(['test', '-r', '/jjb_configs'])
+        args.output_dir = mock.MagicMock()
+        config = ConfigParser.ConfigParser()
+        config.readfp(cStringIO.StringIO(cmd.DEFAULT_CONF))
+        cmd.execute(args, config)   # probably better to fail here
+
+        update_job_mock.assert_called_with(paths, [], output=args.output_dir)
+
+        args = self.parser.parse_args(['test', '/jjb_configs'])
+        config.set('job_builder', 'recursive', 'True')
+        cmd.execute(args, config)   # probably better to fail here
+
+        update_job_mock.assert_called_with(paths, [], output=args.output_dir)

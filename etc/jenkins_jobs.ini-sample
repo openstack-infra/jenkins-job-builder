@@ -2,6 +2,7 @@
 ignore_cache=True
 keep_descriptions=False
 include_path=.:scripts:~/git/
+recursive=False
 
 [jenkins]
 user=jenkins
