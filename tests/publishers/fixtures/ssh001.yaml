@@ -1,0 +1,12 @@
+publishers:
+  - ssh:
+      site: 'server.example.com'
+      target: 'dest/dir'
+      source: 'base/source/dir/**'
+      remove-prefix: 'base/source/dir'
+      excludes: '**/*.excludedfiletype'
+      use-pty: true
+      command: 'rm -r jenkins_$BUILD_NUMBER'
+      timeout: 1800000
+      flatten: true
+
