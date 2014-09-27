@@ -1,0 +1,14 @@
+triggers:
+  - gerrit:
+      trigger-on-comment-added-event: true
+      trigger-approval-category: 'APRV'
+      trigger-approval-value: -1
+      trigger-on-change-abandoned-event: true
+      projects:
+        - project-compare-type: 'PLAIN'
+          project-pattern: 'test-project'
+          branch-compare-type: 'ANT'
+          branch-pattern: '**'
+          file-paths:
+              - compare-type: ANT
+                pattern: subdirectory/**

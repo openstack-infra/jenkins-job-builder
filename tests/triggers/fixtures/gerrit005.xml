@@ -9,12 +9,8 @@
           <pattern>test-project</pattern>
           <branches>
             <com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.Branch>
-              <compareType>PLAIN</compareType>
-              <pattern>master</pattern>
-            </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.Branch>
-            <com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.Branch>
-              <compareType>PLAIN</compareType>
-              <pattern>stable</pattern>
+              <compareType>ANT</compareType>
+              <pattern>**</pattern>
             </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.Branch>
           </branches>
           <filePaths>
@@ -23,32 +19,26 @@
               <pattern>subdirectory/**</pattern>
             </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.FilePath>
           </filePaths>
-          <topics>
-            <com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.Topic>
-              <compareType>ANT</compareType>
-              <pattern>refactor-xy**</pattern>
-            </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.Topic>
-          </topics>
         </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.GerritProject>
       </gerritProjects>
       <skipVote>
-        <onSuccessful>true</onSuccessful>
-        <onFailed>true</onFailed>
-        <onUnstable>true</onUnstable>
-        <onNotBuilt>true</onNotBuilt>
+        <onSuccessful>false</onSuccessful>
+        <onFailed>false</onFailed>
+        <onUnstable>false</onUnstable>
+        <onNotBuilt>false</onNotBuilt>
       </skipVote>
       <silentMode>false</silentMode>
-      <escapeQuotes>false</escapeQuotes>
+      <escapeQuotes>true</escapeQuotes>
       <noNameAndEmailParameters>false</noNameAndEmailParameters>
-      <dynamicTriggerConfiguration>True</dynamicTriggerConfiguration>
-      <triggerConfigURL>http://myhost/mytrigger</triggerConfigURL>
-      <allowTriggeringUnreviewedPatches>true</allowTriggeringUnreviewedPatches>
+      <dynamicTriggerConfiguration>False</dynamicTriggerConfiguration>
+      <triggerConfigURL/>
+      <allowTriggeringUnreviewedPatches>false</allowTriggeringUnreviewedPatches>
       <triggerOnEvents>
-        <com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.events.PluginPatchsetCreatedEvent/>
         <com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.events.PluginCommentAddedEvent>
           <verdictCategory>APRV</verdictCategory>
-          <commentAddedTriggerApprovalValue>1</commentAddedTriggerApprovalValue>
+          <commentAddedTriggerApprovalValue>-1</commentAddedTriggerApprovalValue>
         </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.events.PluginCommentAddedEvent>
+        <com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.events.PluginChangeAbandonedEvent/>
       </triggerOnEvents>
       <buildStartMessage/>
       <buildFailureMessage/>
@@ -56,7 +46,7 @@
       <buildUnstableMessage/>
       <buildNotBuiltMessage/>
       <customUrl/>
-      <serverName>my-server</serverName>
+      <serverName>__ANY__</serverName>
     </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.GerritTrigger>
   </triggers>
 </project>
