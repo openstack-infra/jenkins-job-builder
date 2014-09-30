@@ -1,0 +1,9 @@
+publishers:
+- ftp:
+    site: 'ftp.example.com'
+    target: 'dest/dir'
+    source: 'base/source/dir/**'
+    remove-prefix: 'base/source/dir'
+    excludes: '**/*.excludedfiletype'
+    flatten: true
+

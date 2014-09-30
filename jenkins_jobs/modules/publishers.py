@@ -745,16 +745,14 @@ def ftp(parser, xml_parent, data):
     :arg str remove-prefix: prefix to remove from uploaded file paths
       (optional)
     :arg bool fail-on-error: fail the build if an error occurs (default false).
+    :arg bool flatten: only create files on the server, don't create
+      directories (default false).
 
-    Example::
+    Example:
 
-      publishers:
-        - ftp:
-            site: 'ftp.example.com'
-            target: 'dest/dir'
-            source: 'base/source/dir/**'
-            remove-prefix: 'base/source/dir'
-            excludes: '**/*.excludedfiletype'
+    .. literalinclude::  /../../tests/publishers/fixtures/ftp001.yaml
+       :language: yaml
+
     """
     console_prefix = 'FTP: '
     plugin_tag = 'jenkins.plugins.publish__over__ftp.BapFtpPublisherPlugin'
@@ -1145,6 +1143,7 @@ def scp(parser, xml_parent, data):
     Example:
 
     .. literalinclude:: /../../tests/publishers/fixtures/scp001.yaml
+
     """
     site = data['site']
     scp = XML.SubElement(xml_parent,
@@ -1191,19 +1190,14 @@ def ssh(parser, xml_parent, data):
     :arg bool fail-on-error: fail the build if an error occurs (default false).
     :arg bool always-publish-from-master: transfer the files through the master
       before being sent to the remote server (defaults false)
+    :arg bool flatten: only create files on the server, don't create
+      directories (default false).
 
-    Example::
+    Example:
 
-      publishers:
-        - ssh:
-            site: 'server.example.com'
-            target: 'dest/dir'
-            source: 'base/source/dir/**'
-            remove-prefix: 'base/source/dir'
-            excludes: '**/*.excludedfiletype'
-            use-pty: true
-            command: 'rm -r jenkins_$BUILD_NUMBER'
-            timeout: 1800000
+    .. literalinclude::  /../../tests/publishers/fixtures/ssh001.yaml
+       :language: yaml
+
     """
     console_prefix = 'SSH: '
     plugin_tag = 'jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin'
@@ -1720,7 +1714,8 @@ def base_publish_over(xml_parent, data, console_prefix,
         data.get('remove-prefix', '')
     XML.SubElement(transfersset, 'remoteDirectorySDF').text = \
         str(data.get('target-is-date-format', False)).lower()
-    XML.SubElement(transfersset, 'flatten').text = 'false'
+    XML.SubElement(transfersset, 'flatten').text = \
+        str(data.get('flatten', False)).lower()
     XML.SubElement(transfersset, 'cleanRemote').text = \
         str(data.get('clean-remote', False)).lower()
 
@@ -1754,16 +1749,14 @@ def cifs(parser, xml_parent, data):
     :arg str remove-prefix: prefix to remove from uploaded file paths
       (optional)
     :arg bool fail-on-error: fail the build if an error occurs (default false).
+    :arg bool flatten: only create files on the server, don't create
+      directories (default false).
 
-    Example::
+    Example:
 
-      publishers:
-        - cifs:
-            site: 'cifs.share'
-            target: 'dest/dir'
-            source: 'base/source/dir/**'
-            remove-prefix: 'base/source/dir'
-            excludes: '**/*.excludedfiletype'
+    .. literalinclude::  /../../tests/publishers/fixtures/cifs001.yaml
+       :language: yaml
+
     """
     console_prefix = 'CIFS: '
     plugin_tag = 'jenkins.plugins.publish__over__cifs.CifsPublisherPlugin'

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <jenkins.plugins.publish__over__cifs.CifsPublisherPlugin>
+      <consolePrefix>CIFS: </consolePrefix>
+      <delegate>
+        <publishers>
+          <jenkins.plugins.publish__over__cifs.CifsPublisher>
+            <configName>cifs.share</configName>
+            <verbose>true</verbose>
+            <transfers>
+              <jenkins.plugins.publish__over__cifs.CifsTransfer>
+                <remoteDirectory>dest/dir</remoteDirectory>
+                <sourceFiles>base/source/dir/**</sourceFiles>
+                <excludes>**/*.excludedfiletype</excludes>
+                <removePrefix>base/source/dir</removePrefix>
+                <remoteDirectorySDF>false</remoteDirectorySDF>
+                <flatten>true</flatten>
+                <cleanRemote>false</cleanRemote>
+              </jenkins.plugins.publish__over__cifs.CifsTransfer>
+            </transfers>
+            <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
+            <usePromotionTimestamp>false</usePromotionTimestamp>
+          </jenkins.plugins.publish__over__cifs.CifsPublisher>
+        </publishers>
+        <continueOnError>false</continueOnError>
+        <failOnError>false</failOnError>
+        <alwaysPublishFromMaster>false</alwaysPublishFromMaster>
+        <hostConfigurationAccess class="jenkins.plugins.publish_over_cifs.CifsPublisherPlugin" reference="../.."/>
+      </delegate>
+    </jenkins.plugins.publish__over__cifs.CifsPublisherPlugin>
+  </publishers>
+</project>
+
