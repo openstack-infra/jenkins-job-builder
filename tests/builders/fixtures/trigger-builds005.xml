@@ -5,6 +5,9 @@
       <configs>
         <hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
           <configs>
+            <hudson.plugins.git.GitRevisionBuildParameters>
+              <combineQueuedCommits>true</combineQueuedCommits>
+            </hudson.plugins.git.GitRevisionBuildParameters>
             <hudson.plugins.parameterizedtrigger.FileBuildParameters>
               <propertiesFile>propfile.txt</propertiesFile>
               <failTriggerOnMissing>true</failTriggerOnMissing>

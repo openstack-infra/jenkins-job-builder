@@ -426,6 +426,21 @@ def artifactory_repository(xml_parent, data, target):
             data.get('deploy-dynamic-mode', False)).lower()
 
 
+def append_git_revision_config(parent, config_def):
+    params = XML.SubElement(
+        parent, 'hudson.plugins.git.GitRevisionBuildParameters')
+
+    try:
+        # If git-revision is a boolean, the get() will
+        # throw an AttributeError
+        combine_commits = str(
+            config_def.get('combine-queued-commits', False)).lower()
+    except AttributeError:
+        combine_commits = 'false'
+
+    XML.SubElement(params, 'combineQueuedCommits').text = combine_commits
+
+
 def convert_mapping_to_xml(parent, data, mapping, fail_required=False):
     """Convert mapping to XML
 

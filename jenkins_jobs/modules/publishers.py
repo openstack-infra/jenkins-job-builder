@@ -38,6 +38,7 @@ from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.errors import MissingAttributeError
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
+from jenkins_jobs.modules.helpers import append_git_revision_config
 from jenkins_jobs.modules.helpers import artifactory_common_details
 from jenkins_jobs.modules.helpers import artifactory_deployment_patterns
 from jenkins_jobs.modules.helpers import artifactory_env_vars_patterns
@@ -350,9 +351,18 @@ def trigger_parameterized_builds(parser, xml_parent, data):
     :arg bool svn-revision: Pass svn revision to the triggered job (optional)
     :arg bool include-upstream: Include/pass through Upstream SVN Revisons.
         Only valid when 'svn-revision' is true. (default false)
-    :arg bool git-revision: Pass git revision to the other job (optional)
+    :arg dict git-revision: Passes git revision to the triggered job
+        (optional).
+
+        * **combine-queued-commits** (bool): Whether to combine queued git
+          hashes or not (default false)
+
     :arg bool combine-queued-commits: Combine Queued git hashes. Only valid
         when 'git-revision' is true. (default false)
+
+        .. deprecated:: 1.4.0. Please use `combine-queued-commits` under the
+            `git-revision` argument instead.
+
     :arg dict boolean-parameters: Pass boolean parameters to the downstream
         jobs. Specify the name and boolean value mapping of the parameters.
         (optional)
@@ -446,11 +456,19 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                 properties = XML.SubElement(params, 'properties')
                 properties.text = param_value
             elif param_type == 'git-revision' and param_value:
-                params = XML.SubElement(tconfigs,
-                                        'hudson.plugins.git.'
-                                        'GitRevisionBuildParameters')
-                XML.SubElement(params, 'combineQueuedCommits').text = str(
-                    project_def.get('combine-queued-commits', False)).lower()
+                if 'combine-queued-commits' in project_def:
+                    logger.warn(
+                        "'combine-queued-commit' has moved to reside under "
+                        "'git-revision' configuration, please update your "
+                        "configs as support for this will be removed."
+                    )
+                    git_revision = {
+                        'combine-queued-commits':
+                        project_def['combine-queued-commits']
+                    }
+                else:
+                    git_revision = project_def['git-revision']
+                append_git_revision_config(tconfigs, git_revision)
             elif param_type == 'property-file':
                 params = XML.SubElement(tconfigs,
                                         pt_prefix + 'FileBuildParameters')

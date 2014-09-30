@@ -20,6 +20,9 @@ bar=foo
             <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
               <properties>BUILD_NUM=${BUILD_NUMBER}</properties>
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+            <hudson.plugins.git.GitRevisionBuildParameters>
+              <combineQueuedCommits>false</combineQueuedCommits>
+            </hudson.plugins.git.GitRevisionBuildParameters>
             <hudson.plugins.parameterizedtrigger.FileBuildParameters>
               <propertiesFile>version.prop</propertiesFile>
               <failTriggerOnMissing>true</failTriggerOnMissing>
@@ -35,7 +38,7 @@ bar=foo
               <properties>foo=bar</properties>
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
             <hudson.plugins.git.GitRevisionBuildParameters>
-              <combineQueuedCommits>false</combineQueuedCommits>
+              <combineQueuedCommits>true</combineQueuedCommits>
             </hudson.plugins.git.GitRevisionBuildParameters>
             <hudson.plugins.parameterizedtrigger.matrix.MatrixSubsetBuildParameters>
               <filter>label==&quot;x86&quot;</filter>
