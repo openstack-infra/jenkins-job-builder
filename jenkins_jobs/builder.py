@@ -421,23 +421,25 @@ class ModuleRegistry(object):
             component_data = {}
 
         # Look for a component function defined in an entry point
-        cache_key = '%s:%s' % (component_list_type, name)
-        eps = ModuleRegistry.entry_points_cache.get(cache_key)
+        eps = ModuleRegistry.entry_points_cache.get(component_list_type)
         if eps is None:
-            eps = list(pkg_resources.iter_entry_points(
-                       group='jenkins_jobs.{0}'.format(component_list_type),
-                       name=name))
-            if len(eps) > 1:
-                raise JenkinsJobsException(
-                    "Duplicate entry point found for component type: '{0}',"
-                    "name: '{1}'".format(component_type, name))
-            elif len(eps) == 1:
-                ModuleRegistry.entry_points_cache[cache_key] = eps
-                logger.debug("Cached entry point %s = %s", cache_key,
-                             ModuleRegistry.entry_points_cache[cache_key])
+            module_eps = list(pkg_resources.iter_entry_points(
+                group='jenkins_jobs.{0}'.format(component_list_type)))
+            eps = {}
+            for module_ep in module_eps:
+                if module_ep.name in eps:
+                    raise JenkinsJobsException(
+                        "Duplicate entry point found for component type: "
+                        "'{0}', '{0}',"
+                        "name: '{1}'".format(component_type, name))
+                eps[module_ep.name] = module_ep
 
-        if len(eps) == 1:
-            func = eps[0].load()
+            ModuleRegistry.entry_points_cache[component_list_type] = eps
+            logger.debug("Cached entry point group %s = %s",
+                         component_list_type, eps)
+
+        if name in eps:
+            func = eps[name].load()
             func(parser, xml_parent, component_data)
         else:
             # Otherwise, see if it's defined as a macro
