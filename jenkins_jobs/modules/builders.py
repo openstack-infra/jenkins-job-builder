@@ -732,6 +732,22 @@ def batch(parser, xml_parent, data):
     XML.SubElement(batch, 'command').text = data
 
 
+def powershell(parser, xml_parent, data):
+    """yaml: powershell
+    Execute a powershell command. Requires the `Powershell Plugin
+    <https://wiki.jenkins-ci.org/display/JENKINS/PowerShell+Plugin>`_.
+
+    :Parameter: the powershell command to execute
+
+    Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/powershell.yaml
+       :language: yaml
+    """
+    ps = XML.SubElement(xml_parent, 'hudson.plugins.powershell.PowerShell')
+    XML.SubElement(ps, 'command').text = data
+
+
 def msbuild(parser, xml_parent, data):
     """yaml: msbuild
     Build .NET project using msbuild.  Requires the `Jenkins MSBuild Plugin
