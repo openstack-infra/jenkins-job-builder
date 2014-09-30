@@ -22,9 +22,9 @@ mkdir -p .test/old/out
 mkdir -p .test/new/config
 mkdir -p .test/new/out
 cd .test
-git clone https://review.openstack.org/p/openstack-infra/config --depth 1
-cp config/modules/openstack_project/files/jenkins_job_builder/config/* old/config
-cp config/modules/openstack_project/files/jenkins_job_builder/config/* new/config
+git clone https://review.openstack.org/p/openstack-infra/project-config --depth 1
+cp project-config/jenkins/jobs/* old/config
+cp project-config/jenkins/jobs/* new/config
 cd ..
 GITHEAD=`git rev-parse HEAD`
 
