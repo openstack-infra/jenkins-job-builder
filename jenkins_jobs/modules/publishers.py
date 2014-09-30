@@ -3603,6 +3603,139 @@ def valgrind(parser, xml_parent, data):
         data.get('publish-if-failed', False)).lower()
 
 
+def build_trends_publisher(plugin_name, xml_element, data):
+    """Helper to create various trend publishers.
+    """
+
+    def append_thresholds(element, data, only_totals):
+        """Appends the status thresholds.
+        """
+
+        for status in ['unstable', 'failed']:
+            status_data = data.get(status, {})
+
+            limits = [
+                ('total-all', 'TotalAll'),
+                ('total-high', 'TotalHigh'),
+                ('total-normal', 'TotalNormal'),
+                ('total-low', 'TotalLow')]
+
+            if only_totals is False:
+                limits.extend([
+                    ('new-all', 'NewAll'),
+                    ('new-high', 'NewHigh'),
+                    ('new-normal', 'NewNormal'),
+                    ('new-low', 'NewLow')])
+
+            for key, tag_suffix in limits:
+                tag_name = status + tag_suffix
+                XML.SubElement(element, tag_name).text = str(
+                    status_data.get(key, ''))
+
+    # Tuples containing: setting name, tag name, default value
+    settings = [
+        ('healthy', 'healthy', ''),
+        ('unhealthy', 'unHealthy', ''),
+        ('health-threshold', 'thresholdLimit', 'low'),
+        ('plugin-name', 'pluginName', plugin_name),
+        ('default-encoding', 'defaultEncoding', ''),
+        ('can-run-on-failed', 'canRunOnFailed', False),
+        ('use-stable-build-as-reference', 'useStableBuildAsReference', False),
+        ('use-delta-values', 'useDeltaValues', False),
+        ('thresholds', 'thresholds', {}),
+        ('should-detect-modules', 'shouldDetectModules', False),
+        ('dont-compute-new', 'dontComputeNew', True),
+        ('do-not-resolve-relative-paths', 'doNotResolveRelativePaths', False),
+        ('pattern', 'pattern', '')]
+
+    thresholds = ['low', 'normal', 'high']
+
+    for key, tag_name, default in settings:
+        xml_config = XML.SubElement(xml_element, tag_name)
+        config_value = data.get(key, default)
+
+        if key == 'thresholds':
+            append_thresholds(
+                xml_config,
+                config_value,
+                data.get('dont-compute-new', True))
+        elif key == 'health-threshold' and config_value not in thresholds:
+            raise JenkinsJobsException("health-threshold must be one of %s" %
+                                       ", ".join(thresholds))
+        else:
+            if isinstance(default, bool):
+                xml_config.text = str(config_value).lower()
+            else:
+                xml_config.text = str(config_value)
+
+
+def pmd(parser, xml_parent, data):
+    """yaml: pmd
+    Publish trend reports with PMD.
+    Requires the Jenkins `PMD Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/PMD+Plugin>`_
+
+    The PMD component accepts a dictionary with the following values:
+
+    :arg str pattern: Report filename pattern (optional)
+    :arg bool can-run-on-failed: Also runs for failed builds, instead of just
+      stable or unstable builds (default false)
+    :arg bool should-detect-modules: Determines if Ant or Maven modules should
+      be detected for all files that contain warnings (default false)
+    :arg int healthy: Sunny threshold (optional)
+    :arg int unhealthy: Stormy threshold (optional)
+    :arg str health-threshold: Threshold priority for health status
+      ('low', 'normal' or 'high', defaulted to 'low')
+    :arg dict thresholds: Mark build as failed or unstable if the number of
+      errors exceeds a threshold. (optional)
+
+        :thresholds:
+            * **unstable** (`dict`)
+                :unstable: * **total-all** (`int`)
+                           * **total-high** (`int`)
+                           * **total-normal** (`int`)
+                           * **total-low** (`int`)
+                           * **new-all** (`int`)
+                           * **new-high** (`int`)
+                           * **new-normal** (`int`)
+                           * **new-low** (`int`)
+
+            * **failed** (`dict`)
+                :failed: * **total-all** (`int`)
+                         * **total-high** (`int`)
+                         * **total-normal** (`int`)
+                         * **total-low** (`int`)
+                         * **new-all** (`int`)
+                         * **new-high** (`int`)
+                         * **new-normal** (`int`)
+                         * **new-low** (`int`)
+    :arg str default-encoding: Encoding for parsing or showing files (optional)
+    :arg bool do-not-resolve-relative-paths: (default false)
+    :arg bool dont-compute-new: If set to false, computes new warnings based on
+      the reference build (default true)
+    :arg bool use-stable-build-as-reference: The number of new warnings will be
+      calculated based on the last stable build, allowing reverts of unstable
+      builds where the number of warnings was decreased. (default false)
+    :arg bool use-delta-values: If set then the number of new warnings is
+      calculated by subtracting the total number of warnings of the current
+      build from the reference build.
+      (default false)
+
+    Example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/pmd001.yaml
+
+    Full example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/pmd002.yaml
+
+    """
+
+    xml_element = XML.SubElement(xml_parent, 'hudson.plugins.pmd.PmdPublisher')
+
+    build_trends_publisher('[PMD] ', xml_element, data)
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
