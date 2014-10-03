@@ -146,6 +146,19 @@ arguments after the job definition path. To update Foo1 and Foo2 run::
 
   jenkins-jobs update /path/to/defs Foo1 Foo2
 
+Passing Multiple Paths
+^^^^^^^^^^^^^^^^^^^^^^
+It is possible to pass multiple paths to JJB using colons as a path separator on
+\*nix systems and semi-colons on Windows systems. For example::
+
+  jenkins-jobs test /path/to/global:/path/to/instance:/path/to/instance/project
+
+This helps when structuring directory layouts as you may selectively include
+directories in different ways to suit different needs. If you maintain multiple
+Jenkins instances suited to various needs you may want to share configuration
+between those instances (global). Furthermore, there may be various ways you
+would like to structure jobs within a given instance.
+
 
 .. rubric:: Footnotes
 .. [#f1] The cache default location is at ``~/.cache/jenkins_jobs``, which

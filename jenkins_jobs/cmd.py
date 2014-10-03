@@ -69,13 +69,15 @@ def create_parser():
     subparser = parser.add_subparsers(help='update, test or delete job',
                                       dest='command')
     parser_update = subparser.add_parser('update', parents=[recursive_parser])
-    parser_update.add_argument('path', help='path to YAML file or directory')
+    parser_update.add_argument('path', help='colon-separated list of paths to'
+                                            ' YAML files or directories')
     parser_update.add_argument('names', help='name(s) of job(s)', nargs='*')
     parser_update.add_argument('--delete-old', help='delete obsolete jobs',
                                action='store_true',
                                dest='delete_old', default=False,)
     parser_test = subparser.add_parser('test', parents=[recursive_parser])
-    parser_test.add_argument('path', help='path to YAML file or directory',
+    parser_test.add_argument('path', help='colon-separated list of paths to'
+                                          ' YAML files or directories',
                              nargs='?', default=sys.stdin)
     parser_test.add_argument('-o', dest='output_dir', default=sys.stdout,
                              help='path to output XML')
@@ -83,7 +85,8 @@ def create_parser():
     parser_delete = subparser.add_parser('delete')
     parser_delete.add_argument('name', help='name of job', nargs='+')
     parser_delete.add_argument('-p', '--path', default=None,
-                               help='path to YAML file or directory')
+                               help='colon-separated list of paths to'
+                                    ' YAML files or directories')
     subparser.add_parser('delete-all',
                          help='delete *ALL* jobs from Jenkins server, '
                          'including those not managed by Jenkins Job '
@@ -195,13 +198,19 @@ def execute(options, config):
                     "Reading configuration from STDIN. Press %s to end input.",
                     key)
 
-        # expand or convert options.path to a list
-        if (getattr(options, 'recursive', False)
-            or config.getboolean('job_builder', 'recursive')) and \
-                os.path.isdir(options.path):
-            options.path = recurse_path(options.path)
-        else:
-            options.path = [options.path]
+        # take list of paths
+        options.path = options.path.split(os.pathsep)
+
+        do_recurse = (getattr(options, 'recursive', False) or
+                      config.getboolean('job_builder', 'recursive'))
+
+        paths = []
+        for path in options.path:
+            if do_recurse and os.path.isdir(path):
+                paths.extend(recurse_path(path))
+            else:
+                paths.append(path)
+        options.path = paths
 
     if options.command == 'delete':
         for job in options.name:

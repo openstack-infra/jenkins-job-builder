@@ -69,6 +69,83 @@ class CmdTests(testtools.TestCase):
         config.readfp(StringIO(cmd.DEFAULT_CONF))
         cmd.execute(args, config)   # probably better to fail here
 
+    def test_multi_path(self):
+        """
+        Run test mode and pass multiple paths.
+        """
+        path_list = [os.path.join(self.fixtures_path, 'multipath'),
+                     self.fixtures_path]
+        multipath = os.pathsep.join(path_list)
+        args = self.parser.parse_args(['test', multipath])
+        args.output_dir = mock.MagicMock()
+        config = configparser.ConfigParser()
+        config.readfp(StringIO(cmd.DEFAULT_CONF))
+        cmd.execute(args, config)
+        self.assertEqual(args.path, path_list)
+
+    @mock.patch('jenkins_jobs.cmd.Builder.update_job')
+    @mock.patch('jenkins_jobs.cmd.os.path.isdir')
+    @mock.patch('jenkins_jobs.cmd.os.walk')
+    def test_recursive_multi_path(self, os_walk_mock, isdir_mock,
+                                  update_job_mock):
+        """
+        Run test mode and pass multiple paths with recursive path option.
+        """
+        os_walk_return_values = {
+            '/jjb_projects': [
+                ('/jjb_projects', ('dir1', 'dir2', 'dir3'), ()),
+                ('/jjb_projects/dir1', ('bar',), ()),
+                ('/jjb_projects/dir2', ('baz',), ()),
+                ('/jjb_projects/dir3', (), ()),
+                ('/jjb_projects/dir1/bar', (), ()),
+                ('/jjb_projects/dir2/baz', (), ()),
+            ],
+            '/jjb_templates': [
+                ('/jjb_templates', ('dir1', 'dir2', 'dir3'), ()),
+                ('/jjb_templates/dir1', ('bar',), ()),
+                ('/jjb_templates/dir2', ('baz',), ()),
+                ('/jjb_templates/dir3', (), ()),
+                ('/jjb_templates/dir1/bar', (), ()),
+                ('/jjb_templates/dir2/baz', (), ()),
+            ],
+            '/jjb_macros': [
+                ('/jjb_macros', ('dir1', 'dir2', 'dir3'), ()),
+                ('/jjb_macros/dir1', ('bar',), ()),
+                ('/jjb_macros/dir2', ('baz',), ()),
+                ('/jjb_macros/dir3', (), ()),
+                ('/jjb_macros/dir1/bar', (), ()),
+                ('/jjb_macros/dir2/baz', (), ()),
+            ],
+        }
+
+        def os_walk_side_effects(path_name, topdown):
+            return os_walk_return_values[path_name]
+
+        os_walk_mock.side_effect = os_walk_side_effects
+        isdir_mock.return_value = True
+
+        path_list = os_walk_return_values.keys()
+        paths = []
+        for path in path_list:
+            paths.extend([p for p, _, _ in os_walk_return_values[path]])
+
+        multipath = os.pathsep.join(path_list)
+
+        args = self.parser.parse_args(['test', '-r', multipath])
+        args.output_dir = mock.MagicMock()
+
+        config = configparser.ConfigParser()
+        config.readfp(StringIO(cmd.DEFAULT_CONF))
+        cmd.execute(args, config)
+
+        update_job_mock.assert_called_with(paths, [], output=args.output_dir)
+
+        args = self.parser.parse_args(['test', multipath])
+        config.set('job_builder', 'recursive', 'True')
+        cmd.execute(args, config)
+
+        update_job_mock.assert_called_with(paths, [], output=args.output_dir)
+
     def test_console_output(self):
         """
         Run test mode and verify that resulting XML gets sent to the console.
