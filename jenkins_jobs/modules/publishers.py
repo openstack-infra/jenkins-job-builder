@@ -3926,6 +3926,88 @@ def scan_build(parser, xml_parent, data):
     XML.SubElement(p, 'bugThreshold').text = threshold
 
 
+def dry(parser, xml_parent, data):
+    """yaml: dry
+    Publish trend reports with DRY.
+    Requires the Jenkins `DRY Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/DRY+Plugin>`_
+
+    The DRY component accepts a dictionary with the following values:
+
+    :arg str pattern: Report filename pattern (optional)
+    :arg bool can-run-on-failed: Also runs for failed builds, instead of just
+      stable or unstable builds (default false)
+    :arg bool should-detect-modules: Determines if Ant or Maven modules should
+      be detected for all files that contain warnings (default false)
+    :arg int healthy: Sunny threshold (optional)
+    :arg int unhealthy: Stormy threshold (optional)
+    :arg str health-threshold: Threshold priority for health status
+      ('low', 'normal' or 'high', defaulted to 'low')
+    :arg int high-threshold: Minimum number of duplicated lines for high
+      priority warnings. (default 50)
+    :arg int normal-threshold: Minimum number of duplicated lines for normal
+      priority warnings. (default 25)
+    :arg dict thresholds: Mark build as failed or unstable if the number of
+      errors exceeds a threshold. (optional)
+
+        :thresholds:
+            * **unstable** (`dict`)
+                :unstable: * **total-all** (`int`)
+                           * **total-high** (`int`)
+                           * **total-normal** (`int`)
+                           * **total-low** (`int`)
+                           * **new-all** (`int`)
+                           * **new-high** (`int`)
+                           * **new-normal** (`int`)
+                           * **new-low** (`int`)
+
+            * **failed** (`dict`)
+                :failed: * **total-all** (`int`)
+                         * **total-high** (`int`)
+                         * **total-normal** (`int`)
+                         * **total-low** (`int`)
+                         * **new-all** (`int`)
+                         * **new-high** (`int`)
+                         * **new-normal** (`int`)
+                         * **new-low** (`int`)
+    :arg str default-encoding: Encoding for parsing or showing files (optional)
+    :arg bool do-not-resolve-relative-paths: (default false)
+    :arg bool dont-compute-new: If set to false, computes new warnings based on
+      the reference build (default true)
+    :arg bool use-stable-build-as-reference: The number of new warnings will be
+      calculated based on the last stable build, allowing reverts of unstable
+      builds where the number of warnings was decreased. (default false)
+    :arg bool use-delta-values: If set then the number of new warnings is
+      calculated by subtracting the total number of warnings of the current
+      build from the reference build.
+      (default false)
+
+    Example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/dry001.yaml
+
+    Full example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/dry004.yaml
+
+    """
+
+    xml_element = XML.SubElement(xml_parent, 'hudson.plugins.dry.DryPublisher')
+
+    build_trends_publisher('[DRY] ', xml_element, data)
+
+    # Add specific settings for this trends publisher
+    settings = [
+        ('high-threshold', 'highThreshold', 50),
+        ('normal-threshold', 'normalThreshold', 25)]
+
+    for key, tag_name, default in settings:
+        xml_config = XML.SubElement(xml_element, tag_name)
+        config_value = data.get(key, default)
+
+        xml_config.text = str(config_value)
+
+
 def create_publishers(parser, action):
     dummy_parent = XML.Element("dummy")
     parser.registry.dispatch('publisher', parser, dummy_parent, action)

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.dry.DryPublisher>
+      <healthy>0</healthy>
+      <unHealthy>100</unHealthy>
+      <thresholdLimit>high</thresholdLimit>
+      <pluginName>[DRY] </pluginName>
+      <defaultEncoding>utf-8</defaultEncoding>
+      <canRunOnFailed>true</canRunOnFailed>
+      <useStableBuildAsReference>false</useStableBuildAsReference>
+      <useDeltaValues>false</useDeltaValues>
+      <thresholds>
+        <unstableTotalAll>90</unstableTotalAll>
+        <unstableTotalHigh>80</unstableTotalHigh>
+        <unstableTotalNormal>70</unstableTotalNormal>
+        <unstableTotalLow>60</unstableTotalLow>
+        <failedTotalAll>90</failedTotalAll>
+        <failedTotalHigh>80</failedTotalHigh>
+        <failedTotalNormal>70</failedTotalNormal>
+        <failedTotalLow>60</failedTotalLow>
+      </thresholds>
+      <shouldDetectModules>true</shouldDetectModules>
+      <dontComputeNew>true</dontComputeNew>
+      <doNotResolveRelativePaths>false</doNotResolveRelativePaths>
+      <pattern>**/cpd-result.xml</pattern>
+      <highThreshold>20</highThreshold>
+      <normalThreshold>10</normalThreshold>
+    </hudson.plugins.dry.DryPublisher>
+  </publishers>
+</project>

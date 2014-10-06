@@ -1,0 +1,13 @@
+publishers:
+ - dry:
+    pattern: '**/cpd-result.xml'
+    healthy: 0
+    unhealthy: 100
+    health-threshold: 'high'
+    high-threshold: 50
+    normal-threshold: 25
+    thresholds:
+        unstable:
+            total-high: 10
+        failed:
+            total-high: 1
