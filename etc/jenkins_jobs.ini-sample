@@ -10,3 +10,6 @@ password=1234567890abcdef1234567890abcdef
 url=https://jenkins.example.com
 ##### This is deprecated, use job_builder section instead
 #ignore_cache=True
+
+[hipchat]
+authtoken=dummy
