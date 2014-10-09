@@ -3729,6 +3729,205 @@ def pmd(parser, xml_parent, data):
     build_trends_publisher('[PMD] ', xml_element, data)
 
 
+def create_publishers(parser, action):
+    dummy_parent = XML.Element("dummy")
+    parser.registry.dispatch('publisher', parser, dummy_parent, action)
+    return list(dummy_parent)
+
+
+def conditional_publisher(parser, xml_parent, data):
+    """yaml: conditional-publisher
+    Conditionally execute some post-build steps.  Requires the Jenkins
+    `Flexible Publish Plugin <https://wiki.jenkins-ci.org/display/ \
+    JENKINS/Flexible+Publish+Plugin>`_.
+
+    A Flexible Publish list of Conditional Actions is created in Jenkins.
+
+    :arg str condition-kind: Condition kind that must be verified before the
+      action is executed. Valid values and their additional attributes are
+      described in the conditions_ table.
+    :arg str on-evaluation-failure: What should be the outcome of the build
+      if the evaluation of the condition fails. Possible values are `fail`,
+      `mark-unstable`, `run-and-mark-unstable`, `run` and `dont-run`.
+      Default is `fail`.
+    :arg list action: Action to run if the condition is verified. Item
+      can be any publisher known by Jenkins Job Builder and supported
+      by the Flexible Publish Plugin.
+
+    .. _conditions:
+
+    ================== ====================================================
+    Condition kind     Description
+    ================== ====================================================
+    always             Condition is always verified
+    never              Condition is never verified
+    boolean-expression Run the action if the expression expands to a
+                       representation of true
+
+                         :condition-expression: Expression to expand
+    current-status     Run the action if the current build status is
+                       within the configured range
+
+                         :condition-worst: Accepted values are SUCCESS,
+                           UNSTABLE, FAILURE, NOT_BUILD, ABORTED
+                         :condition-best: Accepted values are SUCCESS,
+                           UNSTABLE, FAILURE, NOT_BUILD, ABORTED
+
+    shell              Run the action if the shell command succeeds
+
+                         :condition-command: Shell command to execute
+    windows-shell      Similar to shell, except that commands will be
+                       executed by cmd, under Windows
+
+                         :condition-command: Command to execute
+    file-exists        Run the action if a file exists
+
+                         :condition-filename: Check existence of this file
+                         :condition-basedir: If condition-filename is
+                           relative, it will be considered relative to
+                           either `workspace`, `artifact-directory`,
+                           or `jenkins-home`. Default is `workspace`.
+    ================== ====================================================
+
+    Single Conditional Action Example:
+
+    .. literalinclude:: \
+    /../../tests/publishers/fixtures/conditional-publisher001.yaml
+       :language: yaml
+
+    Multiple Conditional Actions Example:
+
+    .. literalinclude:: \
+    /../../tests/publishers/fixtures/conditional-publisher002.yaml
+       :language: yaml
+
+    """
+    def publish_condition(cdata):
+        kind = cdata['condition-kind']
+        ctag = XML.SubElement(cond_publisher, condition_tag)
+        class_pkg = 'org.jenkins_ci.plugins.run_condition'
+
+        if kind == "always":
+            ctag.set('class',
+                     class_pkg + '.core.AlwaysRun')
+        elif kind == "never":
+            ctag.set('class',
+                     class_pkg + '.core.NeverRun')
+        elif kind == "boolean-expression":
+            ctag.set('class',
+                     class_pkg + '.core.BooleanCondition')
+            XML.SubElement(ctag, "token").text = cdata['condition-expression']
+        elif kind == "current-status":
+            ctag.set('class',
+                     class_pkg + '.core.StatusCondition')
+            wr = XML.SubElement(ctag, 'worstResult')
+            wr_name = cdata['condition-worst']
+            if wr_name not in hudson_model.THRESHOLDS:
+                raise JenkinsJobsException(
+                    "threshold must be one of %s" %
+                    ", ".join(hudson_model.THRESHOLDS.keys()))
+            wr_threshold = hudson_model.THRESHOLDS[wr_name]
+            XML.SubElement(wr, "name").text = wr_threshold['name']
+            XML.SubElement(wr, "ordinal").text = wr_threshold['ordinal']
+            XML.SubElement(wr, "color").text = wr_threshold['color']
+            XML.SubElement(wr, "completeBuild").text = \
+                str(wr_threshold['complete']).lower()
+
+            br = XML.SubElement(ctag, 'bestResult')
+            br_name = cdata['condition-best']
+            if not br_name in hudson_model.THRESHOLDS:
+                raise JenkinsJobsException(
+                    "threshold must be one of %s" %
+                    ", ".join(hudson_model.THRESHOLDS.keys()))
+            br_threshold = hudson_model.THRESHOLDS[br_name]
+            XML.SubElement(br, "name").text = br_threshold['name']
+            XML.SubElement(br, "ordinal").text = br_threshold['ordinal']
+            XML.SubElement(br, "color").text = br_threshold['color']
+            XML.SubElement(br, "completeBuild").text = \
+                str(wr_threshold['complete']).lower()
+        elif kind == "shell":
+            ctag.set('class',
+                     class_pkg + '.contributed.ShellCondition')
+            XML.SubElement(ctag, "command").text = cdata['condition-command']
+        elif kind == "windows-shell":
+            ctag.set('class',
+                     class_pkg + '.contributed.BatchFileCondition')
+            XML.SubElement(ctag, "command").text = cdata['condition-command']
+        elif kind == "file-exists":
+            ctag.set('class',
+                     class_pkg + '.core.FileExistsCondition')
+            XML.SubElement(ctag, "file").text = cdata['condition-filename']
+            basedir = cdata.get('condition-basedir', 'workspace')
+            basedir_tag = XML.SubElement(ctag, "baseDir")
+            if "workspace" == basedir:
+                basedir_tag.set('class',
+                                class_pkg + '.common.BaseDirectory$Workspace')
+            elif "artifact-directory" == basedir:
+                basedir_tag.set('class',
+                                class_pkg + '.common.'
+                                'BaseDirectory$ArtifactsDir')
+            elif "jenkins-home" == basedir:
+                basedir_tag.set('class',
+                                class_pkg + '.common.'
+                                'BaseDirectory$JenkinsHome')
+        else:
+            raise JenkinsJobsException('%s is not a valid condition-kind '
+                                       'value.' % kind)
+
+    def publish_action(parent, action):
+        for edited_node in create_publishers(parser, action):
+            edited_node.set('class', edited_node.tag)
+            edited_node.tag = 'publisher'
+            parent.append(edited_node)
+
+    flex_publisher_tag = 'org.jenkins__ci.plugins.flexible__publish.'    \
+        'FlexiblePublisher'
+    cond_publisher_tag = 'org.jenkins__ci.plugins.flexible__publish.'   \
+        'ConditionalPublisher'
+
+    root_tag = XML.SubElement(xml_parent, flex_publisher_tag)
+    publishers_tag = XML.SubElement(root_tag, "publishers")
+    condition_tag = "condition"
+
+    evaluation_classes_pkg = 'org.jenkins_ci.plugins.run_condition'
+    evaluation_classes = {
+        'fail': evaluation_classes_pkg + '.BuildStepRunner$Fail',
+        'mark-unstable': evaluation_classes_pkg +
+        '.BuildStepRunner$Unstable',
+        'run-and-mark-unstable': evaluation_classes_pkg +
+        '.BuildStepRunner$RunUnstable',
+        'run': evaluation_classes_pkg + '.BuildStepRunner$Run',
+        'dont-run': evaluation_classes_pkg + '.BuildStepRunner$DontRun',
+    }
+
+    for cond_action in data:
+        cond_publisher = XML.SubElement(publishers_tag, cond_publisher_tag)
+        publish_condition(cond_action)
+        evaluation_flag = cond_action.get('on-evaluation-failure', 'fail')
+        if evaluation_flag not in evaluation_classes.keys():
+            raise JenkinsJobsException('on-evaluation-failure value '
+                                       'specified is not valid.  Must be one '
+                                       'of: %s' % evaluation_classes.keys())
+
+        evaluation_class = evaluation_classes[evaluation_flag]
+        XML.SubElement(cond_publisher, "runner").set('class',
+                                                     evaluation_class)
+
+        if 'action' in cond_action:
+            actions = cond_action['action']
+
+            # Flexible Publish will overwrite action if more than one is
+            # specified.  Limit the action list to one element.
+            if len(actions) is not 1:
+                    raise JenkinsJobsException("Only one action may be "
+                                               "specified for each condition.")
+
+            for action in actions:
+                publish_action(cond_publisher, action)
+        else:
+            raise JenkinsJobsException('action must be set for each condition')
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
