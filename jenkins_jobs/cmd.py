@@ -193,7 +193,7 @@ def execute(options, config):
                       ignore_cache=ignore_cache,
                       flush_cache=options.flush_cache)
 
-    if hasattr(options, 'path'):
+    if getattr(options, 'path', None):
         if options.path == sys.stdin:
             logger.debug("Input file is stdin")
             if options.path.isatty():
