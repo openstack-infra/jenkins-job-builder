@@ -197,6 +197,25 @@ def choice_param(parser, xml_parent, data):
         XML.SubElement(a, 'string').text = choice
 
 
+def run_param(parser, xml_parent, data):
+    """yaml: run
+    A run parameter.
+
+    :arg str name: the name of the parameter
+    :arg str project-name: the name of job from which the user can pick runs
+    :arg str description: a description of the parameter (optional)
+
+    Example:
+
+    .. literalinclude::  /../../tests/parameters/fixtures/run-param001.yaml
+       :language: yaml
+
+    """
+    pdef = base_param(parser, xml_parent, data, False,
+                      'hudson.model.RunParameterDefinition')
+    XML.SubElement(pdef, 'projectName').text = data['project-name']
+
+
 def validating_string_param(parser, xml_parent, data):
     """yaml: validating-string
     A validating string parameter
