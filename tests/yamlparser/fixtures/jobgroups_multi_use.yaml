@@ -1,0 +1,34 @@
+- job-group:
+    name: multiple_jobs
+    jobs:
+        - 'job_one_{version}':
+        - 'job_two_{version}':
+
+- project:
+    name: multiple_1.2
+    version: 1.2
+    jobs:
+        - multiple_jobs
+
+- project:
+    name: multiple_1.3
+    version: 1.3
+    jobs:
+        - multiple_jobs
+
+- job-template:
+    name: 'job_one_{version}'
+    builders:
+      - shell: |
+         #!/usr/bin/env python
+         #
+         print("Doing something cool with python")
+
+- job-template:
+    name: 'job_two_{version}'
+    builders:
+      - shell: |
+         #!/usr/bin/env python
+         #
+         print("Doing something else cool with python")
+

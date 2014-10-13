@@ -1,5 +1,6 @@
 argparse
 ordereddict
+six>=1.5.2
 PyYAML
-python-jenkins
+python-jenkins>=0.3.4
 pbr>=0.8.2,<1.0
