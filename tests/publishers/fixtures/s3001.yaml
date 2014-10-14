@@ -1,0 +1,16 @@
+publishers:
+  - s3:
+      s3-profile: banana
+      entries:
+        - destination-bucket: herp-derp
+          source-files: 'bargle_${BUILD_ID}.tgz'
+          storage-class: STANDARD
+          bucket-region: US_EAST_1
+          upload-on-failure: false
+          upload-from-slave: true
+          managed-artifacts: true
+      metadata-tags:
+        - key: warbl ${garbl}
+          value: herp derp weevils
+        - key: hurrdurr
+          value: wharrgarbl blee ${FANCY_VARIABLE}
