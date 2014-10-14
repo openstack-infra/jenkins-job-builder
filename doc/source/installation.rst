@@ -183,6 +183,19 @@ There is also a command to delete **all** jobs.
 
   jenkins-jobs delete-all
 
+Globbed Parameters
+^^^^^^^^^^^^^^^^^^
+Jenkins job builder supports globbed parameters to identify jobs from a set of
+definition files.  This feature only supports JJB managed jobs.
+
+To update jobs that only have 'foo' in their name::
+
+  jenkins-jobs update ./myjobs \*foo\*
+
+To delete jobs that only have 'foo' in their name::
+
+  jenkins-jobs delete --path ./myjobs \*foo\*
+
 .. rubric:: Footnotes
 .. [#f1] The cache default location is at ``~/.cache/jenkins_jobs``, which
          can be overridden by setting the ``XDG_CACHE_HOME`` environment
