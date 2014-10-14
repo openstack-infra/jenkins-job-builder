@@ -1,0 +1,21 @@
+- scm:
+    name: project-scm
+    scm:
+      - git:
+         url: ssh://jenkins@review.openstack.org:29418/first.git
+         branches:
+          - origin/master
+
+- scm:
+    name: project-scm
+    scm:
+      - git:
+         url: ssh://jenkins@review.openstack.org:29418/second.git
+         branches:
+          - origin/master
+
+- job:
+    name: duplicate_macros
+    scm:
+      - project-scm
+

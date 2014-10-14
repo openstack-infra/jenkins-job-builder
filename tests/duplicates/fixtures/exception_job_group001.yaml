@@ -1,0 +1,20 @@
+- job-template:
+    name: '{name}-1'
+    builders:
+    - shell: step1
+
+- job-template:
+    name: '{name}-2'
+    builders:
+    - shell: step2
+
+- job-group:
+    name: 'group-1'
+
+- job-group:
+    name: 'group-1'
+
+- project:
+    name: project-name
+    jobs:
+    - 'group-1'

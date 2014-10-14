@@ -1,0 +1,13 @@
+- project:
+    name: duplicate-groups
+    jobs:
+      - 'group-001'
+      - 'group-001'
+
+- job-group:
+    name: 'group-001'
+    jobs:
+      - dummy-job
+
+- job:
+    name: dummy-job

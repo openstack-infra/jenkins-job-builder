@@ -31,6 +31,7 @@ DEFAULT_CONF = """
 keep_descriptions=False
 ignore_cache=False
 recursive=False
+allow_duplicates=False
 
 [jenkins]
 url=http://localhost:8080/
