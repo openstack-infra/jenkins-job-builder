@@ -1,0 +1,4 @@
+wrappers:
+  - config-file-provider:
+      files:
+        - file-id: org.jenkinsci.plugins.configfiles.custom.CustomConfig1234

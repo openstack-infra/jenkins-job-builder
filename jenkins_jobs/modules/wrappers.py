@@ -57,6 +57,48 @@ def ci_skip(parser, xml_parent, data):
     })
 
 
+def config_file_provider(parser, xml_parent, data):
+    """yaml: config-file-provider
+    Provide configuration files (i.e., settings.xml for maven etc.)
+    which will be copied to the job's workspace.
+    Requires the Jenkins `Config File Provider Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Config+File+Provider+Plugin>`_
+
+    :arg list files: List of managed config files made up of three\
+      parameters
+
+        :Parameter: * **file-id** (`str`)\
+        The identifier for the managed config file
+        :Parameter: * **target** (`str`)\
+        Define where the file should be created (optional)
+        :Parameter: * **variable** (`str`)\
+        Define an environment variable to be used (optional)
+
+    Example:
+
+    .. literalinclude:: \
+    /../../tests/wrappers/fixtures/config-file-provider003.yaml
+       :language: yaml
+    """
+    top = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.configfiles.'
+                         'buildwrapper.ConfigFileBuildWrapper')
+    xml_files = XML.SubElement(top, 'managedFiles')
+
+    files = data.get('files', [])
+    for file in files:
+        xml_file = XML.SubElement(xml_files, 'org.jenkinsci.plugins.'
+                                  'configfiles.buildwrapper.ManagedFile')
+        file_id = file.get('file-id')
+        if file_id is None:
+            raise JenkinsJobsException("file-id is required for each "
+                                       "managed configuration file")
+        XML.SubElement(xml_file, 'fileId').text = str(file_id)
+        XML.SubElement(xml_file, 'targetLocation').text = \
+            file.get('target', '')
+        XML.SubElement(xml_file, 'variable').text = \
+            file.get('variable', '')
+
+
 def logfilesize(parser, xml_parent, data):
     """yaml: logfilesize
     Abort the build if its logfile becomes too big.
