@@ -1,0 +1,16 @@
+publishers:
+  - trigger-parameterized-builds:
+    - project: other_job, foo, bar
+      predefined-parameters: foo=bar
+    - project: other_job1, other_job2
+      predefined-parameters: BUILD_NUM=${BUILD_NUMBER}
+      property-file: version.prop
+      fail-on-missing: true
+    - project: yet_another_job
+      predefined-parameters: foo=bar
+      git-revision: true
+      restrict-matrix-project: label=="x86"
+    - project: yet_another_job_2
+      node-label-name: foo
+    - project: yet_another_job_3
+      node-label: node-label-foo || node-label-bar
