@@ -18,6 +18,7 @@
       <on>true</on>
       <keepJenkinsSystemVariables>true</keepJenkinsSystemVariables>
       <keepBuildVariables>true</keepBuildVariables>
+      <overrideBuildParameters>false</overrideBuildParameters>
     </EnvInjectJobProperty>
   </properties>
   <scm class="hudson.scm.NullSCM"/>
