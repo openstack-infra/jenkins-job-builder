@@ -41,6 +41,7 @@ later.  There are a few basic optional fields for a Job definition::
       block-downstream: false
       block-upstream: false
       retry-count: 3
+      node: NodeLabel1 || NodeLabel2
 
 :Job Parameters:
     * **project-type**:
@@ -97,6 +98,12 @@ later.  There are a few basic optional fields for a Job definition::
     * **retry-count**:
       If a build fails to checkout from the repository, Jenkins will
       retry the specified number of times before giving up.
+
+    * **node**:
+      Restrict where this job can be run. If there is a group of
+      machines that the job can be built on, you can specify that
+      label as the node to tie on, which will cause Jenkins to build
+      the job on any of the machines with that label.
 
 
 .. _job-template:
