@@ -17,3 +17,4 @@ jenkins_jobs/versioninfo
 .coverage
 cover/
 jenkins-job-builder
+testr_subunit_log
