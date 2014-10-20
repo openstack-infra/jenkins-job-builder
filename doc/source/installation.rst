@@ -17,7 +17,7 @@ Documentation
 Documentation is included in the ``doc`` folder. To generate docs
 locally execute the command::
 
-    tox -e doc
+    tox -e docs
 
 The generated documentation is then available under
 ``doc/build/html/index.html``.
