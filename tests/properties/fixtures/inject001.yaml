@@ -1,0 +1,5 @@
+properties:
+  - inject:
+      properties-content: |
+        FOO=bar
+        BAZ=foobar
