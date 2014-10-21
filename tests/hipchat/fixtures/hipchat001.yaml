@@ -1,0 +1,10 @@
+hipchat:
+  enabled: true
+  room: My Room
+  start-notify: true
+  notify-success: true
+  notify-aborted: true
+  notify-not-built: true
+  notify-unstable: true
+  notify-failure: true
+  notify-back-to-normal: true
