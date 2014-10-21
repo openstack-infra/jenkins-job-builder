@@ -28,6 +28,7 @@ from xml.dom import minidom
 import jenkins
 import re
 import pkg_resources
+from pprint import pformat
 import logging
 import copy
 import itertools
@@ -93,8 +94,8 @@ def deep_format(obj, paramdict):
                 ret = obj.format(**paramdict)
         except KeyError as exc:
             missing_key = exc.message
-            desc = "%s parameter missing to format %s\nGiven: %s" % (
-                   missing_key, obj, paramdict)
+            desc = "%s parameter missing to format %s\nGiven:\n%s" % (
+                   missing_key, obj, pformat(paramdict))
             raise JenkinsJobsException(desc)
     elif isinstance(obj, list):
         ret = []
@@ -103,7 +104,14 @@ def deep_format(obj, paramdict):
     elif isinstance(obj, dict):
         ret = {}
         for item in obj:
-            ret[item.format(**paramdict)] = deep_format(obj[item], paramdict)
+            try:
+                ret[item.format(**paramdict)] = \
+                    deep_format(obj[item], paramdict)
+            except KeyError as exc:
+                missing_key = exc.message
+                desc = "%s parameter missing to format %s\nGiven:\n%s" % (
+                    missing_key, obj, pformat(paramdict))
+                raise JenkinsJobsException(desc)
     else:
         ret = obj
     return ret
