@@ -127,8 +127,8 @@ You can also pass JJB a directory containing multiple job definition files::
 which will write XML files to the output directory for all of the jobs
 defined in the defs directory.
 
-Updating Jenkins
-^^^^^^^^^^^^^^^^
+Updating Jobs
+^^^^^^^^^^^^^
 When you're satisfied with the generated XML from the test, you can run::
 
   jenkins-jobs update /path/to/defs
@@ -159,6 +159,29 @@ Jenkins instances suited to various needs you may want to share configuration
 between those instances (global). Furthermore, there may be various ways you
 would like to structure jobs within a given instance.
 
+Deleting Jobs
+^^^^^^^^^^^^^
+Jenkins Job Builder supports deleting jobs from Jenkins.
+
+To delete a specific job::
+
+  jenkins-jobs delete Foo1
+
+To delete a list of jobs, simply pass them as additional
+arguments after the command::
+
+  jenkins-jobs delete Foo1 Foo2
+
+The ``update`` command includes a ``delete-old`` option to remove obsolete
+jobs.  Obsolete jobs are *all* jobs not managed by JJB, even jobs which
+were *never* managed by JJB::
+
+  jenkins-jobs update --delete-old /path/to/defs
+
+There is also a command to delete **all** jobs.
+**WARNING**: Use with caution::
+
+  jenkins-jobs delete-all
 
 .. rubric:: Footnotes
 .. [#f1] The cache default location is at ``~/.cache/jenkins_jobs``, which
