@@ -311,7 +311,9 @@ Would create jobs ``build-i386`` and ``build-amd64``.
 Advanced
 ^^^^^^^^
 
-If you want to use lists or dicts variables you can use ``{obj:key}``.
+If you want to pass an object (boolean, list or dict) to templates you can
+use an ``{obj:key}`` variable in the job template.  This triggers the use
+of code that retains the original object type.
 
 For example:
 
