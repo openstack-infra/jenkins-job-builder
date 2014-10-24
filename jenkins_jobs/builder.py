@@ -134,6 +134,7 @@ class YamlParser(object):
     def __init__(self, config=None):
         self.data = {}
         self.jobs = []
+        self.xml_jobs = []
         self.config = config
         self.registry = ModuleRegistry(self.config)
         self.path = ["."]
@@ -142,6 +143,15 @@ class YamlParser(object):
                     config.has_option('job_builder', 'include_path'):
                 self.path = config.get('job_builder',
                                        'include_path').split(':')
+        self.keep_desc = self.get_keep_desc()
+
+    def get_keep_desc(self):
+        keep_desc = False
+        if self.config and self.config.has_section('job_builder') and \
+                self.config.has_option('job_builder', 'keep_descriptions'):
+            keep_desc = self.config.getboolean('job_builder',
+                                               'keep_descriptions')
+        return keep_desc
 
     def parse_fp(self, fp):
         data = local_yaml.load(fp, search_path=self.path)
@@ -210,7 +220,16 @@ class YamlParser(object):
         newdata.update(data)
         return newdata
 
-    def generateXML(self, jobs_filter=None):
+    def formatDescription(self, job):
+        if self.keep_desc:
+            description = job.get("description", None)
+        else:
+            description = job.get("description", '')
+        if description is not None:
+            job["description"] = description + \
+                self.get_managed_string().lstrip()
+
+    def expandYaml(self, jobs_filter=None):
         changed = True
         while changed:
             changed = False
@@ -223,11 +242,12 @@ class YamlParser(object):
             if jobs_filter and not matches(job['name'], jobs_filter):
                 logger.debug("Ignoring job {0}".format(job['name']))
                 continue
-            logger.debug("XMLifying job '{0}'".format(job['name']))
+            logger.debug("Expanding job '{0}'".format(job['name']))
             job = self.applyDefaults(job)
-            self.getXMLForJob(job)
+            self.formatDescription(job)
+            self.jobs.append(job)
         for project in self.data.get('project', {}).values():
-            logger.debug("XMLifying project '{0}'".format(project['name']))
+            logger.debug("Expanding project '{0}'".format(project['name']))
             # use a set to check for duplicate job references in projects
             seen = set()
             for jobspec in project.get('jobs', []):
@@ -279,7 +299,8 @@ class YamlParser(object):
                         # Except name, since the group's name is not useful
                         d['name'] = project['name']
                         if template:
-                            self.getXMLForTemplateJob(d, template, jobs_filter)
+                            self.expandYamlForTemplateJob(d, template,
+                                                          jobs_filter)
                     continue
                 # see if it's a template
                 template = self.getJobTemplate(jobname)
@@ -287,7 +308,7 @@ class YamlParser(object):
                     d = {}
                     d.update(project)
                     d.update(jobparams)
-                    self.getXMLForTemplateJob(d, template, jobs_filter)
+                    self.expandYamlForTemplateJob(d, template, jobs_filter)
                 else:
                     raise JenkinsJobsException("Failed to find suitable "
                                                "template named '{0}'"
@@ -296,13 +317,13 @@ class YamlParser(object):
         seen = set()
         # walk the list in reverse so that last definition wins
         for job in self.jobs[::-1]:
-            if job.name in seen:
+            if job['name'] in seen:
                 self._handle_dups("Duplicate definitions for job '{0}' "
-                                  "specified".format(job.name))
+                                  "specified".format(job['name']))
                 self.jobs.remove(job)
-            seen.add(job.name)
+            seen.add(job['name'])
 
-    def getXMLForTemplateJob(self, project, template, jobs_filter=None):
+    def expandYamlForTemplateJob(self, project, template, jobs_filter=None):
         dimensions = []
         for (k, v) in project.items():
             if type(v) == list and k not in ['jobs']:
@@ -345,36 +366,28 @@ class YamlParser(object):
 
             # Lookup the checksum
             if checksum not in checksums:
-
-                # We also want to skip XML generation whenever the user did
+                # We also want to skip expansion whenever the user did
                 # not ask for that job.
                 job_name = expanded.get('name')
                 if jobs_filter and not matches(job_name, jobs_filter):
                     continue
 
-                logger.debug("Generating XML for template job {0}"
-                             " (params {1})".format(
-                                 template['name'], params))
-                self.getXMLForJob(expanded)
+                self.formatDescription(expanded)
+                self.jobs.append(expanded)
                 checksums.add(checksum)
+
+    def get_managed_string(self):
+        # The \n\n is not hard coded, because they get stripped if the
+        # project does not otherwise have a description.
+        return "\n\n" + MAGIC_MANAGE_STRING
+
+    def generateXML(self):
+        for job in self.jobs:
+            self.xml_jobs.append(self.getXMLForJob(job))
 
     def getXMLForJob(self, data):
         kind = data.get('project-type', 'freestyle')
 
-        keep_desc = False
-        if self.config:
-            if self.config.has_section('job_builder') and \
-                    self.config.has_option('job_builder', 'keep_descriptions'):
-                keep_desc = self.config.getboolean('job_builder',
-                                                   'keep_descriptions')
-
-        if keep_desc:
-            description = data.get("description", None)
-        else:
-            description = data.get("description", '')
-        if description is not None:
-            data["description"] = description + \
-                self.get_managed_string().lstrip()
         for ep in pkg_resources.iter_entry_points(
                 group='jenkins_jobs.projects', name=kind):
             Mod = ep.load()
@@ -382,18 +395,12 @@ class YamlParser(object):
             xml = mod.root_xml(data)
             self.gen_xml(xml, data)
             job = XmlJob(xml, data['name'])
-            self.jobs.append(job)
-            break
+            return job
 
     def gen_xml(self, xml, data):
         for module in self.registry.modules:
             if hasattr(module, 'gen_xml'):
                 module.gen_xml(self, xml, data)
-
-    def get_managed_string(self):
-        # The \n\n is not hard coded, because they get stripped if the
-        # project does not otherwise have a description.
-        return "\n\n" + MAGIC_MANAGE_STRING
 
 
 class ModuleRegistry(object):
@@ -655,10 +662,10 @@ class Builder(object):
     def delete_job(self, glob_name, fn=None):
         if fn:
             self.load_files(fn)
-            self.parser.generateXML(glob_name)
-            jobs = [j.name
+            self.parser.expandYaml(glob_name)
+            jobs = [j['name']
                     for j in self.parser.jobs
-                    if matches(j.name, [glob_name])]
+                    if matches(j['name'], [glob_name])]
         else:
             jobs = [glob_name]
         for job in jobs:
@@ -673,11 +680,12 @@ class Builder(object):
 
     def update_job(self, input_fn, names=None, output=None):
         self.load_files(input_fn)
-        self.parser.generateXML(names)
+        self.parser.expandYaml(names)
+        self.parser.generateXML()
 
-        self.parser.jobs.sort(key=operator.attrgetter('name'))
+        self.parser.xml_jobs.sort(key=operator.attrgetter('name'))
 
-        for job in self.parser.jobs:
+        for job in self.parser.xml_jobs:
             if names and not matches(job.name, names):
                 continue
             if output:
@@ -720,4 +728,4 @@ class Builder(object):
                 self.cache.set(job.name, md5)
             else:
                 logger.debug("'{0}' has not changed".format(job.name))
-        return self.parser.jobs
+        return self.parser.xml_jobs
