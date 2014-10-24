@@ -213,7 +213,7 @@ def throttle(parser, xml_parent, data):
 
 def inject(parser, xml_parent, data):
     """yaml: inject
-    Allows you to inject evironment variables into the build.
+    Allows you to inject environment variables into the build.
     Requires the Jenkins `Env Inject Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin>`_
 
@@ -227,11 +227,11 @@ def inject(parser, xml_parent, data):
     :arg bool keep-system-variables: keep system variables (default true)
     :arg bool keep-build-variables: keep build variable (default true)
 
-    Example::
+    Example:
 
-      properties:
-        - inject:
-            properties-content: FOO=bar
+    .. literalinclude:: /../../tests/properties/fixtures/inject001.yaml
+       :language: yaml
+
     """
     inject = XML.SubElement(xml_parent,
                             'EnvInjectJobProperty')
