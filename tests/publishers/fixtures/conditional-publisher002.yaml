@@ -1,0 +1,18 @@
+publishers:
+    - conditional-publisher:
+        - condition-kind: shell
+          condition-command: ls file*
+          on-evaluation-failure: dont-run
+          action:
+              - copy-to-master:
+                  includes:
+                    - file1
+                    - file2*.txt
+                  excludes:
+                    - file2bad.txt
+        - condition-kind: always
+          on-evaluation-failure: run-and-mark-unstable
+          action:
+              - aggregate-tests:
+                  include-failed-builds: true
+

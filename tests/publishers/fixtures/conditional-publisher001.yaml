@@ -1,0 +1,9 @@
+publishers:
+    - conditional-publisher:
+        - condition-kind: current-status
+          condition-worst: FAILURE
+          condition-best: SUCCESS
+          action:
+              - archive:
+                  artifacts: '**/**'
+                  allow-empty: 'true'
