@@ -1,0 +1,9 @@
+publishers:
+  - trigger-parameterized-builds:
+    - project: 'test-project-all'
+      node-label-name: NodeLabelName
+      node-label: NodeLabelNode
+    - project: 'test-project-just-name'
+      node-label-name: NodeLabelName
+    - project: 'test-project-just-node'
+      node-label: NodeLabelNode || NodeBar

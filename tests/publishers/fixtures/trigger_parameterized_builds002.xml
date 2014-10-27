@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.parameterizedtrigger.BuildTrigger>
+      <configs>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <org.jvnet.jenkins.plugins.nodelabelparameter.parameterizedtrigger.NodeLabelBuildParameter>
+              <name>NodeLabelName</name>
+              <nodeLabel>NodeLabelNode</nodeLabel>
+            </org.jvnet.jenkins.plugins.nodelabelparameter.parameterizedtrigger.NodeLabelBuildParameter>
+          </configs>
+          <projects>test-project-all</projects>
+          <condition>ALWAYS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <org.jvnet.jenkins.plugins.nodelabelparameter.parameterizedtrigger.NodeLabelBuildParameter>
+              <name>NodeLabelName</name>
+              <nodeLabel/>
+            </org.jvnet.jenkins.plugins.nodelabelparameter.parameterizedtrigger.NodeLabelBuildParameter>
+          </configs>
+          <projects>test-project-just-name</projects>
+          <condition>ALWAYS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <org.jvnet.jenkins.plugins.nodelabelparameter.parameterizedtrigger.NodeLabelBuildParameter>
+              <name/>
+              <nodeLabel>NodeLabelNode || NodeBar</nodeLabel>
+            </org.jvnet.jenkins.plugins.nodelabelparameter.parameterizedtrigger.NodeLabelBuildParameter>
+          </configs>
+          <projects>test-project-just-node</projects>
+          <condition>ALWAYS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+      </configs>
+    </hudson.plugins.parameterizedtrigger.BuildTrigger>
+  </publishers>
+</project>
+
