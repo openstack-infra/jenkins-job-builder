@@ -5,6 +5,8 @@
       <info>
         <propertiesFilePath>example.prop</propertiesFilePath>
         <propertiesContent>EXAMPLE=foo-bar</propertiesContent>
+        <scriptFilePath>script.sh</scriptFilePath>
+        <scriptContent>script content</scriptContent>
       </info>
     </EnvInjectBuilder>
   </builders>

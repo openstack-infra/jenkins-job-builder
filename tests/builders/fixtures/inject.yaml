@@ -2,3 +2,5 @@ builders:
   - inject:
       properties-file: example.prop
       properties-content: EXAMPLE=foo-bar
+      script-file: script.sh
+      script-content: script content
