@@ -822,6 +822,12 @@ def conditional_step(parser, xml_parent, data):
                        representation of true
 
                          :condition-expression: Expression to expand
+    strings-match      Run the step if two strings match
+
+                         :condition-string1: First string
+                         :condition-string2: Second string
+                         :condition-case-insensitive: Case insensitive
+                           defaults to false
     current-status     Run the build step if the current build status is
                        within the configured range
 
@@ -866,6 +872,14 @@ def conditional_step(parser, xml_parent, data):
                      'org.jenkins_ci.plugins.run_condition.core.'
                      'BooleanCondition')
             XML.SubElement(ctag, "token").text = cdata['condition-expression']
+        elif kind == "strings-match":
+            ctag.set('class',
+                     'org.jenkins_ci.plugins.run_condition.core.'
+                     'StringsMatchCondition')
+            XML.SubElement(ctag, "arg1").text = cdata['condition-string1']
+            XML.SubElement(ctag, "arg2").text = cdata['condition-string2']
+            XML.SubElement(ctag, "ignoreCase").text = str(cdata.get(
+                'condition-case-insensitive', False)).lower()
         elif kind == "current-status":
             ctag.set('class',
                      'org.jenkins_ci.plugins.run_condition.core.'
