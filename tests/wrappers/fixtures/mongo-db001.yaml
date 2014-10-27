@@ -1,0 +1,7 @@
+wrappers:
+  - mongo-db:
+      name: 2.4.6
+      data-directory: /var/tmp/mongo
+      port: 5555
+      startup-params: "--bind_ip 127.0.0.1"
+      start-timeout: 5000

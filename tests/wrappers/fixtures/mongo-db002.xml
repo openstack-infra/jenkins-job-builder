@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <org.jenkinsci.plugins.mongodb.MongoBuildWrapper plugin="mongodb">
+      <mongodbName>2.4.6</mongodbName>
+      <port/>
+      <dbpath/>
+      <parameters/>
+      <startTimeout>0</startTimeout>
+    </org.jenkinsci.plugins.mongodb.MongoBuildWrapper>
+  </buildWrappers>
+</project>

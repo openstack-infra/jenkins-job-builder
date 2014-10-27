@@ -1018,6 +1018,41 @@ def logstash(parser, xml_parent, data):
         key_sub_element.text = str(redis_config.get('key', 'logstash'))
 
 
+def mongo_db(parser, xml_parent, data):
+    """yaml: mongo-db build wrapper
+    Initalizes a MongoDB database while running the build.
+    Requires the Jenkins `MongoDB plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/MongoDB+Plugin>`_
+
+    :arg str name: The name of the MongoDB install to use
+    :arg str data-directory: Data directory for the server (optional)
+    :arg int port: Port for the server (optional)
+    :arg str startup-params: Startup parameters for the server (optional)
+    :arg int start-timeout: How long to wait for the server to start in
+        milliseconds. 0 means no timeout. (default '0')
+
+    Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/mongo-db001.yaml
+
+    """
+    mongodb = XML.SubElement(xml_parent,
+                             'org.jenkinsci.plugins.mongodb.'
+                             'MongoBuildWrapper')
+    mongodb.set('plugin', 'mongodb')
+
+    if not str(data.get('name', '')):
+        raise JenkinsJobsException('The mongo install name must be specified.')
+    XML.SubElement(mongodb, 'mongodbName').text = str(data.get('name', ''))
+    XML.SubElement(mongodb, 'port').text = str(data.get('port', ''))
+    XML.SubElement(mongodb, 'dbpath').text = str(data.get(
+        'data-directory', ''))
+    XML.SubElement(mongodb, 'parameters').text = str(data.get(
+        'startup-params', ''))
+    XML.SubElement(mongodb, 'startTimeout').text = str(data.get(
+        'start-timeout', '0'))
+
+
 def delivery_pipeline(parser, xml_parent, data):
     """yaml: delivery-pipeline
     If enabled the job will create a version based on the template.
