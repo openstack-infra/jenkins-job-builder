@@ -13,21 +13,36 @@
 # under the License.
 
 """
-Enable hipchat notification of build execution.
+Enable HipChat notifications of build execution.
 
-Example::
+:Parameters:
+  * **enabled** *(bool)*: general cut off switch. If not explicitly set to
+    ``true``, no hipchat parameters are written to XML. For Jenkins HipChat
+    plugin of version prior to 0.1.5, also enables all build results to be
+    reported in HipChat room. For later plugin versions, explicit notify-*
+    setting is required (see below).
+  * **room** *(str)*: name of HipChat room to post messages to
+  * **start-notify** *(bool)*: post messages about build start event
+  * **notify-success** *(bool)*: post messages about successful build event
+    (Jenkins HipChat plugin >= 0.1.5)
+  * **notify-aborted** *(bool)*: post messages about aborted build event
+    (Jenkins HipChat plugin >= 0.1.5)
+  * **notify-not-built** *(bool)*: post messages about build set to NOT_BUILT
+    status (Jenkins HipChat plugin >= 0.1.5). This status code is used in a
+    multi-stage build (like maven2) where a problem in earlier stage prevented
+    later stages from building.
+  * **notify-unstable** *(bool)*: post messages about unstable build event
+    (Jenkins HipChat plugin >= 0.1.5)
+  * **notify-failure** *(bool)*:  post messages about build failure event
+    (Jenkins HipChat plugin >= 0.1.5)
+  * **notify-back-to-normal** *(bool)*: post messages about build being back to
+    normal after being unstable or failed (Jenkins HipChat plugin >= 0.1.5)
 
-  - job:
-      name: test_job
-      hipchat:
-        enabled: true
-        room:  Testjob Build Notifications
-        start-notify: true
+Example:
 
-In the jenkins UI specification, the hipchat plugin must be explicitly
-selected as a publisher.  This is not required (or supported) here - use the
-``enabled`` parameter to enable/disable the publisher action.
-If you set ``enabled: false``, no hipchat parameters are written to XML.
+.. literalinclude:: /../../tests/hipchat/fixtures/hipchat001.yaml
+   :language: yaml
+
 """
 
 # Enabling hipchat notifications on a job requires specifying the hipchat
@@ -98,6 +113,24 @@ class HipChat(jenkins_jobs.modules.base.Base):
         XML.SubElement(pdefhip, 'room').text = hipchat['room']
         XML.SubElement(pdefhip, 'startNotification').text = str(
             hipchat.get('start-notify', False)).lower()
+        if hipchat.get('notify-success'):
+            XML.SubElement(pdefhip, 'notifySuccess').text = str(
+                hipchat.get('notify-success')).lower()
+        if hipchat.get('notify-aborted'):
+            XML.SubElement(pdefhip, 'notifyAborted').text = str(
+                hipchat.get('notify-aborted')).lower()
+        if hipchat.get('notify-not-built'):
+            XML.SubElement(pdefhip, 'notifyNotBuilt').text = str(
+                hipchat.get('notify-not-built')).lower()
+        if hipchat.get('notify-unstable'):
+            XML.SubElement(pdefhip, 'notifyUnstable').text = str(
+                hipchat.get('notify-unstable')).lower()
+        if hipchat.get('notify-failure'):
+            XML.SubElement(pdefhip, 'notifyFailure').text = str(
+                hipchat.get('notify-failure')).lower()
+        if hipchat.get('notify-back-to-normal'):
+            XML.SubElement(pdefhip, 'notifyBackToNormal').text = str(
+                hipchat.get('notify-back-to-normal')).lower()
 
         publishers = xml_parent.find('publishers')
         if publishers is None:

@@ -1,0 +1,4 @@
+hipchat:
+  enabled: true
+  room: My Room
+  start-notify: true
