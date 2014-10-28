@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.korosoft.jenkins.plugin.rtp.RichTextPublisher>
+      <stableText>testing</stableText>
+      <unstableText/>
+      <failedText/>
+      <unstableAsStable>True</unstableAsStable>
+      <failedAsStable>True</failedAsStable>
+      <parserName>HTML</parserName>
+    </org.korosoft.jenkins.plugin.rtp.RichTextPublisher>
+  </publishers>
+</project>

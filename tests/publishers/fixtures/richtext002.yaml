@@ -1,0 +1,5 @@
+publishers:
+    - rich-text-publisher:
+        stable-text: the stable text
+        unstable-text: the unstable text
+        parser-name: HTML
