@@ -4,5 +4,6 @@ scm:
      repos:
        - url: http://svn.example.com/repo
          basedir: .
+         credentials-id: "abcdef01234567890"
        - url: http://svn.example.com/repo2
          basedir: repo2
