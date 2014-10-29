@@ -3877,7 +3877,8 @@ def doxygen(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Doxygen Plugin <Doxygen+Plugin>`.
 
     :arg str doxyfile: The doxyfile path
-    :arg bool keepall: Retain doxygen generation for each successful build
+    :arg str slave: The node or label to pull the doxygen HTML files from
+    :arg bool keep-all: Retain doxygen generation for each successful build
         (default: false)
     :arg str folder: Folder where you run doxygen (default: '')
 
@@ -3886,13 +3887,29 @@ def doxygen(parser, xml_parent, data):
     .. literalinclude:: /../../tests/publishers/fixtures/doxygen001.yaml
        :language: yaml
     """
+
+    logger = logging.getLogger(__name__)
     p = XML.SubElement(xml_parent, 'hudson.plugins.doxygen.DoxygenArchiver')
-    if not data['doxyfile']:
-        raise JenkinsJobsException("The path to a doxyfile must be specified.")
-    XML.SubElement(p, 'doxyfilePath').text = str(data.get("doxyfile"))
-    XML.SubElement(p, 'keepAll').text = str(data.get("keepall", False)).lower()
-    XML.SubElement(p, 'folderWhereYouRunDoxygen').text = \
-        str(data.get("folder", ""))
+    if not data.get('doxyfile'):
+        raise JenkinsJobsException('The path to a doxyfile must be specified.')
+    XML.SubElement(p, 'doxyfilePath').text = str(data.get('doxyfile'))
+    XML.SubElement(p, 'runOnChild').text = str(data.get('slave', ''))
+    # backward compatibility
+    if 'keepall' in data:
+        if 'keep-all' in data:
+            XML.SubElement(p, 'keepAll').text = str(
+                data.get('keep-all', False)).lower()
+            logger.warn("The value of 'keepall' will be ignored "
+                        "in preference to 'keep-all'.")
+        else:
+            XML.SubElement(p, 'keepAll').text = str(
+                data.get('keepall', False)).lower()
+            logger.warn("'keepall' is deprecated please use 'keep-all'")
+    else:
+        XML.SubElement(p, 'keepAll').text = str(
+            data.get('keep-all', False)).lower()
+    XML.SubElement(p, 'folderWhereYouRunDoxygen').text = str(
+        data.get('folder', ''))
 
 
 def sitemonitor(parser, xml_parent, data):
