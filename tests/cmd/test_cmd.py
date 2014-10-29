@@ -208,3 +208,25 @@ class CmdTests(testtools.TestCase):
         cmd.execute(args, config)   # probably better to fail here
 
         update_job_mock.assert_called_with(paths, [], output=args.output_dir)
+
+    @mock.patch('jenkins_jobs.cmd.Builder.delete_job')
+    def test_delete_single_job(self, delete_job_mock):
+        """
+        Test handling the deletion of a single Jenkins job.
+        """
+
+        args = self.parser.parse_args(['delete', 'test_job'])
+        config = configparser.ConfigParser()
+        config.readfp(StringIO(cmd.DEFAULT_CONF))
+        cmd.execute(args, config)  # passes if executed without error
+
+    @mock.patch('jenkins_jobs.cmd.Builder.delete_job')
+    def test_delete_multiple_jobs(self, delete_job_mock):
+        """
+        Test handling the deletion of multiple Jenkins jobs.
+        """
+
+        args = self.parser.parse_args(['delete', 'test_job1', 'test_job2'])
+        config = configparser.ConfigParser()
+        config.readfp(StringIO(cmd.DEFAULT_CONF))
+        cmd.execute(args, config)  # passes if executed without error
