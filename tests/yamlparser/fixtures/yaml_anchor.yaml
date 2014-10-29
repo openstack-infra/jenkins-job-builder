@@ -1,0 +1,20 @@
+- wrapper_defaults: &wrapper_defaults
+    name: 'wrapper_defaults'
+    wrappers:
+      - timeout:
+          timeout: 180
+          fail: true
+      - timestamps
+
+- job_defaults: &job_defaults
+    name: 'defaults'
+    <<: *wrapper_defaults
+
+- job-template:
+    name: 'myjob'
+    <<: *job_defaults
+
+- project:
+    name: myproject
+    jobs:
+      - myjob

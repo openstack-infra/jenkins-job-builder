@@ -313,10 +313,10 @@ You can define variables that will be realized in a `Job Template`.
 
 Would create jobs ``build-i386`` and ``build-amd64``.
 
-.. _advanced:
+.. _variable_references:
 
-Advanced
-^^^^^^^^
+Variable References
+^^^^^^^^^^^^^^^^^^^
 
 If you want to pass an object (boolean, list or dict) to templates you can
 use an ``{obj:key}`` variable in the job template.  This triggers the use
@@ -326,6 +326,15 @@ For example:
 
 .. literalinclude::  /../../tests/yamlparser/fixtures/custom_distri.yaml
 
+
+The yaml specification supports `anchors and aliases`__ which means
+that JJB definitions allow references to variables in templates.
+
+__ http://yaml.org/spec/1.2/spec.html#id2765878
+
+For example:
+
+.. literalinclude::  /../../tests/yamlparser/fixtures/yaml_anchor.yaml
 
 Custom Yaml Tags
 ----------------
