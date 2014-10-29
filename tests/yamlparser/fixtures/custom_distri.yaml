@@ -1,5 +1,6 @@
 - project:
     name: test_custom_distri
+    disabled: true
     distributions: !!python/tuple [precise, jessie]
     architectures: !!python/tuple &architectures
       - amd64
@@ -14,6 +15,7 @@
 - job-template:
       name: '{name}-source'
       project-type: matrix
+      disabled: '{obj:disabled}'
       axes:
         - axis:
             type: user-defined
