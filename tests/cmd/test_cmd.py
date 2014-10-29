@@ -11,11 +11,20 @@ from jenkins_jobs import cmd
 # attempting to create the cache directory multiple times as the tests
 # are run in parallel.  Stub out the CacheStorage to ensure that each
 # test can safely create the cache directory without risk of interference.
-@mock.patch('jenkins_jobs.builder.CacheStorage', mock.MagicMock)
 class CmdTests(testtools.TestCase):
 
     fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
     parser = cmd.create_parser()
+
+    def setUp(self):
+        super(CmdTests, self).setUp()
+        self.cache_patch = mock.patch('jenkins_jobs.builder.CacheStorage',
+                                      autospec=True)
+        self.cache_patch.start()
+
+    def tearDown(self):
+        self.cache_patch.stop()
+        super(CmdTests, self).tearDown()
 
     def test_with_empty_args(self):
         """
@@ -230,3 +239,25 @@ class CmdTests(testtools.TestCase):
         config = configparser.ConfigParser()
         config.readfp(StringIO(cmd.DEFAULT_CONF))
         cmd.execute(args, config)  # passes if executed without error
+
+    @mock.patch('jenkins_jobs.builder.Jenkins.delete_job')
+    def test_delete_using_glob_params(self, delete_job_mock):
+        """
+        Test handling the deletion of multiple Jenkins jobs using the glob
+        parameters feature.
+        """
+
+        args = self.parser.parse_args(['delete',
+                                       '--path',
+                                       os.path.join(self.fixtures_path,
+                                                    'cmd-002.yaml'),
+                                       '*bar*'])
+        config = configparser.ConfigParser()
+        config.readfp(StringIO(cmd.DEFAULT_CONF))
+        cmd.execute(args, config)
+        calls = [mock.call('bar001'), mock.call('bar002')]
+        delete_job_mock.assert_has_calls(calls, any_order=True)
+        self.assertEquals(delete_job_mock.call_count, len(calls),
+                          "Jenkins.delete_job() was called '%s' times when "
+                          "expected '%s'" % (delete_job_mock.call_count,
+                                             len(calls)))
