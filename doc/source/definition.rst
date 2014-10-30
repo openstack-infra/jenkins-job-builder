@@ -42,6 +42,11 @@ later.  There are a few basic optional fields for a Job definition::
       block-upstream: false
       retry-count: 3
       node: NodeLabel1 || NodeLabel2
+      logrotate:
+        daysToKeep: 3
+        numToKeep: 20
+        artifactDaysToKeep: -1
+        artifactNumToKeep: -1
 
 :Job Parameters:
     * **project-type**:
@@ -105,6 +110,10 @@ later.  There are a few basic optional fields for a Job definition::
       label as the node to tie on, which will cause Jenkins to build
       the job on any of the machines with that label.
 
+    * **logrotate**:
+      The Logrotate section allows you to automatically remove old build
+      history. It adds the ``logrotate`` attribute to the :ref:`Job`
+      definition. All logrotate attributes default to "-1" (keep forever).
 
 .. _job-template:
 
