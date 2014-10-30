@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <hudson.plugins.release.ReleaseWrapper>
+      <doNotKeepLog>true</doNotKeepLog>
+      <overrideBuildParameters>false</overrideBuildParameters>
+      <releaseVersionTemplate/>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>RELEASE_BRANCH</name>
+          <description>Git branch to release from.</description>
+          <defaultValue/>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>FOO</name>
+          <description>A parameter named FOO, defaults to 'false'.</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+      </parameterDefinitions>
+      <postSuccessfulBuildSteps>
+        <hudson.tasks.Shell>
+          <command>#!/bin/bash
+copy_build_artefacts.sh
+</command>
+        </hudson.tasks.Shell>
+      </postSuccessfulBuildSteps>
+    </hudson.plugins.release.ReleaseWrapper>
+  </buildWrappers>
+</project>

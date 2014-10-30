@@ -1,0 +1,16 @@
+wrappers:
+  - release:
+      keep-forever: false
+      parameters:
+          - string:
+              name: RELEASE_BRANCH
+              default: ''
+              description: Git branch to release from.
+          - bool:
+              name: FOO
+              default: false
+              description: "A parameter named FOO, defaults to 'false'."
+      post-success:
+          - shell: |
+              #!/bin/bash
+              copy_build_artefacts.sh
