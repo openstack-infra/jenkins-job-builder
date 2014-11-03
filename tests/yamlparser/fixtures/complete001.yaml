@@ -38,19 +38,20 @@
     name: gerrit-review
     triggers:
       - gerrit:
-         triggerOnPatchsetUploadedEvent: true
-         triggerOnChangeMergedEvent: false
-         triggerOnRefUpdatedEvent: false
-         triggerOnCommentAddedEvent: false
-         overrideVotes: true
-         gerritBuildSuccessfulVerifiedValue: 1
-         gerritBuildFailedVerifiedValue: -1
+         trigger-on-patchset-uploaded-event: true
+         trigger-on-change-merged-event: false
+         trigger-on-ref-updated-event: false
+         trigger-on-comment-added-event: false
+         override-votes: true
+         gerrit-build-successful-verified-value: 1
+         gerrit-build-failed-verified-value: -1
          projects:
-           - projectCompareType: 'PLAIN'
-             projectPattern: '{project_pattern}'
-             branchCompareType: 'ANT'
-             branchPattern: '**'
-         failureMessage: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+           - project-compare-type: 'PLAIN'
+             project-pattern: '{project_pattern}'
+             branches:
+               - branch-compare-type: 'ANT'
+                 branch-pattern: '**'
+         failure-message: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
 
 - scm:
     name: gerrit-scm
