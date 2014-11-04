@@ -795,6 +795,9 @@ def junit(parser, xml_parent, data):
         results stability (default false).
         Requires the Jenkins `Test stability Plugin
         <https://wiki.jenkins-ci.org/display/JENKINS/Test+stability+plugin>`_.
+    :arg bool claim-build: Allow claiming of failed tests (default false)
+        Requires the Jenkins `Claim Plugin.
+        <https://wiki.jenkins-ci.org/display/JENKINS/Claim+plugin>`_.
 
     Minimal example using defaults:
 
@@ -815,6 +818,9 @@ def junit(parser, xml_parent, data):
         XML.SubElement(datapublisher,
                        'de.esailors.jenkins.teststability'
                        '.StabilityTestDataPublisher')
+    if str(data.get('claim-build', False)).lower() == 'true':
+        XML.SubElement(datapublisher,
+                       'hudson.plugins.claim.ClaimTestDataPublisher')
 
 
 def xunit(parser, xml_parent, data):

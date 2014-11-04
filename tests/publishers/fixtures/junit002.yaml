@@ -3,3 +3,4 @@ publishers:
     results: nosetests-example.xml
     keep-long-stdio: false
     test-stability: true
+    claim-build: true
