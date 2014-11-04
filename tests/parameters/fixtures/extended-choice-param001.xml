@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
+          <name>OPTIONS</name>
+          <description>Available options</description>
+          <type>PT_CHECKBOX</type>
+          <value>OptionA,OptionB,OptionC</value>
+          <visibleItemCount>2</visibleItemCount>
+          <multiSelectDelimiter>,</multiSelectDelimiter>
+          <quoteValue>false</quoteValue>
+          <defaultValue/>
+        </com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+</project>

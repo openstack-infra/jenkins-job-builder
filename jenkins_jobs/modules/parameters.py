@@ -35,6 +35,7 @@ Example::
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+from jenkins_jobs.errors import JenkinsJobsException
 
 
 def base_param(parser, xml_parent, data, do_default, ptype):
@@ -214,6 +215,61 @@ def run_param(parser, xml_parent, data):
     pdef = base_param(parser, xml_parent, data, False,
                       'hudson.model.RunParameterDefinition')
     XML.SubElement(pdef, 'projectName').text = data['project-name']
+
+
+def extended_choice_param(parser, xml_parent, data):
+    """yaml: extended-choice
+    Extended Choice Parameter
+    Requires the Jenkins `Extended Choice Parameter Plug-in.
+    <https://wiki.jenkins-ci.org/display/JENKINS/
+    Extended+Choice+Parameter+plugin>`_
+
+    :arg str name: the name of the parameter
+    :arg str description: a description of the parameter (optional)
+    :arg str type: parameter select type. Can be PT_SINGLE_SELECT,
+        PT_MULTI_SELECT, PT_RADIO, PT_CHECKBOX, PT_TEXTBOX
+    :arg str value: comma separated list of values
+    :arg str visible-item-count: number of lines to render for multi-select
+        (default 5)
+    :arg str multi-select-delimiter: value between selections when the
+        parameter is a multi-select (default ,)
+    :arg str default-value: default selected value
+
+    Example:
+
+    .. literalinclude:: \
+    /../../tests/parameters/fixtures/extended-choice-param001.yaml
+       :language: yaml
+
+    """
+    pdef = XML.SubElement(xml_parent,
+                          'com.cwctravel.hudson.plugins.'
+                          'extended__choice__parameter.'
+                          'ExtendedChoiceParameterDefinition')
+    XML.SubElement(pdef, 'name').text = data['name']
+    XML.SubElement(pdef, 'description').text = data.get('description', '')
+
+    types_list = ['PT_SINGLE_SELECT',
+                  'PT_MULTI_SELECT',
+                  'PT_RADIO',
+                  'PT_CHECKBOX',
+                  'PT_TEXTBOX']
+    type = data['type']
+    if type not in types_list:
+        raise JenkinsJobsException(
+            'extended-choice type must be one of: '
+            + ', '.join(types_list))
+    else:
+        XML.SubElement(pdef, 'type').text = type
+
+    XML.SubElement(pdef, 'value').text = data.get('value', '')
+    XML.SubElement(pdef, 'visibleItemCount').text = data.get(
+        'visible-item-count', '5')
+    XML.SubElement(pdef, 'multiSelectDelimiter').text = data.get(
+        'multi-select-delimiter', ',')
+    XML.SubElement(pdef, 'quoteValue').text = 'false'
+    XML.SubElement(pdef, 'defaultValue').text = data.get(
+        'default-value', '')
 
 
 def validating_string_param(parser, xml_parent, data):
