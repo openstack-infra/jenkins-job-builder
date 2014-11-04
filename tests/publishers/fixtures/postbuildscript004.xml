@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.postbuildscript.PostBuildScript>
+      <buildSteps>
+        <hudson.tasks.Shell>
+          <command>echo &quot;Shell execution should be first&quot;</command>
+        </hudson.tasks.Shell>
+        <hudson.tasks.Ant>
+          <targets>ant_target</targets>
+          <antName>default</antName>
+        </hudson.tasks.Ant>
+      </buildSteps>
+      <groovyScriptContentList>
+        <org.jenkinsci.plugins.postbuildscript.GroovyScriptContent>
+          <content>/** This is some inlined groovy */</content>
+        </org.jenkinsci.plugins.postbuildscript.GroovyScriptContent>
+        <org.jenkinsci.plugins.postbuildscript.GroovyScriptContent>
+          <content>/** Some more inlined groovy */</content>
+        </org.jenkinsci.plugins.postbuildscript.GroovyScriptContent>
+      </groovyScriptContentList>
+      <genericScriptFileList>
+        <org.jenkinsci.plugins.postbuildscript.GenericScript>
+          <filePath>/tmp/one.sh</filePath>
+        </org.jenkinsci.plugins.postbuildscript.GenericScript>
+        <org.jenkinsci.plugins.postbuildscript.GenericScript>
+          <filePath>/tmp/two.sh</filePath>
+        </org.jenkinsci.plugins.postbuildscript.GenericScript>
+      </genericScriptFileList>
+      <groovyScriptFileList>
+        <org.jenkinsci.plugins.postbuildscript.GroovyScriptFile>
+          <filePath>/tmp/one.groovy</filePath>
+        </org.jenkinsci.plugins.postbuildscript.GroovyScriptFile>
+        <org.jenkinsci.plugins.postbuildscript.GroovyScriptFile>
+          <filePath>/tmp/two.groovy</filePath>
+        </org.jenkinsci.plugins.postbuildscript.GroovyScriptFile>
+      </groovyScriptFileList>
+      <scriptOnlyIfSuccess>false</scriptOnlyIfSuccess>
+      <scriptOnlyIfFailure>true</scriptOnlyIfFailure>
+    </org.jenkinsci.plugins.postbuildscript.PostBuildScript>
+  </publishers>
+</project>

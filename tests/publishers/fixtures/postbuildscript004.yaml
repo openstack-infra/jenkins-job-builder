@@ -1,0 +1,16 @@
+publishers:
+    - postbuildscript:
+        builders:
+            - shell: 'echo "Shell execution should be first"'
+            - ant: 'ant_target'
+        groovy:
+            - "/** This is some inlined groovy */"
+            - "/** Some more inlined groovy */"
+        generic-script:
+            - '/tmp/one.sh'
+            - '/tmp/two.sh'
+        groovy-script:
+            - '/tmp/one.groovy'
+            - '/tmp/two.groovy'
+        onsuccess: False
+        onfailure: True
