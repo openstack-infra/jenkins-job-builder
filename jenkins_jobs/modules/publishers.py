@@ -1156,7 +1156,7 @@ def scp(parser, xml_parent, data):
     :arg bool copy-after-failure: copy files even if the job fails
       (default false)
     :arg bool copy-console: copy the console log (default false); if
-      specified, omit 'target'
+      specified, omit 'source'
 
     Example:
 
