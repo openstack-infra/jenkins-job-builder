@@ -397,6 +397,8 @@ def svn(parser, xml_parent, data):
     :arg str url: URL of the svn repository
     :arg str basedir: location relative to the workspace root to checkout to
       (default '.')
+    :arg str credentials-id: optional argument to specify the ID of credentials
+      to use
     :arg str workspaceupdater: optional argument to specify
       how to update the workspace (default wipeworkspace)
     :arg list(str) excluded-users: list of users to ignore revisions from
@@ -417,6 +419,7 @@ def svn(parser, xml_parent, data):
       :Repo: * **url** (`str`) -- URL for the repository
              * **basedir** (`str`) -- Location relative to the workspace
                                       root to checkout to (default '.')
+             * **credentials-id** - optional ID of credentials to use
 
     :workspaceupdater values:
              :wipeworkspace: - deletes the workspace before checking out
@@ -442,11 +445,17 @@ def svn(parser, xml_parent, data):
                                     'hudson.scm.SubversionSCM_-ModuleLocation')
             XML.SubElement(module, 'remote').text = repo['url']
             XML.SubElement(module, 'local').text = repo.get('basedir', '.')
+            if 'credentials-id' in repo:
+                XML.SubElement(module, 'credentialsId').text = repo[
+                    'credentials-id']
     elif 'url' in data:
         module = XML.SubElement(locations,
                                 'hudson.scm.SubversionSCM_-ModuleLocation')
         XML.SubElement(module, 'remote').text = data['url']
         XML.SubElement(module, 'local').text = data.get('basedir', '.')
+        if 'credentials-id' in data:
+            XML.SubElement(module, 'credentialsId').text = data[
+                'credentials-id']
     else:
         raise JenkinsJobsException("A top level url or repos list must exist")
     updater = data.get('workspaceupdater', 'wipeworkspace')

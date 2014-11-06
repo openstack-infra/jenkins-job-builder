@@ -5,6 +5,7 @@
       <hudson.scm.SubversionSCM_-ModuleLocation>
         <remote>http://svn.example.com/repo</remote>
         <local>.</local>
+        <credentialsId>abcdef01234567890</credentialsId>
       </hudson.scm.SubversionSCM_-ModuleLocation>
       <hudson.scm.SubversionSCM_-ModuleLocation>
         <remote>http://svn.example.com/repo2</remote>
