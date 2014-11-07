@@ -82,6 +82,7 @@
       <buildFailureMessage>This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.</buildFailureMessage>
       <buildSuccessfulMessage/>
       <buildUnstableMessage/>
+      <buildNotBuiltMessage/>
       <customUrl/>
       <serverName>__ANY__</serverName>
     </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.GerritTrigger>

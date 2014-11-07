@@ -149,6 +149,7 @@ def gerrit(parser, xml_parent, data):
     :arg str failure-message: Message to leave on failure (default '')
     :arg str successful-message: Message to leave on success (default '')
     :arg str unstable-message: Message to leave when unstable (default '')
+    :arg str notbuilt-message: Message to leave when not built (default '')
     :arg list projects: list of projects to match
 
       :Project: * **project-compare-type** (`str`) --  ''PLAIN'', ''ANT'' or
@@ -331,6 +332,8 @@ def gerrit(parser, xml_parent, data):
         data.get('successful-message', ''))
     XML.SubElement(gtrig, 'buildUnstableMessage').text = str(
         data.get('unstable-message', ''))
+    XML.SubElement(gtrig, 'buildNotBuiltMessage').text = str(
+        data.get('notbuilt-message', ''))
     XML.SubElement(gtrig, 'customUrl').text = str(data.get('custom-url', ''))
     XML.SubElement(gtrig, 'serverName').text = str(
         data.get('server-name', '__ANY__'))

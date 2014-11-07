@@ -47,6 +47,7 @@
       <buildFailureMessage/>
       <buildSuccessfulMessage/>
       <buildUnstableMessage/>
+      <buildNotBuiltMessage/>
       <customUrl/>
       <serverName>__ANY__</serverName>
     </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.GerritTrigger>
