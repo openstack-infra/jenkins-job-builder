@@ -5,6 +5,7 @@
             <artifacts>*.tar.gz</artifacts>
             <latestOnly>false</latestOnly>
             <allowEmptyArchive>true</allowEmptyArchive>
+            <fingerprint>true</fingerprint>
         </hudson.tasks.ArtifactArchiver>
     </publishers>
 </project>
