@@ -656,7 +656,19 @@ class Builder(object):
             else:
                 files_to_process.append(path)
 
-        for in_file in files_to_process:
+        # symlinks used to allow loading of sub-dirs can result in duplicate
+        # definitions of macros and templates when loading all from top-level
+        unique_files = []
+        for f in files_to_process:
+            rpf = os.path.realpath(f)
+            if rpf not in unique_files:
+                unique_files.append(rpf)
+            else:
+                logger.warning("File '%s' already added as '%s, ignoring "
+                               "reference to avoid duplicating yaml "
+                               "definitions." % (f, rpf))
+
+        for in_file in unique_files:
             # use of ask-for-permissions instead of ask-for-forgiveness
             # performs better when low use cases.
             if hasattr(in_file, 'name'):
