@@ -14,7 +14,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-
 import jenkins_jobs.builder
 from tests.base import LoggingFixture
 from tests.base import mock

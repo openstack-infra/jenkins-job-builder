@@ -22,11 +22,11 @@ import itertools
 import logging
 import pkg_resources
 
-import jenkins_jobs.local_yaml as local_yaml
 from jenkins_jobs.constants import MAGIC_MANAGE_STRING
 from jenkins_jobs.errors import JenkinsJobsException
-from jenkins_jobs.registry import ModuleRegistry
 from jenkins_jobs.formatter import deep_format
+import jenkins_jobs.local_yaml as local_yaml
+from jenkins_jobs.registry import ModuleRegistry
 from jenkins_jobs import utils
 from jenkins_jobs.xml_config import XmlJob
 

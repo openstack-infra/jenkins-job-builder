@@ -1,4 +1,5 @@
-from testtools import ExpectedException, TestCase
+from testtools import ExpectedException
+from testtools import TestCase
 
 from jenkins_jobs import errors
 from tests.base import LoggingFixture

@@ -12,13 +12,14 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import xml.etree.ElementTree as XML
 import logging
+import xml.etree.ElementTree as XML
 
 from six.moves import configparser
-from jenkins_jobs.errors import (JenkinsJobsException,
-                                 MissingAttributeError,
-                                 InvalidAttributeError)
+
+from jenkins_jobs.errors import InvalidAttributeError
+from jenkins_jobs.errors import JenkinsJobsException
+from jenkins_jobs.errors import MissingAttributeError
 
 
 def build_trends_publisher(plugin_name, xml_element, data):

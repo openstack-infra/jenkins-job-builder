@@ -1,6 +1,9 @@
 import os
-from six.moves import configparser, StringIO
+
+from six.moves import configparser
+from six.moves import StringIO
 import testtools
+
 from jenkins_jobs import cmd
 from tests.base import LoggingFixture
 from tests.base import mock

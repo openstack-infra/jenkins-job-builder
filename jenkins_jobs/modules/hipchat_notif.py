@@ -68,13 +68,16 @@ Example:
 # The global config object is therefore passed down to the registry object,
 # and this object is passed to the HipChat() class initialiser.
 
-import xml.etree.ElementTree as XML
-import jenkins_jobs.modules.base
-import jenkins_jobs.errors
 import logging
 import pkg_resources
-from six.moves import configparser
 import sys
+import xml.etree.ElementTree as XML
+
+from six.moves import configparser
+
+import jenkins_jobs.errors
+import jenkins_jobs.modules.base
+
 
 logger = logging.getLogger(__name__)
 

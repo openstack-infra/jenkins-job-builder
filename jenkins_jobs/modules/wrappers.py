@@ -23,19 +23,20 @@ Wrappers can alter the way the build is run as well as the build output.
 """
 
 import logging
-import xml.etree.ElementTree as XML
 import pkg_resources
+import xml.etree.ElementTree as XML
+
+from jenkins_jobs.errors import InvalidAttributeError
+from jenkins_jobs.errors import JenkinsJobsException
+from jenkins_jobs.errors import MissingAttributeError
 import jenkins_jobs.modules.base
-from jenkins_jobs.errors import (JenkinsJobsException,
-                                 InvalidAttributeError,
-                                 MissingAttributeError)
 from jenkins_jobs.modules.builders import create_builders
-from jenkins_jobs.modules.helpers import config_file_provider_builder
 from jenkins_jobs.modules.helpers import artifactory_common_details
-from jenkins_jobs.modules.helpers import artifactory_repository
 from jenkins_jobs.modules.helpers import artifactory_deployment_patterns
 from jenkins_jobs.modules.helpers import artifactory_env_vars_patterns
 from jenkins_jobs.modules.helpers import artifactory_optional_props
+from jenkins_jobs.modules.helpers import artifactory_repository
+from jenkins_jobs.modules.helpers import config_file_provider_builder
 
 logger = logging.getLogger(__name__)
 

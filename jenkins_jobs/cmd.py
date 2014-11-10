@@ -14,18 +14,22 @@
 # under the License.
 
 import argparse
-import io
-from six.moves import configparser, StringIO, input
 import fnmatch
+import io
 import logging
 import os
 import platform
 import sys
 import yaml
-import jenkins_jobs.version
+
+from six.moves import configparser
+from six.moves import input
+from six.moves import StringIO
 
 from jenkins_jobs.builder import Builder
 from jenkins_jobs.errors import JenkinsJobsException
+import jenkins_jobs.version
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()

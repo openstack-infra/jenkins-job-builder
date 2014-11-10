@@ -102,6 +102,7 @@ Example:
 """
 
 import xml.etree.ElementTree as XML
+
 import jenkins_jobs.modules.base
 from jenkins_jobs.xml_config import remove_ignorable_whitespace
 

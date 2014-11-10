@@ -32,11 +32,11 @@ Example::
           description: "A parameter named FOO, defaults to 'bar'."
 """
 
-
 import xml.etree.ElementTree as XML
-import jenkins_jobs.modules.base
+
 from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.errors import MissingAttributeError
+import jenkins_jobs.modules.base
 from jenkins_jobs.modules.helpers import copyartifact_build_selector
 
 

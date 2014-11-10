@@ -17,36 +17,38 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import doctest
 import io
+import json
+import logging
+import operator
 import os
 import re
-import doctest
-import logging
-import fixtures
-import json
-import operator
-import testtools
-from testtools.content import text_content
 import xml.etree.ElementTree as XML
+
+import fixtures
 from six.moves import configparser
 from six.moves import StringIO
+import testtools
+from testtools.content import text_content
 from yaml import safe_dump
+
+from jenkins_jobs.cmd import DEFAULT_CONF
+import jenkins_jobs.local_yaml as yaml
+from jenkins_jobs.modules import project_externaljob
+from jenkins_jobs.modules import project_flow
+from jenkins_jobs.modules import project_matrix
+from jenkins_jobs.modules import project_maven
+from jenkins_jobs.modules import project_multijob
+from jenkins_jobs.parser import YamlParser
+from jenkins_jobs.xml_config import XmlJob
+
 # This dance deals with the fact that we want unittest.mock if
 # we're on Python 3.4 and later, and non-stdlib mock otherwise.
 try:
     from unittest import mock
 except ImportError:
     import mock  # noqa
-
-from jenkins_jobs.cmd import DEFAULT_CONF
-import jenkins_jobs.local_yaml as yaml
-from jenkins_jobs.parser import YamlParser
-from jenkins_jobs.xml_config import XmlJob
-from jenkins_jobs.modules import (project_flow,
-                                  project_matrix,
-                                  project_maven,
-                                  project_multijob,
-                                  project_externaljob)
 
 
 def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml',

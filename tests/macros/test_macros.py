@@ -16,9 +16,12 @@
 # under the License.
 
 import os
-from testtools import TestCase
+
 from testscenarios.testcase import TestWithScenarios
-from tests.base import get_scenarios, SingleJobTestCase
+from testtools import TestCase
+
+from tests.base import get_scenarios
+from tests.base import SingleJobTestCase
 
 
 class TestCaseModuleSCMMacro(TestWithScenarios, SingleJobTestCase, TestCase):

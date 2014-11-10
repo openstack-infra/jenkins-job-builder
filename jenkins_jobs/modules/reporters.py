@@ -31,12 +31,12 @@ Example::
           recipients: breakage@example.com
 """
 
-
 import xml.etree.ElementTree as XML
+
+from jenkins_jobs.errors import JenkinsJobsException
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules.helpers import build_trends_publisher
 from jenkins_jobs.modules.helpers import findbugs_settings
-from jenkins_jobs.errors import JenkinsJobsException
 
 
 def email(parser, xml_parent, data):

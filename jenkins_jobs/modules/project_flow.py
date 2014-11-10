@@ -50,6 +50,7 @@ Job example runninng a DSL file from the workspace:
 """
 
 import xml.etree.ElementTree as XML
+
 import jenkins_jobs.modules.base
 
 

@@ -16,22 +16,24 @@
 # Manage jobs in Jenkins server
 
 import errno
-import io
-import os
-import operator
 import hashlib
-import yaml
-import xml.etree.ElementTree as XML
-import jenkins
-import re
-from pprint import pformat
+import io
 import logging
+import operator
+import os
+from pprint import pformat
+import re
 import time
+import xml.etree.ElementTree as XML
+import yaml
+
+import jenkins
 
 from jenkins_jobs.constants import MAGIC_MANAGE_STRING
 from jenkins_jobs.parallel import parallelize
 from jenkins_jobs.parser import YamlParser
 from jenkins_jobs import utils
+
 
 logger = logging.getLogger(__name__)
 

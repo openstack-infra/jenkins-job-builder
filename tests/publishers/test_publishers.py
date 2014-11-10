@@ -16,10 +16,13 @@
 # under the License.
 
 import os
+
 from testscenarios.testcase import TestWithScenarios
 from testtools import TestCase
+
 from jenkins_jobs.modules import publishers
-from tests.base import get_scenarios, BaseTestCase
+from tests.base import BaseTestCase
+from tests.base import get_scenarios
 
 
 class TestCaseModulePublishers(TestWithScenarios, BaseTestCase, TestCase):

@@ -1,8 +1,10 @@
-import testtools as tt
 import pkg_resources
-from testtools.content import text_content
+
+from six.moves import configparser
+from six.moves import StringIO
 from testscenarios.testcase import TestWithScenarios
-from six.moves import configparser, StringIO
+import testtools as tt
+from testtools.content import text_content
 
 from jenkins_jobs import cmd
 from jenkins_jobs.registry import ModuleRegistry

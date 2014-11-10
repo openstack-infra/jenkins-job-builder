@@ -25,10 +25,22 @@ the build is complete.
   :Entry Point: jenkins_jobs.publishers
 """
 
-
+import logging
+import pkg_resources
+import random
+import sys
 import xml.etree.ElementTree as XML
+
+import six
+
+from jenkins_jobs.errors import InvalidAttributeError
+from jenkins_jobs.errors import JenkinsJobsException
+from jenkins_jobs.errors import MissingAttributeError
 import jenkins_jobs.modules.base
-from jenkins_jobs.modules import hudson_model
+from jenkins_jobs.modules.helpers import artifactory_common_details
+from jenkins_jobs.modules.helpers import artifactory_deployment_patterns
+from jenkins_jobs.modules.helpers import artifactory_env_vars_patterns
+from jenkins_jobs.modules.helpers import artifactory_optional_props
 from jenkins_jobs.modules.helpers import build_trends_publisher
 from jenkins_jobs.modules.helpers import cloudformation_init
 from jenkins_jobs.modules.helpers import cloudformation_region_dict
@@ -36,18 +48,7 @@ from jenkins_jobs.modules.helpers import cloudformation_stack
 from jenkins_jobs.modules.helpers import config_file_provider_settings
 from jenkins_jobs.modules.helpers import findbugs_settings
 from jenkins_jobs.modules.helpers import get_value_from_yaml_or_config_file
-from jenkins_jobs.modules.helpers import artifactory_deployment_patterns
-from jenkins_jobs.modules.helpers import artifactory_env_vars_patterns
-from jenkins_jobs.modules.helpers import artifactory_optional_props
-from jenkins_jobs.modules.helpers import artifactory_common_details
-from jenkins_jobs.errors import (InvalidAttributeError,
-                                 JenkinsJobsException,
-                                 MissingAttributeError)
-import logging
-import pkg_resources
-import sys
-import six
-import random
+from jenkins_jobs.modules import hudson_model
 
 
 def archive(parser, xml_parent, data):

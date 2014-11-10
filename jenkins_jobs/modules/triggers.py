@@ -29,16 +29,18 @@ Example::
       - timed: '@daily'
 """
 
-
-import six
-import xml.etree.ElementTree as XML
-import jenkins_jobs.modules.base
-from jenkins_jobs.modules import hudson_model
-from jenkins_jobs.errors import (InvalidAttributeError,
-                                 JenkinsJobsException,
-                                 MissingAttributeError)
 import logging
 import re
+import xml.etree.ElementTree as XML
+
+import six
+
+from jenkins_jobs.errors import InvalidAttributeError
+from jenkins_jobs.errors import JenkinsJobsException
+from jenkins_jobs.errors import MissingAttributeError
+import jenkins_jobs.modules.base
+from jenkins_jobs.modules import hudson_model
+
 try:
     from collections import OrderedDict
 except ImportError:

@@ -47,8 +47,8 @@ Job template example:
 """
 import xml.etree.ElementTree as XML
 
-import jenkins_jobs.modules.base
 from jenkins_jobs.errors import MissingAttributeError
+import jenkins_jobs.modules.base
 
 
 class Workflow(jenkins_jobs.modules.base.Base):

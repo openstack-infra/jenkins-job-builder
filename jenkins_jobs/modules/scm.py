@@ -38,11 +38,12 @@ Example of an empty ``scm``:
 
 import logging
 import xml.etree.ElementTree as XML
+
+from jenkins_jobs.errors import InvalidAttributeError
+from jenkins_jobs.errors import JenkinsJobsException
+from jenkins_jobs.errors import MissingAttributeError
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules.helpers import convert_mapping_to_xml
-from jenkins_jobs.errors import (InvalidAttributeError,
-                                 JenkinsJobsException,
-                                 MissingAttributeError)
 
 
 def git(parser, xml_parent, data):
