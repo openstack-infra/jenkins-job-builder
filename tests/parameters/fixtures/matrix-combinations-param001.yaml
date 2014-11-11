@@ -1,0 +1,5 @@
+parameters:
+  - matrix-combinations:
+      name: FOO
+      description: "Select matrix combinations"
+      filter: "platform == foo"

@@ -514,6 +514,40 @@ def dynamic_scriptler_param_common(parser, xml_parent, data, ptype):
         'read-only', False)).lower()
 
 
+def matrix_combinations_param(parser, xml_parent, data):
+    """yaml: matrix-combinations
+    Matrix combinations parameter
+    Requires the Jenkins `Matrix Combinations Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Matrix+Combinations+Plugin>`_
+
+    :arg str name: the name of the parameter
+    :arg str description: a description of the parameter (optional)
+    :arg str filter: Groovy expression to use filter the combination by
+        default (optional)
+
+    Example:
+
+    .. literalinclude:: \
+    /../../tests/parameters/fixtures/matrix-combinations-param001.yaml
+       :language: yaml
+
+    """
+    element_name = 'hudson.plugins.matrix__configuration__parameter.' \
+                   'MatrixCombinationsParameterDefinition'
+    pdef = XML.SubElement(xml_parent, element_name)
+    if 'name' not in data:
+        raise JenkinsJobsException('matrix-combinations must have a name '
+                                   'parameter.')
+    XML.SubElement(pdef, 'name').text = data['name']
+    XML.SubElement(pdef, 'description').text = data.get('description', '')
+    combination_filter = data.get('filter')
+    if combination_filter:
+        XML.SubElement(pdef, 'defaultCombinationFilter').text = \
+            combination_filter
+
+    return pdef
+
+
 class Parameters(jenkins_jobs.modules.base.Base):
     sequence = 21
 
