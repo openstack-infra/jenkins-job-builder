@@ -218,7 +218,6 @@ def execute(options, config):
 
     if options.command == 'delete':
         for job in options.name:
-            logger.info("Deleting jobs in [{0}]".format(job))
             builder.delete_job(job, options.path)
     elif options.command == 'delete-all':
         confirm('Sure you want to delete *ALL* jobs from Jenkins server?\n'
