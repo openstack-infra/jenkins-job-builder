@@ -20,7 +20,7 @@ Developers
 ==========
 Bug report:
 
-* https://bugs.launchpad.net/openstack-ci/
+* https://storyboard.openstack.org/#!/project/723
 
 Cloning:
 
