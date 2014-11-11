@@ -6,6 +6,7 @@
       <keepLongStdio>false</keepLongStdio>
       <testDataPublishers>
         <de.esailors.jenkins.teststability.StabilityTestDataPublisher/>
+        <hudson.plugins.claim.ClaimTestDataPublisher/>
       </testDataPublishers>
     </hudson.tasks.junit.JUnitResultArchiver>
   </publishers>
