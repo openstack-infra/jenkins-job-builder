@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<matrix-project>
+  <executionStrategy class="hudson.matrix.DefaultMatrixExecutionStrategyImpl">
+    <runSequentially>false</runSequentially>
+  </executionStrategy>
+  <combinationFilter/>
+  <axes>
+    <jenkins.plugins.shiningpanda.matrix.PythonAxis>
+      <name>PYTHON</name>
+      <values>
+        <string>python-2.6</string>
+        <string>python-2.7</string>
+        <string>python-3.4</string>
+      </values>
+    </jenkins.plugins.shiningpanda.matrix.PythonAxis>
+    <jenkins.plugins.shiningpanda.matrix.ToxAxis>
+      <name>TOXENV</name>
+      <values>
+        <string>py26</string>
+        <string>py27</string>
+        <string>py34</string>
+      </values>
+    </jenkins.plugins.shiningpanda.matrix.ToxAxis>
+  </axes>
+  <actions/>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+</matrix-project>
