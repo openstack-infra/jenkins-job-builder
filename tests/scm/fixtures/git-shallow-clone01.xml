@@ -35,5 +35,6 @@
     <scmName/>
     <useShallowClone>true</useShallowClone>
     <ignoreNotifyCommit>false</ignoreNotifyCommit>
+    <extensions/>
   </scm>
 </project>

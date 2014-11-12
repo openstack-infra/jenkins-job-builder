@@ -4,20 +4,17 @@
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <name>internal</name>
-        <refspec>+refs/heads/*:refs/remotes/internal/*</refspec>
-        <url>ssh://git@internal.example.com/foobar.git</url>
-        <credentialsId>01234567-89ab-cdef-0123-456789abcdef</credentialsId>
-      </hudson.plugins.git.UserRemoteConfig>
-      <hudson.plugins.git.UserRemoteConfig>
-        <name>github</name>
-        <refspec>+refs/heads/*:refs/remotes/github/*</refspec>
-        <url>https://github.com/exampleuser/foobar.git</url>
+        <name>origin</name>
+        <refspec>+refs/heads/*:refs/remotes/origin/*</refspec>
+        <url>https://example.com/project.git</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-        <name>github/master</name>
+        <name>master</name>
+      </hudson.plugins.git.BranchSpec>
+      <hudson.plugins.git.BranchSpec>
+        <name>stable</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <excludedUsers/>
@@ -40,6 +37,19 @@
     <scmName/>
     <useShallowClone>false</useShallowClone>
     <ignoreNotifyCommit>false</ignoreNotifyCommit>
-    <extensions/>
+    <extensions>
+      <hudson.plugins.git.extensions.impl.ChangelogToBranch>
+        <options>
+          <compareRemote>origin</compareRemote>
+          <compareTarget>master</compareTarget>
+        </options>
+      </hudson.plugins.git.extensions.impl.ChangelogToBranch>
+      <hudson.plugins.git.extensions.impl.CheckoutOption>
+        <timeout>20</timeout>
+      </hudson.plugins.git.extensions.impl.CheckoutOption>
+    </extensions>
+    <browser class="hudson.plugins.git.browser.GithubWeb">
+      <url>http://github.com/foo/example.git</url>
+    </browser>
   </scm>
 </project>

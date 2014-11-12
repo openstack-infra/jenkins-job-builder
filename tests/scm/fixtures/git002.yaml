@@ -1,0 +1,12 @@
+scm:
+  - git:
+      url: https://example.com/project.git
+      branches:
+        - master
+        - stable
+      browser: githubweb
+      browser-url: http://github.com/foo/example.git
+      timeout: 20
+      changelog-against:
+        remote: origin
+        branch: master

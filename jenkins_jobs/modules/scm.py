@@ -96,7 +96,17 @@ remoteName/\*')
       (default 'default')
     :arg str git-config-name: Configure name for Git clone (optional)
     :arg str git-config-email: Configure email for Git clone (optional)
-    :arg str timeout: Timeout for git commands in minutes (optional)
+
+
+    :extensions:
+        :arg dict changelog-against:
+            :changelog-against:
+                * **remote** (`string`) - name of repo that contains branch to
+                    create changelog against (default 'origin')
+                * **branch** (`string`) - name of the branch to create
+                    create changelog against (default 'master')
+
+        :arg str timeout: Timeout for git commands in minutes (optional)
 
     :browser values:
         :auto:
@@ -223,9 +233,17 @@ remoteName/\*')
     if 'local-branch' in data:
         XML.SubElement(scm, 'localBranch').text = data['local-branch']
 
+    exts_node = XML.SubElement(scm, 'extensions')
+    if 'changelog-against' in data:
+        ext_name = 'hudson.plugins.git.extensions.impl.ChangelogToBranch'
+        ext = XML.SubElement(exts_node, ext_name)
+        opts = XML.SubElement(ext, 'options')
+        change_remote = data['changelog-against'].get('remote', 'origin')
+        change_branch = data['changelog-against'].get('branch', 'master')
+        XML.SubElement(opts, 'compareRemote').text = change_remote
+        XML.SubElement(opts, 'compareTarget').text = change_branch
     if 'timeout' in data:
-        ext = XML.SubElement(scm, 'extensions')
-        co = XML.SubElement(ext,
+        co = XML.SubElement(exts_node,
                             'hudson.plugins.git.extensions.impl.'
                             'CheckoutOption')
         XML.SubElement(co, 'timeout').text = str(data['timeout'])
