@@ -1,0 +1,19 @@
+- job:
+    name: job-name
+    project-type: freestyle
+    defaults: global
+    description: 'Do not edit this job through the web!'
+    disabled: false
+    display-name: 'Fancy job name'
+    concurrent: true
+    workspace: /srv/build-area/job-name
+    quiet-period: 5
+    block-downstream: false
+    block-upstream: false
+    retry-count: 3
+    node: NodeLabel1 || NodeLabel2
+    logrotate:
+      daysToKeep: 3
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
