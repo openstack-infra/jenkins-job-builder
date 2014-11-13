@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.s3.S3BucketPublisher>
+      <profileName>banana</profileName>
+      <entries>
+        <hudson.plugins.s3.Entry>
+          <bucket>herp-derp</bucket>
+          <sourceFile>bargle_${BUILD_ID}.tgz</sourceFile>
+          <storageClass>STANDARD</storageClass>
+          <selectedRegion>US_EAST_1</selectedRegion>
+          <noUploadOnFailure>true</noUploadOnFailure>
+          <uploadFromSlave>true</uploadFromSlave>
+          <managedArtifacts>true</managedArtifacts>
+        </hudson.plugins.s3.Entry>
+      </entries>
+      <userMetadata>
+        <hudson.plugins.s3.MetadataPair>
+          <key>warbl ${garbl}</key>
+          <value>herp derp weevils</value>
+        </hudson.plugins.s3.MetadataPair>
+        <hudson.plugins.s3.MetadataPair>
+          <key>hurrdurr</key>
+          <value>wharrgarbl blee ${FANCY_VARIABLE}</value>
+        </hudson.plugins.s3.MetadataPair>
+      </userMetadata>
+    </hudson.plugins.s3.S3BucketPublisher>
+  </publishers>
+</project>
