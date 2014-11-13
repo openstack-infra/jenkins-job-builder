@@ -34,6 +34,7 @@ from jenkins_jobs.errors import JenkinsJobsException
 import logging
 import pkg_resources
 import sys
+import six
 import random
 
 
@@ -1687,7 +1688,21 @@ def groovy_postbuild(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Groovy Postbuild Plugin
     <Groovy+Postbuild+Plugin>`.
 
-    :Parameter: the groovy script to execute
+    Please pay attention on version of plugin you have installed.
+    There were incompatible changes between 1.x and 2.x. Please see
+    :jenkins-wiki:`home page <Groovy+Postbuild+Plugin>` of this plugin
+    for full information including migration process.
+
+    :arg str script: The groovy script to execute
+    :arg list classpath: List of additional classpaths (>=1.6)
+    :arg str on-failure: In case of script failure leave build as it is
+                         for "nothing" option, mark build as unstable
+                         for "unstable" and mark job as failure for "failed"
+                         (default is "nothing")
+    :arg bool matrix-parent: Run script for matrix parent only (>=1.9)
+                             (default false)
+    :arg bool sandbox: Execute script inside of groovy sandbox (>=2.0)
+                       (default false)
 
     Example:
 
@@ -1695,10 +1710,65 @@ def groovy_postbuild(parser, xml_parent, data):
         /../../tests/publishers/fixtures/groovy-postbuild001.yaml
        :language: yaml
     """
-    root_tag = 'org.jvnet.hudson.plugins.groovypostbuild.'\
-        'GroovyPostbuildRecorder'
+    logger = logging.getLogger("%s:groovy-postbuild" % __name__)
+    # Backward compatibility with old format
+    if isinstance(data, six.string_types):
+        logger.warn(
+            "You use depricated configuration, please follow documentation "
+            "to change configuration. It is not going to be supported in "
+            "future releases!"
+        )
+        data = {
+            'script': data,
+        }
+    # There are incompatible changes, we need to know version
+    info = parser.registry.get_plugin_info('groovy-postbuild')
+    version = pkg_resources.parse_version(info.get('version', "0"))
+    # Version specific predicates
+    matrix_parent_support = version >= pkg_resources.parse_version("1.9")
+    security_plugin_support = version >= pkg_resources.parse_version("2.0")
+    extra_classpath_support = version >= pkg_resources.parse_version("1.6")
+
+    root_tag = (
+        'org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder'
+    )
     groovy = XML.SubElement(xml_parent, root_tag)
-    XML.SubElement(groovy, 'groovyScript').text = data
+
+    behavior = data.get('on-failure')
+    XML.SubElement(groovy, 'behavior').text = {
+        'unstable': '1',
+        'failed': '2',
+    }.get(behavior, '0')
+
+    if matrix_parent_support:
+        XML.SubElement(
+            groovy,
+            'runForMatrixParent',
+        ).text = str(data.get('matrix-parent', False)).lower()
+
+    classpaths = data.get('classpath', list())
+    if security_plugin_support:
+        script = XML.SubElement(groovy, 'script')
+        XML.SubElement(script, 'script').text = data.get('script')
+        XML.SubElement(script, 'sandbox').text = str(
+            data.get('sandbox', False)
+        ).lower()
+        if classpaths:
+            classpath = XML.SubElement(script, 'classpath')
+            for path in classpaths:
+                script_path = XML.SubElement(classpath, 'entry')
+                XML.SubElement(script_path, 'url').text = path
+    else:
+        XML.SubElement(groovy, 'groovyScript').text = data.get('script')
+        if extra_classpath_support and classpaths:
+            classpath = XML.SubElement(groovy, 'classpath')
+            for path in classpaths:
+                script_path = XML.SubElement(
+                    classpath,
+                    'org.jvnet.hudson.plugins.groovypostbuild.'
+                    'GroovyScriptPath',
+                )
+                XML.SubElement(script_path, 'path').text = path
 
 
 def base_publish_over(xml_parent, data, console_prefix,

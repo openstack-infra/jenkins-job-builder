@@ -2,7 +2,20 @@
 <project>
   <publishers>
     <org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder>
-      <groovyScript>manager.buildFailure()</groovyScript>
+      <behavior>2</behavior>
+      <runForMatrixParent>true</runForMatrixParent>
+      <script>
+        <script>manager.buildFailure()</script>
+        <sandbox>false</sandbox>
+        <classpath>
+          <entry>
+            <url>file:///path/to/your/lib</url>
+          </entry>
+          <entry>
+            <url>file:///path/to/your/lib</url>
+          </entry>
+        </classpath>
+      </script>
     </org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder>
   </publishers>
 </project>

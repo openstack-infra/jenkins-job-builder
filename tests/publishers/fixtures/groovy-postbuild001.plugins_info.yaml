@@ -1,0 +1,3 @@
+- longName: 'Groovy Postbuild'
+  shortName: 'groovy-postbuild'
+  version: "2.0"

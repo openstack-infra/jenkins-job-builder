@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder>
+      <behavior>0</behavior>
+      <runForMatrixParent>false</runForMatrixParent>
+      <groovyScript>manager.buildFailure()</groovyScript>
+      <classpath>
+        <org.jvnet.hudson.plugins.groovypostbuild.GroovyScriptPath>
+          <path>file:///path/to/your/lib</path>
+        </org.jvnet.hudson.plugins.groovypostbuild.GroovyScriptPath>
+        <org.jvnet.hudson.plugins.groovypostbuild.GroovyScriptPath>
+          <path>file:///path/to/your/lib</path>
+        </org.jvnet.hudson.plugins.groovypostbuild.GroovyScriptPath>
+      </classpath>
+    </org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder>
+  </publishers>
+</project>
