@@ -668,6 +668,9 @@ class Builder(object):
                     if matches(j['name'], [glob_name])]
         else:
             jobs = [glob_name]
+
+        if jobs is not None:
+            logger.info("Removing jenkins job(s): %s" % ", ".join(jobs))
         for job in jobs:
             self.jenkins.delete_job(job)
             if(self.cache.is_cached(job)):
