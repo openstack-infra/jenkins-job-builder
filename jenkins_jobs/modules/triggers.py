@@ -41,6 +41,8 @@ import re
 def gerrit_handle_legacy_configuration(data):
     hyphenizer = re.compile("[A-Z]")
 
+    logger = logging.getLogger("%s:gerrit" % __name__)
+
     def hyphenize(attr):
         """Convert strings like triggerOn to trigger-on.
         """
@@ -50,7 +52,10 @@ def gerrit_handle_legacy_configuration(data):
     def convert_dict(d, old_keys):
         for old_key in old_keys:
             if old_key in d:
-                d[hyphenize(old_key)] = d[old_key]
+                new_key = hyphenize(old_key)
+                logger.warn("'%s' is deprecated and will be removed after "
+                            "1.0.0, please use '%s' instead", old_key, new_key)
+                d[new_key] = d[old_key]
                 del d[old_key]
 
     convert_dict(data, [
@@ -222,7 +227,8 @@ def gerrit(parser, xml_parent, data):
 
     Until version 0.4.0 of Jenkins Job Builder, camelCase keys were used to
     configure Gerrit Trigger Plugin, instead of hyphenated-keys.  While still
-    supported, camedCase keys are deprecated and should not be used.
+    supported, camedCase keys are deprecated and should not be used. Support
+    for this will be removed after 1.0.0 is released.
 
     Example:
 
