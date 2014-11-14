@@ -1,9 +1,14 @@
 import os
 import io
 import codecs
+import yaml
+
+import jenkins
+
 from jenkins_jobs import cmd
-from tests.base import mock
+from jenkins_jobs.errors import JenkinsJobsException
 from tests.cmd.test_cmd import CmdTestsBase
+from tests.base import mock
 
 
 os_walk_return_values = {
@@ -38,6 +43,7 @@ def os_walk_side_effects(path_name, topdown):
     return os_walk_return_values[path_name]
 
 
+@mock.patch('jenkins_jobs.builder.Jenkins.get_plugins_info', mock.MagicMock)
 class TestTests(CmdTestsBase):
 
     def test_non_existing_config_dir(self):
@@ -154,3 +160,79 @@ class TestTests(CmdTestsBase):
         config = cmd.setup_config_settings(args)
         self.assertEqual(config.get('jenkins', 'url'),
                          "http://test-jenkins.with.non.default.url:8080/")
+
+    @mock.patch('jenkins_jobs.builder.YamlParser.generateXML')
+    @mock.patch('jenkins_jobs.builder.ModuleRegistry')
+    def test_plugins_info_stub_option(self, registry_mock, generateXML_mock):
+        """
+        Test handling of plugins_info stub option.
+        """
+        plugins_info_stub_yaml_file = os.path.join(self.fixtures_path,
+                                                   'plugins-info.yaml')
+        args = ['--conf',
+                os.path.join(self.fixtures_path, 'cmd-001.conf'),
+                'test',
+                '-p',
+                plugins_info_stub_yaml_file,
+                os.path.join(self.fixtures_path, 'cmd-001.yaml')]
+        args = self.parser.parse_args(args)
+
+        with mock.patch('sys.stdout'):
+            cmd.execute(args, self.config)   # probably better to fail here
+
+        with open(plugins_info_stub_yaml_file, 'r') as yaml_file:
+            plugins_info_list = yaml.load(yaml_file)
+
+        registry_mock.assert_called_with(self.config, plugins_info_list)
+
+    @mock.patch('jenkins_jobs.builder.YamlParser.generateXML')
+    @mock.patch('jenkins_jobs.builder.ModuleRegistry')
+    def test_bogus_plugins_info_stub_option(self, registry_mock,
+                                            generateXML_mock):
+        """
+        Verify that a JenkinsJobException is raised if the plugins_info stub
+        file does not yield a list as its top-level object.
+        """
+        plugins_info_stub_yaml_file = os.path.join(self.fixtures_path,
+                                                   'bogus-plugins-info.yaml')
+        args = ['--conf',
+                os.path.join(self.fixtures_path, 'cmd-001.conf'),
+                'test',
+                '-p',
+                plugins_info_stub_yaml_file,
+                os.path.join(self.fixtures_path, 'cmd-001.yaml')]
+        args = self.parser.parse_args(args)
+
+        with mock.patch('sys.stdout'):
+            e = self.assertRaises(JenkinsJobsException, cmd.execute,
+                                  args, self.config)
+        self.assertIn("must contain a Yaml list", str(e))
+
+
+class TestJenkinsGetPluginInfoError(CmdTestsBase):
+    """ This test class is used for testing the 'test' subcommand when we want
+    to validate its behavior without mocking
+    jenkins_jobs.builder.Jenkins.get_plugins_info
+    """
+
+    @mock.patch('jenkins.Jenkins.get_plugins_info')
+    def test_console_output_jenkins_connection_failure_warning(
+            self, get_plugins_info_mock):
+        """
+        Run test mode and verify that failed Jenkins connection attempt
+        exception does not bubble out of cmd.main. Ideally, we would also test
+        that an appropriate message is logged to stderr but it's somewhat
+        difficult to figure out how to actually enable stderr in this test
+        suite.
+        """
+
+        get_plugins_info_mock.side_effect = \
+            jenkins.JenkinsException("Connection refused")
+        with mock.patch('sys.stdout'):
+            try:
+                cmd.main(['test', os.path.join(self.fixtures_path,
+                                               'cmd-001.yaml')])
+            except jenkins.JenkinsException:
+                self.fail("jenkins.JenkinsException propagated to main")
+            except:
+                pass  # only care about jenkins.JenkinsException for now

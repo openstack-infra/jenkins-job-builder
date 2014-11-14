@@ -25,6 +25,7 @@ import doctest
 import json
 import operator
 import testtools
+from testtools.content import text_content
 import xml.etree.ElementTree as XML
 from six.moves import configparser
 # This dance deals with the fact that we want unittest.mock if
@@ -41,7 +42,8 @@ from jenkins_jobs.modules import (project_flow,
                                   project_multijob)
 
 
-def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml'):
+def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml',
+                  plugins_info_ext='plugins_info.yaml'):
     """Returns a list of scenarios, each scenario being described
     by two parameters (yaml and xml filenames by default).
         - content of the fixture output file (aka expected)
@@ -51,6 +53,9 @@ def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml'):
     input_files = [f for f in files if re.match(r'.*\.{0}$'.format(in_ext), f)]
 
     for input_filename in input_files:
+        if input_filename.endswith(plugins_info_ext):
+            continue
+
         output_candidate = re.sub(r'\.{0}$'.format(in_ext),
                                   '.{0}'.format(out_ext), input_filename)
         # Make sure the input file has a output counterpart
@@ -59,6 +64,12 @@ def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml'):
                 "No {0} file named '{1}' to match {2} file '{3}'"
                 .format(out_ext.upper(), output_candidate,
                         in_ext.upper(), input_filename))
+
+        plugins_info_candidate = re.sub(r'\.{0}$'.format(in_ext),
+                                        '.{0}'.format(plugins_info_ext),
+                                        input_filename)
+        if plugins_info_candidate not in files:
+            plugins_info_candidate = None
 
         conf_candidate = re.sub(r'\.yaml$', '.conf', input_filename)
         # If present, add the configuration file
@@ -69,6 +80,7 @@ def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml'):
             'in_filename': input_filename,
             'out_filename': output_candidate,
             'conf_filename': conf_candidate,
+            'plugins_info_filename': plugins_info_candidate,
         }))
 
     return scenarios
@@ -90,8 +102,8 @@ class BaseTestCase(object):
         xml_content = u"%s" % codecs.open(xml_filepath, 'r', 'utf-8').read()
         return xml_content
 
-    def _read_yaml_content(self):
-        yaml_filepath = os.path.join(self.fixtures_path, self.in_filename)
+    def _read_yaml_content(self, filename):
+        yaml_filepath = os.path.join(self.fixtures_path, filename)
         with open(yaml_filepath, 'r') as yaml_file:
             yaml_content = yaml.load(yaml_file)
         return yaml_content
@@ -100,8 +112,16 @@ class BaseTestCase(object):
         if not self.out_filename or not self.in_filename:
             return
 
+        if self.conf_filename is not None:
+            config = configparser.ConfigParser()
+            conf_filepath = os.path.join(self.fixtures_path,
+                                         self.conf_filename)
+            config.readfp(open(conf_filepath))
+        else:
+            config = {}
+
         expected_xml = self._read_utf8_content()
-        yaml_content = self._read_yaml_content()
+        yaml_content = self._read_yaml_content(self.in_filename)
         project = None
         if ('project-type' in yaml_content):
             if (yaml_content['project-type'] == "maven"):
@@ -118,7 +138,16 @@ class BaseTestCase(object):
         else:
             xml_project = XML.Element('project')
         parser = YamlParser()
-        pub = self.klass(ModuleRegistry({}))
+
+        plugins_info = None
+        if self.plugins_info_filename is not None:
+            plugins_info = self._read_yaml_content(self.plugins_info_filename)
+            self.addDetail("plugins-info-filename",
+                           text_content(self.plugins_info_filename))
+            self.addDetail("plugins-info",
+                           text_content(str(plugins_info)))
+
+        pub = self.klass(ModuleRegistry(config, plugins_info))
 
         # Generate the XML tree directly with modules/general
         pub.gen_xml(parser, xml_project, yaml_content)
@@ -174,7 +203,7 @@ class JsonTestCase(BaseTestCase):
 
     def test_yaml_snippet(self):
         expected_json = self._read_utf8_content()
-        yaml_content = self._read_yaml_content()
+        yaml_content = self._read_yaml_content(self.in_filename)
 
         pretty_json = json.dumps(yaml_content, indent=4,
                                  separators=(',', ': '))
