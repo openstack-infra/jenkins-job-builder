@@ -1,0 +1,23 @@
+- job-template:
+    name: 'bar001'
+    description: 'My first job'
+
+- job-template:
+    name: 'bar002'
+    description: 'My second job'
+
+- job-template:
+    name: 'baz001'
+    description: 'My third job'
+
+- job-template:
+    name: 'bam001'
+    description: 'My fourth job'
+
+- project:
+    name: my-projects
+    jobs:
+      - 'bar001'
+      - 'bar002'
+      - 'baz001'
+      - 'bam001'
