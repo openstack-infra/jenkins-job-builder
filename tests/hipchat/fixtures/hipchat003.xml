@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <jenkins.plugins.hipchat.HipChatNotifier_-HipChatJobProperty>
+      <room>My Room</room>
+      <startNotification>true</startNotification>
+      <notifySuccess>true</notifySuccess>
+      <notifyAborted>true</notifyAborted>
+      <notifyNotBuilt>true</notifyNotBuilt>
+      <notifyUnstable>true</notifyUnstable>
+      <notifyFailure>true</notifyFailure>
+      <notifyBackToNormal>true</notifyBackToNormal>
+    </jenkins.plugins.hipchat.HipChatNotifier_-HipChatJobProperty>
+  </properties>
+  <publishers>
+    <jenkins.plugins.hipchat.HipChatNotifier>
+      <buildServerUrl>green</buildServerUrl>
+      <sendAs>Jenkins</sendAs>
+      <authToken>blue</authToken>
+      <room/>
+    </jenkins.plugins.hipchat.HipChatNotifier>
+  </publishers>
+</project>
