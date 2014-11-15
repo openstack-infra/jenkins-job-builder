@@ -1,0 +1,5 @@
+wrappers:
+    - port-allocator:
+        names:
+            - SERVER_PORT
+            - SERVER_PORT2

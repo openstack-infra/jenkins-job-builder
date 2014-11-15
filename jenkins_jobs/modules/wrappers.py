@@ -22,6 +22,7 @@ Wrappers can alter the way the build is run as well as the build output.
 
 """
 
+import logging
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 from jenkins_jobs.errors import JenkinsJobsException
@@ -440,22 +441,29 @@ def port_allocator(parser, xml_parent, data):
     Requires the Jenkins `Port Allocator Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Port+Allocator+Plugin>`_
 
-    :arg str name: Variable name of the port or a specific port number
+    :arg str name: Deprecated, use names instead
+    :arg list names: Variable list of names of the port or list of
+        specific port numbers
 
-    Example::
+    Example:
 
-      wrappers:
-        - port-allocator:
-            name: SERVER_PORT
+    .. literalinclude::  /../../tests/wrappers/fixtures/port-allocator002.yaml
     """
     pa = XML.SubElement(xml_parent,
                         'org.jvnet.hudson.plugins.port__allocator.'
                         'PortAllocator')
     ports = XML.SubElement(pa, 'ports')
-    dpt = XML.SubElement(ports,
-                         'org.jvnet.hudson.plugins.port__allocator.'
-                         'DefaultPortType')
-    XML.SubElement(dpt, 'name').text = data['name']
+    names = data.get('names')
+    if not names:
+        logger = logging.getLogger(__name__)
+        logger.warn('port_allocator name is deprecated, use a names list '
+                    ' instead')
+        names = [data['name']]
+    for name in names:
+        dpt = XML.SubElement(ports,
+                             'org.jvnet.hudson.plugins.port__allocator.'
+                             'DefaultPortType')
+        XML.SubElement(dpt, 'name').text = name
 
 
 def locks(parser, xml_parent, data):
