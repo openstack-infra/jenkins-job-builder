@@ -875,6 +875,9 @@ def xunit(parser, xml_parent, data):
 
     :arg bool deleteoutput: delete temporary JUnit files (default: true)
 
+    :arg bool skip-if-no-test-files: Skip parsing this xUnit type report if \
+    there are no test reports files (default: false).
+
     :arg bool stoponerror: Fail the build whenever an error occur during \
     a result file processing (default: true).
 
@@ -936,6 +939,9 @@ def xunit(parser, xml_parent, data):
         XML.SubElement(xmlframework, 'deleteOutputFiles').text = \
             str(supported_type[framework_name].get(
                 'deleteoutput', True)).lower()
+        XML.SubElement(xmlframework, 'skipNoTestFiles').text = \
+            str(supported_type[framework_name].get(
+                'skip-if-no-test-files', False)).lower()
         XML.SubElement(xmlframework, 'stopProcessingIfError').text = \
             str(supported_type[framework_name].get(
                 'stoponerror', True)).lower()
