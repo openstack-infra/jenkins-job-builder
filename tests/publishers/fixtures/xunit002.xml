@@ -25,6 +25,9 @@
         </org.jenkinsci.plugins.xunit.threshold.SkippedThreshold>
       </thresholds>
       <thresholdMode>1</thresholdMode>
+      <extraConfiguration>
+        <testTimeMargin>5000</testTimeMargin>
+      </extraConfiguration>
     </xunit>
   </publishers>
 </project>
