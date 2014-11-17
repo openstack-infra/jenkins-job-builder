@@ -860,27 +860,10 @@ def xunit(parser, xml_parent, data):
     a result file processing (default: true).
 
 
-    Example::
+    Example:
 
-        publishers:
-            - xunit:
-                thresholdmode: 'percent'
-                thresholds:
-                  - failed:
-                        unstable: 0
-                        unstablenew: 0
-                        failure: 0
-                        failurenew: 0
-                  - skipped:
-                        unstable: 0
-                        unstablenew: 0
-                        failure: 0
-                        failurenew: 0
-                types:
-                  - phpunit:
-                      pattern: junit.log
-                  - cppUnit:
-                      pattern: cppunit.log
+    .. literalinclude::  /../../tests/publishers/fixtures/xunit001.yaml
+       :language: yaml
 
     """
     logger = logging.getLogger(__name__)
