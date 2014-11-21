@@ -165,6 +165,7 @@
       <attachmentsPattern>*/foo*.log</attachmentsPattern>
       <presendScript>cancel=true</presendScript>
       <attachBuildLog>false</attachBuildLog>
+      <saveOutput>true</saveOutput>
       <replyTo>foo@example.com</replyTo>
       <matrixTriggerMode>ONLY_CONFIGURATIONS</matrixTriggerMode>
     </hudson.plugins.emailext.ExtendedEmailPublisher>

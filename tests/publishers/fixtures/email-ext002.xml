@@ -22,6 +22,7 @@
       <attachmentsPattern>*/foo*.log</attachmentsPattern>
       <presendScript/>
       <attachBuildLog>false</attachBuildLog>
+      <saveOutput>false</saveOutput>
       <replyTo>$DEFAULT_REPLYTO</replyTo>
       <matrixTriggerMode>ONLY_CONFIGURATIONS</matrixTriggerMode>
     </hudson.plugins.emailext.ExtendedEmailPublisher>
