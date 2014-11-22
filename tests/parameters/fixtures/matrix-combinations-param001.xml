@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.plugins.matrix__configuration__parameter.MatrixCombinationsParameterDefinition>
+          <name>FOO</name>
+          <description>Select matrix combinations</description>
+          <defaultCombinationFilter>platform == foo</defaultCombinationFilter>
+        </hudson.plugins.matrix__configuration__parameter.MatrixCombinationsParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+</project>
