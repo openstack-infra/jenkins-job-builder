@@ -137,23 +137,37 @@ def build_gerrit_triggers(xml_parent, data):
             if event == 'patchset-uploaded-event':
                 logger.warn("'%s' is deprecated. Use 'patchset-created-event'"
                             "instead.", event)
+
             if not tag_name:
                 known = ', '.join(available_simple_triggers.keys()
-                                  + ['comment-added-event'])
+                                  + ['comment-added-event',
+                                     'comment-added-contains-event'])
                 msg = ("The event '%s' under 'trigger-on' is not one of the "
                        "known: %s.") % (event, known)
                 raise JenkinsJobsException(msg)
             XML.SubElement(trigger_on_events,
                            '%s.%s' % (tag_namespace, tag_name))
         else:
-            comment_added_event = event['comment-added-event']
-            cadded = XML.SubElement(
-                trigger_on_events,
-                '%s.%s' % (tag_namespace, 'PluginCommentAddedEvent'))
-            XML.SubElement(cadded, 'verdictCategory').text = \
-                comment_added_event['approval-category']
-            XML.SubElement(cadded, 'commentAddedTriggerApprovalValue').text = \
-                str(comment_added_event['approval-value'])
+            if 'comment-added-event' in event.keys():
+                comment_added_event = event['comment-added-event']
+                cadded = XML.SubElement(
+                    trigger_on_events,
+                    '%s.%s' % (tag_namespace, 'PluginCommentAddedEvent'))
+                XML.SubElement(cadded, 'verdictCategory').text = \
+                    comment_added_event['approval-category']
+                XML.SubElement(
+                    cadded,
+                    'commentAddedTriggerApprovalValue').text = \
+                    str(comment_added_event['approval-value'])
+
+            if 'comment-added-contains-event' in event.keys():
+                comment_added_event = event['comment-added-contains-event']
+                caddedc = XML.SubElement(
+                    trigger_on_events,
+                    '%s.%s' % (tag_namespace,
+                               'PluginCommentAddedContainsEvent'))
+                XML.SubElement(caddedc, 'commentAddedCommentContains').text = \
+                    comment_added_event['comment-contains-value']
 
 
 def build_gerrit_skip_votes(xml_parent, data):
@@ -209,6 +223,14 @@ def gerrit(parser, xml_parent, data):
                  access-control.html#categories>`_
 
                * **approval-value** -- Approval value for the comment added.
+         * **comment-added-contains-event** (`dict`) -- Trigger on comment
+                                                        added contains
+                                                        Regular Expression.
+
+           :Comment added contains:
+               * **comment-contains-value** (`str`) -- Comment contains
+                                                       Regular Expression
+                                                       value.
 
     :arg bool trigger-on-patchset-uploaded-event: Trigger on patchset upload.
 
