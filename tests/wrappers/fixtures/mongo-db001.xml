@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <org.jenkinsci.plugins.mongodb.MongoBuildWrapper plugin="mongodb">
+      <mongodbName>2.4.6</mongodbName>
+      <port>5555</port>
+      <dbpath>/var/tmp/mongo</dbpath>
+      <parameters>--bind_ip 127.0.0.1</parameters>
+      <startTimeout>5000</startTimeout>
+    </org.jenkinsci.plugins.mongodb.MongoBuildWrapper>
+  </buildWrappers>
+</project>
