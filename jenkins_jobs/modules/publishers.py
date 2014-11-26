@@ -163,6 +163,8 @@ def trigger_parameterized_builds(parser, xml_parent, data):
 
     Use of the `node-label-name` or `node-label` parameters
     requires the Jenkins `NodeLabel Parameter Plugin.
+    Note: 'node-parameters' overrides the Node that the triggered
+    project is tied to.
     <https://wiki.jenkins-ci.org/display/JENKINS/NodeLabel+Parameter+P
     lugin>`_
 
@@ -171,6 +173,8 @@ def trigger_parameterized_builds(parser, xml_parent, data):
       job (optional)
     :arg bool current-parameters: Whether to include the parameters passed
       to the current build to the triggered job (optional)
+    :arg bool node-parameters: Use the same Node for the triggered builds
+      that was used for this build. (optional)
     :arg bool svn-revision: Pass svn revision to the triggered job (optional)
     :arg bool git-revision: Pass git revision to the other job (optional)
     :arg str condition: when to trigger the other job (default 'ALWAYS')
@@ -203,6 +207,7 @@ def trigger_parameterized_builds(parser, xml_parent, data):
             or 'git-revision' in project_def
             or 'property-file' in project_def
             or 'current-parameters' in project_def
+            or 'node-parameters' in project_def
             or 'svn-revision' in project_def
             or 'restrict-matrix-project' in project_def
             or 'node-label-name' in project_def
@@ -235,6 +240,11 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                 XML.SubElement(tconfigs,
                                'hudson.plugins.parameterizedtrigger.'
                                'CurrentBuildParameters')
+            if ('node-parameters' in project_def
+                and project_def['node-parameters']):
+                XML.SubElement(tconfigs,
+                               'hudson.plugins.parameterizedtrigger.'
+                               'NodeParameters')
             if 'svn-revision' in project_def and project_def['svn-revision']:
                 XML.SubElement(tconfigs,
                                'hudson.plugins.parameterizedtrigger.'

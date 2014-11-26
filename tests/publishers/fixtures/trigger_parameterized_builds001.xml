@@ -65,6 +65,15 @@
         <condition>ALWAYS</condition>
         <triggerWithNoParameters>false</triggerWithNoParameters>
       </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+      <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+        <configs>
+          <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
+          <hudson.plugins.parameterizedtrigger.NodeParameters/>
+        </configs>
+        <projects>test-project-same-node</projects>
+        <condition>ALWAYS</condition>
+        <triggerWithNoParameters>false</triggerWithNoParameters>
+      </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
     </configs>
     </hudson.plugins.parameterizedtrigger.BuildTrigger>
   </publishers>
