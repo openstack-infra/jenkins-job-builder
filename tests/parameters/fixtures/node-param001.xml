@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <org.jvnet.jenkins.plugins.nodelabelparameter.NodeParameterDefinition>
+          <name>SLAVE_NAME</name>
+          <description>Select slave</description>
+          <defaultSlaves/>
+          <allowedSlaves>
+            <string>slave001</string>
+            <string>slave002</string>
+            <string>slave003</string>
+          </allowedSlaves>
+          <ignoreOfflineNodes>true</ignoreOfflineNodes>
+          <triggerIfResult>multiSelectionDisallowed</triggerIfResult>
+        </org.jvnet.jenkins.plugins.nodelabelparameter.NodeParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+</project>

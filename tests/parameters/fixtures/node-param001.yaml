@@ -1,0 +1,10 @@
+parameters:
+  - node:
+      name: SLAVE_NAME
+      description: "Select slave"
+      allowed-slaves:
+        - slave001
+        - slave002
+        - slave003
+      ignore-offline-nodes: true
+
