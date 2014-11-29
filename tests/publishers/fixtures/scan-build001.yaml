@@ -1,0 +1,4 @@
+publishers:
+  - scan-build:
+      mark-unstable: true
+      threshold: 0
