@@ -23,6 +23,7 @@ publishers:
       pre-build: true
       matrix-trigger: only-configurations
       presend-script: "cancel=true"
+      save-output: true
       send-to:
         - developers
         - requester
