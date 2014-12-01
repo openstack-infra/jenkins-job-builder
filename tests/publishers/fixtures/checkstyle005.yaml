@@ -1,0 +1,20 @@
+publishers:
+ - checkstyle:
+    pattern: '**/checkstyle-result.xml'
+    can-run-on-failed: true
+    should-detect-modules: true
+    healthy: 0
+    unhealthy: 100
+    health-threshold: 'high'
+    thresholds:
+        unstable:
+            total-all: 90
+            total-high: 80
+            total-normal: 70
+            total-low: 60
+        failed:
+            total-all: 90
+            total-high: 80
+            total-normal: 70
+            total-low: 60
+    default-encoding: 'utf-8'

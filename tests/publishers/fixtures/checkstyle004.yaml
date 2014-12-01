@@ -1,0 +1,11 @@
+publishers:
+ - checkstyle:
+    pattern: '**/checkstyle-result.xml'
+    healthy: 0
+    unhealthy: 100
+    health-threshold: 'high'
+    thresholds:
+        unstable:
+            total-high: 10
+        failed:
+            total-high: 1

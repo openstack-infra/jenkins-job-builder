@@ -1067,92 +1067,93 @@ def checkstyle(parser, xml_parent, data):
     The checkstyle component accepts a dictionary with the
     following values:
 
-    :arg str pattern: report filename pattern
-    :arg bool canRunOnFailed: also runs for failed builds
-     (instead of just stable or unstable builds)
-    :arg bool shouldDetectModules:
-    :arg int healthy: sunny threshold
-    :arg int unHealthy: stormy threshold
-    :arg str healthThreshold: threshold priority for health status
-     (high: only high, normal: high and normal, low: all)
-    :arg dict thresholds:
+    :arg str pattern: Report filename pattern (optional)
+    :arg bool can-run-on-failed: Also runs for failed builds, instead of just
+      stable or unstable builds (default false)
+    :arg bool should-detect-modules: Determines if Ant or Maven modules should
+      be detected for all files that contain warnings (default false)
+    :arg int healthy: Sunny threshold (optional)
+    :arg int unhealthy: Stormy threshold (optional)
+    :arg str health-threshold: Threshold priority for health status
+      ('low', 'normal' or 'high', defaulted to 'low')
+    :arg dict thresholds: Mark build as failed or unstable if the number of
+      errors exceeds a threshold. (optional)
+
         :thresholds:
             * **unstable** (`dict`)
-                :unstable: * **totalAll** (`int`)
-                           * **totalHigh** (`int`)
-                           * **totalNormal** (`int`)
-                           * **totalLow** (`int`)
+                :unstable: * **total-all** (`int`)
+                           * **total-high** (`int`)
+                           * **total-normal** (`int`)
+                           * **total-low** (`int`)
+                           * **new-all** (`int`)
+                           * **new-high** (`int`)
+                           * **new-normal** (`int`)
+                           * **new-low** (`int`)
+
             * **failed** (`dict`)
-                :failed: * **totalAll** (`int`)
-                         * **totalHigh** (`int`)
-                         * **totalNormal** (`int`)
-                         * **totalLow** (`int`)
-    :arg str defaultEncoding: encoding for parsing or showing files
-     (empty will use platform default)
+                :failed: * **total-all** (`int`)
+                         * **total-high** (`int`)
+                         * **total-normal** (`int`)
+                         * **total-low** (`int`)
+                         * **new-all** (`int`)
+                         * **new-high** (`int`)
+                         * **new-normal** (`int`)
+                         * **new-low** (`int`)
+    :arg str default-encoding: Encoding for parsing or showing files (optional)
+    :arg bool do-not-resolve-relative-paths: (default false)
+    :arg bool dont-compute-new: If set to false, computes new warnings based on
+      the reference build (default true)
+    :arg bool use-stable-build-as-reference: The number of new warnings will be
+      calculated based on the last stable build, allowing reverts of unstable
+      builds where the number of warnings was decreased. (default false)
+    :arg bool use-delta-values: If set then the number of new warnings is
+      calculated by subtracting the total number of warnings of the current
+      build from the reference build.
+      (default false)
 
     Example:
 
-    .. literalinclude::  /../../tests/publishers/fixtures/checkstyle001.yaml
+    .. literalinclude::  /../../tests/publishers/fixtures/checkstyle004.yaml
 
     Full example:
 
-    .. literalinclude::  /../../tests/publishers/fixtures/checkstyle002.yaml
+    .. literalinclude::  /../../tests/publishers/fixtures/checkstyle006.yaml
 
     """
-    checkstyle = XML.SubElement(xml_parent,
-                                'hudson.plugins.checkstyle.'
-                                'CheckStylePublisher')
+    def convert_settings(lookup, data):
+        """Helper to convert settings from one key to another
+        """
 
-    XML.SubElement(checkstyle, 'healthy').text = str(
-        data.get('healthy', ''))
-    XML.SubElement(checkstyle, 'unHealthy').text = str(
-        data.get('unHealthy', ''))
-    XML.SubElement(checkstyle, 'thresholdLimit').text = \
-        data.get('healthThreshold', 'low')
+        for old_key, value in data.items():
+            if old_key in lookup:
+                # Insert value if key does not already exists
+                data.setdefault(lookup[old_key], value)
 
-    XML.SubElement(checkstyle, 'pluginName').text = '[CHECKSTYLE] '
+                del data[old_key]
 
-    XML.SubElement(checkstyle, 'defaultEncoding').text = \
-        data.get('defaultEncoding', '')
+    xml_element = XML.SubElement(xml_parent,
+                                 'hudson.plugins.checkstyle.'
+                                 'CheckStylePublisher')
 
-    XML.SubElement(checkstyle, 'canRunOnFailed').text = str(
-        data.get('canRunOnFailed', False)).lower()
+    # Convert old style yaml to new style
+    convert_settings({
+        'unHealthy': 'unhealthy',
+        'healthThreshold': 'health-threshold',
+        'defaultEncoding': 'default-encoding',
+        'canRunOnFailed': 'can-run-on-failed',
+        'shouldDetectModules': 'should-detect-modules'
+    }, data)
 
-    XML.SubElement(checkstyle, 'useStableBuildAsReference').text = 'false'
+    threshold_data = data.get('thresholds', {})
+    for threshold in ['unstable', 'failed']:
+        convert_settings({
+            'totalAll': 'total-all',
+            'totalHigh': 'total-high',
+            'totalNormal': 'total-normal',
+            'totalLow': 'total-low'
+        }, threshold_data.get(threshold, {}))
 
-    XML.SubElement(checkstyle, 'useDeltaValues').text = 'false'
-
-    dthresholds = data.get('thresholds', {})
-    dunstable = dthresholds.get('unstable', {})
-    dfailed = dthresholds.get('failed', {})
-    thresholds = XML.SubElement(checkstyle, 'thresholds')
-
-    XML.SubElement(thresholds, 'unstableTotalAll').text = str(
-        dunstable.get('totalAll', ''))
-    XML.SubElement(thresholds, 'unstableTotalHigh').text = str(
-        dunstable.get('totalHigh', ''))
-    XML.SubElement(thresholds, 'unstableTotalNormal').text = str(
-        dunstable.get('totalNormal', ''))
-    XML.SubElement(thresholds, 'unstableTotalLow').text = str(
-        dunstable.get('totalLow', ''))
-
-    XML.SubElement(thresholds, 'failedTotalAll').text = str(
-        dfailed.get('totalAll', ''))
-    XML.SubElement(thresholds, 'failedTotalHigh').text = str(
-        dfailed.get('totalHigh', ''))
-    XML.SubElement(thresholds, 'failedTotalNormal').text = str(
-        dfailed.get('totalNormal', ''))
-    XML.SubElement(thresholds, 'failedTotalLow').text = str(
-        dfailed.get('totalLow', ''))
-
-    XML.SubElement(checkstyle, 'shouldDetectModules').text = \
-        str(data.get('shouldDetectModules', False)).lower()
-
-    XML.SubElement(checkstyle, 'dontComputeNew').text = 'true'
-
-    XML.SubElement(checkstyle, 'doNotResolveRelativePaths').text = 'false'
-
-    XML.SubElement(checkstyle, 'pattern').text = data.get('pattern', '')
+    build_trends_publisher('[CHECKSTYLE] ', xml_element, data)
 
 
 def scp(parser, xml_parent, data):
