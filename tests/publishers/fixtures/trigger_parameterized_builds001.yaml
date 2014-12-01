@@ -14,3 +14,6 @@ publishers:
       node-label-name: foo
     - project: yet_another_job_3
       node-label: node-label-foo || node-label-bar
+    - project: 'test-project-same-node'
+      node-parameters: true
+      current-parameters: true
