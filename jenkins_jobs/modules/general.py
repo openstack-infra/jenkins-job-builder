@@ -82,8 +82,9 @@ Example:
     * **node**:
       Restrict where this job can be run. If there is a group of
       machines that the job can be built on, you can specify that
-      label as the node to tie on, which will cause Jenkins to build
-      the job on any of the machines with that label.
+      label as the node to tie on, which will cause Jenkins to build the job on
+      any of the machines with that label. For matrix projects, this parameter
+      will only restrict where the parent job will run.
 
     * **logrotate**:
       The Logrotate section allows you to automatically remove old build

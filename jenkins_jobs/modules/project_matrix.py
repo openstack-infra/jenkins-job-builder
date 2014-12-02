@@ -31,6 +31,10 @@ The module supports also dynamic axis:
 Requires the Jenkins `dynamic axis Plugin.
 <https://wiki.jenkins-ci.org/display/JENKINS/DynamicAxis+Plugin>`_
 
+To tie the parent job to a specific node, you should use ``node`` parameter.
+On a matrix project, this will tie *only* the parent job.  To restrict axes
+jobs, you can define a single value ``slave`` axis.
+
 :Job Parameters:
     * **execution-strategy** (optional):
         * **combination-filter** (`str`): axes selection filter

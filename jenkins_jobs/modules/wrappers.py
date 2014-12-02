@@ -1096,6 +1096,8 @@ def matrix_tie_parent(parser, xml_parent, data):
     <https://wiki.jenkins-ci.org/display/JENKINS/Matrix+Tie+Parent+Plugin>`_
     Note that from Jenkins version 1.532 this plugin's functionality is
     available under the "advanced" option of the matrix project configuration.
+    You can use the top level ``node`` parameter to control where the parent
+    job is tied in Jenkins 1.532 and higher.
 
     :arg str node: Name of the node.
 
