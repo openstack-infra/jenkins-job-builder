@@ -219,21 +219,33 @@ def run_param(parser, xml_parent, data):
 
 def extended_choice_param(parser, xml_parent, data):
     """yaml: extended-choice
-    Extended Choice Parameter
-    Requires the Jenkins `Extended Choice Parameter Plug-in.
+    Creates an extended choice parameter where values can be read from a file
+    Requires the Jenkins `Extended Choice Parameter Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/
     Extended+Choice+Parameter+plugin>`_
 
-    :arg str name: the name of the parameter
-    :arg str description: a description of the parameter (optional)
-    :arg str type: parameter select type. Can be PT_SINGLE_SELECT,
-        PT_MULTI_SELECT, PT_RADIO, PT_CHECKBOX, PT_TEXTBOX
-    :arg str value: comma separated list of values
-    :arg str visible-item-count: number of lines to render for multi-select
-        (default 5)
+    :arg str name: name of the parameter
+    :arg str description: description of the parameter
+        (optional, default '')
+    :arg str property-file: location of property file to read from
+        (optional, default '')
+    :arg str property-key: key for the property-file (optional, default '')
+    :arg bool quote-value: whether to put quotes around the property
+        when passing to Jenkins (optional, default false)
+    :arg str visible-items: number of items to show in the list
+        (optional, default 5)
+    :arg str type: type of select, can be single-select, multi-select,
+        radio, checkbox or textbox (optional, default single-select)
+    :arg str value: comma separated list of values for the single select
+        or multi-select box (optional, default '')
+    :arg str default-value: used to set the initial selection of the
+        single-select or multi-select box (optional, default '')
+    :arg str default-property-file: location of property file when default
+        value needs to come from a property file (optional, default '')
+    :arg str default-property-key: key for the default property file
+        (optional, default '')
     :arg str multi-select-delimiter: value between selections when the
-        parameter is a multi-select (default ,)
-    :arg str default-value: default selected value
+        parameter is a multi-select (optiona, default ',')
 
     Example:
 
@@ -242,34 +254,44 @@ def extended_choice_param(parser, xml_parent, data):
        :language: yaml
 
     """
-    pdef = XML.SubElement(xml_parent,
-                          'com.cwctravel.hudson.plugins.'
-                          'extended__choice__parameter.'
-                          'ExtendedChoiceParameterDefinition')
-    XML.SubElement(pdef, 'name').text = data['name']
-    XML.SubElement(pdef, 'description').text = data.get('description', '')
-
-    types_list = ['PT_SINGLE_SELECT',
-                  'PT_MULTI_SELECT',
-                  'PT_RADIO',
-                  'PT_CHECKBOX',
-                  'PT_TEXTBOX']
-    type = data['type']
-    if type not in types_list:
-        raise JenkinsJobsException(
-            'extended-choice type must be one of: '
-            + ', '.join(types_list))
-    else:
-        XML.SubElement(pdef, 'type').text = type
-
+    pdef = base_param(parser, xml_parent, data, False,
+                      'com.cwctravel.hudson.plugins.'
+                      'extended__choice__parameter.'
+                      'ExtendedChoiceParameterDefinition')
     XML.SubElement(pdef, 'value').text = data.get('value', '')
-    XML.SubElement(pdef, 'visibleItemCount').text = data.get(
-        'visible-item-count', '5')
+    XML.SubElement(pdef, 'visibleItemCount').text = str(data.get(
+        'visible-items', data.get('visible-item-count', 5)))
     XML.SubElement(pdef, 'multiSelectDelimiter').text = data.get(
         'multi-select-delimiter', ',')
-    XML.SubElement(pdef, 'quoteValue').text = 'false'
+    XML.SubElement(pdef, 'quoteValue').text = str(data.get('quote-value',
+                                                  False)).lower()
     XML.SubElement(pdef, 'defaultValue').text = data.get(
         'default-value', '')
+
+    choice = data.get('type', 'single-select')
+    choicedict = {'single-select': 'PT_SINGLE_SELECT',
+                  'multi-select': 'PT_MULTI_SELECT',
+                  'radio': 'PT_RADIO',
+                  'checkbox': 'PT_CHECKBOX',
+                  'textbox': 'PT_TEXTBOX',
+                  'PT_SINGLE_SELECT': 'PT_SINGLE_SELECT',
+                  'PT_MULTI_SELECT': 'PT_MULTI_SELECT',
+                  'PT_RADIO': 'PT_RADIO',
+                  'PT_CHECKBOX': 'PT_CHECKBOX',
+                  'PT_TEXTBOX': 'PT_TEXTBOX'}
+
+    if choice in choicedict:
+        XML.SubElement(pdef, 'type').text = choicedict[choice]
+    else:
+        raise JenkinsJobsException("Type entered is not valid, must be one "
+                                   "of: single-select, multi-select, radio, "
+                                   "textbox or checkbox")
+    XML.SubElement(pdef, 'propertyFile').text = data.get('property-file', '')
+    XML.SubElement(pdef, 'propertyKey').text = data.get('property-key', '')
+    XML.SubElement(pdef, 'defaultPropertyFile').text = data.get(
+        'default-property-file', '')
+    XML.SubElement(pdef, 'defaultPropertyKey').text = data.get(
+        'default-property-key', '')
 
 
 def validating_string_param(parser, xml_parent, data):
@@ -560,10 +582,20 @@ class Parameters(jenkins_jobs.modules.base.Base):
             properties = XML.SubElement(xml_parent, 'properties')
 
         parameters = data.get('parameters', [])
+        hmodel = 'hudson.model.'
         if parameters:
-            pdefp = XML.SubElement(properties,
-                                   'hudson.model.ParametersDefinitionProperty')
-            pdefs = XML.SubElement(pdefp, 'parameterDefinitions')
+            # The conditionals here are to work around the extended_choice
+            # parameter also being definable in the properties module.  This
+            # usage has been deprecated but not removed.  Because it may have
+            # added these elements before us, we need to check if they already
+            # exist, and only add them if they're missing.
+            pdefp = properties.find(hmodel + 'ParametersDefinitionProperty')
+            if pdefp is None:
+                pdefp = XML.SubElement(properties,
+                                       hmodel + 'ParametersDefinitionProperty')
+            pdefs = pdefp.find('parameterDefinitions')
+            if pdefs is None:
+                pdefs = XML.SubElement(pdefp, 'parameterDefinitions')
             for param in parameters:
                 self.registry.dispatch('parameter',
                                        parser, pdefs, param)
