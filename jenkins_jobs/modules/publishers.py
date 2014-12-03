@@ -1308,7 +1308,7 @@ def email(parser, xml_parent, data):
     """yaml: email
     Email notifications on build failure.
 
-    :arg str recipients: Recipient email addresses
+    :arg str recipients: Recipient email addresses (optional)
     :arg bool notify-every-unstable-build: Send an email for every
       unstable build (default true)
     :arg bool send-to-individuals: Send an email to the individual
@@ -1324,7 +1324,8 @@ def email(parser, xml_parent, data):
     # TODO: raise exception if this is applied to a maven job
     mailer = XML.SubElement(xml_parent,
                             'hudson.tasks.Mailer')
-    XML.SubElement(mailer, 'recipients').text = data['recipients']
+    if 'recipients' in data:
+        XML.SubElement(mailer, 'recipients').text = data['recipients']
 
     # Note the logic reversal (included here to match the GUI
     if data.get('notify-every-unstable-build', True):
