@@ -2441,18 +2441,20 @@ def postbuildscript(parser, xml_parent, data):
     :arg list groovy-script: Paths to Groovy scripts
     :arg list groovy: Inline Groovy
     :arg list builders: Any supported builders, see :doc:`builders`.
-    :arg bool onsuccess: Scripts and builders are run only if the build succeed
-                         (default True)
-    :arg bool onfailure: Scripts and builders are run only if the build fail
-                         (default False)
+    :arg bool onsuccess: Deprecated, replaced with script-only-if-succeeded
+    :arg bool script-only-if-succeeded: Scripts and builders are run only if
+                                        the build succeeded (default True)
+    :arg bool onfailure: Deprecated, replaced with script-only-if-failed
+    :arg bool script-only-if-failed: Scripts and builders are run only if the
+                                     build failed (default False)
     :arg str execute-on: For matrix projects, scripts can be run after each
                          axis is built (`axes`), after all axis of the matrix
                          are built (`matrix`) or after each axis AND the matrix
                          are built (`both`).
 
-    The `onsuccess` and `onfailure` options are confusing. If you want
-    the post build to always run regardless of the build status, you
-    should set them both to `false`.
+    The `script-only-if-succeeded` and `bool script-only-if-failed` options are
+    confusing. If you want the post build to always run regardless of the build
+    status, you should set them both to `false`.
 
     Example:
 
@@ -2519,10 +2521,21 @@ postbuildscript003.yaml
 
     # When to run the build? Note the plugin let one specify both options
     # although they are antinomic
+    # onsuccess and onfailure parameters are deprecated, this is to keep
+    # backwards compatability
     success_xml = XML.SubElement(pbs_xml, 'scriptOnlyIfSuccess')
-    success_xml.text = str(data.get('onsuccess', True)).lower()
+    if 'script-only-if-succeeded' in data:
+        success_xml.text = str(data.get('script-only-if-succeeded',
+                                        True)).lower()
+    else:
+        success_xml.text = str(data.get('onsuccess', True)).lower()
+
     failure_xml = XML.SubElement(pbs_xml, 'scriptOnlyIfFailure')
-    failure_xml.text = str(data.get('onfailure', False)).lower()
+    if 'script-only-if-failed' in data:
+        failure_xml.text = str(data.get('script-only-if-failed',
+                                        False)).lower()
+    else:
+        failure_xml.text = str(data.get('onfailure', False)).lower()
 
     # TODO: we may want to avoid setting "execute-on" on non-matrix jobs,
     # either by skipping this part or by raising an error to let the user know
