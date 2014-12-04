@@ -2442,9 +2442,9 @@ def postbuildscript(parser, xml_parent, data):
     :arg list groovy: Inline Groovy
     :arg list builders: Any supported builders, see :doc:`builders`.
     :arg bool onsuccess: Scripts and builders are run only if the build succeed
-                         (default False)
-    :arg bool onfailure: Scripts and builders are run only if the build fail
                          (default True)
+    :arg bool onfailure: Scripts and builders are run only if the build fail
+                         (default False)
     :arg str execute-on: For matrix projects, scripts can be run after each
                          axis is built (`axes`), after all axis of the matrix
                          are built (`matrix`) or after each axis AND the matrix
