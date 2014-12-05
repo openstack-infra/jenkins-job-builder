@@ -34,7 +34,7 @@ Please do not submit GitHub pull requests, they will be automatically closed.
 
 More details on how you can contribute is available on our wiki at:
 
-* http://wiki.openstack.org/HowToContribute
+* http://docs.openstack.org/infra/manual/developers.html
 
 Writing a patch
 ===============
