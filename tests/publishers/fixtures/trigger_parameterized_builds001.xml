@@ -6,7 +6,9 @@
       <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
         <configs>
           <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
-            <properties>foo=bar</properties>
+            <properties>foo=bar
+bar=foo
+            </properties>
           </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
         </configs>
         <projects>other_job, foo, bar</projects>

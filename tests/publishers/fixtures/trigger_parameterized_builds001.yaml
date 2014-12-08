@@ -1,7 +1,9 @@
 publishers:
   - trigger-parameterized-builds:
     - project: other_job, foo, bar
-      predefined-parameters: foo=bar
+      predefined-parameters: |
+        foo=bar
+        bar=foo
     - project: other_job1, other_job2
       predefined-parameters: BUILD_NUM=${BUILD_NUMBER}
       property-file: version.prop
