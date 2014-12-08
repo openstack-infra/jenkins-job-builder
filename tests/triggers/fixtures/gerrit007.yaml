@@ -1,10 +1,7 @@
 triggers:
   - gerrit:
       trigger-on:
-        - patchset-created-event:
-            exclude-drafts: true
-            exclude-trivial-rebase: true
-            exclude-no-code-change: true
+        - patchset-created-event
         - comment-added-event:
             approval-category: 'APRV'
             approval-value: 1
