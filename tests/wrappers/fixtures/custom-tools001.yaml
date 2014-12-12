@@ -1,0 +1,6 @@
+wrappers:
+  - custom-tools:
+      tools:
+      - my_custom_tool
+      skip-master-install: true
+      convert-homes-to-upper: true

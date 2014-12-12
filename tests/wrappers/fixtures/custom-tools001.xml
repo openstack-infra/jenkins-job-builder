@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <com.cloudbees.jenkins.plugins.customtools.CustomToolInstallWrapper>
+      <selectedTools>
+        <com.cloudbees.jenkins.plugins.customtools.CustomToolInstallWrapper_-SelectedTool>
+          <name>my_custom_tool</name>
+        </com.cloudbees.jenkins.plugins.customtools.CustomToolInstallWrapper_-SelectedTool>
+      </selectedTools>
+      <multiconfigOptions>
+        <skipMasterInstallation>True</skipMasterInstallation>
+      </multiconfigOptions>
+      <convertHomesToUppercase>True</convertHomesToUppercase>
+    </com.cloudbees.jenkins.plugins.customtools.CustomToolInstallWrapper>
+  </buildWrappers>
+</project>
