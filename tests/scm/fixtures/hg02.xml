@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <scm class="hudson.plugins.mercurial.MercurialSCM">
+    <source>ssh://hg@hg/repo</source>
+    <credentialsId>abcdef01234567890</credentialsId>
+    <revisionType>BRANCH</revisionType>
+    <revision>feature</revision>
+    <subdir>my/sources</subdir>
+    <clean>true</clean>
+    <modules>module1 module2</modules>
+    <disableChangeLog>true</disableChangeLog>
+    <browser class="hudson.plugins.mercurial.browser.HgWeb">
+      <url>http://hg/repo</url>
+    </browser>
+  </scm>
+</project>

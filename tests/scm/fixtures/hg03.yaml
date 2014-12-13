@@ -1,0 +1,12 @@
+scm:
+  - hg:
+     revision-type: tag
+     revision: '1.0'
+     url: ssh://hg@hg/repo
+     credentials-id: "abcdef01234567890"
+     modules: module
+     clean: true
+     subdir: my/sources
+     disable-changelog: true
+     browser: hgweb
+     browser-url: http://hg/repo
