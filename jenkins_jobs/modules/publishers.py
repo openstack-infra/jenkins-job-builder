@@ -2151,7 +2151,7 @@ def maven_deploy(parser, xml_parent, data):
     Deploy artifacts to Maven repository.
 
     :arg str id: Repository ID
-    :arg str url: Repository URL
+    :arg str url: Repository URL (optional)
     :arg bool unique-version: Assign unique versions to snapshots
       (default true)
     :arg bool deploy-unstable: Deploy even if the build is unstable
@@ -2171,7 +2171,8 @@ def maven_deploy(parser, xml_parent, data):
     p = XML.SubElement(xml_parent, 'hudson.maven.RedeployPublisher')
     if 'id' in data:
         XML.SubElement(p, 'id').text = data['id']
-    XML.SubElement(p, 'url').text = data['url']
+    if 'url' in data:
+        XML.SubElement(p, 'url').text = data['url']
     XML.SubElement(p, 'uniqueVersion').text = str(
         data.get('unique-version', True)).lower()
     XML.SubElement(p, 'evenIfUnstable').text = str(
