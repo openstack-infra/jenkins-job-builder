@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<maven2-moduleset>
+  <goals>deploy</goals>
+  <ignoreUpstremChanges>true</ignoreUpstremChanges>
+  <rootPOM>pom.xml</rootPOM>
+  <aggregatorStyleBuild>true</aggregatorStyleBuild>
+  <incrementalBuild>false</incrementalBuild>
+  <perModuleEmail>true</perModuleEmail>
+  <archivingDisabled>false</archivingDisabled>
+  <resolveDependencies>false</resolveDependencies>
+  <processPlugins>false</processPlugins>
+  <mavenValidationLevel>-1</mavenValidationLevel>
+  <runHeadless>false</runHeadless>
+  <settings class="org.jenkinsci.plugins.configfiles.maven.job.MvnSettingsProvider">
+    <settingsConfigId>org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig0123456789012</settingsConfigId>
+  </settings>
+  <globalSettings class="org.jenkinsci.plugins.configfiles.maven.job.MvnGlobalSettingsProvider">
+    <settingsConfigId>org.jenkinsci.plugins.configfiles.maven.GlobalMavenSettingsConfig0123456789012</settingsConfigId>
+  </globalSettings>
+  <runPostStepsIfResult>
+    <name>FAILURE</name>
+    <ordinal>2</ordinal>
+    <color>red</color>
+  </runPostStepsIfResult>
+  <actions/>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+</maven2-moduleset>
