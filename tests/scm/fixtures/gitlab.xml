@@ -34,6 +34,7 @@
     <scmName/>
     <useShallowClone>false</useShallowClone>
     <ignoreNotifyCommit>false</ignoreNotifyCommit>
+    <extensions/>
     <browser class="hudson.plugins.git.browser.GitLab">
       <url>https://gitlab.example.com/foo/bar/</url>
       <version>5.2</version>

@@ -42,6 +42,7 @@
     <scmName/>
     <useShallowClone>false</useShallowClone>
     <ignoreNotifyCommit>false</ignoreNotifyCommit>
+    <extensions/>
   </scm>
   <builders/>
   <publishers/>
@@ -91,6 +92,7 @@
     <scmName/>
     <useShallowClone>false</useShallowClone>
     <ignoreNotifyCommit>false</ignoreNotifyCommit>
+    <extensions/>
   </scm>
   <builders/>
   <publishers/>

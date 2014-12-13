@@ -42,6 +42,7 @@
     <scmName/>
     <useShallowClone>false</useShallowClone>
     <ignoreNotifyCommit>false</ignoreNotifyCommit>
+    <extensions/>
     <browser class="hudson.plugins.git.browser.GitWeb">
       <url>http://review.openstack.org/gitweb?p=openstack-infra/jenkins-job-builder.git</url>
     </browser>
