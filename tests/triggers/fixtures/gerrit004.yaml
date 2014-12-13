@@ -1,8 +1,10 @@
 triggers:
   - gerrit:
-      trigger-on-comment-added-event: true
-      trigger-approval-category: 'APRV'
-      trigger-approval-value: 1
+      trigger-on:
+        - patchset-created-event
+        - comment-added-event:
+            approval-category: 'APRV'
+            approval-value: 1
       projects:
         - project-compare-type: 'PLAIN'
           project-pattern: 'test-project'
