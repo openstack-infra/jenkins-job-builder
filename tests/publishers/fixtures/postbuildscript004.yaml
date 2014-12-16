@@ -12,5 +12,5 @@ publishers:
         groovy-script:
             - '/tmp/one.groovy'
             - '/tmp/two.groovy'
-        onsuccess: False
-        onfailure: True
+        script-only-if-succeeded: False
+        script-only-if-failed: True
