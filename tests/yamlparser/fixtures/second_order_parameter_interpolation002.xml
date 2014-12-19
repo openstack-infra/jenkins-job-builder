@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <displayName>experimental p2 bar</displayName>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <builders/>
+  <publishers>
+    <hudson.plugins.parameterizedtrigger.BuildTrigger>
+      <configs>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <hudson.plugins.git.GitRevisionBuildParameters>
+              <combineQueuedCommits>false</combineQueuedCommits>
+            </hudson.plugins.git.GitRevisionBuildParameters>
+          </configs>
+          <projects/>
+          <condition>ALWAYS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+      </configs>
+    </hudson.plugins.parameterizedtrigger.BuildTrigger>
+  </publishers>
+  <buildWrappers/>
+</project>
+<BLANKLINE>
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <displayName>experimental p2 foo</displayName>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <builders/>
+  <publishers>
+    <hudson.plugins.parameterizedtrigger.BuildTrigger>
+      <configs>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <hudson.plugins.git.GitRevisionBuildParameters>
+              <combineQueuedCommits>false</combineQueuedCommits>
+            </hudson.plugins.git.GitRevisionBuildParameters>
+          </configs>
+          <projects>experimental_p2_bar</projects>
+          <condition>ALWAYS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+      </configs>
+    </hudson.plugins.parameterizedtrigger.BuildTrigger>
+  </publishers>
+  <buildWrappers/>
+</project>
+<BLANKLINE>
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <displayName>production p1 bar</displayName>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <builders/>
+  <publishers>
+    <hudson.plugins.parameterizedtrigger.BuildTrigger>
+      <configs>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <hudson.plugins.git.GitRevisionBuildParameters>
+              <combineQueuedCommits>false</combineQueuedCommits>
+            </hudson.plugins.git.GitRevisionBuildParameters>
+          </configs>
+          <projects>production_p1_foo</projects>
+          <condition>ALWAYS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+      </configs>
+    </hudson.plugins.parameterizedtrigger.BuildTrigger>
+  </publishers>
+  <buildWrappers/>
+</project>
+<BLANKLINE>
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <displayName>production p1 foo</displayName>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <builders/>
+  <publishers>
+    <hudson.plugins.parameterizedtrigger.BuildTrigger>
+      <configs>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <hudson.plugins.git.GitRevisionBuildParameters>
+              <combineQueuedCommits>false</combineQueuedCommits>
+            </hudson.plugins.git.GitRevisionBuildParameters>
+          </configs>
+          <projects/>
+          <condition>ALWAYS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+      </configs>
+    </hudson.plugins.parameterizedtrigger.BuildTrigger>
+  </publishers>
+  <buildWrappers/>
+</project>

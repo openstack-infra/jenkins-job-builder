@@ -261,6 +261,14 @@ For example:
 
 .. literalinclude::  /../../tests/yamlparser/fixtures/yaml_anchor.yaml
 
+JJB also supports interpolation of parameters within parameters. This allows a
+little more flexibility when ordering template jobs as components in different
+projects and job groups.
+
+For example:
+
+.. literalinclude:: /../../tests/yamlparser/fixtures/second_order_parameter_interpolation002.yaml
+
 Custom Yaml Tags
 ----------------
 
