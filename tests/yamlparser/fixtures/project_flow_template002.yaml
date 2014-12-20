@@ -1,0 +1,26 @@
+- job-template:
+    name: '{name}-unit-tests'
+    project-type: flow
+    dsl: |
+        build("job1")
+        parallel (
+            {{ build("job2a") }},
+            {{ build("job2b") }}
+        )
+        build("job2c")
+    builders:
+    - shell: unittest
+    publishers:
+    - email:
+        recipients: '{mail-to}'
+
+- job-group:
+    name: '{name}-tests'
+    jobs:
+    - '{name}-unit-tests':
+        mail-to: developer@nowhere.net
+
+- project:
+    name: project-name
+    jobs:
+    - '{name}-tests'
