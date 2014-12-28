@@ -24,7 +24,7 @@ Bug report:
 
 Cloning:
 
-* https://git.openstack.org/openstack-infra/jenkins-job-builder
+* git clone https://git.openstack.org/openstack-infra/jenkins-job-builder
 
 Patches are submitted via Gerrit at:
 
