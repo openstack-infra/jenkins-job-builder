@@ -52,7 +52,7 @@ jobs, you can define a single value ``slave`` axis.
 
 The module supports also ShiningPanda axes:
 
-Example::
+Example:
 
 .. literalinclude::  /../../tests/general/fixtures/matrix-axis003.yaml
 
