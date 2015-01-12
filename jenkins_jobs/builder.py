@@ -176,8 +176,8 @@ class YamlParser(object):
                                                .format(n))
                 name = dfn['name']
                 if name in group:
-                    self._handle_dups("Duplicate entry found: '{0}' is "
-                                      "already defined".format(name))
+                    self._handle_dups("Duplicate entry found in '{0}: '{1}' "
+                                      "already defined".format(fp.name, name))
                 group[name] = dfn
                 self.data[cls] = group
 
