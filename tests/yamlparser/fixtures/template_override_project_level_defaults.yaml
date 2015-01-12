@@ -1,0 +1,33 @@
+- job-template:
+    name: '{publish}_foo'
+    display-name: '{publish} foo'
+    defaults: testdefaults
+
+- job-template:
+    name: '{publish}_bar'
+    display-name: '{publish} bar'
+    defaults: testdefaults
+    publishers:
+      - email:
+          recipients: qa@example.com
+
+- project:
+    name: dev
+    publish: 'experimental'
+    defaults: testdefaults
+    recipients: dev@example.com
+    jobs:
+        - '{publish}_foo'
+
+- project:
+    name: foobar
+    publish: 'production'
+    defaults: testdefaults
+    jobs:
+        - '{publish}_bar'
+
+- defaults:
+    name: testdefaults
+    publishers:
+      - email-ext:
+          recipients: '{recipients}'
