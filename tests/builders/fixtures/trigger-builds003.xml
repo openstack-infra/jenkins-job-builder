@@ -9,6 +9,22 @@
             <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
               <properties>FOO=&quot;bar&quot;</properties>
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+            <hudson.plugins.parameterizedtrigger.BooleanParameters>
+              <configs>
+                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                  <name>PARAM1</name>
+                  <value>false</value>
+                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                  <name>PARAM2</name>
+                  <value>true</value>
+                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                  <name>PARAM3</name>
+                  <value>false</value>
+                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+              </configs>
+            </hudson.plugins.parameterizedtrigger.BooleanParameters>
           </configs>
           <projects>build_started</projects>
           <condition>ALWAYS</condition>
