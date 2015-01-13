@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <hudson.plugins.android__emulator.AndroidEmulator>
+      <osVersion>android-19</osVersion>
+      <screenDensity>mdpi</screenDensity>
+      <screenResolution>WVGA</screenResolution>
+      <deviceLocale>en_US</deviceLocale>
+      <targetAbi>x86</targetAbi>
+      <sdCardSize>16MB</sdCardSize>
+      <hardwareProperties>
+        <hudson.plugins.android__emulator.AndroidEmulator_-HardwareProperty>
+          <key>hw.accelerometer</key>
+          <value>100</value>
+        </hudson.plugins.android__emulator.AndroidEmulator_-HardwareProperty>
+      </hardwareProperties>
+      <wipeData>true</wipeData>
+      <showWindow>true</showWindow>
+      <useSnapshots>true</useSnapshots>
+      <deleteAfterBuild>true</deleteAfterBuild>
+      <startupDelay>10</startupDelay>
+      <commandLineOptions>-gpu on -no-audio</commandLineOptions>
+      <executable>emulator-arm</executable>
+    </hudson.plugins.android__emulator.AndroidEmulator>
+  </buildWrappers>
+</project>

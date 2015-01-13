@@ -1,0 +1,10 @@
+wrappers:
+  - android-emulator:
+      avd: avdname
+      wipe: true
+      show-window: true
+      snapshot: true
+      delete: true
+      startup-delay: 10
+      commandline-options: "-gpu on -no-audio"
+      exe: emulator-arm

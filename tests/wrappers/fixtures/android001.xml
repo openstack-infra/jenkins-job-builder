@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <hudson.plugins.android__emulator.AndroidEmulator>
+      <osVersion>android-7</osVersion>
+      <screenDensity>mdpi</screenDensity>
+      <screenResolution>WVGA</screenResolution>
+      <deviceLocale>en_US</deviceLocale>
+      <targetAbi/>
+      <sdCardSize/>
+      <hardwareProperties/>
+      <wipeData>false</wipeData>
+      <showWindow>false</showWindow>
+      <useSnapshots>false</useSnapshots>
+      <deleteAfterBuild>false</deleteAfterBuild>
+      <startupDelay>0</startupDelay>
+      <commandLineOptions/>
+      <executable/>
+    </hudson.plugins.android__emulator.AndroidEmulator>
+  </buildWrappers>
+</project>
