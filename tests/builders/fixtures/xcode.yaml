@@ -1,0 +1,22 @@
+builders:
+  - xcode
+  - xcode:
+      developer-profile: "849b07cd-ac61-4588-89c8-b6606ee84946"
+      clean-build: true
+      clean-test-reports: true
+      configuration: Distribution
+      target: TARGET
+      sdk: iphonesimulator
+      build-arguments: "test ONLY_ACTIVE_ARCH=NO -destination 'platform=iOS Simulator,name=iPhone 6' -derivedDataPath ."
+      schema: "UASDKInternal"
+      workspace: "UA"
+      profile: "PROFILE"
+      codesign-id: "iPhone Distribution: MapMyFitness Inc."
+      allow-failing: true
+      version-technical: "TECHNICAL"
+      version-marketing: "MARKETING"
+      ipa-version: "${VERSION}"
+      ipa-output: "/output"
+      keychain-path: "/Users/jenkins/Library/Keychains/jenkins-uasdk-ios-pre_review"
+      keychain-password: "testpass"
+      keychain-unlock: true
