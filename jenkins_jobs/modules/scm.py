@@ -89,7 +89,6 @@ remoteName/\*')
     :arg str reference-repo: Path of the reference repo to use during clone
       (optional)
     :arg str scm-name: The unique scm name for this Git SCM (optional)
-    :arg bool wipe-workspace: Wipe out workspace before build (default true)
     :arg bool ignore-notify: Ignore notifyCommit URL accesses (default false)
     :arg str browser: what repository browser to use (default '(Auto)')
     :arg str browser-url: url for the repository browser (required if browser
@@ -127,6 +126,8 @@ remoteName/\*')
                     submodules operations (default: 10).
 
         :arg str timeout: Timeout for git commands in minutes (optional)
+        :arg bool wipe-workspace: Wipe out workspace before build
+          (default true)
 
     :browser values:
         :auto:
@@ -294,6 +295,11 @@ remoteName/\*')
                             'hudson.plugins.git.extensions.impl.'
                             'CheckoutOption')
         XML.SubElement(co, 'timeout').text = str(data['timeout'])
+    # By default we wipe the workspace
+    wipe_workspace = str(data.get('wipe-workspace', True)).lower()
+    if wipe_workspace == 'true':
+        ext_name = 'hudson.plugins.git.extensions.impl.WipeWorkspace'
+        ext = XML.SubElement(exts_node, ext_name)
 
     browser = data.get('browser', 'auto')
     browserdict = {'auto': 'auto',

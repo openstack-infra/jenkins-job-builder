@@ -34,6 +34,8 @@
     <scmName/>
     <useShallowClone>false</useShallowClone>
     <ignoreNotifyCommit>true</ignoreNotifyCommit>
-    <extensions/>
+    <extensions>
+      <hudson.plugins.git.extensions.impl.WipeWorkspace/>
+    </extensions>
   </scm>
 </project>

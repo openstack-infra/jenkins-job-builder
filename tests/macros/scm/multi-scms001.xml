@@ -44,7 +44,9 @@
         <scmName/>
         <useShallowClone>false</useShallowClone>
         <ignoreNotifyCommit>false</ignoreNotifyCommit>
-        <extensions/>
+        <extensions>
+          <hudson.plugins.git.extensions.impl.WipeWorkspace/>
+        </extensions>
       </scm>
       <scm class="hudson.plugins.git.GitSCM">
         <configVersion>2</configVersion>
@@ -80,7 +82,9 @@
         <scmName/>
         <useShallowClone>false</useShallowClone>
         <ignoreNotifyCommit>false</ignoreNotifyCommit>
-        <extensions/>
+        <extensions>
+          <hudson.plugins.git.extensions.impl.WipeWorkspace/>
+        </extensions>
       </scm>
     </scms>
   </scm>
