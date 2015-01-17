@@ -31,7 +31,7 @@ Example of multiple repositories in a single job:
     .. literalinclude:: /../../tests/macros/scm/multi-scms001.yaml
 """
 
-
+import logging
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 from jenkins_jobs.errors import JenkinsJobsException
@@ -74,8 +74,14 @@ remoteName/\*')
     :arg bool clean: Clean after checkout (default false)
     :arg bool fastpoll: Use fast remote polling (default false)
     :arg bool disable-submodules: Disable submodules (default false)
+
+        .. deprecated:: 1.1.1. Please use submodule extension.
+
     :arg bool recursive-submodules: Recursively update submodules (default
       false)
+
+        .. deprecated:: 1.1.1. Please use submodule extension.
+
     :arg bool use-author: Use author rather than committer in Jenkin's build
       changeset (default false)
     :arg str git-tool: The name of the Git installation to use (default
@@ -106,6 +112,20 @@ remoteName/\*')
                 * **branch** (`string`) - name of the branch to create
                     create changelog against (default 'master')
 
+        :arg dict submodule:
+            :submodule:
+                * **disable** (`bool`) - By disabling support for submodules
+                    you can still keep using basic git plugin functionality
+                    and just have Jenkins to ignore submodules completely as
+                    if they didn't exist.
+                * **recursive** (`bool`) - Retrieve all submodules recursively
+                    (uses '--recursive' option which requires git>=1.6.5)
+                * **tracking** (`bool`) - Retrieve the tip of the configured
+                    branch in .gitmodules (Uses '--remote' option which
+                    requires git>=1.8.2)
+                * **timeout** (`int`) - Specify a timeout (in minutes) for
+                    submodules operations (default: 10).
+
         :arg str timeout: Timeout for git commands in minutes (optional)
 
     :browser values:
@@ -131,6 +151,7 @@ remoteName/\*')
 
     .. literalinclude:: /../../tests/scm/fixtures/git001.yaml
     """
+    logger = logging.getLogger("%s:git" % __name__)
 
     # XXX somebody should write the docs for those with option name =
     # None so we have a sensible name/key for it.
@@ -219,6 +240,21 @@ remoteName/\*')
 
     for elem in mapping:
         (optname, xmlname, val) = elem[:3]
+
+        # Throw warning for deprecated settings and skip
+        submodule_cfgs = ['disable-submodules', 'recursive-submodules']
+        if optname in submodule_cfgs:
+            if 'submodule' in data:
+                logger.warn("'{0}' is deprecated and will be ignored in "
+                            "favour of 'submodule'".format(optname))
+                continue
+
+            if optname in data:
+                logger.warn("'{0}' is deprecated, please convert to use the "
+                            "'submodule' section instead as support for this "
+                            "top level option will be removed in a future "
+                            "release.".format(optname))
+
         attrs = {}
         if len(elem) >= 4:
             attrs = elem[3]
@@ -242,6 +278,17 @@ remoteName/\*')
         change_branch = data['changelog-against'].get('branch', 'master')
         XML.SubElement(opts, 'compareRemote').text = change_remote
         XML.SubElement(opts, 'compareTarget').text = change_branch
+    if 'submodule' in data:
+        ext_name = 'hudson.plugins.git.extensions.impl.SubmoduleOption'
+        ext = XML.SubElement(exts_node, ext_name)
+        XML.SubElement(ext, 'disableSubmodules').text = str(
+            data['submodule'].get('disable', False)).lower()
+        XML.SubElement(ext, 'recursiveSubmodules').text = str(
+            data['submodule'].get('recursive', False)).lower()
+        XML.SubElement(ext, 'trackingSubmodules').text = str(
+            data['submodule'].get('tracking', False)).lower()
+        XML.SubElement(ext, 'timeout').text = str(
+            data['submodule'].get('timeout', 10))
     if 'timeout' in data:
         co = XML.SubElement(exts_node,
                             'hudson.plugins.git.extensions.impl.'
