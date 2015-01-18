@@ -72,6 +72,9 @@ remoteName/\*')
     :arg bool shallow-clone: Perform shallow clone (default false)
     :arg bool prune: Prune remote branches (default false)
     :arg bool clean: Clean after checkout (default false)
+
+        .. deprecated:: 1.1.1. Please use clean extension format.
+
     :arg bool fastpoll: Use fast remote polling (default false)
     :arg bool disable-submodules: Disable submodules (default false)
 
@@ -110,6 +113,11 @@ remoteName/\*')
                     create changelog against (default 'origin')
                 * **branch** (`string`) - name of the branch to create
                     create changelog against (default 'master')
+
+        :arg dict clean:
+            :clean:
+                * **after** (`bool`) - Clean the workspace after checkout
+                * **before** (`bool`) - Clean the workspace before checkout
 
         :arg dict submodule:
             :submodule:
@@ -162,7 +170,6 @@ remoteName/\*')
         ("recursive-submodules", 'recursiveSubmodules', False),
         (None, 'doGenerateSubmoduleConfigurations', False),
         ("use-author", 'authorOrCommitter', False),
-        ("clean", 'clean', False),
         ("wipe-workspace", 'wipeOutWorkspace', True),
         ("prune", 'pruneBranches', False),
         ("fastpoll", 'remotePoll', False),
@@ -279,6 +286,24 @@ remoteName/\*')
         change_branch = data['changelog-against'].get('branch', 'master')
         XML.SubElement(opts, 'compareRemote').text = change_remote
         XML.SubElement(opts, 'compareTarget').text = change_branch
+    if 'clean' in data:
+        # Keep support for old format 'clean' configuration by checking
+        # if 'clean' is boolean. Else we're using the new extensions style.
+        if isinstance(data['clean'], bool):
+            clean_after = data['clean']
+            clean_before = False
+            logger.warn("'clean: bool' configuration format is deprecated, "
+                        "please use the extension style format to configure "
+                        "this option.")
+        else:
+            clean_after = data['clean'].get('after', False)
+            clean_before = data['clean'].get('before', False)
+        if clean_after:
+            ext_name = 'hudson.plugins.git.extensions.impl.CleanCheckout'
+            ext = XML.SubElement(exts_node, ext_name)
+        if clean_before:
+            ext_name = 'hudson.plugins.git.extensions.impl.CleanBeforeCheckout'
+            ext = XML.SubElement(exts_node, ext_name)
     if 'submodule' in data:
         ext_name = 'hudson.plugins.git.extensions.impl.SubmoduleOption'
         ext = XML.SubElement(exts_node, ext_name)
