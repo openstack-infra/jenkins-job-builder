@@ -600,23 +600,22 @@ def inject_passwords(parser, xml_parent, data):
     <https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin>`_
 
     :arg bool global: inject global passwords to the job
+    :arg bool mask-password-params: mask passsword parameters
     :arg list job-passwords: key value pair of job passwords
 
         :Parameter: * **name** (`str`) Name of password
                     * **password** (`str`) Encrypted password
 
-    Example::
+    Example:
 
-      wrappers:
-        - inject-passwords:
-            global: true
-            job-passwords:
-              - name: ADMIN
-                password: 0v8ZCNaHwq1hcx+sHwRLdg9424uBh4Pin0zO4sBIb+U=
+    .. literalinclude:: /../../tests/wrappers/fixtures/passwords001.yaml
+
     """
     eib = XML.SubElement(xml_parent, 'EnvInjectPasswordWrapper')
     XML.SubElement(eib, 'injectGlobalPasswords').text = \
         str(data.get('global', False)).lower()
+    XML.SubElement(eib, 'maskPasswordParameters').text = \
+        str(data.get('mask-password-params', False)).lower()
     entries = XML.SubElement(eib, 'passwordEntries')
     passwords = data.get('job-passwords', [])
     if passwords:
