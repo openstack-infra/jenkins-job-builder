@@ -287,6 +287,35 @@ def workspace_cleanup(parser, xml_parent, data):
     deldirs.text = str(data.get("dirmatch", False)).lower()
 
 
+def m2_repository_cleanup(parser, xml_parent, data):
+    """yaml: m2-repository-cleanup
+    Configure M2 Repository Cleanup
+    Requires the Jenkins `M2 Repository Cleanup.
+    <https://wiki.jenkins-ci.org/display/JENKINS/M2+Repository+Cleanup+\
+Plugin>`_
+
+    :arg list patterns: List of patterns for artifacts to cleanup before
+                        building. (optional)
+
+    This plugin allows you to configure a maven2 job to clean some or all of
+    the artifacts from the repository before it runs.
+
+    Example:
+
+        .. literalinclude:: \
+../../tests/wrappers/fixtures/m2-repository-cleanup001.yaml
+    """
+    m2repo = XML.SubElement(
+        xml_parent,
+        'hudson.plugins.m2__repo__reaper.M2RepoReaperWrapper')
+    m2repo.set("plugin", "m2-repo-reaper")
+    patterns = data.get("patterns", [])
+    XML.SubElement(m2repo, 'artifactPatterns').text = ",".join(patterns)
+    p = XML.SubElement(m2repo, 'patterns')
+    for pattern in patterns:
+        XML.SubElement(p, 'string').text = pattern
+
+
 def rvm_env(parser, xml_parent, data):
     """yaml: rvm-env
     Set the RVM implementation

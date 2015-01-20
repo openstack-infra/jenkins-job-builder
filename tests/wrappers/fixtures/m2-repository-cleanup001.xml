@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <hudson.plugins.m2__repo__reaper.M2RepoReaperWrapper plugin="m2-repo-reaper">
+      <artifactPatterns>com/ibm/**,com/microsoft/**</artifactPatterns>
+      <patterns>
+        <string>com/ibm/**</string>
+        <string>com/microsoft/**</string>
+      </patterns>
+    </hudson.plugins.m2__repo__reaper.M2RepoReaperWrapper>
+  </buildWrappers>
+</project>
