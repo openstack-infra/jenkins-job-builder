@@ -1,8 +1,8 @@
-===================
-Jenkins Job Builder
-===================
+======
+README
+======
 
-Jenkins Job Builder takes simple descriptions of Jenkins jobs in YAML format,
+Jenkins Job Builder takes simple descriptions of Jenkins_ jobs in YAML_ format,
 and uses them to configure Jenkins. You can keep your job descriptions in human
 readable text format in a version control system to make changes and auditing
 easier. It also has a flexible template system, so creating many similarly
@@ -21,6 +21,10 @@ Developers
 Bug report:
 
 * https://storyboard.openstack.org/#!/project/723
+
+Repository:
+
+* https://git.openstack.org/cgit/openstack-infra/jenkins-job-builder
 
 Cloning:
 
@@ -72,6 +76,8 @@ Then install the required python packages using pip_::
 
     $ sudo pip install PyYAML python-jenkins
 
+.. _Jenkins: http://jenkins-ci.org/
+.. _YAML: http://www.yaml.org/
 .. _pep8: https://pypi.python.org/pypi/pep8
 .. _pyflakes: https://pypi.python.org/pypi/pyflakes
 .. _tox: https://testrun.org/tox
