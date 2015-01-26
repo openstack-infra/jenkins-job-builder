@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <javaposse.jobdsl.plugin.ExecuteDslScripts>
+      <scriptText>job { name 'dsljob' }</scriptText>
+      <usingScriptText>true</usingScriptText>
+      <ignoreExisting>true</ignoreExisting>
+      <removedJobAction>DISABLE</removedJobAction>
+      <removedViewAction>DELETE</removedViewAction>
+      <lookupStrategy>SEED_JOB</lookupStrategy>
+      <additionalClasspath>*.jar</additionalClasspath>
+    </javaposse.jobdsl.plugin.ExecuteDslScripts>
+  </builders>
+</project>

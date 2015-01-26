@@ -1,0 +1,8 @@
+builders:
+  - dsl:
+      script-text: "job { name 'dsljob' }"
+      ignore-existing: "true"
+      removed-job-action: "DISABLE"
+      removed-view-action: "DELETE"
+      lookup-strategy: "SEED_JOB"
+      additional-classpath: "*.jar"
