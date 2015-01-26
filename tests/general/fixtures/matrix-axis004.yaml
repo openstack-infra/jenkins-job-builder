@@ -1,0 +1,8 @@
+name: matrix-test004
+project-type: matrix
+axes:
+    - axis:
+        type: jdk
+        values:
+            - openjdk-6-jdk
+            - openjdk-7-jdk

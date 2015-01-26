@@ -17,12 +17,16 @@
 The matrix project module handles creating Jenkins matrix
 projects. To create a matrix project specify ``matrix`` in the
 ``project-type`` attribute to the :ref:`Job` definition.
-Currently it only supports three axes which share the same
+Currently it supports four axes which share the same
 internal YAML structure:
 
 * label expressions (``label-expression``)
 * user-defined values (``user-defined``)
 * slave name or label (``slave``)
+* JDK name (``jdk``)
+
+Requires the Jenkins `Matrix Project Plugin.
+<https://wiki.jenkins-ci.org/display/JENKINS/Matrix+Project+Plugin>`_
 
 The module supports also dynamic axis:
 
@@ -46,7 +50,7 @@ jobs, you can define a single value ``slave`` axis.
     * **axes** (`list`):
         * **axis**:
             * **type** (`str`) -- axis type, must be either
-              'label-expression', 'user-defined' or 'slave'.
+              'label-expression', 'user-defined', 'slave' or 'jdk'.
             * **name** (`str`) -- name of the axis
             * **values** (`list`) -- values of the axis
 
@@ -129,6 +133,7 @@ class Matrix(jenkins_jobs.modules.base.Base):
         'label-expression': 'hudson.matrix.LabelExpAxis',
         'user-defined': 'hudson.matrix.TextAxis',
         'slave': 'hudson.matrix.LabelAxis',
+        'jdk': 'hudson.matrix.JDKAxis',
         'dynamic': 'ca.silvermaplesolutions.jenkins.plugins.daxis.DynamicAxis',
         'python': 'jenkins.plugins.shiningpanda.matrix.PythonAxis',
         'tox': 'jenkins.plugins.shiningpanda.matrix.ToxAxis',
@@ -171,7 +176,9 @@ class Matrix(jenkins_jobs.modules.base.Base):
             axis_name = self.supported_axis.get(axis_type)
             lbl_root = XML.SubElement(ax_root, axis_name)
             name, values = axis.get('name', ''), axis.get('values', [''])
-            if axis_type == 'python':
+            if axis_type == 'jdk':
+                XML.SubElement(lbl_root, 'name').text = 'JDK'
+            elif axis_type == 'python':
                 XML.SubElement(lbl_root, 'name').text = 'PYTHON'
             elif axis_type == 'tox':
                 XML.SubElement(lbl_root, 'name').text = 'TOXENV'
