@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <jenkins.plugins.shiningpanda.publishers.CoveragePublisher>
+      <htmlDir>foo/bar/coveragepy_html_report/</htmlDir>
+    </jenkins.plugins.shiningpanda.publishers.CoveragePublisher>
+  </publishers>
+</project>
