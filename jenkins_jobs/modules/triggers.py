@@ -656,6 +656,11 @@ def github_pull_request(parser, xml_parent, data):
         without asking (default false)
     :arg bool auto-close-on-fail: close failed pull request automatically
         (default false)
+    :arg list white-list-target-branches: Adding branches to this whitelist
+        allows you to selectively test pull requests destined for these
+        branches only. Supports regular expressions (e.g. 'master',
+        'feature-.*'). (optional)
+
 
     Example:
 
@@ -681,6 +686,14 @@ def github_pull_request(parser, xml_parent, data):
         data.get('permit-all', False)).lower()
     XML.SubElement(ghprb, 'autoCloseFailedPullRequests').text = str(
         data.get('auto-close-on-fail', False)).lower()
+
+    white_list_target_branches = data.get('white-list-target-branches', [])
+    if white_list_target_branches:
+        ghprb_wltb = XML.SubElement(ghprb, 'whiteListTargetBranches')
+        for branch in white_list_target_branches:
+            be = XML.SubElement(ghprb_wltb, 'org.jenkinsci.plugins.'
+                                'ghprb.GhprbBranch')
+            XML.SubElement(be, 'branch').text = str(branch)
 
 
 def gitlab_merge_request(parser, xml_parent, data):

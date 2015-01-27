@@ -15,3 +15,6 @@ triggers:
       github-hooks: true
       permit-all: false
       auto-close-on-fail: false
+      white-list-target-branches:
+        - master
+        - testing
