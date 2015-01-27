@@ -1,0 +1,14 @@
+builders:
+  - trigger-remote:
+      remote-jenkins-name: "http://example.jenkinsmaster.lan"
+      token: "BLAH"
+      job: "build-things"
+      should-fail-build: True
+      prevent-remote-build-queue: True
+      poll-interval: 5
+      connection-retry-limit: 5
+      block: true
+      property-file: '.props'
+      predefined-parameters: |
+        FOO="bar"
+        herp="derp"

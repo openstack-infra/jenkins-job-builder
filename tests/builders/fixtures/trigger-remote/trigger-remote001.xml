@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jenkinsci.plugins.ParameterizedRemoteTrigger.RemoteBuildConfiguration>
+      <remoteJenkinsName>http://example.jenkinsmaster.lan</remoteJenkinsName>
+      <token>BLAH</token>
+      <job>build-things</job>
+      <shouldNotFailBuild>false</shouldNotFailBuild>
+      <pollInterval>5</pollInterval>
+      <connectionRetryLimit>5</connectionRetryLimit>
+      <preventRemoteBuildQueue>true</preventRemoteBuildQueue>
+      <blockBuildUntilComplete>true</blockBuildUntilComplete>
+      <parameters>FOO=&quot;bar&quot;
+herp=&quot;derp&quot;
+      </parameters>
+      <parameterList>
+        <string>FOO=&quot;bar&quot;</string>
+        <string>herp=&quot;derp&quot;</string>
+      </parameterList>
+      <loadParamsFromFile>true</loadParamsFromFile>
+      <parameterFile>.props</parameterFile>
+      <overrideAuth>false</overrideAuth>
+    </org.jenkinsci.plugins.ParameterizedRemoteTrigger.RemoteBuildConfiguration>
+  </builders>
+</project>

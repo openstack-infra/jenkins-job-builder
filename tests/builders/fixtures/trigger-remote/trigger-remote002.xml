@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jenkinsci.plugins.ParameterizedRemoteTrigger.RemoteBuildConfiguration>
+      <remoteJenkinsName>http://example.jenkinsmaster.lan</remoteJenkinsName>
+      <token/>
+      <job>build-things</job>
+      <shouldNotFailBuild>false</shouldNotFailBuild>
+      <pollInterval>10</pollInterval>
+      <connectionRetryLimit>5</connectionRetryLimit>
+      <preventRemoteBuildQueue>false</preventRemoteBuildQueue>
+      <blockBuildUntilComplete>true</blockBuildUntilComplete>
+      <loadParamsFromFile>false</loadParamsFromFile>
+      <overrideAuth>false</overrideAuth>
+    </org.jenkinsci.plugins.ParameterizedRemoteTrigger.RemoteBuildConfiguration>
+  </builders>
+</project>

@@ -1,0 +1,4 @@
+builders:
+  - trigger-remote:
+      remote-jenkins-name: "http://example.jenkinsmaster.lan"
+      job: "build-things"

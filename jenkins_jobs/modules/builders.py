@@ -277,6 +277,103 @@ def ant(parser, xml_parent, data):
     XML.SubElement(ant, 'antName').text = data.get('ant-name', 'default')
 
 
+def trigger_remote(parser, xml_parent, data):
+    """yaml: trigger-remote
+    Trigger build of job on remote Jenkins instance.
+
+    :jenkins-wiki:`Parameterized Remote Trigger Plugin
+    <Parameterized+Remote+Trigger+Plugin>`
+
+    Please note that this plugin requires system configuration on the Jenkins
+    Master that is unavailable from individual job views; specifically, one
+    must add remote jenkins servers whose 'Display Name' field are what make up
+    valid fields on the `remote-jenkins-name` attribute below.
+
+    :arg str remote-jenkins-name: the remote Jenkins server (required)
+    :arg str job: the Jenkins project to trigger on the remote Jenkins server
+      (required)
+    :arg bool should-not-fail-build:
+      if true, remote job failure will not lead current job to fail
+      (default false)
+    :arg bool prevent-remote-build-queue:
+      if true, wait to trigger remote builds until no other builds
+      (default false)
+    :arg bool block: whether to wait for the trigger jobs to finish or not
+      (default true)
+    :arg str poll-interval: polling interval in seconds for checking statues of
+      triggered remote job, only necessary if current job is configured to
+      block
+      (default 10)
+    :arg str connection-retry-limit: number of connection attempts to remote
+      Jenkins server before giving up.
+      (default 5)
+    :arg str predefined-parameters: predefined parameters to send to the remote
+      job when triggering it
+      (optional)
+    :arg str property-file: file in workspace of current job containing
+      additional parameters to be set on remote job
+      (optional)
+
+    Example:
+
+    .. literalinclude:: \
+    /../../tests/builders/fixtures/trigger-remote/trigger-remote001.yaml
+       :language: yaml
+    """
+    triggerr = XML.SubElement(xml_parent,
+                              'org.jenkinsci.plugins.'
+                              'ParameterizedRemoteTrigger.'
+                              'RemoteBuildConfiguration')
+    XML.SubElement(triggerr,
+                   'remoteJenkinsName').text = data.get('remote-jenkins-name')
+    XML.SubElement(triggerr, 'token').text = data.get('token', '')
+
+    for attribute in ['job', 'remote-jenkins-name']:
+        if attribute not in data:
+            raise MissingAttributeError(attribute, "builders.trigger-remote")
+        if data[attribute] == '':
+            raise InvalidAttributeError(attribute,
+                                        data[attribute],
+                                        "builders.trigger-remote")
+
+    XML.SubElement(triggerr, 'job').text = data.get('job')
+
+    XML.SubElement(triggerr, 'shouldNotFailBuild').text = str(
+        data.get('should-not-fail-build', False)).lower()
+
+    XML.SubElement(triggerr,
+                   'pollInterval').text = str(data.get('poll-interval', 10))
+    XML.SubElement(triggerr, 'connectionRetryLimit').text = str(
+        data.get('connection-retry-limit', 5))
+
+    XML.SubElement(triggerr, 'preventRemoteBuildQueue').text = str(
+        data.get('prevent-remote-build-queue', False)).lower()
+
+    XML.SubElement(triggerr, 'blockBuildUntilComplete').text = str(
+        data.get('block', True)).lower()
+
+    if 'predefined-parameters' in data:
+        parameters = XML.SubElement(triggerr, 'parameters')
+        parameters.text = data.get('predefined-parameters', '')
+        params_list = parameters.text.split("\n")
+
+        parameter_list = XML.SubElement(triggerr, 'parameterList')
+        for param in params_list:
+            if param == '':
+                continue
+            tmp = XML.SubElement(parameter_list, 'string')
+            tmp.text = param
+
+    if 'property-file' in data and data['property-file'] != '':
+        XML.SubElement(triggerr, 'loadParamsFromFile').text = 'true'
+        XML.SubElement(triggerr,
+                       'parameterFile').text = data.get('property-file')
+    else:
+        XML.SubElement(triggerr, 'loadParamsFromFile').text = 'false'
+
+    XML.SubElement(triggerr, 'overrideAuth').text = "false"
+
+
 def trigger_builds(parser, xml_parent, data):
     """yaml: trigger-builds
     Trigger builds of other jobs.
