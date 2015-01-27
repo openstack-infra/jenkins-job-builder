@@ -220,7 +220,8 @@ def trigger_parameterized_builds(parser, xml_parent, data):
     Note: 'node-parameters' overrides the Node that the triggered
     project is tied to.
 
-    :arg str project: name of the job to trigger
+    :arg list project: list the jobs to trigger, will generate comma-separated
+      string containing the named jobs.
     :arg str predefined-parameters: parameters to pass to the other
       job (optional)
     :arg bool current-parameters: Whether to include the parameters passed
@@ -324,7 +325,12 @@ def trigger_parameterized_builds(parser, xml_parent, data):
         else:
             tconfigs.set('class', 'java.util.Collections$EmptyList')
         projects = XML.SubElement(tconfig, 'projects')
-        projects.text = project_def['project']
+
+        if isinstance(project_def['project'], list):
+            projects.text = ",".join(project_def['project'])
+        else:
+            projects.text = project_def['project']
+
         condition = XML.SubElement(tconfig, 'condition')
         condition.text = project_def.get('condition', 'ALWAYS')
         trigger_with_no_params = XML.SubElement(tconfig,

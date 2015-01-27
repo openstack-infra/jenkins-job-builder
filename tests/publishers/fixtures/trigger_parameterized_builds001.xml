@@ -11,7 +11,7 @@ bar=foo
             </properties>
           </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
         </configs>
-        <projects>other_job, foo, bar</projects>
+        <projects>other_job,foo,bar</projects>
         <condition>ALWAYS</condition>
         <triggerWithNoParameters>false</triggerWithNoParameters>
       </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>

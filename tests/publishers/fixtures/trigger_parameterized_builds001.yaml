@@ -1,6 +1,9 @@
 publishers:
   - trigger-parameterized-builds:
-    - project: other_job, foo, bar
+    - project:
+        - other_job
+        - foo
+        - bar
       predefined-parameters: |
         foo=bar
         bar=foo
