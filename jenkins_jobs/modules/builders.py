@@ -282,7 +282,7 @@ def trigger_builds(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Parameterized Trigger Plugin
     <Parameterized+Trigger+Plugin>`.
 
-    :arg str project: the Jenkins project to trigger
+    :arg list project: the Jenkins project to trigger
     :arg str predefined-parameters:
       key/value pairs to be passed to the job (optional)
     :arg list bool-parameters:
@@ -354,6 +354,12 @@ def trigger_builds(parser, xml_parent, data):
                   (default true)
 
     Examples:
+
+    Basic usage with yaml list of projects.
+
+    .. literalinclude::
+       /../../tests/builders/fixtures/trigger-builds/project-list.yaml
+       :language: yaml
 
     Basic usage with passing svn revision through.
 
@@ -515,7 +521,11 @@ def trigger_builds(parser, xml_parent, data):
                         'ignore-offline-nodes', True)).lower()
 
         projects = XML.SubElement(tconfig, 'projects')
-        projects.text = project_def['project']
+        if isinstance(project_def['project'], list):
+            projects.text = ",".join(project_def['project'])
+        else:
+            projects.text = project_def['project']
+
         condition = XML.SubElement(tconfig, 'condition')
         condition.text = 'ALWAYS'
         trigger_with_no_params = XML.SubElement(tconfig,

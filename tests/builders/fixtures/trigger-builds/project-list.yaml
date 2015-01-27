@@ -1,0 +1,7 @@
+builders:
+  - trigger-builds:
+    - project:
+        - "foo"
+        - "bar"
+        - "baz"
+      current-parameters: true
