@@ -1062,6 +1062,8 @@ def multijob(parser, xml_parent, data):
                   to the other job (optional)
                 * **predefined-parameters** (`str`) -- Pass predefined
                   parameters to the other job (optional)
+                * **enable-condition** (`str`) -- Condition to run the
+                  job in groovy script format (optional)
                 * **kill-phase-on** (`str`) -- Stop the phase execution
                   on specific job status. Can be 'FAILURE', 'UNSTABLE',
                   'NEVER'. (optional)
@@ -1133,6 +1135,18 @@ def multijob(parser, xml_parent, data):
                                    'PredefinedBuildParameters')
             properties = XML.SubElement(param, 'properties')
             properties.text = predefined_parameters
+
+        # Enable Condition
+        enable_condition = project.get('enable-condition')
+        if enable_condition is not None:
+            XML.SubElement(
+                phaseJob,
+                'enableCondition'
+            ).text = 'true'
+            XML.SubElement(
+                phaseJob,
+                'condition'
+            ).text = enable_condition
 
         # Kill phase on job status
         kill_status = project.get('kill-phase-on')

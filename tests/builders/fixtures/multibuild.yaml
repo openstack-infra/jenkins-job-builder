@@ -21,3 +21,4 @@ builders:
         - name: PhaseTwoJobB
           current-parameters: false
           kill-phase-on: UNSTABLE
+          enable-condition: "${BUILDNUMBER} % 2 == 1"

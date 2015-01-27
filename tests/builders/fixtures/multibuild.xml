@@ -47,6 +47,8 @@
           <jobName>PhaseTwoJobB</jobName>
           <currParams>false</currParams>
           <configs/>
+          <enableCondition>true</enableCondition>
+          <condition>${BUILDNUMBER} % 2 == 1</condition>
           <killPhaseOnJobResultCondition>UNSTABLE</killPhaseOnJobResultCondition>
         </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
       </phaseJobs>
