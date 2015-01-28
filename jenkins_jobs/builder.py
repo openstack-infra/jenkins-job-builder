@@ -21,7 +21,6 @@ import operator
 import sys
 import hashlib
 import yaml
-import json
 import xml.etree.ElementTree as XML
 import xml
 from xml.dom import minidom
@@ -33,7 +32,6 @@ import logging
 import copy
 import itertools
 import fnmatch
-import six
 from jenkins_jobs.errors import JenkinsJobsException
 import jenkins_jobs.local_yaml as local_yaml
 
@@ -238,7 +236,7 @@ class YamlParser(object):
             job["description"] = description + \
                 self.get_managed_string().lstrip()
 
-    def expandYaml(self, jobs_filter=None):
+    def expandYaml(self, jobs_glob=None):
         changed = True
         while changed:
             changed = False
@@ -248,7 +246,7 @@ class YamlParser(object):
                         changed = True
 
         for job in self.data.get('job', {}).values():
-            if jobs_filter and not matches(job['name'], jobs_filter):
+            if jobs_glob and not matches(job['name'], jobs_glob):
                 logger.debug("Ignoring job {0}".format(job['name']))
                 continue
             logger.debug("Expanding job '{0}'".format(job['name']))
@@ -309,7 +307,7 @@ class YamlParser(object):
                         d['name'] = project['name']
                         if template:
                             self.expandYamlForTemplateJob(d, template,
-                                                          jobs_filter)
+                                                          jobs_glob)
                     continue
                 # see if it's a template
                 template = self.getJobTemplate(jobname)
@@ -317,7 +315,7 @@ class YamlParser(object):
                     d = {}
                     d.update(project)
                     d.update(jobparams)
-                    self.expandYamlForTemplateJob(d, template, jobs_filter)
+                    self.expandYamlForTemplateJob(d, template, jobs_glob)
                 else:
                     raise JenkinsJobsException("Failed to find suitable "
                                                "template named '{0}'"
@@ -332,19 +330,25 @@ class YamlParser(object):
                 self.jobs.remove(job)
             seen.add(job['name'])
 
-    def expandYamlForTemplateJob(self, project, template, jobs_filter=None):
+    def expandYamlForTemplateJob(self, project, template, jobs_glob=None):
         dimensions = []
+        template_name = template['name']
         # reject keys that are not useful during yaml expansion
         for k in ['jobs']:
             project.pop(k)
         for (k, v) in project.items():
+            tmpk = '{{{0}}}'.format(k)
+            if tmpk not in template_name:
+                logger.debug("Variable %s not in name %s, rejecting from job"
+                             " matrix expansion.", tmpk, template_name)
+                continue
             if type(v) == list:
                 dimensions.append(zip([k] * len(v), v))
         # XXX somewhat hackish to ensure we actually have a single
         # pass through the loop
         if len(dimensions) == 0:
             dimensions = [(("", ""),)]
-        checksums = set([])
+
         for values in itertools.product(*dimensions):
             params = copy.deepcopy(project)
             params = self.applyDefaults(params, template)
@@ -362,32 +366,12 @@ class YamlParser(object):
             params = deep_format(params, params)
             expanded = deep_format(template, params)
 
-            # Keep track of the resulting expansions to avoid
-            # regenerating the exact same job.  Whenever a project has
-            # different values for a parameter and that parameter is not
-            # used in the template, we ended up regenerating the exact
-            # same job.
-            # To achieve that we serialize the expanded template making
-            # sure the dict keys are always in the same order. Then we
-            # record the checksum in an unordered unique set which let
-            # us guarantee a group of parameters will not be added a
-            # second time.
-            uniq = json.dumps(expanded, sort_keys=True)
-            if six.PY3:
-                uniq = uniq.encode('utf-8')
-            checksum = hashlib.md5(uniq).hexdigest()
+            job_name = expanded.get('name')
+            if jobs_glob and not matches(job_name, jobs_glob):
+                continue
 
-            # Lookup the checksum
-            if checksum not in checksums:
-                # We also want to skip expansion whenever the user did
-                # not ask for that job.
-                job_name = expanded.get('name')
-                if jobs_filter and not matches(job_name, jobs_filter):
-                    continue
-
-                self.formatDescription(expanded)
-                self.jobs.append(expanded)
-                checksums.add(checksum)
+            self.formatDescription(expanded)
+            self.jobs.append(expanded)
 
     def get_managed_string(self):
         # The \n\n is not hard coded, because they get stripped if the
@@ -785,15 +769,15 @@ class Builder(object):
                 logger.debug("Ignoring unmanaged jenkins job %s",
                              job['name'])
 
-    def delete_job(self, glob_name, fn=None):
+    def delete_job(self, jobs_glob, fn=None):
         if fn:
             self.load_files(fn)
-            self.parser.expandYaml(glob_name)
+            self.parser.expandYaml(jobs_glob)
             jobs = [j['name']
                     for j in self.parser.jobs
-                    if matches(j['name'], [glob_name])]
+                    if matches(j['name'], [jobs_glob])]
         else:
-            jobs = [glob_name]
+            jobs = [jobs_glob]
 
         if jobs is not None:
             logger.info("Removing jenkins job(s): %s" % ", ".join(jobs))
@@ -807,15 +791,15 @@ class Builder(object):
         for job in jobs:
             self.delete_job(job['name'])
 
-    def update_job(self, input_fn, names=None, output=None):
+    def update_job(self, input_fn, jobs_glob=None, output=None):
         self.load_files(input_fn)
-        self.parser.expandYaml(names)
+        self.parser.expandYaml(jobs_glob)
         self.parser.generateXML()
 
         self.parser.xml_jobs.sort(key=operator.attrgetter('name'))
 
         for job in self.parser.xml_jobs:
-            if names and not matches(job.name, names):
+            if jobs_glob and not matches(job.name, jobs_glob):
                 continue
             if output:
                 if hasattr(output, 'write'):

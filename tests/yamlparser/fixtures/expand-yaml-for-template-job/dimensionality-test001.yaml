@@ -1,0 +1,27 @@
+- job-template:
+    name: 'thingerator_{pipeline-type}'
+    project-type: matrix
+    axes:
+        - axis:
+            type: 'user-defined'
+            name: 'PLATFORM'
+            values: '{obj:platform_axis}'
+
+- project:
+    name: derp
+    jobs:
+        - 'thingerator_{pipeline-type}':
+            pipeline-type: 'foo'
+            platform_axis:
+                - 'centos4-64mdca'
+                - 'centos5-64mdca'
+                - 'centos6-64mdca'
+                - 'centos7-64mdca'
+
+        - 'thingerator_{pipeline-type}':
+            pipeline-type:
+                - 'bar'
+                - 'baz'
+            platform_axis:
+                - 'centos6-64mdca'
+                - 'centos7-64mdca'
