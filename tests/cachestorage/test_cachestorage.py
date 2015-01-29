@@ -13,10 +13,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import mock
 import testtools
 
 import jenkins_jobs
+from tests.base import mock
 
 
 class TestCaseCacheStorage(testtools.TestCase):

@@ -27,6 +27,12 @@ import operator
 import testtools
 import xml.etree.ElementTree as XML
 from six.moves import configparser
+# This dance deals with the fact that we want unittest.mock if
+# we're on Python 3.4 and later, and non-stdlib mock otherwise.
+try:
+    from unittest import mock
+except ImportError:
+    import mock  # noqa
 import jenkins_jobs.local_yaml as yaml
 from jenkins_jobs.builder import XmlJob, YamlParser, ModuleRegistry
 from jenkins_jobs.modules import (project_flow,

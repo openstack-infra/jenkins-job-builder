@@ -1,8 +1,8 @@
 import os
 from six.moves import configparser, StringIO
-import mock
 import testtools
 from jenkins_jobs import cmd
+from tests.base import mock
 
 
 class CmdTestsBase(testtools.TestCase):

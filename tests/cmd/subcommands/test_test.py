@@ -1,8 +1,8 @@
 import os
 import io
 import codecs
-import mock
 from jenkins_jobs import cmd
+from tests.base import mock
 from tests.cmd.test_cmd import CmdTestsBase
 
 
