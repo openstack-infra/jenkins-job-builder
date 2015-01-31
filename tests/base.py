@@ -35,7 +35,7 @@ try:
 except ImportError:
     import mock  # noqa
 import jenkins_jobs.local_yaml as yaml
-from jenkins_jobs.builder import XmlJob, YamlParser, ModuleRegistry
+from jenkins_jobs.builder import XmlJob, YamlParser
 from jenkins_jobs.modules import (project_flow,
                                   project_matrix,
                                   project_maven,
@@ -49,7 +49,10 @@ def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml',
         - content of the fixture output file (aka expected)
     """
     scenarios = []
-    files = os.listdir(fixtures_path)
+    files = []
+    for dirpath, dirs, fs in os.walk(fixtures_path):
+        files.extend([os.path.join(dirpath, f) for f in fs])
+
     input_files = [f for f in files if re.match(r'.*\.{0}$'.format(in_ext), f)]
 
     for input_filename in input_files:
@@ -98,13 +101,12 @@ class BaseTestCase(object):
 
     def _read_utf8_content(self):
         # Read XML content, assuming it is unicode encoded
-        xml_filepath = os.path.join(self.fixtures_path, self.out_filename)
-        xml_content = u"%s" % codecs.open(xml_filepath, 'r', 'utf-8').read()
+        xml_content = u"%s" % codecs.open(self.out_filename,
+                                          'r', 'utf-8').read()
         return xml_content
 
     def _read_yaml_content(self, filename):
-        yaml_filepath = os.path.join(self.fixtures_path, filename)
-        with open(yaml_filepath, 'r') as yaml_file:
+        with open(filename, 'r') as yaml_file:
             yaml_content = yaml.load(yaml_file)
         return yaml_content
 
@@ -114,9 +116,7 @@ class BaseTestCase(object):
 
         if self.conf_filename is not None:
             config = configparser.ConfigParser()
-            conf_filepath = os.path.join(self.fixtures_path,
-                                         self.conf_filename)
-            config.readfp(open(conf_filepath))
+            config.readfp(open(self.conf_filename))
         else:
             config = {}
 
@@ -137,7 +137,6 @@ class BaseTestCase(object):
             xml_project = project.root_xml(yaml_content)
         else:
             xml_project = XML.Element('project')
-        parser = YamlParser()
 
         plugins_info = None
         if self.plugins_info_filename is not None:
@@ -147,7 +146,9 @@ class BaseTestCase(object):
             self.addDetail("plugins-info",
                            text_content(str(plugins_info)))
 
-        pub = self.klass(ModuleRegistry(config, plugins_info))
+        parser = YamlParser(config, plugins_info)
+
+        pub = self.klass(parser.registry)
 
         # Generate the XML tree directly with modules/general
         pub.gen_xml(parser, xml_project, yaml_content)
@@ -168,17 +169,13 @@ class SingleJobTestCase(BaseTestCase):
     def test_yaml_snippet(self):
         expected_xml = self._read_utf8_content()
 
-        yaml_filepath = os.path.join(self.fixtures_path, self.in_filename)
-
         if self.conf_filename:
             config = configparser.ConfigParser()
-            conf_filepath = os.path.join(self.fixtures_path,
-                                         self.conf_filename)
-            config.readfp(open(conf_filepath))
+            config.readfp(open(self.conf_filename))
         else:
             config = None
         parser = YamlParser(config)
-        parser.parse(yaml_filepath)
+        parser.parse(self.in_filename)
 
         # Generate the XML tree
         parser.expandYaml()
