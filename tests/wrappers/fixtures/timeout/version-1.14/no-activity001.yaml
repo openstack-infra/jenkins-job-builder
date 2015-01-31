@@ -1,0 +1,7 @@
+wrappers:
+  - timeout:
+      timeout: 5
+      timeout-var: 'BUILD_TIMEOUT'
+      type: no-activity
+      abort: true
+      write-description: "Blah Blah Blah"

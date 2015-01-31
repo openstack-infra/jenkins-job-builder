@@ -1,0 +1,8 @@
+wrappers:
+  - timeout:
+      elastic-percentage: 150
+      elastic-default-timeout: 3
+      elastic-number-builds: 14
+      timeout-var: 'BUILD_TIMEOUT'
+      abort: true
+      type: elastic

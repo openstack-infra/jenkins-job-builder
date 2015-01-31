@@ -1,0 +1,6 @@
+wrappers:
+  - timeout:
+      timeout: 90
+      timeout-var: 'BUILD_TIMEOUT'
+      abort: true
+      type: likely-stuck
