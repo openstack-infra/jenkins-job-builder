@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.plugins.cmake.CmakeBuilder>
+      <sourceDir>path/to/source</sourceDir>
+      <buildDir>path/to/build</buildDir>
+      <installDir>path/to/install</installDir>
+      <buildType>Debug</buildType>
+      <otherBuildType>CustomReleaseType</otherBuildType>
+      <generator>NMake Makefiles</generator>
+      <makeCommand>/usr/bin/make</makeCommand>
+      <installCommand>make new-install</installCommand>
+      <preloadScript>path/to/source/cmake.preload</preloadScript>
+      <cmakeArgs>-DCMAKE_FIND_ROOT_PATH=&quot;path/to/something/else&quot;</cmakeArgs>
+      <projectCmakePath>/usr/bin/cmake</projectCmakePath>
+      <cleanBuild>true</cleanBuild>
+      <cleanInstallDir>true</cleanInstallDir>
+      <builderImpl/>
+    </hudson.plugins.cmake.CmakeBuilder>
+  </builders>
+</project>
