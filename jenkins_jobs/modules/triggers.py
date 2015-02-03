@@ -357,6 +357,10 @@ def gerrit(parser, xml_parent, data):
         parameters (default true)
     :arg bool no-name-and-email: Do not pass compound 'name and email'
         parameters (default false)
+    :arg bool readable-message: If parameters regarding multiline text,
+        e.g. commit message, should be as human readable or not. If false,
+        those parameters are Base64 encoded to keep environment variables
+        clean. (default false)
     :arg bool dynamic-trigger-enabled: Enable/disable the dynamic trigger
         (default false)
     :arg str dynamic-trigger-url: if you specify this option, the Gerrit
@@ -460,6 +464,8 @@ def gerrit(parser, xml_parent, data):
         data.get('escape-quotes', True)).lower()
     XML.SubElement(gtrig, 'noNameAndEmailParameters').text = str(
         data.get('no-name-and-email', False)).lower()
+    XML.SubElement(gtrig, 'readableMessage').text = str(
+        data.get('readable-message', False)).lower()
     XML.SubElement(gtrig, 'dynamicTriggerConfiguration').text = str(
         data.get('dynamic-trigger-enabled', False))
     XML.SubElement(gtrig, 'triggerConfigURL').text = str(

@@ -30,6 +30,7 @@
       <silentMode>false</silentMode>
       <escapeQuotes>false</escapeQuotes>
       <noNameAndEmailParameters>false</noNameAndEmailParameters>
+      <readableMessage>false</readableMessage>
       <dynamicTriggerConfiguration>True</dynamicTriggerConfiguration>
       <triggerConfigURL>http://myhost/mytrigger</triggerConfigURL>
       <allowTriggeringUnreviewedPatches>false</allowTriggeringUnreviewedPatches>
