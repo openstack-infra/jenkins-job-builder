@@ -28,7 +28,7 @@ SCMs plugin.
 <https://wiki.jenkins-ci.org/display/JENKINS/Multiple+SCMs+Plugin>`_
 
 Example of multiple repositories in a single job:
-    .. literalinclude:: /../../tests/macros/scm/multi-scms001.yaml
+    .. literalinclude:: /../../tests/macros/fixtures/scm/multi-scms001.yaml
 """
 
 import logging
