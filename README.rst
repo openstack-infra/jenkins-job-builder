@@ -1,4 +1,3 @@
-======
 README
 ======
 
@@ -17,7 +16,7 @@ Online documentation:
 * http://ci.openstack.org/jenkins-job-builder/
 
 Developers
-==========
+----------
 Bug report:
 
 * https://storyboard.openstack.org/#!/project/723
@@ -41,7 +40,7 @@ More details on how you can contribute is available on our wiki at:
 * http://docs.openstack.org/infra/manual/developers.html
 
 Writing a patch
-===============
+---------------
 
 We ask that all code submissions be pep8_ and pyflakes_ clean.  The
 easiest way to do that is to run tox_ before submitting code for
@@ -64,7 +63,7 @@ YAML, as well as developers when matching YAML components to Python
 implementation.
 
 Installing without setup.py
-===========================
+---------------------------
 
 For YAML support, you will need libyaml_ installed.
 
