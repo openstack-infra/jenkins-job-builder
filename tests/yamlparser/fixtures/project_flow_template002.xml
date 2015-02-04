@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.cloudbees.plugins.flow.BuildFlow>
+  <dsl>build(&quot;job1&quot;)
+parallel (
+    { build(&quot;job2a&quot;) },
+    { build(&quot;job2b&quot;) }
+)
+build(&quot;job2c&quot;)
+</dsl>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>unittest</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <hudson.tasks.Mailer>
+      <recipients>developer@nowhere.net</recipients>
+      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>false</sendToIndividuals>
+    </hudson.tasks.Mailer>
+  </publishers>
+  <buildWrappers/>
+</com.cloudbees.plugins.flow.BuildFlow>
