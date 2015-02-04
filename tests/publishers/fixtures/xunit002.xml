@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <xunit>
+      <types>
+        <CTestType>
+          <pattern>build/tests/reports/ctest.xml</pattern>
+          <failIfNotNew>true</failIfNotNew>
+          <deleteOutputFiles>true</deleteOutputFiles>
+          <stopProcessingIfError>true</stopProcessingIfError>
+        </CTestType>
+      </types>
+      <thresholds>
+        <org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
+          <unstableThreshold>1</unstableThreshold>
+          <unstableNewThreshold>2</unstableNewThreshold>
+          <failureThreshold>3</failureThreshold>
+          <failureNewThreshold>4</failureNewThreshold>
+        </org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
+        <org.jenkinsci.plugins.xunit.threshold.SkippedThreshold>
+          <unstableThreshold>5</unstableThreshold>
+          <unstableNewThreshold>6</unstableNewThreshold>
+          <failureThreshold>7</failureThreshold>
+          <failureNewThreshold>8</failureNewThreshold>
+        </org.jenkinsci.plugins.xunit.threshold.SkippedThreshold>
+      </thresholds>
+      <thresholdMode>1</thresholdMode>
+    </xunit>
+  </publishers>
+</project>
