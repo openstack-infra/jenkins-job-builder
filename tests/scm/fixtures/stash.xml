@@ -34,7 +34,9 @@
     <scmName/>
     <useShallowClone>false</useShallowClone>
     <ignoreNotifyCommit>false</ignoreNotifyCommit>
-    <extensions/>
+    <extensions>
+      <hudson.plugins.git.extensions.impl.WipeWorkspace/>
+    </extensions>
     <browser class="hudson.plugins.git.browser.Stash">
       <url>https://stash.example.com/projects/foo/repos/bar/</url>
     </browser>

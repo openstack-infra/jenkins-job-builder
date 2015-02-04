@@ -39,6 +39,7 @@
         <trackingSubmodules>true</trackingSubmodules>
         <timeout>15</timeout>
       </hudson.plugins.git.extensions.impl.SubmoduleOption>
+      <hudson.plugins.git.extensions.impl.WipeWorkspace/>
     </extensions>
   </scm>
 </project>

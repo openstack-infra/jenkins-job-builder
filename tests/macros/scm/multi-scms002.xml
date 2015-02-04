@@ -56,7 +56,9 @@
         <scmName/>
         <useShallowClone>false</useShallowClone>
         <ignoreNotifyCommit>false</ignoreNotifyCommit>
-        <extensions/>
+        <extensions>
+          <hudson.plugins.git.extensions.impl.WipeWorkspace/>
+        </extensions>
       </scm>
     </scms>
   </scm>
