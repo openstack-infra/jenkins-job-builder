@@ -616,7 +616,7 @@ class CacheStorage(object):
         if flush or not os.path.isfile(self.cachefilename):
             self.data = {}
         else:
-            with file(self.cachefilename, 'r') as yfile:
+            with open(self.cachefilename, 'r') as yfile:
                 self.data = yaml.load(yfile)
         logger.debug("Using cache: '{0}'".format(self.cachefilename))
 

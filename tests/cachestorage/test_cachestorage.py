@@ -13,6 +13,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import os
 import testtools
 
 import jenkins_jobs
@@ -32,3 +33,14 @@ class TestCaseCacheStorage(testtools.TestCase):
             with mock.patch('os.path.isfile', return_value=False):
                 jenkins_jobs.builder.CacheStorage("dummy")
             save_mock.assert_called_once_with()
+
+    @mock.patch('jenkins_jobs.builder.CacheStorage.get_cache_dir',
+                lambda x: '/bad/file')
+    def test_cache_file(self):
+        """
+        Test providing a cachefile.
+        """
+        test_file = os.path.abspath(__file__)
+        with mock.patch('os.path.join', return_value=test_file):
+            with mock.patch('yaml.load'):
+                jenkins_jobs.builder.CacheStorage("dummy").data = None
