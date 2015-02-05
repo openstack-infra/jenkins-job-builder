@@ -131,12 +131,12 @@ def matches(what, glob_patterns):
 
 
 class YamlParser(object):
-    def __init__(self, config=None):
+    def __init__(self, config=None, plugins_info=None):
         self.data = {}
         self.jobs = []
         self.xml_jobs = []
         self.config = config
-        self.registry = ModuleRegistry(self.config)
+        self.registry = ModuleRegistry(self.config, plugins_info)
         self.path = ["."]
         if self.config:
             if config.has_section('job_builder') and \
@@ -406,11 +406,16 @@ class YamlParser(object):
 class ModuleRegistry(object):
     entry_points_cache = {}
 
-    def __init__(self, config):
+    def __init__(self, config, plugins_list=None):
         self.modules = []
         self.modules_by_component_type = {}
         self.handlers = {}
         self.global_config = config
+
+        if plugins_list is None:
+            self.plugins_dict = {}
+        else:
+            self.plugins_dict = self._get_plugins_info_dict(plugins_list)
 
         for entrypoint in pkg_resources.iter_entry_points(
                 group='jenkins_jobs.modules'):
@@ -420,6 +425,64 @@ class ModuleRegistry(object):
             self.modules.sort(key=operator.attrgetter('sequence'))
             if mod.component_type is not None:
                 self.modules_by_component_type[mod.component_type] = mod
+
+    @staticmethod
+    def _get_plugins_info_dict(plugins_list):
+        def mutate_plugin_info(plugin_info):
+            """
+            We perform mutations on a single member of plugin_info here, then
+            return a dictionary with the longName and shortName of the plugin
+            mapped to its plugin info dictionary.
+            """
+            version = plugin_info.get('version', '0')
+            plugin_info['version'] = re.sub(r'(.*)-(?:SNAPSHOT|BETA)',
+                                            r'\g<1>.preview', version)
+
+            aliases = []
+            for key in ['longName', 'shortName']:
+                value = plugin_info.get(key, None)
+                if value is not None:
+                    aliases.append(value)
+
+            plugin_info_dict = {}
+            for name in aliases:
+                plugin_info_dict[name] = plugin_info
+
+            return plugin_info_dict
+
+        list_of_dicts = [mutate_plugin_info(v) for v in plugins_list]
+
+        plugins_info_dict = {}
+        for d in list_of_dicts:
+            plugins_info_dict.update(d)
+
+        return plugins_info_dict
+
+    def get_plugin_info(self, plugin_name):
+        """ This method is intended to provide information about plugins within
+        a given module's implementation of Base.gen_xml. The return value is a
+        dictionary with data obtained directly from a running Jenkins instance.
+        This allows module authors to differentiate generated XML output based
+        on information such as specific plugin versions.
+
+        :arg string plugin_name: Either the shortName or longName of a plugin
+          as see in a query that looks like:
+          http://<jenkins-hostname>/pluginManager/api/json?pretty&depth=2
+
+        During a 'test' run, it is possible to override JJB's query to a live
+        Jenkins instance by passing it a path to a file containing a YAML list
+        of dictionaries that mimics the plugin properties you want your test
+        output to reflect::
+
+          jenkins-jobs test -p /path/to/plugins-info.yaml
+
+        Below is example YAML that might be included in
+        /path/to/plugins-info.yaml.
+
+        .. literalinclude:: /../../tests/cmd/fixtures/plugins-info.yaml
+
+        """
+        return self.plugins_dict.get(plugin_name, {})
 
     def registerHandler(self, category, name, method):
         cat_dict = self.handlers.get(category, {})
@@ -612,6 +675,26 @@ class Jenkins(object):
             logger.info("Deleting jenkins job {0}".format(job_name))
             self.jenkins.delete_job(job_name)
 
+    def get_plugins_info(self):
+        """ Return a list of plugin_info dicts, one for each plugin on the
+        Jenkins instance.
+        """
+        try:
+            plugins_list = self.jenkins.get_plugins_info()
+        except jenkins.JenkinsException as e:
+            if re.search("Connection refused", str(e)):
+                logger.warn("Unable to retrieve Jenkins Plugin Info from {0},"
+                            " using default empty plugins info list.".format(
+                                self.jenkins.server))
+                plugins_list = [{'shortName': '',
+                                 'version': '',
+                                 'longName': ''}]
+            else:
+                raise e
+        logger.debug("Jenkins Plugin Info {0}".format(pformat(plugins_list)))
+
+        return plugins_list
+
     def get_jobs(self):
         return self.jenkins.get_jobs()
 
@@ -628,14 +711,20 @@ class Jenkins(object):
 
 class Builder(object):
     def __init__(self, jenkins_url, jenkins_user, jenkins_password,
-                 config=None, ignore_cache=False, flush_cache=False):
+                 config=None, ignore_cache=False, flush_cache=False,
+                 plugins_list=None):
         self.jenkins = Jenkins(jenkins_url, jenkins_user, jenkins_password)
         self.cache = CacheStorage(jenkins_url, flush=flush_cache)
         self.global_config = config
         self.ignore_cache = ignore_cache
 
+        if plugins_list is None:
+            self.plugins_list = self.jenkins.get_plugins_info()
+        else:
+            self.plugins_list = plugins_list
+
     def load_files(self, fn):
-        self.parser = YamlParser(self.global_config)
+        self.parser = YamlParser(self.global_config, self.plugins_list)
 
         # handle deprecated behavior
         if not hasattr(fn, '__iter__'):

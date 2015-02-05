@@ -19,6 +19,7 @@ import logging
 import os
 import platform
 import sys
+import yaml
 import jenkins_jobs.version
 
 from jenkins_jobs.builder import Builder
@@ -69,6 +70,9 @@ def create_parser():
                                   help='look for yaml files recursively')
     subparser = parser.add_subparsers(help='update, test or delete job',
                                       dest='command')
+
+    # subparser: update
+
     parser_update = subparser.add_parser('update', parents=[recursive_parser])
     parser_update.add_argument('path', help='colon-separated list of paths to'
                                             ' YAML files or directories')
@@ -76,18 +80,29 @@ def create_parser():
     parser_update.add_argument('--delete-old', help='delete obsolete jobs',
                                action='store_true',
                                dest='delete_old', default=False,)
+
+    # subparser: test
+
     parser_test = subparser.add_parser('test', parents=[recursive_parser])
     parser_test.add_argument('path', help='colon-separated list of paths to'
                                           ' YAML files or directories',
                              nargs='?', default=sys.stdin)
+    parser_test.add_argument('-p', dest='plugins_info_path', default=None,
+                             help='path to plugin info YAML file')
     parser_test.add_argument('-o', dest='output_dir', default=sys.stdout,
                              help='path to output XML')
     parser_test.add_argument('name', help='name(s) of job(s)', nargs='*')
+
+    # subparser: delete
+
     parser_delete = subparser.add_parser('delete')
     parser_delete.add_argument('name', help='name of job', nargs='+')
     parser_delete.add_argument('-p', '--path', default=None,
                                help='colon-separated list of paths to'
                                     ' YAML files or directories')
+
+    # subparser: delete-all
+
     subparser.add_parser('delete-all',
                          help='delete *ALL* jobs from Jenkins server, '
                          'including those not managed by Jenkins Job '
@@ -186,12 +201,22 @@ def execute(options, config):
     except (TypeError, configparser.NoOptionError):
         password = None
 
+    plugins_info = None
+
+    if getattr(options, 'plugins_info_path', None) is not None:
+        with open(options.plugins_info_path, 'r') as yaml_file:
+            plugins_info = yaml.load(yaml_file)
+        if not isinstance(plugins_info, list):
+            raise JenkinsJobsException("{0} must contain a Yaml list!"
+                                       .format(options.plugins_info_path))
+
     builder = Builder(config.get('jenkins', 'url'),
                       user,
                       password,
                       config,
                       ignore_cache=ignore_cache,
-                      flush_cache=options.flush_cache)
+                      flush_cache=options.flush_cache,
+                      plugins_list=plugins_info)
 
     if getattr(options, 'path', None):
         if options.path == sys.stdin:
