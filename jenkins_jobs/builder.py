@@ -730,11 +730,13 @@ class Builder(object):
         self.cache = CacheStorage(jenkins_url, flush=flush_cache)
         self.global_config = config
         self.ignore_cache = ignore_cache
+        self._plugins_list = plugins_list
 
-        if plugins_list is None:
-            self.plugins_list = self.jenkins.get_plugins_info()
-        else:
-            self.plugins_list = plugins_list
+    @property
+    def plugins_list(self):
+        if self._plugins_list is None:
+            self._plugins_list = self.jenkins.get_plugins_info()
+        return self._plugins_list
 
     def load_files(self, fn):
         self.parser = YamlParser(self.global_config, self.plugins_list)
