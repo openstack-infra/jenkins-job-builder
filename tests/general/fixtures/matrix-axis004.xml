@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<matrix-project>
+  <executionStrategy class="hudson.matrix.DefaultMatrixExecutionStrategyImpl">
+    <runSequentially>false</runSequentially>
+  </executionStrategy>
+  <combinationFilter/>
+  <axes>
+    <hudson.matrix.JDKAxis>
+      <name>JDK</name>
+      <values>
+        <string>openjdk-6-jdk</string>
+        <string>openjdk-7-jdk</string>
+      </values>
+    </hudson.matrix.JDKAxis>
+  </axes>
+  <actions/>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+</matrix-project>
