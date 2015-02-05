@@ -209,12 +209,21 @@ class YamlParser(object):
             return job
         return self.applyDefaults(job)
 
-    def applyDefaults(self, data):
+    def applyDefaults(self, data, override_dict=None):
+        if override_dict is None:
+            override_dict = {}
+
         whichdefaults = data.get('defaults', 'global')
-        defaults = self.data.get('defaults', {}).get(whichdefaults, {})
+        defaults = copy.deepcopy(self.data.get('defaults',
+                                 {}).get(whichdefaults, {}))
         if defaults == {} and whichdefaults != 'global':
             raise JenkinsJobsException("Unknown defaults set: '{0}'"
                                        .format(whichdefaults))
+
+        for key in override_dict.keys():
+            if key in defaults.keys():
+                defaults[key] = override_dict[key]
+
         newdata = {}
         newdata.update(defaults)
         newdata.update(data)
@@ -325,8 +334,11 @@ class YamlParser(object):
 
     def expandYamlForTemplateJob(self, project, template, jobs_filter=None):
         dimensions = []
+        # reject keys that are not useful during yaml expansion
+        for k in ['jobs']:
+            project.pop(k)
         for (k, v) in project.items():
-            if type(v) == list and k not in ['jobs']:
+            if type(v) == list:
                 dimensions.append(zip([k] * len(v), v))
         # XXX somewhat hackish to ensure we actually have a single
         # pass through the loop
@@ -335,7 +347,7 @@ class YamlParser(object):
         checksums = set([])
         for values in itertools.product(*dimensions):
             params = copy.deepcopy(project)
-            params = self.applyDefaults(params)
+            params = self.applyDefaults(params, template)
 
             expanded_values = {}
             for (k, v) in values:
@@ -347,6 +359,7 @@ class YamlParser(object):
                     expanded_values[k] = v
 
             params.update(expanded_values)
+            params = deep_format(params, params)
             expanded = deep_format(template, params)
 
             # Keep track of the resulting expansions to avoid

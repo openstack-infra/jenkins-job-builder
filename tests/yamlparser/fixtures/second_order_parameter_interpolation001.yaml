@@ -1,0 +1,13 @@
+- job-template:
+    name: '{value-stream}_{pipeline-type}'
+    display-name: '{value-stream}_{pipeline-type}'
+
+- project:
+    name: derp
+    jobs:
+        - '{value-stream}_{pipeline-type}':
+            pipeline-type: 'foo'
+
+- defaults:
+    name: 'global'
+    value-stream: 'experimental'

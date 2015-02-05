@@ -1,0 +1,47 @@
+- job-template:
+    name: '{value-stream}_{project-id}_foo'
+    display-name: '{value-stream} {project-id} foo'
+    publishers:
+        - trigger-parameterized-builds:
+            - project: '{downstream}'
+              current-parameters: False
+              condition: ALWAYS
+              git-revision: True
+
+- job-template:
+    name: '{value-stream}_{project-id}_bar'
+    display-name: '{value-stream} {project-id} bar'
+    publishers:
+        - trigger-parameterized-builds:
+            - project: '{downstream}'
+              current-parameters: False
+              condition: ALWAYS
+              git-revision: True
+
+- job-group:
+    name: 'pipeline2'
+    project-id: 'p2'
+    jobs:
+        - '{value-stream}_{project-id}_foo':
+            downstream: '{value-stream}_{project-id}_bar'
+        - '{value-stream}_{project-id}_bar':
+
+- job-group:
+    name: 'pipeline1'
+    project-id: 'p1'
+    jobs:
+        - '{value-stream}_{project-id}_bar':
+            downstream: '{value-stream}_{project-id}_foo'
+        - '{value-stream}_{project-id}_foo':
+
+- project:
+    name: derp
+    jobs:
+        - 'pipeline1':
+            value-stream: 'production'
+        - 'pipeline2':
+            value-stream: 'experimental'
+
+- defaults:
+    name: 'global'
+    downstream: ''
