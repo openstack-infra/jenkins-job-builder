@@ -298,6 +298,16 @@ def trigger_builds(parser, xml_parent, data):
       to the triggered job
     :arg bool block: whether to wait for the triggered jobs
       to finish or not (default false)
+    :arg dict block-thresholds: Fail builds and/or mark as failed or unstable
+      based on thresholds. Only apply if block parameter is true (optional)
+
+      * **build-step-failure-threshold** (`str`)
+        ['never', 'SUCCESS', 'UNSTABLE', 'FAILURE'] (default: 'FAILURE')
+      * **unstable-threshold** (`str`)
+        ['never', 'SUCCESS', 'UNSTABLE', 'FAILURE'] (default: 'UNSTABLE')
+      * **failure-threshold** (`str`)
+        ['never', 'SUCCESS', 'UNSTABLE', 'FAILURE'] (default: 'FAILURE')
+
     :arg bool same-node: Use the same node for the triggered builds that was
       used for this build (optional)
     :arg list parameter-factories: list of parameter factories
@@ -484,29 +494,40 @@ def trigger_builds(parser, xml_parent, data):
                                                     'buildAllNodesWithLabel')
         build_all_nodes_with_label.text = 'false'
         block = project_def.get('block', False)
-        if(block):
+        if block:
             block = XML.SubElement(tconfig, 'block')
-            bsft = XML.SubElement(block, 'buildStepFailureThreshold')
-            XML.SubElement(bsft, 'name').text = \
-                hudson_model.FAILURE['name']
-            XML.SubElement(bsft, 'ordinal').text = \
-                hudson_model.FAILURE['ordinal']
-            XML.SubElement(bsft, 'color').text = \
-                hudson_model.FAILURE['color']
-            ut = XML.SubElement(block, 'unstableThreshold')
-            XML.SubElement(ut, 'name').text = \
-                hudson_model.UNSTABLE['name']
-            XML.SubElement(ut, 'ordinal').text = \
-                hudson_model.UNSTABLE['ordinal']
-            XML.SubElement(ut, 'color').text = \
-                hudson_model.UNSTABLE['color']
-            ft = XML.SubElement(block, 'failureThreshold')
-            XML.SubElement(ft, 'name').text = \
-                hudson_model.FAILURE['name']
-            XML.SubElement(ft, 'ordinal').text = \
-                hudson_model.FAILURE['ordinal']
-            XML.SubElement(ft, 'color').text = \
-                hudson_model.FAILURE['color']
+            supported_thresholds = [['build-step-failure-threshold',
+                                     'buildStepFailureThreshold',
+                                     'FAILURE'],
+                                    ['unstable-threshold',
+                                     'unstableThreshold',
+                                     'UNSTABLE'],
+                                    ['failure-threshold',
+                                     'failureThreshold',
+                                     'FAILURE']]
+            supported_threshold_values = ['never',
+                                          hudson_model.SUCCESS['name'],
+                                          hudson_model.UNSTABLE['name'],
+                                          hudson_model.FAILURE['name']]
+            thrsh = project_def.get('block-thresholds', False)
+            for toptname, txmltag, tvalue in supported_thresholds:
+                if thrsh:
+                    tvalue = thrsh.get(toptname, tvalue)
+                if tvalue.lower() == supported_threshold_values[0]:
+                    continue
+                if tvalue.upper() not in supported_threshold_values:
+                    raise JenkinsJobsException(
+                        "threshold value must be one of (%s)" %
+                        ", ".join(supported_threshold_values))
+                th = XML.SubElement(block, txmltag)
+                XML.SubElement(th, 'name').text = hudson_model.THRESHOLDS[
+                    tvalue.upper()]['name']
+                XML.SubElement(th, 'ordinal').text = hudson_model.THRESHOLDS[
+                    tvalue.upper()]['ordinal']
+                XML.SubElement(th, 'color').text = hudson_model.THRESHOLDS[
+                    tvalue.upper()]['color']
+                XML.SubElement(th, 'completeBuild').text = "true"
+
     # If configs is empty, remove the entire tbuilder tree.
     if(len(configs) == 0):
         logger.debug("Pruning empty TriggerBuilder tree.")
