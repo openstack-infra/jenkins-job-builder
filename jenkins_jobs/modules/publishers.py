@@ -29,6 +29,7 @@ the build is complete.
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
+from jenkins_jobs.modules.helpers import build_trends_publisher
 from jenkins_jobs.errors import JenkinsJobsException
 import logging
 import sys
@@ -3743,72 +3744,6 @@ def valgrind(parser, xml_parent, data):
         data.get('publish-if-aborted', False)).lower()
     XML.SubElement(p, 'publishResultsForFailedBuilds').text = str(
         data.get('publish-if-failed', False)).lower()
-
-
-def build_trends_publisher(plugin_name, xml_element, data):
-    """Helper to create various trend publishers.
-    """
-
-    def append_thresholds(element, data, only_totals):
-        """Appends the status thresholds.
-        """
-
-        for status in ['unstable', 'failed']:
-            status_data = data.get(status, {})
-
-            limits = [
-                ('total-all', 'TotalAll'),
-                ('total-high', 'TotalHigh'),
-                ('total-normal', 'TotalNormal'),
-                ('total-low', 'TotalLow')]
-
-            if only_totals is False:
-                limits.extend([
-                    ('new-all', 'NewAll'),
-                    ('new-high', 'NewHigh'),
-                    ('new-normal', 'NewNormal'),
-                    ('new-low', 'NewLow')])
-
-            for key, tag_suffix in limits:
-                tag_name = status + tag_suffix
-                XML.SubElement(element, tag_name).text = str(
-                    status_data.get(key, ''))
-
-    # Tuples containing: setting name, tag name, default value
-    settings = [
-        ('healthy', 'healthy', ''),
-        ('unhealthy', 'unHealthy', ''),
-        ('health-threshold', 'thresholdLimit', 'low'),
-        ('plugin-name', 'pluginName', plugin_name),
-        ('default-encoding', 'defaultEncoding', ''),
-        ('can-run-on-failed', 'canRunOnFailed', False),
-        ('use-stable-build-as-reference', 'useStableBuildAsReference', False),
-        ('use-delta-values', 'useDeltaValues', False),
-        ('thresholds', 'thresholds', {}),
-        ('should-detect-modules', 'shouldDetectModules', False),
-        ('dont-compute-new', 'dontComputeNew', True),
-        ('do-not-resolve-relative-paths', 'doNotResolveRelativePaths', False),
-        ('pattern', 'pattern', '')]
-
-    thresholds = ['low', 'normal', 'high']
-
-    for key, tag_name, default in settings:
-        xml_config = XML.SubElement(xml_element, tag_name)
-        config_value = data.get(key, default)
-
-        if key == 'thresholds':
-            append_thresholds(
-                xml_config,
-                config_value,
-                data.get('dont-compute-new', True))
-        elif key == 'health-threshold' and config_value not in thresholds:
-            raise JenkinsJobsException("health-threshold must be one of %s" %
-                                       ", ".join(thresholds))
-        else:
-            if isinstance(default, bool):
-                xml_config.text = str(config_value).lower()
-            else:
-                xml_config.text = str(config_value)
 
 
 def pmd(parser, xml_parent, data):
