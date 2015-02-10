@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.plugins.copyartifact.CopyArtifact>
+      <project>foo</project>
+      <filter>*.txt</filter>
+      <target>/home/foo</target>
+      <flatten>true</flatten>
+      <optional>true</optional>
+      <parameters>PUBLISH=true</parameters>
+      <selector class="hudson.plugins.copyartifact.LastCompletedBuildSelector"/>
+    </hudson.plugins.copyartifact.CopyArtifact>
+  </builders>
+</project>
