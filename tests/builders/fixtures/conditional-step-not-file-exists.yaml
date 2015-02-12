@@ -1,0 +1,10 @@
+builders:
+      - conditional-step:
+          condition-kind: not
+          condition-operand:
+              condition-kind: file-exists
+              condition-filename: mytestfile
+              condition-basedir: workspace
+          steps:
+              - shell: "touch $WORKSPACE/mytestfile"
+
