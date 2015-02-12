@@ -31,6 +31,7 @@ import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
 from jenkins_jobs.errors import JenkinsJobsException
 import logging
+import pkg_resources
 import sys
 import random
 
@@ -3993,11 +3994,16 @@ def conditional_publisher(parser, xml_parent, data):
     /../../tests/publishers/fixtures/conditional-publisher001.yaml
        :language: yaml
 
-    Multiple Conditional Actions Example:
+    Multiple Conditional Actions Example
+    (includes example of multiple actions per condition which requires
+    v0.13 or higher of the Flexible Publish plugin):
 
     .. literalinclude:: \
-    /../../tests/publishers/fixtures/conditional-publisher002.yaml
+    /../../tests/publishers/fixtures/conditional-publisher003.yaml
        :language: yaml
+
+    :download:`Multiple Conditional Actions Example for pre-v0.13 versions
+    <../../tests/publishers/fixtures/conditional-publisher002.yaml>`
 
     """
     def publish_condition(cdata):
@@ -4074,8 +4080,9 @@ def conditional_publisher(parser, xml_parent, data):
 
     def publish_action(parent, action):
         for edited_node in create_publishers(parser, action):
-            edited_node.set('class', edited_node.tag)
-            edited_node.tag = 'publisher'
+            if not use_publisher_list:
+                edited_node.set('class', edited_node.tag)
+                edited_node.tag = 'publisher'
             parent.append(edited_node)
 
     flex_publisher_tag = 'org.jenkins__ci.plugins.flexible__publish.'    \
@@ -4114,14 +4121,27 @@ def conditional_publisher(parser, xml_parent, data):
         if 'action' in cond_action:
             actions = cond_action['action']
 
-            # Flexible Publish will overwrite action if more than one is
-            # specified.  Limit the action list to one element.
-            if len(actions) is not 1:
+            action_parent = cond_publisher
+
+            plugin_info = \
+                parser.registry.get_plugin_info("Flexible Publish Plugin")
+            version = pkg_resources.parse_version(plugin_info.get('version',
+                                                                  '0'))
+            # XML tag changed from publisher to publisherList in v0.13
+            # check the plugin version to determine further operations
+            use_publisher_list = version >= pkg_resources.parse_version("0.13")
+
+            if use_publisher_list:
+                action_parent = XML.SubElement(cond_publisher, 'publisherList')
+            else:
+                # Check the length of actions list for versions prior to 0.13.
+                # Flexible Publish will overwrite action if more than one is
+                # specified.  Limit the action list to one element.
+                if len(actions) is not 1:
                     raise JenkinsJobsException("Only one action may be "
                                                "specified for each condition.")
-
             for action in actions:
-                publish_action(cond_publisher, action)
+                publish_action(action_parent, action)
         else:
             raise JenkinsJobsException('action must be set for each condition')
 
