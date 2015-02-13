@@ -37,19 +37,24 @@ in the :ref:`Job` definition.
       a SNAPSHOT dependency is built or not. (default true)
     * **automatic-archiving** (`bool`): Activate automatic artifact archiving
       (default true).
-    * **settings** (`str`): Path to custom maven settings file
+    * **settings** (`str`): Path to custom maven settings file.
       It is possible to provide a ConfigFileProvider settings file as well
-      org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig0123456789012
-      (optional)
-    * **global-settings** (`str`): Path to custom maven global settings file
+      see CFP Example below. (optional)
+    * **global-settings** (`str`): Path to custom maven global settings file.
       It is possible to provide a ConfigFileProvider settings file as well
-      org.jenkinsci.plugins.configfiles.maven.GlobalMavenSettingsConfig
-      0123456789012 (optional)
+      see CFP Example below. (optional)
+
+Requires the Jenkins `Config File Provider Plugin
+<https://wiki.jenkins-ci.org/display/JENKINS/Config+File+Provider+Plugin>`_
+for the Config File Provider "settings" and "global-settings" config.
 
 Example:
 
     .. literalinclude:: /../../tests/general/fixtures/project-maven001.yaml
 
+CFP Example:
+
+    .. literalinclude:: /../../tests/general/fixtures/project-maven003.yaml
 """
 
 import xml.etree.ElementTree as XML

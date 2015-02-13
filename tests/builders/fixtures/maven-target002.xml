@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <postbuilders>
+    <hudson.tasks.Maven>
+      <targets>clean verify</targets>
+      <properties/>
+      <mavenName>mvn30</mavenName>
+      <usePrivateRepository>false</usePrivateRepository>
+      <settings class="org.jenkinsci.plugins.configfiles.maven.job.MvnSettingsProvider">
+        <settingsConfigId>org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig0123456789012</settingsConfigId>
+      </settings>
+      <globalSettings class="org.jenkinsci.plugins.configfiles.maven.job.MvnGlobalSettingsProvider">
+        <settingsConfigId>org.jenkinsci.plugins.configfiles.maven.GlobalMavenSettingsConfig0123456789012</settingsConfigId>
+      </globalSettings>
+    </hudson.tasks.Maven>
+  </postbuilders>
+  <builders/>
+</project>
