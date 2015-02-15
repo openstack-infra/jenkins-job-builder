@@ -1284,6 +1284,30 @@ def custom_tools(parser, xml_parent, data):
                    'convertHomesToUppercase').text = convert_home
 
 
+def xvnc(parser, xml_parent, data):
+    """yaml: xvnc
+    Enable xvnc during the build.
+    Requires the Jenkins `xvnc plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/Xvnc+Plugin>`_
+
+    :arg bool screenshot: Take screenshot upon build completion
+                          (default: false)
+    :arg bool xauthority: Create a dedicated Xauthority file per build
+                          (default: true)
+
+    Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/xvnc001.yaml
+
+    """
+    xwrapper = XML.SubElement(xml_parent,
+                              'hudson.plugins.xvnc.Xvnc')
+    XML.SubElement(xwrapper, 'takeScreenshot').text = str(
+        data.get('screenshot', False)).lower()
+    XML.SubElement(xwrapper, 'useXauthority').text = str(
+        data.get('xauthority', True)).lower()
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 
