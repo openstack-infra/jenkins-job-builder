@@ -1,0 +1,4 @@
+publishers:
+  - build-publisher:
+      publish-unstable-builds: true
+      publish-failed-builds: true

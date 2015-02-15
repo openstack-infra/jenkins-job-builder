@@ -3294,42 +3294,37 @@ def build_publisher(parser, xml_parent, data):
     Requires the Jenkins `Build Publisher Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Build+Publisher+Plugin>`_
 
-    :arg str servers: Specify the servers where to publish
+    :arg bool publish-unstable-builds: publish unstable builds (default: true)
+    :arg bool publish-failed-builds: publish failed builds (default: true)
+    :arg int days-to-keep: days to keep when publishing results (optional)
+    :arg int num-to-keep: number of jobs to keep in the published results
+      (optional)
 
+    Example:
 
-    Example::
-
-        publishers:
-            - build-publisher:
-                name: servername
-                publish-unstable-builds: true
-                publish-failed-builds: true
-                days-to-keep: -1
-                num-to-keep: -1
-                artifact-days-to-keep: -1
-                artifact-num-to-keep: -1
-
+    .. literalinclude::
+       /../../tests/publishers/fixtures/build-publisher002.yaml
     """
 
     reporter = XML.SubElement(
         xml_parent,
         'hudson.plugins.build__publisher.BuildPublisher')
 
-    XML.SubElement(reporter, 'serverName').text = data['name']
     XML.SubElement(reporter, 'publishUnstableBuilds').text = \
         str(data.get('publish-unstable-builds', True)).lower()
     XML.SubElement(reporter, 'publishFailedBuilds').text = \
         str(data.get('publish-failed-builds', True)).lower()
 
-    logrotator = XML.SubElement(reporter, 'logRotator')
-    XML.SubElement(logrotator, 'daysToKeep').text = \
-        str(data.get('days-to-keep', -1))
-    XML.SubElement(logrotator, 'numToKeep').text = \
-        str(data.get('num-to-keep', -1))
-    XML.SubElement(logrotator, 'artifactDaysToKeep').text = \
-        str(data.get('artifact-days-to-keep', -1))
-    XML.SubElement(logrotator, 'artifactNumToKeep').text = \
-        str(data.get('artifact-num-to-keep', -1))
+    if 'days-to-keep' in data or 'num-to-keep' in data:
+        logrotator = XML.SubElement(reporter, 'logRotator')
+        XML.SubElement(logrotator, 'daysToKeep').text = \
+            str(data.get('days-to-keep', -1))
+        XML.SubElement(logrotator, 'numToKeep').text = \
+            str(data.get('num-to-keep', -1))
+        # hardcoded to -1 to emulate what the build publisher
+        # plugin seem to do.
+        XML.SubElement(logrotator, 'artifactDaysToKeep').text = "-1"
+        XML.SubElement(logrotator, 'artifactNumToKeep').text = "-1"
 
 
 def stash(parser, xml_parent, data):
