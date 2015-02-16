@@ -177,7 +177,7 @@ class Matrix(jenkins_jobs.modules.base.Base):
             lbl_root = XML.SubElement(ax_root, axis_name)
             name, values = axis.get('name', ''), axis.get('values', [''])
             if axis_type == 'jdk':
-                XML.SubElement(lbl_root, 'name').text = 'JDK'
+                XML.SubElement(lbl_root, 'name').text = 'jdk'
             elif axis_type == 'python':
                 XML.SubElement(lbl_root, 'name').text = 'PYTHON'
             elif axis_type == 'tox':

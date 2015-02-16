@@ -6,7 +6,7 @@
   <combinationFilter/>
   <axes>
     <hudson.matrix.JDKAxis>
-      <name>JDK</name>
+      <name>jdk</name>
       <values>
         <string>openjdk-6-jdk</string>
         <string>openjdk-7-jdk</string>
