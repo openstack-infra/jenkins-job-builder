@@ -187,6 +187,11 @@ def node_param(parser, xml_parent, data):
         when job gets triggered manually. Empty means 'All'.
     :arg bool ignore-offline-nodes: Ignore nodes not online or not having
         executors (default false)
+    :arg bool allowed-multiselect: Allow multi node selection for concurrent
+        builds - this option only makes sense (and must be selected!) in
+        case the job is configured with: "Execute concurrent builds if
+        necessary". With this configuration the build will be executed on all
+        the selected nodes in parallel. (default false)
 
     Example:
 
@@ -208,8 +213,16 @@ def node_param(parser, xml_parent, data):
     XML.SubElement(pdef, 'ignoreOfflineNodes').text = str(
         data.get('ignore-offline-nodes', False)).lower()
 
-    XML.SubElement(pdef, 'triggerIfResult').text = \
-        'multiSelectionDisallowed'
+    if data.get('allowed-multiselect', False):
+        XML.SubElement(pdef, 'triggerIfResult').text = \
+            'allowMultiSelectionForConcurrentBuilds'
+    else:
+        XML.SubElement(pdef, 'triggerIfResult').text = \
+            'multiSelectionDisallowed'
+    XML.SubElement(pdef, 'allowMultiNodeSelection').text = str(
+        data.get('allowed-multiselect', False)).lower()
+    XML.SubElement(pdef, 'triggerConcurrentBuilds').text = str(
+        data.get('allowed-multiselect', False)).lower()
 
 
 def choice_param(parser, xml_parent, data):

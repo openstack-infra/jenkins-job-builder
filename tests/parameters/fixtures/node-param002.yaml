@@ -7,5 +7,5 @@ parameters:
         - slave002
         - slave003
       ignore-offline-nodes: true
-      allowed-multiselect: true
+      allowed-multiselect: false
 
