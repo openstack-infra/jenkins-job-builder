@@ -92,11 +92,9 @@ def ownership(parser, xml_parent, data):
 
     XML.SubElement(ownership, 'primaryOwnerId').text = data.get('owner')
 
-    coowners = data.get('co-owners', [])
-    if coowners:
-        coownersIds = XML.SubElement(ownership, 'coownersIds')
-        for coowner in coowners:
-            XML.SubElement(coownersIds, 'string').text = coowner
+    coownersIds = XML.SubElement(ownership, 'coownersIds')
+    for coowner in data.get('co-owners', []):
+        XML.SubElement(coownersIds, 'string').text = coowner
 
 
 def promoted_build(parser, xml_parent, data):
