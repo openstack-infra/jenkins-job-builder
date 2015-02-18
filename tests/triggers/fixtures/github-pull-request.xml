@@ -5,6 +5,7 @@
       <spec>* * * * *</spec>
       <adminlist>user1
         user2</adminlist>
+      <allowMembersOfWhitelistedOrgsAsAdmin>true</allowMembersOfWhitelistedOrgsAsAdmin>
       <whitelist>user3
         user4</whitelist>
       <orgslist>org1
