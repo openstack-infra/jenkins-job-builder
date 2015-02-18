@@ -1,0 +1,34 @@
+publishers:
+ - dry:
+    pattern: '**/cpd-result.xml'
+    can-run-on-failed: true
+    should-detect-modules: true
+    healthy: 0
+    unhealthy: 100
+    health-threshold: 'high'
+    high-threshold: 20
+    normal-threshold: 10
+    thresholds:
+        unstable:
+            total-all: 90
+            total-high: 80
+            total-normal: 70
+            total-low: 60
+            new-all: 50
+            new-high: 40
+            new-normal: 30
+            new-low: 20
+        failed:
+            total-all: 91
+            total-high: 81
+            total-normal: 71
+            total-low: 61
+            new-all: 51
+            new-high: 41
+            new-normal: 31
+            new-low: 21
+    default-encoding: 'utf-8'
+    do-not-resolve-relative-paths: true
+    dont-compute-new: false
+    use-stable-build-as-reference: true
+    use-delta-values: true
