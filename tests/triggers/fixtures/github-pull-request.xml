@@ -15,6 +15,14 @@
       <useGitHubHooks>true</useGitHubHooks>
       <permitAll>false</permitAll>
       <autoCloseFailedPullRequests>false</autoCloseFailedPullRequests>
+      <whiteListTargetBranches>
+        <org.jenkinsci.plugins.ghprb.GhprbBranch>
+          <branch>master</branch>
+        </org.jenkinsci.plugins.ghprb.GhprbBranch>
+        <org.jenkinsci.plugins.ghprb.GhprbBranch>
+          <branch>testing</branch>
+        </org.jenkinsci.plugins.ghprb.GhprbBranch>
+      </whiteListTargetBranches>
     </org.jenkinsci.plugins.ghprb.GhprbTrigger>
   </triggers>
 </project>
