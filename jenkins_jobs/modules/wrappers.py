@@ -1170,7 +1170,7 @@ def ssh_agent_credentials(parser, xml_parent, data):
     Sets up the user for the ssh agent plugin for jenkins.
 
     Requires the Jenkins `SSH-Agent Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/SSH-Agent-Plugin>`_
+    <https://wiki.jenkins-ci.org/display/JENKINS/SSH+Agent+Plugin>`_
 
     :arg str user: The user id of the jenkins user credentials (required)
 
