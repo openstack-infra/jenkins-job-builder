@@ -1,5 +1,6 @@
 publishers:
   - xunit:
+      test-time-margin: 5000
       thresholdmode: 'number'
       thresholds:
           - failed:
