@@ -16,3 +16,4 @@ publishers:
       types:
           - ctest:
               pattern: "build/tests/reports/ctest.xml"
+              skip-if-no-test-files: true

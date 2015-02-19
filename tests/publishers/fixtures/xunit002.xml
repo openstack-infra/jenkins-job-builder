@@ -7,6 +7,7 @@
           <pattern>build/tests/reports/ctest.xml</pattern>
           <failIfNotNew>true</failIfNotNew>
           <deleteOutputFiles>true</deleteOutputFiles>
+          <skipNoTestFiles>true</skipNoTestFiles>
           <stopProcessingIfError>true</stopProcessingIfError>
         </CTestType>
       </types>
