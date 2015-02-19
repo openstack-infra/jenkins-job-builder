@@ -28,6 +28,11 @@
               <paramExpr/>
               <validationFail>FAIL</validationFail>
             </hudson.plugins.parameterizedtrigger.CounterBuildParameterFactory>
+            <org.jvnet.jenkins.plugins.nodelabelparameter.parameterizedtrigger.AllNodesForLabelBuildParameterFactory>
+              <name>parametername</name>
+              <nodeLabel>labelname</nodeLabel>
+              <ignoreOfflineNodes>false</ignoreOfflineNodes>
+            </org.jvnet.jenkins.plugins.nodelabelparameter.parameterizedtrigger.AllNodesForLabelBuildParameterFactory>
           </configFactories>
           <projects>build_started</projects>
           <condition>ALWAYS</condition>

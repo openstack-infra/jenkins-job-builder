@@ -15,4 +15,8 @@ builders:
           from: 0
           to: 5
           step: 1
+        - factory: allnodesforlabel
+          name: parametername
+          node-label: labelname
+          ignore-offline-nodes: false
       block: true

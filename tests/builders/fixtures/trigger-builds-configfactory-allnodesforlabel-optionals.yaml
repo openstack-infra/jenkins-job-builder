@@ -1,0 +1,9 @@
+builders:
+  - trigger-builds:
+    - project: "build_started"
+      parameter-factories:
+        - factory: allnodesforlabel
+          name: test-name
+          node-label: test-label
+          ignore-offline-nodes: true
+      block: true

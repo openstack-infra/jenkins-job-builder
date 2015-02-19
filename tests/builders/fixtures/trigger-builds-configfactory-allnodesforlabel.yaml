@@ -1,0 +1,7 @@
+builders:
+  - trigger-builds:
+    - project: "build_started"
+      parameter-factories:
+        - factory: allnodesforlabel
+          node-label: test-label
+      block: true

@@ -327,6 +327,16 @@ def trigger_builds(parser, xml_parent, data):
                   ['FAIL', 'SKIP', 'NOPARMS']
                   (default 'FAIL')
 
+      :Factory: * **factory** (`str`) **allnodesforlabel** -- Trigger a build
+                  on all nodes having specific label. Requires NodeLabel
+                  Parameter Plugin (optional)
+                * **name** (`str`) -- Name of the parameter to set (optional)
+                * **node-label** (`str`) -- Label of the nodes where build
+                  should be triggered
+                * **ignore-offline-nodes** (`bool`) -- Don't trigger build on
+                  offline nodes (optional)
+                  (default true)
+
     Examples:
 
     Basic usage.
@@ -387,7 +397,10 @@ def trigger_builds(parser, xml_parent, data):
         if 'parameter-factories' in project_def:
             fconfigs = XML.SubElement(tconfig, 'configFactories')
 
-            supported_factories = ['filebuild', 'binaryfile', 'counterbuild']
+            supported_factories = ['filebuild',
+                                   'binaryfile',
+                                   'counterbuild',
+                                   'allnodesforlabel']
             supported_actions = ['SKIP', 'NOPARMS', 'FAIL']
             for factory in project_def['parameter-factories']:
 
@@ -443,6 +456,22 @@ def trigger_builds(parser, xml_parent, data):
                             "validation-fail action must be one of %s" %
                             ", ".join(supported_actions))
                     validationFail.text = validationFailValue
+                if factory['factory'] == 'allnodesforlabel':
+                    params = XML.SubElement(
+                        fconfigs,
+                        'org.jvnet.jenkins.plugins.nodelabelparameter.'
+                        'parameterizedtrigger.'
+                        'AllNodesForLabelBuildParameterFactory')
+                    nameProperty = XML.SubElement(params, 'name')
+                    nameProperty.text = str(factory.get(
+                        'name', ''))
+                    nodeLabel = XML.SubElement(params, 'nodeLabel')
+                    nodeLabel.text = str(factory['node-label'])
+                    ignoreOfflineNodes = XML.SubElement(
+                        params,
+                        'ignoreOfflineNodes')
+                    ignoreOfflineNodes.text = str(factory.get(
+                        'ignore-offline-nodes', True)).lower()
 
         projects = XML.SubElement(tconfig, 'projects')
         projects.text = project_def['project']
