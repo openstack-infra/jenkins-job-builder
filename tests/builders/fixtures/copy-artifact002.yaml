@@ -1,0 +1,9 @@
+builders:
+  - copyartifact:
+      project: foo
+      filter: "*.txt"
+      target: /home/foo
+      which-build: last-completed
+      optional: true
+      flatten: true
+      parameter-filters: PUBLISH=true

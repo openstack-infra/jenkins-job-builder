@@ -109,6 +109,7 @@ def copyartifact(parser, xml_parent, data):
         parameters (optional)
     :which-build values:
       * **last-successful**
+      * **last-completed**
       * **specific-build**
       * **last-saved**
       * **upstream-build**
@@ -143,6 +144,7 @@ def copyartifact(parser, xml_parent, data):
     XML.SubElement(t, 'parameters').text = data.get("parameter-filters", "")
     select = data.get('which-build', 'last-successful')
     selectdict = {'last-successful': 'StatusBuildSelector',
+                  'last-completed': 'LastCompletedBuildSelector',
                   'specific-build': 'SpecificBuildSelector',
                   'last-saved': 'SavedBuildSelector',
                   'upstream-build': 'TriggeredBuildSelector',
