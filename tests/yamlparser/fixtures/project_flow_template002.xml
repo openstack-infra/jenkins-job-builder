@@ -7,6 +7,7 @@ parallel (
 )
 build(&quot;job2c&quot;)
 </dsl>
+  <buildNeedsWorkspace>false</buildNeedsWorkspace>
   <actions/>
   <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
   <keepDependencies>false</keepDependencies>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.cloudbees.plugins.flow.BuildFlow>
   <dsl/>
+  <buildNeedsWorkspace>false</buildNeedsWorkspace>
   <actions/>
   <keepDependencies>false</keepDependencies>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
