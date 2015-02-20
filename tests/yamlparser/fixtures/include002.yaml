@@ -1,0 +1,16 @@
+# vim: sw=4 ts=4 et
+- default:
+    name: default-timeout-wrapper
+    timeout: &timeout
+      fail: true
+      elastic-percentage: 150
+      elastic-default-timeout: 90
+      type: elastic
+
+# include that uses timeout alias
+- wrapper: !include include002_1.yaml.inc
+
+- job:
+    name: test-job-1
+    wrappers:
+      !include include002.yaml.inc

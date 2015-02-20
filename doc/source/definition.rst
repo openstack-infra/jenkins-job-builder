@@ -319,9 +319,8 @@ For example:
 
 
 The `anchors and aliases`_ are expanded internally within JJB's yaml loading
-calls, and are limited to individual documents. That means you use the same
-anchor name in separate files without collisions, but also means that you must
-define the anchor in the same file that you intend to reference it.
+calls and are not limited to individual documents. That means you can't use
+the same anchor name in included files without collisions.
 
 A simple example can be seen in the specs `full length example`_ with the
 following being more representative of usage within JJB:

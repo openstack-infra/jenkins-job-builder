@@ -16,9 +16,9 @@
 
 import os
 from testtools import ExpectedException
-from testtools.matchers import MismatchError
 from testtools import TestCase
 from testscenarios.testcase import TestWithScenarios
+from yaml.composer import ComposerError
 
 from jenkins_jobs import builder
 from tests.base import get_scenarios, JsonTestCase, YamlTestCase
@@ -40,7 +40,8 @@ class TestCaseLocalYamlInclude(TestWithScenarios, TestCase, JsonTestCase):
     def test_yaml_snippet(self):
 
         if os.path.basename(self.in_filename).startswith("exception_"):
-            with ExpectedException(MismatchError):
+            with ExpectedException(ComposerError,
+                                   "^found duplicate anchor .*"):
                 super(TestCaseLocalYamlInclude, self).test_yaml_snippet()
         else:
             super(TestCaseLocalYamlInclude, self).test_yaml_snippet()
