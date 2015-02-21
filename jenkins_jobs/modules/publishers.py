@@ -209,14 +209,14 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                                  'BuildTriggerConfig')
         tconfigs = XML.SubElement(tconfig, 'configs')
         if ('predefined-parameters' in project_def
-            or 'git-revision' in project_def
-            or 'property-file' in project_def
-            or 'current-parameters' in project_def
-            or 'node-parameters' in project_def
-            or 'svn-revision' in project_def
-            or 'restrict-matrix-project' in project_def
-            or 'node-label-name' in project_def
-            or 'node-label' in project_def):
+                or 'git-revision' in project_def
+                or 'property-file' in project_def
+                or 'current-parameters' in project_def
+                or 'node-parameters' in project_def
+                or 'svn-revision' in project_def
+                or 'restrict-matrix-project' in project_def
+                or 'node-label-name' in project_def
+                or 'node-label' in project_def):
 
             if 'predefined-parameters' in project_def:
                 params = XML.SubElement(tconfigs,
@@ -241,12 +241,12 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                 failOnMissing.text = str(project_def.get('fail-on-missing',
                                                          False)).lower()
             if ('current-parameters' in project_def
-                and project_def['current-parameters']):
+                    and project_def['current-parameters']):
                 XML.SubElement(tconfigs,
                                'hudson.plugins.parameterizedtrigger.'
                                'CurrentBuildParameters')
             if ('node-parameters' in project_def
-                and project_def['node-parameters']):
+                    and project_def['node-parameters']):
                 XML.SubElement(tconfigs,
                                'hudson.plugins.parameterizedtrigger.'
                                'NodeParameters')
@@ -255,14 +255,14 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                                'hudson.plugins.parameterizedtrigger.'
                                'SubversionRevisionBuildParameters')
             if ('restrict-matrix-project' in project_def
-                and project_def['restrict-matrix-project']):
+                    and project_def['restrict-matrix-project']):
                 subset = XML.SubElement(tconfigs,
                                         'hudson.plugins.parameterizedtrigger.'
                                         'matrix.MatrixSubsetBuildParameters')
                 XML.SubElement(subset, 'filter').text = \
                     project_def['restrict-matrix-project']
-            if 'node-label-name' in project_def or \
-               'node-label' in project_def:
+            if ('node-label-name' in project_def or
+                    'node-label' in project_def):
                 params = XML.SubElement(tconfigs,
                                         'org.jvnet.jenkins.plugins.'
                                         'nodelabelparameter.'
@@ -1041,23 +1041,22 @@ def violations(parser, xml_parent, data):
     configs = XML.SubElement(config, 'typeConfigs')
     XML.SubElement(configs, 'no-comparator')
 
-    for name in [
-        'checkstyle',
-        'codenarc',
-        'cpd',
-        'cpplint',
-        'csslint',
-        'findbugs',
-        'fxcop',
-        'gendarme',
-        'jcreport',
-        'jslint',
-        'pep8',
-        'perlcritic',
-        'pmd',
-        'pylint',
-        'simian',
-        'stylecop']:
+    for name in ['checkstyle',
+                 'codenarc',
+                 'cpd',
+                 'cpplint',
+                 'csslint',
+                 'findbugs',
+                 'fxcop',
+                 'gendarme',
+                 'jcreport',
+                 'jslint',
+                 'pep8',
+                 'perlcritic',
+                 'pmd',
+                 'pylint',
+                 'simian',
+                 'stylecop']:
         _violations_add_entry(configs, name, data.get(name, {}))
 
     XML.SubElement(config, 'limit').text = '100'
@@ -1294,7 +1293,7 @@ def pipeline(parser, xml_parent, data):
             properties.text = data['predefined-parameters']
 
         if ('current-parameters' in data
-            and data['current-parameters']):
+                and data['current-parameters']):
             XML.SubElement(configs,
                            'hudson.plugins.parameterizedtrigger.'
                            'CurrentBuildParameters')
@@ -1496,7 +1495,7 @@ def email_ext(parser, xml_parent, data):
                    'only-configurations': 'ONLY_CONFIGURATIONS',
                    'only-parent': 'ONLY_PARENT'}
     matrix_trigger = data.get('matrix-trigger', None)
-    ## If none defined, then do not create entry
+    # If none defined, then do not create entry
     if matrix_trigger is not None:
         if matrix_trigger not in matrix_dict:
             raise JenkinsJobsException("matrix-trigger entered is not valid, "
@@ -2802,7 +2801,7 @@ def warnings(parser, xml_parent, data):
     XML.SubElement(warnings, 'canRunOnFailed').text = run_always
     detect_modules = str(data.get('detect-modules', False)).lower()
     XML.SubElement(warnings, 'shouldDetectModules').text = detect_modules
-    #Note the logic reversal (included here to match the GUI)
+    # Note the logic reversal (included here to match the GUI)
     XML.SubElement(warnings, 'doNotResolveRelativePaths').text = \
         str(not data.get('resolve-relative-paths', False)).lower()
     health_threshold_high = str(data.get('health-threshold-high', ''))
@@ -4148,7 +4147,7 @@ def conditional_publisher(parser, xml_parent, data):
 
             br = XML.SubElement(ctag, 'bestResult')
             br_name = cdata['condition-best']
-            if not br_name in hudson_model.THRESHOLDS:
+            if br_name not in hudson_model.THRESHOLDS:
                 raise JenkinsJobsException(
                     "threshold must be one of %s" %
                     ", ".join(hudson_model.THRESHOLDS.keys()))
