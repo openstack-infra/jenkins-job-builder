@@ -1548,6 +1548,25 @@ def aggregate_tests(parser, xml_parent, data):
         'include-failed-builds', False)).lower()
 
 
+def aggregate_flow_tests(parser, xml_parent, data):
+    """yaml: aggregate-flow-tests
+    Aggregate downstream test results in a Build Flow job.
+    Requires the Jenkins `Build Flow Test Aggregator Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/
+    Build+Flow+Test+Aggregator+Plugin>`_
+
+    Example:
+
+    .. literalinclude:: \
+    /../../tests/publishers/fixtures/aggregate-flow-tests.yaml
+       :language: yaml
+
+    """
+    XML.SubElement(xml_parent,
+                   'org.zeroturnaround.jenkins.'
+                   'flowbuildtestaggregator.FlowTestAggregator')
+
+
 def cppcheck(parser, xml_parent, data):
     """yaml: cppcheck
     Cppcheck result publisher
