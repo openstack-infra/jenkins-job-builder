@@ -1,0 +1,8 @@
+publishers:
+  - downstream-ext:
+      projects:
+        - foo
+        - bar
+      only-on-scm-change: true
+      criteria: unstable
+      condition: equal

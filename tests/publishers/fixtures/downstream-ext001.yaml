@@ -1,0 +1,5 @@
+publishers:
+  - downstream-ext:
+      projects:
+        - foo
+        - bar

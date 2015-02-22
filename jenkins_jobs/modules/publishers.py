@@ -3768,6 +3768,76 @@ def shining_panda(parser, xml_parent, data):
             data['html-reports-directory'])
 
 
+def downstream_ext(parser, xml_parent, data):
+    """yaml: downstream-ext
+    Trigger multiple downstream jobs when a job is completed and
+    condition is met.
+
+    Requires the Jenkins :jenkins-wiki:`Downstream-Ext Plugin
+    <Downstream-Ext+Plugin>`.
+
+    :arg list projects: Projects to build (required)
+    :arg string comparison: comparison used for the criteria.
+      One of 'equal-or-over', 'equal-or-under', 'equal'
+      (default: 'equal-or-over')
+    :arg string criteria: Trigger downstream job if build results meets
+      condition. One of 'success', 'unstable', 'failure' or
+      'aborted' (default: 'success')
+    :arg bool only-on-scm-change: Trigger only if downstream project
+      has SCM changes (default: false)
+    :arg bool only-on-local-scm-change: Trigger only if current project
+      has SCM changes (default: false)
+
+    Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/downstream-ext002.yaml
+       :language: yaml
+    """
+
+    conditions = {
+        "equal-or-over": "AND_HIGHER",
+        "equal-or-under": "AND_LOWER",
+        "equal": "EQUAL"
+    }
+
+    p = XML.SubElement(xml_parent,
+                       'hudson.plugins.downstream__ext.DownstreamTrigger')
+
+    if 'projects' not in data:
+        raise JenkinsJobsException("Missing list of downstream projects.")
+
+    XML.SubElement(p, 'childProjects').text = ','.join(data['projects'])
+
+    th = XML.SubElement(p, 'threshold')
+
+    criteria = data.get('criteria', 'success').upper()
+
+    if criteria not in hudson_model.THRESHOLDS:
+        raise JenkinsJobsException("criteria must be one of %s" %
+                                   ", ".join(hudson_model.THRESHOLDS.keys()))
+
+    wr_threshold = hudson_model.THRESHOLDS[
+        criteria]
+    XML.SubElement(th, "name").text = wr_threshold['name']
+    XML.SubElement(th, "ordinal").text = wr_threshold['ordinal']
+    XML.SubElement(th, "color").text = wr_threshold['color']
+    XML.SubElement(th, "completeBuild").text = str(
+        wr_threshold['complete']).lower()
+
+    condition = data.get('condition', 'equal-or-over')
+    if condition not in conditions:
+        raise JenkinsJobsException('condition must be one of: %s' %
+                                   ", ".join(conditions))
+
+    XML.SubElement(p, 'thresholdStrategy').text = conditions[
+        condition]
+    XML.SubElement(p, 'onlyIfSCMChanges').text = str(
+        data.get('only-on-scm-change', False)).lower()
+    XML.SubElement(p, 'onlyIfLocalSCMChanges').text = str(
+        data.get('only-on-local-scm-change', False)).lower()
+
+
 def create_publishers(parser, action):
     dummy_parent = XML.Element("dummy")
     parser.registry.dispatch('publisher', parser, dummy_parent, action)
