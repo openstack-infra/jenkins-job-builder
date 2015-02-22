@@ -676,6 +676,8 @@ def github_pull_request(parser, xml_parent, data):
     :arg list admin-list: the users with admin rights (optional)
     :arg list white-list: users whose pull requests build (optional)
     :arg list org-list: orgs whose users should be white listed (optional)
+    :arg bool allow-whitelist-orgs-as-admins: members of white listed orgs
+        will have admin rights. (default false)
     :arg string cron: cron syntax of when to run (optional)
     :arg string trigger-phrase: when filled, commenting this phrase
         in the pull request will trigger a build (optional)
@@ -701,6 +703,8 @@ def github_pull_request(parser, xml_parent, data):
     XML.SubElement(ghprb, 'spec').text = data.get('cron', '')
     admin_string = "\n".join(data.get('admin-list', []))
     XML.SubElement(ghprb, 'adminlist').text = admin_string
+    XML.SubElement(ghprb, 'allowMembersOfWhitelistedOrgsAsAdmin').text = str(
+        data.get('allow-whitelist-orgs-as-admins', False)).lower()
     white_string = "\n".join(data.get('white-list', []))
     XML.SubElement(ghprb, 'whitelist').text = white_string
     org_string = "\n".join(data.get('org-list', []))
