@@ -4023,6 +4023,27 @@ def dry(parser, xml_parent, data):
         xml_config.text = str(config_value)
 
 
+def shining_panda(parser, xml_parent, data):
+    """yaml: shining-panda
+    Publish coverage.py results. Requires the Jenkins `ShiningPanda Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/ShiningPanda+Plugin>`_.
+
+    :arg str html-reports-directory: path to coverage.py html results
+                                    (optional)
+
+    Example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/shiningpanda001.yaml
+       :language: yaml
+    """
+    shining_panda_plugin = XML.SubElement(
+        xml_parent,
+        'jenkins.plugins.shiningpanda.publishers.CoveragePublisher')
+    if 'html-reports-directory' in data:
+        XML.SubElement(shining_panda_plugin, 'htmlDir').text = str(
+            data['html-reports-directory'])
+
+
 def create_publishers(parser, action):
     dummy_parent = XML.Element("dummy")
     parser.registry.dispatch('publisher', parser, dummy_parent, action)
