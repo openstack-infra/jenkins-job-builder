@@ -506,12 +506,12 @@ def pollscm(parser, xml_parent, data):
     """yaml: pollscm
     Poll the SCM to determine if there has been a change.
 
-    :Parameter: the polling interval (cron syntax)
+    :arg string pollscm: the polling interval (cron syntax)
 
-    Example::
+    Example:
 
-      triggers:
-        - pollscm: "\*/15 * * * \*"
+    .. literalinclude:: /../../tests/triggers/fixtures/pollscm001.yaml
+       :language: yaml
     """
 
     scmtrig = XML.SubElement(xml_parent, 'hudson.triggers.SCMTrigger')
