@@ -1,0 +1,11 @@
+- builders:
+    name: custom-copytarball2
+    builders:
+      - copyartifact: &custom-copytarball
+          project: foo
+          filter: "*.tar.gz"
+          target: /home/foo
+          which-build: last-successful
+          optional: true
+          flatten: true
+          parameter-filters: PUBLISH=true

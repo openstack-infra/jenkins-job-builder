@@ -15,9 +15,17 @@
 # under the License.
 
 import os
+from testtools import ExpectedException
+from testtools.matchers import MismatchError
 from testtools import TestCase
 from testscenarios.testcase import TestWithScenarios
-from tests.base import get_scenarios, JsonTestCase
+
+from jenkins_jobs import builder
+from tests.base import get_scenarios, JsonTestCase, YamlTestCase
+
+
+def _exclude_scenarios(input_filename):
+    return os.path.basename(input_filename).startswith("custom_")
 
 
 class TestCaseLocalYamlInclude(TestWithScenarios, TestCase, JsonTestCase):
@@ -26,4 +34,43 @@ class TestCaseLocalYamlInclude(TestWithScenarios, TestCase, JsonTestCase):
     modules XML parsing behaviour
     """
     fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
-    scenarios = get_scenarios(fixtures_path, 'yaml', 'json')
+    scenarios = get_scenarios(fixtures_path, 'yaml', 'json',
+                              filter_func=_exclude_scenarios)
+
+    def test_yaml_snippet(self):
+
+        if os.path.basename(self.in_filename).startswith("exception_"):
+            with ExpectedException(MismatchError):
+                super(TestCaseLocalYamlInclude, self).test_yaml_snippet()
+        else:
+            super(TestCaseLocalYamlInclude, self).test_yaml_snippet()
+
+
+class TestCaseLocalYamlAnchorAlias(TestWithScenarios, TestCase, YamlTestCase):
+    """
+    Verify yaml input is expanded to the expected yaml output when using yaml
+    anchors and aliases.
+    """
+    fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
+    scenarios = get_scenarios(fixtures_path, 'iyaml', 'oyaml')
+
+
+class TestCaseLocalYamlIncludeAnchors(TestCase):
+
+    fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
+
+    def test_multiple_same_anchor_in_multiple_toplevel_yaml(self):
+        """
+        Verify that anchors/aliases only span use of '!include' tag
+
+        To ensure that any yaml loaded by the include tag is in the same
+        space as the top level file, but individual top level yaml definitions
+        are treated by the yaml loader as independent.
+        """
+
+        files = ["custom_same_anchor-001-part1.yaml",
+                 "custom_same_anchor-001-part2.yaml"]
+
+        b = builder.Builder("http://example.com", "jenkins", None,
+                            plugins_list=[])
+        b.load_files([os.path.join(self.fixtures_path, f) for f in files])

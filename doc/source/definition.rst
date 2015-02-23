@@ -252,15 +252,6 @@ For example:
 .. literalinclude::  /../../tests/yamlparser/fixtures/custom_distri.yaml
 
 
-The yaml specification supports `anchors and aliases`__ which means
-that JJB definitions allow references to variables in templates.
-
-__ http://yaml.org/spec/1.2/spec.html#id2765878
-
-For example:
-
-.. literalinclude::  /../../tests/yamlparser/fixtures/yaml_anchor.yaml
-
 JJB also supports interpolation of parameters within parameters. This allows a
 little more flexibility when ordering template jobs as components in different
 projects and job groups.
@@ -268,6 +259,38 @@ projects and job groups.
 For example:
 
 .. literalinclude:: /../../tests/yamlparser/fixtures/second_order_parameter_interpolation002.yaml
+
+
+Yaml Anchors & Aliases
+^^^^^^^^^^^^^^^^^^^^^^
+
+The yaml specification supports `anchors and aliases`_ which means
+that JJB definitions allow references to variables in templates.
+
+For example:
+
+.. literalinclude::  /../../tests/yamlparser/fixtures/yaml_anchor.yaml
+
+
+The `anchors and aliases`_ are expanded internally within JJB's yaml loading
+calls, and are limited to individual documents. That means you use the same
+anchor name in separate files without collisions, but also means that you must
+define the anchor in the same file that you intend to reference it.
+
+A simple example can be seen in the specs `full length example`_ with the
+following being more representative of usage within JJB:
+
+.. literalinclude:: /../../tests/localyaml/fixtures/anchors_aliases.iyaml
+
+
+Which will be expanded to the following yaml before being processed:
+
+.. literalinclude:: /../../tests/localyaml/fixtures/anchors_aliases.oyaml
+
+
+.. _full length example: http://www.yaml.org/spec/1.2/spec.html#id2761803
+.. _anchors and aliases: http://www.yaml.org/spec/1.2/spec.html#id2765878
+
 
 Custom Yaml Tags
 ----------------
