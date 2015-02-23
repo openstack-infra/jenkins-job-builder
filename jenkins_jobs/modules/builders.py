@@ -881,6 +881,11 @@ def conditional_step(parser, xml_parent, data):
                            relative, it will be considered relative to
                            either `workspace`, `artifact-directory`,
                            or `jenkins-home`. Default is `workspace`.
+    not                Run the step if the inverse of the condition-operand
+                       is true
+
+                         :condition-operand: Condition to evaluate.  Can be
+                           any supported conditional-step condition.
     ================== ====================================================
 
     Example:
@@ -888,10 +893,13 @@ def conditional_step(parser, xml_parent, data):
     .. literalinclude:: \
     /../../tests/builders/fixtures/conditional-step-success-failure.yaml
        :language: yaml
+    .. literalinclude:: \
+    /../../tests/builders/fixtures/conditional-step-not-file-exists.yaml
+       :language: yaml
     """
-    def build_condition(cdata):
+    def build_condition(cdata, cond_root_tag):
         kind = cdata['condition-kind']
-        ctag = XML.SubElement(root_tag, condition_tag)
+        ctag = XML.SubElement(cond_root_tag, condition_tag)
         if kind == "always":
             ctag.set('class',
                      'org.jenkins_ci.plugins.run_condition.core.AlwaysRun')
@@ -969,6 +977,11 @@ def conditional_step(parser, xml_parent, data):
                 basedir_tag.set('class',
                                 'org.jenkins_ci.plugins.run_condition.common.'
                                 'BaseDirectory$JenkinsHome')
+        elif kind == "not":
+            ctag.set('class',
+                     'org.jenkins_ci.plugins.run_condition.logic.Not')
+            notcondition = cdata['condition-operand']
+            build_condition(notcondition, ctag)
 
     def build_step(parent, step):
         for edited_node in create_builders(parser, step):
@@ -993,7 +1006,7 @@ def conditional_step(parser, xml_parent, data):
         steps_parent = root_tag
         condition_tag = "condition"
 
-    build_condition(data)
+    build_condition(data, root_tag)
     evaluation_classes_pkg = 'org.jenkins_ci.plugins.run_condition'
     evaluation_classes = {
         'fail': evaluation_classes_pkg + '.BuildStepRunner$Fail',
