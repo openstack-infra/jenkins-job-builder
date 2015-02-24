@@ -1312,18 +1312,16 @@ def email(parser, xml_parent, data):
     :arg bool send-to-individuals: Send an email to the individual
       who broke the build (default false)
 
-    Example::
+    Example:
 
-      publishers:
-        - email:
-            recipients: breakage@example.com
+    .. literalinclude::  /../../tests/publishers/fixtures/email001.yaml
+       :language: yaml
     """
 
     # TODO: raise exception if this is applied to a maven job
     mailer = XML.SubElement(xml_parent,
                             'hudson.tasks.Mailer')
-    if 'recipients' in data:
-        XML.SubElement(mailer, 'recipients').text = data['recipients']
+    XML.SubElement(mailer, 'recipients').text = data.get('recipients', '')
 
     # Note the logic reversal (included here to match the GUI
     if data.get('notify-every-unstable-build', True):
