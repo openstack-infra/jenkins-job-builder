@@ -464,7 +464,7 @@ class ModuleRegistry(object):
 
         :arg string plugin_name: Either the shortName or longName of a plugin
           as see in a query that looks like:
-          http://<jenkins-hostname>/pluginManager/api/json?pretty&depth=2
+          ``http://<jenkins-hostname>/pluginManager/api/json?pretty&depth=2``
 
         During a 'test' run, it is possible to override JJB's query to a live
         Jenkins instance by passing it a path to a file containing a YAML list
