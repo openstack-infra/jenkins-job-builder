@@ -27,7 +27,8 @@ sys.path.insert(0, os.path.abspath('../../jenkins_jobs/modules'))
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.coverage',
-              'jenkins_jobs.sphinx.yaml', 'sphinxcontrib.programoutput']
+              'jenkins_jobs.sphinx.yaml', 'sphinxcontrib.programoutput',
+              'sphinx.ext.extlinks']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -249,3 +250,6 @@ texinfo_documents = [
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
+
+extlinks = {'jenkins-wiki': ('https://wiki.jenkins-ci.org/display/JENKINS/%s',
+                             None)}

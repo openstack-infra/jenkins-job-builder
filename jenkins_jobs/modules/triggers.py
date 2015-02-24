@@ -201,8 +201,8 @@ def gerrit(parser, xml_parent, data):
     """yaml: gerrit
 
     Trigger on a Gerrit event.
-    Requires the Jenkins `Gerrit Trigger Plugin
-    <wiki.jenkins-ci.org/display/JENKINS/Gerrit+Trigger>`_ version >= 2.6.0.
+    Requires the Jenkins :jenkins-wiki:`Gerrit Trigger Plugin <Gerrit+Trigger>`
+    version >= 2.6.0.
 
     :arg list trigger-on: Events to react on. Please use either the new
       **trigger-on**, or the old **trigger-on-*** events definitions. You
@@ -371,7 +371,7 @@ def gerrit(parser, xml_parent, data):
     :arg str custom-url: Custom URL for a message sent to Gerrit. Build
         details URL will be used if empty. (default '')
     :arg str server-name: Name of the server to trigger on, or ''__ANY__'' to
-        trigger on any configured Gerrit server (default '__ANY__').  Requires
+        trigger on any configured Gerrit server (default '__ANY__'). Requires
         Gerrit Trigger Plugin version >= 2.11.0
 
     You may select one or more Gerrit events upon which to trigger.
@@ -534,8 +534,7 @@ def build_pollurl_content_type(xml_parent, entries, prefix,
 def pollurl(parser, xml_parent, data):
     """yaml: pollurl
     Trigger when the HTTP response from a URL changes.
-    Requires the Jenkins `URLTrigger Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/URLTrigger+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`URLTrigger Plugin <URLTrigger+Plugin>`.
 
     :arg string cron: cron syntax of when to run (default '')
     :arg string polling-node: Restrict where the polling should run.
@@ -653,8 +652,7 @@ def timed(parser, xml_parent, data):
 def github(parser, xml_parent, data):
     """yaml: github
     Trigger a job when github repository is pushed to.
-    Requires the Jenkins `GitHub Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/GitHub+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`GitHub Plugin <GitHub+Plugin>`.
 
     Example::
 
@@ -669,9 +667,8 @@ def github(parser, xml_parent, data):
 def github_pull_request(parser, xml_parent, data):
     """yaml: github-pull-request
     Build pull requests in github and report results.
-    Requires the Jenkins `GitHub Pull Request Builder Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    GitHub+pull+request+builder+plugin>`_
+    Requires the Jenkins :jenkins-wiki:`GitHub Pull Request Builder Plugin
+    <GitHub+pull+request+builder+plugin>`.
 
     :arg list admin-list: the users with admin rights (optional)
     :arg list white-list: users whose pull requests build (optional)
@@ -733,9 +730,8 @@ def github_pull_request(parser, xml_parent, data):
 def gitlab_merge_request(parser, xml_parent, data):
     """yaml: gitlab-merge-request
     Build merge requests in gitlab and report results.
-    Requires the Jenkins `Gitlab MergeRequest Builder Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    Gitlab+Merge+Request+Builder+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Gitlab MergeRequest Builder Plugin.
+    <Gitlab+Merge+Request+Builder+Plugin>`.
 
     :arg string cron: cron syntax of when to run (required)
     :arg string project-path: gitlab-relative path to project (required)
@@ -767,8 +763,8 @@ def build_result(parser, xml_parent, data):
     """yaml: build-result
     Configure jobB to monitor jobA build result. A build is scheduled if there
     is a new build result that matches your criteria (unstable, failure, ...).
-    Requires the Jenkins `BuildResultTrigger Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/BuildResultTrigger+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`BuildResultTrigger Plugin
+    <BuildResultTrigger+Plugin>`.
 
     :arg list groups: List groups of jobs and results to monitor for
     :arg list jobs: The jobs to monitor (required)
@@ -879,8 +875,8 @@ def reverse(parser, xml_parent, data):
 def script(parser, xml_parent, data):
     """yaml: script
     Triggers the job using shell or batch script.
-    Requires the Jenkins `ScriptTrigger Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/ScriptTrigger+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`ScriptTrigger Plugin
+    <ScriptTrigger+Plugin>`.
 
     :arg str label: Restrict where the polling should run. (default '')
     :arg str script: A shell or batch script. (default '')

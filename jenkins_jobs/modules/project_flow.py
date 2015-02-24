@@ -19,8 +19,7 @@ The flow Project module handles creating Jenkins flow projects.
 You may specify ``flow`` in the ``project-type`` attribute of
 the :ref:`Job` definition.
 
-Requires the Jenkins `Build Flow Plugin.
-<https://wiki.jenkins-ci.org/display/JENKINS/Build+Flow+Plugin>`_
+Requires the Jenkins :jenkins-wiki:`Build Flow Plugin <Build+Flow+Plugin>`.
 
 In order to use it for job-template you have to escape the curly braces by
 doubling them in the DSL: { -> {{ , otherwise it will be interpreted by the

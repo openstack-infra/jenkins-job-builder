@@ -23,9 +23,8 @@ which accepts any number of scm definitions.
   :Entry Point: jenkins_jobs.scm
 
 The scm module allows referencing multiple repositories in a Jenkins job.
-Note: Adding more than one scm definition requires the Jenkins `Multiple
-SCMs plugin.
-<https://wiki.jenkins-ci.org/display/JENKINS/Multiple+SCMs+Plugin>`_
+Note: Adding more than one scm definition requires the Jenkins
+:jenkins-wiki:`Multiple SCMs plugin <Multiple+SCMs+Plugin>`.
 
 Example of multiple repositories in a single job:
     .. literalinclude:: /../../tests/macros/scm/multi-scms001.yaml
@@ -40,8 +39,7 @@ from jenkins_jobs.errors import JenkinsJobsException
 def git(parser, xml_parent, data):
     """yaml: git
     Specifies the git SCM repository for this job.
-    Requires the Jenkins `Git Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Git Plugin <Git+Plugin>`.
 
     :arg str url: URL of the git repository
     :arg str credentials-id: ID of credential to use to connect, which is the
@@ -364,8 +362,7 @@ remoteName/\*')
 def repo(parser, xml_parent, data):
     """yaml: repo
     Specifies the repo SCM repository for this job.
-    Requires the Jenkins `Repo Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Repo+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Repo Plugin <Repo+Plugin>`.
 
     :arg str manifest-url: URL of the repo manifest
     :arg str manifest-branch: The branch of the manifest to use (optional)
@@ -430,9 +427,8 @@ def repo(parser, xml_parent, data):
 def store(parser, xml_parent, data):
     """yaml: store
     Specifies the Visualworks Smalltalk Store repository for this job.
-    Requires the Jenkins `Visualworks Smalltalk Store Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    Visualworks+Smalltalk+Store+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Visualworks Smalltalk Store Plugin
+    <Visualworks+Smalltalk+Store+Plugin>`.
 
     :arg str script: name of the Store script to run
     :arg str repository: name of the Store repository
@@ -601,9 +597,8 @@ def svn(parser, xml_parent, data):
 def tfs(parser, xml_parent, data):
     """yaml: tfs
     Specifies the Team Foundation Server repository for this job.
-    Requires the Jenkins `Team Foundation Server Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    Team+Foundation+Server+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Team Foundation Server Plugin
+    <Team+Foundation+Server+Plugin>`.
 
     **NOTE**: TFS Password must be entered manually on the project if a
     user name is specified. The password will be overwritten with an empty
@@ -725,8 +720,8 @@ def tfs(parser, xml_parent, data):
 def workspace(parser, xml_parent, data):
     """yaml: workspace
     Specifies the cloned workspace for this job to use as a SCM source.
-    Requires the Jenkins `Clone Workspace SCM Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Clone+Workspace+SCM+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Clone Workspace SCM Plugin
+    <Clone+Workspace+SCM+Plugin>`.
 
     The job the workspace is cloned from must be configured with an
     clone-workspace publisher
@@ -763,8 +758,7 @@ def workspace(parser, xml_parent, data):
 def hg(self, xml_parent, data):
     """yaml: hg
     Specifies the mercurial SCM repository for this job.
-    Requires the Jenkins `Mercurial Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Mercurial+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Mercurial Plugin <Mercurial+Plugin>`.
 
     :arg str url: URL of the hg repository
     :arg str credentials-id: ID of credentials to use to connect (optional)

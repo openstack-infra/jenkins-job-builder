@@ -84,9 +84,8 @@ def archive(parser, xml_parent, data):
 def blame_upstream(parser, xml_parent, data):
     """yaml: blame-upstream
     Notify upstream commiters when build fails
-    Requires the Jenkins `Blame upstream commiters Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    Blame+Upstream+Committers+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Blame upstream commiters Plugin
+    <Blame+Upstream+Committers+Plugin>`.
 
     Example:
 
@@ -102,8 +101,7 @@ def blame_upstream(parser, xml_parent, data):
 def campfire(parser, xml_parent, data):
     """yaml: campfire
     Send build notifications to Campfire rooms.
-    Requires the Jenkins `Campfire Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Campfire+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Campfire Plugin <Campfire+Plugin>`.
 
     Campfire notifications global default values must be configured for
     the Jenkins instance. Default values will be used if no specific
@@ -147,8 +145,8 @@ def campfire(parser, xml_parent, data):
 def emotional_jenkins(parser, xml_parent, data):
     """yaml: emotional-jenkins
     Emotional Jenkins.
-    Requires the Jenkins `Emotional Jenkins Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Emotional+Jenkins+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Emotional Jenkins Plugin
+    <Emotional+Jenkins+Plugin>`.
 
     Example:
 
@@ -162,16 +160,14 @@ def emotional_jenkins(parser, xml_parent, data):
 def trigger_parameterized_builds(parser, xml_parent, data):
     """yaml: trigger-parameterized-builds
     Trigger parameterized builds of other jobs.
-    Requires the Jenkins `Parameterized Trigger Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    Parameterized+Trigger+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Parameterized Trigger Plugin
+    <Parameterized+Trigger+Plugin>`.
 
     Use of the `node-label-name` or `node-label` parameters
-    requires the Jenkins `NodeLabel Parameter Plugin.
+    requires the Jenkins :jenkins-wiki:`NodeLabel Parameter Plugin
+    <NodeLabel+Parameter+Plugin>`.
     Note: 'node-parameters' overrides the Node that the triggered
     project is tied to.
-    <https://wiki.jenkins-ci.org/display/JENKINS/NodeLabel+Parameter+P
-    lugin>`_
 
     :arg str project: name of the job to trigger
     :arg str predefined-parameters: parameters to pass to the other
@@ -319,8 +315,8 @@ def clone_workspace(parser, xml_parent, data):
     """yaml: clone-workspace
     Archive the workspace from builds of one project and reuse them as the SCM
     source for another project.
-    Requires the Jenkins `Clone Workspace SCM Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Clone+Workspace+SCM+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Clone Workspace SCM Plugin
+    <Clone+Workspace+SCM+Plugin>`.
 
     :arg str workspace-glob: Files to include in cloned workspace
     :arg str workspace-exclude-glob: Files to exclude from cloned workspace
@@ -389,8 +385,7 @@ def clone_workspace(parser, xml_parent, data):
 def cloverphp(parser, xml_parent, data):
     """yaml: cloverphp
     Capture code coverage reports from PHPUnit
-    Requires the Jenkins `Clover PHP Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Clover+PHP+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Clover PHP Plugin <Clover+PHP+Plugin>`.
 
     Your job definition should pass to PHPUnit the --coverage-clover option
     pointing to a file in the workspace (ex: clover-coverage.xml). The filename
@@ -496,8 +491,8 @@ def coverage(parser, xml_parent, data):
     """yaml: coverage
     WARNING: The coverage function is deprecated. Instead, use the
     cobertura function to generate a cobertura coverage report.
-    Requires the Jenkins `Cobertura Coverage Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Cobertura+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Cobertura Coverage Plugin
+    <Cobertura+Plugin>`.
 
     Example::
 
@@ -565,8 +560,8 @@ def coverage(parser, xml_parent, data):
 def cobertura(parser, xml_parent, data):
     """yaml: cobertura
     Generate a cobertura coverage report.
-    Requires the Jenkins `Cobertura Coverage Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Cobertura+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Cobertura Coverage Plugin
+    <Cobertura+Plugin>`.
 
     :arg str report-file: This is a file name pattern that can be used
                           to locate the cobertura xml report files (optional)
@@ -677,8 +672,7 @@ def cobertura(parser, xml_parent, data):
 def jacoco(parser, xml_parent, data):
     """yaml: jacoco
     Generate a JaCoCo coverage report.
-    Requires the Jenkins `JaCoCo Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/JaCoCo+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`JaCoCo Plugin <JaCoCo+Plugin>`.
 
     :arg str exec-pattern: This is a file name pattern that can be used to
                           locate the jacoco report files (default
@@ -760,8 +754,8 @@ def jacoco(parser, xml_parent, data):
 def ftp(parser, xml_parent, data):
     """yaml: ftp
     Upload files via FTP.
-    Requires the Jenkins `Publish over FTP Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Publish+Over+FTP+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Publish over FTP Plugin
+    <Publish+Over+FTP+Plugin>`.
 
     :arg str site: name of the ftp site
     :arg str target: destination directory
@@ -808,11 +802,10 @@ def junit(parser, xml_parent, data):
       results (default true).
     :arg bool test-stability: Add historical information about test
         results stability (default false).
-        Requires the Jenkins `Test stability Plugin
-        <https://wiki.jenkins-ci.org/display/JENKINS/Test+stability+plugin>`_.
+        Requires the Jenkins :jenkins-wiki:`Test stability Plugin
+        <Test+stability+plugin>`.
     :arg bool claim-build: Allow claiming of failed tests (default false)
-        Requires the Jenkins `Claim Plugin.
-        <https://wiki.jenkins-ci.org/display/JENKINS/Claim+plugin>`_.
+        Requires the Jenkins :jenkins-wiki:`Claim Plugin <Claim+plugin>`.
 
     Minimal example using defaults:
 
@@ -840,8 +833,8 @@ def junit(parser, xml_parent, data):
 
 def xunit(parser, xml_parent, data):
     """yaml: xunit
-    Publish tests results.  Requires the Jenkins `xUnit Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/xUnit+Plugin>`_
+    Publish tests results. Requires the Jenkins :jenkins-wiki:`xUnit Plugin
+    <xUnit+Plugin>`.
 
     :arg str thresholdmode: whether thresholds represents an absolute \
     number of tests or a percentage. Either 'number' or 'percent', will \
@@ -1001,8 +994,7 @@ def _violations_add_entry(xml_parent, name, data):
 def violations(parser, xml_parent, data):
     """yaml: violations
     Publish code style violations.
-    Requires the Jenkins `Violations Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Violations>`_
+    Requires the Jenkins :jenkins-wiki:`Violations Plugin <Violations>`.
 
     The violations component accepts any number of dictionaries keyed
     by the name of the violations system.  The dictionary has the
@@ -1069,8 +1061,7 @@ def violations(parser, xml_parent, data):
 def checkstyle(parser, xml_parent, data):
     """yaml: checkstyle
     Publish trend reports with Checkstyle.
-    Requires the Jenkins `Checkstyle Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Checkstyle+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Checkstyle Plugin <Checkstyle+Plugin>`.
 
     The checkstyle component accepts a dictionary with the
     following values:
@@ -1167,8 +1158,7 @@ def checkstyle(parser, xml_parent, data):
 def scp(parser, xml_parent, data):
     """yaml: scp
     Upload files via SCP
-    Requires the Jenkins `SCP Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/SCP+plugin>`_
+    Requires the Jenkins :jenkins-wiki:`SCP Plugin <SCP+plugin>`.
 
     :arg str site: name of the scp site
     :arg str target: destination directory
@@ -1211,8 +1201,8 @@ def scp(parser, xml_parent, data):
 def ssh(parser, xml_parent, data):
     """yaml: ssh
     Upload files via SCP.
-    Requires the Jenkins `Publish over SSH Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Publish+Over+SSH+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Publish over SSH Plugin
+    <Publish+Over+SSH+Plugin>`.
 
     :arg str site: name of the ssh site
     :arg str target: destination directory
@@ -1257,8 +1247,8 @@ def ssh(parser, xml_parent, data):
 def pipeline(parser, xml_parent, data):
     """yaml: pipeline
     Specify a downstream project in a pipeline.
-    Requires the Jenkins `Build Pipeline Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Build+Pipeline+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Build Pipeline Plugin
+    <Build+Pipeline+Plugin>`.
 
     :arg str project: the name of the downstream project
     :arg str predefined-parameters: parameters to pass to the other
@@ -1335,8 +1325,7 @@ def email(parser, xml_parent, data):
 def claim_build(parser, xml_parent, data):
     """yaml: claim-build
     Claim build failures
-    Requires the Jenkins `Claim Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Claim+plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Claim Plugin <Claim+plugin>`.
 
     Example::
 
@@ -1374,8 +1363,8 @@ def base_email_ext(parser, xml_parent, data, ttype):
 def email_ext(parser, xml_parent, data):
     """yaml: email-ext
     Extend Jenkin's built in email notification
-    Requires the Jenkins `Email-ext Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Email-ext+plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Email-ext Plugin
+    <Email-ext+plugin>`.
 
     :arg str recipients: Comma separated list of emails
     :arg str reply-to: Comma separated list of emails that should be in
@@ -1549,8 +1538,7 @@ def aggregate_tests(parser, xml_parent, data):
 def cppcheck(parser, xml_parent, data):
     """yaml: cppcheck
     Cppcheck result publisher
-    Requires the Jenkins `Cppcheck Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Cppcheck+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Cppcheck Plugin <Cppcheck+Plugin>`.
 
     :arg str pattern: file pattern for cppcheck xml report
 
@@ -1634,8 +1622,7 @@ def cppcheck(parser, xml_parent, data):
 
 def logparser(parser, xml_parent, data):
     """yaml: logparser
-    Requires the Jenkins `Log Parser Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Log+Parser+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Log Parser Plugin <Log+Parser+Plugin>`.
 
     :arg str parse-rules: full path to parse rules
     :arg bool unstable-on-warning: mark build unstable on warning
@@ -1663,8 +1650,8 @@ def logparser(parser, xml_parent, data):
 def copy_to_master(parser, xml_parent, data):
     """yaml: copy-to-master
     Copy files to master from slave
-    Requires the Jenkins `Copy To Slave Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Copy+To+Slave+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Copy To Slave Plugin
+    <Copy+To+Slave+Plugin>`.
 
     :arg list includes: list of file patterns to copy
     :arg list excludes: list of file patterns to exclude
@@ -1698,8 +1685,7 @@ def copy_to_master(parser, xml_parent, data):
 def jira(parser, xml_parent, data):
     """yaml: jira
     Update relevant JIRA issues
-    Requires the Jenkins `JIRA Plugin
-    <https://wiki.jenkins-ci.org/display/JENKINS/JIRA+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`JIRA Plugin <JIRA+Plugin>`.
 
     Example::
 
@@ -1712,8 +1698,8 @@ def jira(parser, xml_parent, data):
 def groovy_postbuild(parser, xml_parent, data):
     """yaml: groovy-postbuild
     Execute a groovy script.
-    Requires the Jenkins `Groovy Postbuild Plugin
-    <https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Postbuild+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Groovy Postbuild Plugin
+    <Groovy+Postbuild+Plugin>`.
 
     :Parameter: the groovy script to execute
 
@@ -1777,8 +1763,8 @@ def base_publish_over(xml_parent, data, console_prefix,
 def cifs(parser, xml_parent, data):
     """yaml: cifs
     Upload files via CIFS.
-    Requires the Jenkins `Publish over CIFS Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Publish+Over+CIFS+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Publish over CIFS Plugin
+    <Publish+Over+CIFS+Plugin>`.
 
     :arg str site: name of the cifs site/share
     :arg str target: destination directory
@@ -1819,9 +1805,8 @@ def cigame(parser, xml_parent, data):
     """yaml: cigame
     This plugin introduces a game where users get points
     for improving the builds.
-    Requires the Jenkins `The Continuous Integration Game plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    The+Continuous+Integration+Game+plugin>`_
+    Requires the Jenkins :jenkins-wiki:`The Continuous Integration Game plugin
+    <The+Continuous+Integration+Game+plugin>`.
 
     Example:
 
@@ -1888,8 +1873,8 @@ def sonar(parser, xml_parent, data):
 def performance(parser, xml_parent, data):
     """yaml: performance
     Publish performance test results from jmeter and junit.
-    Requires the Jenkins `Performance Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Performance+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Performance Plugin
+    <Performance+Plugin>`.
 
     :arg int failed-threshold: Specify the error percentage threshold that
                                set the build failed. A negative value means
@@ -1994,8 +1979,7 @@ def join_trigger(parser, xml_parent, data):
 def jabber(parser, xml_parent, data):
     """yaml: jabber
     Integrates Jenkins with the Jabber/XMPP instant messaging protocol
-    Requires the Jenkins `Jabber Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Jabber+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Jabber Plugin <Jabber+Plugin>`.
 
     :arg bool notify-on-build-start: Whether to send notifications
         to channels when a build starts (default false)
@@ -2089,8 +2073,8 @@ def jabber(parser, xml_parent, data):
 def workspace_cleanup(parser, xml_parent, data):
     """yaml: workspace-cleanup (post-build)
 
-    Requires the Jenkins `Workspace Cleanup Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Workspace+Cleanup+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Workspace Cleanup Plugin
+    <Workspace+Cleanup+Plugin>`.
 
     The pre-build workspace-cleanup is available as a wrapper.
 
@@ -2197,8 +2181,8 @@ def text_finder(parser, xml_parent, data):
     This plugin lets you search keywords in the files you specified and
     additionally check build status
 
-    Requires the Jenkins `Text-finder Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Text-finder+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Text-finder Plugin
+    <Text-finder+Plugin>`.
 
     :arg str regexp: Specify a regular expression
     :arg str fileset: Specify the path to search
@@ -2238,8 +2222,8 @@ def html_publisher(parser, xml_parent, data):
     """yaml: html-publisher
     This plugin publishes HTML reports.
 
-    Requires the Jenkins `HTML Publisher Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/HTML+Publisher+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`HTML Publisher Plugin
+    <HTML+Publisher+Plugin>`.
 
     :arg str name: Report name
     :arg str dir: HTML directory to archive
@@ -2277,8 +2261,8 @@ def rich_text_publisher(parser, xml_parent, data):
     This plugin puts custom rich text message to the Build pages and Job main
     page.
 
-    Requires the Jenkins `Rich Text Publisher Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Rich+Text+Publisher+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Rich Text Publisher Plugin
+    <Rich+Text+Publisher+Plugin>`.
 
     :arg str stable-text: The stable text
     :arg str unstable-text: The unstable text if different from stable
@@ -2318,8 +2302,7 @@ def tap(parser, xml_parent, data):
     """yaml: tap
     Adds support to TAP test result files
 
-    Requires the Jenkins `TAP Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`TAP Plugin <TAP+Plugin>`.
 
     :arg str results: TAP test result files
     :arg bool fail-if-no-results: Fail if no result (default False)
@@ -2366,8 +2349,8 @@ def post_tasks(parser, xml_parent, data):
     """yaml: post-tasks
     Adds support to post build task plugin
 
-    Requires the Jenkins `Post Build Task plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Post+build+task>`_
+    Requires the Jenkins :jenkins-wiki:`Post Build Task plugin
+    <Post+build+task>`.
 
     :arg dict task: Post build task definition
     :arg list task[matches]: list of matches when to run the task
@@ -2431,8 +2414,8 @@ def postbuildscript(parser, xml_parent, data):
     Executes additional builders, script or Groovy after the build is
     complete.
 
-    Requires the Jenkins `Post Build Script plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/PostBuildScript+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Post Build Script plugin
+    <PostBuildScript+Plugin>`.
 
     :arg list generic-script: Paths to Batch/Shell scripts
     :arg list groovy-script: Paths to Groovy scripts
@@ -2554,8 +2537,8 @@ def xml_summary(parser, xml_parent, data):
     """yaml: xml-summary
     Adds support for the Summary Display Plugin
 
-    Requires the Jenkins `Summary Display Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Summary+Display+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Summary Display Plugin
+    <Summary+Display+Plugin>`.
 
     :arg str files: Files to parse (default '')
 
@@ -2576,8 +2559,8 @@ def robot(parser, xml_parent, data):
     """yaml: robot
     Adds support for the Robot Framework Plugin
 
-    Requires the Jenkins `Robot Framework Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Robot+Framework+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Robot Framework Plugin
+    <Robot+Framework+Plugin>`.
 
     :arg str output-path: Path to directory containing robot xml and html files
         relative to build workspace. (default '')
@@ -2637,8 +2620,8 @@ def robot(parser, xml_parent, data):
 def warnings(parser, xml_parent, data):
     """yaml: warnings
     Generate trend report for compiler warnings in the console log or
-    in log files.  Requires the Jenkins `Warnings Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Warnings+Plugin>`_
+    in log files. Requires the Jenkins :jenkins-wiki:`Warnings Plugin
+    <Warnings+Plugin>`.
 
     :arg list console-log-parsers: The parser to use to scan the console
         log (default '')
@@ -2848,8 +2831,7 @@ def sloccount(parser, xml_parent, data):
     """yaml: sloccount
     Generates the trend report for SLOCCount
 
-    Requires the Jenkins `SLOCCount Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/SLOCCount+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`SLOCCount Plugin <SLOCCount+Plugin>`.
 
     :arg str report-files: Setting that specifies the generated raw
                            SLOCCount report files.
@@ -2881,8 +2863,7 @@ def ircbot(parser, xml_parent, data):
     ircbot enables Jenkins to send build notifications via IRC and lets you
     interact with Jenkins via an IRC bot.
 
-    Requires the Jenkins `IRC Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/IRC+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`IRC Plugin <IRC+Plugin>`.
 
     :arg string strategy: When to send notifications
 
@@ -2997,8 +2978,7 @@ def plot(parser, xml_parent, data):
     """yaml: plot
     Plot provides generic plotting (or graphing).
 
-    Requires the Jenkins `Plot Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Plot+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Plot Plugin <Plot+Plugin>`.
 
     :arg str title: title for the graph
                     (default: '')
@@ -3162,8 +3142,7 @@ def git(parser, xml_parent, data):
     push merge results, tags, and/or branches to
     remote repositories after the job completes.
 
-    Requires the Jenkins `Git Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Git Plugin <Git+Plugin>`.
 
     :arg bool push-merge: push merges back to the origin specified in the
                           pre-build merge options (Default: False)
@@ -3287,8 +3266,7 @@ def git(parser, xml_parent, data):
 def github_notifier(parser, xml_parent, data):
     """yaml: github-notifier
     Set build status on Github commit.
-    Requires the Jenkins `Github Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/GitHub+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Github Plugin <GitHub+Plugin>`.
 
     Example:
 
@@ -3303,8 +3281,8 @@ def build_publisher(parser, xml_parent, data):
     This plugin allows records from one Jenkins to be published
     on another Jenkins.
 
-    Requires the Jenkins `Build Publisher Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Build+Publisher+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Build Publisher Plugin
+    <Build+Publisher+Plugin>`.
 
     :arg str servers: Specify the servers where to publish
 
@@ -3349,8 +3327,8 @@ def stash(parser, xml_parent, data):
     This plugin will configure the Jenkins Stash Notifier plugin to
     notify Atlassian Stash after job completes.
 
-    Requires the Jenkins `StashNotifier Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/StashNotifier+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`StashNotifier Plugin
+    <StashNotifier+Plugin>`.
 
     :arg string url: Base url of Stash Server (Default: "")
     :arg string username: Username of Stash Server (Default: "")
@@ -3383,8 +3361,8 @@ def description_setter(parser, xml_parent, data):
     This plugin sets the description for each build,
     based upon a RegEx test of the build log file.
 
-    Requires the Jenkins `Description Setter Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Description+Setter+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Description Setter Plugin
+    <Description+Setter+Plugin>`.
 
     :arg str regexp: A RegEx which is used to scan the build log file
     :arg str regexp-for-failed: A RegEx which is used for failed builds
@@ -3423,8 +3401,7 @@ def doxygen(parser, xml_parent, data):
     This plugin parses the Doxygen descriptor (Doxyfile) and provides a link to
     the generated Doxygen documentation.
 
-    Requires the Jenkins `Doxygen Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Doxygen+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Doxygen Plugin <Doxygen+Plugin>`.
 
     :arg str doxyfile: The doxyfile path
     :arg bool keepall: Retain doxygen generation for each successful build
@@ -3449,8 +3426,7 @@ def sitemonitor(parser, xml_parent, data):
     """yaml: sitemonitor
     This plugin checks the availability of an url.
 
-    It requires the `sitemonitor plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/SiteMonitor+Plugin>`_
+    It requires the :jenkins-wiki:`sitemonitor plugin <SiteMonitor+Plugin>`.
 
     :arg list sites: List of URLs to check
 
@@ -3473,8 +3449,7 @@ def testng(parser, xml_parent, data):
     """yaml: testng
     This plugin publishes TestNG test reports.
 
-    Requires the Jenkins `TestNG Results Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/testng-plugin>`_
+    Requires the Jenkins :jenkins-wiki:`TestNG Results Plugin <testng-plugin>`.
 
     :arg str pattern: filename pattern to locate the TestNG XML report files
     :arg bool escape-test-description: escapes the description string
@@ -3503,8 +3478,8 @@ def artifact_deployer(parser, xml_parent, data):
     """yaml: artifact-deployer
     This plugin makes it possible to copy artifacts to remote locations.
 
-    Requires the Jenkins `ArtifactDeployer Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/ArtifactDeployer+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`ArtifactDeployer Plugin
+    <ArtifactDeployer+Plugin>`.
 
     :arg list entries:
         :entries:
@@ -3569,8 +3544,7 @@ def s3(parser, xml_parent, data):
     """yaml: s3
     Upload build artifacts to Amazon S3.
 
-    Requires the Jenkins `S3 plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/S3+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`S3 plugin <S3+Plugin>`.
 
     :arg str s3-profile: Globally-defined S3 profile to use
     :arg list entries:
@@ -3643,8 +3617,8 @@ def ruby_metrics(parser, xml_parent, data):
     Rcov plugin parses rcov html report files and
     shows it in Jenkins with a trend graph.
 
-    Requires the Jenkins `Ruby metrics plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Ruby+metrics+plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Ruby metrics plugin
+    <Ruby+metrics+plugin>`.
 
     :arg str report-dir: Relative path to the coverage report directory
     :arg dict targets:
@@ -3690,8 +3664,7 @@ def fitnesse(parser, xml_parent, data):
     """yaml: fitnesse
     Publish Fitnesse test results
 
-    Requires the Jenkins `Fitnesse plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Fitnesse+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Fitnesse plugin <Fitnesse+Plugin>`.
 
     :arg str results: path specifier for results files
 
@@ -3711,8 +3684,7 @@ def valgrind(parser, xml_parent, data):
     """yaml: valgrind
     This plugin publishes Valgrind Memcheck XML results.
 
-    Requires the Jenkins `Valgrind Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Valgrind+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Valgrind Plugin <Valgrind+Plugin>`.
 
     :arg str pattern: Filename pattern to locate the Valgrind XML report files
         (required)
@@ -3842,8 +3814,7 @@ def build_trends_publisher(plugin_name, xml_element, data):
 def pmd(parser, xml_parent, data):
     """yaml: pmd
     Publish trend reports with PMD.
-    Requires the Jenkins `PMD Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/PMD+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`PMD Plugin <PMD+Plugin>`.
 
     The PMD component accepts a dictionary with the following values:
 
@@ -3913,8 +3884,8 @@ def scan_build(parser, xml_parent, data):
     The scan-build report has to be generated in the directory
     ``${WORKSPACE}/clangScanBuildReports`` for the publisher to find it.
 
-    Requires the Jenkins `Clang Scan-Build Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Clang+Scan-Build+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Clang Scan-Build Plugin
+    <Clang+Scan-Build+Plugin>`.
 
     :arg bool mark-unstable: Mark build as unstable if the number of bugs
         exceeds a threshold (default: false)
@@ -3942,8 +3913,7 @@ def scan_build(parser, xml_parent, data):
 def dry(parser, xml_parent, data):
     """yaml: dry
     Publish trend reports with DRY.
-    Requires the Jenkins `DRY Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/DRY+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`DRY Plugin <DRY+Plugin>`.
 
     The DRY component accepts a dictionary with the following values:
 
@@ -4023,8 +3993,8 @@ def dry(parser, xml_parent, data):
 
 def shining_panda(parser, xml_parent, data):
     """yaml: shining-panda
-    Publish coverage.py results. Requires the Jenkins `ShiningPanda Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/ShiningPanda+Plugin>`_.
+    Publish coverage.py results. Requires the Jenkins
+    :jenkins-wiki:`ShiningPanda Plugin <ShiningPanda+Plugin>`.
 
     :arg str html-reports-directory: path to coverage.py html results
                                     (optional)
@@ -4050,9 +4020,8 @@ def create_publishers(parser, action):
 
 def conditional_publisher(parser, xml_parent, data):
     """yaml: conditional-publisher
-    Conditionally execute some post-build steps.  Requires the Jenkins
-    `Flexible Publish Plugin <https://wiki.jenkins-ci.org/display/ \
-    JENKINS/Flexible+Publish+Plugin>`_.
+    Conditionally execute some post-build steps. Requires the Jenkins
+    :jenkins-wiki:`Flexible Publish Plugin <Flexible+Publish+Plugin>`.
 
     A Flexible Publish list of Conditional Actions is created in Jenkins.
 
