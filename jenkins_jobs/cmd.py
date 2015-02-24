@@ -42,6 +42,7 @@ allow_empty_variables=False
 url=http://localhost:8080/
 user=
 password=
+query_plugins_info=True
 
 [hipchat]
 authtoken=dummy
@@ -238,6 +239,11 @@ def execute(options, config):
         if not isinstance(plugins_info, list):
             raise JenkinsJobsException("{0} must contain a Yaml list!"
                                        .format(options.plugins_info_path))
+    elif (not options.conf or not
+          config.getboolean("jenkins", "query_plugins_info")):
+        logger.debug("Skipping plugin info retrieval")
+        plugins_info = {}
+
     if options.allow_empty_variables is not None:
         config.set('job_builder',
                    'allow_empty_variables',

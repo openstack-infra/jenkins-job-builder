@@ -10,6 +10,7 @@ allow_duplicates=False
 user=jenkins
 password=1234567890abcdef1234567890abcdef
 url=https://jenkins.example.com
+query_plugins_info=False
 ##### This is deprecated, use job_builder section instead
 #ignore_cache=True
 
