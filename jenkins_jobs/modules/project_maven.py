@@ -59,6 +59,7 @@ CFP Example:
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+from jenkins_jobs.modules.helpers import config_file_provider_settings
 
 
 class Maven(jenkins_jobs.modules.base.Base):
@@ -71,22 +72,6 @@ class Maven(jenkins_jobs.modules.base.Base):
         'hudson.maven.local_repo.PerJobLocalRepositoryLocator',
         'local-to-executor':
         'hudson.maven.local_repo.PerExecutorLocalRepositoryLocator',
-    }
-
-    settings = {
-        'default-settings':
-        'jenkins.mvn.DefaultSettingsProvider',
-        'settings':
-        'jenkins.mvn.FilePathSettingsProvider',
-        'config-file-provider-settings':
-        'org.jenkinsci.plugins.configfiles.maven.job.MvnSettingsProvider',
-        'default-global-settings':
-        'jenkins.mvn.DefaultGlobalSettingsProvider',
-        'global-settings':
-        'jenkins.mvn.FilePathGlobalSettingsProvider',
-        'config-file-provider-global-settings':
-        'org.jenkinsci.plugins.configfiles.maven.job.'
-        'MvnGlobalSettingsProvider',
     }
 
     def root_xml(self, data):
@@ -135,56 +120,7 @@ class Maven(jenkins_jobs.modules.base.Base):
         XML.SubElement(xml_parent, 'processPlugins').text = 'false'
         XML.SubElement(xml_parent, 'mavenValidationLevel').text = '-1'
         XML.SubElement(xml_parent, 'runHeadless').text = 'false'
-        if 'settings' in data['maven']:
-            # Support for Config File Provider
-            settings_file = str(data['maven'].get('settings', ''))
-            if settings_file.startswith(
-                'org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig'):
-                settings = XML.SubElement(
-                    xml_parent,
-                    'settings',
-                    {'class': self.settings['config-file-provider-settings']})
-                XML.SubElement(
-                    settings,
-                    'settingsConfigId').text = settings_file
-            else:
-                settings = XML.SubElement(
-                    xml_parent,
-                    'settings',
-                    {'class': self.settings['settings']})
-                XML.SubElement(settings, 'path').text = settings_file
-        else:
-            XML.SubElement(
-                xml_parent,
-                'settings',
-                {'class': self.settings['default-settings']})
-        if 'global-settings' in data['maven']:
-            # Support for Config File Provider
-            global_settings_file = str(data['maven'].get(
-                'global-settings', ''))
-            if global_settings_file.startswith(
-                    'org.jenkinsci.plugins.configfiles.maven.'
-                    'GlobalMavenSettingsConfig'):
-                settings = XML.SubElement(
-                    xml_parent,
-                    'globalSettings',
-                    {'class':
-                     self.settings['config-file-provider-global-settings']})
-                XML.SubElement(
-                    settings,
-                    'settingsConfigId').text = global_settings_file
-            else:
-                settings = XML.SubElement(
-                    xml_parent,
-                    'globalSettings',
-                    {'class': self.settings['global-settings']})
-                XML.SubElement(settings, 'path').text = str(
-                    data['maven'].get('global-settings', ''))
-        else:
-            XML.SubElement(
-                xml_parent,
-                'globalSettings',
-                {'class': self.settings['default-global-settings']})
+        config_file_provider_settings(xml_parent, data['maven'])
 
         run_post_steps = XML.SubElement(xml_parent, 'runPostStepsIfResult')
         XML.SubElement(run_post_steps, 'name').text = 'FAILURE'
