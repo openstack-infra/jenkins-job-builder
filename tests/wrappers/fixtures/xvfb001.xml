@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+    <buildWrappers>
+        <org.jenkinsci.plugins.xvfb.XvfbBuildWrapper>
+            <installationName>default</installationName>
+            <autoDisplayName>false</autoDisplayName>
+            <displayName>123</displayName>
+            <assignedLabels>nodes-xxx</assignedLabels>
+            <parallelBuild>false</parallelBuild>
+            <timeout>10</timeout>
+            <screen>1024x768x16</screen>
+            <displayNameOffset>100</displayNameOffset>
+            <additionalOptions>-fbdir /tmp</additionalOptions>
+            <debug>true</debug>
+            <shutdownWithBuild>false</shutdownWithBuild>
+        </org.jenkinsci.plugins.xvfb.XvfbBuildWrapper>
+    </buildWrappers>
+</project>
