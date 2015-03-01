@@ -1,0 +1,8 @@
+scm:
+  - git:
+      url: https://example.com/project.git
+  - raw:
+      xml: |
+        <scm>
+           <scmraw/>
+        </scm>

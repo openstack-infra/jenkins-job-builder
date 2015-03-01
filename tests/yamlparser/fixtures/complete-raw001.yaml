@@ -1,0 +1,51 @@
+- project:
+    name: complete002
+    version:
+        - 1.2
+    jobs:
+        - 'complete001_{version}'
+
+- job-template:
+    name: 'complete001_{version}'
+    project-type: maven
+    scm:
+      - raw:
+          xml: |
+            <!-- <scm> for raw replaces the whole scm section.
+             where as for others the raw part is added to the existing.
+            -->
+            <scm>
+              <scmraw/>
+            </scm>
+    triggers:
+      - raw:
+          xml: |
+            <triggersraw/>
+    wrappers:
+      - raw:
+          xml: |
+            <wrappersraw/>
+    builders:
+      - raw:
+          xml: |
+            <buildersraw/>
+    publishers:
+      - raw:
+          xml: |
+            <publishersraw/>
+    properties:
+      - raw:
+          xml: |
+            <propertiesraw/>
+    parameters:
+      - raw:
+          xml: |
+            <parametersraw/>
+    notifications:
+      - raw:
+          xml: |
+            <metadataraw/>
+    reporters:
+      - raw:
+          xml:
+            <reportersraw/>

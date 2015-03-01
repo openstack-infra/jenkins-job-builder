@@ -162,3 +162,10 @@ class General(jenkins_jobs.modules.base.Base):
             lr_adays.text = str(logrotate.get('artifactDaysToKeep', -1))
             lr_anum = XML.SubElement(lr_xml, 'artifactNumToKeep')
             lr_anum.text = str(logrotate.get('artifactNumToKeep', -1))
+
+
+def raw(parser, xml_parent, data):
+    # documented in definition.rst since includes and docs is not working well
+    # For cross cutting method like this
+    root = XML.fromstring(data.get('xml'))
+    xml_parent.append(root)
