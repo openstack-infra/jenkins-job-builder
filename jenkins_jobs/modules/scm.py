@@ -253,19 +253,17 @@ remoteName/\*')
     for elem in mapping:
         (optname, xmlname, val) = elem[:3]
 
-        # Throw warning for deprecated settings and skip
+        # Throw warning for deprecated settings and skip if the 'submodule' key
+        # is available.
         submodule_cfgs = ['disable-submodules', 'recursive-submodules']
         if optname in submodule_cfgs:
-            if 'submodule' in data:
-                logger.warn("'{0}' is deprecated and will be ignored in "
-                            "favour of 'submodule'".format(optname))
-                continue
-
             if optname in data:
                 logger.warn("'{0}' is deprecated, please convert to use the "
                             "'submodule' section instead as support for this "
                             "top level option will be removed in a future "
                             "release.".format(optname))
+            if 'submodule' in data:
+                continue
 
         attrs = {}
         if len(elem) >= 4:
