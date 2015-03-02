@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.imagegallery.ImageGalleryRecorder>
+      <imageGalleries>
+        <org.jenkinsci.plugins.imagegallery.imagegallery.ArchivedImagesGallery>
+          <title>Gallery 1</title>
+          <imageWidth>100</imageWidth>
+          <markBuildAsUnstableIfNoArchivesFound>False</markBuildAsUnstableIfNoArchivesFound>
+          <includes>path/images</includes>
+        </org.jenkinsci.plugins.imagegallery.imagegallery.ArchivedImagesGallery>
+      </imageGalleries>
+    </org.jenkinsci.plugins.imagegallery.ImageGalleryRecorder>
+  </publishers>
+</project>

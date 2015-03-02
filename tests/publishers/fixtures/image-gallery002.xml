@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.imagegallery.ImageGalleryRecorder>
+      <imageGalleries>
+        <org.jenkinsci.plugins.imagegallery.imagegallery.ArchivedImagesGallery>
+          <title>Gallery 1</title>
+          <imageWidth>100</imageWidth>
+          <markBuildAsUnstableIfNoArchivesFound>True</markBuildAsUnstableIfNoArchivesFound>
+          <includes>path/images</includes>
+        </org.jenkinsci.plugins.imagegallery.imagegallery.ArchivedImagesGallery>
+        <org.jenkinsci.plugins.imagegallery.imagegallery.ArchivedImagesGallery>
+          <title/>
+          <markBuildAsUnstableIfNoArchivesFound>False</markBuildAsUnstableIfNoArchivesFound>
+          <includes/>
+        </org.jenkinsci.plugins.imagegallery.imagegallery.ArchivedImagesGallery>
+        <org.jenkinsci.plugins.imagegallery.comparative.InFolderComparativeArchivedImagesGallery>
+          <title>Gallery 3</title>
+          <imageWidth>321</imageWidth>
+          <markBuildAsUnstableIfNoArchivesFound>True</markBuildAsUnstableIfNoArchivesFound>
+          <baseRootFolder>path/images3</baseRootFolder>
+          <imageInnerWidth>111</imageInnerWidth>
+        </org.jenkinsci.plugins.imagegallery.comparative.InFolderComparativeArchivedImagesGallery>
+        <org.jenkinsci.plugins.imagegallery.comparative.InFolderComparativeArchivedImagesGallery>
+          <title/>
+          <markBuildAsUnstableIfNoArchivesFound>False</markBuildAsUnstableIfNoArchivesFound>
+          <baseRootFolder/>
+        </org.jenkinsci.plugins.imagegallery.comparative.InFolderComparativeArchivedImagesGallery>
+        <org.jenkinsci.plugins.imagegallery.comparative.MultipleFolderComparativeArchivedImagesGallery>
+          <title>Gallery 5</title>
+          <imageWidth>444</imageWidth>
+          <markBuildAsUnstableIfNoArchivesFound>True</markBuildAsUnstableIfNoArchivesFound>
+          <baseRootFolder>path/images5</baseRootFolder>
+          <imageInnerWidth>333</imageInnerWidth>
+        </org.jenkinsci.plugins.imagegallery.comparative.MultipleFolderComparativeArchivedImagesGallery>
+        <org.jenkinsci.plugins.imagegallery.comparative.MultipleFolderComparativeArchivedImagesGallery>
+          <title/>
+          <markBuildAsUnstableIfNoArchivesFound>False</markBuildAsUnstableIfNoArchivesFound>
+          <baseRootFolder/>
+        </org.jenkinsci.plugins.imagegallery.comparative.MultipleFolderComparativeArchivedImagesGallery>
+      </imageGalleries>
+    </org.jenkinsci.plugins.imagegallery.ImageGalleryRecorder>
+  </publishers>
+</project>

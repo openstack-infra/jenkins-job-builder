@@ -31,7 +31,7 @@ import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
 from jenkins_jobs.modules.helpers import build_trends_publisher
 from jenkins_jobs.modules.helpers import findbugs_settings
-from jenkins_jobs.errors import JenkinsJobsException
+from jenkins_jobs.errors import JenkinsJobsException, InvalidAttributeError
 import logging
 import pkg_resources
 import sys
@@ -4327,6 +4327,80 @@ def logstash(parser, xml_parent, data):
 
     XML.SubElement(logstash, 'failBuild').text = str(
         data.get('fail-build', False))
+
+
+def image_gallery(parser, xml_parent, data):
+    """yaml: image-gallery
+    Produce an image gallery using Javascript library. Requires the Jenkins
+    :jenkins-wiki:`Image Gallery Plugin<Image+Gallery+Plugin>`.
+
+    :arg str gallery-type:
+
+        :gallery-type values:
+            * **archived-images-gallery** (default)
+            * **in-folder-comparative-gallery**
+            * **multiple-folder-comparative-gallery**
+    :arg str title: gallery title (optional)
+    :arg int image-width: width of the image (optional)
+    :arg bool unstable-if-no-artifacts: mark build as unstable
+        if no archived artifacts were found (default False)
+    :arg str includes: include pattern (valid for archived-images-gallery
+        gallery)
+    :arg str base-root-folder: base root dir (valid for comparative gallery)
+    :arg int image-inner-width: width of the image displayed in the inner
+        gallery popup (valid for comparative gallery, optional)
+
+    Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/image-gallery001.yaml
+
+    """
+    def include_comparative_elements(gallery_parent_elem, gallery):
+        XML.SubElement(gallery_parent_elem, 'baseRootFolder').text = str(
+            gallery.get('base-root-folder', ''))
+        image_inner_width = gallery.get('image-inner-width', '')
+        if image_inner_width:
+            XML.SubElement(gallery_parent_elem, 'imageInnerWidth').text = str(
+                image_inner_width)
+
+    package_prefix = 'org.jenkinsci.plugins.imagegallery.'
+    builder = XML.SubElement(
+        xml_parent, package_prefix + 'ImageGalleryRecorder'
+    )
+    image_galleries = XML.SubElement(builder, 'imageGalleries')
+    galleries = {
+        'archived-images-gallery': package_prefix + 'imagegallery.'
+        'ArchivedImagesGallery',
+        'in-folder-comparative-gallery': package_prefix + 'comparative.'
+        'InFolderComparativeArchivedImagesGallery',
+        'multiple-folder-comparative-gallery': package_prefix + 'comparative.'
+        'MultipleFolderComparativeArchivedImagesGallery'
+    }
+    for gallery_def in data:
+        gallery_type = gallery_def.get('gallery-type',
+                                       'archived-images-gallery')
+        if gallery_type not in galleries:
+            raise InvalidAttributeError('gallery-type', gallery_type,
+                                        galleries.keys())
+        gallery_config = XML.SubElement(
+            image_galleries, galleries[gallery_type])
+        XML.SubElement(gallery_config, 'title').text = str(
+            gallery_def.get('title', ''))
+        image_width = str(gallery_def.get('image-width', ''))
+        if image_width:
+            XML.SubElement(gallery_config, 'imageWidth').text = str(
+                image_width)
+        XML.SubElement(
+            gallery_config,
+            'markBuildAsUnstableIfNoArchivesFound').text = str(gallery_def.get(
+                'unstable-if-no-artifacts', False))
+        if gallery_type == 'archived-images-gallery':
+            XML.SubElement(gallery_config, 'includes').text = str(
+                gallery_def.get('includes', ''))
+        if gallery_type == 'in-folder-comparative-gallery':
+            include_comparative_elements(gallery_config, gallery_def)
+        if gallery_type == 'multiple-folder-comparative-gallery':
+            include_comparative_elements(gallery_config, gallery_def)
 
 
 class Publishers(jenkins_jobs.modules.base.Base):

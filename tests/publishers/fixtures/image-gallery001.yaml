@@ -1,0 +1,18 @@
+publishers:
+    - image-gallery:
+        - gallery-type: archived-images-gallery
+          title: Gallery 1
+          includes: path/images
+          image-width: 100
+          unstable-if-no-artifacts: true
+        - gallery-type: in-folder-comparative-gallery
+          title: Gallery 2
+          base-root-folder: path/images2
+          image-width: 321
+          image-inner-width: 111
+          unstable-if-no-artifacts: false
+        - gallery-type: multiple-folder-comparative-gallery
+          title: Gallery 3
+          base-root-folder: path/images3
+          image-width: 222
+          image-inner-width: 1
