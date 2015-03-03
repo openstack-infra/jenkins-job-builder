@@ -1,0 +1,6 @@
+postbuilders:
+      - maven-target:
+          maven-version: mvn30
+          goals: clean verify
+          settings: org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig0123456789012
+          global-settings: org.jenkinsci.plugins.configfiles.maven.GlobalMavenSettingsConfig0123456789012

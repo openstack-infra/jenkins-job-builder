@@ -1037,12 +1037,24 @@ def maven_target(parser, xml_parent, data):
       (optional)
     :arg str java-opts: java options for maven, can have multiples,
         must be in quotes (optional)
-    :arg str settings: Path to use as user settings.xml (optional)
-    :arg str global-settings: Path to use as global settings.xml (optional)
+    :arg str settings: Path to use as user settings.xml
+      It is possible to provide a ConfigFileProvider settings file, such as
+      see CFP Example below. (optional)
+    :arg str global-settings: Path to use as global settings.xml
+      It is possible to provide a ConfigFileProvider settings file, such as
+      see CFP Example below. (optional)
+
+    Requires the Jenkins `Config File Provider Plugin
+    <https://wiki.jenkins-ci.org/display/JENKINS/Config+File+Provider+Plugin>`_
+    for the Config File Provider "settings" and "global-settings" config.
 
     Example:
 
     .. literalinclude:: /../../tests/builders/fixtures/maven-target-doc.yaml
+
+    CFP Example:
+
+    .. literalinclude:: /../../tests/builders/fixtures/maven-target002.yaml
        :language: yaml
     """
     maven = XML.SubElement(xml_parent, 'hudson.tasks.Maven')
@@ -1059,20 +1071,48 @@ def maven_target(parser, xml_parent, data):
         javaoptions = ' '.join(data.get('java-opts', []))
         XML.SubElement(maven, 'jvmOptions').text = javaoptions
     if 'settings' in data:
-        settings = XML.SubElement(maven, 'settings',
-                                  {'class':
-                                   'jenkins.mvn.FilePathSettingsProvider'})
-        XML.SubElement(settings, 'path').text = data.get('settings')
+        # Support for Config File Provider
+        settings_file = str(data.get('settings'))
+        if settings_file.startswith(
+            'org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig'):
+            settings = XML.SubElement(
+                maven,
+                'settings',
+                {'class': 'org.jenkinsci.plugins.configfiles.maven.job.'
+                          'MvnSettingsProvider'})
+            XML.SubElement(
+                settings,
+                'settingsConfigId').text = settings_file
+        else:
+            settings = XML.SubElement(
+                maven,
+                'settings',
+                {'class': 'jenkins.mvn.FilePathSettingsProvider'})
+            XML.SubElement(settings, 'path').text = data.get('settings')
     else:
         XML.SubElement(maven, 'settings',
                        {'class':
                         'jenkins.mvn.DefaultSettingsProvider'})
     if 'global-settings' in data:
-        provider = 'jenkins.mvn.FilePathGlobalSettingsProvider'
-        global_settings = XML.SubElement(maven, 'globalSettings',
-                                         {'class': provider})
-        XML.SubElement(global_settings, 'path').text = data.get(
-            'global-settings')
+        # Support for Config File Provider
+        global_settings_file = str(data.get('global-settings'))
+        if global_settings_file.startswith(
+                'org.jenkinsci.plugins.configfiles.maven.'
+                'GlobalMavenSettingsConfig'):
+            settings = XML.SubElement(
+                maven,
+                'globalSettings',
+                {'class': 'org.jenkinsci.plugins.configfiles.maven.job.'
+                          'MvnGlobalSettingsProvider'})
+            XML.SubElement(
+                settings,
+                'settingsConfigId').text = global_settings_file
+        else:
+            provider = 'jenkins.mvn.FilePathGlobalSettingsProvider'
+            global_settings = XML.SubElement(maven, 'globalSettings',
+                                             {'class': provider})
+            XML.SubElement(global_settings, 'path').text = data.get(
+                'global-settings')
     else:
         XML.SubElement(maven, 'globalSettings',
                        {'class':
