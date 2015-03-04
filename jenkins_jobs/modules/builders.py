@@ -40,6 +40,7 @@ Example::
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
+from jenkins_jobs.modules.helpers import config_file_provider_settings
 from jenkins_jobs.errors import JenkinsJobsException
 import logging
 
@@ -1070,53 +1071,7 @@ def maven_target(parser, xml_parent, data):
     if 'java-opts' in data:
         javaoptions = ' '.join(data.get('java-opts', []))
         XML.SubElement(maven, 'jvmOptions').text = javaoptions
-    if 'settings' in data:
-        # Support for Config File Provider
-        settings_file = str(data.get('settings'))
-        if settings_file.startswith(
-            'org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig'):
-            settings = XML.SubElement(
-                maven,
-                'settings',
-                {'class': 'org.jenkinsci.plugins.configfiles.maven.job.'
-                          'MvnSettingsProvider'})
-            XML.SubElement(
-                settings,
-                'settingsConfigId').text = settings_file
-        else:
-            settings = XML.SubElement(
-                maven,
-                'settings',
-                {'class': 'jenkins.mvn.FilePathSettingsProvider'})
-            XML.SubElement(settings, 'path').text = data.get('settings')
-    else:
-        XML.SubElement(maven, 'settings',
-                       {'class':
-                        'jenkins.mvn.DefaultSettingsProvider'})
-    if 'global-settings' in data:
-        # Support for Config File Provider
-        global_settings_file = str(data.get('global-settings'))
-        if global_settings_file.startswith(
-                'org.jenkinsci.plugins.configfiles.maven.'
-                'GlobalMavenSettingsConfig'):
-            settings = XML.SubElement(
-                maven,
-                'globalSettings',
-                {'class': 'org.jenkinsci.plugins.configfiles.maven.job.'
-                          'MvnGlobalSettingsProvider'})
-            XML.SubElement(
-                settings,
-                'settingsConfigId').text = global_settings_file
-        else:
-            provider = 'jenkins.mvn.FilePathGlobalSettingsProvider'
-            global_settings = XML.SubElement(maven, 'globalSettings',
-                                             {'class': provider})
-            XML.SubElement(global_settings, 'path').text = data.get(
-                'global-settings')
-    else:
-        XML.SubElement(maven, 'globalSettings',
-                       {'class':
-                        'jenkins.mvn.DefaultGlobalSettingsProvider'})
+    config_file_provider_settings(maven, data)
 
 
 def multijob(parser, xml_parent, data):
