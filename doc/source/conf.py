@@ -210,6 +210,12 @@ latex_documents = [
 # If false, no module index is generated.
 #latex_domain_indices = True
 
+# -- Options for linkcheck ----------------------------------------------------
+
+# If set, override pythons default socket timeout
+# testing has shown the default is too short so explicitly increase to 15 secs
+linkcheck_timeout = 15
+
 
 # -- Options for manual page output --------------------------------------------
 
