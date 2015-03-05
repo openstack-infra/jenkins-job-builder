@@ -664,7 +664,7 @@ class Builder(object):
             if rpf not in unique_files:
                 unique_files.append(rpf)
             else:
-                logger.warning("File '%s' already added as '%s, ignoring "
+                logger.warning("File '%s' already added as '%s', ignoring "
                                "reference to avoid duplicating yaml "
                                "definitions." % (f, rpf))
 
