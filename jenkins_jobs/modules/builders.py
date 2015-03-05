@@ -1601,7 +1601,7 @@ def cmake(parser, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: ../../tests/builders/fixtures/cmake-common.yaml
+    .. literalinclude:: ../../tests/builders/fixtures/cmake-complete.yaml
        :language: yaml
     """
 
