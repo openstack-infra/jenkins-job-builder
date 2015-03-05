@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<matrix-project>
+  <executionStrategy class="hudson.matrix.DefaultMatrixExecutionStrategyImpl">
+    <runSequentially>true</runSequentially>
+    <touchStoneCombinationFilter>os == &quot;fedora11&quot;</touchStoneCombinationFilter>
+    <touchStoneResultCondition>
+      <name>UNSTABLE</name>
+      <ordinal>1</ordinal>
+      <color>YELLOW</color>
+    </touchStoneResultCondition>
+  </executionStrategy>
+  <combinationFilter>!(os==&quot;fedora11&quot; &amp;&amp; arch==&quot;amd64&quot;)</combinationFilter>
+  <axes>
+    <hudson.matrix.LabelExpAxis>
+      <name>os</name>
+      <values>
+        <string>ubuntu12.04</string>
+        <string>fedora11</string>
+      </values>
+    </hudson.matrix.LabelExpAxis>
+    <hudson.matrix.LabelExpAxis>
+      <name>arch</name>
+      <values>
+        <string>amd64</string>
+        <string>i386</string>
+      </values>
+    </hudson.matrix.LabelExpAxis>
+    <hudson.matrix.LabelAxis>
+      <name>nodes</name>
+      <values>
+        <string>node1</string>
+        <string>node2</string>
+      </values>
+    </hudson.matrix.LabelAxis>
+    <ca.silvermaplesolutions.jenkins.plugins.daxis.DynamicAxis>
+      <name>config</name>
+      <values>
+        <string>config_list</string>
+      </values>
+      <varName>config_list</varName>
+      <axisValues>
+        <string>default</string>
+      </axisValues>
+    </ca.silvermaplesolutions.jenkins.plugins.daxis.DynamicAxis>
+    <hudson.matrix.TextAxis>
+      <name>database</name>
+      <values>
+        <string>mysql</string>
+        <string>postgresql</string>
+        <string>sqlite</string>
+      </values>
+    </hudson.matrix.TextAxis>
+  </axes>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>make &amp;&amp; make check</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</matrix-project>
