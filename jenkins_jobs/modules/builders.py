@@ -65,8 +65,8 @@ def shell(parser, xml_parent, data):
 
 def python(parser, xml_parent, data):
     """yaml: python
-    Execute a python command. Requires the Jenkins `Python plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Python+Plugin>`_
+    Execute a python command. Requires the Jenkins :jenkins-wiki:`Python plugin
+    <Python+Plugin>`.
 
     :arg str parameter: the python command to execute
 
@@ -83,9 +83,8 @@ def python(parser, xml_parent, data):
 def copyartifact(parser, xml_parent, data):
     """yaml: copyartifact
 
-    Copy artifact from another project.  Requires the Jenkins `Copy Artifact
-    plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Copy+Artifact+Plugin>`_
+    Copy artifact from another project. Requires the :jenkins-wiki:`Copy
+    Artifact plugin <Copy+Artifact+Plugin>`.
 
     :arg str project: Project to copy from
     :arg str filter: what files to copy
@@ -189,8 +188,8 @@ def copyartifact(parser, xml_parent, data):
 def change_assembly_version(parser, xml_parent, data):
     """yaml: change-assembly-version
     Change the assembly version.
-    Requires the Jenkins `Change Assembly Version.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Change+Assembly+Version>`_
+    Requires the Jenkins :jenkins-wiki:`Change Assembly Version
+    <Change+Assembly+Version>`.
 
     :arg str version: Set the new version number for replace (default 1.0.0)
     :arg str assemblyFile: The file name to search (default AssemblyInfo.cs)
@@ -212,8 +211,8 @@ def change_assembly_version(parser, xml_parent, data):
 
 def ant(parser, xml_parent, data):
     """yaml: ant
-    Execute an ant target.  Requires the Jenkins `Ant Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Ant+Plugin>`_
+    Execute an ant target. Requires the Jenkins :jenkins-wiki:`Ant Plugin
+    <Ant+Plugin>`.
 
     To setup this builder you can either reference the list of targets
     or use named parameters. Below is a description of both forms:
@@ -280,9 +279,8 @@ def ant(parser, xml_parent, data):
 def trigger_builds(parser, xml_parent, data):
     """yaml: trigger-builds
     Trigger builds of other jobs.
-    Requires the Jenkins `Parameterized Trigger Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    Parameterized+Trigger+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Parameterized Trigger Plugin
+    <Parameterized+Trigger+Plugin>`.
 
     :arg str project: the Jenkins project to trigger
     :arg str predefined-parameters:
@@ -517,8 +515,8 @@ def trigger_builds(parser, xml_parent, data):
 def builders_from(parser, xml_parent, data):
     """yaml: builders-from
     Use builders from another project.
-    Requires the Jenkins `Template Project Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Template+Project+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Template Project Plugin
+    <Template+Project+Plugin>`.
 
     :arg str projectName: the name of the other project
 
@@ -535,8 +533,8 @@ def builders_from(parser, xml_parent, data):
 def inject(parser, xml_parent, data):
     """yaml: inject
     Inject an environment for the job.
-    Requires the Jenkins `EnvInject Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`EnvInject Plugin
+    <EnvInject+Plugin>`.
 
     :arg str properties-file: the name of the property file (optional)
     :arg str properties-content: the properties content (optional)
@@ -564,8 +562,8 @@ def artifact_resolver(parser, xml_parent, data):
     """yaml: artifact-resolver
     Allows one to resolve artifacts from a maven repository like nexus
     (without having maven installed)
-    Requires the Jenkins `Repository Connector Plugin
-    <https://wiki.jenkins-ci.org/display/JENKINS/Repository+Connector+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Repository Connector Plugin
+    <Repository+Connector+Plugin>`.
 
     :arg bool fail-on-error: Whether to fail the build on error (default false)
     :arg bool repository-logging: Enable repository logging (default false)
@@ -618,8 +616,8 @@ def artifact_resolver(parser, xml_parent, data):
 
 def gradle(parser, xml_parent, data):
     """yaml: gradle
-    Execute gradle tasks.  Requires the Jenkins `Gradle Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Gradle+Plugin>`_
+    Execute gradle tasks. Requires the Jenkins :jenkins-wiki:`Gradle Plugin
+    <Gradle+Plugin>`.
 
     :arg str tasks: List of tasks to execute
     :arg str gradle-name: Use a custom gradle name (optional)
@@ -682,8 +680,7 @@ def _groovy_common_scriptSource(data):
 def groovy(parser, xml_parent, data):
     """yaml: groovy
     Execute a groovy script or command.
-    Requires the Jenkins `Groovy Plugin
-    <https://wiki.jenkins-ci.org/display/JENKINS/Groovy+plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Groovy Plugin <Groovy+plugin>`.
 
     :arg str file: Groovy file to run.
       (Alternative: you can chose a command instead)
@@ -727,8 +724,7 @@ def groovy(parser, xml_parent, data):
 def system_groovy(parser, xml_parent, data):
     """yaml: system-groovy
     Execute a system groovy script or command.
-    Requires the Jenkins `Groovy Plugin
-    <https://wiki.jenkins-ci.org/display/JENKINS/Groovy+plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Groovy Plugin <Groovy+plugin>`.
 
     :arg str file: Groovy file to run.
       (Alternative: you can chose a command instead)
@@ -772,8 +768,8 @@ def batch(parser, xml_parent, data):
 
 def powershell(parser, xml_parent, data):
     """yaml: powershell
-    Execute a powershell command. Requires the `Powershell Plugin
-    <https://wiki.jenkins-ci.org/display/JENKINS/PowerShell+Plugin>`_.
+    Execute a powershell command. Requires the :jenkins-wiki:`Powershell Plugin
+    <PowerShell+Plugin>`.
 
     :Parameter: the powershell command to execute
 
@@ -788,8 +784,8 @@ def powershell(parser, xml_parent, data):
 
 def msbuild(parser, xml_parent, data):
     """yaml: msbuild
-    Build .NET project using msbuild.  Requires the `Jenkins MSBuild Plugin
-    <https://wiki.jenkins-ci.org/display/JENKINS/MSBuild+Plugin>`_.
+    Build .NET project using msbuild. Requires the :jenkins-wiki:`Jenkins
+    MSBuild Plugin <MSBuild+Plugin>`.
 
     :arg str msbuild-version: which msbuild configured in Jenkins to use
       (optional)
@@ -826,9 +822,9 @@ def create_builders(parser, step):
 
 def conditional_step(parser, xml_parent, data):
     """yaml: conditional-step
-    Conditionally execute some build steps.  Requires the Jenkins `Conditional
-    BuildStep Plugin <https://wiki.jenkins-ci.org/display/ \
-    JENKINS/Conditional+BuildStep+Plugin>`_.
+    Conditionally execute some build steps. Requires the Jenkins
+    :jenkins-wiki:`Conditional BuildStep Plugin
+    <Conditional+BuildStep+Plugin>`.
 
     Depending on the number of declared steps, a `Conditional step (single)`
     or a `Conditional steps (multiple)` is created in Jenkins.
@@ -1076,8 +1072,8 @@ def maven_target(parser, xml_parent, data):
 
 def multijob(parser, xml_parent, data):
     """yaml: multijob
-    Define a multijob phase. Requires the Jenkins `Multijob Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Multijob+Plugin>`_
+    Define a multijob phase. Requires the Jenkins
+    :jenkins-wiki:`Multijob Plugin <Multijob+Plugin>`.
 
     This builder may only be used in \
     :py:class:`jenkins_jobs.modules.project_multijob.MultiJob` projects.
@@ -1203,8 +1199,8 @@ def multijob(parser, xml_parent, data):
 
 def grails(parser, xml_parent, data):
     """yaml: grails
-    Execute a grails build step. Requires the `Jenkins Grails Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Grails+Plugin>`_
+    Execute a grails build step. Requires the :jenkins-wiki:`Jenkins Grails
+    Plugin <Grails+Plugin>`.
 
     :arg bool use-wrapper: Use a grails wrapper (default false)
     :arg str name: Select a grails installation to use (optional)
@@ -1269,8 +1265,8 @@ def grails(parser, xml_parent, data):
 
 def sbt(parser, xml_parent, data):
     """yaml: sbt
-    Execute a sbt build step. Requires the Jenkins `Sbt Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/sbt+plugin>`_
+    Execute a sbt build step. Requires the Jenkins :jenkins-wiki:`Sbt Plugin
+    <sbt+plugin>`.
 
     :arg str name: Select a sbt installation to use. If no name is
                    provided, the first in the list of defined SBT
@@ -1308,8 +1304,7 @@ def critical_block_start(parser, xml_parent, data):
     Must also add a build wrapper (exclusion), specifying the resources that
     control the critical block. Otherwise, this will have no effect.
 
-    Requires Jenkins `Exclusion Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Exclusion-Plugin>`_
+    Requires Jenkins :jenkins-wiki:`Exclusion Plugin <Exclusion-Plugin>`.
 
     Example::
 
@@ -1337,8 +1332,7 @@ def critical_block_end(parser, xml_parent, data):
     Must also add a build wrapper (exclusion), specifying the resources that
     control the critical block. Otherwise, this will have no effect.
 
-    Requires Jenkins `Exclusion Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Exclusion-Plugin>`_
+    Requires Jenkins :jenkins-wiki:`Exclusion Plugin <Exclusion-Plugin>`.
 
     Example::
 
@@ -1383,8 +1377,7 @@ class Builders(jenkins_jobs.modules.base.Base):
 def shining_panda(parser, xml_parent, data):
     """yaml: shining-panda
     Execute a command inside various python environments. Requires the Jenkins
-    `ShiningPanda plugin
-    <https://wiki.jenkins-ci.org/display/JENKINS/ShiningPanda+Plugin>`_.
+    :jenkins-wiki:`ShiningPanda plugin <ShiningPanda+Plugin>`.
 
     :arg str build-environment: Building environment to set up (Required).
 
@@ -1509,8 +1502,8 @@ def shining_panda(parser, xml_parent, data):
 def managed_script(parser, xml_parent, data):
     """yaml: managed-script
     This step allows to reference and execute a centrally managed
-    script within your build. Requires the Jenkins `Managed Script Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Managed+Script+Plugin>`_
+    script within your build. Requires the Jenkins
+    :jenkins-wiki:`Managed Script Plugin <Managed+Script+Plugin>`.
 
     :arg str script-id: Id of script to execute (Required)
     :arg str type: Type of managed file (default: script)
@@ -1684,8 +1677,7 @@ def dsl(parser, xml_parent, data):
     """yaml: dsl
     Process Job DSL
 
-    Requires the Jenkins `Job DSL plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Job+DSL+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Job DSL plugin <Job+DSL+Plugin>`.
 
     :arg str script-text: dsl script which is Groovy code (Required if target
         is not specified)
@@ -1758,8 +1750,7 @@ def dsl(parser, xml_parent, data):
 def github_notifier(parser, xml_parent, data):
     """yaml: github-notifier
     Set pending build status on Github commit.
-    Requires the Jenkins `Github Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/GitHub+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Github Plugin <GitHub+Plugin>`.
 
     Example:
 

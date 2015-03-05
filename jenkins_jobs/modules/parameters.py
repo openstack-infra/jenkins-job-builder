@@ -274,9 +274,8 @@ def run_param(parser, xml_parent, data):
 def extended_choice_param(parser, xml_parent, data):
     """yaml: extended-choice
     Creates an extended choice parameter where values can be read from a file
-    Requires the Jenkins `Extended Choice Parameter Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    Extended+Choice+Parameter+plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Extended Choice Parameter Plugin
+    <Extended+Choice+Parameter+plugin>`.
 
     :arg str name: name of the parameter
     :arg str description: description of the parameter
@@ -351,9 +350,8 @@ def extended_choice_param(parser, xml_parent, data):
 def validating_string_param(parser, xml_parent, data):
     """yaml: validating-string
     A validating string parameter
-    Requires the Jenkins `Validating String Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    Validating+String+Parameter+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Validating String Plugin
+    <Validating+String+Parameter+Plugin>`.
 
     :arg str name: the name of the parameter
     :arg str default: the default value of the parameter (optional)
@@ -381,9 +379,8 @@ def validating_string_param(parser, xml_parent, data):
 def svn_tags_param(parser, xml_parent, data):
     """yaml: svn-tags
     A svn tag parameter
-    Requires the Jenkins `Parameterized Trigger Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    Parameterized+Trigger+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Parameterized Trigger Plugin
+    <Parameterized+Trigger+Plugin>`.
 
     :arg str name: the name of the parameter
     :arg str default: the default value of the parameter (optional)
@@ -415,9 +412,8 @@ def svn_tags_param(parser, xml_parent, data):
 def dynamic_choice_param(parser, xml_parent, data):
     """yaml: dynamic-choice
     Dynamic Choice Parameter
-    Requires the Jenkins `Jenkins Dynamic Parameter Plug-in.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    Jenkins+Dynamic+Parameter+Plug-in>`_
+    Requires the Jenkins :jenkins-wiki:`Jenkins Dynamic Parameter Plug-in
+    <Jenkins+Dynamic+Parameter+Plug-in>`.
 
     :arg str name: the name of the parameter
     :arg str description: a description of the parameter (optional)
@@ -444,9 +440,8 @@ def dynamic_choice_param(parser, xml_parent, data):
 def dynamic_string_param(parser, xml_parent, data):
     """yaml: dynamic-string
     Dynamic Parameter
-    Requires the Jenkins `Jenkins Dynamic Parameter Plug-in.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    Jenkins+Dynamic+Parameter+Plug-in>`_
+    Requires the Jenkins :jenkins-wiki:`Jenkins Dynamic Parameter Plug-in
+    <Jenkins+Dynamic+Parameter+Plug-in>`.
 
     :arg str name: the name of the parameter
     :arg str description: a description of the parameter (optional)
@@ -473,9 +468,8 @@ def dynamic_string_param(parser, xml_parent, data):
 def dynamic_choice_scriptler_param(parser, xml_parent, data):
     """yaml: dynamic-choice-scriptler
     Dynamic Choice Parameter (Scriptler)
-    Requires the Jenkins `Jenkins Dynamic Parameter Plug-in.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    Jenkins+Dynamic+Parameter+Plug-in>`_
+    Requires the Jenkins :jenkins-wiki:`Jenkins Dynamic Parameter Plug-in
+    <Jenkins+Dynamic+Parameter+Plug-in>`.
 
     :arg str name: the name of the parameter
     :arg str description: a description of the parameter (optional)
@@ -511,9 +505,8 @@ def dynamic_choice_scriptler_param(parser, xml_parent, data):
 def dynamic_string_scriptler_param(parser, xml_parent, data):
     """yaml: dynamic-string-scriptler
     Dynamic Parameter (Scriptler)
-    Requires the Jenkins `Jenkins Dynamic Parameter Plug-in.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    Jenkins+Dynamic+Parameter+Plug-in>`_
+    Requires the Jenkins :jenkins-wiki:`Jenkins Dynamic Parameter Plug-in
+    <Jenkins+Dynamic+Parameter+Plug-in>`.
 
     :arg str name: the name of the parameter
     :arg str description: a description of the parameter (optional)
@@ -593,8 +586,8 @@ def dynamic_scriptler_param_common(parser, xml_parent, data, ptype):
 def matrix_combinations_param(parser, xml_parent, data):
     """yaml: matrix-combinations
     Matrix combinations parameter
-    Requires the Jenkins `Matrix Combinations Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Matrix+Combinations+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Matrix Combinations Plugin
+    <Matrix+Combinations+Plugin>`.
 
     :arg str name: the name of the parameter
     :arg str description: a description of the parameter (optional)

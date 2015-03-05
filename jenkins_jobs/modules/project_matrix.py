@@ -25,15 +25,14 @@ internal YAML structure:
 * slave name or label (``slave``)
 * JDK name (``jdk``)
 
-Requires the Jenkins `Matrix Project Plugin.
-<https://wiki.jenkins-ci.org/display/JENKINS/Matrix+Project+Plugin>`_
+Requires the Jenkins :jenkins-wiki:`Matrix Project Plugin
+<Matrix+Project+Plugin>`.
 
 The module supports also dynamic axis:
 
 * dynamic (``dynamic``)
 
-Requires the Jenkins `dynamic axis Plugin.
-<https://wiki.jenkins-ci.org/display/JENKINS/DynamicAxis+Plugin>`_
+Requires the Jenkins :jenkins-wiki:`dynamic axis Plugin <DynamicAxis+Plugin>`.
 
 To tie the parent job to a specific node, you should use ``node`` parameter.
 On a matrix project, this will tie *only* the parent job.  To restrict axes
@@ -60,8 +59,7 @@ Example:
 
 .. literalinclude::  /../../tests/general/fixtures/matrix-axis003.yaml
 
-Requires the Jenkins `ShiningPanda Plugin.
-<https://wiki.jenkins-ci.org/display/JENKINS/ShiningPanda+Plugin>`_
+Requires the Jenkins :jenkins-wiki:`ShiningPanda Plugin <ShiningPanda+Plugin>`.
 
 Example::
 

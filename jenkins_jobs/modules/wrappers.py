@@ -34,8 +34,7 @@ def ci_skip(parser, xml_parent, data):
     Skip making a build for certain push.
     Just add [ci skip] into your commit's message to let Jenkins know,
     that you do not want to perform build for the next push.
-    Requires the Jenkins `Ci Skip Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Ci+Skip+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Ci Skip Plugin <Ci+Skip+Plugin>`.
 
     Example:
 
@@ -62,8 +61,8 @@ def config_file_provider(parser, xml_parent, data):
     """yaml: config-file-provider
     Provide configuration files (i.e., settings.xml for maven etc.)
     which will be copied to the job's workspace.
-    Requires the Jenkins `Config File Provider Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Config+File+Provider+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Config File Provider Plugin
+    <Config+File+Provider+Plugin>`.
 
     :arg list files: List of managed config files made up of three\
       parameters
@@ -103,8 +102,8 @@ def config_file_provider(parser, xml_parent, data):
 def logfilesize(parser, xml_parent, data):
     """yaml: logfilesize
     Abort the build if its logfile becomes too big.
-    Requires the Jenkins `Logfilesizechecker Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Logfilesizechecker+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Logfilesizechecker Plugin
+    <Logfilesizechecker+Plugin>`.
 
     :arg bool set-own: Use job specific maximum log size instead of global
         config value (default false).
@@ -138,8 +137,8 @@ def logfilesize(parser, xml_parent, data):
 def timeout(parser, xml_parent, data):
     """yaml: timeout
     Abort the build if it runs too long.
-    Requires the Jenkins `Build Timeout Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Build-timeout+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Build Timeout Plugin
+    <Build-timeout+Plugin>`.
 
     :arg bool fail: Mark the build as failed (default false)
     :arg bool write-description: Write a message in the description
@@ -191,8 +190,7 @@ def timeout(parser, xml_parent, data):
 def timestamps(parser, xml_parent, data):
     """yaml: timestamps
     Add timestamps to the console log.
-    Requires the Jenkins `Timestamper Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Timestamper>`_
+    Requires the Jenkins :jenkins-wiki:`Timestamper Plugin <Timestamper>`.
 
     Example::
 
@@ -206,8 +204,7 @@ def timestamps(parser, xml_parent, data):
 def ansicolor(parser, xml_parent, data):
     """yaml: ansicolor
     Translate ANSI color codes to HTML in the console log.
-    Requires the Jenkins `Ansi Color Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/AnsiColor+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Ansi Color Plugin <AnsiColor+Plugin>`.
 
     :arg string colormap: (optional) color mapping to use
 
@@ -234,8 +231,8 @@ def ansicolor(parser, xml_parent, data):
 def mask_passwords(parser, xml_parent, data):
     """yaml: mask-passwords
     Hide passwords in the console log.
-    Requires the Jenkins `Mask Passwords Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Mask+Passwords+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Mask Passwords Plugin
+    <Mask+Passwords+Plugin>`.
 
     Example::
 
@@ -250,8 +247,8 @@ def mask_passwords(parser, xml_parent, data):
 def workspace_cleanup(parser, xml_parent, data):
     """yaml: workspace-cleanup (pre-build)
 
-    Requires the Jenkins `Workspace Cleanup Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Workspace+Cleanup+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Workspace Cleanup Plugin
+    <Workspace+Cleanup+Plugin>`.
 
     The post-build workspace-cleanup is available as a publisher.
 
@@ -290,9 +287,8 @@ def workspace_cleanup(parser, xml_parent, data):
 def m2_repository_cleanup(parser, xml_parent, data):
     """yaml: m2-repository-cleanup
     Configure M2 Repository Cleanup
-    Requires the Jenkins `M2 Repository Cleanup.
-    <https://wiki.jenkins-ci.org/display/JENKINS/M2+Repository+Cleanup+\
-Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`M2 Repository Cleanup
+    <M2+Repository+Cleanup+Plugin>`.
 
     :arg list patterns: List of patterns for artifacts to cleanup before
                         building. (optional)
@@ -319,8 +315,7 @@ Plugin>`_
 def rvm_env(parser, xml_parent, data):
     """yaml: rvm-env
     Set the RVM implementation
-    Requires the Jenkins `Rvm Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/RVM+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Rvm Plugin <RVM+Plugin>`.
 
     :arg str implementation: Type of implementation. Syntax is RUBY[@GEMSET],
                              such as '1.9.3' or 'jruby@foo'.
@@ -359,8 +354,7 @@ def rvm_env(parser, xml_parent, data):
 def rbenv(parser, xml_parent, data):
     """yaml: rbenv
     Set the rbenv implementation.
-    Requires the Jenkins `rbenv plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/rbenv+plugin>`_
+    Requires the Jenkins :jenkins-wiki:`rbenv plugin <rbenv+plugin>`.
 
     All parameters are optional.
 
@@ -445,8 +439,8 @@ def rbenv(parser, xml_parent, data):
 def build_name(parser, xml_parent, data):
     """yaml: build-name
     Set the name of the build
-    Requires the Jenkins `Build Name Setter Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Build+Name+Setter+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Build Name Setter Plugin
+    <Build+Name+Setter+Plugin>`.
 
     :arg str name: Name for the build.  Typically you would use a variable
                    from Jenkins in the name.  The syntax would be ${FOO} for
@@ -467,8 +461,8 @@ def build_name(parser, xml_parent, data):
 def port_allocator(parser, xml_parent, data):
     """yaml: port-allocator
     Assign unique TCP port numbers
-    Requires the Jenkins `Port Allocator Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Port+Allocator+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Port Allocator Plugin
+    <Port+Allocator+Plugin>`.
 
     :arg str name: Deprecated, use names instead
     :arg list names: Variable list of names of the port or list of
@@ -498,8 +492,8 @@ def port_allocator(parser, xml_parent, data):
 def locks(parser, xml_parent, data):
     """yaml: locks
     Control parallel execution of jobs.
-    Requires the Jenkins `Locks and Latches Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Locks+and+Latches+plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Locks and Latches Plugin
+    <Locks+and+Latches+plugin>`.
 
     :arg: list of locks to use
 
@@ -523,8 +517,8 @@ def locks(parser, xml_parent, data):
 def copy_to_slave(parser, xml_parent, data):
     """yaml: copy-to-slave
     Copy files to slave before build
-    Requires the Jenkins `Copy To Slave Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Copy+To+Slave+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Copy To Slave Plugin
+    <Copy+To+Slave+Plugin>`.
 
     :arg list includes: list of file patterns to copy
     :arg list excludes: list of file patterns to exclude
@@ -567,8 +561,7 @@ def copy_to_slave(parser, xml_parent, data):
 def inject(parser, xml_parent, data):
     """yaml: inject
     Add or override environment variables to the whole build process
-    Requires the Jenkins `EnvInject Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`EnvInject Plugin <EnvInject+Plugin>`.
 
     :arg str properties-file: path to the properties file (default '')
     :arg str properties-content: key value pair of properties (default '')
@@ -600,9 +593,8 @@ def inject(parser, xml_parent, data):
 def inject_ownership_variables(parser, xml_parent, data):
     """yaml: inject-ownership-variables
     Inject ownership variables to the build as environment variables.
-    Requires the Jenkins `EnvInject Plugin and Jenkins Ownership plugin
-    <https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin>
-    <https://wiki.jenkins-ci.org/display/JENKINS/Ownership+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`EnvInject Plugin <EnvInject+Plugin>`
+    and Jenkins :jenkins-wiki:`Ownership plugin <Ownership+Plugin>`.
 
     :arg bool job-variables: inject job ownership variables to the job
         (default false)
@@ -625,8 +617,7 @@ def inject_ownership_variables(parser, xml_parent, data):
 def inject_passwords(parser, xml_parent, data):
     """yaml: inject-passwords
     Inject passwords to the build as environment variables.
-    Requires the Jenkins `EnvInject Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`EnvInject Plugin <EnvInject+Plugin>`.
 
     :arg bool global: inject global passwords to the job
     :arg bool mask-password-params: mask passsword parameters
@@ -657,8 +648,8 @@ def inject_passwords(parser, xml_parent, data):
 def env_file(parser, xml_parent, data):
     """yaml: env-file
     Add or override environment variables to the whole build process
-    Requires the Jenkins `Environment File Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Envfile+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Environment File Plugin
+    <Envfile+Plugin>`.
 
     :arg str properties-file: path to the properties file (default '')
 
@@ -677,8 +668,8 @@ def env_file(parser, xml_parent, data):
 def env_script(parser, xml_parent, data):
     """yaml: env-script
     Add or override environment variables to the whole build process.
-    Requires the Jenkins `Environment Script Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Environment+Script+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Environment Script Plugin
+    <Environment+Script+Plugin>`.
 
     :arg script-content: The script to run (default: '')
     :arg only-run-on-parent: Only applicable for Matrix Jobs. If true, run only
@@ -699,8 +690,7 @@ def jclouds(parser, xml_parent, data):
     """yaml: jclouds
     Uses JClouds to provide slave launching on most of the currently
     usable Cloud infrastructures.
-    Requires the Jenkins `JClouds Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/JClouds+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`JClouds Plugin <JClouds+Plugin>`.
 
     :arg bool single-use: Whether or not to terminate the slave after use
                           (default: False).
@@ -753,8 +743,8 @@ def jclouds(parser, xml_parent, data):
 def build_user_vars(parser, xml_parent, data):
     """yaml: build-user-vars
     Set environment variables to the value of the user that started the build.
-    Requires the Jenkins `Build User Vars Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Build+User+Vars+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Build User Vars Plugin
+    <Build+User+Vars+Plugin>`.
 
     Example::
 
@@ -767,8 +757,7 @@ def build_user_vars(parser, xml_parent, data):
 def release(parser, xml_parent, data):
     """yaml: release
     Add release build configuration
-    Requires the Jenkins `Release Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Release+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Release Plugin <Release+Plugin>`.
 
     :arg bool keep-forever: Keep build forever (default true)
     :arg bool override-build-parameters: Enable build-parameter override
@@ -821,9 +810,8 @@ def sauce_ondemand(parser, xml_parent, data):
     """yaml: sauce-ondemand
     Allows you to integrate Sauce OnDemand with Jenkins.  You can
     automate the setup and tear down of Sauce Connect and integrate
-    the Sauce OnDemand results videos per test.  Requires the Jenkins `Sauce
-    OnDemand Plugin
-    <https://wiki.jenkins-ci.org/display/JENKINS/Sauce+OnDemand+Plugin>`_.
+    the Sauce OnDemand results videos per test. Requires the Jenkins
+    :jenkins-wiki:`Sauce OnDemand Plugin <Sauce+OnDemand+Plugin>`.
 
     :arg bool enable-sauce-connect: launches a SSH tunnel from their cloud
         to your private network (default false)
@@ -927,8 +915,7 @@ def pathignore(parser, xml_parent, data):
     This plugin allows SCM-triggered jobs to ignore
     build requests if only certain paths have changed.
 
-    Requires the Jenkins `Pathignore Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Pathignore+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Pathignore Plugin <Pathignore+Plugin>`.
 
     :arg str ignored: A set of patterns to define ignored changes
 
@@ -962,8 +949,7 @@ def pathignore(parser, xml_parent, data):
 def pre_scm_buildstep(parser, xml_parent, data):
     """yaml: pre-scm-buildstep
     Execute a Build Step before running the SCM
-    Requires the Jenkins `pre-scm-buildstep.
-    <https://wiki.jenkins-ci.org/display/JENKINS/pre-scm-buildstep>`_
+    Requires the Jenkins :jenkins-wiki:`pre-scm-buildstep <pre-scm-buildstep>`.
 
     :arg list buildsteps: List of build steps to execute
 
@@ -997,8 +983,7 @@ def pre_scm_buildstep(parser, xml_parent, data):
 def logstash(parser, xml_parent, data):
     """yaml: logstash build wrapper
     Dump the Jenkins console output to Logstash
-    Requires the Jenkins `logstash plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Logstash+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`logstash plugin <Logstash+Plugin>`.
 
     :arg use-redis: Boolean to use Redis. (default: true)
     :arg redis: Redis config params
@@ -1057,8 +1042,7 @@ def logstash(parser, xml_parent, data):
 def mongo_db(parser, xml_parent, data):
     """yaml: mongo-db build wrapper
     Initalizes a MongoDB database while running the build.
-    Requires the Jenkins `MongoDB plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/MongoDB+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`MongoDB plugin <MongoDB+Plugin>`.
 
     :arg str name: The name of the MongoDB install to use
     :arg str data-directory: Data directory for the server (optional)
@@ -1095,8 +1079,8 @@ def delivery_pipeline(parser, xml_parent, data):
     The version will be set to the environment variable PIPELINE_VERSION and
     will also be set in the downstream jobs.
 
-    Requires the Jenkins `Delivery Pipeline Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Delivery+Pipeline+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Delivery Pipeline Plugin
+    <Delivery+Pipeline+Plugin>`.
 
     :arg str version-template: Template for generated version e.g
         1.0.${BUILD_NUMBER} (default: '')
@@ -1120,8 +1104,8 @@ def delivery_pipeline(parser, xml_parent, data):
 def matrix_tie_parent(parser, xml_parent, data):
     """yaml: matrix-tie-parent
     Tie parent to a node.
-    Requires the Jenkins `Matrix Tie Parent Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Matrix+Tie+Parent+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Matrix Tie Parent Plugin
+    <Matrix+Tie+Parent+Plugin>`.
     Note that from Jenkins version 1.532 this plugin's functionality is
     available under the "advanced" option of the matrix project configuration.
     You can use the top level ``node`` parameter to control where the parent
@@ -1143,8 +1127,7 @@ def exclusion(parser, xml_parent, data):
     another job specifies the same resource, the second job will wait for the
     blocked resource to become available.
 
-    Requires the Jenkins `Exclusion Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Exclusion-Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Exclusion Plugin <Exclusion-Plugin>`.
 
     :arg list resources: List of resources to add for exclusion
 
@@ -1169,8 +1152,7 @@ def ssh_agent_credentials(parser, xml_parent, data):
     """yaml: ssh-agent-credentials
     Sets up the user for the ssh agent plugin for jenkins.
 
-    Requires the Jenkins `SSH-Agent Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/SSH+Agent+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`SSH-Agent Plugin <SSH+Agent+Plugin>`.
 
     :arg str user: The user id of the jenkins user credentials (required)
 
@@ -1196,9 +1178,8 @@ def credentials_binding(parser, xml_parent, data):
     Binds credentials to environment variables using the credentials binding
     plugin for jenkins.
 
-    Requires the Jenkins `Credentials Binding Plugin
-    <https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Binding+Plugin>`_
-    version 1.1 or greater.
+    Requires the Jenkins :jenkins-wiki:`Credentials Binding Plugin
+    <Credentials+Binding+Plugin>` version 1.1 or greater.
 
     :arg list binding-type: List of each bindings to create.  Bindings may be\
                             of type `zip-file`, `file`, `username-password`,\
@@ -1248,8 +1229,8 @@ def credentials_binding(parser, xml_parent, data):
 
 def custom_tools(parser, xml_parent, data):
     """yaml: custom-tools
-    Requires the Jenkins Custom Tools Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Custom+Tools+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Custom Tools Plugin
+    <Custom+Tools+Plugin>`.
 
     :arg list tools: List of custom tools to add
                      (optional)
@@ -1287,8 +1268,7 @@ def custom_tools(parser, xml_parent, data):
 def xvnc(parser, xml_parent, data):
     """yaml: xvnc
     Enable xvnc during the build.
-    Requires the Jenkins `xvnc plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Xvnc+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`xvnc plugin <Xvnc+Plugin>`.
 
     :arg bool screenshot: Take screenshot upon build completion
                           (default: false)

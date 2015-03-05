@@ -40,8 +40,8 @@ import jenkins_jobs.modules.base
 def http_endpoint(parser, xml_parent, data):
     """yaml: http
     Defines an HTTP notification endpoint.
-    Requires the Jenkins `Notification Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Notification+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Notification Plugin
+    <Notification+Plugin>`.
 
     :arg str url: URL of the endpoint
 
