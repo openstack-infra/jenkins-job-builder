@@ -7,40 +7,41 @@ import jenkins
 
 from jenkins_jobs import cmd
 from jenkins_jobs.errors import JenkinsJobsException
-from tests.cmd.test_cmd import CmdTestsBase
 from tests.base import mock
+from tests.cmd.test_cmd import CmdTestsBase
+from tests.cmd.test_recurse_path import fake_os_walk
 
 
 os_walk_return_values = {
     '/jjb_projects': [
-        ('/jjb_projects', ('dir1', 'dir2', 'dir3'), ()),
-        ('/jjb_projects/dir1', ('bar',), ()),
-        ('/jjb_projects/dir2', ('baz',), ()),
-        ('/jjb_projects/dir3', (), ()),
-        ('/jjb_projects/dir1/bar', (), ()),
-        ('/jjb_projects/dir2/baz', (), ()),
+        ('/jjb_projects', (['dir1', 'dir2', 'dir3'], ())),
+        ('/jjb_projects/dir1', (['bar'], ())),
+        ('/jjb_projects/dir2', (['baz'], ())),
+        ('/jjb_projects/dir3', ([], ())),
+        ('/jjb_projects/dir1/bar', ([], ())),
+        ('/jjb_projects/dir2/baz', ([], ())),
     ],
     '/jjb_templates': [
-        ('/jjb_templates', ('dir1', 'dir2', 'dir3'), ()),
-        ('/jjb_templates/dir1', ('bar',), ()),
-        ('/jjb_templates/dir2', ('baz',), ()),
-        ('/jjb_templates/dir3', (), ()),
-        ('/jjb_templates/dir1/bar', (), ()),
-        ('/jjb_templates/dir2/baz', (), ()),
+        ('/jjb_templates', (['dir1', 'dir2', 'dir3'], ())),
+        ('/jjb_templates/dir1', (['bar'], ())),
+        ('/jjb_templates/dir2', (['baz'], ())),
+        ('/jjb_templates/dir3', ([], ())),
+        ('/jjb_templates/dir1/bar', ([], ())),
+        ('/jjb_templates/dir2/baz', ([], ())),
     ],
     '/jjb_macros': [
-        ('/jjb_macros', ('dir1', 'dir2', 'dir3'), ()),
-        ('/jjb_macros/dir1', ('bar',), ()),
-        ('/jjb_macros/dir2', ('baz',), ()),
-        ('/jjb_macros/dir3', (), ()),
-        ('/jjb_macros/dir1/bar', (), ()),
-        ('/jjb_macros/dir2/baz', (), ()),
+        ('/jjb_macros', (['dir1', 'dir2', 'dir3'], ())),
+        ('/jjb_macros/dir1', (['bar'], ())),
+        ('/jjb_macros/dir2', (['baz'], ())),
+        ('/jjb_macros/dir3', ([], ())),
+        ('/jjb_macros/dir1/bar', ([], ())),
+        ('/jjb_macros/dir2/baz', ([], ())),
     ],
 }
 
 
 def os_walk_side_effects(path_name, topdown):
-    return os_walk_return_values[path_name]
+    return fake_os_walk(os_walk_return_values[path_name])(path_name, topdown)
 
 
 @mock.patch('jenkins_jobs.builder.Jenkins.get_plugins_info', mock.MagicMock)
@@ -114,8 +115,7 @@ class TestTests(CmdTestsBase):
         path_list = os_walk_return_values.keys()
         paths = []
         for path in path_list:
-            paths.extend([p for p, _, _ in
-                          os_walk_return_values[path]])
+            paths.extend([p for p, _ in os_walk_return_values[path]])
 
         multipath = os.pathsep.join(path_list)
 
@@ -128,6 +128,34 @@ class TestTests(CmdTestsBase):
 
         args = self.parser.parse_args(['test', multipath])
         self.config.set('job_builder', 'recursive', 'True')
+        cmd.execute(args, self.config)
+
+        update_job_mock.assert_called_with(paths, [], output=args.output_dir)
+
+    @mock.patch('jenkins_jobs.cmd.Builder.update_job')
+    @mock.patch('jenkins_jobs.cmd.os.path.isdir')
+    @mock.patch('jenkins_jobs.cmd.os.walk')
+    def test_recursive_multi_path_with_excludes(self, os_walk_mock, isdir_mock,
+                                                update_job_mock):
+        """
+        Run test mode and pass multiple paths with recursive path option.
+        """
+
+        os_walk_mock.side_effect = os_walk_side_effects
+        isdir_mock.return_value = True
+
+        path_list = os_walk_return_values.keys()
+        paths = []
+        for path in path_list:
+            paths.extend([p for p, __ in os_walk_return_values[path]
+                          if 'dir1' not in p and 'dir2' not in p])
+
+        multipath = os.pathsep.join(path_list)
+
+        args = self.parser.parse_args(['test', '-r', multipath, '-x',
+                                       'dir1:dir2'])
+        args.output_dir = mock.MagicMock()
+
         cmd.execute(args, self.config)
 
         update_job_mock.assert_called_with(paths, [], output=args.output_dir)

@@ -74,6 +74,14 @@ job_builder section
   (Optional) If set to True, jenkins job builder will search for job
   definition files recursively
 
+**exclude**
+  (Optional) If set to a list of values separated by ':', these paths will be
+  excluded from the list of paths to be processed when searching recursively.
+  Values containing no ``/`` will be matched against directory names at all
+  levels, those starting with ``/`` will be considered absolute, while others
+  containing a ``/`` somewhere other than the start of the value will be
+  considered relative to the starting path.
+
 **allow_duplicates**
   (Optional) By default `jenkins-jobs` will abort any time a duplicate macro,
   template, job-group or job name is encountered as it cannot establish the
@@ -154,6 +162,59 @@ directories in different ways to suit different needs. If you maintain multiple
 Jenkins instances suited to various needs you may want to share configuration
 between those instances (global). Furthermore, there may be various ways you
 would like to structure jobs within a given instance.
+
+Recursive Searching of Paths
+----------------------------
+
+In addition to passing multiple paths to JJB it is also possible to enable
+recursive searching to process all yaml files in the tree beneath each path.
+For example::
+
+  For a tree:
+    /path/
+      to/
+        defs/
+          ci_jobs/
+          release_jobs/
+        globals/
+          macros/
+          templates/
+
+  jenkins-jobs update -r /path/to/defs:/path/to/globals
+
+JJB will search defs/ci_jobs, defs/release_jobs, globals/macros and
+globals/templates in addition to the defs and globals trees.
+
+Excluding Paths
+---------------
+
+To allow a complex tree of jobs where some jobs are managed differently without
+needing to explicitly provide each path, the recursive path processing supports
+excluding paths based on absolute paths, relative paths and patterns. For
+example::
+
+  For a tree:
+    /path/
+      to/
+        defs/
+          ci_jobs/
+            manual/
+          release_jobs/
+            manual/
+          qa_jobs/
+        globals/
+          macros/
+          templates/
+          special/
+
+  jenkins-jobs update -r -x man*:./qa_jobs -x /path/to/defs/globals/special \
+    /path/to/defs:/path/to/globals
+
+JJB search the given paths, ignoring the directories qa_jobs, ci_jobs/manual,
+release_jobs/manual, and globals/special when building the list of yaml files
+to be processed. Absolute paths are denoted by starting from the root,
+relative by containing the path separator, and patterns by having neither.
+Patterns use simple shell globing to match directories.
 
 Deleting Jobs
 ^^^^^^^^^^^^^
