@@ -27,7 +27,7 @@ Note: Adding more than one scm definition requires the Jenkins
 :jenkins-wiki:`Multiple SCMs plugin <Multiple+SCMs+Plugin>`.
 
 Example of multiple repositories in a single job:
-    .. literalinclude:: /../../tests/macros/scm/multi-scms001.yaml
+    .. literalinclude:: /../../tests/macros/fixtures/scm/multi-scms001.yaml
 """
 
 import logging
