@@ -788,6 +788,7 @@ class Builder(object):
 
     def delete_all_jobs(self):
         jobs = self.jenkins.get_jobs()
+        logger.info("Number of jobs to delete:  %d", len(jobs))
         for job in jobs:
             self.delete_job(job['name'])
 
@@ -796,6 +797,7 @@ class Builder(object):
         self.parser.expandYaml(jobs_glob)
         self.parser.generateXML()
 
+        logger.info("Number of jobs generated:  %d", len(self.parser.xml_jobs))
         self.parser.xml_jobs.sort(key=operator.attrgetter('name'))
 
         for job in self.parser.xml_jobs:
