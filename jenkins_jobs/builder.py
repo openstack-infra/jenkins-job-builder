@@ -807,15 +807,18 @@ class Builder(object):
 
     def delete_old_managed(self, keep):
         jobs = self.jenkins.get_jobs()
+        deleted_jobs = 0
         for job in jobs:
             if job['name'] not in keep and \
                     self.jenkins.is_managed(job['name']):
                 logger.info("Removing obsolete jenkins job {0}"
                             .format(job['name']))
                 self.delete_job(job['name'])
+                deleted_jobs += 1
             else:
                 logger.debug("Ignoring unmanaged jenkins job %s",
                              job['name'])
+        return deleted_jobs
 
     def delete_job(self, jobs_glob, fn=None):
         if fn:
@@ -857,6 +860,7 @@ class Builder(object):
                 if not os.path.isdir(output):
                     raise
 
+        updated_jobs = 0
         for job in self.parser.xml_jobs:
             if jobs_glob and not matches(job.name, jobs_glob):
                 continue
@@ -889,7 +893,8 @@ class Builder(object):
 
             if self.cache.has_changed(job.name, md5) or self.ignore_cache:
                 self.jenkins.update_job(job.name, job.output())
+                updated_jobs += 1
                 self.cache.set(job.name, md5)
             else:
                 logger.debug("'{0}' has not changed".format(job.name))
-        return self.parser.xml_jobs
+        return self.parser.xml_jobs, updated_jobs
