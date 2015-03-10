@@ -4,12 +4,12 @@
     <com.tikal.hudson.plugins.notification.HudsonNotificationProperty>
       <endpoints>
         <com.tikal.hudson.plugins.notification.Endpoint>
-          <format>JSON</format>
+          <format>XML</format>
           <protocol>HTTP</protocol>
-          <event>all</event>
-          <timeout>30000</timeout>
+          <event>completed</event>
+          <timeout>40000</timeout>
           <url>http://example.com/jenkins_endpoint</url>
-          <loglines>0</loglines>
+          <loglines>-1</loglines>
         </com.tikal.hudson.plugins.notification.Endpoint>
       </endpoints>
     </com.tikal.hudson.plugins.notification.HudsonNotificationProperty>
