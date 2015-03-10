@@ -4,31 +4,23 @@
     <hudson.plugins.parameterizedtrigger.TriggerBuilder>
       <configs>
         <hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
-          <configs class="java.util.Collections$EmptyList"/>
-          <configFactories>
-            <hudson.plugins.parameterizedtrigger.BinaryFileParameterFactory>
-              <parameterName>filename</parameterName>
-              <filePattern>propfile*.txt</filePattern>
-              <noFilesFoundAction>SKIP</noFilesFoundAction>
-            </hudson.plugins.parameterizedtrigger.BinaryFileParameterFactory>
-          </configFactories>
+          <configs>
+            <hudson.plugins.parameterizedtrigger.FileBuildParameters>
+              <propertiesFile>propfile.txt</propertiesFile>
+              <failTriggerOnMissing>true</failTriggerOnMissing>
+            </hudson.plugins.parameterizedtrigger.FileBuildParameters>
+          </configs>
           <projects>build_started</projects>
           <condition>ALWAYS</condition>
           <triggerWithNoParameters>false</triggerWithNoParameters>
           <buildAllNodesWithLabel>false</buildAllNodesWithLabel>
           <block>
             <buildStepFailureThreshold>
-              <name>FAILURE</name>
-              <ordinal>2</ordinal>
-              <color>RED</color>
-              <completeBuild>true</completeBuild>
-            </buildStepFailureThreshold>
-            <unstableThreshold>
               <name>UNSTABLE</name>
               <ordinal>1</ordinal>
               <color>YELLOW</color>
               <completeBuild>true</completeBuild>
-            </unstableThreshold>
+            </buildStepFailureThreshold>
             <failureThreshold>
               <name>FAILURE</name>
               <ordinal>2</ordinal>

@@ -1,0 +1,9 @@
+builders:
+  - trigger-builds:
+    - project: "build_started"
+      property-file: propfile.txt
+      block: true
+      block-thresholds:
+        build-step-failure-threshold: UNSTABLE
+        unstable-threshold: never
+        failure-threshold: FAILURE
