@@ -25,6 +25,13 @@ In order to use it for job-template you have to escape the curly braces by
 doubling them in the DSL: { -> {{ , otherwise it will be interpreted by the
 python str.format() command.
 
+:Job Parameters:
+    * **dsl** (`str`): The DSL content. (optional)
+    * **needs-workspace** (`bool`): This build needs a workspace. \
+    (default false)
+    * **dsl-file** (`str`): Path to the DSL script in the workspace. \
+    Has effect only when `needs-workspace` is true. (optional)
+
 Job example:
 
     .. literalinclude::
@@ -34,6 +41,11 @@ Job template example:
 
     .. literalinclude::
       /../../tests/yamlparser/fixtures/project_flow_template002.yaml
+
+Job example runninng a DSL file from the workspace:
+
+    .. literalinclude::
+      /../../tests/yamlparser/fixtures/project_flow_template003.yaml
 
 """
 
@@ -50,5 +62,12 @@ class Flow(jenkins_jobs.modules.base.Base):
             XML.SubElement(xml_parent, 'dsl').text = data['dsl']
         else:
             XML.SubElement(xml_parent, 'dsl').text = ''
+
+        needs_workspace = data.get('needs-workspace', False)
+        XML.SubElement(xml_parent, 'buildNeedsWorkspace').text = str(
+            needs_workspace).lower()
+
+        if needs_workspace and 'dsl-file' in data:
+            XML.SubElement(xml_parent, 'dslFile').text = data['dsl-file']
 
         return xml_parent

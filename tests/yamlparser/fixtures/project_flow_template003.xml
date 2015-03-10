@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.cloudbees.plugins.flow.BuildFlow>
-  <dsl>build(&quot;job1&quot;)
-parallel (
-  { build(&quot;job2a&quot;) },
-  { build(&quot;job2b&quot;) }
-)
-</dsl>
-  <buildNeedsWorkspace>false</buildNeedsWorkspace>
+  <dsl/>
+  <buildNeedsWorkspace>true</buildNeedsWorkspace>
+  <dslFile>script.groovy</dslFile>
   <actions/>
   <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
   <keepDependencies>false</keepDependencies>
