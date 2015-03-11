@@ -2102,6 +2102,8 @@ def maven_deploy(parser, xml_parent, data):
       (default true)
     :arg bool deploy-unstable: Deploy even if the build is unstable
       (default false)
+    :arg str release-env-var: If the given variable name is set to "true",
+      the deploy steps are skipped. (optional)
 
 
     Example:
@@ -2119,6 +2121,8 @@ def maven_deploy(parser, xml_parent, data):
         data.get('unique-version', True)).lower()
     XML.SubElement(p, 'evenIfUnstable').text = str(
         data.get('deploy-unstable', False)).lower()
+    if 'release-env-var' in data:
+        XML.SubElement(p, 'releaseEnvVar').text = data['release-env-var']
 
 
 def text_finder(parser, xml_parent, data):
