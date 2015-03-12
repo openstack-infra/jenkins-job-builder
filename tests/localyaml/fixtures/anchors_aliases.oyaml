@@ -1,0 +1,23 @@
+- wrapper_defaults:
+    name: wrapper_defaults
+    wrappers:
+    - timeout:
+        fail: true
+        timeout: 180
+    - timestamps
+
+- job_defaults:
+    name: defaults
+    wrappers:
+    - timeout:
+        fail: true
+        timeout: 180
+    - timestamps
+
+- job-template:
+    name: myjob
+    wrappers:
+    - timeout:
+        fail: true
+        timeout: 180
+    - timestamps

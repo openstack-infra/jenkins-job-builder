@@ -28,6 +28,8 @@ import testtools
 from testtools.content import text_content
 import xml.etree.ElementTree as XML
 from six.moves import configparser
+from six.moves import StringIO
+from yaml import safe_dump
 # This dance deals with the fact that we want unittest.mock if
 # we're on Python 3.4 and later, and non-stdlib mock otherwise.
 try:
@@ -43,7 +45,8 @@ from jenkins_jobs.modules import (project_flow,
 
 
 def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml',
-                  plugins_info_ext='plugins_info.yaml'):
+                  plugins_info_ext='plugins_info.yaml',
+                  filter_func=None):
     """Returns a list of scenarios, each scenario being described
     by two parameters (yaml and xml filenames by default).
         - content of the fixture output file (aka expected)
@@ -57,6 +60,9 @@ def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml',
 
     for input_filename in input_files:
         if input_filename.endswith(plugins_info_ext):
+            continue
+
+        if callable(filter_func) and filter_func(input_filename):
             continue
 
         output_candidate = re.sub(r'\.{0}$'.format(in_ext),
@@ -208,6 +214,28 @@ class JsonTestCase(BaseTestCase):
         self.assertThat(
             pretty_json,
             testtools.matchers.DocTestMatches(expected_json,
+                                              doctest.ELLIPSIS |
+                                              doctest.NORMALIZE_WHITESPACE |
+                                              doctest.REPORT_NDIFF)
+        )
+
+
+class YamlTestCase(BaseTestCase):
+
+    def test_yaml_snippet(self):
+        expected_yaml = self._read_utf8_content()
+        yaml_content = self._read_yaml_content(self.in_filename)
+
+        # using json forces expansion of yaml anchors and aliases in the
+        # outputted yaml, otherwise it would simply appear exactly as
+        # entered which doesn't show that the net effect of the yaml
+        data = StringIO(json.dumps(yaml_content))
+
+        pretty_yaml = safe_dump(json.load(data), default_flow_style=False)
+
+        self.assertThat(
+            pretty_yaml,
+            testtools.matchers.DocTestMatches(expected_yaml,
                                               doctest.ELLIPSIS |
                                               doctest.NORMALIZE_WHITESPACE |
                                               doctest.REPORT_NDIFF)
