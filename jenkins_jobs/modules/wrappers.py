@@ -1288,6 +1288,27 @@ def xvnc(parser, xml_parent, data):
         data.get('xauthority', True)).lower()
 
 
+def job_log_logger(parser, xml_parent, data):
+    """yaml: job-log-logger
+    Enable writing the job log to the underlying logging system.
+    Requires the Jenkins :jenkins-wiki:`Job Log Logger plugin
+    <Job+Log+Logger+Plugin>`.
+
+    :arg bool suppress-empty: Suppress empty log messages
+                              (default: true)
+
+    Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/job-log-logger001.yaml
+
+    """
+    top = XML.SubElement(xml_parent,
+                         'org.jenkins.ci.plugins.jobloglogger.'
+                         'JobLogLoggerBuildWrapper')
+    XML.SubElement(top, 'suppressEmpty').text = str(
+        data.get('suppress-empty', True)).lower()
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 

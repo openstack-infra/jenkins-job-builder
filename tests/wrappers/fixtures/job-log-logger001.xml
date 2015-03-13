@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <org.jenkins.ci.plugins.jobloglogger.JobLogLoggerBuildWrapper>
+      <suppressEmpty>false</suppressEmpty>
+    </org.jenkins.ci.plugins.jobloglogger.JobLogLoggerBuildWrapper>
+  </buildWrappers>
+</project>
