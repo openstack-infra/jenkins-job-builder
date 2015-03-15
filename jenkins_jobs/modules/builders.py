@@ -40,6 +40,7 @@ Example::
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
+from jenkins_jobs.modules.helpers import config_file_provider_builder
 from jenkins_jobs.modules.helpers import config_file_provider_settings
 from jenkins_jobs.errors import JenkinsJobsException
 import logging
@@ -1255,6 +1256,36 @@ def multijob(parser, xml_parent, data):
                 phaseJob,
                 'killPhaseOnJobResultCondition'
             ).text = kill_status
+
+
+def config_file_provider(parser, xml_parent, data):
+    """yaml: config-file-provider
+    Provide configuration files (i.e., settings.xml for maven etc.)
+    which will be copied to the job's workspace.
+    Requires the Jenkins :jenkins-wiki:`Config File Provider Plugin
+    <Config+File+Provider+Plugin>`.
+
+    :arg list files: List of managed config files made up of three
+      parameters
+
+      :files: * **file-id** (`str`) -- The identifier for the managed config
+                file
+              * **target** (`str`) -- Define where the file should be created
+                (optional)
+              * **variable** (`str`) -- Define an environment variable to be
+                used (optional)
+
+    Example:
+
+    .. literalinclude::
+       ../../tests/builders/fixtures/config-file-provider01.yaml
+       :language: yaml
+    """
+    cfp = XML.SubElement(xml_parent,
+                         'org.jenkinsci.plugins.configfiles.builder.'
+                         'ConfigFileBuildStep')
+    cfp.set('plugin', 'config-file-provider')
+    config_file_provider_builder(cfp, data)
 
 
 def grails(parser, xml_parent, data):

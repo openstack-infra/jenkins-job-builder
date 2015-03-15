@@ -27,6 +27,7 @@ import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.modules.builders import create_builders
+from jenkins_jobs.modules.helpers import config_file_provider_builder
 
 
 def ci_skip(parser, xml_parent, data):
@@ -64,15 +65,15 @@ def config_file_provider(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Config File Provider Plugin
     <Config+File+Provider+Plugin>`.
 
-    :arg list files: List of managed config files made up of three\
+    :arg list files: List of managed config files made up of three
       parameters
 
-        :Parameter: * **file-id** (`str`)\
-        The identifier for the managed config file
-        :Parameter: * **target** (`str`)\
-        Define where the file should be created (optional)
-        :Parameter: * **variable** (`str`)\
-        Define an environment variable to be used (optional)
+      :files: * **file-id** (`str`) -- The identifier for the managed config
+                file
+              * **target** (`str`) -- Define where the file should be created
+                (optional)
+              * **variable** (`str`) -- Define an environment variable to be
+                used (optional)
 
     Example:
 
@@ -80,23 +81,10 @@ def config_file_provider(parser, xml_parent, data):
     /../../tests/wrappers/fixtures/config-file-provider003.yaml
        :language: yaml
     """
-    top = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.configfiles.'
+    cfp = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.configfiles.'
                          'buildwrapper.ConfigFileBuildWrapper')
-    xml_files = XML.SubElement(top, 'managedFiles')
-
-    files = data.get('files', [])
-    for file in files:
-        xml_file = XML.SubElement(xml_files, 'org.jenkinsci.plugins.'
-                                  'configfiles.buildwrapper.ManagedFile')
-        file_id = file.get('file-id')
-        if file_id is None:
-            raise JenkinsJobsException("file-id is required for each "
-                                       "managed configuration file")
-        XML.SubElement(xml_file, 'fileId').text = str(file_id)
-        XML.SubElement(xml_file, 'targetLocation').text = \
-            file.get('target', '')
-        XML.SubElement(xml_file, 'variable').text = \
-            file.get('variable', '')
+    cfp.set('plugin', 'config-file-provider')
+    config_file_provider_builder(cfp, data)
 
 
 def logfilesize(parser, xml_parent, data):

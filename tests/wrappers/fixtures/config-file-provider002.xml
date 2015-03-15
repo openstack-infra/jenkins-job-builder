@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <buildWrappers>
-    <org.jenkinsci.plugins.configfiles.buildwrapper.ConfigFileBuildWrapper>
+    <org.jenkinsci.plugins.configfiles.buildwrapper.ConfigFileBuildWrapper plugin="config-file-provider">
       <managedFiles>
         <org.jenkinsci.plugins.configfiles.buildwrapper.ManagedFile>
           <fileId>org.jenkinsci.plugins.configfiles.custom.CustomConfig1234</fileId>
