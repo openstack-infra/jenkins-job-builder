@@ -1,0 +1,34 @@
+project-type: maven
+reporters:
+    - findbugs:
+        rank-priority: true
+        include-files: 'f,d,e,.*'
+        exclude-files: 'a,c,d,.*'
+        can-run-on-failed: true
+        healthy: 80
+        unhealthy: 10
+        use-delta-values: true
+        health-threshold: 'high'
+        thresholds:
+            unstable:
+                total-all: 90
+                total-high: 80
+                total-normal: 50
+                total-low: 20
+                new-all: 95
+                new-high: 85
+                new-normal: 55
+                new-low: 25
+            failed:
+                total-all: 80
+                total-high: 70
+                total-normal: 40
+                total-low: 10
+                new-all: 85
+                new-high: 75
+                new-normal: 45
+                new-low: 15
+        dont-compute-new: false
+        use-delta-values: true
+        use-previous-build-as-reference: true
+        use-stable-build-as-reference: true
