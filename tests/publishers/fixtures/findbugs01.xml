@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.findbugs.FindBugsPublisher plugin="findbugs">
+      <isRankActivated>true</isRankActivated>
+      <includePattern>f,d,e,.*</includePattern>
+      <excludePattern>a,c,d,.*</excludePattern>
+      <usePreviousBuildAsReference>true</usePreviousBuildAsReference>
+      <healthy>80</healthy>
+      <unHealthy>10</unHealthy>
+      <thresholdLimit>high</thresholdLimit>
+      <pluginName>[FINDBUGS] </pluginName>
+      <defaultEncoding/>
+      <canRunOnFailed>true</canRunOnFailed>
+      <useStableBuildAsReference>true</useStableBuildAsReference>
+      <useDeltaValues>true</useDeltaValues>
+      <thresholds>
+        <unstableTotalAll>90</unstableTotalAll>
+        <unstableTotalHigh>80</unstableTotalHigh>
+        <unstableTotalNormal>50</unstableTotalNormal>
+        <unstableTotalLow>20</unstableTotalLow>
+        <unstableNewAll>95</unstableNewAll>
+        <unstableNewHigh>85</unstableNewHigh>
+        <unstableNewNormal>55</unstableNewNormal>
+        <unstableNewLow>25</unstableNewLow>
+        <failedTotalAll>80</failedTotalAll>
+        <failedTotalHigh>70</failedTotalHigh>
+        <failedTotalNormal>40</failedTotalNormal>
+        <failedTotalLow>10</failedTotalLow>
+        <failedNewAll>85</failedNewAll>
+        <failedNewHigh>75</failedNewHigh>
+        <failedNewNormal>45</failedNewNormal>
+        <failedNewLow>15</failedNewLow>
+      </thresholds>
+      <shouldDetectModules>true</shouldDetectModules>
+      <dontComputeNew>false</dontComputeNew>
+      <doNotResolveRelativePaths>false</doNotResolveRelativePaths>
+      <pattern>**/findbugs.xml</pattern>
+    </hudson.plugins.findbugs.FindBugsPublisher>
+  </publishers>
+</project>

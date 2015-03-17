@@ -137,3 +137,17 @@ def config_file_provider_settings(xml_parent, data):
     else:
         XML.SubElement(xml_parent, 'globalSettings',
                        {'class': settings['default-global-settings']})
+
+
+def findbugs_settings(xml_parent, data):
+    # General Options
+    rank_priority = str(data.get('rank-priority', False)).lower()
+    XML.SubElement(xml_parent, 'isRankActivated').text = rank_priority
+    include_files = data.get('include-files', '')
+    XML.SubElement(xml_parent, 'includePattern').text = include_files
+    exclude_files = data.get('exclude-files', '')
+    XML.SubElement(xml_parent, 'excludePattern').text = exclude_files
+    use_previous_build = str(data.get('use-previous-build-as-reference',
+                                      False)).lower()
+    XML.SubElement(xml_parent,
+                   'usePreviousBuildAsReference').text = use_previous_build

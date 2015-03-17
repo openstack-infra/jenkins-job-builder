@@ -30,6 +30,7 @@ import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
 from jenkins_jobs.modules.helpers import build_trends_publisher
+from jenkins_jobs.modules.helpers import findbugs_settings
 from jenkins_jobs.errors import JenkinsJobsException
 import logging
 import pkg_resources
@@ -1058,6 +1059,77 @@ def violations(parser, xml_parent, data):
     XML.SubElement(config, 'sourcePathPattern')
     XML.SubElement(config, 'fauxProjectPath')
     XML.SubElement(config, 'encoding').text = 'default'
+
+
+def findbugs(parser, xml_parent, data):
+    """yaml: findbugs
+    FindBugs reporting for builds
+
+    Requires the Jenkins :jenkins-wiki:`FindBugs Plugin
+    <FindBugs+Plugin>`.
+
+    :arg str pattern: specifies the generated raw FindBugs XML report files,
+                      such as \*\*/findbugs.xml or \*\*/findbugsXml.xml.
+                      (Optional)
+    :arg bool rank-priority: Use rank as priority (default: false)
+    :arg str include-files: Comma separated list of files to include.
+                            (Optional)
+    :arg str exclude-files: Comma separated list of files to exclude.
+                            (Optional)
+    :arg bool can-run-on-failed: Weather or not to run plug-in on failed builds
+                                 (default: false)
+    :arg bool should-detect-modules: Determines if Ant or Maven modules should
+                                     be detected for all files that contain
+                                     warnings. (default: false)
+    :arg int healthy: Sunny threshold (optional)
+    :arg int unhealthy: Stormy threshold (optional)
+    :arg str health-threshold: Threshold priority for health status
+      ('low', 'normal' or 'high', defaulted to 'low')
+    :arg bool dont-compute-new: If set to false, computes new warnings based on
+                                the reference build (default true)
+    :arg bool use-delta-values: Use delta for new warnings. (Default: false)
+    :arg bool use-previous-build-as-reference:  If set then the number of new
+      warnings will always be calculated based on the previous build. Otherwise
+      the reference build. (Default: false)
+    :arg bool use-stable-build-as-reference: The number of new warnings will be
+      calculated based on the last stable build, allowing reverts of unstable
+      builds where the number of warnings was decreased. (default false)
+    :arg dict thresholds:
+        :thresholds:
+            * **unstable** (`dict`)
+                :unstable: * **total-all** (`int`)
+                           * **total-high** (`int`)
+                           * **total-normal** (`int`)
+                           * **total-low** (`int`)
+                           * **new-all** (`int`)
+                           * **new-high** (`int`)
+                           * **new-normal** (`int`)
+                           * **new-low** (`int`)
+
+            * **failed** (`dict`)
+                :failed: * **total-all** (`int`)
+                         * **total-high** (`int`)
+                         * **total-normal** (`int`)
+                         * **total-low** (`int`)
+                         * **new-all** (`int`)
+                         * **new-high** (`int`)
+                         * **new-normal** (`int`)
+                         * **new-low** (`int`)
+
+    Minimal Example:
+
+    .. literalinclude::  /../../tests/reporters/fixtures/findbugs-minimal.yaml
+
+    Full Example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/findbugs01.yaml
+    """
+    findbugs = XML.SubElement(xml_parent,
+                              'hudson.plugins.findbugs.FindBugsPublisher')
+    findbugs.set('plugin', 'findbugs')
+
+    findbugs_settings(findbugs, data)
+    build_trends_publisher('[FINDBUGS] ', findbugs, data)
 
 
 def checkstyle(parser, xml_parent, data):
