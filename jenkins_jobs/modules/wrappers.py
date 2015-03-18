@@ -1154,23 +1154,66 @@ def ssh_agent_credentials(parser, xml_parent, data):
 
     Requires the Jenkins :jenkins-wiki:`SSH-Agent Plugin <SSH+Agent+Plugin>`.
 
-    :arg str user: The user id of the jenkins user credentials (required)
+    :arg list users: A list of Jenkins users credential IDs (required)
+    :arg str user: The user id of the jenkins user credentials (deprecated)
 
     Example:
+
+    .. literalinclude::
+            /../../tests/wrappers/fixtures/ssh-agent-credentials002.yaml
+
+
+    if both **users** and **user** parameters specified, **users** will be
+        prefered, **user** will be ignored.
+
+    Example:
+
+    .. literalinclude::
+            /../../tests/wrappers/fixtures/ssh-agent-credentials003.yaml
+
+    The **users** with one value in list equals to the **user**. In this
+    case old style XML will be generated. Use this format if you use
+    SSH-Agent plugin < 1.5.
+
+    Example:
+
+    .. literalinclude::
+            /../../tests/wrappers/fixtures/ssh-agent-credentials004.yaml
+
+    equals to:
 
     .. literalinclude::
             /../../tests/wrappers/fixtures/ssh-agent-credentials001.yaml
 
     """
 
+    logger = logging.getLogger(__name__)
+
     entry_xml = XML.SubElement(
         xml_parent,
         'com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper')
+    xml_key = 'user'
 
-    try:
-        XML.SubElement(entry_xml, 'user').text = data['user']
-    except KeyError:
-        raise JenkinsJobsException("Missing 'user' for ssh-agent-credentials")
+    user_list = list()
+    if 'users' in data:
+        user_list += data['users']
+        if len(user_list) > 1:
+            entry_xml = XML.SubElement(entry_xml, 'credentialIds')
+            xml_key = 'string'
+        if 'user' in data:
+            logger.warn("Both 'users' and 'user' parameters specified for "
+                        "ssh-agent-credentials. 'users' is used, 'user' is "
+                        "ignored.")
+    elif 'user' in data:
+        logger.warn("The 'user' param has been deprecated, "
+                    "use the 'users' param instead.")
+        user_list.append(data['user'])
+    else:
+        raise JenkinsJobsException("Missing 'user' or 'users' parameter "
+                                   "for ssh-agent-credentials")
+
+    for user in user_list:
+        XML.SubElement(entry_xml, xml_key).text = user
 
 
 def credentials_binding(parser, xml_parent, data):
