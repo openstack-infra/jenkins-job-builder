@@ -812,6 +812,15 @@ class Builder(object):
         logger.info("Number of jobs generated:  %d", len(self.parser.xml_jobs))
         self.parser.xml_jobs.sort(key=operator.attrgetter('name'))
 
+        if (output and not hasattr(output, 'write')
+                and not os.path.isdir(output)):
+            logger.info("Creating directory %s" % output)
+            try:
+                os.makedirs(output)
+            except OSError:
+                if not os.path.isdir(output):
+                    raise
+
         for job in self.parser.xml_jobs:
             if jobs_glob and not matches(job.name, jobs_glob):
                 continue
@@ -830,15 +839,7 @@ class Builder(object):
                         raise
                     continue
 
-                output_dir = output
-
-                try:
-                    os.makedirs(output_dir)
-                except OSError:
-                    if not os.path.isdir(output_dir):
-                        raise
-
-                output_fn = os.path.join(output_dir, job.name)
+                output_fn = os.path.join(output, job.name)
                 logger.debug("Writing XML to '{0}'".format(output_fn))
                 f = open(output_fn, 'w')
                 f.write(job.output())
