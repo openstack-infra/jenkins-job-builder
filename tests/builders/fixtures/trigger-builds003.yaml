@@ -3,5 +3,11 @@ builders:
     - project: "build_started"
       predefined-parameters:
         FOO="bar"
+      bool-parameters:
+        - name: "PARAM1"
+          value: false
+        - name: "PARAM2"
+          value: true
+        - name: "PARAM3"
       block: true
       same-node: true
