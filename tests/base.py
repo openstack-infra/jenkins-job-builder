@@ -67,12 +67,9 @@ def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml',
 
         output_candidate = re.sub(r'\.{0}$'.format(in_ext),
                                   '.{0}'.format(out_ext), input_filename)
-        # Make sure the input file has a output counterpart
+        # assume empty file if no output candidate found
         if output_candidate not in files:
-            raise Exception(
-                "No {0} file named '{1}' to match {2} file '{3}'"
-                .format(out_ext.upper(), output_candidate,
-                        in_ext.upper(), input_filename))
+            output_candidate = None
 
         plugins_info_candidate = re.sub(r'\.{0}$'.format(in_ext),
                                         '.{0}'.format(plugins_info_ext),
@@ -106,6 +103,10 @@ class BaseTestCase(object):
     logging.basicConfig()
 
     def _read_utf8_content(self):
+        # if None assume empty file
+        if self.out_filename is None:
+            return u""
+
         # Read XML content, assuming it is unicode encoded
         xml_content = u"%s" % codecs.open(self.out_filename,
                                           'r', 'utf-8').read()
@@ -117,7 +118,7 @@ class BaseTestCase(object):
         return yaml_content
 
     def test_yaml_snippet(self):
-        if not self.out_filename or not self.in_filename:
+        if not self.in_filename:
             return
 
         if self.conf_filename is not None:
