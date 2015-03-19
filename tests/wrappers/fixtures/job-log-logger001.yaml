@@ -1,0 +1,3 @@
+wrappers:
+  - job-log-logger:
+      suppress-empty: false
