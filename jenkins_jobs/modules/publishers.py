@@ -2765,7 +2765,7 @@ def warnings(parser, xml_parent, data):
               - CodeAnalysis
             workspace-file-scanners:
               - file-pattern: '**/*.out'
-                scanner: 'AcuCobol Compiler
+                scanner: 'AcuCobol Compiler'
               - file-pattern: '**/*.warnings'
                 scanner: FxCop
             files-to-include: '[a-zA-Z]\.java,[a-zA-Z]\.cpp'
