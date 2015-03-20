@@ -1,0 +1,7 @@
+publishers:
+  - violations:
+      pep8:
+        min: 0
+        max: 1
+        unstable: 1
+        pattern: '**/pep8.txt'

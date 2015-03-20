@@ -1,0 +1,20 @@
+publishers:
+  - cobertura:
+      report-file: "/reports/cobertura/coverage.xml"
+      only-stable: "true"
+      fail-no-reports: "true"
+      fail-unhealthy: "true"
+      fail-unstable: "true"
+      health-auto-update: "true"
+      stability-auto-update: "true"
+      zoom-coverage-chart: "true"
+      source-encoding: "Big5"
+      targets:
+        - files:
+            healthy: 10
+            unhealthy: 20
+            failing: 30
+        - method:
+            healthy: 50
+            unhealthy: 40
+            failing: 30

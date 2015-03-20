@@ -1,0 +1,21 @@
+publishers:
+  - cppcheck:
+      pattern: "**/cppcheck.xml"
+      # the rest is optional
+      # build status (new) error count thresholds
+      thresholds:
+        unstable: 5
+        new-unstable: 5
+        failure: 7
+        new-failure: 3
+        # severities which count towards the threshold, default all true
+        severity:
+          error: true
+          warning: true
+          information: false
+      graph:
+        xysize: [500, 200]
+        # which errors to display, default only sum
+        display:
+          sum: false
+          error: true

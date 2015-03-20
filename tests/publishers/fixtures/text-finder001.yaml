@@ -1,0 +1,7 @@
+publishers:
+  - text-finder:
+      regexp: "some string"
+      fileset: "file.txt"
+      also-check-console-output: true
+      succeed-if-found: false
+      unstable-if-found: false

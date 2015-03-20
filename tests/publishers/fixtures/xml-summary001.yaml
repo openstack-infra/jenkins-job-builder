@@ -1,0 +1,3 @@
+publishers:
+  - xml-summary:
+      files: '*_summary_report.xml'

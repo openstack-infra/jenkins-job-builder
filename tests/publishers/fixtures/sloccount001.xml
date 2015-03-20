@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.sloccount.SloccountPublisher>
+      <pattern>sloccount.sc</pattern>
+      <encoding>latin-1</encoding>
+    </hudson.plugins.sloccount.SloccountPublisher>
+  </publishers>
+</project>

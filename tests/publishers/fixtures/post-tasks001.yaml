@@ -1,0 +1,13 @@
+publishers:
+  - post-tasks:
+    - matches:
+      - log-text: line to match
+        operator: AND
+      - log-text: line to match
+        operator: OR
+      - log-text: line to match
+        operator: AND
+      escalate-status: true
+      run-if-job-successful: true
+      script: |
+        echo "Here goes the task script"

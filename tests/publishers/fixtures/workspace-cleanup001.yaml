@@ -1,0 +1,7 @@
+publishers:
+  - workspace-cleanup:
+      include:
+        - "*.zip"
+      clean-if:
+        - success: true
+        - not-built: false

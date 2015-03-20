@@ -1,4 +1,0 @@
-publishers:
-  - maven-deploy:
-      url: file:///path/to/repo
-

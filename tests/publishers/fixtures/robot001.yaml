@@ -1,0 +1,13 @@
+publishers:
+  - robot:
+      output-path: reports/robot
+      log-file-link: report.html
+      report-html: custom-report.html
+      log-html: custom-log.html
+      output-xml: custom-output.xml
+      pass-threshold: 80.0
+      unstable-threshold: 60.0
+      only-critical: false
+      other-files:
+        - extra-file1.html
+        - extra-file2.txt

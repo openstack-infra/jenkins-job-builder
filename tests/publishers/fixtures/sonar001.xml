@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.sonar.SonarPublisher>
+      <jdk>MyJdk</jdk>
+      <branch>myBranch</branch>
+      <language>java</language>
+      <mavenOpts>-DskipTests</mavenOpts>
+      <jobAdditionalProperties>-DsonarHostURL=http://example.com/</jobAdditionalProperties>
+      <triggers>
+        <skipScmCause>true</skipScmCause>
+        <skipUpstreamCause>true</skipUpstreamCause>
+        <envVar>SKIP_SONAR</envVar>
+      </triggers>
+    </hudson.plugins.sonar.SonarPublisher>
+  </publishers>
+</project>

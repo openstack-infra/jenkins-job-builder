@@ -1,0 +1,7 @@
+publishers:
+  - performance:
+      failed-threshold: 85
+      unstable-threshold: -1
+      report:
+        - jmeter
+        - junit

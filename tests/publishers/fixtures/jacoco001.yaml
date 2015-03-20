@@ -1,0 +1,13 @@
+publishers:
+  - jacoco:
+      exec-pattern: "**/**.exec"
+      class-pattern: "**/classes"
+      source-pattern: "**/src/main/java"
+      status-update: true
+      targets:
+        - branch:
+            healthy: 10
+            unhealthy: 20
+        - method:
+            healthy: 50
+            unhealthy: 40

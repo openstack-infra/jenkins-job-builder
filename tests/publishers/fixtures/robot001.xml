@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.robot.RobotPublisher>
+      <outputPath>reports/robot</outputPath>
+      <logFileLink>report.html</logFileLink>
+      <reportFileName>custom-report.html</reportFileName>
+      <logFileName>custom-log.html</logFileName>
+      <outputFileName>custom-output.xml</outputFileName>
+      <passThreshold>80.0</passThreshold>
+      <unstableThreshold>60.0</unstableThreshold>
+      <onlyCritical>false</onlyCritical>
+      <otherFiles>
+        <string>extra-file1.html</string>
+        <string>extra-file2.txt</string>
+      </otherFiles>
+    </hudson.plugins.robot.RobotPublisher>
+  </publishers>
+</project>

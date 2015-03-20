@@ -1,0 +1,43 @@
+publishers:
+  - warnings:
+      console-log-parsers:
+        - FxCop
+        - CodeAnalysis
+      workspace-file-scanners:
+        - file-pattern: '**/*.out'
+          scanner: 'AcuCobol Compiler'
+        - file-pattern: '**/*.warnings'
+          scanner: FxCop
+      files-to-include: '[a-zA-Z]\.java,[a-zA-Z]\.cpp'
+      files-to-ignore: '[a-zA-Z]\.html,[a-zA-Z]\.js'
+      run-always: true
+      detect-modules: true
+      resolve-relative-paths: true
+      health-threshold-high: 50
+      health-threshold-low: 25
+      health-priorities: high-and-normal
+      total-thresholds:
+        unstable:
+          total-all: 90
+          total-high: 90
+          total-normal: 40
+          total-low: 30
+        failed:
+          total-all: 100
+          total-high: 100
+          total-normal: 50
+          total-low: 40
+      new-thresholds:
+        unstable:
+          new-all: 100
+          new-high: 50
+          new-normal: 30
+          new-low: 10
+        failed:
+          new-all: 100
+          new-high: 60
+          new-normal: 50
+          new-low: 40
+      use-delta-for-new-warnings: true
+      only-use-stable-builds-as-reference: true
+      default-encoding: ISO-8859-9

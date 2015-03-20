@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.textfinder.TextFinderPublisher>
+      <fileSet>file.txt</fileSet>
+      <regexp>some string</regexp>
+      <alsoCheckConsoleOutput>true</alsoCheckConsoleOutput>
+      <succeedIfFound>false</succeedIfFound>
+      <unstableIfFound>false</unstableIfFound>
+    </hudson.plugins.textfinder.TextFinderPublisher>
+  </publishers>
+</project>

@@ -1,0 +1,6 @@
+publishers:
+  - maven-deploy:
+      id: example
+      url: http://repo.example.com/maven2/
+      unique-version: true
+      deploy-unstable: false

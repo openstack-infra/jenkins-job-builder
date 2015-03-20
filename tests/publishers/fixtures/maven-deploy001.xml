@@ -2,7 +2,8 @@
 <project>
   <publishers>
     <hudson.maven.RedeployPublisher>
-      <url>file:///path/to/repo</url>
+      <id>example</id>
+      <url>http://repo.example.com/maven2/</url>
       <uniqueVersion>true</uniqueVersion>
       <evenIfUnstable>false</evenIfUnstable>
     </hudson.maven.RedeployPublisher>

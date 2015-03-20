@@ -1,0 +1,5 @@
+publishers:
+  - join-trigger:
+      projects:
+        - project-one
+        - project-two
