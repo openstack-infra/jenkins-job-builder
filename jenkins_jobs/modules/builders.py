@@ -41,7 +41,9 @@ import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
 from jenkins_jobs.modules.helpers import config_file_provider_settings
-from jenkins_jobs.errors import JenkinsJobsException
+from jenkins_jobs.errors import (JenkinsJobsException,
+                                 MissingAttributeError,
+                                 InvalidAttributeError)
 import logging
 
 logger = logging.getLogger(__name__)
@@ -152,10 +154,9 @@ def copyartifact(parser, xml_parent, data):
                   'workspace-latest': 'WorkspaceSelector',
                   'build-param': 'ParameterizedBuildSelector'}
     if select not in selectdict:
-        raise JenkinsJobsException("which-build entered is not valid must be "
-                                   "one of: last-successful, specific-build, "
-                                   "last-saved, upstream-build, permalink, "
-                                   "workspace-latest, or build-param")
+        raise InvalidAttributeError('which-build',
+                                    select,
+                                    selectdict.keys())
     permalink = data.get('permalink', 'last')
     permalinkdict = {'last': 'lastBuild',
                      'last-stable': 'lastStableBuild',
@@ -164,10 +165,9 @@ def copyartifact(parser, xml_parent, data):
                      'last-unstable': 'lastUnstableBuild',
                      'last-unsuccessful': 'lastUnsuccessfulBuild'}
     if permalink not in permalinkdict:
-        raise JenkinsJobsException("permalink entered is not valid must be "
-                                   "one of: last, last-stable, "
-                                   "last-successful, last-failed, "
-                                   "last-unstable, or last-unsuccessful")
+        raise InvalidAttributeError('permalink',
+                                    permalink,
+                                    permalinkdict.keys())
     selector = XML.SubElement(t, 'selector',
                               {'class': 'hudson.plugins.copyartifact.' +
                                selectdict[select]})
@@ -446,8 +446,9 @@ def trigger_builds(parser, xml_parent, data):
             for factory in project_def['parameter-factories']:
 
                 if factory['factory'] not in supported_factories:
-                    raise JenkinsJobsException("factory must be one of %s" %
-                                               ", ".join(supported_factories))
+                    raise InvalidAttributeError('factory',
+                                                factory['factory'],
+                                                supported_factories)
 
                 if factory['factory'] == 'filebuild':
                     params = XML.SubElement(
@@ -471,9 +472,9 @@ def trigger_builds(parser, xml_parent, data):
                     noFilesFoundActionValue = str(factory.get(
                         'no-files-found-action', 'SKIP'))
                     if noFilesFoundActionValue not in supported_actions:
-                        raise JenkinsJobsException(
-                            "no-files-found-action must be one of %s" %
-                            ", ".join(supported_actions))
+                        raise InvalidAttributeError('no-files-found-action',
+                                                    noFilesFoundActionValue,
+                                                    supported_actions)
                     noFilesFoundAction.text = noFilesFoundActionValue
                 if factory['factory'] == 'counterbuild':
                     params = XML.SubElement(
@@ -493,9 +494,9 @@ def trigger_builds(parser, xml_parent, data):
                     validationFailValue = str(factory.get(
                         'validation-fail', 'FAIL'))
                     if validationFailValue not in supported_actions:
-                        raise JenkinsJobsException(
-                            "validation-fail action must be one of %s" %
-                            ", ".join(supported_actions))
+                        raise InvalidAttributeError('validation-fail',
+                                                    validationFailValue,
+                                                    supported_actions)
                     validationFail.text = validationFailValue
                 if factory['factory'] == 'allnodesforlabel':
                     params = XML.SubElement(
@@ -547,9 +548,9 @@ def trigger_builds(parser, xml_parent, data):
                 if tvalue.lower() == supported_threshold_values[0]:
                     continue
                 if tvalue.upper() not in supported_threshold_values:
-                    raise JenkinsJobsException(
-                        "threshold value must be one of (%s)" %
-                        ", ".join(supported_threshold_values))
+                    raise InvalidAttributeError(toptname,
+                                                tvalue,
+                                                supported_threshold_values)
                 th = XML.SubElement(block, txmltag)
                 XML.SubElement(th, 'name').text = hudson_model.THRESHOLDS[
                     tvalue.upper()]['name']
@@ -1512,13 +1513,10 @@ def shining_panda(parser, xml_parent, data):
     try:
         buildenv = data['build-environment']
     except KeyError:
-        raise JenkinsJobsException("A build-environment is required")
+        raise MissingAttributeError('build-environment')
 
     if buildenv not in envs:
-        errorstring = ("build-environment '%s' is invalid. Must be one of %s."
-                       % (buildenv, ', '.join("'{0}'".format(env)
-                                              for env in envs)))
-        raise JenkinsJobsException(errorstring)
+        raise InvalidAttributeError('build-environment', buildenv, envs)
 
     t = XML.SubElement(xml_parent, '%s%s' %
                        (pluginelementpart, buildenvdict[buildenv]))
@@ -1549,10 +1547,7 @@ def shining_panda(parser, xml_parent, data):
     nature = data.get('nature', 'shell')
     naturetuple = ('shell', 'xshell', 'python')
     if nature not in naturetuple:
-        errorstring = ("nature '%s' is not valid: must be one of %s."
-                       % (nature, ', '.join("'{0}'".format(naturevalue)
-                                            for naturevalue in naturetuple)))
-        raise JenkinsJobsException(errorstring)
+        raise InvalidAttributeError('nature', nature, naturetuple)
     XML.SubElement(t, 'nature').text = nature
     XML.SubElement(t, 'command').text = data.get("command", "")
     ignore_exit_code = data.get('ignore-exit-code', False)
@@ -1590,15 +1585,13 @@ def managed_script(parser, xml_parent, data):
         step = 'WinBatchBuildStep'
         script_tag = 'command'
     else:
-        raise JenkinsJobsException("type entered is not valid must be "
-                                   "one of: script or batch")
+        raise InvalidAttributeError('type', step_type, ['script', 'batch'])
     ms = XML.SubElement(xml_parent,
                         'org.jenkinsci.plugins.managedscripts.' + step)
     try:
         script_id = data['script-id']
     except KeyError:
-        raise JenkinsJobsException("A script-id is required for "
-                                   "managed-script")
+        raise MissingAttributeError('script-id')
     XML.SubElement(ms, script_tag).text = script_id
     args = XML.SubElement(ms, 'buildStepArgs')
     for arg in data.get('args', []):
@@ -1673,8 +1666,7 @@ def cmake(parser, xml_parent, data):
     try:
         source_dir.text = data['source-dir']
     except KeyError:
-        raise JenkinsJobsException("'source-dir' must be set for CMake "
-                                   "builder")
+        raise MissingAttributeError('source-dir')
 
     build_dir = XML.SubElement(cmake, 'buildDir')
     build_dir.text = data.get('build-dir', '')
@@ -1773,8 +1765,7 @@ def dsl(parser, xml_parent, data):
         XML.SubElement(dsl, 'target').text = data.get('target')
         XML.SubElement(dsl, 'usingScriptText').text = 'false'
     else:
-        raise JenkinsJobsException("You must specify either script-text or "
-                                   "a target")
+        raise MissingAttributeError(['script-text', 'target'])
 
     XML.SubElement(dsl, 'ignoreExisting').text = str(data.get(
         'ignore-existing', False)).lower()
@@ -1783,24 +1774,27 @@ def dsl(parser, xml_parent, data):
     removedJobAction = data.get('removed-job-action',
                                 supportedJobActions[0])
     if removedJobAction not in supportedJobActions:
-        raise JenkinsJobsException("removed-job-action must be one "
-                                   "of %s" % ", ".join(supportedJobActions))
+        raise InvalidAttributeError('removed-job-action',
+                                    removedJobAction,
+                                    supportedJobActions)
     XML.SubElement(dsl, 'removedJobAction').text = removedJobAction
 
     supportedViewActions = ['IGNORE', 'DELETE']
     removedViewAction = data.get('removed-view-action',
                                  supportedViewActions[0])
     if removedViewAction not in supportedViewActions:
-        raise JenkinsJobsException("removed-view-action must be one "
-                                   "of %s" % ", ".join(supportedViewActions))
+        raise InvalidAttributeError('removed-view-action',
+                                    removedViewAction,
+                                    supportedViewActions)
     XML.SubElement(dsl, 'removedViewAction').text = removedViewAction
 
     supportedLookupActions = ['JENKINS_ROOT', 'SEED_JOB']
     lookupStrategy = data.get('lookup-strategy',
                               supportedLookupActions[0])
     if lookupStrategy not in supportedLookupActions:
-        raise JenkinsJobsException("lookup-strategy must be one "
-                                   "of %s" % ", ".join(supportedLookupActions))
+        raise InvalidAttributeError('lookup-strategy',
+                                    lookupStrategy,
+                                    supportedLookupActions)
     XML.SubElement(dsl, 'lookupStrategy').text = lookupStrategy
 
     XML.SubElement(dsl, 'additionalClasspath').text = data.get(
