@@ -296,12 +296,22 @@ def gerrit(parser, xml_parent, data):
         .. deprecated:: 1.1.0. Please use :ref:`trigger-on <trigger_on>`.
 
     :arg bool override-votes: Override default vote values
+    :arg int gerrit-build-started-verified-value: Started ''Verified'' value
     :arg int gerrit-build-successful-verified-value: Successful ''Verified''
         value
     :arg int gerrit-build-failed-verified-value: Failed ''Verified'' value
+    :arg int gerrit-build-unstable-verified-value: Unstable ''Verified'' value
+    :arg int gerrit-build-notbuilt-verified-value: Not built ''Verified''
+        value
+    :arg int gerrit-build-started-codereview-value: Started ''CodeReview''
+        value
     :arg int gerrit-build-successful-codereview-value: Successful
         ''CodeReview'' value
     :arg int gerrit-build-failed-codereview-value: Failed ''CodeReview'' value
+    :arg int gerrit-build-unstable-codereview-value: Unstable ''CodeReview''
+        value
+    :arg int gerrit-build-notbuilt-codereview-value: Not built ''CodeReview''
+        value
     :arg str failure-message: Message to leave on failure (default '')
     :arg str successful-message: Message to leave on success (default '')
     :arg str unstable-message: Message to leave when unstable (default '')
@@ -475,14 +485,26 @@ def gerrit(parser, xml_parent, data):
     build_gerrit_triggers(gtrig, data)
     override = str(data.get('override-votes', False)).lower()
     if override == 'true':
-        for yamlkey, xmlkey in [('gerrit-build-successful-verified-value',
+        for yamlkey, xmlkey in [('gerrit-build-started-verified-value',
+                                 'gerritBuildStartedVerifiedValue'),
+                                ('gerrit-build-successful-verified-value',
                                  'gerritBuildSuccessfulVerifiedValue'),
                                 ('gerrit-build-failed-verified-value',
                                  'gerritBuildFailedVerifiedValue'),
+                                ('gerrit-build-unstable-verified-value',
+                                 'gerritBuildUnstableVerifiedValue'),
+                                ('gerrit-build-notbuilt-verified-value',
+                                 'gerritBuildNotBuiltVerifiedValue'),
+                                ('gerrit-build-started-codereview-value',
+                                 'gerritBuildStartedCodeReviewValue'),
                                 ('gerrit-build-successful-codereview-value',
-                                 'gerritBuildSuccessfulCodereviewValue'),
+                                 'gerritBuildSuccessfulCodeReviewValue'),
                                 ('gerrit-build-failed-codereview-value',
-                                 'gerritBuildFaiedCodeReviewValue')]:
+                                 'gerritBuildFailedCodeReviewValue'),
+                                ('gerrit-build-unstable-codereview-value',
+                                 'gerritBuildUnstableCodeReviewValue'),
+                                ('gerrit-build-notbuilt-codereview-value',
+                                 'gerritBuildNotBuiltCodeReviewValue')]:
             if data.get(yamlkey) is not None:
                 # str(int(x)) makes input values like '+1' work
                 XML.SubElement(gtrig, xmlkey).text = str(
