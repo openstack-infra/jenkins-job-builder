@@ -3438,7 +3438,7 @@ def ruby_metrics(parser, xml_parent, data):
     shows it in Jenkins with a trend graph.
 
     Requires the Jenkins :jenkins-wiki:`Ruby metrics plugin
-    <Ruby+metrics+plugin>`.
+    <RubyMetrics+plugin>`.
 
     :arg str report-dir: Relative path to the coverage report directory
     :arg dict targets:
