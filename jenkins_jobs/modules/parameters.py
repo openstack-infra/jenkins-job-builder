@@ -413,7 +413,7 @@ def dynamic_choice_param(parser, xml_parent, data):
     """yaml: dynamic-choice
     Dynamic Choice Parameter
     Requires the Jenkins :jenkins-wiki:`Jenkins Dynamic Parameter Plug-in
-    <Jenkins+Dynamic+Parameter+Plug-in>`.
+    <Dynamic+Parameter+Plug-in>`.
 
     :arg str name: the name of the parameter
     :arg str description: a description of the parameter (optional)
@@ -441,7 +441,7 @@ def dynamic_string_param(parser, xml_parent, data):
     """yaml: dynamic-string
     Dynamic Parameter
     Requires the Jenkins :jenkins-wiki:`Jenkins Dynamic Parameter Plug-in
-    <Jenkins+Dynamic+Parameter+Plug-in>`.
+    <Dynamic+Parameter+Plug-in>`.
 
     :arg str name: the name of the parameter
     :arg str description: a description of the parameter (optional)
@@ -469,7 +469,7 @@ def dynamic_choice_scriptler_param(parser, xml_parent, data):
     """yaml: dynamic-choice-scriptler
     Dynamic Choice Parameter (Scriptler)
     Requires the Jenkins :jenkins-wiki:`Jenkins Dynamic Parameter Plug-in
-    <Jenkins+Dynamic+Parameter+Plug-in>`.
+    <Dynamic+Parameter+Plug-in>`.
 
     :arg str name: the name of the parameter
     :arg str description: a description of the parameter (optional)
@@ -506,7 +506,7 @@ def dynamic_string_scriptler_param(parser, xml_parent, data):
     """yaml: dynamic-string-scriptler
     Dynamic Parameter (Scriptler)
     Requires the Jenkins :jenkins-wiki:`Jenkins Dynamic Parameter Plug-in
-    <Jenkins+Dynamic+Parameter+Plug-in>`.
+    <Dynamic+Parameter+Plug-in>`.
 
     :arg str name: the name of the parameter
     :arg str description: a description of the parameter (optional)
