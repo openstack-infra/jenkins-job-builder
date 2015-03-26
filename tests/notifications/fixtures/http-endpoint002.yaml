@@ -1,0 +1,7 @@
+notifications:
+  - http:
+      url: http://example.com/jenkins_endpoint
+      format: xml
+      event: completed
+      timeout: 40000
+      log: -1
