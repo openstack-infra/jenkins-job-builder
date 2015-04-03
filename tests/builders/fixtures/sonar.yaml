@@ -1,0 +1,7 @@
+builders:
+  - sonar:
+      sonar-name: Sonar
+      task: views
+      project: sonar-project.properties
+      properties: sonar.views.list=myview1,myview2
+      java-opts: -Xmx512m

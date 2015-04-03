@@ -1798,3 +1798,31 @@ def github_notifier(parser, xml_parent, data):
     """
     XML.SubElement(xml_parent,
                    'com.cloudbees.jenkins.GitHubSetCommitStatusBuilder')
+
+
+def sonar(parser, xml_parent, data):
+    """yaml: sonar
+    Invoke standalone Sonar analysis.
+    Requires the Jenkins `Sonar Plugin.
+    <http://docs.codehaus.org/pages/viewpage.action?pageId=116359341>`_
+
+    :arg str sonar-name: Name of the Sonar installation.
+    :arg str task: Task to run. (optional)
+    :arg str project: Path to Sonar project properties file. (optional)
+    :arg str properties: Sonar configuration properties. (optional)
+    :arg str java-opts: Java options for Sonnar Runner. (optional)
+    :arg str jdk: JDK to use (inherited from the job if omitted). (optional)
+
+    Example:
+
+    .. literalinclude:: /../../tests/builders/fixtures/sonar.yaml
+    """
+    sonar = XML.SubElement(xml_parent,
+                           'hudson.plugins.sonar.SonarRunnerBuilder')
+    XML.SubElement(sonar, 'installationName').text = data['sonar-name']
+    XML.SubElement(sonar, 'task').text = data.get('task', '')
+    XML.SubElement(sonar, 'project').text = data.get('project', '')
+    XML.SubElement(sonar, 'properties').text = data.get('properties', '')
+    XML.SubElement(sonar, 'javaOpts').text = data.get('java-opts', '')
+    if 'jdk' in data:
+        XML.SubElement(sonar, 'jdk').text = data['jdk']
