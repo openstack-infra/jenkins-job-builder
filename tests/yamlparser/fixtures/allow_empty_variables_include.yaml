@@ -1,0 +1,11 @@
+- project:
+    name: allow_empty_variables_include
+    jobs:
+      - 'allow_empty_variables_include'
+
+- job-template:
+    name: allow_empty_variables_include
+    builders:
+      - shell:
+          !include ./allow_empty_variables_include.sh
+

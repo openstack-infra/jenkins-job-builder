@@ -36,6 +36,7 @@ ignore_cache=False
 recursive=False
 exclude=.*
 allow_duplicates=False
+allow_empty_variables=False
 
 [jenkins]
 url=http://localhost:8080/
@@ -144,6 +145,11 @@ def create_parser():
     parser.add_argument('--version', dest='version', action='version',
                         version=version(),
                         help='show version')
+    parser.add_argument(
+        '--allow-empty-variables', action='store_true',
+        dest='allow_empty_variables', default=None,
+        help='Don\'t fail if any of the variables inside any string are not '
+        'defined, replace with empty string instead')
 
     return parser
 
@@ -232,6 +238,10 @@ def execute(options, config):
         if not isinstance(plugins_info, list):
             raise JenkinsJobsException("{0} must contain a Yaml list!"
                                        .format(options.plugins_info_path))
+    if options.allow_empty_variables is not None:
+        config.set('job_builder',
+                   'allow_empty_variables',
+                   str(options.allow_empty_variables))
 
     builder = Builder(config.get('jenkins', 'url'),
                       user,

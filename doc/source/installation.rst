@@ -88,6 +88,14 @@ job_builder section
   correct one to use. When this option is set to True, only a warning is
   emitted.
 
+**allow_empty_variables**
+  (Optional) When expanding strings, by default `jenkins-jobs` will raise an
+  exception if there's a key in the string, that has not been declared on the
+  yamls. Setting this options to True, will replace it with the empty string,
+  allowing you to use those strings without having to define all the keys it
+  might be using.
+
+
 jenkins section
 ^^^^^^^^^^^^^^^
 
