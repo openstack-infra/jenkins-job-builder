@@ -1,0 +1,13 @@
+- template-job:
+    name: test-job-include-raw-{num}
+    builders:
+      - shell:
+          !include-raw-escape:
+              - include-raw001-hello-world.sh
+              - include-raw001-vars.sh
+
+- project:
+    name: test-job-template-1
+    num: 1
+    jobs:
+      - 'test-job-include-raw-{num}'
