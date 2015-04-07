@@ -1,0 +1,4 @@
+publishers:
+  - scoverage:
+      report-directory: target/scala-2.10/scoverage-report/
+      report-file: scoverage.xml

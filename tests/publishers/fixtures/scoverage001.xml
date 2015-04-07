@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.scoverage.ScoveragePublisher>
+      <reportDirectory>target/scala-2.10/scoverage-report/</reportDirectory>
+      <reportFile>scoverage.xml</reportFile>
+    </org.jenkinsci.plugins.scoverage.ScoveragePublisher>
+  </publishers>
+</project>

@@ -3985,6 +3985,30 @@ def conditional_publisher(parser, xml_parent, data):
             raise JenkinsJobsException('action must be set for each condition')
 
 
+def scoverage(parser, xml_parent, data):
+    """yaml: scoverage
+    Publish scoverage results as a trend graph.
+    Requires the Jenkins :jenkins-wiki:`Scoverage Plugin <Scoverage+Plugin>`.
+
+    :arg str report-directory: This is a directory that specifies the locations
+                          where the xml scoverage report is generated
+    :arg str report-file: This is a file name that is given to the xml
+                          scoverage report.
+
+    Example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/scoverage001.yaml
+       :language: yaml
+    """
+    scoverage = XML.SubElement(
+        xml_parent,
+        'org.jenkinsci.plugins.scoverage.ScoveragePublisher')
+    XML.SubElement(scoverage, 'reportDirectory').text = str(
+        data.get('report-directory', ''))
+    XML.SubElement(scoverage, 'reportFile').text = str(
+        data.get('report-file', ''))
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
