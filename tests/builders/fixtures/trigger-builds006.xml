@@ -12,6 +12,10 @@
             <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
               <properties>FOO=&quot;bar&quot;</properties>
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+            <org.jvnet.jenkins.plugins.nodelabelparameter.parameterizedtrigger.NodeLabelBuildParameter>
+              <name>NODE</name>
+              <nodeLabel>testnodes</nodeLabel>
+            </org.jvnet.jenkins.plugins.nodelabelparameter.parameterizedtrigger.NodeLabelBuildParameter>
           </configs>
           <projects>build_started</projects>
           <condition>ALWAYS</condition>
