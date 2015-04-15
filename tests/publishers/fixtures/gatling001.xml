@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <io.gatling.jenkins.GatlingPublisher>
+      <enabled>true</enabled>
+    </io.gatling.jenkins.GatlingPublisher>
+  </publishers>
+</project>
