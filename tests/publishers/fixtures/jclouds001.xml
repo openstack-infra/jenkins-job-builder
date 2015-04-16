@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+    <publishers>
+         <jenkins.plugins.jclouds.blobstore.BlobStorePublisher>
+             <profileName>hp</profileName>
+             <entries>
+                 <jenkins.plugins.jclouds.blobstore.BlobStoreEntry>
+                     <container>jenkins</container>
+                     <path/>
+                     <sourceFile>*.tar.gz</sourceFile>
+                     <keepHierarchy>false</keepHierarchy>
+                 </jenkins.plugins.jclouds.blobstore.BlobStoreEntry>
+             </entries>
+         </jenkins.plugins.jclouds.blobstore.BlobStorePublisher>
+    </publishers>
+</project>
+

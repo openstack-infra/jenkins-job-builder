@@ -100,6 +100,52 @@ def blame_upstream(parser, xml_parent, data):
                    'BlameUpstreamCommitersPublisher')
 
 
+def jclouds(parser, xml_parent, data):
+    """yaml: JClouds Cloud Storage Settings
+    provides a way to store artifacts on JClouds supported storage providers.
+    Requires the Jenkins `JClouds Plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/JClouds+Plugin>`_
+
+    JClouds Cloud Storage Settings must be configured for the Jenkins instance.
+
+    :arg str profile: preconfigured storage profile (required)
+    :arg str files: files to upload (regex) (required)
+    :arg str basedir: the source file path (relative to workspace, Optional)
+    :arg str container: the destination container name (required)
+    :arg bool hierarchy: keep hierarchy (default false)
+
+    Example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/jclouds001.yaml
+
+    """
+
+    deployer = XML.SubElement(xml_parent,
+                              'jenkins.plugins.jclouds.blobstore.'
+                              'BlobStorePublisher')
+
+    if 'profile' not in data:
+        raise JenkinsJobsException('profile parameter is missing')
+    XML.SubElement(deployer, 'profileName').text = data.get('profile')
+
+    entries = XML.SubElement(deployer, 'entries')
+
+    deployer_entry = XML.SubElement(entries,
+                                    'jenkins.plugins.jclouds.blobstore.'
+                                    'BlobStoreEntry')
+
+    try:
+        XML.SubElement(deployer_entry, 'container').text = data['container']
+        XML.SubElement(deployer_entry, 'path').text = data.get('basedir', '')
+        XML.SubElement(deployer_entry, 'sourceFile').text = data['files']
+    except KeyError as e:
+        raise JenkinsJobsException("blobstore requires '%s' to be set"
+                                   % e.args[0])
+
+    XML.SubElement(deployer_entry, 'keepHierarchy').text = str(
+        data.get('hierarchy', False)).lower()
+
+
 def campfire(parser, xml_parent, data):
     """yaml: campfire
     Send build notifications to Campfire rooms.
