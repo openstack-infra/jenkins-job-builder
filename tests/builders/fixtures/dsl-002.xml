@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <javaposse.jobdsl.plugin.ExecuteDslScripts>
+      <targets>jobs/*/*/*.groovy</targets>
+      <usingScriptText>false</usingScriptText>
+      <ignoreExisting>true</ignoreExisting>
+      <removedJobAction>IGNORE</removedJobAction>
+      <removedViewAction>IGNORE</removedViewAction>
+      <lookupStrategy>JENKINS_ROOT</lookupStrategy>
+      <additionalClasspath/>
+    </javaposse.jobdsl.plugin.ExecuteDslScripts>
+  </builders>
+</project>

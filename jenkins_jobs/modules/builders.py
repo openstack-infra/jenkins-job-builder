@@ -2207,10 +2207,10 @@ def dsl(parser, xml_parent, data):
 
     Requires the Jenkins :jenkins-wiki:`Job DSL plugin <Job+DSL+Plugin>`.
 
-    :arg str script-text: dsl script which is Groovy code (required if target
+    :arg str script-text: dsl script which is Groovy code (Required if targets
         is not specified)
-    :arg str target: Newline separated list of DSL scripts, located in the
-        Workspace. Can use wildcards like 'jobs/\*\*/\*.groovy' (required
+    :arg str targets: Newline separated list of DSL scripts, located in the
+        Workspace. Can use wildcards like 'jobs/\*/\*/\*.groovy' (Required
         if script-text is not specified)
     :arg str ignore-existing: Ignore previously generated jobs and views
     :arg str removed-job-action: Specifies what to do when a previously
@@ -2238,11 +2238,21 @@ def dsl(parser, xml_parent, data):
     dsl = XML.SubElement(xml_parent,
                          'javaposse.jobdsl.plugin.ExecuteDslScripts')
 
+    if 'target' in data:
+        if 'targets' not in data:
+            logger.warn("Converting from old format of 'target' to new "
+                        "name 'targets', please update your job definitions.")
+            data['targets'] = data['target']
+        else:
+            logger.warn("Ignoring old argument 'target' in favour of new "
+                        "format argument 'targets', please remove old "
+                        "format.")
+
     if data.get('script-text'):
         XML.SubElement(dsl, 'scriptText').text = data.get('script-text')
         XML.SubElement(dsl, 'usingScriptText').text = 'true'
-    elif data.get('target'):
-        XML.SubElement(dsl, 'targets').text = data.get('target')
+    elif data.get('targets'):
+        XML.SubElement(dsl, 'targets').text = data.get('targets')
         XML.SubElement(dsl, 'usingScriptText').text = 'false'
     else:
         raise MissingAttributeError(['script-text', 'target'])
