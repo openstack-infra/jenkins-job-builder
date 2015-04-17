@@ -72,7 +72,9 @@ back to its template.
 
 Sometimes it is useful to have the same job name format used even
 where the template contents may vary. `Ids` provide a mechanism to
-support such use cases.
+support such use cases in addition to simplifying referencing
+templates when the name contains the more complex substitution with
+default values.
 
 
 Default Values for Template Variables
@@ -333,9 +335,9 @@ to reference it instead of the name. This has two primary functions:
   still using multiple templates to handle subtle variables in job
   requirements.
 * Provides a simpler name for a `job-template` where you have multiple
-  variables in the name and don't wish to have to include this information
-  in every use. This also allows changing the template output name without
-  impacting references.
+  variables including default values in the name and don't wish to have
+  to include this information in every use. This also makes changing
+  the template output name without impacting references.
 
 Example:
 

@@ -1,0 +1,20 @@
+- project:
+    name: test_template_variable_defaults
+    num:
+      - 1
+      - 2
+    jobs:
+        - 'template_variable_defaults':
+            test_var: Goodbye World
+
+- job-template:
+    name: 'template_variable_defaults_{num}{type|_debug}'
+    id: template_variable_defaults
+    disabled: '{obj:disabled_var|}'
+    builders:
+      - shell: |
+         echo "Variable: {test_var|Hello World}"
+         echo "Allow empty Variable: {test_var|}"
+         echo "show that we expand for num: {num}"
+
+
