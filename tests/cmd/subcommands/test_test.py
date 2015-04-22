@@ -190,7 +190,7 @@ class TestTests(CmdTestsBase):
                          "http://test-jenkins.with.non.default.url:8080/")
 
     @mock.patch('jenkins_jobs.builder.YamlParser.generateXML')
-    @mock.patch('jenkins_jobs.builder.ModuleRegistry')
+    @mock.patch('jenkins_jobs.parser.ModuleRegistry')
     def test_plugins_info_stub_option(self, registry_mock, generateXML_mock):
         """
         Test handling of plugins_info stub option.
@@ -214,7 +214,7 @@ class TestTests(CmdTestsBase):
         registry_mock.assert_called_with(self.config, plugins_info_list)
 
     @mock.patch('jenkins_jobs.builder.YamlParser.generateXML')
-    @mock.patch('jenkins_jobs.builder.ModuleRegistry')
+    @mock.patch('jenkins_jobs.parser.ModuleRegistry')
     def test_bogus_plugins_info_stub_option(self, registry_mock,
                                             generateXML_mock):
         """

@@ -5,7 +5,7 @@ from testscenarios.testcase import TestWithScenarios
 from six.moves import configparser, StringIO
 
 from jenkins_jobs import cmd
-from jenkins_jobs.builder import ModuleRegistry
+from jenkins_jobs.registry import ModuleRegistry
 
 
 class ModuleRegistryPluginInfoTestsWithScenarios(TestWithScenarios,
