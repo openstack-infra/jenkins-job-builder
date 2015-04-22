@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.downstream__ext.DownstreamTrigger>
+      <childProjects>foo,bar</childProjects>
+      <threshold>
+        <name>UNSTABLE</name>
+        <ordinal>1</ordinal>
+        <color>YELLOW</color>
+        <completeBuild>true</completeBuild>
+      </threshold>
+      <thresholdStrategy>EQUAL</thresholdStrategy>
+      <onlyIfSCMChanges>true</onlyIfSCMChanges>
+      <onlyIfLocalSCMChanges>false</onlyIfLocalSCMChanges>
+    </hudson.plugins.downstream__ext.DownstreamTrigger>
+  </publishers>
+</project>
