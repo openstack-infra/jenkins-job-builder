@@ -35,6 +35,7 @@ Example::
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules.helpers import build_trends_publisher
+from jenkins_jobs.modules.helpers import findbugs_settings
 from jenkins_jobs.errors import JenkinsJobsException
 
 
@@ -132,18 +133,7 @@ def findbugs(parser, xml_parent, data):
                               'hudson.plugins.findbugs.FindBugsReporter')
     findbugs.set('plugin', 'findbugs')
 
-    # General Options
-    rank_priority = str(data.get('rank-priority', False)).lower()
-    XML.SubElement(findbugs, 'isRankActivated').text = rank_priority
-    include_files = data.get('include-files', '')
-    XML.SubElement(findbugs, 'includePattern').text = include_files
-    exclude_files = data.get('exclude-files', '')
-    XML.SubElement(findbugs, 'excludePattern').text = exclude_files
-    use_previous_build = str(data.get('use-previous-build-as-reference',
-                                      False)).lower()
-    XML.SubElement(findbugs,
-                   'usePreviousBuildAsReference').text = use_previous_build
-
+    findbugs_settings(findbugs, data)
     build_trends_publisher('[FINDBUGS] ', findbugs, data)
 
 
