@@ -83,6 +83,25 @@ def build_trends_publisher(plugin_name, xml_element, data):
                 xml_config.text = str(config_value)
 
 
+def config_file_provider_builder(xml_parent, data):
+    """Builder / Wrapper helper"""
+    xml_files = XML.SubElement(xml_parent, 'managedFiles')
+
+    files = data.get('files', [])
+    for file in files:
+        xml_file = XML.SubElement(xml_files, 'org.jenkinsci.plugins.'
+                                  'configfiles.buildwrapper.ManagedFile')
+        file_id = file.get('file-id')
+        if file_id is None:
+            raise JenkinsJobsException("file-id is required for each "
+                                       "managed configuration file")
+        XML.SubElement(xml_file, 'fileId').text = str(file_id)
+        XML.SubElement(xml_file, 'targetLocation').text = file.get(
+            'target', '')
+        XML.SubElement(xml_file, 'variable').text = file.get(
+            'variable', '')
+
+
 def config_file_provider_settings(xml_parent, data):
     settings = {
         'default-settings':
