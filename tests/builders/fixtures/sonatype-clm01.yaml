@@ -1,0 +1,8 @@
+builders:
+    - sonatype-clm:
+        application-name: jenkins-job-builder
+        fail-on-clm-server-failure: true
+        stage: release
+        scan-targets: '**/*.jar'
+        module-excludes: '**/my-module/target/**'
+        advanced-options: 'test'

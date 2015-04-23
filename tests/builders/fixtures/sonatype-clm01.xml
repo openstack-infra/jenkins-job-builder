@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.sonatype.insight.ci.hudson.PreBuildScan plugin="sonatype-clm-ci">
+      <billOfMaterialsToken>jenkins-job-builder</billOfMaterialsToken>
+      <failOnClmServerFailures>true</failOnClmServerFailures>
+      <stageId>release</stageId>
+      <pathConfig>
+        <scanTargets>**/*.jar</scanTargets>
+        <moduleExcludes>**/my-module/target/**</moduleExcludes>
+        <scanProperties>test</scanProperties>
+      </pathConfig>
+    </com.sonatype.insight.ci.hudson.PreBuildScan>
+  </builders>
+</project>
