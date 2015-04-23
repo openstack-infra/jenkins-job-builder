@@ -1,4 +1,4 @@
-- template-job:
+- job-template:
     name: test-job-include-raw-{num}
     builders:
       - shell:
