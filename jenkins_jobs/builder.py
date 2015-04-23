@@ -823,10 +823,8 @@ class Builder(object):
     def delete_job(self, jobs_glob, fn=None):
         if fn:
             self.load_files(fn)
-            self.parser.expandYaml(jobs_glob)
-            jobs = [j['name']
-                    for j in self.parser.jobs
-                    if matches(j['name'], [jobs_glob])]
+            self.parser.expandYaml([jobs_glob])
+            jobs = [j['name'] for j in self.parser.jobs]
         else:
             jobs = [jobs_glob]
 
@@ -862,8 +860,6 @@ class Builder(object):
 
         updated_jobs = 0
         for job in self.parser.xml_jobs:
-            if jobs_glob and not matches(job.name, jobs_glob):
-                continue
             if output:
                 if hasattr(output, 'write'):
                     # `output` is a file-like object
