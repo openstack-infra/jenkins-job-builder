@@ -285,9 +285,13 @@ def execute(options, config):
     elif options.command == 'update':
         logger.info("Updating jobs in {0} ({1})".format(
             options.path, options.names))
-        jobs = builder.update_job(options.path, options.names)
+        jobs, num_updated_jobs = builder.update_job(options.path,
+                                                    options.names)
+        logger.info("Number of jobs updated: %d", num_updated_jobs)
         if options.delete_old:
-            builder.delete_old_managed(keep=[x.name for x in jobs])
+            num_deleted_jobs = builder.delete_old_managed(
+                keep=[x.name for x in jobs])
+            logger.info("Number of jobs deleted: %d", num_deleted_jobs)
     elif options.command == 'test':
         builder.update_job(options.path, options.name,
                            output=options.output_dir)
