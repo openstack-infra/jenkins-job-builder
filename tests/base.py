@@ -37,7 +37,8 @@ try:
 except ImportError:
     import mock  # noqa
 import jenkins_jobs.local_yaml as yaml
-from jenkins_jobs.builder import XmlJob, YamlParser
+from jenkins_jobs.parser import YamlParser
+from jenkins_jobs.xml_config import XmlJob
 from jenkins_jobs.modules import (project_flow,
                                   project_matrix,
                                   project_maven,

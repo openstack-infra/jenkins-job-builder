@@ -83,5 +83,5 @@ All modules and their associated components are registered in the
 module registry. It can be accessed either from modules via the registry
 field, or via the parser parameter of components.
 
-.. autoclass:: jenkins_jobs.builder.ModuleRegistry
+.. autoclass:: jenkins_jobs.registry.ModuleRegistry
    :members:
