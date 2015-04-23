@@ -185,7 +185,7 @@ def setup_config_settings(options):
         if os.path.isfile(localconf):
             conf = localconf
     config = configparser.ConfigParser()
-    ## Load default config always
+    # Load default config always
     config.readfp(StringIO(DEFAULT_CONF))
     if os.path.isfile(conf):
         logger.debug("Reading config from {0}".format(conf))

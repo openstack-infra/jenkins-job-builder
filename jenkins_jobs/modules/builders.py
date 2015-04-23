@@ -464,7 +464,7 @@ def trigger_builds(parser, xml_parent, data):
                     parameterName = XML.SubElement(params, 'parameterName')
                     parameterName.text = factory['parameter-name']
                 if (factory['factory'] == 'filebuild' or
-                    factory['factory'] == 'binaryfile'):
+                        factory['factory'] == 'binaryfile'):
                     filePattern = XML.SubElement(params, 'filePattern')
                     filePattern.text = factory['file-pattern']
                     noFilesFoundAction = XML.SubElement(
@@ -990,7 +990,7 @@ def conditional_step(parser, xml_parent, data):
 
             br = XML.SubElement(ctag, 'bestResult')
             br_name = cdata['condition-best']
-            if not br_name in hudson_model.THRESHOLDS:
+            if br_name not in hudson_model.THRESHOLDS:
                 raise JenkinsJobsException(
                     "threshold must be one of %s" %
                     ", ".join(hudson_model.THRESHOLDS.keys()))

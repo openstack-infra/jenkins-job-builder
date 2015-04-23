@@ -192,7 +192,7 @@ def throttle(parser, xml_parent, data):
     XML.SubElement(throttle, 'maxConcurrentTotal').text = str(
         data.get('max-total', '0'))
     # TODO: What's "categories"?
-    #XML.SubElement(throttle, 'categories')
+    # XML.SubElement(throttle, 'categories')
     if data.get('enabled', True):
         XML.SubElement(throttle, 'throttleEnabled').text = 'true'
     else:

@@ -346,8 +346,8 @@ remoteName/\*')
                                                       valid[-1]))
     if browser != 'auto':
         bc = XML.SubElement(scm, 'browser', {'class':
-                            'hudson.plugins.git.browser.' +
-                            browserdict[browser]})
+                                             'hudson.plugins.git.browser.' +
+                                             browserdict[browser]})
         XML.SubElement(bc, 'url').text = data['browser-url']
         if browser in ['gitblit', 'viewgit']:
             XML.SubElement(bc, 'projectName').text = str(
@@ -684,8 +684,9 @@ def tfs(parser, xml_parent, data):
 
     """
 
-    tfs = XML.SubElement(xml_parent, 'scm', {'class': 'hudson.plugins.tfs.'
-                                             'TeamFoundationServerScm'})
+    tfs = XML.SubElement(xml_parent, 'scm',
+                         {'class': 'hudson.plugins.tfs.'
+                                   'TeamFoundationServerScm'})
     XML.SubElement(tfs, 'serverUrl').text = str(
         data.get('server-url', ''))
     XML.SubElement(tfs, 'projectPath').text = str(
@@ -704,9 +705,9 @@ def tfs(parser, xml_parent, data):
         data.get('use-update', True))
     store = data.get('web-access', None)
     if 'web-access' in data and isinstance(store, list):
-        web = XML.SubElement(tfs, 'repositoryBrowser', {'class': 'hudson.'
-                                  'plugins.tfs.browsers.'
-                                  'TeamSystemWebAccessBrowser'})
+        web = XML.SubElement(tfs, 'repositoryBrowser',
+                             {'class': 'hudson.plugins.tfs.browsers.'
+                                       'TeamSystemWebAccessBrowser'})
         XML.SubElement(web, 'url').text = str(store[0].get('web-url', None))
     elif 'web-access' in data and store is None:
         XML.SubElement(tfs, 'repositoryBrowser', {'class': 'hudson.'
@@ -842,9 +843,9 @@ def hg(self, xml_parent, data):
         raise JenkinsJobsException("Browser entered is not valid must be one "
                                    "of: %s" % ", ".join(browserdict.keys()))
     if browser != 'auto':
-        bc = XML.SubElement(scm, 'browser', {'class':
-                            'hudson.plugins.mercurial.browser.' +
-                            browserdict[browser]})
+        bc = XML.SubElement(scm, 'browser',
+                            {'class': 'hudson.plugins.mercurial.browser.' +
+                                      browserdict[browser]})
         if 'browser-url' in data:
             XML.SubElement(bc, 'url').text = data['browser-url']
         else:
