@@ -867,6 +867,7 @@ class Builder(object):
             if output:
                 if hasattr(output, 'write'):
                     # `output` is a file-like object
+                    logger.info("Job name:  %s", job.name)
                     logger.debug("Writing XML to '{0}'".format(output))
                     try:
                         output.write(job.output())
