@@ -1,0 +1,13 @@
+wrappers:
+  - xvfb:
+      installation-name: default
+      auto-display-name: false
+      display-name: 123
+      assigned-labels: nodes-xxx
+      parallel-build: false
+      timeout: 10
+      screen: 1024x768x16
+      display-name-offset: 100
+      additional-options: -fbdir /tmp
+      debug: true
+      shutdown-with-build: false

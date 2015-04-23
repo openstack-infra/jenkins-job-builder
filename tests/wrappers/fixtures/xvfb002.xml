@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <org.jenkinsci.plugins.xvfb.XvfbBuildWrapper>
+      <installationName>default</installationName>
+      <autoDisplayName>false</autoDisplayName>
+      <assignedLabels/>
+      <parallelBuild>false</parallelBuild>
+      <timeout>0</timeout>
+      <screen>1024x768x24</screen>
+      <displayNameOffset>1</displayNameOffset>
+      <additionalOptions/>
+      <debug>false</debug>
+      <shutdownWithBuild>false</shutdownWithBuild>
+    </org.jenkinsci.plugins.xvfb.XvfbBuildWrapper>
+  </buildWrappers>
+</project>
