@@ -115,6 +115,25 @@ jenkins section
   The base URL for your Jenkins installation.
 
 
+hipchat section
+^^^^^^^^^^^^^^^
+
+**send-as**
+  This is the hipchat user name that will be used when sending notifications.
+
+**authtoken**
+  The API token necessary to send messages to hipchat.  This can be generated in
+  the hipchat web interface by a user with administrative access for your
+  organization. This is the authtoken is set for each job individually; the
+  JJB Hipchat Plugin does not currently support setting different tokens for
+  different projects, so the token you use will have to be scoped such that it
+  can be used for any room your jobs might be configured to notify. For more
+  information on this topic, please see the `Hipchat API Documentation`__
+
+__ https://www.hipchat.com/docs/apiv2/auth
+
+
+
 Running
 -------
 
