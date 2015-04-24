@@ -40,8 +40,6 @@ allow_empty_variables=False
 
 [jenkins]
 url=http://localhost:8080/
-user=
-password=
 query_plugins_info=True
 
 [hipchat]
@@ -217,16 +215,35 @@ def execute(options, config):
     elif config.has_option('job_builder', 'ignore_cache'):
         ignore_cache = config.getboolean('job_builder', 'ignore_cache')
 
-    # workaround for python 2.6 interpolation error
+    # Jenkins supports access as an anonymous user, which can be used to
+    # ensure read-only behaviour when querying the version of plugins
+    # installed for test mode to generate XML output matching what will be
+    # uploaded. To enable must pass 'None' as the value for user and password
+    # to python-jenkins
+    #
+    # catching 'TypeError' is a workaround for python 2.6 interpolation error
     # https://bugs.launchpad.net/openstack-ci/+bug/1259631
     try:
         user = config.get('jenkins', 'user')
     except (TypeError, configparser.NoOptionError):
         user = None
+
     try:
         password = config.get('jenkins', 'password')
     except (TypeError, configparser.NoOptionError):
         password = None
+
+    # Inform the user as to what is likely to happen, as they may specify
+    # a real jenkins instance in test mode to get the plugin info to check
+    # the XML generated.
+    if user is None and password is None:
+        logger.info("Will use anonymous access to Jenkins if needed.")
+    elif (user is not None and password is None) or (
+            user is None and password is not None):
+        raise JenkinsJobsException(
+            "Cannot authenticate to Jenkins with only one of User and "
+            "Password provided, please check your configuration."
+        )
 
     plugins_info = None
 
