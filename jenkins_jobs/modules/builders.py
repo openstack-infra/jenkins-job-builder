@@ -1870,6 +1870,29 @@ def github_notifier(parser, xml_parent, data):
                    'com.cloudbees.jenkins.GitHubSetCommitStatusBuilder')
 
 
+def ssh_builder(parser, xml_parent, data):
+    """yaml: ssh-builder
+    Executes command on remote host
+    Requires the Jenkins `SSH plugin.
+    <https://wiki.jenkins-ci.org/display/JENKINS/SSH+plugin>`_
+
+    :arg str ssh-user-ip: user@ip:ssh_port of machine that was defined
+                          in jenkins according to SSH plugin instructions
+    :arg str command: command to run on remote server
+
+    Example:
+
+    .. literalinclude:: /../../tests/builders/fixtures/ssh-builder.yaml
+    """
+    builder = XML.SubElement(
+        xml_parent, 'org.jvnet.hudson.plugins.SSHBuilder')
+    try:
+        XML.SubElement(builder, 'siteName').text = str(data['ssh-user-ip'])
+        XML.SubElement(builder, 'command').text = str(data['command'])
+    except KeyError as e:
+        raise MissingAttributeError("'%s'" % e.args[0])
+
+
 def sonar(parser, xml_parent, data):
     """yaml: sonar
     Invoke standalone Sonar analysis.
