@@ -72,14 +72,9 @@ def ownership(parser, xml_parent, data):
     :arg str owner: the owner of job
     :arg list co-owners: list of job co-owners
 
-    Example::
+    Example:
 
-        properties:
-         - ownership:
-            owner: abraverm
-            co-owners:
-             - lbednar
-             - edolinin
+    .. literalinclude:: /../../tests/properties/fixtures/ownership.yaml
     """
     ownership_plugin = \
         XML.SubElement(xml_parent,
