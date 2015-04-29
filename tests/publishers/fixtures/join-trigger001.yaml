@@ -3,3 +3,10 @@ publishers:
       projects:
         - project-one
         - project-two
+      even-if-unstable: true
+      publishers:
+        - trigger-parameterized-builds:
+          - project: archive
+            current-parameters: true
+          - project: cleanup
+            current-parameters: true
