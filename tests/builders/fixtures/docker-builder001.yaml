@@ -1,0 +1,12 @@
+builders:
+    - docker-build-publish:
+        repo-name: 'test'
+        repo-tag: 'test-tag'
+        no-cache: true
+        no-force-pull: false
+        skip-build: false
+        skip-decorate: false
+        skip-latest: false
+        skip-tag: false
+        file-path: '/tmp/'
+

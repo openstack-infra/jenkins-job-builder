@@ -2936,3 +2936,49 @@ def description_setter(parser, xml_parent, data):
     if 'description' in data:
         XML.SubElement(descriptionsetter, 'description').text = data[
             'description']
+
+
+def docker_build_publish(parse, xml_parent, data):
+    """yaml: docker-build-publish
+    Requires the Jenkins :jenkins-wiki`Docker build publish Plugin
+    <Docker+build+publish+Plugin>`.
+
+    :arg str repo-name: Name of repository to push to.
+    :arg str repo-tag: Tag for image. (default '')
+    :arg bool no-cache: If build should be cached. (default false)
+    :arg bool no-force-pull: Don't update the source image before building when
+        it exists locally. (default false)
+    :arg bool skip-build: Do not build the image. (default false)
+    :arg bool skip-decorate: Do not decorate the build name. (default false)
+    :arg bool skip-tag-latest: Do not tag this build as latest. (default false)
+    :arg bool skip-push: Do not push. (default false)
+    :arg str file-path: Project root of Dockerfile. (default '')
+
+    Example:
+
+    .. literalinclude:: /../../tests/builders/fixtures/docker-builder001.yaml
+    """
+    db = XML.SubElement(xml_parent,
+                        'com.cloudbees.dockerpublish.DockerBuilder')
+    db.set('plugin', 'docker-build-publish')
+
+    try:
+        XML.SubElement(db, 'repoName').text = str(data['repo-name'])
+    except KeyError:
+        raise MissingAttributeError('repo-name')
+
+    XML.SubElement(db, 'repoTag').text = str(data.get('repo-tag', ''))
+    XML.SubElement(db, 'noCache').text = str(
+        data.get('no-cache', False)).lower()
+    XML.SubElement(db, 'noForcePull').text = str(
+        data.get('no-force-pull', False)).lower()
+    XML.SubElement(db, 'skipBuild').text = str(
+        data.get('skip-build', False)).lower()
+    XML.SubElement(db, 'skipDecorate').text = str(
+        data.get('skip-decorate', False)).lower()
+    XML.SubElement(db, 'skipTagLatest').text = str(
+        data.get('skip-tag-latest', False)).lower()
+    XML.SubElement(db, 'skipPush').text = str(
+        data.get('skip-', False)).lower()
+    XML.SubElement(db, 'dockerfilePath').text = str(
+        data.get('file-path', ''))

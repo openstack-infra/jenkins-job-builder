@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.cloudbees.dockerpublish.DockerBuilder plugin="docker-build-publish">
+      <repoName>test</repoName>
+      <repoTag>test-tag</repoTag>
+      <noCache>true</noCache>
+      <noForcePull>false</noForcePull>
+      <skipBuild>false</skipBuild>
+      <skipDecorate>false</skipDecorate>
+      <skipTagLatest>false</skipTagLatest>
+      <skipPush>false</skipPush>
+      <dockerfilePath>/tmp/</dockerfilePath>
+    </com.cloudbees.dockerpublish.DockerBuilder>
+  </builders>
+</project>
