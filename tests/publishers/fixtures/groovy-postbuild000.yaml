@@ -4,5 +4,5 @@ publishers:
         classpath:
             - "file:///path/to/your/lib"
             - "file:///path/to/your/lib"
-        on-failure: "failed"
+        on-failure: "unstable"
         matrix-parent: true
