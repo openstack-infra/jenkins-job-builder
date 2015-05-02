@@ -9,6 +9,7 @@
       <defaultEncoding>utf-8</defaultEncoding>
       <canRunOnFailed>true</canRunOnFailed>
       <useStableBuildAsReference>false</useStableBuildAsReference>
+      <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
       <useDeltaValues>false</useDeltaValues>
       <thresholds>
         <unstableTotalAll>90</unstableTotalAll>
