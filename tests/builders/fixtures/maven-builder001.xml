@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jfrog.hudson.maven3.Maven3Builder>
+      <mavenName>mvn3</mavenName>
+      <goals>clean install</goals>
+      <rootPom>modules/pom.xml</rootPom>
+      <mavenOpts/>
+    </org.jfrog.hudson.maven3.Maven3Builder>
+  </builders>
+</project>
