@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<maven2-moduleset>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties>
+    <propertiesraw/>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <parametersraw/>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <com.tikal.hudson.plugins.notification.HudsonNotificationProperty>
+      <endpoints>
+        <metadataraw/>
+      </endpoints>
+    </com.tikal.hudson.plugins.notification.HudsonNotificationProperty>
+  </properties>
+  <scm>
+    <scmraw/>
+  </scm>
+  <triggers class="vector">
+    <triggersraw/>
+  </triggers>
+  <reporters>
+    <reportersraw/>
+  </reporters>
+  <builders>
+    <buildersraw/>
+  </builders>
+  <publishers>
+    <publishersraw/>
+  </publishers>
+  <buildWrappers>
+    <wrappersraw/>
+  </buildWrappers>
+</maven2-moduleset>

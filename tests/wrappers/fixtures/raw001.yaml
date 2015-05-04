@@ -1,0 +1,7 @@
+wrappers:
+  - raw:
+      xml: |
+        <hudson.plugins.xvnc.Xvnc>
+          <takeScreenshot>true</takeScreenshot>
+          <useXauthority>false</useXauthority>
+        </hudson.plugins.xvnc.Xvnc>
