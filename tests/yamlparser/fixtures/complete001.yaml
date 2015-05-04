@@ -43,15 +43,27 @@
          trigger-on-ref-updated-event: false
          trigger-on-comment-added-event: false
          override-votes: true
+         gerrit-build-started-verified-value: 0
          gerrit-build-successful-verified-value: 1
          gerrit-build-failed-verified-value: -1
+         gerrit-build-unstable-verified-value: -1
+         gerrit-build-notbuilt-verified-value: -1
+         gerrit-build-started-codereview-value: 0
+         gerrit-build-successful-codereview-value: 1
+         gerrit-build-failed-codereview-value: -1
+         gerrit-build-unstable-codereview-value: -1
+         gerrit-build-notbuilt-codereview-value: -1
          projects:
            - project-compare-type: 'PLAIN'
              project-pattern: '{project_pattern}'
              branches:
                - branch-compare-type: 'ANT'
                  branch-pattern: '**'
-         failure-message: 'This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.'
+         start-message: 'Start message.'
+         failure-message: 'Failed message.'
+         successful-message: 'Success message.'
+         unstable-message: 'Unstable message.'
+         notbuilt-message: 'Not built message.'
 
 - scm:
     name: gerrit-scm

@@ -80,13 +80,21 @@
       <triggerOnEvents>
         <com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.events.PluginPatchsetCreatedEvent/>
       </triggerOnEvents>
+      <gerritBuildStartedVerifiedValue>0</gerritBuildStartedVerifiedValue>
       <gerritBuildSuccessfulVerifiedValue>1</gerritBuildSuccessfulVerifiedValue>
       <gerritBuildFailedVerifiedValue>-1</gerritBuildFailedVerifiedValue>
-      <buildStartMessage/>
-      <buildFailureMessage>This change was unable to be automatically merged with the current state of the repository. Please rebase your change and upload a new patchset.</buildFailureMessage>
-      <buildSuccessfulMessage/>
-      <buildUnstableMessage/>
-      <buildNotBuiltMessage/>
+      <gerritBuildUnstableVerifiedValue>-1</gerritBuildUnstableVerifiedValue>
+      <gerritBuildNotBuiltVerifiedValue>-1</gerritBuildNotBuiltVerifiedValue>
+      <gerritBuildStartedCodeReviewValue>0</gerritBuildStartedCodeReviewValue>
+      <gerritBuildSuccessfulCodeReviewValue>1</gerritBuildSuccessfulCodeReviewValue>
+      <gerritBuildFailedCodeReviewValue>-1</gerritBuildFailedCodeReviewValue>
+      <gerritBuildUnstableCodeReviewValue>-1</gerritBuildUnstableCodeReviewValue>
+      <gerritBuildNotBuiltCodeReviewValue>-1</gerritBuildNotBuiltCodeReviewValue>
+      <buildStartMessage>Start message.</buildStartMessage>
+      <buildFailureMessage>Failed message.</buildFailureMessage>
+      <buildSuccessfulMessage>Success message.</buildSuccessfulMessage>
+      <buildUnstableMessage>Unstable message.</buildUnstableMessage>
+      <buildNotBuiltMessage>Not built message.</buildNotBuiltMessage>
       <customUrl/>
       <serverName>__ANY__</serverName>
     </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.GerritTrigger>
