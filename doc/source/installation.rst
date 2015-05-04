@@ -183,6 +183,12 @@ arguments after the job definition path. To update Foo1 and Foo2 run::
 
   jenkins-jobs update /path/to/defs Foo1 Foo2
 
+You can also enable the parallel execution of the program passing the workers
+option with a value of 0, 2, or higer. Use 0 to run as many workers as cores in
+the host that runs it, and 2 or higher to specify the number of workers to use::
+
+  jenkins-jobs update --workers 0 /path/to/defs
+
 Passing Multiple Paths
 ^^^^^^^^^^^^^^^^^^^^^^
 It is possible to pass multiple paths to JJB using colons as a path separator on
@@ -272,6 +278,7 @@ There is also a command to delete **all** jobs.
 **WARNING**: Use with caution::
 
   jenkins-jobs delete-all
+
 
 Globbed Parameters
 ^^^^^^^^^^^^^^^^^^
