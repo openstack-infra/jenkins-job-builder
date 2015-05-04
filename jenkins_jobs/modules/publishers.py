@@ -828,6 +828,9 @@ def junit(parser, xml_parent, data):
         <Test+stability+plugin>`.
     :arg bool claim-build: Allow claiming of failed tests (default false)
         Requires the Jenkins :jenkins-wiki:`Claim Plugin <Claim+plugin>`.
+    :arg bool measurement-plots: Create measurement plots (default false)
+        Requires the Jenkins `Measurement Plots Plugin.
+        <https://wiki.jenkins-ci.org/display/JENKINS/Measurement+Plots+Plugin>`_.
 
     Minimal example using defaults:
 
@@ -852,6 +855,9 @@ def junit(parser, xml_parent, data):
     if str(data.get('claim-build', False)).lower() == 'true':
         XML.SubElement(datapublisher,
                        'hudson.plugins.claim.ClaimTestDataPublisher')
+    if str(data.get('measurement-plots', False)).lower() == 'true':
+        XML.SubElement(datapublisher,
+                       'hudson.plugins.measurement__plots.TestDataPublisher')
 
 
 def xunit(parser, xml_parent, data):

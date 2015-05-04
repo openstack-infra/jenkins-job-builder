@@ -4,3 +4,4 @@ publishers:
     keep-long-stdio: false
     test-stability: true
     claim-build: true
+    measurement-plots: true
