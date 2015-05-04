@@ -22,6 +22,10 @@ Enable HipChat notifications of build execution.
     reported in HipChat room. For later plugin versions, explicit notify-*
     setting is required (see below).
   * **room** *(str)*: name of HipChat room to post messages to
+
+    .. deprecated:: 1.2.0  Please use 'rooms'.
+
+  * **rooms** *(list)*: list of HipChat rooms to post messages to
   * **start-notify** *(bool)*: post messages about build start event
   * **notify-success** *(bool)*: post messages about successful build event
     (Jenkins HipChat plugin >= 0.1.5)
@@ -101,9 +105,6 @@ class HipChat(jenkins_jobs.modules.base.Base):
         hipchat = data.get('hipchat')
         if not hipchat or not hipchat.get('enabled', True):
             return
-        if('room' not in hipchat):
-            raise jenkins_jobs.errors.YAMLFormatError(
-                "Missing hipchat 'room' specifier")
         self._load_global_data()
 
         properties = xml_parent.find('properties')
@@ -112,7 +113,17 @@ class HipChat(jenkins_jobs.modules.base.Base):
         pdefhip = XML.SubElement(properties,
                                  'jenkins.plugins.hipchat.'
                                  'HipChatNotifier_-HipChatJobProperty')
-        XML.SubElement(pdefhip, 'room').text = hipchat['room']
+
+        room = XML.SubElement(pdefhip, 'room')
+        if 'rooms' in hipchat:
+            room.text = ",".join(hipchat['rooms'])
+        elif 'room' in hipchat:
+            logger.warn("'room' is deprecated, please use 'rooms'")
+            room.text = hipchat['room']
+        else:
+            raise jenkins_jobs.errors.YAMLFormatError(
+                "Must specify either 'room' or 'rooms' in hipchat config.")
+
         XML.SubElement(pdefhip, 'startNotification').text = str(
             hipchat.get('start-notify', False)).lower()
         if hipchat.get('notify-success'):
