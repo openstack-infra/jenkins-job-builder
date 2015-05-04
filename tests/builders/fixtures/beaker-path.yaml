@@ -1,0 +1,4 @@
+builders:
+    - beaker:
+        path: 'test.xml'
+        download-logs: true

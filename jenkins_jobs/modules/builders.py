@@ -1924,3 +1924,42 @@ def sonatype_clm(parser, xml_parent, data):
         data.get('module-excludes', '')).lower()
     XML.SubElement(path_config, 'scanProperties').text = str(
         data.get('advanced-options', '')).lower()
+
+
+def beaker(parser, xml_parent, data):
+    """yaml: beaker
+    Execute a beaker build step. Requires the Jenkins :jenkins-wiki:`Beaker
+    Builder Plugin <Beaker+Builder+Plugin>`.
+
+    :arg str content: Run job from string
+                      (Alternative: you can choose a path instead)
+    :arg str path: Run job from file
+                   (Alternative: you can choose a content instead)
+    :arg bool download-logs: Download Beaker log files (default false)
+
+    Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/beaker-path.yaml
+       :language: yaml
+
+    .. literalinclude:: ../../tests/builders/fixtures/beaker-content.yaml
+       :language: yaml
+    """
+    beaker = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.beakerbuilder.'
+                                        'BeakerBuilder')
+    jobSource = XML.SubElement(beaker, 'jobSource')
+    if 'content' in data and 'path' in data:
+        raise JenkinsJobsException("Use just one of 'content' or 'path'")
+    elif 'content' in data:
+        jobSourceClass = "org.jenkinsci.plugins.beakerbuilder.StringJobSource"
+        jobSource.set('class', jobSourceClass)
+        XML.SubElement(jobSource, 'jobContent').text = data['content']
+    elif 'path' in data:
+        jobSourceClass = "org.jenkinsci.plugins.beakerbuilder.FileJobSource"
+        jobSource.set('class', jobSourceClass)
+        XML.SubElement(jobSource, 'jobPath').text = data['path']
+    else:
+        raise JenkinsJobsException("Use one of 'content' or 'path'")
+
+    XML.SubElement(beaker, 'downloadFiles').text = str(data.get(
+        'download-logs', False)).lower()
