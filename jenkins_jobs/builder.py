@@ -18,12 +18,9 @@
 import errno
 import os
 import operator
-import sys
 import hashlib
 import yaml
 import xml.etree.ElementTree as XML
-import xml
-from xml.dom import minidom
 import jenkins
 import re
 from pprint import pformat
@@ -35,43 +32,6 @@ from jenkins_jobs.parallel import parallelize
 from jenkins_jobs.parser import YamlParser
 
 logger = logging.getLogger(__name__)
-
-
-# Python 2.6's minidom toprettyxml produces broken output by adding extraneous
-# whitespace around data. This patches the broken implementation with one taken
-# from Python > 2.7.3
-def writexml(self, writer, indent="", addindent="", newl=""):
-    # indent = current indentation
-    # addindent = indentation to add to higher levels
-    # newl = newline string
-    writer.write(indent + "<" + self.tagName)
-
-    attrs = self._get_attributes()
-    a_names = attrs.keys()
-    a_names.sort()
-
-    for a_name in a_names:
-        writer.write(" %s=\"" % a_name)
-        minidom._write_data(writer, attrs[a_name].value)
-        writer.write("\"")
-    if self.childNodes:
-        writer.write(">")
-        if (len(self.childNodes) == 1 and
-                self.childNodes[0].nodeType == minidom.Node.TEXT_NODE):
-            self.childNodes[0].writexml(writer, '', '', '')
-        else:
-            writer.write(newl)
-            for node in self.childNodes:
-                node.writexml(writer, indent + addindent, addindent, newl)
-            writer.write(indent)
-        writer.write("</%s>%s" % (self.tagName, newl))
-    else:
-        writer.write("/>%s" % (newl))
-
-# PyXML xml.__name__ is _xmlplus. Check that if we don't have the default
-# system version of the minidom, then patch the writexml method
-if sys.version_info[:3] < (2, 7, 3) or xml.__name__ != 'xml':
-    minidom.Element.writexml = writexml
 
 
 class CacheStorage(object):
