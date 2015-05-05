@@ -1,6 +1,5 @@
 import os
 
-from jenkins_jobs import cmd
 from tests.base import mock
 from tests.cmd.test_cmd import CmdTestsBase
 
@@ -14,8 +13,8 @@ class DeleteTests(CmdTestsBase):
         Test handling the deletion of a single Jenkins job.
         """
 
-        args = self.parser.parse_args(['delete', 'test_job'])
-        cmd.execute(args, self.config)  # passes if executed without error
+        args = ['--conf', self.default_config_file, 'delete', 'test_job']
+        self.execute_jenkins_jobs_with_args(args)
 
     @mock.patch('jenkins_jobs.cmd.Builder.delete_job')
     def test_delete_multiple_jobs(self, delete_job_mock):
@@ -23,8 +22,9 @@ class DeleteTests(CmdTestsBase):
         Test handling the deletion of multiple Jenkins jobs.
         """
 
-        args = self.parser.parse_args(['delete', 'test_job1', 'test_job2'])
-        cmd.execute(args, self.config)  # passes if executed without error
+        args = ['--conf', self.default_config_file,
+                'delete', 'test_job1', 'test_job2']
+        self.execute_jenkins_jobs_with_args(args)
 
     @mock.patch('jenkins_jobs.builder.Jenkins.delete_job')
     def test_delete_using_glob_params(self, delete_job_mock):
@@ -33,12 +33,12 @@ class DeleteTests(CmdTestsBase):
         parameters feature.
         """
 
-        args = self.parser.parse_args(['delete',
-                                       '--path',
-                                       os.path.join(self.fixtures_path,
-                                                    'cmd-002.yaml'),
-                                       '*bar*'])
-        cmd.execute(args, self.config)
+        args = ['--conf', self.default_config_file,
+                'delete', '--path',
+                os.path.join(self.fixtures_path,
+                             'cmd-002.yaml'),
+                '*bar*']
+        self.execute_jenkins_jobs_with_args(args)
         calls = [mock.call('bar001'), mock.call('bar002')]
         delete_job_mock.assert_has_calls(calls, any_order=True)
         self.assertEqual(delete_job_mock.call_count, len(calls),

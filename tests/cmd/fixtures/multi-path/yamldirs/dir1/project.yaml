@@ -1,0 +1,8 @@
+- project:
+    name: 'beep'
+    jobs:
+      - 'job2'
+
+- job:
+    name: 'job2'
+    disabled: True

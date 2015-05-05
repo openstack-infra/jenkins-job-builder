@@ -13,7 +13,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import argparse
 import fnmatch
 import io
 import logging
@@ -30,6 +29,8 @@ from jenkins_jobs.builder import Builder
 from jenkins_jobs.errors import JenkinsJobsException
 import jenkins_jobs.version
 
+
+import jenkins_jobs.cli
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
@@ -89,110 +90,7 @@ def recurse_path(root, excludes=None):
     return pathlist
 
 
-def create_parser():
-
-    parser = argparse.ArgumentParser()
-    recursive_parser = argparse.ArgumentParser(add_help=False)
-    recursive_parser.add_argument('-r', '--recursive', action='store_true',
-                                  dest='recursive', default=False,
-                                  help='look for yaml files recursively')
-    recursive_parser.add_argument('-x', '--exclude', dest='exclude',
-                                  action='append', default=[],
-                                  help='paths to exclude when using recursive'
-                                       ' search, uses standard globbing.')
-    subparser = parser.add_subparsers(help='update, test or delete job',
-                                      dest='command')
-
-    # subparser: update
-    parser_update = subparser.add_parser('update', parents=[recursive_parser])
-    parser_update.add_argument('path', help='colon-separated list of paths to'
-                                            ' YAML files or directories')
-    parser_update.add_argument('names', help='name(s) of job(s)', nargs='*')
-    parser_update.add_argument('--delete-old', help='delete obsolete jobs',
-                               action='store_true',
-                               dest='delete_old', default=False,)
-    parser_update.add_argument('--workers', dest='n_workers', type=int,
-                               default=1, help='number of workers to use, 0 '
-                               'for autodetection and 1 for just one worker.')
-
-    # subparser: test
-    parser_test = subparser.add_parser('test', parents=[recursive_parser])
-    parser_test.add_argument('path', help='colon-separated list of paths to'
-                                          ' YAML files or directories',
-                             nargs='?', default=sys.stdin)
-    parser_test.add_argument('-p', dest='plugins_info_path', default=None,
-                             help='path to plugin info YAML file')
-    parser_test.add_argument('-o', dest='output_dir', default=sys.stdout,
-                             help='path to output XML')
-    parser_test.add_argument('name', help='name(s) of job(s)', nargs='*')
-
-    # subparser: delete
-    parser_delete = subparser.add_parser('delete', parents=[recursive_parser])
-    parser_delete.add_argument('name', help='name of job', nargs='+')
-    parser_delete.add_argument('-p', '--path', default=None,
-                               help='colon-separated list of paths to'
-                                    ' YAML files or directories')
-
-    # subparser: delete-all
-    subparser.add_parser('delete-all',
-                         help='delete *ALL* jobs from Jenkins server, '
-                         'including those not managed by Jenkins Job '
-                         'Builder.')
-    parser.add_argument('--conf', dest='conf', help='configuration file')
-    parser.add_argument('-l', '--log_level', dest='log_level', default='info',
-                        help="log level (default: %(default)s)")
-    parser.add_argument(
-        '--ignore-cache', action='store_true',
-        dest='ignore_cache', default=False,
-        help='ignore the cache and update the jobs anyhow (that will only '
-             'flush the specified jobs cache)')
-    parser.add_argument(
-        '--flush-cache', action='store_true', dest='flush_cache',
-        default=False, help='flush all the cache entries before updating')
-    parser.add_argument('--version', dest='version', action='version',
-                        version=version(),
-                        help='show version')
-    parser.add_argument(
-        '--allow-empty-variables', action='store_true',
-        dest='allow_empty_variables', default=None,
-        help='Don\'t fail if any of the variables inside any string are not '
-        'defined, replace with empty string instead')
-    parser.add_argument(
-        '--user', '-u',
-        help='The Jenkins user to use for authentication. This overrides '
-        'the user specified in the configuration file')
-    parser.add_argument(
-        '--password', '-p',
-        help='Password or API token to use for authenticating towards '
-        'Jenkins. This overrides the password specified in the '
-        'configuration file.')
-
-    return parser
-
-
-def main(argv=None):
-
-    # We default argv to None and assign to sys.argv[1:] below because having
-    # an argument default value be a mutable type in Python is a gotcha. See
-    # http://bit.ly/1o18Vff
-    if argv is None:
-        argv = sys.argv[1:]
-
-    parser = create_parser()
-    options = parser.parse_args(argv)
-    if not options.command:
-        parser.error("Must specify a 'command' to be performed")
-    if (options.log_level is not None):
-        options.log_level = getattr(logging, options.log_level.upper(),
-                                    logger.getEffectiveLevel())
-        logger.setLevel(options.log_level)
-
-    config = setup_config_settings(options)
-    execute(options, config)
-
-
 def get_config_file(options):
-    # Initialize with the global fallback location for the config.
     conf = '/etc/jenkins_jobs/jenkins_jobs.ini'
     if options.conf:
         conf = options.conf
@@ -211,7 +109,6 @@ def get_config_file(options):
 
 
 def setup_config_settings(options):
-
     conf = get_config_file(options)
     config = configparser.ConfigParser()
     # Load default config always
@@ -225,8 +122,8 @@ def setup_config_settings(options):
         logger.debug("Not requiring config for test output generation")
     else:
         raise JenkinsJobsException(
-            "A valid configuration file is required when not run as a test"
-            "\n{0} is not a valid .ini file".format(conf))
+            "A valid configuration file is required."
+            "\n{0} is not valid.".format(conf))
 
     return config
 
@@ -378,13 +275,3 @@ def execute(options, config):
         builder.update_jobs(options.path, options.name,
                             output=options.output_dir,
                             n_workers=1)
-
-
-def version():
-    return "Jenkins Job Builder version: %s" % \
-        jenkins_jobs.version.version_info.version_string()
-
-
-if __name__ == '__main__':
-    sys.path.insert(0, '.')
-    main()

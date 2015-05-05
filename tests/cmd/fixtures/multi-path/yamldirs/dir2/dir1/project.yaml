@@ -1,0 +1,8 @@
+- project:
+    name: 'goodbye'
+    jobs:
+      - 'job4'
+
+- job:
+    name: 'job4'
+    project-type: matrix

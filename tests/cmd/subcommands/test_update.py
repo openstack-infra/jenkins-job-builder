@@ -18,7 +18,6 @@ import os
 import six
 
 from jenkins_jobs import builder
-from jenkins_jobs import cmd
 from tests.base import mock
 from tests.cmd.test_cmd import CmdTestsBase
 
@@ -35,9 +34,9 @@ class UpdateTests(CmdTestsBase):
         update_jobs_mock.return_value = ([], 0)
 
         path = os.path.join(self.fixtures_path, 'cmd-002.yaml')
-        args = self.parser.parse_args(['update', path])
+        args = ['--conf', self.default_config_file, 'update', path]
 
-        cmd.execute(args, self.config)
+        self.execute_jenkins_jobs_with_args(args)
         update_jobs_mock.assert_called_with([path], [], n_workers=mock.ANY)
 
     @mock.patch('jenkins_jobs.builder.Jenkins.is_job', return_value=True)
@@ -54,9 +53,9 @@ class UpdateTests(CmdTestsBase):
         update_job_mock.return_value = ([], 0)
 
         path = os.path.join(self.fixtures_path, 'cmd-002.yaml')
-        args = self.parser.parse_args(['update', path])
+        args = ['--conf', self.default_config_file, 'update', path]
 
-        cmd.execute(args, self.config)
+        self.execute_jenkins_jobs_with_args(args)
         self.assertTrue(isinstance(update_job_mock.call_args[0][1],
                                    six.text_type))
 
@@ -101,17 +100,18 @@ class UpdateTests(CmdTestsBase):
             [True] * 2 + [False] * 2)
 
         path = os.path.join(self.fixtures_path, 'cmd-002.yaml')
-        args = self.parser.parse_args(['update', '--delete-old', path])
+        args = ['--conf', self.default_config_file, 'update', '--delete-old',
+                path]
 
         with mock.patch('jenkins_jobs.builder.Jenkins.update_job') as update:
             with mock.patch('jenkins_jobs.builder.Jenkins.is_managed',
                             return_value=True):
-                cmd.execute(args, self.config)
-            self.assertEqual(2, update.call_count,
-                             "Expected Jenkins.update_job to be called '%d' "
-                             "times, got '%d' calls instead.\n"
-                             "Called with: %s" % (2, update.call_count,
-                                                  update.mock_calls))
+                self.execute_jenkins_jobs_with_args(args)
+            self.assertEquals(2, update.call_count,
+                              "Expected Jenkins.update_job to be called '%d' "
+                              "times, got '%d' calls instead.\n"
+                              "Called with: %s" % (2, update.call_count,
+                                                   update.mock_calls))
 
         calls = [mock.call(name) for name in jobs]
         self.assertEqual(2, delete_job_mock.call_count,
@@ -130,11 +130,11 @@ class UpdateTests(CmdTestsBase):
         """
 
         path = os.path.join(self.fixtures_path, 'cmd-002.yaml')
-        args = self.parser.parse_args(['update', path])
+        args = ['--conf', self.default_config_file, 'update', path]
 
         with mock.patch('jenkins_jobs.cmd.Builder.update_job') as update_mock:
             update_mock.return_value = ([], 0)
-            cmd.execute(args, self.config)
+            self.execute_jenkins_jobs_with_args(args)
         # unless the timeout is set, should only call with 3 arguments
         # (url, user, password)
         self.assertEqual(len(jenkins_mock.call_args[0]), 3)
@@ -148,12 +148,13 @@ class UpdateTests(CmdTestsBase):
         """
 
         path = os.path.join(self.fixtures_path, 'cmd-002.yaml')
-        args = self.parser.parse_args(['update', path])
-        self.config.set('jenkins', 'timeout', '0.2')
+        config_file = os.path.join(self.fixtures_path,
+                                   'non-default-timeout.ini')
+        args = ['--conf', config_file, 'update', path]
 
         with mock.patch('jenkins_jobs.cmd.Builder.update_job') as update_mock:
             update_mock.return_value = ([], 0)
-            cmd.execute(args, self.config)
+            self.execute_jenkins_jobs_with_args(args)
         # when timeout is set, the fourth argument to the Jenkins api init
         # should be the value specified from the config
         self.assertEqual(jenkins_mock.call_args[0][3], 0.2)

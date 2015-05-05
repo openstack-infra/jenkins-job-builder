@@ -1,0 +1,9 @@
+- project:
+    name: 'meow'
+    jobs:
+      - 'job3'
+
+- job:
+    name: 'job3'
+    display-name: 'herp derp derp'
+    disabled: True
