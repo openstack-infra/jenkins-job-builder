@@ -105,9 +105,6 @@ def create_parser():
     parser_update.add_argument('--delete-old', help='delete obsolete jobs',
                                action='store_true',
                                dest='delete_old', default=False,)
-    parser_update.add_argument('--workers', dest='n_workers', type=int,
-                               default=1, help='number of workers to use, 0 '
-                               'for autodetection and 1 for just one worker.')
 
     # subparser: test
     parser_test = subparser.add_parser('test', parents=[recursive_parser])
@@ -292,24 +289,18 @@ def execute(options, config):
         logger.info("Deleting all jobs")
         builder.delete_all_jobs()
     elif options.command == 'update':
-        if options.n_workers < 0:
-            raise JenkinsJobsException(
-                'Number of workers must be equal or greater than 0')
-
         logger.info("Updating jobs in {0} ({1})".format(
             options.path, options.names))
-        jobs, num_updated_jobs = builder.update_jobs(
-            options.path, options.names,
-            n_workers=options.n_workers)
+        jobs, num_updated_jobs = builder.update_job(options.path,
+                                                    options.names)
         logger.info("Number of jobs updated: %d", num_updated_jobs)
         if options.delete_old:
             num_deleted_jobs = builder.delete_old_managed(
                 keep=[x.name for x in jobs])
             logger.info("Number of jobs deleted: %d", num_deleted_jobs)
     elif options.command == 'test':
-        builder.update_jobs(options.path, options.name,
-                            output=options.output_dir,
-                            n_workers=1)
+        builder.update_job(options.path, options.name,
+                           output=options.output_dir)
 
 
 def version():
