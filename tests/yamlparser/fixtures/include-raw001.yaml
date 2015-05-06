@@ -1,10 +1,45 @@
+# vim: sw=4 ts=4 et
+- wrapper:
+    name: timeout-wrapper
+    wrappers:
+      - timeout:
+          fail: true
+          elastic-percentage: 150
+          elastic-default-timeout: 90
+          type: elastic
+
+- wrapper:
+    name: pre-scm-shell-ant
+    wrappers:
+      - pre-scm-buildstep:
+          - shell:
+              !include-raw: include-raw002-cool.sh
+          - shell:
+              !include-raw: include-raw002-cool.zsh
+          - ant:
+              targets: "target1 target2"
+              ant-name: "Standard Ant"
+          - inject:
+               properties-file: example.prop
+               properties-content: EXAMPLE=foo-bar
+
+- wrapper:
+    name: copy-files
+    wrappers:
+      - copy-to-slave:
+          includes:
+            - file1
+            - file2*.txt
+          excludes:
+            - file2bad.txt
+
+
 - job:
-    name: test-job-2
+    name: test-job-3
+    wrappers:
+        !include: include001.yaml.inc
     properties:
       - inject:
           keep-build-variables: true
           keep-system-variables: true
-    builders:
-      - shell:
-          !include-raw ../../localyaml/fixtures/include-raw001-hello-world.sh
 

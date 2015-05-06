@@ -5,4 +5,4 @@
 
 - job-template:
     name: 'include_path'
-    description: !include test.inc
+    description: !include: test.inc

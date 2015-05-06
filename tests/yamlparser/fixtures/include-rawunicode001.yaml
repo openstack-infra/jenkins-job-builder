@@ -3,7 +3,7 @@
     wrappers:
       - pre-scm-buildstep:
           - shell:
-              !include-raw include-rawunicode001-cool.sh
+              !include-raw: include-rawunicode001-cool.sh
 
 - job:
     name: test-unicode-raw-include-wrapper

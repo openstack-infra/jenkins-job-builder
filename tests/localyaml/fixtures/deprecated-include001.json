@@ -1,0 +1,43 @@
+[
+    {
+        "job": {
+            "name": "test-job-1",
+            "builders": [
+                {
+                    "copyartifact": {
+                        "project": "foo",
+                        "filter": "*.tar.gz",
+                        "target": "/home/foo",
+                        "which-build": "last-successful",
+                        "optional": true,
+                        "flatten": true,
+                        "parameter-filters": "PUBLISH=true"
+                    }
+                },
+                {
+                    "copyartifact": {
+                        "project": "bar",
+                        "filter": "*.tar.gz",
+                        "target": "/home/foo",
+                        "which-build": "specific-build",
+                        "optional": true,
+                        "flatten": true,
+                        "parameter-filters": "PUBLISH=true",
+                        "build-number": 123
+                    }
+                },
+                {
+                    "copyartifact": {
+                        "project": "baz",
+                        "filter": "*.tar.gz",
+                        "target": "/home/foo",
+                        "which-build": "upstream-build",
+                        "optional": true,
+                        "flatten": true,
+                        "parameter-filters": "PUBLISH=true"
+                    }
+                }
+            ]
+        }
+    }
+]

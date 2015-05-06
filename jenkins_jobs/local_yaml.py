@@ -23,7 +23,7 @@ managed separately to the yaml job configurations. A specific usage of this is
 inlining scripts contained in separate files, although such tags may also be
 used to simplify usage of macros or job templates.
 
-The tag ``!include`` will treat the following string as file which should be
+The tag ``!include:`` will treat the following string as file which should be
 parsed as yaml configuration data.
 
 Example:
@@ -35,65 +35,63 @@ Example:
     .. literalinclude:: /../../tests/yamlparser/fixtures/include001.yaml.inc
 
 
-The tag ``!include-raw`` will treat the following file as a data blob, which
-should be read into the calling yaml construct without any further parsing.
-Any data in a file included through this tag, will be treated as string data.
+The tag ``!include-raw:`` will treat the given string or list of strings as
+filenames to be opened as one or more data blob, which should be read into
+the calling yaml construct without any further parsing. Any data in a file
+included through this tag, will be treated as string data.
 
-Example:
+Examples:
 
     .. literalinclude:: /../../tests/localyaml/fixtures/include-raw001.yaml
 
     contents of include-raw001-hello-world.sh:
 
-    .. literalinclude::
-        /../../tests/localyaml/fixtures/include-raw001-hello-world.sh
+        .. literalinclude::
+            /../../tests/localyaml/fixtures/include-raw001-hello-world.sh
 
     contents of include-raw001-vars.sh:
 
+        .. literalinclude::
+            /../../tests/localyaml/fixtures/include-raw001-vars.sh
+
+    using a list of files:
+
     .. literalinclude::
-        /../../tests/localyaml/fixtures/include-raw001-vars.sh
+        /../../tests/localyaml/fixtures/include-raw-multi001.yaml
+
+The tag ``!include-raw-escape:`` treats the given string or list of strings as
+filenames to be opened as one or more data blobs, which should be escaped
+before being read in as string data. This allows job-templates to use this tag
+to include scripts from files without needing to escape braces in the original
+file.
 
 
-The tag ``!include-raw-escape`` treats the given file as a data blob, which
-should be escaped before being read in as string data. This allows
-job-templates to use this tag to include scripts from files without
-needing to escape braces in the original file.
-
-
-Example:
+Examples:
 
     .. literalinclude::
         /../../tests/localyaml/fixtures/include-raw-escaped001.yaml
 
     contents of include-raw001-hello-world.sh:
 
-    .. literalinclude::
-        /../../tests/localyaml/fixtures/include-raw001-hello-world.sh
+        .. literalinclude::
+            /../../tests/localyaml/fixtures/include-raw001-hello-world.sh
 
     contents of include-raw001-vars.sh:
 
-    .. literalinclude::
-        /../../tests/localyaml/fixtures/include-raw001-vars.sh
+        .. literalinclude::
+            /../../tests/localyaml/fixtures/include-raw001-vars.sh
 
-
-Variants for the raw include tags ``!include-raw:`` and
-``!include-raw-escape:`` accept a list of files. All of the specified files
-are concatenated and included as string data.
-
-Example:
-
-    .. literalinclude::
-        /../../tests/localyaml/fixtures/include-raw-multi001.yaml
+    using a list of files:
 
     .. literalinclude::
         /../../tests/localyaml/fixtures/include-raw-escaped-multi001.yaml
 
+
+For all the multi file includes, the files are simply appended using a newline
+character.
+
 """
 
-try:
-    from collections import OrderedDict
-except ImportError:
-    from ordereddict import OrderedDict
 import functools
 import io
 import logging
@@ -101,6 +99,12 @@ import re
 import os
 import yaml
 from yaml.constructor import BaseConstructor
+from yaml import YAMLObject
+
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
 
 logger = logging.getLogger(__name__)
 
@@ -167,11 +171,9 @@ class LocalAnchorLoader(yaml.Loader):
 
 
 class LocalLoader(OrderedConstructor, LocalAnchorLoader):
-    """Subclass for yaml.Loader which handles the local tags 'include',
-    'include-raw' and 'include-raw-escaped' to specify a file to include data
-    from and whether to parse it as additional yaml, treat it as a data blob
-    or additionally escape the data contained. These are specified in yaml
-    files by "!include path/to/file.yaml".
+    """Subclass for yaml.Loader which handles storing the search_path and
+    escape_callback functions for use by the custom YAML objects to find files
+    and escape the content where required.
 
     Constructor access a list of search paths to look under for the given
     file following each tag, taking the first match found. Search path by
@@ -209,18 +211,11 @@ class LocalLoader(OrderedConstructor, LocalAnchorLoader):
                 self.search_path.append(os.path.normpath(p))
 
         if 'escape_callback' in kwargs:
-            self._escape = kwargs.pop('escape_callback')
+            self.escape_callback = kwargs.pop('escape_callback')
+        else:
+            self.escape_callback = self._escape
 
         super(LocalLoader, self).__init__(*args, **kwargs)
-
-        # Add tag constructors
-        self.add_constructor('!include', self._include_tag)
-        self.add_constructor('!include-raw', self._include_raw_tag)
-        self.add_constructor('!include-raw-escape',
-                             self._include_raw_escape_tag)
-        self.add_constructor('!include-raw:', self._include_raw_tag_multi)
-        self.add_constructor('!include-raw-escape:',
-                             self._include_raw_escape_tag_multi)
 
         # constructor to preserve order of maps and ensure that the order of
         # keys returned is consistent across multiple python versions
@@ -232,8 +227,21 @@ class LocalLoader(OrderedConstructor, LocalAnchorLoader):
                 os.path.dirname(self.stream.name)))
         self.search_path.append(os.path.normpath(os.path.curdir))
 
-    def _find_file(self, filename):
-        for dirname in self.search_path:
+    def _escape(self, data):
+        return re.sub(r'({|})', r'\1\1', data)
+
+
+class BaseYAMLObject(YAMLObject):
+    yaml_loader = LocalLoader
+    yaml_dumper = yaml.Dumper
+
+
+class YamlInclude(BaseYAMLObject):
+    yaml_tag = u'!include:'
+
+    @classmethod
+    def _find_file(cls, filename, search_path):
+        for dirname in search_path:
             candidate = os.path.expanduser(os.path.join(dirname, filename))
             if os.path.isfile(candidate):
                 logger.info("Including file '{0}' from path '{1}'"
@@ -241,43 +249,76 @@ class LocalLoader(OrderedConstructor, LocalAnchorLoader):
                 return candidate
         return filename
 
-    def _include_tag(self, loader, node):
-        filename = self._find_file(loader.construct_yaml_str(node))
-        with io.open(filename, 'r', encoding='utf-8') as f:
-            data = yaml.load(f, functools.partial(LocalLoader,
-                                                  search_path=self.search_path
-                                                  ))
-        return data
-
-    def _include_raw_tag(self, loader, node):
-        filename = self._find_file(loader.construct_yaml_str(node))
+    @classmethod
+    def _open_file(cls, loader, scalar_node):
+        filename = cls._find_file(loader.construct_yaml_str(scalar_node),
+                                  loader.search_path)
         try:
             with io.open(filename, 'r', encoding='utf-8') as f:
-                data = f.read()
+                return f.read()
         except:
             logger.error("Failed to include file using search path: '{0}'"
-                         .format(':'.join(self.search_path)))
+                         .format(':'.join(loader.search_path)))
             raise
+
+    @classmethod
+    def _from_file(cls, loader, node):
+        data = yaml.load(cls._open_file(loader, node),
+                         functools.partial(cls.yaml_loader,
+                                           search_path=loader.search_path))
         return data
 
-    def _include_raw_tag_multi(self, loader, node):
-        if not isinstance(node, yaml.SequenceNode):
+    @classmethod
+    def from_yaml(cls, loader, node):
+        if isinstance(node, yaml.ScalarNode):
+            return cls._from_file(loader, node)
+        elif isinstance(node, yaml.SequenceNode):
+            return u'\n'.join(cls._from_file(loader, scalar_node)
+                              for scalar_node in node.value)
+        else:
             raise yaml.constructor.ConstructorError(
-                None, None,
-                "expected a sequence node, but found %s" % node.id,
-                node.start_mark)
+                None, None, "expected either a sequence or scalar node, but "
+                "found %s" % node.id, node.start_mark)
 
-        return '\n'.join(self._include_raw_tag(loader, scalar_node)
-                         for scalar_node in node.value)
 
-    def _include_raw_escape_tag(self, loader, node):
-        return self._escape(self._include_raw_tag(loader, node))
+class YamlIncludeRaw(YamlInclude):
+    yaml_tag = u'!include-raw:'
 
-    def _include_raw_escape_tag_multi(self, loader, node):
-        return self._escape(self._include_raw_tag_multi(loader, node))
+    @classmethod
+    def _from_file(cls, loader, node):
+        return cls._open_file(loader, node)
 
-    def _escape(self, data):
-        return re.sub(r'({|})', r'\1\1', data)
+
+class YamlIncludeRawEscape(YamlIncludeRaw):
+    yaml_tag = u'!include-raw-escape:'
+
+    @classmethod
+    def from_yaml(cls, loader, node):
+        return loader.escape_callback(YamlIncludeRaw.from_yaml(loader, node))
+
+
+class DeprecatedTag(BaseYAMLObject):
+
+    @classmethod
+    def from_yaml(cls, loader, node):
+        logger.warn("tag '%s' is deprecated, switch to using '%s'",
+                    cls.yaml_tag, cls._new.yaml_tag)
+        return cls._new.from_yaml(loader, node)
+
+
+class YamlIncludeDeprecated(DeprecatedTag):
+    yaml_tag = u'!include'
+    _new = YamlInclude
+
+
+class YamlIncludeRawDeprecated(DeprecatedTag):
+    yaml_tag = u'!include-raw'
+    _new = YamlIncludeRaw
+
+
+class YamlIncludeRawEscapeDeprecated(DeprecatedTag):
+    yaml_tag = u'!include-raw-escape'
+    _new = YamlIncludeRawEscape
 
 
 def load(stream, **kwargs):
