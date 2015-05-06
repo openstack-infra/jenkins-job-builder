@@ -242,9 +242,11 @@ class Builder(object):
             else:
                 self.parser.parse(in_file)
 
-    def delete_old_managed(self, keep):
+    def delete_old_managed(self, keep=None):
         jobs = self.jenkins.get_jobs()
         deleted_jobs = 0
+        if keep is None:
+            keep = [job.name for job in self.parser.xml_jobs]
         for job in jobs:
             if job['name'] not in keep and \
                     self.jenkins.is_managed(job['name']):
