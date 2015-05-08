@@ -18,16 +18,13 @@ class CmdTestsBase(testtools.TestCase):
         # are run in parallel.  Stub out the CacheStorage to ensure that each
         # test can safely create the cache directory without risk of
         # interference.
-        self.cache_patch = mock.patch('jenkins_jobs.builder.CacheStorage',
-                                      autospec=True)
-        self.cache_patch.start()
+        cache_patch = mock.patch('jenkins_jobs.builder.CacheStorage',
+                                 autospec=True)
+        self.cache_mock = cache_patch.start()
+        self.addCleanup(cache_patch.stop)
 
         self.config = configparser.ConfigParser()
         self.config.readfp(StringIO(cmd.DEFAULT_CONF))
-
-    def tearDown(self):
-        self.cache_patch.stop()
-        super(CmdTestsBase, self).tearDown()
 
 
 class CmdTests(CmdTestsBase):
