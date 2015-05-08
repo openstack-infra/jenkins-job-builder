@@ -1,6 +1,6 @@
 import os
 
-import mock
+from tests.base import mock
 import testtools
 
 from jenkins_jobs import cmd
