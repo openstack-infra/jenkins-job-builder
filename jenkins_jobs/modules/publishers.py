@@ -3054,6 +3054,8 @@ def plot(parser, xml_parent, data):
                                descriptions used as X-axis labels and the
                                build number and date used for tooltips.
                                (default: False)
+    :arg bool keep-records: When checked, show all builds up to 'Number of
+                            builds to include'. (default: false)
     :arg str csv-file-name: Use for choosing the file name in which the data
                             will be persisted. If none specified and random
                             name is generated as done in the Jenkins Plot
@@ -3155,6 +3157,8 @@ def plot(parser, xml_parent, data):
         XML.SubElement(plugin, 'group').text = plot['group']
         XML.SubElement(plugin, 'useDescr').text = \
             str(plot.get('use-description', False)).lower()
+        XML.SubElement(plugin, 'keepRecords').text = \
+            str(plot.get('keep-records', False)).lower()
         XML.SubElement(plugin, 'numBuilds').text = plot.get('num-builds', '')
         style_list = ['area', 'bar', 'bar3d', 'line', 'line3d', 'stackedArea',
                       'stackedbar', 'stackedbar3d', 'waterfall']

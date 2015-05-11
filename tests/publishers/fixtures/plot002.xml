@@ -16,6 +16,7 @@
           </series>
           <group>bench</group>
           <useDescr>false</useDescr>
+          <keepRecords>false</keepRecords>
           <numBuilds/>
           <style>line</style>
         </hudson.plugins.plot.Plot>
