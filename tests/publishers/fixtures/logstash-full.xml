@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <jenkins.plugins.logstash.LogstashNotifier>
+      <maxLines>2000</maxLines>
+      <failBuild>True</failBuild>
+    </jenkins.plugins.logstash.LogstashNotifier>
+  </publishers>
+</project>

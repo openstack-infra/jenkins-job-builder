@@ -4299,6 +4299,36 @@ def gatling(parser, xml_parent, data):
     XML.SubElement(gatling, 'enabled').text = 'true'
 
 
+def logstash(parser, xml_parent, data):
+    """yaml: logstash
+    Send job's console log to Logstash for processing and analyis of
+    your job data. Also stores test metrics from Junit.
+    Requires the Jenkins :jenkins-wiki:`Logstash Plugin <Logstash+Plugin>`.
+
+    :arg num max-lines: The maximum number of log lines to send to Logstash.
+        ( default 1000 )
+    :arg bool fail-build: Mark build as failed if this step fails.
+        ( default false )
+
+    Minimal Example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/logstash-min.yaml
+
+    Full Example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/logstash-full.yaml
+
+    """
+
+    logstash = XML.SubElement(xml_parent,
+                              'jenkins.plugins.logstash.LogstashNotifier')
+    XML.SubElement(logstash, 'maxLines').text = str(
+        data.get('max-lines', 1000))
+
+    XML.SubElement(logstash, 'failBuild').text = str(
+        data.get('fail-build', False))
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

@@ -1,0 +1,4 @@
+publishers:
+  - logstash:
+      max-lines: 2000
+      fail-build: true
