@@ -17,7 +17,7 @@ The Zuul module adds jobs parameters to manually run a build as Zuul would
 have. It is entirely optional, Zuul 2.0+ pass the parameters over Gearman.
 
 .. _expected by Zuul: \
-http://ci.openstack.org/zuul/launchers.html#zuul-parameters
+http://docs.openstack.org/infra/zuul/launchers.html#zuul-parameters
 """
 
 import itertools
