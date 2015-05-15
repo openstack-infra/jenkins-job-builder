@@ -27,6 +27,7 @@ from jenkins_jobs.constants import MAGIC_MANAGE_STRING
 from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.registry import ModuleRegistry
 from jenkins_jobs.formatter import deep_format
+from jenkins_jobs import utils
 from jenkins_jobs.xml_config import XmlJob
 
 logger = logging.getLogger(__name__)
@@ -69,7 +70,8 @@ class YamlParser(object):
         return keep_desc
 
     def parse_fp(self, fp):
-        data = local_yaml.load(fp, search_path=self.path)
+        # wrap provided file streams to ensure correct encoding used
+        data = local_yaml.load(utils.wrap_stream(fp), search_path=self.path)
         if data:
             if not isinstance(data, list):
                 raise JenkinsJobsException(

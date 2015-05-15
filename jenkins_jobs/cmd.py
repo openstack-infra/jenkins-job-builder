@@ -290,30 +290,30 @@ def execute(options, config):
                       plugins_list=plugins_info)
 
     if getattr(options, 'path', None):
-        if options.path == sys.stdin:
+        if hasattr(options.path, 'read'):
             logger.debug("Input file is stdin")
             if options.path.isatty():
                 key = 'CTRL+Z' if platform.system() == 'Windows' else 'CTRL+D'
                 logger.warn(
                     "Reading configuration from STDIN. Press %s to end input.",
                     key)
+        else:
+            # take list of paths
+            options.path = options.path.split(os.pathsep)
 
-        # take list of paths
-        options.path = options.path.split(os.pathsep)
+            do_recurse = (getattr(options, 'recursive', False) or
+                          config.getboolean('job_builder', 'recursive'))
 
-        do_recurse = (getattr(options, 'recursive', False) or
-                      config.getboolean('job_builder', 'recursive'))
-
-        excludes = [e for elist in options.exclude
-                    for e in elist.split(os.pathsep)] or \
-            config.get('job_builder', 'exclude').split(os.pathsep)
-        paths = []
-        for path in options.path:
-            if do_recurse and os.path.isdir(path):
-                paths.extend(recurse_path(path, excludes))
-            else:
-                paths.append(path)
-        options.path = paths
+            excludes = [e for elist in options.exclude
+                        for e in elist.split(os.pathsep)] or \
+                config.get('job_builder', 'exclude').split(os.pathsep)
+            paths = []
+            for path in options.path:
+                if do_recurse and os.path.isdir(path):
+                    paths.extend(recurse_path(path, excludes))
+                else:
+                    paths.append(path)
+            options.path = paths
 
     if options.command == 'delete':
         for job in options.name:
