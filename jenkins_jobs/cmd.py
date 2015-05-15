@@ -14,6 +14,7 @@
 # under the License.
 
 import argparse
+import io
 from six.moves import configparser, StringIO
 import fnmatch
 import logging
@@ -189,7 +190,7 @@ def setup_config_settings(options):
     config.readfp(StringIO(DEFAULT_CONF))
     if os.path.isfile(conf):
         logger.debug("Reading config from {0}".format(conf))
-        conffp = open(conf, 'r')
+        conffp = io.open(conf, 'r', encoding='utf-8')
         config.readfp(conffp)
     elif options.command == 'test':
         logger.debug("Not requiring config for test output generation")
@@ -231,7 +232,8 @@ def execute(options, config):
     plugins_info = None
 
     if getattr(options, 'plugins_info_path', None) is not None:
-        with open(options.plugins_info_path, 'r') as yaml_file:
+        with io.open(options.plugins_info_path, 'r',
+                     encoding='utf-8') as yaml_file:
             plugins_info = yaml.load(yaml_file)
         if not isinstance(plugins_info, list):
             raise JenkinsJobsException("{0} must contain a Yaml list!"

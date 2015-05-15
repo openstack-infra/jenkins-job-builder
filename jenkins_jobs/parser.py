@@ -17,6 +17,7 @@
 
 import copy
 import fnmatch
+import io
 import itertools
 import logging
 import pkg_resources
@@ -96,7 +97,7 @@ class YamlParser(object):
                 self.data[cls] = group
 
     def parse(self, fn):
-        with open(fn) as fp:
+        with io.open(fn, 'r', encoding='utf-8') as fp:
             self.parse_fp(fp)
 
     def _handle_dups(self, message):

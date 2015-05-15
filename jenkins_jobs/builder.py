@@ -16,6 +16,7 @@
 # Manage jobs in Jenkins server
 
 import errno
+import io
 import os
 import operator
 import hashlib
@@ -49,7 +50,7 @@ class CacheStorage(object):
         if flush or not os.path.isfile(self.cachefilename):
             self.data = {}
         else:
-            with open(self.cachefilename, 'r') as yfile:
+            with io.open(self.cachefilename, 'r', encoding='utf-8') as yfile:
                 self.data = yaml.load(yfile)
         logger.debug("Using cache: '{0}'".format(self.cachefilename))
 
@@ -83,7 +84,8 @@ class CacheStorage(object):
         # due to an exception occurring in the __init__
         if getattr(self, 'data', None) is not None:
             try:
-                with open(self.cachefilename, 'w') as yfile:
+                with io.open(self.cachefilename, 'w',
+                             encoding='utf-8') as yfile:
                     self._yaml.dump(self.data, yfile)
             except Exception as e:
                 self._logger.error("Failed to write to cache file '%s' on "
@@ -315,9 +317,8 @@ class Builder(object):
 
                 output_fn = os.path.join(output, job.name)
                 logger.debug("Writing XML to '{0}'".format(output_fn))
-                f = open(output_fn, 'w')
-                f.write(job.output())
-                f.close()
+                with io.open(output_fn, 'w', encoding='utf-8') as f:
+                    f.write(job.output().decode('utf-8'))
                 continue
             md5 = job.md5()
             if (self.jenkins.is_job(job.name)

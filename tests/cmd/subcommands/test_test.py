@@ -1,6 +1,5 @@
 import os
 import io
-import codecs
 import yaml
 
 import jenkins
@@ -169,9 +168,8 @@ class TestTests(CmdTestsBase):
         with mock.patch('sys.stdout', console_out):
             cmd.main(['test', os.path.join(self.fixtures_path,
                       'cmd-001.yaml')])
-        xml_content = codecs.open(os.path.join(self.fixtures_path,
-                                               'cmd-001.xml'),
-                                  'r', 'utf-8').read()
+        xml_content = io.open(os.path.join(self.fixtures_path, 'cmd-001.xml'),
+                              'r', encoding='utf-8').read()
         self.assertEqual(console_out.getvalue().decode('utf-8'), xml_content)
 
     def test_config_with_test(self):
@@ -208,7 +206,8 @@ class TestTests(CmdTestsBase):
         with mock.patch('sys.stdout'):
             cmd.execute(args, self.config)   # probably better to fail here
 
-        with open(plugins_info_stub_yaml_file, 'r') as yaml_file:
+        with io.open(plugins_info_stub_yaml_file,
+                     'r', encoding='utf-8') as yaml_file:
             plugins_info_list = yaml.load(yaml_file)
 
         registry_mock.assert_called_with(self.config, plugins_info_list)

@@ -17,7 +17,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import codecs
+import io
 import logging
 import os
 import re
@@ -109,12 +109,12 @@ class BaseTestCase(object):
             return u""
 
         # Read XML content, assuming it is unicode encoded
-        xml_content = u"%s" % codecs.open(self.out_filename,
-                                          'r', 'utf-8').read()
+        xml_content = u"%s" % io.open(self.out_filename,
+                                      'r', encoding='utf-8').read()
         return xml_content
 
     def _read_yaml_content(self, filename):
-        with open(filename, 'r') as yaml_file:
+        with io.open(filename, 'r', encoding='utf-8') as yaml_file:
             yaml_content = yaml.load(yaml_file)
         return yaml_content
 
@@ -124,7 +124,7 @@ class BaseTestCase(object):
 
         if self.conf_filename is not None:
             config = configparser.ConfigParser()
-            config.readfp(open(self.conf_filename))
+            config.readfp(io.open(self.conf_filename, 'r', encoding='utf-8'))
         else:
             config = {}
 
@@ -179,7 +179,7 @@ class SingleJobTestCase(BaseTestCase):
 
         if self.conf_filename:
             config = configparser.ConfigParser()
-            config.readfp(open(self.conf_filename))
+            config.readfp(io.open(self.conf_filename, 'r', encoding='utf-8'))
         else:
             config = None
         parser = YamlParser(config)

@@ -90,12 +90,12 @@ Example:
 
 """
 
-import codecs
 try:
     from collections import OrderedDict
 except ImportError:
     from ordereddict import OrderedDict
 import functools
+import io
 import logging
 import re
 import os
@@ -183,18 +183,18 @@ class LocalLoader(OrderedConstructor, LocalAnchorLoader):
 
         # use the load function provided in this module
         import local_yaml
-        data = local_yaml.load(open(fn))
+        data = local_yaml.load(io.open(fn, 'r', encoding='utf-8'))
 
 
         # Loading by providing the alternate class to the default yaml load
         from local_yaml import LocalLoader
-        data = yaml.load(open(fn), LocalLoader)
+        data = yaml.load(io.open(fn, 'r', encoding='utf-8'), LocalLoader)
 
         # Loading with a search path
         from local_yaml import LocalLoader
         import functools
-        data = yaml.load(open(fn), functools.partial(LocalLoader,
-                        search_path=['path']))
+        data = yaml.load(io.open(fn, 'r', encoding='utf-8'),
+                         functools.partial(LocalLoader, search_path=['path']))
 
     """
 
@@ -243,7 +243,7 @@ class LocalLoader(OrderedConstructor, LocalAnchorLoader):
 
     def _include_tag(self, loader, node):
         filename = self._find_file(loader.construct_yaml_str(node))
-        with open(filename, 'r') as f:
+        with io.open(filename, 'r', encoding='utf-8') as f:
             data = yaml.load(f, functools.partial(LocalLoader,
                                                   search_path=self.search_path
                                                   ))
@@ -252,7 +252,7 @@ class LocalLoader(OrderedConstructor, LocalAnchorLoader):
     def _include_raw_tag(self, loader, node):
         filename = self._find_file(loader.construct_yaml_str(node))
         try:
-            with codecs.open(filename, 'r', 'utf-8') as f:
+            with io.open(filename, 'r', encoding='utf-8') as f:
                 data = f.read()
         except:
             logger.error("Failed to include file using search path: '{0}'"
