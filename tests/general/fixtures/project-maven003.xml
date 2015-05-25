@@ -5,6 +5,8 @@
   <rootPOM>pom.xml</rootPOM>
   <aggregatorStyleBuild>true</aggregatorStyleBuild>
   <incrementalBuild>false</incrementalBuild>
+  <siteArchivingDisabled>false</siteArchivingDisabled>
+  <fingerprintingDisabled>false</fingerprintingDisabled>
   <perModuleEmail>true</perModuleEmail>
   <archivingDisabled>false</archivingDisabled>
   <resolveDependencies>false</resolveDependencies>

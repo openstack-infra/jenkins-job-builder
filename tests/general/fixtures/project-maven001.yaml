@@ -7,3 +7,11 @@ maven:
     artifact-id: hey
   settings: test
   global-settings: test
+  incremental-build: true
+  automatic-archiving: false
+  automatic-site-archiving: false
+  parallel-build-modules: true
+  resolve-dependencies: true
+  process-plugins: true
+  run-headless: true
+  custom-workspace: path/to/some/repository
