@@ -286,6 +286,11 @@ class YamlParser(object):
                     'job_builder', 'allow_empty_variables') \
                 and self.config.getboolean(
                     'job_builder', 'allow_empty_variables')
+
+            for key in template.keys():
+                if key not in params:
+                    params[key] = template[key]
+
             expanded = deep_format(template, params, allow_empty_variables)
 
             job_name = expanded.get('name')
