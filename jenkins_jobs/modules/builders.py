@@ -299,6 +299,12 @@ def trigger_builds(parser, xml_parent, data):
     :arg bool current-parameters: Whether to include the
       parameters passed to the current build to the
       triggered job.
+    :arg str node-label-name: Define a name for the NodeLabel parameter to be
+      set. Used in conjunction with node-label. Requires NodeLabel Parameter
+      Plugin (optional)
+    :arg str node-label: Label of the nodes where build should be triggered.
+      Used in conjunction with node-label-name.  Requires NodeLabel Parameter
+      Plugin (optional)
     :arg bool svn-revision: Whether to pass the svn revision
       to the triggered job
     :arg bool git-revision: Whether to pass the git revision
@@ -438,6 +444,15 @@ def trigger_builds(parser, xml_parent, data):
                 XML.SubElement(param, 'name').text = str(bool_param['name'])
                 XML.SubElement(param, 'value').text = str(
                     bool_param.get('value', False)).lower()
+
+        if 'node-label-name' in project_def and 'node-label' in project_def:
+            node = XML.SubElement(tconfigs, 'org.jvnet.jenkins.plugins.'
+                                  'nodelabelparameter.parameterizedtrigger.'
+                                  'NodeLabelBuildParameter')
+            XML.SubElement(node, 'name').text = \
+                project_def.get('node-label-name')
+            XML.SubElement(node, 'nodeLabel').text = \
+                project_def.get('node-label')
 
         if(len(list(tconfigs)) == 0):
             tconfigs.set('class', 'java.util.Collections$EmptyList')

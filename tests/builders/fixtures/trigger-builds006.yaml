@@ -4,5 +4,7 @@ builders:
       predefined-parameters:
         FOO="bar"
       current-parameters: true
+      node-label-name: NODE
+      node-label: testnodes
       git-revision: true
       block: true
