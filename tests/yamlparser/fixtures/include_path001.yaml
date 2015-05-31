@@ -1,0 +1,8 @@
+- project:
+    name: include_path
+    jobs:
+        - 'include_path'
+
+- job-template:
+    name: 'include_path'
+    description: !include test.inc
