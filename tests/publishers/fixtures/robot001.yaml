@@ -11,3 +11,4 @@ publishers:
       other-files:
         - extra-file1.html
         - extra-file2.txt
+      archive-output-xml: false

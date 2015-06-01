@@ -14,6 +14,7 @@
         <string>extra-file1.html</string>
         <string>extra-file2.txt</string>
       </otherFiles>
+      <disableArchiveOutput>true</disableArchiveOutput>
     </hudson.plugins.robot.RobotPublisher>
   </publishers>
 </project>
