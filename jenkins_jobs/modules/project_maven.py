@@ -35,8 +35,23 @@ in the :ref:`Job` definition.
       `local-to-executor`.
     * **ignore-upstream-changes** (`bool`): Do not start a build whenever
       a SNAPSHOT dependency is built or not. (default true)
+    * **incremental-build** (`bool`): Activate incremental build - only build
+      changed modules (default false).
     * **automatic-archiving** (`bool`): Activate automatic artifact archiving
       (default true).
+    * **automatic-site-archiving** (`bool`): Activate automatic site
+      documentation artifact archiving (default true).
+    * **automatic-fingerprinting** (`bool`): Activate automatic fingerprinting
+      of consumed and produced artifacts (default true).
+    * **parallel-build-modules** (`bool`): Build modules in parallel
+      (default false)
+    * **resolve-dependencies** (`bool`): Resolve Dependencies during Pom
+      parsing (default false).
+    * **run-headless** (`bool`): Run headless (default false).
+    * **process-plugins** (`bool`): Process Plugins during Pom parsing
+      (default false).
+    * **custom-workspace** (`str`): Path to the custom workspace. If no path is
+      provided, custom workspace is not used. (optional)
     * **settings** (`str`): Path to custom maven settings file.
       It is possible to provide a ConfigFileProvider settings file as well
       see CFP Example below. (optional)
@@ -111,15 +126,27 @@ class Maven(jenkins_jobs.modules.base.Base):
 
         XML.SubElement(xml_parent, 'rootPOM').text = \
             data['maven'].get('root-pom', 'pom.xml')
-        XML.SubElement(xml_parent, 'aggregatorStyleBuild').text = 'true'
-        XML.SubElement(xml_parent, 'incrementalBuild').text = 'false'
+        XML.SubElement(xml_parent, 'aggregatorStyleBuild').text = str(
+            not data['maven'].get('parallel-build-modules', False)).lower()
+        XML.SubElement(xml_parent, 'incrementalBuild').text = str(
+            data['maven'].get('incremental-build', False)).lower()
+        XML.SubElement(xml_parent, 'siteArchivingDisabled').text = str(
+            not data['maven'].get('automatic-site-archiving', True)).lower()
+        XML.SubElement(xml_parent, 'fingerprintingDisabled').text = str(
+            not data['maven'].get('automatic-fingerprinting', True)).lower()
         XML.SubElement(xml_parent, 'perModuleEmail').text = 'true'
         XML.SubElement(xml_parent, 'archivingDisabled').text = str(
             not data['maven'].get('automatic-archiving', True)).lower()
-        XML.SubElement(xml_parent, 'resolveDependencies').text = 'false'
-        XML.SubElement(xml_parent, 'processPlugins').text = 'false'
+        XML.SubElement(xml_parent, 'resolveDependencies').text = str(
+            data['maven'].get('resolve-dependencies', False)).lower()
+        XML.SubElement(xml_parent, 'processPlugins').text = str(
+            data['maven'].get('process-plugins', False)).lower()
         XML.SubElement(xml_parent, 'mavenValidationLevel').text = '-1'
-        XML.SubElement(xml_parent, 'runHeadless').text = 'false'
+        XML.SubElement(xml_parent, 'runHeadless').text = str(
+            data['maven'].get('run-headless', False)).lower()
+        if 'custom-workspace' in data['maven']:
+            XML.SubElement(xml_parent, 'customWorkspace').text = str(
+                data['maven'].get('custom-workspace'))
         config_file_provider_settings(xml_parent, data['maven'])
 
         run_post_steps = XML.SubElement(xml_parent, 'runPostStepsIfResult')

@@ -7,14 +7,17 @@
   <goals>deploy</goals>
   <ignoreUpstremChanges>true</ignoreUpstremChanges>
   <rootPOM>pom.xml</rootPOM>
-  <aggregatorStyleBuild>true</aggregatorStyleBuild>
-  <incrementalBuild>false</incrementalBuild>
+  <aggregatorStyleBuild>false</aggregatorStyleBuild>
+  <incrementalBuild>true</incrementalBuild>
+  <siteArchivingDisabled>true</siteArchivingDisabled>
+  <fingerprintingDisabled>false</fingerprintingDisabled>
   <perModuleEmail>true</perModuleEmail>
-  <archivingDisabled>false</archivingDisabled>
-  <resolveDependencies>false</resolveDependencies>
-  <processPlugins>false</processPlugins>
+  <archivingDisabled>true</archivingDisabled>
+  <resolveDependencies>true</resolveDependencies>
+  <processPlugins>true</processPlugins>
   <mavenValidationLevel>-1</mavenValidationLevel>
-  <runHeadless>false</runHeadless>
+  <runHeadless>true</runHeadless>
+  <customWorkspace>path/to/some/repository</customWorkspace>
   <settings class="jenkins.mvn.FilePathSettingsProvider">
     <path>test</path>
   </settings>
