@@ -4,3 +4,4 @@ publishers:
       url: http://repo.example.com/maven2/
       unique-version: true
       deploy-unstable: false
+      release-env-var: TIMER

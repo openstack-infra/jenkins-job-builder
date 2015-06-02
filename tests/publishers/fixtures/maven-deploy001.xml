@@ -6,6 +6,7 @@
       <url>http://repo.example.com/maven2/</url>
       <uniqueVersion>true</uniqueVersion>
       <evenIfUnstable>false</evenIfUnstable>
+      <releaseEnvVar>TIMER</releaseEnvVar>
     </hudson.maven.RedeployPublisher>
   </publishers>
 </project>
