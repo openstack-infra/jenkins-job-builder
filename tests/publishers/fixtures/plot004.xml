@@ -24,6 +24,7 @@
           </series>
           <group>PlotGroup</group>
           <useDescr>false</useDescr>
+          <keepRecords>false</keepRecords>
           <numBuilds/>
           <style>line</style>
         </hudson.plugins.plot.Plot>
@@ -42,6 +43,7 @@
           </series>
           <group>PlotGroup</group>
           <useDescr>false</useDescr>
+          <keepRecords>false</keepRecords>
           <numBuilds/>
           <style>line</style>
         </hudson.plugins.plot.Plot>
