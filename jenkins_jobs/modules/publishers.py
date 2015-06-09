@@ -3846,6 +3846,8 @@ def scan_build(parser, xml_parent, data):
     :arg bool mark-unstable: Mark build as unstable if the number of bugs
         exceeds a threshold (default: false)
     :arg int threshold: Threshold for marking builds as unstable (default: 0)
+    :arg string exclude-paths: Comma separated paths to exclude from reports
+        (default: '')
 
     Example:
 
@@ -3864,6 +3866,8 @@ def scan_build(parser, xml_parent, data):
     XML.SubElement(p, 'markBuildUnstableWhenThresholdIsExceeded').text = \
         str(data.get('mark-unstable', False)).lower()
     XML.SubElement(p, 'bugThreshold').text = threshold
+    XML.SubElement(p, 'clangexcludedpaths').text = str(
+        data.get('exclude-paths', ''))
 
 
 def dry(parser, xml_parent, data):

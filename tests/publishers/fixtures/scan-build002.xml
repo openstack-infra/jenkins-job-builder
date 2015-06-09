@@ -4,6 +4,7 @@
     <jenkins.plugins.clangscanbuild.publisher.ClangScanBuildPublisher>
       <markBuildUnstableWhenThresholdIsExceeded>false</markBuildUnstableWhenThresholdIsExceeded>
       <bugThreshold>0</bugThreshold>
+      <clangexcludedpaths/>
     </jenkins.plugins.clangscanbuild.publisher.ClangScanBuildPublisher>
   </publishers>
 </project>
