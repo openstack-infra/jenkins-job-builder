@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.cloudbees.hudson.plugins.folder.Folder plugin="cloudbees-folder">
+  <actions/>
+  <icon class="com.cloudbees.hudson.plugins.folder.icons.StockFolderIcon"/>
+  <views/>
+  <viewsTabBar class="hudson.views.DefaultViewsTabBar"/>
+  <primaryView>All</primaryView>
+  <healthMetrics/>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <publishers/>
+  <buildWrappers/>
+</com.cloudbees.hudson.plugins.folder.Folder>

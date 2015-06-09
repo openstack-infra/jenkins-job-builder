@@ -1,0 +1,8 @@
+- job-template:
+    name: 'folder-{name}'
+    project-type: folder
+
+- project:
+    name: test
+    jobs:
+    - 'folder-{name}'
