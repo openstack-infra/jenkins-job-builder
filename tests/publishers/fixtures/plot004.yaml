@@ -6,6 +6,8 @@ publishers:
       group: PlotGroup
       num-builds: ''
       style: line
+      exclude-zero-yaxis: true
+      logarithmic-yaxis: true
       use-description: false
       series:
         - file: graph-me-second.properties

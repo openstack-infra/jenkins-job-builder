@@ -24,6 +24,8 @@
           </series>
           <group>PlotGroup</group>
           <useDescr>false</useDescr>
+          <exclZero>true</exclZero>
+          <logarithmic>true</logarithmic>
           <keepRecords>false</keepRecords>
           <numBuilds/>
           <style>line</style>
@@ -43,6 +45,8 @@
           </series>
           <group>PlotGroup</group>
           <useDescr>false</useDescr>
+          <exclZero>false</exclZero>
+          <logarithmic>false</logarithmic>
           <keepRecords>false</keepRecords>
           <numBuilds/>
           <style>line</style>

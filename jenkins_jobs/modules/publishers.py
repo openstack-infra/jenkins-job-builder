@@ -3064,7 +3064,14 @@ def plot(parser, xml_parent, data):
                                descriptions used as X-axis labels and the
                                build number and date used for tooltips.
                                (default: False)
-    :arg bool keep-records: When checked, show all builds up to 'Number of
+    :arg bool exclude-zero-yaxis: When false, Y-axis contains the value zero
+                                  even if it is not included in the data
+                                  series. When true, the value zero is not
+                                  automatically included. (default: False)
+    :arg bool logarithmic-yaxis: When true, the Y-axis will use a logarithmic
+                                 scale. By default, the Y-axis uses a linear
+                                 scale. (default: False)
+    :arg bool keep-records: When true, show all builds up to 'Number of
                             builds to include'. (default: false)
     :arg str csv-file-name: Use for choosing the file name in which the data
                             will be persisted. If none specified and random
@@ -3167,6 +3174,10 @@ def plot(parser, xml_parent, data):
         XML.SubElement(plugin, 'group').text = plot['group']
         XML.SubElement(plugin, 'useDescr').text = \
             str(plot.get('use-description', False)).lower()
+        XML.SubElement(plugin, 'exclZero').text = \
+            str(plot.get('exclude-zero-yaxis', False)).lower()
+        XML.SubElement(plugin, 'logarithmic').text = \
+            str(plot.get('logarithmic-yaxis', False)).lower()
         XML.SubElement(plugin, 'keepRecords').text = \
             str(plot.get('keep-records', False)).lower()
         XML.SubElement(plugin, 'numBuilds').text = plot.get('num-builds', '')

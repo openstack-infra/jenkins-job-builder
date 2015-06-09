@@ -18,6 +18,8 @@
           </series>
           <group>bench</group>
           <useDescr>false</useDescr>
+          <exclZero>false</exclZero>
+          <logarithmic>false</logarithmic>
           <keepRecords>false</keepRecords>
           <numBuilds/>
           <style>line</style>
