@@ -1,0 +1,9 @@
+builders:
+    - conditional-step:
+        condition-kind: day-of-week
+        day-selector: select-days
+        days:
+            SUN: true
+        use-build-time: true
+        steps:
+            - shell: "sl"

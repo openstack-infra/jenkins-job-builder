@@ -1,0 +1,7 @@
+builders:
+    - conditional-step:
+        condition-kind: regex-match
+        regex: a*b
+        label: cadaaab
+        steps:
+            - shell: "sl"

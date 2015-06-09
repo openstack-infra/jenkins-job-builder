@@ -1,0 +1,9 @@
+builders:
+      - conditional-step:
+          condition-kind: num-comp
+          lhs: "2 + 5"
+          rhs: "1 + 6"
+          comparator: equal
+          condition-basedir: "jenkins-home"
+          steps:
+              - shell: "sl"
