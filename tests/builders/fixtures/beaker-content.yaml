@@ -1,0 +1,8 @@
+builders:
+    - beaker:
+        content: |
+            <job group='product-QA'>
+                <whiteboard>
+                    Apache 2.2 test
+                </whiteboard>
+            </job>
