@@ -1484,12 +1484,18 @@ def email_ext(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Email-ext Plugin
     <Email-ext+plugin>`.
 
+    :arg bool disable-publisher: Disable the publisher, while maintaining the
+        settings. The usage model for this is when you want to test things out
+        in the build, not send out e-mails during the testing. A message will
+        be printed to the build log saying that the publisher is disabled.
+        (default false)
     :arg str recipients: Comma separated list of emails
     :arg str reply-to: Comma separated list of emails that should be in
         the Reply-To header for this project (default $DEFAULT_REPLYTO)
     :arg str content-type: The content type of the emails sent. If not set, the
         Jenkins plugin uses the value set on the main configuration page.
-        Possible values: 'html', 'text' or 'default' (default 'default')
+        Possible values: 'html', 'text', 'both-html-text' or 'default'
+        (default 'default')
     :arg str subject: Subject for the email, can include variables like
         ${BUILD_NUMBER} or even groovy or javascript code
     :arg str body: Content for the body of the email, can include variables
@@ -1579,6 +1585,7 @@ def email_ext(parser, xml_parent, data):
         'text': 'text/plain',
         'html': 'text/html',
         'default': 'default',
+        'both-html-text': 'both',
     }
     ctype = data.get('content-type', 'default')
     if ctype not in content_type_mime:
@@ -1594,10 +1601,12 @@ def email_ext(parser, xml_parent, data):
         'attachments', '')
     XML.SubElement(emailext, 'presendScript').text = data.get(
         'presend-script', '')
-    XML.SubElement(emailext, 'attachBuildLog').text = \
-        str(data.get('attach-build-log', False)).lower()
-    XML.SubElement(emailext, 'saveOutput').text = \
-        str(data.get('save-output', False)).lower()
+    XML.SubElement(emailext, 'attachBuildLog').text = str(data.get(
+        'attach-build-log', False)).lower()
+    XML.SubElement(emailext, 'saveOutput').text = str(data.get(
+        'save-output', False)).lower()
+    XML.SubElement(emailext, 'disabled').text = str(data.get(
+        'disable-publisher', False)).lower()
     XML.SubElement(emailext, 'replyTo').text = data.get('reply-to',
                                                         '$DEFAULT_REPLYTO')
     matrix_dict = {'both': 'BOTH',
