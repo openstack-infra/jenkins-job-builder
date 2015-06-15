@@ -58,6 +58,9 @@ in the :ref:`Job` definition.
     * **global-settings** (`str`): Path to custom maven global settings file.
       It is possible to provide a ConfigFileProvider settings file as well
       see CFP Example below. (optional)
+    * **post-step-run-condition** (`str`): Run the post-build steps only if the
+      build succeeds ('SUCCESS'), build succeeds or is unstable ('UNSTABLE'),
+      regardless of build result ('FAILURE'). (default 'FAILURE').
 
 Requires the Jenkins `Config File Provider Plugin
 <https://wiki.jenkins-ci.org/display/JENKINS/Config+File+Provider+Plugin>`_
@@ -74,7 +77,9 @@ CFP Example:
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+from jenkins_jobs.modules import hudson_model
 from jenkins_jobs.modules.helpers import config_file_provider_settings
+from jenkins_jobs.errors import InvalidAttributeError
 
 
 class Maven(jenkins_jobs.modules.base.Base):
@@ -150,8 +155,14 @@ class Maven(jenkins_jobs.modules.base.Base):
         config_file_provider_settings(xml_parent, data['maven'])
 
         run_post_steps = XML.SubElement(xml_parent, 'runPostStepsIfResult')
-        XML.SubElement(run_post_steps, 'name').text = 'FAILURE'
-        XML.SubElement(run_post_steps, 'ordinal').text = '2'
-        XML.SubElement(run_post_steps, 'color').text = 'red'
+        run_conditions = ['SUCCESS', 'UNSTABLE', 'FAILURE']
+        run_condition = data['maven'].get('post-step-run-condition', 'FAILURE')
+        if run_condition not in run_conditions:
+            raise InvalidAttributeError('post-step-run-condition',
+                                        run_condition, run_conditions)
+        cond_dict = hudson_model.THRESHOLDS[run_condition]
+        XML.SubElement(run_post_steps, 'name').text = cond_dict['name']
+        XML.SubElement(run_post_steps, 'ordinal').text = cond_dict['ordinal']
+        XML.SubElement(run_post_steps, 'color').text = cond_dict['color']
 
         return xml_parent
