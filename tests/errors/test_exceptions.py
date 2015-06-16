@@ -14,6 +14,12 @@ def dispatch(exc, *args):
     raise exc(*args)
 
 
+def gen_xml(exc, *args):
+    data = {'module': 'data'}  # noqa
+
+    raise exc(*args)
+
+
 class TestInvalidAttributeError(TestCase):
 
     def test_no_valid_values(self):
@@ -48,20 +54,28 @@ class TestMissingAttributeError(TestCase):
         #  * the missing attribute
         #  * which component type and component name is missing it.
         missing_attribute = 'herp'
-        message = "Missing {0} from an instance of {1}".format(
+        message = "Missing {0} from an instance of '{1}'".format(
             missing_attribute, 'type.name')
 
         with ExpectedException(errors.MissingAttributeError, message):
             dispatch(errors.MissingAttributeError, missing_attribute)
+
+        with ExpectedException(errors.MissingAttributeError,
+                               message.replace('type.name', 'module')):
+            gen_xml(errors.MissingAttributeError, missing_attribute)
 
     def test_with_multiple_missing_attributes(self):
         # When passed multiple missing attributes, display a message indicating
         #  * the missing attributes
         #  * which component type and component name is missing it.
         missing_attribute = ['herp', 'derp']
-        message = "One of {0} must be present in {1}".format(
+        message = "One of {0} must be present in '{1}'".format(
             ', '.join("'{0}'".format(value) for value in missing_attribute),
             'type.name')
 
         with ExpectedException(errors.MissingAttributeError, message):
             dispatch(errors.MissingAttributeError, missing_attribute)
+
+        with ExpectedException(errors.MissingAttributeError,
+                               message.replace('type.name', 'module')):
+            gen_xml(errors.MissingAttributeError, missing_attribute)
