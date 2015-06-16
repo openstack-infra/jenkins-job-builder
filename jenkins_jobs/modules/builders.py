@@ -1101,6 +1101,41 @@ def conditional_step(parser, xml_parent, data):
         build_step(steps_parent, step)
 
 
+def maven_builder(parser, xml_parent, data):
+    """yaml: maven-builder
+    Execute Maven3 builder
+
+    :arg str name: Name of maven installation from the configuration
+    :arg str pom: Location of pom.xml (default 'pom.xml')
+    :arg str goals: Goals to execute
+    :arg str maven-opts: Additional options for maven (optional)
+
+    Requires the Jenkins `Artifactory Plugin
+    <https://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin>`_
+    allows your build jobs to deploy artifacts automatically to Artifactory.
+
+    Example:
+
+    .. literalinclude:: /../../tests/builders/fixtures/maven-builder001.yaml
+       :language: yaml
+    """
+    maven = XML.SubElement(xml_parent, 'org.jfrog.hudson.maven3.Maven3Builder')
+
+    required = {
+        'mavenName': 'name',
+        'goals': 'goals',
+    }
+
+    for key in required:
+        try:
+            XML.SubElement(maven, key).text = data[required[key]]
+        except KeyError:
+            raise MissingAttributeError(required[key])
+
+    XML.SubElement(maven, 'rootPom').text = data.get('pom', 'pom.xml')
+    XML.SubElement(maven, 'mavenOpts').text = data.get('maven-opts', '')
+
+
 def maven_target(parser, xml_parent, data):
     """yaml: maven-target
     Execute top-level Maven targets
