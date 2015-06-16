@@ -1,0 +1,4 @@
+builders:
+  - ssh-builder:
+      ssh-user-ip: foo@bar:22
+      command: echo foo
