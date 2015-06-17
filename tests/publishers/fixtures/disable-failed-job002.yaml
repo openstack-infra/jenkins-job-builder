@@ -1,0 +1,3 @@
+publishers:
+  - disable-failed-job:
+      when-to-disable: 'Only Failure'

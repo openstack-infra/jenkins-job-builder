@@ -31,7 +31,9 @@ import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
 from jenkins_jobs.modules.helpers import build_trends_publisher
 from jenkins_jobs.modules.helpers import findbugs_settings
-from jenkins_jobs.errors import JenkinsJobsException, InvalidAttributeError
+from jenkins_jobs.errors import (InvalidAttributeError,
+                                 JenkinsJobsException,
+                                 MissingAttributeError)
 import logging
 import pkg_resources
 import sys
@@ -4504,6 +4506,56 @@ def naginator(parser, xml_parent, data):
             data.get('progressive-delay-maximum', '0'))
     XML.SubElement(naginator, 'maxSchedule').text = str(
         data.get('max-failed-builds', '0'))
+
+
+def disable_failed_job(parser, xml_parent, data):
+    """yaml: disable-failed-job
+    Automatically disable failed jobs.
+
+    Requires the Jenkins :jenkins-wiki:`Disable Failed Job Plugin
+    <Disable+Failed+Job+Plugin>`.
+
+    :arg str when-to-disable: The condition to disable the job. (required)
+        Possible values are
+
+        * **Only Failure**
+        * **Failure and Unstable**
+        * **Unstable**
+
+    :arg int no-of-failures: Number of consecutive failures to disable the
+        job. (optional)
+
+    Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/disable-failed-job001.yaml
+       :language: yaml
+    """
+
+    xml_element = XML.SubElement(xml_parent, 'disableFailedJob.'
+                                 'disableFailedJob.DisableFailedJob',
+                                 {'plugin': 'disable-failed-job'})
+
+    valid_conditions = ['Only Failure',
+                        'Failure and Unstable',
+                        'Only Unstable']
+
+    try:
+        disable_condition = str(data['when-to-disable'])
+    except KeyError as e:
+        raise MissingAttributeError(e.args[0])
+
+    if disable_condition not in valid_conditions:
+        raise InvalidAttributeError('when-to-disable', disable_condition,
+                                    valid_conditions)
+    XML.SubElement(xml_element, 'whenDisable').text = disable_condition
+
+    if 'no-of-failures' in data:
+        XML.SubElement(xml_element, 'failureTimes').text = str(data.get(
+            'no-of-failures'))
+        XML.SubElement(xml_element, 'optionalBrockChecked').text = 'true'
+    else:
+        XML.SubElement(xml_element, 'optionalBrockChecked').text = 'false'
 
 
 class Publishers(jenkins_jobs.modules.base.Base):
