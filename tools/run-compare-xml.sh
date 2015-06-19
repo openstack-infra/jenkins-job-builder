@@ -24,7 +24,7 @@ mkdir -p .test/new/out
 cd .test
 if [ -e /usr/zuul-env/bin/zuul-cloner ];
 then
-    /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git git://git.openstack.org/openstack-infra project-config
+    /usr/zuul-env/bin/zuul-cloner -m ../tools/run-compare-clonemap.yaml --cache-dir /opt/git git://git.openstack.org openstack-infra/project-config
 else
     git clone --depth=1 git://git.openstack.org/openstack-infra/project-config
 fi
