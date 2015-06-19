@@ -1,0 +1,10 @@
+publishers:
+  - trigger-parameterized-builds:
+    - project: another_job
+      predefined-parameters: BUILD_NUM=${BUILD_NUMBER}
+      property-file: version.prop
+      current-parameters: true
+    - project: yet_another_job
+      current-parameters: true
+      predefined-parameters: foo=bar
+      property-file: version.prop

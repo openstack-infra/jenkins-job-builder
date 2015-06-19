@@ -1,0 +1,39 @@
+- project:
+    name: bogus-jankerator
+    jobs:
+        - 'hydra_{name}_jjb-test1'
+        - 'hydra_{name}_jjb-test2'
+
+- job-template:
+    name: 'hydra_{name}_jjb-test1'
+    display-name: 'JJB Test1'
+    publishers:
+        - trigger-parameterized-builds:
+            - project: '{obj:tpb_projects}'
+              current-parameters: '{obj:tpb_current_parameters}'
+              predefined-parameters: '{obj:tpb_predefined_parameters}'
+              condition: '{obj:tpb_condition}'
+              property-file: '{obj:tpb_property_file}'
+              git-revision: '{obj:tpb_git_revision}'
+
+- job-template:
+    name: 'hydra_{name}_jjb-test2'
+    display-name: 'JJB Test2'
+    publishers:
+        - trigger-parameterized-builds:
+            - project: '{obj:tpb_projects}'
+              property-file: '{obj:tpb_property_file}'
+              predefined-parameters: '{obj:tpb_predefined_parameters}'
+              current-parameters: '{obj:tpb_current_parameters}'
+              condition: '{obj:tpb_condition}'
+              git-revision: '{obj:tpb_git_revision}'
+
+- defaults:
+    name: global
+
+    tpb_predefined_parameters: ''
+    tpb_property_file: ''
+    tpb_current_parameters: True
+    tpb_condition: 'UNSTABLE_OR_BETTER'
+    tpb_git_revision: True
+    tpb_projects: ''
