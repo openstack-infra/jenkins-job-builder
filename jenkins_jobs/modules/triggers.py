@@ -861,13 +861,18 @@ def reverse(parser, xml_parent, data):
     "Post-build Actions" of an upstream project, but is preferable when you
     want to configure the downstream project.
 
-    :arg str jobs: List (comma separated) of jobs to watch.
+    :arg str jobs: List of jobs to watch. Can be either a comma separated
+      list or a list.
     :arg str result: Build results to monitor for between the following
       options: success, unstable and failure. (default 'success').
 
     Example:
 
     .. literalinclude:: /../../tests/triggers/fixtures/reverse.yaml
+
+    Example List:
+
+    .. literalinclude:: /../../tests/triggers/fixtures/reverse-list.yaml
     """
     reserveBuildTrigger = XML.SubElement(
         xml_parent, 'jenkins.triggers.ReverseBuildTrigger')
@@ -875,8 +880,12 @@ def reverse(parser, xml_parent, data):
     supported_thresholds = ['SUCCESS', 'UNSTABLE', 'FAILURE']
 
     XML.SubElement(reserveBuildTrigger, 'spec').text = ''
+
+    jobs = data.get('jobs')
+    if isinstance(jobs, list):
+        jobs = ",".join(jobs)
     XML.SubElement(reserveBuildTrigger, 'upstreamProjects').text = \
-        data.get('jobs')
+        jobs
 
     threshold = XML.SubElement(reserveBuildTrigger, 'threshold')
     result = data.get('result').upper()
