@@ -246,6 +246,21 @@ def execute(options, config):
             "Password provided, please check your configuration."
         )
 
+    # None -- no timeout, blocking mode; same as setblocking(True)
+    # 0.0 -- non-blocking mode; same as setblocking(False) <--- default
+    # > 0 -- timeout mode; operations time out after timeout seconds
+    # < 0 -- illegal; raises an exception
+    # to retain the default must use
+    # "timeout=jenkins_jobs.builder._DEFAULT_TIMEOUT" or not set timeout at
+    # all.
+    timeout = jenkins_jobs.builder._DEFAULT_TIMEOUT
+    try:
+        timeout = config.getfloat('jenkins', 'timeout')
+    except (ValueError):
+        raise JenkinsJobsException("Jenkins timeout config is invalid")
+    except (TypeError, configparser.NoOptionError):
+        pass
+
     plugins_info = None
 
     if getattr(options, 'plugins_info_path', None) is not None:
@@ -269,6 +284,7 @@ def execute(options, config):
                       user,
                       password,
                       config,
+                      jenkins_timeout=timeout,
                       ignore_cache=ignore_cache,
                       flush_cache=options.flush_cache,
                       plugins_list=plugins_info)
