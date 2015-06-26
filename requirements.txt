@@ -3,4 +3,4 @@ ordereddict
 six>=1.5.2
 PyYAML
 python-jenkins>=0.4.1
-pbr>=0.8.2,<1.0
+pbr>=0.8.2,<2.0
