@@ -148,6 +148,32 @@ def jclouds(parser, xml_parent, data):
         data.get('hierarchy', False)).lower()
 
 
+def javadoc(parser, xml_parent, data):
+    """yaml: javadoc
+    Publish Javadoc
+    Requires the Jenkins :jenkins-wiki:`Javadoc Plugin <Javadoc+Plugin>`.
+
+    :arg str directory: Directory relative to the root of the workspace,
+      such as 'myproject/build/javadoc' (optional)
+    :arg bool keep-all-successful: When true, it will retain Javadoc for each
+      successful build. This allows you to browse Javadoc for older builds,
+      at the expense of additional disk space requirement. If false, it will
+      only keep the latest Javadoc, so older Javadoc will be overwritten as
+      new builds succeed. (default false)
+
+    Example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/javadoc001.yaml
+       :language: yaml
+    """
+
+    root = XML.SubElement(xml_parent, 'hudson.tasks.JavadocArchiver')
+    if 'directory' in data:
+        XML.SubElement(root, 'javadocDir').text = data.get('directory', '')
+    XML.SubElement(root, 'keepAll').text = str(data.get(
+        'keep-all-successful', False)).lower()
+
+
 def campfire(parser, xml_parent, data):
     """yaml: campfire
     Send build notifications to Campfire rooms.

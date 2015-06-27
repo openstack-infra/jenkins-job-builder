@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.tasks.JavadocArchiver>
+      <javadocDir>myproject/build/javadoc</javadocDir>
+      <keepAll>true</keepAll>
+    </hudson.tasks.JavadocArchiver>
+  </publishers>
+</project>
