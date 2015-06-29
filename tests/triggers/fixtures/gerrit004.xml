@@ -38,9 +38,12 @@
         <onNotBuilt>true</onNotBuilt>
       </skipVote>
       <silentMode>false</silentMode>
+      <silentStartMode>true</silentStartMode>
       <escapeQuotes>false</escapeQuotes>
       <noNameAndEmailParameters>false</noNameAndEmailParameters>
       <readableMessage>false</readableMessage>
+      <dependencyJobsNames>job1, job2</dependencyJobsNames>
+      <notificationLevel>ALL</notificationLevel>
       <dynamicTriggerConfiguration>True</dynamicTriggerConfiguration>
       <triggerConfigURL>http://myhost/mytrigger</triggerConfigURL>
       <allowTriggeringUnreviewedPatches>true</allowTriggeringUnreviewedPatches>
@@ -60,6 +63,7 @@
       <buildSuccessfulMessage/>
       <buildUnstableMessage/>
       <buildNotBuiltMessage/>
+      <buildUnsuccessfulFilepath>path/to/filename</buildUnsuccessfulFilepath>
       <customUrl/>
       <serverName>my-server</serverName>
     </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.GerritTrigger>

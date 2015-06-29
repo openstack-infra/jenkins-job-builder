@@ -32,9 +32,10 @@ Example::
 
 import six
 import xml.etree.ElementTree as XML
-from jenkins_jobs.errors import JenkinsJobsException
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
+from jenkins_jobs.errors import (InvalidAttributeError,
+                                 JenkinsJobsException)
 import logging
 import re
 try:
@@ -213,14 +214,14 @@ def gerrit(parser, xml_parent, data):
       :Trigger on:
 
          * **patchset-created-event** (`dict`) -- Trigger upon patchset
-                                                  creation.
+           creation.
 
            :Patchset created:
                * **exclude-drafts** (`bool`) -- exclude drafts (Default: False)
                * **exclude-trivial-rebase** (`bool`) -- exclude trivial rebase
-                                                        (Default: False)
+                 (Default: False)
                * **exclude-no-code-change** (`bool`) -- exclude no code change
-                                                        (Default: False)
+                 (Default: False)
 
            Exclude drafts|trivial-rebase|no-code-change needs
            Gerrit Trigger v2.12.0
@@ -248,13 +249,11 @@ def gerrit(parser, xml_parent, data):
 
                * **approval-value** -- Approval value for the comment added.
          * **comment-added-contains-event** (`dict`) -- Trigger on comment
-                                                        added contains
-                                                        Regular Expression.
+           added contains Regular Expression.
 
            :Comment added contains:
                * **comment-contains-value** (`str`) -- Comment contains
-                                                       Regular Expression
-                                                       value.
+                 Regular Expression value.
 
     :arg bool trigger-on-patchset-uploaded-event: Trigger on patchset upload.
 
@@ -316,6 +315,8 @@ def gerrit(parser, xml_parent, data):
     :arg str successful-message: Message to leave on success (default '')
     :arg str unstable-message: Message to leave when unstable (default '')
     :arg str notbuilt-message: Message to leave when not built (default '')
+    :arg str failure-message-file: Sets the filename within the workspace from
+        which to retrieve the unsuccessful review message. (optional)
     :arg list projects: list of projects to match
 
       :Project: * **project-compare-type** (`str`) --  ''PLAIN'', ''ANT'' or
@@ -324,7 +325,7 @@ def gerrit(parser, xml_parent, data):
                 * **branch-compare-type** (`str`) -- ''PLAIN'', ''ANT'' or
                   ''REG_EXP'' (not used if `branches` list is specified)
                 * **branch-pattern** (`str`) -- Branch name pattern to match
-                   (not used if `branches` list is specified)
+                  (not used if `branches` list is specified)
                 * **branches** (`list`) -- List of branches to match
                   (optional)
 
@@ -363,6 +364,9 @@ def gerrit(parser, xml_parent, data):
         messages etc. If other non-silent jobs are triggered by the same
         Gerrit event as this job, the result of this job's build will not be
         counted in the end result of the other jobs. (default false)
+    :arg bool silent-start: Sets silent start mode to on or off. When silent
+        start mode is on there will be no 'build started' messages sent back
+        to Gerrit. (default false)
     :arg bool escape-quotes: escape quotes in the values of Gerrit change
         parameters (default true)
     :arg bool no-name-and-email: Do not pass compound 'name and email'
@@ -371,6 +375,15 @@ def gerrit(parser, xml_parent, data):
         e.g. commit message, should be as human readable or not. If false,
         those parameters are Base64 encoded to keep environment variables
         clean. (default false)
+    :arg str dependency-jobs: All jobs on which this job depends. If a commit
+        should trigger both a dependency and this job, the dependency will be
+        built first. Use commas to separate job names. Beware of cyclic
+        dependencies. (optional)
+    :arg str notification-level: Defines to whom email notifications should be
+        sent. This can either be nobody ('NONE'), the change owner ('OWNER'),
+        reviewers and change owner ('OWNER_REVIEWERS'), all interested users
+        i.e. owning, reviewing, watching, and starring ('ALL') or server
+        default ('SERVER_DEFAULT'). (default 'SERVER_DEFAULT')
     :arg bool dynamic-trigger-enabled: Enable/disable the dynamic trigger
         (default false)
     :arg str dynamic-trigger-url: if you specify this option, the Gerrit
@@ -470,12 +483,26 @@ def gerrit(parser, xml_parent, data):
     build_gerrit_skip_votes(gtrig, data)
     XML.SubElement(gtrig, 'silentMode').text = str(
         data.get('silent', False)).lower()
+    XML.SubElement(gtrig, 'silentStartMode').text = str(
+        data.get('silent-start', False)).lower()
     XML.SubElement(gtrig, 'escapeQuotes').text = str(
         data.get('escape-quotes', True)).lower()
     XML.SubElement(gtrig, 'noNameAndEmailParameters').text = str(
         data.get('no-name-and-email', False)).lower()
     XML.SubElement(gtrig, 'readableMessage').text = str(
         data.get('readable-message', False)).lower()
+    XML.SubElement(gtrig, 'dependencyJobsNames').text = str(
+        data.get('dependency-jobs', ''))
+    notification_levels = ['NONE', 'OWNER', 'OWNER_REVIEWERS', 'ALL',
+                           'SERVER_DEFAULT']
+    notification_level = data.get('notification-level', 'SERVER_DEFAULT')
+    if notification_level not in notification_levels:
+        raise InvalidAttributeError('notification-level', notification_level,
+                                    notification_levels)
+    if notification_level == 'SERVER_DEFAULT':
+        XML.SubElement(gtrig, 'notificationLevel').text = ''
+    else:
+        XML.SubElement(gtrig, 'notificationLevel').text = notification_level
     XML.SubElement(gtrig, 'dynamicTriggerConfiguration').text = str(
         data.get('dynamic-trigger-enabled', False))
     XML.SubElement(gtrig, 'triggerConfigURL').text = str(
@@ -519,6 +546,8 @@ def gerrit(parser, xml_parent, data):
         data.get('unstable-message', ''))
     XML.SubElement(gtrig, 'buildNotBuiltMessage').text = str(
         data.get('notbuilt-message', ''))
+    XML.SubElement(gtrig, 'buildUnsuccessfulFilepath').text = str(
+        data.get('failure-message-file', ''))
     XML.SubElement(gtrig, 'customUrl').text = str(data.get('custom-url', ''))
     XML.SubElement(gtrig, 'serverName').text = str(
         data.get('server-name', '__ANY__'))
