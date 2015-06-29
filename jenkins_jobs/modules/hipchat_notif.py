@@ -21,26 +21,33 @@ Enable HipChat notifications of build execution.
     plugin of version prior to 0.1.5, also enables all build results to be
     reported in HipChat room. For later plugin versions, explicit notify-*
     setting is required (see below).
-  * **room** *(str)*: name of HipChat room to post messages to
+  * **room** *(str)*: name of HipChat room to post messages to (default '')
 
     .. deprecated:: 1.2.0  Please use 'rooms'.
 
   * **rooms** *(list)*: list of HipChat rooms to post messages to
+    (default empty)
   * **start-notify** *(bool)*: post messages about build start event
+
+    .. deprecated:: 1.2.0 use notify-start parameter instead
+
+  * **notify-start** *(bool)*: post messages about build start event
+    (default false)
   * **notify-success** *(bool)*: post messages about successful build event
-    (Jenkins HipChat plugin >= 0.1.5)
+    (Jenkins HipChat plugin >= 0.1.5) (default false)
   * **notify-aborted** *(bool)*: post messages about aborted build event
-    (Jenkins HipChat plugin >= 0.1.5)
+    (Jenkins HipChat plugin >= 0.1.5) (default false)
   * **notify-not-built** *(bool)*: post messages about build set to NOT_BUILT
     status (Jenkins HipChat plugin >= 0.1.5). This status code is used in a
     multi-stage build (like maven2) where a problem in earlier stage prevented
-    later stages from building.
+    later stages from building. (default false)
   * **notify-unstable** *(bool)*: post messages about unstable build event
-    (Jenkins HipChat plugin >= 0.1.5)
+    (Jenkins HipChat plugin >= 0.1.5) (default false)
   * **notify-failure** *(bool)*:  post messages about build failure event
-    (Jenkins HipChat plugin >= 0.1.5)
+    (Jenkins HipChat plugin >= 0.1.5) (default false)
   * **notify-back-to-normal** *(bool)*: post messages about build being back to
     normal after being unstable or failed (Jenkins HipChat plugin >= 0.1.5)
+    (default false)
 
 Example:
 
@@ -107,6 +114,9 @@ class HipChat(jenkins_jobs.modules.base.Base):
             return
         self._load_global_data()
 
+        plugin_info = self.registry.get_plugin_info("Jenkins HipChat Plugin")
+        version = pkg_resources.parse_version(plugin_info.get('version', '0'))
+
         properties = xml_parent.find('properties')
         if properties is None:
             properties = XML.SubElement(xml_parent, 'properties')
@@ -120,39 +130,35 @@ class HipChat(jenkins_jobs.modules.base.Base):
         elif 'room' in hipchat:
             logger.warn("'room' is deprecated, please use 'rooms'")
             room.text = hipchat['room']
-        else:
-            raise jenkins_jobs.errors.YAMLFormatError(
-                "Must specify either 'room' or 'rooms' in hipchat config.")
 
+        # Handle backwards compatibility 'start-notify' but all add an element
+        # of standardization with notify-*
+        if hipchat.get('start-notify'):
+            logger.warn("'start-notify' is deprecated, please use "
+                        "'notify-start'")
         XML.SubElement(pdefhip, 'startNotification').text = str(
-            hipchat.get('start-notify', False)).lower()
-        if hipchat.get('notify-success'):
+            hipchat.get('notify-start', hipchat.get('start-notify',
+                                                    False))).lower()
+
+        if version >= pkg_resources.parse_version("0.1.5"):
             XML.SubElement(pdefhip, 'notifySuccess').text = str(
-                hipchat.get('notify-success')).lower()
-        if hipchat.get('notify-aborted'):
+                hipchat.get('notify-success', False)).lower()
             XML.SubElement(pdefhip, 'notifyAborted').text = str(
-                hipchat.get('notify-aborted')).lower()
-        if hipchat.get('notify-not-built'):
+                hipchat.get('notify-aborted', False)).lower()
             XML.SubElement(pdefhip, 'notifyNotBuilt').text = str(
-                hipchat.get('notify-not-built')).lower()
-        if hipchat.get('notify-unstable'):
+                hipchat.get('notify-not-built', False)).lower()
             XML.SubElement(pdefhip, 'notifyUnstable').text = str(
-                hipchat.get('notify-unstable')).lower()
-        if hipchat.get('notify-failure'):
+                hipchat.get('notify-unstable', False)).lower()
             XML.SubElement(pdefhip, 'notifyFailure').text = str(
-                hipchat.get('notify-failure')).lower()
-        if hipchat.get('notify-back-to-normal'):
+                hipchat.get('notify-failure', False)).lower()
             XML.SubElement(pdefhip, 'notifyBackToNormal').text = str(
-                hipchat.get('notify-back-to-normal')).lower()
+                hipchat.get('notify-back-to-normal', False)).lower()
 
         publishers = xml_parent.find('publishers')
         if publishers is None:
             publishers = XML.SubElement(xml_parent, 'publishers')
         hippub = XML.SubElement(publishers,
                                 'jenkins.plugins.hipchat.HipChatNotifier')
-
-        plugin_info = self.registry.get_plugin_info("Jenkins HipChat Plugin")
-        version = pkg_resources.parse_version(plugin_info.get('version', '0'))
 
         if version >= pkg_resources.parse_version("0.1.8"):
             XML.SubElement(hippub, 'buildServerUrl').text = self.jenkinsUrl
