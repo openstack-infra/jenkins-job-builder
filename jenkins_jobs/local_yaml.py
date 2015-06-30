@@ -201,12 +201,12 @@ class LocalLoader(OrderedConstructor, LocalAnchorLoader):
     def __init__(self, *args, **kwargs):
         # make sure to pop off any local settings before passing to
         # the parent constructor as any unknown args may cause errors.
-        self.search_path = set()
+        self.search_path = list()
         if 'search_path' in kwargs:
             for p in kwargs.pop('search_path'):
                 logger.debug("Adding '{0}' to search path for include tags"
                              .format(p))
-                self.search_path.add(os.path.normpath(p))
+                self.search_path.append(os.path.normpath(p))
 
         if 'escape_callback' in kwargs:
             self._escape = kwargs.pop('escape_callback')
@@ -228,15 +228,15 @@ class LocalLoader(OrderedConstructor, LocalAnchorLoader):
                              type(self).construct_yaml_map)
 
         if hasattr(self.stream, 'name'):
-            self.search_path.add(os.path.normpath(
+            self.search_path.append(os.path.normpath(
                 os.path.dirname(self.stream.name)))
-        self.search_path.add(os.path.normpath(os.path.curdir))
+        self.search_path.append(os.path.normpath(os.path.curdir))
 
     def _find_file(self, filename):
         for dirname in self.search_path:
             candidate = os.path.expanduser(os.path.join(dirname, filename))
             if os.path.isfile(candidate):
-                logger.info("Including file '{0}' from path '{0}'"
+                logger.info("Including file '{0}' from path '{1}'"
                             .format(filename, dirname))
                 return candidate
         return filename
