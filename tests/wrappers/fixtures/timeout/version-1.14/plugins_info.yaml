@@ -1,0 +1,3 @@
+- longName: 'Jenkins build timeout plugin'
+  shortName: 'build-timeout'
+  version: "1.14"

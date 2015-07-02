@@ -1,0 +1,5 @@
+wrappers:
+  - timeout:
+      timeout: 90
+      timeout-var: 'BUILD_TIMEOUT'
+      type: absolute
