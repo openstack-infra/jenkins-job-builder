@@ -16,7 +16,10 @@
 """
 The SCM module allows you to specify the source code location for the
 project.  It adds the ``scm`` attribute to the :ref:`Job` definition,
-which accepts any number of scm definitions.
+which accepts any number of scm definitions. It is also possible to pass
+``[]`` to the ``scm`` attribute. This is useful when a set of configs has a
+global default ``scm`` and you want to a particular job to override that
+default with no SCM.
 
 **Component**: scm
   :Macro: scm
@@ -28,6 +31,9 @@ Note: Adding more than one scm definition requires the Jenkins
 
 Example of multiple repositories in a single job:
     .. literalinclude:: /../../tests/macros/fixtures/scm/multi-scms001.yaml
+
+Example of an empty ``scm``:
+    .. literalinclude:: /../../tests/scm/fixtures/empty.yaml
 """
 
 import logging
