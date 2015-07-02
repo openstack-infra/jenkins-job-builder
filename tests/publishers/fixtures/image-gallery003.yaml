@@ -1,0 +1,6 @@
+publishers:
+    - image-gallery:
+        - title: Gallery 1
+          includes: path/images
+          image-width: 100
+          unstable-if-no-artifacts: false
