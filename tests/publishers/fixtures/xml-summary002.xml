@@ -3,7 +3,7 @@
   <publishers>
     <hudson.plugins.summary__report.ACIPluginPublisher>
       <name>*_summary_report.xml</name>
-      <shownOnProjectPage>false</shownOnProjectPage>
+      <shownOnProjectPage>true</shownOnProjectPage>
     </hudson.plugins.summary__report.ACIPluginPublisher>
   </publishers>
 </project>

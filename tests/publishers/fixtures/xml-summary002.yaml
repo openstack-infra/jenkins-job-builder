@@ -1,0 +1,4 @@
+publishers:
+  - xml-summary:
+      files: '*_summary_report.xml'
+      shown-on-project-page: 'true'
