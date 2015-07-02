@@ -1,0 +1,6 @@
+properties:
+ - ownership:
+    owner: foo
+    co-owners:
+     - bar
+     - moo
