@@ -28,9 +28,13 @@ triggers:
           unstable: true
           notbuilt: true
       silent: false
+      silent-start: true
       escape-quotes: false
       no-name-and-email: false
+      dependency-jobs: 'job1, job2'
+      notification-level: ALL
       dynamic-trigger-enabled: true
       dynamic-trigger-url: http://myhost/mytrigger
       trigger-for-unreviewed-patches: true
       server-name: my-server
+      failure-message-file: path/to/filename
