@@ -1,0 +1,4 @@
+publishers:
+  - naginator:
+      fixed-delay: 30
+      max-failed-builds: 6
