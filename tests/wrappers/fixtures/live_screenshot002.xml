@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <org.jenkinsci.plugins.livescreenshot.LiveScreenshotBuildWrapper>
+      <fullscreenFilename>my_screenshot.png</fullscreenFilename>
+      <thumbnailFilename>my_screenshot-thumb.png</thumbnailFilename>
+    </org.jenkinsci.plugins.livescreenshot.LiveScreenshotBuildWrapper>
+  </buildWrappers>
+</project>

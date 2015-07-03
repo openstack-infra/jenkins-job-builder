@@ -324,6 +324,34 @@ def ansicolor(parser, xml_parent, data):
         XML.SubElement(cwrapper, 'colorMapName').text = colormap
 
 
+def live_screenshot(parser, xml_parent, data):
+    """yaml: live-screenshot
+    Show live screenshots of running jobs in the job list.
+    Requires the Jenkins :jenkins-wiki:`Live-Screenshot Plugin
+    <LiveScreenshot+Plugin>`.
+
+    :arg str full-size: name of screenshot file (default 'screenshot.png')
+    :arg str thumbnail: name of thumbnail file (default 'screenshot-thumb.png')
+
+    File type must be .png and they must be located inside the $WORKDIR.
+
+    Example using defaults:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/live_screenshot001.yaml
+
+    or specifying the files to use:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/live_screenshot002.yaml
+    """
+    live = XML.SubElement(
+        xml_parent,
+        'org.jenkinsci.plugins.livescreenshot.LiveScreenshotBuildWrapper')
+    XML.SubElement(live, 'fullscreenFilename').text = data.get(
+        'full-size', 'screenshot.png')
+    XML.SubElement(live, 'thumbnailFilename').text = data.get(
+        'thumbnail', 'screenshot-thumb.png')
+
+
 def mask_passwords(parser, xml_parent, data):
     """yaml: mask-passwords
     Hide passwords in the console log.
