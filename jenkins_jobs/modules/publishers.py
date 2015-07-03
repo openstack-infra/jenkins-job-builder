@@ -2709,6 +2709,8 @@ def robot(parser, xml_parent, data):
     :arg bool only-critical: Take only critical tests into account when
         checking the thresholds (default true)
     :arg list other-files: list other files to archive (default '')
+    :arg bool archive-output-xml: Archive output xml file to server
+        (default true)
 
     Example:
 
@@ -2734,6 +2736,8 @@ def robot(parser, xml_parent, data):
     other_files = XML.SubElement(parent, 'otherFiles')
     for other_file in data['other-files']:
         XML.SubElement(other_files, 'string').text = str(other_file)
+    XML.SubElement(parent, 'disableArchiveOutput').text = str(
+        not data.get('archive-output-xml', True)).lower()
 
 
 def warnings(parser, xml_parent, data):
