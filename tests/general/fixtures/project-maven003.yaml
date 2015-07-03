@@ -4,3 +4,4 @@ maven:
   goals: deploy
   settings: org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig0123456789012
   global-settings: org.jenkinsci.plugins.configfiles.maven.GlobalMavenSettingsConfig0123456789012
+  post-step-run-condition: SUCCESS

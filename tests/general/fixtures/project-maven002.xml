@@ -19,7 +19,7 @@
   <runPostStepsIfResult>
     <name>FAILURE</name>
     <ordinal>2</ordinal>
-    <color>red</color>
+    <color>RED</color>
   </runPostStepsIfResult>
   <actions/>
   <keepDependencies>false</keepDependencies>
