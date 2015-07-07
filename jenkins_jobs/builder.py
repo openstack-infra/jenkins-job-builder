@@ -142,6 +142,13 @@ class Jenkins(object):
             logger.info("Deleting jenkins job {0}".format(job_name))
             self.jenkins.delete_job(job_name)
 
+    def delete_all_jobs(self):
+        # execute a groovy script to delete all jobs is much faster than
+        # using the doDelete REST endpoint to delete one job at a time.
+        script = ('for(job in jenkins.model.Jenkins.theInstance.getProjects())'
+                  '       { job.delete(); }')
+        self.jenkins.run_script(script)
+
     def get_plugins_info(self):
         """ Return a list of plugin_info dicts, one for each plugin on the
         Jenkins instance.
@@ -275,8 +282,7 @@ class Builder(object):
     def delete_all_jobs(self):
         jobs = self.jenkins.get_jobs()
         logger.info("Number of jobs to delete:  %d", len(jobs))
-        for job in jobs:
-            self.delete_job(job['name'])
+        self.jenkins.delete_all_jobs()
 
     def update_job(self, input_fn, jobs_glob=None, output=None):
         self.load_files(input_fn)
