@@ -931,6 +931,7 @@ def script(parser, xml_parent, data):
 
     :arg str label: Restrict where the polling should run. (default '')
     :arg str script: A shell or batch script. (default '')
+    :arg str script-file-path: A shell or batch script path. (default '')
     :arg str cron: cron syntax of when to run (default '')
     :arg bool enable-concurrent:  Enables triggering concurrent builds.
                                   (default false)
@@ -958,6 +959,51 @@ def script(parser, xml_parent, data):
     XML.SubElement(st, 'enableConcurrentBuild').text = str(
         data.get('enable-concurrent', False)).lower()
     XML.SubElement(st, 'exitCode').text = str(data.get('exit-code', 0))
+
+
+def groovy_script(parser, xml_parent, data):
+    """yaml: groovy-script
+    Triggers the job using a groovy script.
+    Requires the Jenkins :jenkins-wiki:`ScriptTrigger Plugin
+    <ScriptTrigger+Plugin>`.
+
+    :arg bool system-script: If true, run the groovy script as a system script,
+      the script will have access to the same variables as the Groovy Console.
+      If false, run the groovy script on the executor node, the script will not
+      have access to the hudson or job model. (default false)
+    :arg str script: Content of the groovy script. If the script result is
+      evaluated to true, a build is scheduled. (default '')
+    :arg str script-file-path: Groovy script path. (default '')
+    :arg str property-file-path: Property file path. All properties will be set
+      as parameters for the triggered build. (optional)
+    :arg bool enable-concurrent: Enable concurrent build. (default false)
+    :arg str label: Restrict where the polling should run. (default '')
+    :arg str cron: cron syntax of when to run (default '')
+
+    Example:
+
+    .. literalinclude:: /../../tests/triggers/fixtures/groovy-script.yaml
+    """
+    gst = XML.SubElement(
+        xml_parent,
+        'org.jenkinsci.plugins.scripttrigger.groovy.GroovyScriptTrigger'
+    )
+
+    XML.SubElement(gst, 'groovySystemScript').text = str(
+        data.get('system-script', False)).lower()
+    XML.SubElement(gst, 'groovyExpression').text = str(data.get('script', ''))
+    XML.SubElement(gst, 'groovyFilePath').text = str(data.get(
+        'script-file-path', ''))
+    if 'property-file-path' in data:
+        XML.SubElement(gst, 'propertiesFilePath').text = str(
+            data.get('property-file-path'))
+    XML.SubElement(gst, 'enableConcurrentBuild').text = str(
+        data.get('enable-concurrent', False)).lower()
+    label = data.get('label')
+    XML.SubElement(gst, 'labelRestriction').text = str(bool(label)).lower()
+    if label:
+        XML.SubElement(gst, 'triggerLabel').text = label
+    XML.SubElement(gst, 'spec').text = str(data.get('cron', ''))
 
 
 class Triggers(jenkins_jobs.modules.base.Base):
