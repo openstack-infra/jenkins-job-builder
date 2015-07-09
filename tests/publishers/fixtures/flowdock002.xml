@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <com.flowdock.jenkins.FlowdockNotifier>
+      <flowToken>abcdefghijklmnopqrstuvwxyzabcdef</flowToken>
+      <notificationTags>jenkins,ci</notificationTags>
+      <chatNotification>true</chatNotification>
+      <notifyMap>
+        <entry>
+          <com.flowdock.jenkins.BuildResult>SUCCESS</com.flowdock.jenkins.BuildResult>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
+          <com.flowdock.jenkins.BuildResult>FAILURE</com.flowdock.jenkins.BuildResult>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
+          <com.flowdock.jenkins.BuildResult>FIXED</com.flowdock.jenkins.BuildResult>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
+          <com.flowdock.jenkins.BuildResult>UNSTABLE</com.flowdock.jenkins.BuildResult>
+          <boolean>false</boolean>
+        </entry>
+        <entry>
+          <com.flowdock.jenkins.BuildResult>ABORTED</com.flowdock.jenkins.BuildResult>
+          <boolean>false</boolean>
+        </entry>
+        <entry>
+          <com.flowdock.jenkins.BuildResult>NOT_BUILT</com.flowdock.jenkins.BuildResult>
+          <boolean>false</boolean>
+        </entry>
+      </notifyMap>
+      <notifySuccess>true</notifySuccess>
+      <notifyFailure>true</notifyFailure>
+      <notifyFixed>true</notifyFixed>
+      <notifyUnstable>false</notifyUnstable>
+      <notifyAborted>false</notifyAborted>
+      <notifyNotBuilt>false</notifyNotBuilt>
+    </com.flowdock.jenkins.FlowdockNotifier>
+  </publishers>
+</project>
