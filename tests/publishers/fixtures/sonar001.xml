@@ -5,6 +5,8 @@
       <jdk>MyJdk</jdk>
       <branch>myBranch</branch>
       <language>java</language>
+      <rootPom>pom.xml</rootPom>
+      <usePrivateRepository>false</usePrivateRepository>
       <mavenOpts>-DskipTests</mavenOpts>
       <jobAdditionalProperties>-DsonarHostURL=http://example.com/</jobAdditionalProperties>
       <triggers>
@@ -12,6 +14,8 @@
         <skipUpstreamCause>true</skipUpstreamCause>
         <envVar>SKIP_SONAR</envVar>
       </triggers>
+      <settings class="jenkins.mvn.DefaultSettingsProvider"/>
+      <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
     </hudson.plugins.sonar.SonarPublisher>
   </publishers>
 </project>

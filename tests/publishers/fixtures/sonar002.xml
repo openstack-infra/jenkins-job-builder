@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.sonar.SonarPublisher>
+      <jdk>MyJdk</jdk>
+      <branch>myBranch</branch>
+      <language>java</language>
+      <rootPom>mypom.xml</rootPom>
+      <usePrivateRepository>true</usePrivateRepository>
+      <mavenOpts>-DskipTests</mavenOpts>
+      <jobAdditionalProperties>-DsonarHostURL=http://example.com/</jobAdditionalProperties>
+      <triggers>
+        <skipScmCause>true</skipScmCause>
+        <skipUpstreamCause>true</skipUpstreamCause>
+        <envVar>SKIP_SONAR</envVar>
+      </triggers>
+      <settings class="org.jenkinsci.plugins.configfiles.maven.job.MvnSettingsProvider">
+        <settingsConfigId>org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig0123456789012</settingsConfigId>
+      </settings>
+      <globalSettings class="org.jenkinsci.plugins.configfiles.maven.job.MvnGlobalSettingsProvider">
+        <settingsConfigId>org.jenkinsci.plugins.configfiles.maven.GlobalMavenSettingsConfig0123456789012</settingsConfigId>
+      </globalSettings>
+    </hudson.plugins.sonar.SonarPublisher>
+  </publishers>
+</project>
