@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <scm class="hudson.plugins.tfs.TeamFoundationServerScm">
+    <serverUrl>tfs.company.com</serverUrl>
+    <projectPath>$/myproject</projectPath>
+    <localPath>../foo/</localPath>
+    <workspaceName>Hudson-${JOB_NAME}</workspaceName>
+    <userPassword/>
+    <userName>mydomain\\jane</userName>
+    <useUpdate>False</useUpdate>
+    <repositoryBrowser class="hudson.plugins.tfs.browsers.TeamSystemWebAccessBrowser">
+      <url>http://TFSMachine:8080</url>
+    </repositoryBrowser>
+  </scm>
+</project>

@@ -1,0 +1,9 @@
+scm:
+  - tfs:
+      server-url: "tfs.company.com"
+      project-path: "$/myproject"
+      login: "jane@mydomain"
+      use-update: false
+      local-path: "../foo/"
+      workspace: "Hudson-${JOB_NAME}"
+      web-access:

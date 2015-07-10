@@ -1,0 +1,10 @@
+scm:
+  - tfs:
+      server-url: "tfs.company.com"
+      project-path: "$/myproject"
+      login: "mydomain\\\\jane"
+      use-update: false
+      local-path: "../foo/"
+      workspace: "Hudson-${JOB_NAME}"
+      web-access:
+        - web-url: "http://TFSMachine:8080"
