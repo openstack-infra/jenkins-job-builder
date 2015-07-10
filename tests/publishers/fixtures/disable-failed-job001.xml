@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <disableFailedJob.disableFailedJob.DisableFailedJob plugin="disable-failed-job">
+      <whenDisable>Failure and Unstable</whenDisable>
+      <failureTimes>3</failureTimes>
+      <optionalBrockChecked>true</optionalBrockChecked>
+    </disableFailedJob.disableFailedJob.DisableFailedJob>
+  </publishers>
+</project>
