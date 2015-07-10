@@ -39,7 +39,8 @@ Example of an empty ``scm``:
 import logging
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
-from jenkins_jobs.errors import JenkinsJobsException
+from jenkins_jobs.errors import (InvalidAttributeError,
+                                 JenkinsJobsException)
 
 
 def git(parser, xml_parent, data):
@@ -499,6 +500,9 @@ def svn(parser, xml_parent, data):
       (default '.')
     :arg str credentials-id: optional argument to specify the ID of credentials
       to use
+    :arg str repo-depth: Repository depth. Can be one of 'infinity', 'empty',
+      'files', 'immediates' or 'unknown'. (default 'infinity')
+    :arg bool ignore-externals: Ignore Externals. (default false)
     :arg str workspaceupdater: optional argument to specify
       how to update the workspace (default wipeworkspace)
     :arg list(str) excluded-users: list of users to ignore revisions from
@@ -518,8 +522,12 @@ def svn(parser, xml_parent, data):
 
       :Repo: * **url** (`str`) -- URL for the repository
              * **basedir** (`str`) -- Location relative to the workspace
-                                      root to checkout to (default '.')
+               root to checkout to (default '.')
              * **credentials-id** - optional ID of credentials to use
+             * **repo-depth** - Repository depth. Can be one of 'infinity',
+               'empty', 'files', 'immediates' or 'unknown'.
+               (default 'infinity')
+             * **ignore-externals** - Ignore Externals. (default false)
 
     :workspaceupdater values:
              :wipeworkspace: - deletes the workspace before checking out
@@ -538,24 +546,29 @@ def svn(parser, xml_parent, data):
     scm = XML.SubElement(xml_parent, 'scm', {'class':
                          'hudson.scm.SubversionSCM'})
     locations = XML.SubElement(scm, 'locations')
-    if 'repos' in data:
-        repos = data['repos']
-        for repo in repos:
-            module = XML.SubElement(locations,
-                                    'hudson.scm.SubversionSCM_-ModuleLocation')
-            XML.SubElement(module, 'remote').text = repo['url']
-            XML.SubElement(module, 'local').text = repo.get('basedir', '.')
-            if 'credentials-id' in repo:
-                XML.SubElement(module, 'credentialsId').text = repo[
-                    'credentials-id']
-    elif 'url' in data:
-        module = XML.SubElement(locations,
+
+    def populate_repo_xml(parent, data):
+        module = XML.SubElement(parent,
                                 'hudson.scm.SubversionSCM_-ModuleLocation')
         XML.SubElement(module, 'remote').text = data['url']
         XML.SubElement(module, 'local').text = data.get('basedir', '.')
         if 'credentials-id' in data:
             XML.SubElement(module, 'credentialsId').text = data[
                 'credentials-id']
+        repo_depths = ['infinity', 'empty', 'files', 'immediates', 'unknown']
+        repo_depth = data.get('repo-depth', 'infinity')
+        if repo_depth not in repo_depths:
+            raise InvalidAttributeError('repo_depth', repo_depth, repo_depths)
+        XML.SubElement(module, 'depthOption').text = repo_depth
+        XML.SubElement(module, 'ignoreExternalsOption').text = str(
+            data.get('ignore-externals', False)).lower()
+
+    if 'repos' in data:
+        repos = data['repos']
+        for repo in repos:
+            populate_repo_xml(locations, repo)
+    elif 'url' in data:
+        populate_repo_xml(locations, data)
     else:
         raise JenkinsJobsException("A top level url or repos list must exist")
     updater = data.get('workspaceupdater', 'wipeworkspace')

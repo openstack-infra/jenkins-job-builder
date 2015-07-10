@@ -6,6 +6,8 @@
         <remote>http://svn.apache.org/repos/asf/spamassassin/trunk</remote>
         <local>.</local>
         <credentialsId>abcdef01234567890</credentialsId>
+        <depthOption>empty</depthOption>
+        <ignoreExternalsOption>true</ignoreExternalsOption>
       </hudson.scm.SubversionSCM_-ModuleLocation>
     </locations>
     <workspaceUpdater class="hudson.scm.subversion.CheckoutUpdater"/>

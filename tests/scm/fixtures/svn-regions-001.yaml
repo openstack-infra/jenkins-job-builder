@@ -2,6 +2,8 @@ scm:
   - svn:
       url: http://svn.apache.org/repos/asf/spamassassin/trunk
       credentials-id: "abcdef01234567890"
+      repo-depth: empty
+      ignore-externals: true
       workspaceupdater: wipeworkspace
       included-regions:
           - /region1/.*\.cpp
