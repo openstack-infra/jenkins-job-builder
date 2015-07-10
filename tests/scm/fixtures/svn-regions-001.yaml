@@ -18,3 +18,4 @@ scm:
       exclusion-revprop-name: propname
       filter-changelog: true
       ignore-property-changes-on-directories: true
+      viewvc-url: http://svn.apache.org/viewvc/spamassassin/trunk

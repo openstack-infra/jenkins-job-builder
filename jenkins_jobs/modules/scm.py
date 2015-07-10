@@ -509,6 +509,7 @@ def svn(parser, xml_parent, data):
       and exclusion patterns for displaying changelog entries as it does for
       polling for changes (default false)
     :arg list repos: list of repositories to checkout (optional)
+    :arg str viewvc-url: URL of the svn web interface (optional)
 
       :Repo: * **url** (`str`) -- URL for the repository
              * **basedir** (`str`) -- Location relative to the workspace
@@ -531,6 +532,10 @@ def svn(parser, xml_parent, data):
     """
     scm = XML.SubElement(xml_parent, 'scm', {'class':
                          'hudson.scm.SubversionSCM'})
+    if 'viewvc-url' in data:
+        browser = XML.SubElement(
+            scm, 'browser', {'class': 'hudson.scm.browsers.ViewSVN'})
+        XML.SubElement(browser, 'url').text = data['viewvc-url']
     locations = XML.SubElement(scm, 'locations')
     if 'repos' in data:
         repos = data['repos']

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <scm class="hudson.scm.SubversionSCM">
+    <browser class="hudson.scm.browsers.ViewSVN">
+      <url>http://svn.apache.org/viewvc/spamassassin/trunk</url>
+    </browser>
     <locations>
       <hudson.scm.SubversionSCM_-ModuleLocation>
         <remote>http://svn.apache.org/repos/asf/spamassassin/trunk</remote>
