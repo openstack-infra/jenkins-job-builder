@@ -4,6 +4,7 @@
     <hudson.tasks.junit.JUnitResultArchiver>
       <testResults>nosetests-example.xml</testResults>
       <keepLongStdio>false</keepLongStdio>
+      <healthScaleFactor>2.0</healthScaleFactor>
       <testDataPublishers>
         <de.esailors.jenkins.teststability.StabilityTestDataPublisher/>
         <hudson.plugins.claim.ClaimTestDataPublisher/>

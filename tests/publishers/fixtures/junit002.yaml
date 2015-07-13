@@ -2,6 +2,7 @@ publishers:
 - junit:
     results: nosetests-example.xml
     keep-long-stdio: false
+    health-scale-factor: 2.0
     test-stability: true
     claim-build: true
     measurement-plots: true
