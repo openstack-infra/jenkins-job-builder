@@ -26,7 +26,9 @@ import logging
 import xml.etree.ElementTree as XML
 import pkg_resources
 import jenkins_jobs.modules.base
-from jenkins_jobs.errors import (JenkinsJobsException, InvalidAttributeError)
+from jenkins_jobs.errors import (JenkinsJobsException,
+                                 InvalidAttributeError,
+                                 MissingAttributeError)
 from jenkins_jobs.modules.builders import create_builders
 from jenkins_jobs.modules.helpers import config_file_provider_builder
 
@@ -1348,14 +1350,24 @@ def credentials_binding(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Credentials Binding Plugin
     <Credentials+Binding+Plugin>` version 1.1 or greater.
 
-    :arg list binding-type: List of each bindings to create.  Bindings may be\
-                            of type `zip-file`, `file`, `username-password`,\
-                            or `text`
+    :arg list binding-type: List of each bindings to create.  Bindings may be
+      of type `zip-file`, `file`, `username-password`, `text` or
+      `username-password-separated`.
+      username-password sets a variable to the username and password given in
+      the credentials, separated by a colon.
+      username-password-separated sets one variable to the username and one
+      variable to the password given in the credentials.
 
-        :Parameters: * **credential-id** (`str`) UUID of the credential being\
-                                                 referenced
-                     * **variable** (`str`) Environment variable where the\
-                                            credential will be stored
+        :Parameters: * **credential-id** (`str`) UUID of the credential being
+                       referenced
+                     * **variable** (`str`) Environment variable where the
+                       credential will be stored
+                     * **username** (`str`) Environment variable for the
+                       username (Required for binding-type
+                       username-password-separated)
+                     * **password** (`str`) Environment variable for the
+                       password (Required for binding-type
+                       username-password-separated)
 
     Example:
 
@@ -1374,6 +1386,9 @@ def credentials_binding(parser, xml_parent, data):
         'file': 'org.jenkinsci.plugins.credentialsbinding.impl.FileBinding',
         'username-password': 'org.jenkinsci.plugins.credentialsbinding.impl.'
                              'UsernamePasswordBinding',
+        'username-password-separated': 'org.jenkinsci.plugins.'
+                                       'credentialsbinding.impl.'
+                                       'UsernamePasswordMultiBinding',
         'text': 'org.jenkinsci.plugins.credentialsbinding.impl.StringBinding'
     }
     if not data:
@@ -1388,8 +1403,17 @@ def credentials_binding(parser, xml_parent, data):
 
             binding_xml = XML.SubElement(bindings_xml,
                                          binding_types[binding_type])
-            variable_xml = XML.SubElement(binding_xml, 'variable')
-            variable_xml.text = params.get('variable')
+            if binding_type == 'username-password-separated':
+                try:
+                    XML.SubElement(binding_xml, 'usernameVariable'
+                                   ).text = params['username']
+                    XML.SubElement(binding_xml, 'passwordVariable'
+                                   ).text = params['password']
+                except KeyError as e:
+                    raise MissingAttributeError(e.args[0])
+            else:
+                variable_xml = XML.SubElement(binding_xml, 'variable')
+                variable_xml.text = params.get('variable')
             credential_xml = XML.SubElement(binding_xml, 'credentialsId')
             credential_xml.text = params.get('credential-id')
 
