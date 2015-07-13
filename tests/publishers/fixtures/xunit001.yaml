@@ -18,3 +18,5 @@ publishers:
               stoponerror: true
           - cppunit:
               pattern: "cppunit.log"
+          - gtest:
+              pattern: "gtest.log"
