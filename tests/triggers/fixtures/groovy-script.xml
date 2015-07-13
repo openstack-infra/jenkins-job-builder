@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.scripttrigger.groovy.GroovyScriptTrigger>
+      <groovySystemScript>true</groovySystemScript>
+      <groovyExpression/>
+      <groovyFilePath>path/to/filename</groovyFilePath>
+      <enableConcurrentBuild>true</enableConcurrentBuild>
+      <labelRestriction>true</labelRestriction>
+      <triggerLabel>master</triggerLabel>
+      <spec>H/15 * * * *</spec>
+    </org.jenkinsci.plugins.scripttrigger.groovy.GroovyScriptTrigger>
+  </triggers>
+</project>

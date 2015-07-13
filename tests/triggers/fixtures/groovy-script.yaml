@@ -1,0 +1,8 @@
+triggers:
+  - groovy-script:
+        script-file-path: 'path/to/filename'
+        cron: 'H/15 * * * *'
+        enable-concurrent: true
+        label: master
+        system-script: true
+
