@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <com.google.jenkins.plugins.storage.GoogleCloudStorageUploader plugin="google-storage-plugin">
+      <credentialsId>myCredentials</credentialsId>
+      <uploads>
+        <com.google.jenkins.plugins.storage.ExpiringBucketLifecycleManager>
+          <bucketNameWithVars>gs://myBucket</bucketNameWithVars>
+          <sharedPublicly>false</sharedPublicly>
+          <forFailedJobs>false</forFailedJobs>
+          <module/>
+          <bucketObjectTTL>7</bucketObjectTTL>
+        </com.google.jenkins.plugins.storage.ExpiringBucketLifecycleManager>
+      </uploads>
+    </com.google.jenkins.plugins.storage.GoogleCloudStorageUploader>
+  </publishers>
+</project>
