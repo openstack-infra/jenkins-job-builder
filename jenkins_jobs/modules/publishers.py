@@ -3250,6 +3250,7 @@ def git(parser, xml_parent, data):
     :arg bool push-only-if-success: Only push to remotes if the build succeeds
                                     - otherwise, nothing will be pushed.
                                     (Default: True)
+    :arg bool force-push: Add force option to git push (Default: False)
     :arg list tags: tags to push at the completion of the build
 
         :tag: * **remote** (`str`) remote repo name to push to
@@ -3285,7 +3286,8 @@ def git(parser, xml_parent, data):
        :language: yaml
     """
     mappings = [('push-merge', 'pushMerge', False),
-                ('push-only-if-success', 'pushOnlyIfSuccess', True)]
+                ('push-only-if-success', 'pushOnlyIfSuccess', True),
+                ('force-push', 'forcePush', False)]
 
     tag_mappings = [('remote', 'targetRepoName', 'origin'),
                     ('name', 'tagName', None),
