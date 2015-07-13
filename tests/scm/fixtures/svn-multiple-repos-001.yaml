@@ -5,5 +5,7 @@ scm:
        - url: http://svn.example.com/repo
          basedir: .
          credentials-id: "abcdef01234567890"
+         repo-depth: files
+         ignore-externals: true
        - url: http://svn.example.com/repo2
          basedir: repo2

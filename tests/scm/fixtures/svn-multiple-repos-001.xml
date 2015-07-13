@@ -6,10 +6,14 @@
         <remote>http://svn.example.com/repo</remote>
         <local>.</local>
         <credentialsId>abcdef01234567890</credentialsId>
+        <depthOption>files</depthOption>
+        <ignoreExternalsOption>true</ignoreExternalsOption>
       </hudson.scm.SubversionSCM_-ModuleLocation>
       <hudson.scm.SubversionSCM_-ModuleLocation>
         <remote>http://svn.example.com/repo2</remote>
         <local>repo2</local>
+        <depthOption>infinity</depthOption>
+        <ignoreExternalsOption>false</ignoreExternalsOption>
       </hudson.scm.SubversionSCM_-ModuleLocation>
     </locations>
     <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
