@@ -324,8 +324,16 @@ def gerrit(parser, xml_parent, data):
                 * **project-pattern** (`str`) -- Project name pattern to match
                 * **branch-compare-type** (`str`) -- ''PLAIN'', ''ANT'' or
                   ''REG_EXP'' (not used if `branches` list is specified)
+
+                  .. deprecated:: 1.1.0  Please use :ref:`branches <branches>`.
+
                 * **branch-pattern** (`str`) -- Branch name pattern to match
                   (not used if `branches` list is specified)
+
+                  .. deprecated:: 1.1.0  Please use :ref:`branches <branches>`.
+
+                .. _branches:
+
                 * **branches** (`list`) -- List of branches to match
                   (optional)
 
