@@ -923,6 +923,54 @@ def reverse(parser, xml_parent, data):
         str(hudson_model.THRESHOLDS[result]['complete']).lower()
 
 
+def ivy(parser, xml_parent, data):
+    """yaml: ivy
+    Poll with an Ivy script
+    Requires the Jenkins :jenkins-wiki:`IvyTrigger Plugin
+    <IvyTrigger+Plugin>`.
+
+    :arg str path: Path of the ivy file. (optional)
+    :arg str settings-path: Ivy Settings Path. (optional)
+    :arg list str properties-file: List of properties file path. Properties
+      will be injected as variables in the ivy settings file. (optional)
+    :arg str properties-content: Properties content. Properties will be
+      injected as variables in the ivy settings file. (optional)
+    :arg bool debug: Active debug mode on artifacts resolution. (default false)
+    :arg download-artifacts: Download artifacts for dependencies to see if they
+      have changed. (default true)
+    :arg bool enable-concurrent: Enable Concurrent Build. (default false)
+    :arg str label: Restrict where the polling should run. (default '')
+    :arg str cron: cron syntax of when to run (default '')
+
+    Example:
+
+    .. literalinclude:: /../../tests/triggers/fixtures/ivy.yaml
+    """
+    it = XML.SubElement(xml_parent,
+                        'org.jenkinsci.plugins.ivytrigger.IvyTrigger')
+    mappings = [('path', 'ivyPath', None),
+                ('settings-path', 'ivySettingsPath', None),
+                ('properties-file', 'propertiesFilePath', None),
+                ('properties-content', 'propertiesContent', None),
+                ('debug', 'debug', False),
+                ('download-artifacts', 'downloadArtifacts', True),
+                ('enable-concurrent', 'enableConcurrentBuild', False),
+                ('cron', 'spec', '')]
+    for prop in mappings:
+        opt, xmlopt, default_val = prop[:3]
+        val = data.get(opt, default_val)
+        if val is not None:
+            if type(val) == bool:
+                val = str(val).lower()
+            if type(val) == list:
+                val = ";".join(val)
+            XML.SubElement(it, xmlopt).text = val
+    label = data.get('label')
+    XML.SubElement(it, 'labelRestriction').text = str(bool(label)).lower()
+    if label:
+        XML.SubElement(it, 'triggerLabel').text = label
+
+
 def script(parser, xml_parent, data):
     """yaml: script
     Triggers the job using shell or batch script.

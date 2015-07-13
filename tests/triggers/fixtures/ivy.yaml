@@ -1,0 +1,11 @@
+triggers:
+  - ivy:
+        path: path/to/file
+        settings-path: path/to/settings/file
+        properties-file:
+            - 'filename1'
+            - 'filename2'
+        debug: true
+        cron: 'H/15 * * * *'
+        enable-concurrent: False
+        label: master
