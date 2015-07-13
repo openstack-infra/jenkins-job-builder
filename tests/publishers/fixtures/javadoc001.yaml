@@ -1,0 +1,4 @@
+publishers:
+  - javadoc:
+      directory: myproject/build/javadoc
+      keep-all-successful: true
