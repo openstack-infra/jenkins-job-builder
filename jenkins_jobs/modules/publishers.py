@@ -176,6 +176,27 @@ def javadoc(parser, xml_parent, data):
         'keep-all-successful', False)).lower()
 
 
+def jdepend(parser, xml_parent, data):
+    """yaml: jdepend
+    Publish jdepend report
+    Requires the :jenkins-wiki:`JDepend Plugin<JDepend+Plugin>`.
+
+    :arg str file: path to jdepend file (required)
+
+    Example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/jdepend001.yaml
+       :language: yaml
+    """
+    jdepend = XML.SubElement(
+        xml_parent,
+        'hudson.plugins.jdepend.JDependRecorder')
+    filepath = data.get('file', None)
+    if filepath is None:
+        raise MissingAttributeError('file')
+    XML.SubElement(jdepend, 'configuredJDependFile').text = str(filepath)
+
+
 def campfire(parser, xml_parent, data):
     """yaml: campfire
     Send build notifications to Campfire rooms.
