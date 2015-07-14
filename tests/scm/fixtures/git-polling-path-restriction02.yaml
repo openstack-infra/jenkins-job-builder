@@ -1,0 +1,5 @@
+scm:
+  - git:
+      url: https://github.com/openstack-infra/jenkins-job-builder.git
+      excluded-regions:
+        - doc

@@ -257,12 +257,6 @@ remoteName/\*')
         XML.SubElement(bspec, 'name').text = branch
     excluded_users = '\n'.join(data.get('excluded-users', []))
     XML.SubElement(scm, 'excludedUsers').text = excluded_users
-    if 'included-regions' in data:
-        include_string = '\n'.join(data['included-regions'])
-        XML.SubElement(scm, 'includedRegions').text = include_string
-    if 'excluded-regions' in data:
-        exclude_string = '\n'.join(data['excluded-regions'])
-        XML.SubElement(scm, 'excludedRegions').text = exclude_string
     if 'merge' in data:
         merge = data['merge']
         merge_strategies = ['default', 'resolve', 'recursive', 'octopus',
@@ -322,6 +316,16 @@ remoteName/\*')
 
     exts_node = XML.SubElement(scm, 'extensions')
     impl_prefix = 'hudson.plugins.git.extensions.impl.'
+    if 'included-regions' in data or 'excluded-regions' in data:
+        ext_name = XML.SubElement(exts_node,
+                                  'hudson.plugins.git.extensions.impl.'
+                                  'PathRestriction')
+        if 'included-regions' in data:
+            include_string = '\n'.join(data['included-regions'])
+            XML.SubElement(ext_name, 'includedRegions').text = include_string
+        if 'excluded-regions' in data:
+            exclude_string = '\n'.join(data['excluded-regions'])
+            XML.SubElement(ext_name, 'excludedRegions').text = exclude_string
     if 'changelog-against' in data:
         ext_name = impl_prefix + 'ChangelogToBranch'
         ext = XML.SubElement(exts_node, ext_name)
