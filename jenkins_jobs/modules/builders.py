@@ -40,6 +40,9 @@ Example::
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
+from jenkins_jobs.modules.helpers import cloudformation_init
+from jenkins_jobs.modules.helpers import cloudformation_region_dict
+from jenkins_jobs.modules.helpers import cloudformation_stack
 from jenkins_jobs.modules.helpers import config_file_provider_builder
 from jenkins_jobs.modules.helpers import config_file_provider_settings
 from jenkins_jobs.errors import (JenkinsJobsException,
@@ -2389,3 +2392,46 @@ def beaker(parser, xml_parent, data):
 
     XML.SubElement(beaker, 'downloadFiles').text = str(data.get(
         'download-logs', False)).lower()
+
+
+def cloudformation(parser, xml_parent, data):
+    """yaml: cloudformation
+    Create cloudformation stacks before running a build and optionally
+    delete them at the end.  Requires the Jenkins :jenkins-wiki:`AWS
+    Cloudformation Plugin <AWS+Cloudformation+Plugin>`.
+
+    :arg list name: The names of the stacks to create (Required)
+    :arg str description: Description of the stack (Optional)
+    :arg str recipe: The cloudformation recipe file (Required)
+    :arg list parameters: List of key/value pairs to pass
+        into the recipe, will be joined together into a comma separated
+        string (Optional)
+    :arg int timeout: Number of seconds to wait before giving up creating
+        a stack (default 0)
+    :arg str access-key: The Amazon API Access Key (Required)
+    :arg str secret-key: The Amazon API Secret Key (Required)
+    :arg int sleep: Number of seconds to wait before continuing to the
+        next step (default 0)
+    :arg array region: The region to run cloudformation in (Required)
+
+        :region values:
+            * **us-east-1**
+            * **us-west-1**
+            * **us-west-2**
+            * **eu-central-1**
+            * **eu-west-1**
+            * **ap-southeast-1**
+            * **ap-southeast-2**
+            * **ap-northeast-1**
+            * **sa-east-1**
+
+    Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/cloudformation.yaml
+       :language: yaml
+    """
+    region_dict = cloudformation_region_dict()
+    stacks = cloudformation_init(xml_parent, data, 'CloudFormationBuildStep')
+    for stack in data:
+        cloudformation_stack(xml_parent, stack, 'PostBuildStackBean', stacks,
+                             region_dict)

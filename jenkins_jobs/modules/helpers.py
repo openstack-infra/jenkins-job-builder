@@ -15,8 +15,10 @@
 import xml.etree.ElementTree as XML
 import logging
 
-from jenkins_jobs.errors import JenkinsJobsException
 from six.moves import configparser
+from jenkins_jobs.errors import (JenkinsJobsException,
+                                 MissingAttributeError,
+                                 InvalidAttributeError)
 
 
 def build_trends_publisher(plugin_name, xml_element, data):
@@ -189,3 +191,54 @@ def get_value_from_yaml_or_config_file(key, section, data, parser):
                            " the " + section + " section, blank default" +
                            " value will be applied:\n{0}".format(e))
     return result
+
+
+def cloudformation_region_dict():
+    region_dict = {'us-east-1': 'US_East_Northern_Virginia',
+                   'us-west-1': 'US_WEST_Northern_California',
+                   'us-west-2': 'US_WEST_Oregon',
+                   'eu-central-1': 'EU_Frankfurt',
+                   'eu-west-1': 'EU_Ireland',
+                   'ap-southeast-1': 'Asia_Pacific_Singapore',
+                   'ap-southeast-2': 'Asia_Pacific_Sydney',
+                   'ap-northeast-1': 'Asia_Pacific_Tokyo',
+                   'sa-east-1': 'South_America_Sao_Paulo'}
+    return region_dict
+
+
+def cloudformation_init(xml_parent, data, xml_tag):
+    cloudformation = XML.SubElement(
+        xml_parent, 'com.syncapse.jenkinsci.'
+                    'plugins.awscloudformationwrapper.' + xml_tag)
+    return XML.SubElement(cloudformation, 'stacks')
+
+
+def cloudformation_stack(xml_parent, stack, xml_tag, stacks, region_dict):
+    if 'name' not in stack or stack['name'] == '':
+        raise MissingAttributeError('name')
+    step = XML.SubElement(
+        stacks, 'com.syncapse.jenkinsci.plugins.'
+                'awscloudformationwrapper.' + xml_tag)
+    try:
+        XML.SubElement(step, 'stackName').text = stack['name']
+        XML.SubElement(step, 'awsAccessKey').text = stack['access-key']
+        XML.SubElement(step, 'awsSecretKey').text = stack['secret-key']
+        region = stack['region']
+    except KeyError as e:
+        raise MissingAttributeError(e.args[0])
+    if region not in region_dict:
+        raise InvalidAttributeError('region', region, region_dict.keys())
+    XML.SubElement(step, 'awsRegion').text = region_dict.get(region)
+    if xml_tag == 'SimpleStackBean':
+        prefix = str(stack.get('prefix', False)).lower()
+        XML.SubElement(step, 'isPrefixSelected').text = prefix
+    else:
+        XML.SubElement(step, 'description').text = stack.get('description', '')
+        XML.SubElement(step, 'parameters').text = ','.join(
+            stack.get('parameters', []))
+        XML.SubElement(step, 'timeout').text = str(stack.get('timeout', '0'))
+        XML.SubElement(step, 'sleep').text = str(stack.get('sleep', '0'))
+        try:
+            XML.SubElement(step, 'cloudFormationRecipe').text = stack['recipe']
+        except KeyError as e:
+            raise MissingAttributeError(e.args[0])
