@@ -1,0 +1,42 @@
+triggers:
+  - gerrit:
+      trigger-on:
+        - patchset-created-event:
+            exclude-drafts: true
+            exclude-trivial-rebase: true
+            exclude-no-code-change: true
+        - comment-added-event:
+            approval-category: 'APRV'
+            approval-value: 1
+      projects:
+        - project-compare-type: 'PLAIN'
+          project-pattern: 'test-project'
+          branches:
+            - branch-compare-type: 'PLAIN'
+              branch-pattern: 'master'
+            - branch-compare-type: 'PLAIN'
+              branch-pattern: 'stable'
+          file-paths:
+              - pattern: '**'
+          forbidden-file-paths:
+              - compare-type: ANT
+                pattern: subdirectory/**
+          topics:
+              - compare-type: ANT
+                pattern: refactor-xy**
+      skip-vote:
+          successful: true
+          failed: true
+          unstable: true
+          notbuilt: true
+      silent: false
+      silent-start: true
+      escape-quotes: false
+      no-name-and-email: false
+      dependency-jobs: 'job1, job2'
+      notification-level: ALL
+      dynamic-trigger-enabled: true
+      dynamic-trigger-url: http://myhost/mytrigger
+      trigger-for-unreviewed-patches: true
+      server-name: my-server
+      failure-message-file: path/to/filename

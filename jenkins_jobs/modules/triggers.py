@@ -351,6 +351,15 @@ def gerrit(parser, xml_parent, data):
                               * **pattern** (`str`) -- File path pattern to
                                 match
 
+                * **forbidden-file-paths** (`list`) -- List of file paths to
+                  skip triggering (optional)
+
+                  :Forbidden File Path: * **compare-type** (`str`) --
+                                ''PLAIN'', ''ANT'' or ''REG_EXP'' (optional)
+                                (default ''PLAIN'')
+                              * **pattern** (`str`) -- File path pattern to
+                                match
+
                 * **topics** (`list`) -- List of topics to match
                   (optional)
 
@@ -485,6 +494,20 @@ def gerrit(parser, xml_parent, data):
                 XML.SubElement(fp_tag, 'compareType').text = get_compare_type(
                     'compare-type', file_path.get('compare-type', 'PLAIN'))
                 XML.SubElement(fp_tag, 'pattern').text = file_path['pattern']
+
+        project_forbidden_file_paths = project.get('forbidden-file-paths', [])
+        if project_forbidden_file_paths:
+            ffps_tag = XML.SubElement(gproj, 'forbiddenFilePaths')
+            for forbidden_file_path in project_forbidden_file_paths:
+                ffp_tag = XML.SubElement(ffps_tag,
+                                         'com.sonyericsson.hudson.plugins.'
+                                         'gerrit.trigger.hudsontrigger.data.'
+                                         'FilePath')
+                XML.SubElement(ffp_tag, 'compareType').text = get_compare_type(
+                    'compare-type', forbidden_file_path.get('compare-type',
+                                                            'PLAIN'))
+                XML.SubElement(ffp_tag, 'pattern').text = \
+                    forbidden_file_path['pattern']
 
         topics = project.get('topics', [])
         if topics:
