@@ -1,0 +1,5 @@
+properties:
+    - sidebar:
+        icon: /userContent/images/debian-swirl-24x24.png
+        text: About jenkins.debian.net
+        url: 'https://jenkins.debian.net/userContent/about.html'

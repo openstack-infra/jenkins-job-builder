@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <hudson.plugins.sidebar__link.ProjectLinks>
+      <links>
+        <hudson.plugins.sidebar__link.LinkAction>
+          <url>https://jenkins.debian.net/userContent/about.html</url>
+          <text>About jenkins.debian.net</text>
+          <icon>/userContent/images/debian-swirl-24x24.png</icon>
+        </hudson.plugins.sidebar__link.LinkAction>
+        <hudson.plugins.sidebar__link.LinkAction>
+          <url>https://jenkins.debian.net/view/reproducible</url>
+          <text>reproducible builds jobs</text>
+          <icon>/userContent/images/debian-jenkins-24x24.png</icon>
+        </hudson.plugins.sidebar__link.LinkAction>
+      </links>
+    </hudson.plugins.sidebar__link.ProjectLinks>
+  </properties>
+</project>
+

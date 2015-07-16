@@ -1,0 +1,9 @@
+properties:
+   - sidebar:
+       url: https://jenkins.debian.net/userContent/about.html
+       text: About jenkins.debian.net
+       icon: /userContent/images/debian-swirl-24x24.png
+   - sidebar:
+       url: https://jenkins.debian.net/view/reproducible
+       text: reproducible builds jobs
+       icon: /userContent/images/debian-jenkins-24x24.png
