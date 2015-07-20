@@ -1,0 +1,15 @@
+publishers:
+  - sonar:
+      jdk: MyJdk
+      branch: myBranch
+      language: java
+      root-pom: mypom.xml
+      private-maven-repo: true
+      maven-opts: -DskipTests
+      additional-properties: -DsonarHostURL=http://example.com/
+      skip-global-triggers:
+        skip-when-scm-change: true
+        skip-when-upstream-build: true
+        skip-when-envvar-defined: SKIP_SONAR
+      settings: org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig0123456789012
+      global-settings: org.jenkinsci.plugins.configfiles.maven.GlobalMavenSettingsConfig0123456789012

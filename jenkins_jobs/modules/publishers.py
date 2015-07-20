@@ -30,6 +30,7 @@ import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
 from jenkins_jobs.modules.helpers import build_trends_publisher
+from jenkins_jobs.modules.helpers import config_file_provider_settings
 from jenkins_jobs.modules.helpers import findbugs_settings
 from jenkins_jobs.errors import (InvalidAttributeError,
                                  JenkinsJobsException,
@@ -2039,11 +2040,14 @@ def sonar(parser, xml_parent, data):
     """yaml: sonar
     Sonar plugin support.
     Requires the Jenkins `Sonar Plugin.
-    <http://docs.codehaus.org/pages/viewpage.action?pageId=116359341>`_
+    <http://docs.sonarqube.org/display/PLUG/Jenkins+Plugin>`_
 
     :arg str jdk: JDK to use (inherited from the job if omitted). (optional)
     :arg str branch: branch onto which the analysis will be posted (optional)
     :arg str language: source code language (optional)
+    :arg str root-pom: Root POM (default 'pom.xml')
+    :arg bool private-maven-repo: If true, use private Maven repository.
+      (default false)
     :arg str maven-opts: options given to maven (optional)
     :arg str additional-properties: sonar analysis parameters (optional)
     :arg dict skip-global-triggers:
@@ -2053,6 +2057,15 @@ def sonar(parser, xml_parent, data):
                      build triggered by an upstream build
                    * **skip-when-envvar-defined** (`str`): skip analysis when
                      the specified environment variable is set to true
+    :arg str settings: Path to use as user settings.xml. It is possible to
+      provide a ConfigFileProvider settings file, see Example below. (optional)
+    :arg str global-settings: Path to use as global settings.xml. It is
+      possible to provide a ConfigFileProvider settings file, see Example
+      below. (optional)
+
+    Requires the Jenkins :jenkins-wiki:`Config File Provider Plugin
+    <Config+File+Provider+Plugin>`
+    for the Config File Provider "settings" and "global-settings" config.
 
     This publisher supports the post-build action exposed by the Jenkins
     Sonar Plugin, which is triggering a Sonar Analysis with Maven.
@@ -2067,6 +2080,9 @@ def sonar(parser, xml_parent, data):
         XML.SubElement(sonar, 'jdk').text = data['jdk']
     XML.SubElement(sonar, 'branch').text = data.get('branch', '')
     XML.SubElement(sonar, 'language').text = data.get('language', '')
+    XML.SubElement(sonar, 'rootPom').text = data.get('root-pom', 'pom.xml')
+    XML.SubElement(sonar, 'usePrivateRepository').text = str(
+        data.get('private-maven-repo', False)).lower()
     XML.SubElement(sonar, 'mavenOpts').text = data.get('maven-opts', '')
     XML.SubElement(sonar, 'jobAdditionalProperties').text = \
         data.get('additional-properties', '')
@@ -2079,6 +2095,7 @@ def sonar(parser, xml_parent, data):
             str(data_triggers.get('skip-when-upstream-build', False)).lower()
         XML.SubElement(triggers, 'envVar').text =  \
             data_triggers.get('skip-when-envvar-defined', '')
+    config_file_provider_settings(sonar, data)
 
 
 def performance(parser, xml_parent, data):
