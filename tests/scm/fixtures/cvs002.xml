@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <scm class="hudson.scm.CVSSCM">
+    <repositories>
+      <hudson.scm.CvsRepository>
+        <cvsRoot>:protocol:user@host1:path</cvsRoot>
+        <repositoryItems>
+          <hudson.scm.CvsRepositoryItem>
+            <location class="hudson.scm.CvsRepositoryLocation$TagRepositoryLocation">
+              <locationType>TAG</locationType>
+              <locationName>tag name</locationName>
+              <useHeadIfNotFound>false</useHeadIfNotFound>
+            </location>
+            <modules>
+              <hudson.scm.CvsModule>
+                <remoteName>remote1</remoteName>
+                <localName>localName</localName>
+              </hudson.scm.CvsModule>
+              <hudson.scm.CvsModule>
+                <remoteName>remote2</remoteName>
+                <localName/>
+              </hudson.scm.CvsModule>
+            </modules>
+          </hudson.scm.CvsRepositoryItem>
+        </repositoryItems>
+        <excludedRegions>
+          <hudson.scm.ExcludedRegion>
+            <pattern>pattern1</pattern>
+          </hudson.scm.ExcludedRegion>
+          <hudson.scm.ExcludedRegion>
+            <pattern>pattern2</pattern>
+          </hudson.scm.ExcludedRegion>
+        </excludedRegions>
+        <compressionLevel>1</compressionLevel>
+      </hudson.scm.CvsRepository>
+      <hudson.scm.CvsRepository>
+        <cvsRoot>:protocol:user@host2:path</cvsRoot>
+        <repositoryItems>
+          <hudson.scm.CvsRepositoryItem>
+            <location class="hudson.scm.CvsRepositoryLocation$HeadRepositoryLocation">
+              <locationType>HEAD</locationType>
+            </location>
+            <modules>
+              <hudson.scm.CvsModule>
+                <remoteName>remote1</remoteName>
+                <localName/>
+              </hudson.scm.CvsModule>
+            </modules>
+          </hudson.scm.CvsRepositoryItem>
+        </repositoryItems>
+        <excludedRegions/>
+        <compressionLevel>-1</compressionLevel>
+      </hudson.scm.CvsRepository>
+    </repositories>
+    <canUseUpdate>false</canUseUpdate>
+    <pruneEmptyDirectories>false</pruneEmptyDirectories>
+    <skipChangeLog>true</skipChangeLog>
+    <disableCvsQuiet>true</disableCvsQuiet>
+    <cleanOnFailedUpdate>true</cleanOnFailedUpdate>
+    <forceCleanCopy>true</forceCleanCopy>
+  </scm>
+</project>
