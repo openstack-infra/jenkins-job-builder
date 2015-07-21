@@ -1,0 +1,3 @@
+publishers:
+  - flowdock:
+      token: abcdefghijklmnopqrstuvwxyzabcdef

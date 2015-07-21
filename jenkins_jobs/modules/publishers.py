@@ -4784,6 +4784,84 @@ def google_cloud_storage(parser, xml_parent, data):
                     properties, upload_element, types)
 
 
+def flowdock(parser, xml_parent, data):
+    """yaml: flowdock
+    This plugin publishes job build results to a Flowdock flow.
+
+    Requires the Jenkins :jenkins-wiki:`Flowdock Plugin
+    <Flowdock+Plugin>`.
+
+    :arg str token: API token for the targeted flow.
+      (required)
+    :arg str tags: Comma-separated list of tags to incude in message
+      (default "")
+    :arg bool chat-notification: Send chat notification when build fails
+      (default true)
+    :arg bool notify-success: Send notification on build success
+      (default true)
+    :arg bool notify-failure: Send notification on build failure
+      (default true)
+    :arg bool notify-fixed: Send notification when build is fixed
+      (default true)
+    :arg bool notify-unstable: Send notification when build is unstable
+      (default false)
+    :arg bool notify-aborted: Send notification when build was aborted
+      (default false)
+    :arg bool notify-notbuilt: Send notification when build did not occur
+      (default false)
+
+    Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/flowdock001.yaml
+       :language: yaml
+
+    Full example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/flowdock002.yaml
+       :language: yaml
+    """
+
+    def gen_notification_entry(data_item, default, text):
+        e = XML.SubElement(nm, 'entry')
+        XML.SubElement(e, 'com.flowdock.jenkins.BuildResult').text = text
+        XML.SubElement(e, 'boolean').text = str(
+            data.get(data_item, default)).lower()
+
+    def gen_setting(item, default):
+        XML.SubElement(parent, 'notify%s' % item).text = str(
+            data.get('notify-%s' % item.lower(), default)).lower()
+
+    # Raise exception if token was not specified
+    if 'token' not in data:
+        raise MissingAttributeError('token')
+
+    parent = XML.SubElement(xml_parent,
+                            'com.flowdock.jenkins.FlowdockNotifier')
+
+    XML.SubElement(parent, 'flowToken').text = data['token']
+    XML.SubElement(parent, 'notificationTags').text = data.get('tags', '')
+    XML.SubElement(parent, 'chatNotification').text = str(
+        data.get('chat-notification', True)).lower()
+
+    nm = XML.SubElement(parent, 'notifyMap')
+
+    # notification entries
+    gen_notification_entry('notify-success', True, 'SUCCESS')
+    gen_notification_entry('notify-failure', True, 'FAILURE')
+    gen_notification_entry('notify-fixed', True, 'FIXED')
+    gen_notification_entry('notify-unstable', False, 'UNSTABLE')
+    gen_notification_entry('notify-aborted', False, 'ABORTED')
+    gen_notification_entry('notify-notbuilt', False, 'NOT_BUILT')
+
+    # notification settings
+    gen_setting('Success', True)
+    gen_setting('Failure', True)
+    gen_setting('Fixed', True)
+    gen_setting('Unstable', False)
+    gen_setting('Aborted', False)
+    gen_setting('NotBuilt', False)
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

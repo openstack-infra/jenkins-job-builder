@@ -1,0 +1,11 @@
+publishers:
+  - flowdock:
+      token: abcdefghijklmnopqrstuvwxyzabcdef
+      tags: jenkins,ci
+      chat-notification: true
+      notify-success: true
+      notify-failure: true
+      notify-fixed: true
+      notify-unstable: false
+      notify-aborted: false
+      notify-notbuilt: false
