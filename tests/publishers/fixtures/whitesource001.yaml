@@ -1,0 +1,13 @@
+publishers:
+  - whitesource:
+      product-token: abcdefghijklmnopqrstuvwxyzabcdef
+      version: 1.0.17
+      policies: enable
+      override-token: "1231424523412"
+      project-token: sd;fkljsdfkljasdfkj
+      includes:
+        - lib/*.jar
+        - test/lib/*.jar
+      excludes:
+        - lib/ant*.jar
+        - test/lib/ant*.jar
