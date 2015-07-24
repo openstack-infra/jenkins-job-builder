@@ -1,0 +1,10 @@
+publishers:
+ - rundeck:
+    job-id: testproject:group/jobname
+    options: |
+      STUFF_FOR_THE_JOB=stuff
+      ANOTHER_VAR=more_stuff
+    node-filters: dev
+    tag: master
+    wait-for-rundeck: true
+    fail-the-build: true

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.rundeck.RundeckNotifier>
+      <jobId>testproject:group/jobname</jobId>
+      <options>STUFF_FOR_THE_JOB=stuff
+ANOTHER_VAR=more_stuff
+</options>
+      <nodeFilters>dev</nodeFilters>
+      <tag>master</tag>
+      <shouldWaitForRundeckJob>true</shouldWaitForRundeckJob>
+      <shouldFailTheBuild>true</shouldFailTheBuild>
+    </org.jenkinsci.plugins.rundeck.RundeckNotifier>
+  </publishers>
+</project>
