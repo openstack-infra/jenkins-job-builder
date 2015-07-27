@@ -3389,6 +3389,20 @@ def github_notifier(parser, xml_parent, data):
                    'com.cloudbees.jenkins.GitHubCommitNotifier')
 
 
+def zulip(parser, xml_parent, data):
+    """yaml: zulip
+    Set build status on zulip.
+    Requires the Jenkins :jenkins-wiki:`Humbug Plugin <Humbug+Plugin>`.
+
+    Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/zulip.yaml
+       :language: yaml
+    """
+    XML.SubElement(xml_parent,
+                   'hudson.plugins.humbug.HumbugNotifier')
+
+
 def build_publisher(parser, xml_parent, data):
     """yaml: build-publisher
     This plugin allows records from one Jenkins to be published
