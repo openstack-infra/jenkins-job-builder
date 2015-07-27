@@ -32,5 +32,3 @@
     </jenkins.plugins.publish__over__ftp.BapFtpPublisherPlugin>
   </publishers>
 </project>
-
-

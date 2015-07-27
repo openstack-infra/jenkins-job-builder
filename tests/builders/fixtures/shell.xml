@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-   <builders>
-     <hudson.tasks.Shell>
-       <command>make test</command>
-     </hudson.tasks.Shell>
-   </builders>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>make test</command>
+    </hudson.tasks.Shell>
+  </builders>
 </project>

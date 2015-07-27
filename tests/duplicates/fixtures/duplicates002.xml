@@ -19,7 +19,7 @@
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-	<name>origin/stable-1.1</name>
+        <name>origin/stable-1.1</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <excludedUsers/>
@@ -49,6 +49,7 @@
   <publishers/>
   <buildWrappers/>
 </project>
+
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <actions/>
@@ -70,7 +71,7 @@
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-	<name>origin/stable-2.0</name>
+        <name>origin/stable-2.0</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <excludedUsers/>

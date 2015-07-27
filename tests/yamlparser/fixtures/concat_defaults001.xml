@@ -20,7 +20,7 @@
 
 <?xml version="1.0" encoding="utf-8"?>
 <project>
- <actions/>
+  <actions/>
   <description>my project description&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
   <keepDependencies>false</keepDependencies>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>

@@ -18,7 +18,7 @@
       <branchesToPush>
         <hudson.plugins.git.GitPublisher_-BranchToPush>
           <targetRepoName>branchremotename</targetRepoName>
-	  <branchName>some/branch</branchName>
+          <branchName>some/branch</branchName>
         </hudson.plugins.git.GitPublisher_-BranchToPush>
       </branchesToPush>
       <notesToPush>

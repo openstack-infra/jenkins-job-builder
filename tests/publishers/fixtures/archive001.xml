@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-    <publishers>
-        <hudson.tasks.ArtifactArchiver>
-            <artifacts>*.tar.gz</artifacts>
-            <latestOnly>false</latestOnly>
-            <allowEmptyArchive>true</allowEmptyArchive>
-            <fingerprint>true</fingerprint>
-        </hudson.tasks.ArtifactArchiver>
-    </publishers>
+  <publishers>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>*.tar.gz</artifacts>
+      <latestOnly>false</latestOnly>
+      <allowEmptyArchive>true</allowEmptyArchive>
+      <fingerprint>true</fingerprint>
+    </hudson.tasks.ArtifactArchiver>
+  </publishers>
 </project>

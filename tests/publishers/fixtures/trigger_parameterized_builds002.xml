@@ -40,4 +40,3 @@
     </hudson.plugins.parameterizedtrigger.BuildTrigger>
   </publishers>
 </project>
-
