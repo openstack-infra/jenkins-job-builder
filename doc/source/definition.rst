@@ -222,7 +222,7 @@ Raw config
 It is possible, but not recommended, to use `raw` within a module to
 inject raw xml into the job configs.
 
-This is relevant in case there is no apropriate module for a
+This is relevant in case there is no appropriate module for a
 Jenkins plugin or the module does not behave as you expect it to do.
 
 For example:
@@ -231,7 +231,7 @@ For example:
 
 Is the raw way of adding support for the `xvnc` wrapper.
 
-To get the apropriate xml to use you would need to create/edit a job
+To get the appropriate xml to use you would need to create/edit a job
 in Jenkins and grab the relevant raw xml segment from the
 `config.xml`.
 
@@ -296,10 +296,10 @@ For example:
 
 
 By default JJB will fail if it tries to interpolate a variable that was not
-defined, but you can change that behaviour and allow empty variables with the
+defined, but you can change that behavior and allow empty variables with the
 allow_empty_variables configuration option.
 
-For example, having a configuration file with tha toption enabled:
+For example, having a configuration file with that option enabled:
 
 .. literalinclude:: /../../tests/yamlparser/fixtures/allow_empty_variables.conf
 
