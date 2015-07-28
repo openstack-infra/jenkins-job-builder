@@ -78,7 +78,7 @@ def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml',
         if plugins_info_candidate not in files:
             plugins_info_candidate = None
 
-        conf_candidate = re.sub(r'\.yaml$', '.conf', input_filename)
+        conf_candidate = re.sub(r'\.yaml$|\.json$', '.conf', input_filename)
         # If present, add the configuration file
         if conf_candidate not in files:
             conf_candidate = None

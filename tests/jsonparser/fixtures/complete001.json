@@ -1,0 +1,168 @@
+[
+  {
+    "wrapper": {
+      "name": "timeout-wrapper",
+      "wrappers": [
+        {
+          "timeout": {
+            "fail": true,
+            "elastic-percentage": 150,
+            "elastic-default-timeout": 90,
+            "type": "elastic"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "wrapper": {
+      "name": "pre-scm-shell-ant",
+      "wrappers": [
+        {
+          "pre-scm-buildstep": [
+            {
+              "shell": "#!/bin/bash\necho \"Doing somethiung cool\"\n"
+            },
+            {
+              "shell": "#!/bin/zsh\necho \"Doing somethin cool with zsh\"\n"
+            },
+            {
+              "ant": {
+                "targets": "target1 target2",
+                "ant-name": "Standard Ant"
+              }
+            },
+            {
+              "inject": {
+                "properties-file": "example.prop",
+                "properties-content": "EXAMPLE=foo-bar"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "wrapper": {
+      "name": "copy-files",
+      "wrappers": [
+        {
+          "copy-to-slave": {
+            "includes": [
+              "file1",
+              "file2*.txt"
+            ],
+            "excludes": [
+              "file2bad.txt"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "trigger": {
+      "name": "gerrit-review",
+      "triggers": [
+        {
+          "gerrit": {
+            "trigger-on-patchset-uploaded-event": true,
+            "trigger-on-change-merged-event": false,
+            "trigger-on-ref-updated-event": false,
+            "trigger-on-comment-added-event": false,
+            "override-votes": true,
+            "gerrit-build-started-verified-value": 0,
+            "gerrit-build-successful-verified-value": 1,
+            "gerrit-build-failed-verified-value": -1,
+            "gerrit-build-unstable-verified-value": -1,
+            "gerrit-build-notbuilt-verified-value": -1,
+            "gerrit-build-started-codereview-value": 0,
+            "gerrit-build-successful-codereview-value": 1,
+            "gerrit-build-failed-codereview-value": -1,
+            "gerrit-build-unstable-codereview-value": -1,
+            "gerrit-build-notbuilt-codereview-value": -1,
+            "projects": [
+              {
+                "project-compare-type": "PLAIN",
+                "project-pattern": "{project_pattern}",
+                "branches": [
+                  {
+                    "branch-compare-type": "ANT",
+                    "branch-pattern": "**"
+                  }
+                ]
+              }
+            ],
+            "start-message": "Start message.",
+            "failure-message": "Failed message.",
+            "successful-message": "Success message.",
+            "unstable-message": "Unstable message.",
+            "notbuilt-message": "Not built message."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "scm": {
+      "name": "gerrit-scm",
+      "scm": [
+        {
+          "git": {
+            "url": "ssh://jenkins@review.openstack.org:29418/{project_pattern}.git",
+            "branches": [
+              "origin/**"
+            ],
+            "name": "origin",
+            "prune": true,
+            "clean": true,
+            "browser": "gitweb",
+            "browser-url": "http://review.openstack.org/gitweb?p={project_pattern}.git",
+            "choosing-strategy": "gerrit"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "project": {
+      "name": "complete001",
+      "version": [
+        1.2
+      ],
+      "jobs": [
+        "complete001_{version}"
+      ]
+    }
+  },
+  {
+    "job-template": {
+      "name": "complete001_{version}",
+      "scm": [
+        {
+          "gerrit-scm": {
+            "project_pattern": "openstack-infra/jenkins-job-builder"
+          }
+        }
+      ],
+      "triggers": [
+        {
+          "gerrit-review": {
+            "project_pattern": "openstack-infra/jenkins-job-builder"
+          }
+        }
+      ],
+      "wrappers": [
+        "timeout-wrapper",
+        "pre-scm-shell-ant",
+        "copy-files"
+      ],
+      "builders": [
+        {
+          "shell": "#!/usr/bin/env python\n#\nprint(\"Doing something cool with python\")\n"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "job": {
+      "name": "simple",
+      "node": "centos",
+      "builders": [
+        {
+          "shell": "echo This is my job"
+        }
+      ]
+    }
+  }
+]
