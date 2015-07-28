@@ -263,6 +263,8 @@ def trigger_parameterized_builds(parser, xml_parent, data):
     :arg str property-file: Use properties from file (optional)
     :arg bool fail-on-missing: Blocks the triggering of the downstream jobs
       if any of the files are not found in the workspace (default 'False')
+    :arg bool trigger-with-no-params: Trigger a build even when there are
+      currently no parameters defined (default 'False')
     :arg str restrict-matrix-project: Filter that restricts the subset
         of the combinations that the downstream project will run (optional)
     :arg str node-label-name: Specify the Name for the NodeLabel parameter.
@@ -364,7 +366,8 @@ def trigger_parameterized_builds(parser, xml_parent, data):
         condition.text = project_def.get('condition', 'ALWAYS')
         trigger_with_no_params = XML.SubElement(tconfig,
                                                 'triggerWithNoParameters')
-        trigger_with_no_params.text = 'false'
+        trigger_with_no_params.text = str(
+            project_def.get('trigger-with-no-params', False)).lower()
 
 
 def trigger(parser, xml_parent, data):
