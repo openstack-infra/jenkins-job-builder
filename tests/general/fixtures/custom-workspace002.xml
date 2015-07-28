@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<matrix-project>
+  <executionStrategy class="hudson.matrix.DefaultMatrixExecutionStrategyImpl">
+    <runSequentially>false</runSequentially>
+  </executionStrategy>
+  <combinationFilter/>
+  <axes/>
+  <actions/>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <customWorkspace>foo</customWorkspace>
+  <childCustomWorkspace>bar</childCustomWorkspace>
+  <canRoam>true</canRoam>
+</matrix-project>

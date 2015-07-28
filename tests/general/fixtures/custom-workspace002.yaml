@@ -1,0 +1,3 @@
+project-type: matrix
+workspace: foo
+child-workspace: bar
