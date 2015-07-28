@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jenkinsci.plugins.conditionalbuildstep.singlestep.SingleConditionalBuilder>
+      <condition class="org.jenkins_ci.plugins.run_condition.core.DayCondition">
+        <daySelector class="org.jenkins_ci.plugins.run_condition.core.DayCondition$Weekday"/>
+        <useBuildTime>true</useBuildTime>
+      </condition>
+      <runner class="org.jenkins_ci.plugins.run_condition.BuildStepRunner$Fail"/>
+      <buildStep class="hudson.tasks.Shell">
+        <command>sl</command>
+      </buildStep>
+    </org.jenkinsci.plugins.conditionalbuildstep.singlestep.SingleConditionalBuilder>
+  </builders>
+</project>

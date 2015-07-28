@@ -1,0 +1,12 @@
+builders:
+      - conditional-step:
+          condition-kind: files-match
+          include-pattern:
+              - "inc_pattern1"
+              - "inc_pattern2"
+          exclude-pattern:
+              - "exc_pattern1"
+              - "exc_pattern2"
+          condition-basedir: "jenkins-home"
+          steps:
+              - shell: "sl"

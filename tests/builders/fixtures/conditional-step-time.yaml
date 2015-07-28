@@ -1,0 +1,9 @@
+builders:
+    - conditional-step:
+        condition-kind: time
+        earliest-hour: "4"
+        earliest-min: "15"
+        latest-hour: "20"
+        latest-min: "30"
+        steps:
+            - shell: "sl"

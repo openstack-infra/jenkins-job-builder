@@ -1,0 +1,20 @@
+builders:
+      - conditional-step:
+          condition-kind: or
+          condition-operands:
+              - condition-kind: num-comp
+                lhs: "2 + 5"
+                rhs: "1 + 6"
+                comparator: equal
+                condition-basedir: "jenkins-home"
+              - condition-kind: files-match
+                include-pattern:
+                    - "inc_pattern1"
+                    - "inc_pattern2"
+                exclude-pattern:
+                    - "exc_pattern1"
+                    - "exc_pattern2"
+                condition-basedir: "jenkins-home"
+          steps:
+              - shell: "sl"
+
