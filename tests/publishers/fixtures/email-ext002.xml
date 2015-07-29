@@ -23,6 +23,7 @@
       <presendScript/>
       <attachBuildLog>false</attachBuildLog>
       <saveOutput>false</saveOutput>
+      <disabled>false</disabled>
       <replyTo>$DEFAULT_REPLYTO</replyTo>
       <matrixTriggerMode>ONLY_CONFIGURATIONS</matrixTriggerMode>
     </hudson.plugins.emailext.ExtendedEmailPublisher>

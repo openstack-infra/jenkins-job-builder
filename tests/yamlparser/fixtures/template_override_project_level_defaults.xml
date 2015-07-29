@@ -34,6 +34,7 @@
       <presendScript/>
       <attachBuildLog>false</attachBuildLog>
       <saveOutput>false</saveOutput>
+      <disabled>false</disabled>
       <replyTo>$DEFAULT_REPLYTO</replyTo>
     </hudson.plugins.emailext.ExtendedEmailPublisher>
   </publishers>

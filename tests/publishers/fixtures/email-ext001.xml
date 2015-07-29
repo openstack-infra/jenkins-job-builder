@@ -166,6 +166,7 @@
       <presendScript>cancel=true</presendScript>
       <attachBuildLog>false</attachBuildLog>
       <saveOutput>true</saveOutput>
+      <disabled>false</disabled>
       <replyTo>foo@example.com</replyTo>
       <matrixTriggerMode>ONLY_CONFIGURATIONS</matrixTriggerMode>
     </hudson.plugins.emailext.ExtendedEmailPublisher>
