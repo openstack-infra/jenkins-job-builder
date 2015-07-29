@@ -11,11 +11,14 @@
           <multiSelectDelimiter>,</multiSelectDelimiter>
           <quoteValue>false</quoteValue>
           <defaultValue/>
+          <descriptionPropertyValue/>
           <type>PT_CHECKBOX</type>
           <propertyFile/>
           <propertyKey/>
           <defaultPropertyFile/>
           <defaultPropertyKey/>
+          <descriptionPropertyFile/>
+          <descriptionPropertyKey/>
         </com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
