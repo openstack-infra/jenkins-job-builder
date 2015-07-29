@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.ivytrigger.IvyTrigger>
+      <ivyPath>path/to/file</ivyPath>
+      <ivySettingsPath>path/to/settings/file</ivySettingsPath>
+      <propertiesFilePath>filename1;filename2</propertiesFilePath>
+      <debug>true</debug>
+      <downloadArtifacts>true</downloadArtifacts>
+      <enableConcurrentBuild>false</enableConcurrentBuild>
+      <spec>H/15 * * * *</spec>
+      <labelRestriction>true</labelRestriction>
+      <triggerLabel>master</triggerLabel>
+    </org.jenkinsci.plugins.ivytrigger.IvyTrigger>
+  </triggers>
+</project>
