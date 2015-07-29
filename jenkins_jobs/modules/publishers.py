@@ -4873,6 +4873,30 @@ def flowdock(parser, xml_parent, data):
     gen_setting('NotBuilt', False)
 
 
+def clamav(parser, xml_parent, data):
+    """yaml: clamav
+    Check files with ClamAV, an open source antivirus engine.
+    Requires the Jenkins :jenkins-wiki:`ClamAV Plugin <ClamAV+Plugin>`.
+
+    :arg str includes: Files that should be scanned.
+      (default "")
+    :arg str excludes: Files that should be ignored.
+      (default "")
+
+    Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/clamav001.yaml
+       :language: yaml
+    """
+    clamav = XML.SubElement(
+        xml_parent,
+        'org.jenkinsci.plugins.clamav.ClamAvRecorder')
+    XML.SubElement(clamav, 'includes').text = str(
+        data.get('includes', ''))
+    XML.SubElement(clamav, 'excludes').text = str(
+        data.get('excludes', ''))
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

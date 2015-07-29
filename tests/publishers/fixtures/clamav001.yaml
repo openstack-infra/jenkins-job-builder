@@ -1,0 +1,4 @@
+publishers:
+  - clamav:
+      includes: '*.zip'
+      excludes: 'foo.zip'

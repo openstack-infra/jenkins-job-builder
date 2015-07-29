@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.clamav.ClamAvRecorder>
+      <includes>*.zip</includes>
+      <excludes>foo.zip</excludes>
+    </org.jenkinsci.plugins.clamav.ClamAvRecorder>
+  </publishers>
+</project>
