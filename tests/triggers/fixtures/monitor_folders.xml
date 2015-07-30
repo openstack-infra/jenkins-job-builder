@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.fstrigger.triggers.FolderContentTrigger>
+      <path>pathname</path>
+      <includes>pattern1,pattern2</includes>
+      <excludes>pattern1</excludes>
+      <spec>H/15 * * * *</spec>
+      <excludeCheckLastModificationDate>true</excludeCheckLastModificationDate>
+      <excludeCheckContent>true</excludeCheckContent>
+      <excludeCheckFewerOrMoreFiles>true</excludeCheckFewerOrMoreFiles>
+    </org.jenkinsci.plugins.fstrigger.triggers.FolderContentTrigger>
+  </triggers>
+</project>

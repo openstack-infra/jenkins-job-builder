@@ -1,0 +1,11 @@
+triggers:
+  - monitor-folders:
+      path: 'pathname'
+      includes:
+          - 'pattern1'
+          - 'pattern2'
+      excludes: 'pattern1'
+      check-modification-date: false
+      check-content: false
+      check-fewer: false
+      cron: 'H/15 * * * *'

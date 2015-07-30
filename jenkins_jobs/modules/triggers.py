@@ -940,6 +940,49 @@ def reverse(parser, xml_parent, data):
         str(hudson_model.THRESHOLDS[result]['complete']).lower()
 
 
+def monitor_folders(parser, xml_parent, data):
+    """yaml: monitor-folders
+    Configure Jenkins to monitor folders.
+    Requires the Jenkins :jenkins-wiki:`Filesystem Trigger Plugin
+    <FSTriggerPlugin>`.
+
+    :arg str path: Folder path to poll. (optional)
+    :arg list includes: Fileset includes setting that specifies the list of
+      includes files. Basedir of the fileset is relative to the workspace
+      root. If no value is set, all files are used. (optional)
+    :arg str excludes: The 'excludes' pattern. A file that matches this mask
+      will not be polled even if it matches the mask specified in 'includes'
+      section. (optional)
+    :arg bool check-modification-date: Check last modification date.
+      (default true)
+    :arg bool check-content: Check content. (default true)
+    :arg bool check-fewer: Check fewer or more files (default true)
+    :arg str cron: cron syntax of when to run (default '')
+
+    Example:
+
+    .. literalinclude:: /../../tests/triggers/fixtures/monitor_folders.yaml
+    """
+    ft = XML.SubElement(xml_parent, ('org.jenkinsci.plugins.fstrigger.'
+                                     'triggers.FolderContentTrigger'))
+    path = data.get('path')
+    if path:
+        XML.SubElement(ft, 'path').text = path
+    includes = data.get('includes')
+    if includes:
+        XML.SubElement(ft, 'includes').text = ",".join(includes)
+    excludes = data.get('excludes')
+    if excludes:
+        XML.SubElement(ft, 'excludes').text = excludes
+    XML.SubElement(ft, 'spec').text = data.get('cron', '')
+    XML.SubElement(ft, 'excludeCheckLastModificationDate').text = str(
+        not data.get('check-modification-date', True)).lower()
+    XML.SubElement(ft, 'excludeCheckContent').text = str(
+        not data.get('check-content', True)).lower()
+    XML.SubElement(ft, 'excludeCheckFewerOrMoreFiles').text = str(
+        not data.get('check-fewer', True)).lower()
+
+
 def ivy(parser, xml_parent, data):
     """yaml: ivy
     Poll with an Ivy script
