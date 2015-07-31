@@ -8,7 +8,9 @@ Contents
 .. toctree::
    :maxdepth: 3
 
+   quick-start
    installation
+   execution
    definition
    extending
 
