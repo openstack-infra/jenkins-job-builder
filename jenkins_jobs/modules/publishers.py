@@ -52,6 +52,8 @@ def archive(parser, xml_parent, data):
       successful build
     :arg bool allow-empty:  pass the build if no artifacts are
       found (default false)
+    :arg bool only-if-success: archive artifacts only if build is successful
+      (default false)
     :arg bool fingerprint: fingerprint all archived artifacts (default false)
 
     Example:
@@ -82,6 +84,10 @@ def archive(parser, xml_parent, data):
         empty = XML.SubElement(archiver, 'allowEmptyArchive')
         # Default behavior is to fail the build.
         empty.text = str(data.get('allow-empty', False)).lower()
+
+    if 'only-if-success' in data:
+        success = XML.SubElement(archiver, 'onlyIfSuccessful')
+        success.text = str(data.get('only-if-success', False)).lower()
 
     if 'fingerprint' in data:
         fingerprint = XML.SubElement(archiver, 'fingerprint')
