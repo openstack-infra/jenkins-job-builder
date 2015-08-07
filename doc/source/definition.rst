@@ -351,6 +351,7 @@ The bulk of the job definitions come from the following modules.
 .. toctree::
    :maxdepth: 2
 
+   project_externaljob
    project_flow
    project_freestyle
    project_maven

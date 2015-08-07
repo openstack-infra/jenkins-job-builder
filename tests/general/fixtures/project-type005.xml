@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hudson.model.ExternalJob>
+  <actions/>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+</hudson.model.ExternalJob>

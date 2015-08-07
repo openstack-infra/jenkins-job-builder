@@ -42,7 +42,8 @@ from jenkins_jobs.xml_config import XmlJob
 from jenkins_jobs.modules import (project_flow,
                                   project_matrix,
                                   project_maven,
-                                  project_multijob)
+                                  project_multijob,
+                                  project_externaljob)
 
 
 def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml',
@@ -140,6 +141,8 @@ class BaseTestCase(object):
                 project = project_flow.Flow(None)
             elif (yaml_content['project-type'] == "multijob"):
                 project = project_multijob.MultiJob(None)
+            elif (yaml_content['project-type'] == "externaljob"):
+                project = project_externaljob.ExternalJob(None)
 
         if project:
             xml_project = project.root_xml(yaml_content)
