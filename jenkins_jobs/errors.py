@@ -18,10 +18,17 @@ class ModuleError(JenkinsJobsException):
     def get_module_name(self):
         frame = inspect.currentframe()
         co_name = frame.f_code.co_name
+        module_name = '<unresolved>'
         while frame and co_name != 'run':
+            # XML generation called via dispatch
             if co_name == 'dispatch':
                 data = frame.f_locals
                 module_name = "%s.%s" % (data['component_type'], data['name'])
+                break
+            # XML generation done directly by class using gen_xml
+            if co_name == 'gen_xml':
+                data = frame.f_locals['data']
+                module_name = next(iter(data.keys()))
                 break
             frame = frame.f_back
             co_name = frame.f_code.co_name
@@ -45,15 +52,15 @@ class InvalidAttributeError(ModuleError):
 
 class MissingAttributeError(ModuleError):
 
-    def __init__(self, missing_attribute):
+    def __init__(self, missing_attribute, module_name=None):
+        module = module_name or self.get_module_name()
         if is_sequence(missing_attribute):
-            message = "One of {0} must be present in {1}".format(
+            message = "One of {0} must be present in '{1}'".format(
                 ', '.join("'{0}'".format(value)
-                          for value in missing_attribute),
-                self.get_module_name())
+                          for value in missing_attribute), module)
         else:
-            message = "Missing {0} from an instance of {1}".format(
-                missing_attribute, self.get_module_name())
+            message = "Missing {0} from an instance of '{1}'".format(
+                missing_attribute, module)
 
         super(MissingAttributeError, self).__init__(message)
 
