@@ -20,6 +20,7 @@ from tests.base import mock
 from testtools import TestCase
 
 
+@mock.patch('jenkins_jobs.builder.CacheStorage', mock.MagicMock)
 class TestCaseTestBuilder(TestCase):
     def setUp(self):
         self.builder = jenkins_jobs.builder.Builder(
