@@ -12,7 +12,7 @@
               </configs>
               <projects>archive</projects>
               <condition>ALWAYS</condition>
-              <triggerWithNoParameters>false</triggerWithNoParameters>
+              <triggerWithNoParameters>true</triggerWithNoParameters>
             </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
             <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
               <configs>
