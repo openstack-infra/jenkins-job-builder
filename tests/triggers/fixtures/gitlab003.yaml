@@ -1,0 +1,8 @@
+triggers:
+  - gitlab:
+      include-branches:
+        - 'master'
+      exclude-branches:
+        - 'baz'
+        - 'foo'
+        - 'fnord'
