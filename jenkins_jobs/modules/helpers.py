@@ -13,8 +13,10 @@
 # under the License.
 
 import xml.etree.ElementTree as XML
+import logging
 
 from jenkins_jobs.errors import JenkinsJobsException
+from six.moves import configparser
 
 
 def build_trends_publisher(plugin_name, xml_element, data):
@@ -170,3 +172,20 @@ def findbugs_settings(xml_parent, data):
                                       False)).lower()
     XML.SubElement(xml_parent,
                    'usePreviousBuildAsReference').text = use_previous_build
+
+
+def get_value_from_yaml_or_config_file(key, section, data, parser):
+    logger = logging.getLogger(__name__)
+    result = data.get(key, '')
+    if result == '':
+        try:
+            result = parser.config.get(
+                section, key
+            )
+        except (configparser.NoSectionError, configparser.NoOptionError,
+                JenkinsJobsException) as e:
+            logger.warning("You didn't set a " + key +
+                           " neither in the yaml job definition nor in" +
+                           " the " + section + " section, blank default" +
+                           " value will be applied:\n{0}".format(e))
+    return result

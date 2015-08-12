@@ -16,3 +16,7 @@ query_plugins_info=False
 
 [hipchat]
 authtoken=dummy
+
+[stash]
+username=user
+password=pass

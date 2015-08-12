@@ -32,6 +32,7 @@ from jenkins_jobs.modules import hudson_model
 from jenkins_jobs.modules.helpers import build_trends_publisher
 from jenkins_jobs.modules.helpers import config_file_provider_settings
 from jenkins_jobs.modules.helpers import findbugs_settings
+from jenkins_jobs.modules.helpers import get_value_from_yaml_or_config_file
 from jenkins_jobs.errors import (InvalidAttributeError,
                                  JenkinsJobsException,
                                  MissingAttributeError)
@@ -3463,13 +3464,16 @@ def stash(parser, xml_parent, data):
     .. literalinclude:: /../../tests/publishers/fixtures/stash001.yaml
        :language: yaml
     """
-
     top = XML.SubElement(xml_parent,
                          'org.jenkinsci.plugins.stashNotifier.StashNotifier')
 
     XML.SubElement(top, 'stashServerBaseUrl').text = data.get('url', '')
-    XML.SubElement(top, 'stashUserName').text = data.get('username', '')
-    XML.SubElement(top, 'stashUserPassword').text = data.get('password', '')
+    XML.SubElement(top, 'stashUserName'
+                   ).text = get_value_from_yaml_or_config_file(
+                       'username', 'stash', data, parser)
+    XML.SubElement(top, 'stashUserPassword'
+                   ).text = get_value_from_yaml_or_config_file(
+                       'password', 'stash', data, parser)
     XML.SubElement(top, 'ignoreUnverifiedSSLPeer').text = str(
         data.get('ignore-ssl', False)).lower()
     XML.SubElement(top, 'commitSha1').text = data.get('commit-sha1', '')
