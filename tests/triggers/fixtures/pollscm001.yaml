@@ -1,2 +1,3 @@
 triggers:
-  - pollscm: "*/15 * * * *"
+  - pollscm:
+      cron: "*/15 * * * *"
