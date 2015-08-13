@@ -350,12 +350,9 @@ The bulk of the job definitions come from the following modules.
 
 .. toctree::
    :maxdepth: 2
+   :glob:
 
-   project_externaljob
-   project_flow
-   project_freestyle
-   project_maven
-   project_matrix
+   project_*
    builders
    hipchat
    metadata
