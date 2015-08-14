@@ -210,9 +210,52 @@ Then ``<builders />`` section of the generated job show up as::
   </builders>
 
 As you can see, the specialized macro ``addtwo`` reused the definition from
-the generic macro ``add``.  Whenever you forget a parameter from a macro,
-it will not be expanded and left as is, which will most probably cause havoc in
-your Jenkins builds.
+the generic macro ``add``.
+
+Macro Notes
+~~~~~~~~~~~
+
+If a macro is not passed any parameters it will not have any expansion
+performed on it.  Thus if you forget to provide `any` parameters to a
+macro that expects some, the parameter-templates (``{foo}``) will be
+left as is in the resulting output; this is almost certainly not what
+you want.  Note if you provide an invalid parameter, the expansion
+will fail; the expansion will only be skipped if you provide `no`
+parameters at all.
+
+Macros are expanded using Python string substitution rules.  This can
+especially cause confusion with shell snippets that use ``{`` as part
+of their syntax.  As described, if a macro has `no` parameters, no
+expansion will be performed and thus it is correct to write the script
+with no escaping, e.g.::
+
+  - builder:
+    name: a_builder
+    builders:
+      - shell: |
+          VARIABLE=${VARIABLE:-bar}
+          function foo {
+              echo "my shell function"
+          }
+
+However, if the macro `has` parameters, you must escape the ``{`` you
+wish to make it through to the output, e.g.::
+
+  - builder:
+    name: a_builder
+    builders:
+       - shell: |
+         PARAMETER={parameter}
+         VARIABLE=${{VARIABLE:-bar}}
+         function foo {{
+              echo "my shell function"
+         }}
+
+Note that a ``job-template`` will have parameters by definition (at
+least a ``name``).  Thus embedded-shell within a ``job-template`` should
+always use ``{{`` to achieve a literal ``{``.  A generic builder will need
+to consider the correct quoting based on its use of parameters.
+
 
 .. _raw:
 
