@@ -1,0 +1,12 @@
+name: matrix-test005
+project-type: matrix
+axes:
+    - axis:
+        type: dynamic
+        name: config
+        values:
+            - config_list
+    - axis:
+        type: groovy
+        name: foo
+        command: 'return [bar,baz]'

@@ -39,5 +39,9 @@
           - mysql
           - postgresql
           - sqlite
+      - axis:
+         type: groovy
+         name: foo
+         command: return [one,two,three]
     builders:
       - shell: make && make check

@@ -28,11 +28,12 @@ internal YAML structure:
 Requires the Jenkins :jenkins-wiki:`Matrix Project Plugin
 <Matrix+Project+Plugin>`.
 
-The module supports also dynamic axis:
+The module also supports additional, plugin-defined axes:
 
-* dynamic (``dynamic``)
-
-Requires the Jenkins :jenkins-wiki:`dynamic axis Plugin <DynamicAxis+Plugin>`.
+* DynamicAxis (``dynamic``), requires the Jenkins
+  :jenkins-wiki:`DynamicAxis Plugin <DynamicAxis+Plugin>`
+* GroovyAxis (``groovy``), requires the Jenkins
+  :jenkins-wiki:`GroovyAxis Plugin <GroovyAxis>`
 
 To tie the parent job to a specific node, you should use ``node`` parameter.
 On a matrix project, this will tie *only* the parent job.  To restrict axes
@@ -85,6 +86,7 @@ class Matrix(jenkins_jobs.modules.base.Base):
         'dynamic': 'ca.silvermaplesolutions.jenkins.plugins.daxis.DynamicAxis',
         'python': 'jenkins.plugins.shiningpanda.matrix.PythonAxis',
         'tox': 'jenkins.plugins.shiningpanda.matrix.ToxAxis',
+        'groovy': 'org.jenkinsci.plugins.GroovyAxis',
     }
 
     def root_xml(self, data):
@@ -132,12 +134,17 @@ class Matrix(jenkins_jobs.modules.base.Base):
                 XML.SubElement(lbl_root, 'name').text = 'TOXENV'
             else:
                 XML.SubElement(lbl_root, 'name').text = str(name)
-            v_root = XML.SubElement(lbl_root, 'values')
+            if axis_type != "groovy":
+                v_root = XML.SubElement(lbl_root, 'values')
             if axis_type == "dynamic":
                 XML.SubElement(v_root, 'string').text = str(values[0])
                 XML.SubElement(lbl_root, 'varName').text = str(values[0])
                 v_root = XML.SubElement(lbl_root, 'axisValues')
                 XML.SubElement(v_root, 'string').text = 'default'
+            elif axis_type == "groovy":
+                command = XML.SubElement(lbl_root, 'groovyString')
+                command.text = axis.get('command')
+                XML.SubElement(lbl_root, 'computedValues').text = ''
             else:
                 for v in values:
                     XML.SubElement(v_root, 'string').text = str(v)

@@ -50,6 +50,11 @@
         <string>sqlite</string>
       </values>
     </hudson.matrix.TextAxis>
+    <org.jenkinsci.plugins.GroovyAxis>
+      <name>foo</name>
+      <groovyString>return [one,two,three]</groovyString>
+      <computedValues/>
+    </org.jenkinsci.plugins.GroovyAxis>
   </axes>
   <actions/>
   <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
