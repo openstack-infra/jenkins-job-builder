@@ -4378,7 +4378,7 @@ def scoverage(parser, xml_parent, data):
     scoverage = XML.SubElement(
         xml_parent,
         'org.jenkinsci.plugins.scoverage.ScoveragePublisher')
-    XML.SubElement(scoverage, 'reportDirectory').text = str(
+    XML.SubElement(scoverage, 'reportDir').text = str(
         data.get('report-directory', ''))
     XML.SubElement(scoverage, 'reportFile').text = str(
         data.get('report-file', ''))
