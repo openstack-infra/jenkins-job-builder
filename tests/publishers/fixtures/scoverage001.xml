@@ -2,7 +2,7 @@
 <project>
   <publishers>
     <org.jenkinsci.plugins.scoverage.ScoveragePublisher>
-      <reportDirectory>target/scala-2.10/scoverage-report/</reportDirectory>
+      <reportDir>target/scala-2.10/scoverage-report/</reportDir>
       <reportFile>scoverage.xml</reportFile>
     </org.jenkinsci.plugins.scoverage.ScoveragePublisher>
   </publishers>
