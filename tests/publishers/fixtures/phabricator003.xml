@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <com.uber.jenkins.phabricator.PhabricatorNotifier>
+      <commentOnSuccess>false</commentOnSuccess>
+      <uberallsEnabled>false</uberallsEnabled>
+      <commentFile>.foo</commentFile>
+      <commentSize>137</commentSize>
+      <commentWithConsoleLinkOnFailure>false</commentWithConsoleLinkOnFailure>
+    </com.uber.jenkins.phabricator.PhabricatorNotifier>
+  </publishers>
+</project>

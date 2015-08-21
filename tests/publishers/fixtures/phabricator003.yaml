@@ -1,0 +1,7 @@
+publishers:
+  - phabricator:
+      comment-on-success: false
+      uberalls-enabled: false
+      comment-file: '.foo'
+      comment-size: 137
+      comment-with-console-link-on-failure: false
