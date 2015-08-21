@@ -205,7 +205,8 @@ def throttle(parser, xml_parent, data):
 def sidebar(parser, xml_parent, data):
     """yaml: sidebar
     Allows you to add links in the sidebar.
-    Requires the Jenkins :jenkins-wiki:`Sidebar Plugin <Sidebar+Plugin>`.
+    Requires the Jenkins :jenkins-wiki:`Sidebar-Link Plugin
+    <Sidebar-Link+Plugin>`.
 
     :arg str url: url to link to (optional)
     :arg str text: text for the link (optional)
