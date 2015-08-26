@@ -14,8 +14,8 @@
   </properties>
   <publishers>
     <jenkins.plugins.hipchat.HipChatNotifier>
-      <jenkinsUrl>url</jenkinsUrl>
-      <authToken>authtoken</authToken>
+      <jenkinsUrl>green</jenkinsUrl>
+      <authToken>blue</authToken>
       <room/>
     </jenkins.plugins.hipchat.HipChatNotifier>
   </publishers>
