@@ -2182,7 +2182,9 @@ def dsl(parser, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: /../../tests/builders/fixtures/dsl.yaml
+    .. literalinclude:: /../../tests/builders/fixtures/dsl001.yaml
+       :language: yaml
+    .. literalinclude:: /../../tests/builders/fixtures/dsl002.yaml
        :language: yaml
 
     """
@@ -2194,7 +2196,7 @@ def dsl(parser, xml_parent, data):
         XML.SubElement(dsl, 'scriptText').text = data.get('script-text')
         XML.SubElement(dsl, 'usingScriptText').text = 'true'
     elif data.get('target'):
-        XML.SubElement(dsl, 'target').text = data.get('target')
+        XML.SubElement(dsl, 'targets').text = data.get('target')
         XML.SubElement(dsl, 'usingScriptText').text = 'false'
     else:
         raise MissingAttributeError(['script-text', 'target'])
