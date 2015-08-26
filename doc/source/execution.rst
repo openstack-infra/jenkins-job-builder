@@ -96,6 +96,20 @@ hipchat section
 __ https://www.hipchat.com/docs/apiv2/auth
 
 
+stash section
+^^^^^^^^^^^^^^^^^^^^^^^
+
+**username**
+  This is the stash user name that will be used to connect to stash
+  when using the stash publisher plugin and not defining it in the
+  yaml part.
+
+**password**
+  This is the related password that will be used with the stash username
+  when using the stash publisher plugin and not defining it in the
+  yaml part.
+
+
 
 Running
 -------
