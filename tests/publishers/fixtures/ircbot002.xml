@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-     <hudson.plugins.ircbot.IrcPublisher>
-       <buildToChatNotifier class="hudson.plugins.im.build_notify.DefaultBuildToChatNotifier"/>
-       <strategy>ALL</strategy>
-       <targets>
-         <hudson.plugins.im.GroupChatIMMessageTarget>
-           <name>#jenkins-channel</name>
-           <password/>
-           <notificationOnly>true</notificationOnly>
-         </hudson.plugins.im.GroupChatIMMessageTarget>
-       </targets>
-       <notifyOnBuildStart>false</notifyOnBuildStart>
-       <notifySuspects>false</notifySuspects>
-       <notifyCulprits>false</notifyCulprits>
-       <notifyFixers>false</notifyFixers>
-       <notifyUpstreamCommitters>false</notifyUpstreamCommitters>
-       <matrixMultiplier>ONLY_CONFIGURATIONS</matrixMultiplier>
-     </hudson.plugins.ircbot.IrcPublisher>
+    <hudson.plugins.ircbot.IrcPublisher>
+      <buildToChatNotifier class="hudson.plugins.im.build_notify.DefaultBuildToChatNotifier"/>
+      <strategy>ALL</strategy>
+      <targets>
+        <hudson.plugins.im.GroupChatIMMessageTarget>
+          <name>#jenkins-channel</name>
+          <password/>
+          <notificationOnly>true</notificationOnly>
+        </hudson.plugins.im.GroupChatIMMessageTarget>
+      </targets>
+      <notifyOnBuildStart>false</notifyOnBuildStart>
+      <notifySuspects>false</notifySuspects>
+      <notifyCulprits>false</notifyCulprits>
+      <notifyFixers>false</notifyFixers>
+      <notifyUpstreamCommitters>false</notifyUpstreamCommitters>
+      <matrixMultiplier>ONLY_CONFIGURATIONS</matrixMultiplier>
+    </hudson.plugins.ircbot.IrcPublisher>
   </publishers>
 </project>

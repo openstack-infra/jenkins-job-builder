@@ -19,7 +19,7 @@
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-	<name>origin/stable-2</name>
+        <name>origin/stable-2</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <excludedUsers/>

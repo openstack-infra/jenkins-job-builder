@@ -20,6 +20,7 @@ print(&quot;Doing something cool with python&quot;)
   <publishers/>
   <buildWrappers/>
 </project>
+
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <actions/>
@@ -42,6 +43,7 @@ print(&quot;Doing something cool with python&quot;)
   <publishers/>
   <buildWrappers/>
 </project>
+
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <actions/>
@@ -64,6 +66,7 @@ print(&quot;Doing something else cool with python&quot;)
   <publishers/>
   <buildWrappers/>
 </project>
+
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <actions/>

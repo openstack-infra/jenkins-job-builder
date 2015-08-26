@@ -59,6 +59,28 @@ if sys.version_info[:3] < (2, 7, 3) or xml.__name__ != 'xml':
     minidom.Element.writexml = writexml
 
 
+def remove_ignorable_whitespace(node):
+    """Remove insignificant whitespace from XML nodes
+
+    It should only remove whitespace in between elements and sub elements.
+    This should be safe for Jenkins due to how it's XML serialization works
+    but may not be valid for other XML documents. So use this method with
+    caution outside of this specific library.
+    """
+    # strip tail whitespace if it's not significant
+    if node.tail and node.tail.strip() == "":
+        node.tail = None
+
+    for child in node.getchildren():
+        # only strip whitespace from the text node if there are subelement
+        # nodes as this means we are removing leading whitespace before such
+        # sub elements. Otherwise risk removing whitespace from an element
+        # that only contains whitespace
+        if node.text and node.text.strip() == "":
+            node.text = None
+        remove_ignorable_whitespace(child)
+
+
 class XmlJob(object):
     def __init__(self, xml, name):
         self.xml = xml

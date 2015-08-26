@@ -5,7 +5,6 @@
         fail: true
         timeout: 180
     - timestamps
-
 - job_defaults:
     name: defaults
     wrappers:
@@ -13,7 +12,6 @@
         fail: true
         timeout: 180
     - timestamps
-
 - job-template:
     name: myjob
     wrappers:

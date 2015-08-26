@@ -2,9 +2,9 @@
 <project>
   <buildWrappers>
     <hudson.plugins.logfilesizechecker.LogfilesizecheckerWrapper plugin="logfilesizechecker">
-        <setOwn>true</setOwn>
-        <maxLogSize>1024</maxLogSize>
-        <failBuild>true</failBuild>
+      <setOwn>true</setOwn>
+      <maxLogSize>1024</maxLogSize>
+      <failBuild>true</failBuild>
     </hudson.plugins.logfilesizechecker.LogfilesizecheckerWrapper>
   </buildWrappers>
 </project>

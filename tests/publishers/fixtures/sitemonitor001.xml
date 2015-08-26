@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
- <project>
-   <publishers>
-     <hudson.plugins.sitemonitor.SiteMonitorRecorder>
-       <mSites>
-         <hudson.plugins.sitemonitor.model.Site>
-           <mUrl>http://foo.example.com</mUrl>
-         </hudson.plugins.sitemonitor.model.Site>
-         <hudson.plugins.sitemonitor.model.Site>
-           <mUrl>http://bar.example.com:8080/</mUrl>
-         </hudson.plugins.sitemonitor.model.Site>
-       </mSites>
-     </hudson.plugins.sitemonitor.SiteMonitorRecorder>
-   </publishers>
- </project>
+<project>
+  <publishers>
+    <hudson.plugins.sitemonitor.SiteMonitorRecorder>
+      <mSites>
+        <hudson.plugins.sitemonitor.model.Site>
+          <mUrl>http://foo.example.com</mUrl>
+        </hudson.plugins.sitemonitor.model.Site>
+        <hudson.plugins.sitemonitor.model.Site>
+          <mUrl>http://bar.example.com:8080/</mUrl>
+        </hudson.plugins.sitemonitor.model.Site>
+      </mSites>
+    </hudson.plugins.sitemonitor.SiteMonitorRecorder>
+  </publishers>
+</project>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-    <properties>
-        <se.diabol.jenkins.pipeline.PipelineProperty>
-            <stageName>Stage</stageName>
-            <taskName>Task</taskName>
-        </se.diabol.jenkins.pipeline.PipelineProperty>
-    </properties>
+  <properties>
+    <se.diabol.jenkins.pipeline.PipelineProperty>
+      <stageName>Stage</stageName>
+      <taskName>Task</taskName>
+    </se.diabol.jenkins.pipeline.PipelineProperty>
+  </properties>
 </project>

@@ -31,4 +31,3 @@
     </jenkins.plugins.publish__over__cifs.CifsPublisherPlugin>
   </publishers>
 </project>
-

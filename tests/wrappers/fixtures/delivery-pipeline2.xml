@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-    <buildWrappers>
-        <se.diabol.jenkins.pipeline.PipelineVersionContributor>
-            <versionTemplate/>
-            <updateDisplayName>false</updateDisplayName>
-        </se.diabol.jenkins.pipeline.PipelineVersionContributor>
-    </buildWrappers>
+  <buildWrappers>
+    <se.diabol.jenkins.pipeline.PipelineVersionContributor>
+      <versionTemplate/>
+      <updateDisplayName>false</updateDisplayName>
+    </se.diabol.jenkins.pipeline.PipelineVersionContributor>
+  </buildWrappers>
 </project>

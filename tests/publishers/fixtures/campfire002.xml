@@ -2,7 +2,7 @@
 <project>
   <publishers>
     <hudson.plugins.campfire.CampfireNotifier>
-        <campfire/>
+      <campfire/>
     </hudson.plugins.campfire.CampfireNotifier>
   </publishers>
 </project>

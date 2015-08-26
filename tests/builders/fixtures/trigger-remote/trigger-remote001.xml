@@ -12,7 +12,7 @@
       <blockBuildUntilComplete>true</blockBuildUntilComplete>
       <parameters>FOO=&quot;bar&quot;
 herp=&quot;derp&quot;
-      </parameters>
+</parameters>
       <parameterList>
         <string>FOO=&quot;bar&quot;</string>
         <string>herp=&quot;derp&quot;</string>

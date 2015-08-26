@@ -3,12 +3,13 @@
   <builders>
     <hudson.tasks.Maven>
       <targets>clean</targets>
-      <properties>foo=bar bar=foo</properties>
+      <properties>foo=bar
+bar=foo</properties>
       <mavenName>Maven3</mavenName>
       <pom>parent/pom.xml</pom>
       <usePrivateRepository>true</usePrivateRepository>
       <jvmOptions>-Xms512m -Xmx1024m -XX:PermSize=128m -XX:MaxPermSize=256m</jvmOptions>
-       <settings class="jenkins.mvn.FilePathSettingsProvider">
+      <settings class="jenkins.mvn.FilePathSettingsProvider">
         <path>mvn/settings.xml</path>
       </settings>
       <globalSettings class="jenkins.mvn.FilePathGlobalSettingsProvider">

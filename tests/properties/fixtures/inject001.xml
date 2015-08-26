@@ -4,8 +4,8 @@
     <EnvInjectJobProperty>
       <info>
         <propertiesContent>FOO=bar
- BAZ=foobar
- </propertiesContent>
+BAZ=foobar
+</propertiesContent>
         <loadFilesFromMaster>false</loadFilesFromMaster>
       </info>
       <on>true</on>

@@ -4,4 +4,3 @@
     <hudson.plugins.blame__upstream__commiters.BlameUpstreamCommitersPublisher/>
   </publishers>
 </project>
-
