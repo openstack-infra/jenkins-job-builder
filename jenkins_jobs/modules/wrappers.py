@@ -1561,6 +1561,92 @@ def xvfb(parser, xml_parent, data):
         'shutdown-with-build', False)).lower()
 
 
+def android_emulator(parser, xml_parent, data):
+    """yaml: android-emulator
+    Automates many Android development tasks including SDK installation,
+    build file generation, emulator creation and launch,
+    APK (un)installation...
+    Requires the Jenkins :jenkins-wiki:`Android Emulator Plugin
+    <Android+Emulator+Plugin>`.
+
+    :arg str avd: Enter the name of an existing Android emulator configuration.
+        If this is exclusive with the 'os' arg.
+    :arg str os: Can be an OS version, target name or SDK add-on
+    :arg str screen-density: Density in dots-per-inch (dpi) or as an alias,
+        e.g. "160" or "mdpi". (default mdpi)
+    :arg str screen-resolution: Can be either a named resolution or explicit
+        size, e.g. "WVGA" or "480x800". (default WVGA)
+    :arg str locale: Language and country pair. (default en_US)
+    :arg str target-abi: Name of the ABI / system image to be used. (optional)
+    :arg str sd-card: sd-card size e.g. "32M" or "10240K". (optional)
+    :arg bool wipe: if true, the emulator will have its user data reset at
+        start-up (default false)
+    :arg bool show-window: if true, the Android emulator user interface will
+        be displayed on screen during the build. (default false)
+    :arg bool snapshot: Start emulator from stored state (default false)
+    :arg bool delete: Delete Android emulator at the end of build
+        (default false)
+    :arg int startup-delay: Wait this many seconds before attempting
+        to start the emulator (default 0)
+    :arg str commandline-options: Will be given when starting the
+        Android emulator executable (optional)
+    :arg str exe: The emulator executable. (optional)
+    :arg list hardware-properties: Dictionary of hardware properties. Allows
+        you to override the default values for an AVD. (optional)
+
+    Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/android003.yaml
+    """
+    root = XML.SubElement(xml_parent,
+                          'hudson.plugins.android__emulator.AndroidEmulator')
+
+    if data.get('avd') and data.get('os'):
+        raise JenkinsJobsException("'avd' and 'os' options are "
+                                   "exclusive, please pick one only")
+
+    if not data.get('avd') and not data.get('os'):
+        raise JenkinsJobsException("AndroidEmulator requires an AVD name or"
+                                   "OS version to run: specify 'os' or 'avd'")
+
+    if data.get('avd'):
+        XML.SubElement(root, 'avdName').text = str(data['avd'])
+
+    if data.get('os'):
+        XML.SubElement(root, 'osVersion').text = str(data['os'])
+        XML.SubElement(root, 'screenDensity').text = str(
+            data.get('screen-density', 'mdpi'))
+        XML.SubElement(root, 'screenResolution').text = str(
+            data.get('screen-resolution', 'WVGA'))
+        XML.SubElement(root, 'deviceLocale').text = str(
+            data.get('locale', 'en_US'))
+        XML.SubElement(root, 'targetAbi').text = str(
+            data.get('target-abi', ''))
+        XML.SubElement(root, 'sdCardSize').text = str(data.get('sd-card', ''))
+
+    hardware = XML.SubElement(root, 'hardwareProperties')
+    for prop_name, prop_val in data.get('hardware-properties', {}).items():
+        prop_node = XML.SubElement(hardware,
+                                   'hudson.plugins.android__emulator'
+                                   '.AndroidEmulator_-HardwareProperty')
+        XML.SubElement(prop_node, 'key').text = str(prop_name)
+        XML.SubElement(prop_node, 'value').text = str(prop_val)
+
+    XML.SubElement(root, 'wipeData').text = str(
+        data.get('wipe', False)).lower()
+    XML.SubElement(root, 'showWindow').text = str(
+        data.get('show-window', False)).lower()
+    XML.SubElement(root, 'useSnapshots').text = str(
+        data.get('snapshot', False)).lower()
+    XML.SubElement(root, 'deleteAfterBuild').text = str(
+        data.get('delete', False)).lower()
+    XML.SubElement(root, 'startupDelay').text = str(
+        data.get('startup-delay', 0))
+    XML.SubElement(root, 'commandLineOptions').text = str(
+        data.get('commandline-options', ''))
+    XML.SubElement(root, 'executable').text = str(data.get('exe', ''))
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 

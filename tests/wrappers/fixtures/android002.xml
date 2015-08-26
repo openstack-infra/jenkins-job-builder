@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <hudson.plugins.android__emulator.AndroidEmulator>
+      <avdName>avdname</avdName>
+      <hardwareProperties/>
+      <wipeData>true</wipeData>
+      <showWindow>true</showWindow>
+      <useSnapshots>true</useSnapshots>
+      <deleteAfterBuild>true</deleteAfterBuild>
+      <startupDelay>10</startupDelay>
+      <commandLineOptions>-gpu on -no-audio</commandLineOptions>
+      <executable>emulator-arm</executable>
+    </hudson.plugins.android__emulator.AndroidEmulator>
+  </buildWrappers>
+</project>
