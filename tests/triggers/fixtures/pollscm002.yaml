@@ -1,0 +1,4 @@
+triggers:
+  - pollscm:
+      cron: "*/30 * * * *"
+      ignore-post-commit-hooks: True

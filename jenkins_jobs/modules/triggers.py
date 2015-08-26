@@ -35,7 +35,8 @@ import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
 from jenkins_jobs.errors import (InvalidAttributeError,
-                                 JenkinsJobsException)
+                                 JenkinsJobsException,
+                                 MissingAttributeError)
 import logging
 import re
 try:
@@ -599,16 +600,44 @@ def pollscm(parser, xml_parent, data):
     """yaml: pollscm
     Poll the SCM to determine if there has been a change.
 
-    :arg string pollscm: the polling interval (cron syntax)
+    :Parameter: the polling interval (cron syntax)
+
+    .. deprecated:: 1.3.0. Please use :ref:`cron <cron>`.
+
+    .. _cron:
+
+    :arg string cron: the polling interval (cron syntax, required)
+    :arg bool ignore-post-commit-hooks: Ignore changes notified by SCM
+        post-commit hooks. The subversion-plugin supports this since
+        version 1.44. (default false)
 
     Example:
 
-    .. literalinclude:: /../../tests/triggers/fixtures/pollscm001.yaml
+    .. literalinclude:: /../../tests/triggers/fixtures/pollscm002.yaml
        :language: yaml
     """
 
+    try:
+        cron = data['cron']
+        ipch = str(data.get('ignore-post-commit-hooks', False)).lower()
+    except KeyError as e:
+        # ensure specific error on the attribute not being set is raised
+        # for new format
+        raise MissingAttributeError(e)
+    except TypeError:
+        # To keep backward compatibility
+        logger.warn("Your pollscm usage is deprecated, please use"
+                    " the syntax described in the documentation"
+                    " instead")
+        cron = data
+        ipch = 'false'
+
+    if not cron:
+        raise InvalidAttributeError('cron', cron)
+
     scmtrig = XML.SubElement(xml_parent, 'hudson.triggers.SCMTrigger')
-    XML.SubElement(scmtrig, 'spec').text = data
+    XML.SubElement(scmtrig, 'spec').text = cron
+    XML.SubElement(scmtrig, 'ignorePostCommitHooks').text = ipch
 
 
 def build_pollurl_content_type(xml_parent, entries, prefix,
