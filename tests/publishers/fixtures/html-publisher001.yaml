@@ -5,3 +5,4 @@ publishers:
       files: "index.html"
       keep-all: true
       allow-missing: true
+      link-to-last-build: true
