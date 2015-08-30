@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.cucumber.jsontestsupport.CucumberTestResultArchiver>
+      <testResults>nosetests.xml</testResults>
+    </org.jenkinsci.plugins.cucumber.jsontestsupport.CucumberTestResultArchiver>
+  </publishers>
+</project>

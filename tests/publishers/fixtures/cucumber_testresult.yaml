@@ -1,0 +1,3 @@
+publishers:
+- cucumber_testresult:
+    results: nosetests.xml
