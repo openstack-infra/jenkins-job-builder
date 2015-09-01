@@ -7,6 +7,7 @@
       <target>/home/foo</target>
       <flatten>true</flatten>
       <optional>true</optional>
+      <doNotFingerprintArtifacts>true</doNotFingerprintArtifacts>
       <parameters>PUBLISH=true</parameters>
       <selector class="hudson.plugins.copyartifact.SpecificBuildSelector">
         <buildNumber>123</buildNumber>

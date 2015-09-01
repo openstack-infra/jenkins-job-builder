@@ -7,4 +7,5 @@ builders:
       build-number: "123"
       optional: true
       flatten: true
+      do-not-fingerprint: true
       parameter-filters: PUBLISH=true

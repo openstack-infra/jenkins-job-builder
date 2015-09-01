@@ -5,6 +5,7 @@
     which-build: last-successful
     optional: true
     flatten: true
+    do-not-fingerprint: true
     parameter-filters: PUBLISH=true
 - copyartifact:
     <<: *copytarball
