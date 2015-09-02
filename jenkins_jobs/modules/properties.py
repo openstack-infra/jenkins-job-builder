@@ -34,7 +34,7 @@ Example::
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
-from jenkins_jobs.errors import JenkinsJobsException
+from jenkins_jobs.errors import InvalidAttributeError, JenkinsJobsException
 import logging
 
 
@@ -411,19 +411,21 @@ def build_blocker(parser, xml_parent, data):
     <Build+Blocker+Plugin>`.
 
     :arg bool use-build-blocker: Enable or disable build blocker
-        (optional) (default true)
+        (default true)
     :arg list blocking-jobs: One regular expression per line
         to select blocking jobs by their names. (required)
 
+    :arg str block-level: block build globally ('GLOBAL') or per node ('NODE')
+        (default 'GLOBAL')
 
-    Example::
+    :arg str queue-scanning: scan build queue for all builds ('ALL') or only
+        buildable builds ('BUILDABLE') (default 'DISABLED'))
 
-        properties:
-          - build-blocker:
-              use-build-blocker: true
-              blocking-jobs:
-                - ".*-deploy"
-                - "^maintenance.*"
+
+    Example:
+
+    .. literalinclude:: \
+            /../../tests/properties/fixtures/build-blocker01.yaml
     """
     blocker = XML.SubElement(xml_parent,
                              'hudson.plugins.'
@@ -438,6 +440,22 @@ def build_blocker(parser, xml_parent, data):
     for value in data['blocking-jobs']:
         jobs = jobs + value + '\n'
     XML.SubElement(blocker, 'blockingJobs').text = jobs
+
+    block_level_list = ('GLOBAL', 'NODE')
+    block_level = data.get('block-level', 'GLOBAL')
+    if block_level not in block_level_list:
+        raise InvalidAttributeError('block-level',
+                                    block_level,
+                                    block_level_list)
+    XML.SubElement(blocker, 'blockLevel').text = block_level
+
+    queue_scanning_list = ('DISABLED', 'ALL', 'BUILDABLE')
+    queue_scanning = data.get('queue-scanning', 'DISABLED')
+    if queue_scanning not in queue_scanning_list:
+        raise InvalidAttributeError('queue-scanning',
+                                    queue_scanning,
+                                    queue_scanning_list)
+    XML.SubElement(blocker, 'scanQueueFor').text = queue_scanning
 
 
 def copyartifact(parser, xml_parent, data):
