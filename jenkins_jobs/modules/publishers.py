@@ -30,6 +30,9 @@ import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
 from jenkins_jobs.modules.helpers import build_trends_publisher
+from jenkins_jobs.modules.helpers import cloudformation_init
+from jenkins_jobs.modules.helpers import cloudformation_region_dict
+from jenkins_jobs.modules.helpers import cloudformation_stack
 from jenkins_jobs.modules.helpers import config_file_provider_settings
 from jenkins_jobs.modules.helpers import findbugs_settings
 from jenkins_jobs.modules.helpers import get_value_from_yaml_or_config_file
@@ -4975,6 +4978,80 @@ def clamav(parser, xml_parent, data):
         data.get('includes', ''))
     XML.SubElement(clamav, 'excludes').text = str(
         data.get('excludes', ''))
+
+
+def cloudformation(parser, xml_parent, data):
+    """yaml: cloudformation
+    Create cloudformation stacks before running a build and optionally
+    delete them at the end.  Requires the Jenkins :jenkins-wiki:`AWS
+    Cloudformation Plugin <AWS+Cloudformation+Plugin>`.
+
+    :arg list create-stacks: List of stacks to create
+
+        :create-stacks attributes:
+            * **arg str name** - The name of the stack (Required)
+            * **arg str description** - Description of the stack (Optional)
+            * **arg str recipe** - The cloudformation recipe file (Required)
+            * **arg list parameters** - A list of key/value pairs, will be
+              joined together into a comma separated string (Optional)
+            * **arg int timeout** - Number of seconds to wait before giving up
+              creating a stack (default 0)
+            * **arg str access-key** - The Amazon API Access Key (Required)
+            * **arg str secret-key** - The Amazon API Secret Key (Required)
+            * **arg int sleep** - Number of seconds to wait before continuing
+              to the next step (default 0)
+            * **arg array region** - The region to run cloudformation in.
+              (Required)
+
+                :region values:
+                    * **us-east-1**
+                    * **us-west-1**
+                    * **us-west-2**
+                    * **eu-central-1**
+                    * **eu-west-1**
+                    * **ap-southeast-1**
+                    * **ap-southeast-2**
+                    * **ap-northeast-1**
+                    * **sa-east-1**
+    :arg list delete-stacks: List of stacks to delete
+
+        :delete-stacks attributes:
+            * **arg list name** - The names of the stacks to delete (Required)
+            * **arg str access-key** - The Amazon API Access Key (Required)
+            * **arg str secret-key** - The Amazon API Secret Key (Required)
+            * **arg bool prefix** - If selected the tear down process will look
+              for the stack that Starts with the stack name with the oldest
+              creation date and will delete it.  (Default False)
+            * **arg array region** - The region to run cloudformation in.
+              (Required)
+
+                :region values:
+                    * **us-east-1**
+                    * **us-west-1**
+                    * **us-west-2**
+                    * **eu-central-1**
+                    * **eu-west-1**
+                    * **ap-southeast-1**
+                    * **ap-southeast-2**
+                    * **ap-northeast-1**
+                    * **sa-east-1**
+
+    Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/cloudformation.yaml
+       :language: yaml
+    """
+    region_dict = cloudformation_region_dict()
+    stacks = cloudformation_init(xml_parent, data, 'CloudFormationPostBuild'
+                                 'Notifier')
+    for stack in data.get('create-stacks', []):
+        cloudformation_stack(xml_parent, stack, 'PostBuildStackBean',
+                             stacks, region_dict)
+    delete_stacks = cloudformation_init(xml_parent, data, 'CloudFormation'
+                                                          'Notifier')
+    for delete_stack in data.get('delete-stacks', []):
+        cloudformation_stack(xml_parent, delete_stack, 'SimpleStackBean',
+                             delete_stacks, region_dict)
 
 
 class Publishers(jenkins_jobs.modules.base.Base):
