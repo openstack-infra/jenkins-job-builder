@@ -1,0 +1,26 @@
+scm:
+  - cvs:
+      repos:
+          - root: ":protocol:user@host1:path"
+            locations:
+                - type: TAG
+                  name: "tag name"
+                  use-head: false
+                  modules:
+                    - remote: "remote1"
+                      local-name: "localName"
+                    - remote: "remote2"
+            excluded-regions:
+                - "pattern1"
+                - "pattern2"
+            compression-level: "1"
+          - root: ":protocol:user@host2:path"
+            locations:
+                - modules:
+                    - remote: "remote1"
+      use-update: false
+      prune-empty: false
+      skip-changelog: true
+      show-all-output: true
+      clean-checkout: true
+      clean-copy: true

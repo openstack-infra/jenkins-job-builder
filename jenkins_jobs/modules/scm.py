@@ -40,7 +40,8 @@ import logging
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 from jenkins_jobs.errors import (InvalidAttributeError,
-                                 JenkinsJobsException)
+                                 JenkinsJobsException,
+                                 MissingAttributeError)
 
 
 def git(parser, xml_parent, data):
@@ -421,6 +422,136 @@ def git(parser, xml_parent, data):
         if browser == 'phabricator':
             XML.SubElement(bc, 'repo').text = str(
                 data.get('repo-name', ''))
+
+
+def cvs(parser, xml_parent, data):
+    """yaml: cvs
+    Specifies the CVS SCM repository for this job.
+    Requires the Jenkins :jenkins-wiki:`CVS Plugin <CVS+Plugin>`.
+
+    :arg list repos: List of CVS repositories. (required)
+
+        :Repos:
+            * **root** (`str`) -- The CVS connection string Jenkins uses to
+              connect to the server. The format is :protocol:user@host:path
+              (required)
+            * **locations** (`list`) -- List of locations. (required)
+
+                :Locations:
+                    * **type** (`str`) -- Type of location.
+
+                        :supported values:
+                            * **HEAD** - (default)
+                            * **BRANCH**
+                            * **TAG**
+                    * **name** (`str`) -- Name of location. Only valid in case
+                      of 'BRANCH' or 'TAG' location type. (default '')
+                    * **use-head** (`bool`) -- Use Head if not found. Only
+                      valid in case of 'BRANCH' or 'TAG' location type.
+                      (default false)
+                    * **modules** (`list`) -- List of modules. (required)
+
+                        :Modules:
+                            * **remote** -- The name of the module in the
+                              repository at CVSROOT. (required)
+                            * **local-name** --  The name to be applied to
+                              this module in the local workspace. If blank,
+                              the remote module name will be used.
+                              (default '')
+            * **excluded-regions** (`list str`) -- Patterns for excluding
+              regions. (optional)
+            * **compression-level** (`int`) -- Compression level. Must be a
+              number between -1 and 9 inclusive. Choose -1 for System Default.
+              (default -1)
+    :arg bool use-update: If true, Jenkins will use 'cvs update' whenever
+      possible for builds. This makes a build faster. But this also causes the
+      artifacts from the previous build to remain in the file system when a
+      new build starts, making it not a true clean build. (default true)
+    :arg bool prune-empty: Remove empty directories after checkout using the
+      CVS '-P' option. (default true)
+    :arg bool skip-changelog: Prevent the changelog being generated after
+      checkout has completed. (default false)
+    :arg bool show-all-output: Instructs CVS to show all logging output. CVS
+      normally runs in quiet mode but this option disables that.
+      (default false)
+    :arg bool clean-checkout: Perform clean checkout on failed update.
+      (default false)
+    :arg bool clean-copy: Force clean copy for locally modified files.
+      (default false)
+
+    Example
+
+    .. literalinclude:: /../../tests/scm/fixtures/cvs001.yaml
+       :language: yaml
+    .. literalinclude:: /../../tests/scm/fixtures/cvs002.yaml
+       :language: yaml
+    """
+    prefix = 'hudson.scm.'
+    valid_loc_types = {'HEAD': 'Head', 'TAG': 'Tag', 'BRANCH': 'Branch'}
+    cvs = XML.SubElement(xml_parent, 'scm', {'class': prefix + 'CVSSCM'})
+    repos = data.get('repos')
+    if not repos:
+        raise JenkinsJobsException("'repos' empty or missing")
+    repos_tag = XML.SubElement(cvs, 'repositories')
+    for repo in repos:
+        repo_tag = XML.SubElement(repos_tag, prefix + 'CvsRepository')
+        try:
+            XML.SubElement(repo_tag, 'cvsRoot').text = repo['root']
+        except KeyError:
+            raise MissingAttributeError('root')
+        items_tag = XML.SubElement(repo_tag, 'repositoryItems')
+        locations = repo.get('locations')
+        if not locations:
+            raise JenkinsJobsException("'locations' empty or missing")
+        for location in locations:
+            item_tag = XML.SubElement(items_tag, prefix + 'CvsRepositoryItem')
+            loc_type = location.get('type', 'HEAD')
+            if loc_type not in valid_loc_types:
+                raise InvalidAttributeError('type', loc_type, valid_loc_types)
+            loc_class = ('{0}CvsRepositoryLocation${1}Repository'
+                         'Location').format(prefix, valid_loc_types[loc_type])
+            loc_tag = XML.SubElement(item_tag, 'location',
+                                     {'class': loc_class})
+            XML.SubElement(loc_tag, 'locationType').text = loc_type
+            if loc_type == 'TAG' or loc_type == 'BRANCH':
+                XML.SubElement(loc_tag, 'locationName').text = location.get(
+                    'name', '')
+                XML.SubElement(loc_tag, 'useHeadIfNotFound').text = str(
+                    location.get('use-head', False)).lower()
+            modules = location.get('modules')
+            if not modules:
+                raise JenkinsJobsException("'modules' empty or missing")
+            modules_tag = XML.SubElement(item_tag, 'modules')
+            for module in modules:
+                module_tag = XML.SubElement(modules_tag, prefix + 'CvsModule')
+                try:
+                    XML.SubElement(module_tag, 'remoteName'
+                                   ).text = module['remote']
+                except KeyError:
+                    raise MissingAttributeError('remote')
+                XML.SubElement(module_tag, 'localName').text = module.get(
+                    'local-name', '')
+        excluded = repo.get('excluded-regions', [])
+        excluded_tag = XML.SubElement(repo_tag, 'excludedRegions')
+        for pattern in excluded:
+            pattern_tag = XML.SubElement(excluded_tag,
+                                         prefix + 'ExcludedRegion')
+            XML.SubElement(pattern_tag, 'pattern').text = pattern
+        compression_level = repo.get('compression-level', '-1')
+        if int(compression_level) not in range(-1, 10):
+            raise InvalidAttributeError('compression-level',
+                                        compression_level, range(-1, 10))
+        XML.SubElement(repo_tag, 'compressionLevel').text = compression_level
+    mapping = [('use-update', 'canUseUpdate', True),
+               ('prune-empty', 'pruneEmptyDirectories', True),
+               ('skip-changelog', 'skipChangeLog', False),
+               ('show-all-output', 'disableCvsQuiet', False),
+               ('clean-checkout', 'cleanOnFailedUpdate', False),
+               ('clean-copy', 'forceCleanCopy', False)]
+    for elem in mapping:
+        opt, xml_tag, val = elem[:]
+        XML.SubElement(cvs, xml_tag).text = str(
+            data.get(opt, val)).lower()
 
 
 def repo(parser, xml_parent, data):

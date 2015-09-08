@@ -1,0 +1,12 @@
+scm:
+  - cvs:
+      repos:
+          - root: ":protocol:user@host1:path"
+            locations:
+                - modules:
+                    - remote: "remote1"
+                    - remote: "remote2"
+          - root: ":protocol:user@host2:path"
+            locations:
+                - modules:
+                    - remote: "remote1"
