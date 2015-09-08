@@ -289,11 +289,21 @@ def trigger_parameterized_builds(parser, xml_parent, data):
     :arg bool node-parameters: Use the same Node for the triggered builds
       that was used for this build. (optional)
     :arg bool svn-revision: Pass svn revision to the triggered job (optional)
+    :arg bool include-upstream: Include/pass through Upstream SVN Revisons.
+        Only valid when 'svn-revision' is true. (default false)
     :arg bool git-revision: Pass git revision to the other job (optional)
+    :arg bool combine-queued-commits: Combine Queued git hashes. Only valid
+        when 'git-revision' is true. (default false)
+    :arg dict boolean-parameters: Pass boolean parameters to the downstream
+        jobs. Specify the name and boolean value mapping of the parameters.
+        (optional)
     :arg str condition: when to trigger the other job (default 'ALWAYS')
     :arg str property-file: Use properties from file (optional)
     :arg bool fail-on-missing: Blocks the triggering of the downstream jobs
-      if any of the files are not found in the workspace (default 'False')
+        if any of the files are not found in the workspace (default 'False')
+    :arg str file-encoding: Encoding of contents of the files. If not
+        specified, default encoding of the platform is used. Only valid when
+        'property-file' is specified. (optional)
     :arg bool trigger-with-no-params: Trigger a build even when there are
       currently no parameters defined (default 'False')
     :arg str restrict-matrix-project: Filter that restricts the subset
@@ -308,15 +318,15 @@ def trigger_parameterized_builds(parser, xml_parent, data):
     .. literalinclude::
         /../../tests/publishers/fixtures/trigger_parameterized_builds001.yaml
        :language: yaml
+    .. literalinclude::
+        /../../tests/publishers/fixtures/trigger_parameterized_builds003.yaml
+       :language: yaml
     """
-    tbuilder = XML.SubElement(xml_parent,
-                              'hudson.plugins.parameterizedtrigger.'
-                              'BuildTrigger')
+    pt_prefix = 'hudson.plugins.parameterizedtrigger.'
+    tbuilder = XML.SubElement(xml_parent, pt_prefix + 'BuildTrigger')
     configs = XML.SubElement(tbuilder, 'configs')
     for project_def in data:
-        tconfig = XML.SubElement(configs,
-                                 'hudson.plugins.parameterizedtrigger.'
-                                 'BuildTriggerConfig')
+        tconfig = XML.SubElement(configs, pt_prefix + 'BuildTriggerConfig')
         tconfigs = XML.SubElement(tconfig, 'configs')
         if ('predefined-parameters' in project_def
                 or 'git-revision' in project_def
@@ -326,11 +336,11 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                 or 'svn-revision' in project_def
                 or 'restrict-matrix-project' in project_def
                 or 'node-label-name' in project_def
-                or 'node-label' in project_def):
+                or 'node-label' in project_def
+                or 'boolean-parameters' in project_def):
 
             if 'predefined-parameters' in project_def:
-                params = XML.SubElement(tconfigs,
-                                        'hudson.plugins.parameterizedtrigger.'
+                params = XML.SubElement(tconfigs, pt_prefix +
                                         'PredefinedBuildParameters')
                 properties = XML.SubElement(params, 'properties')
                 properties.text = project_def['predefined-parameters']
@@ -339,35 +349,33 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                 params = XML.SubElement(tconfigs,
                                         'hudson.plugins.git.'
                                         'GitRevisionBuildParameters')
-                properties = XML.SubElement(params, 'combineQueuedCommits')
-                properties.text = 'false'
+                XML.SubElement(params, 'combineQueuedCommits').text = str(
+                    project_def.get('combine-queued-commits', False)).lower()
             if 'property-file' in project_def and project_def['property-file']:
                 params = XML.SubElement(tconfigs,
-                                        'hudson.plugins.parameterizedtrigger.'
-                                        'FileBuildParameters')
+                                        pt_prefix + 'FileBuildParameters')
                 properties = XML.SubElement(params, 'propertiesFile')
                 properties.text = project_def['property-file']
                 failOnMissing = XML.SubElement(params, 'failTriggerOnMissing')
                 failOnMissing.text = str(project_def.get('fail-on-missing',
                                                          False)).lower()
+                if 'file-encoding' in project_def:
+                    XML.SubElement(params, 'encoding'
+                                   ).text = project_def['file-encoding']
             if ('current-parameters' in project_def
                     and project_def['current-parameters']):
-                XML.SubElement(tconfigs,
-                               'hudson.plugins.parameterizedtrigger.'
-                               'CurrentBuildParameters')
+                XML.SubElement(tconfigs, pt_prefix + 'CurrentBuildParameters')
             if ('node-parameters' in project_def
                     and project_def['node-parameters']):
-                XML.SubElement(tconfigs,
-                               'hudson.plugins.parameterizedtrigger.'
-                               'NodeParameters')
+                XML.SubElement(tconfigs, pt_prefix + 'NodeParameters')
             if 'svn-revision' in project_def and project_def['svn-revision']:
-                XML.SubElement(tconfigs,
-                               'hudson.plugins.parameterizedtrigger.'
-                               'SubversionRevisionBuildParameters')
+                param = XML.SubElement(tconfigs, pt_prefix +
+                                       'SubversionRevisionBuildParameters')
+                XML.SubElement(param, 'includeUpstreamParameters').text = str(
+                    project_def.get('include-upstream', False)).lower()
             if ('restrict-matrix-project' in project_def
                     and project_def['restrict-matrix-project']):
-                subset = XML.SubElement(tconfigs,
-                                        'hudson.plugins.parameterizedtrigger.'
+                subset = XML.SubElement(tconfigs, pt_prefix +
                                         'matrix.MatrixSubsetBuildParameters')
                 XML.SubElement(subset, 'filter').text = \
                     project_def['restrict-matrix-project']
@@ -384,6 +392,18 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                 label = XML.SubElement(params, 'nodeLabel')
                 if 'node-label' in project_def:
                     label.text = project_def['node-label']
+            if ('boolean-parameters' in project_def
+                    and project_def['boolean-parameters']):
+                params = XML.SubElement(tconfigs,
+                                        pt_prefix + 'BooleanParameters')
+                config_tag = XML.SubElement(params, 'configs')
+                param_tag_text = pt_prefix + 'BooleanParameterConfig'
+                params_list = project_def['boolean-parameters']
+                for name, value in params_list.items():
+                    param_tag = XML.SubElement(config_tag, param_tag_text)
+                    XML.SubElement(param_tag, 'name').text = name
+                    XML.SubElement(param_tag, 'value').text = str(
+                        value or False).lower()
         else:
             tconfigs.set('class', 'java.util.Collections$EmptyList')
         projects = XML.SubElement(tconfig, 'projects')

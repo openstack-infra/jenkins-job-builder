@@ -1,0 +1,15 @@
+publishers:
+  - trigger-parameterized-builds:
+    - project:
+        - other_job
+        - foo
+        - bar
+      boolean-parameters:
+          p1: true
+          p2: false
+      svn-revision: true
+      include-upstream: true
+      git-revision: true
+      combine-queued-commits: true
+      property-file: version.prop
+      file-encoding: UTF-8
