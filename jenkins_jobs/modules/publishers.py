@@ -5120,6 +5120,77 @@ def whitesource(parser, xml_parent, data):
     XML.SubElement(whitesource, 'ignorePomModules').text = 'false'
 
 
+def hipchat(parser, xml_parent, data):
+    """yaml: hipchat
+    Publisher that sends hipchat notifications on job events
+    Requires the Jenkins :jenkins-wiki:`Hipchat Plugin
+    <Hipchat+Plugin>` version >=1.9
+
+    Please see documentation for older plugin version
+    http://docs.openstack.org/infra/jenkins-job-builder/hipchat.html
+
+    :arg str token: This will override the default auth token (optional)
+    :arg list rooms: list of HipChat rooms to post messages to, overrides
+        global default (optional)
+    :arg bool notify-start: post messages about build start event
+        (default False)
+    :arg bool notify-success: post messages about successful build event
+        (default False)
+    :arg bool notify-aborted: post messages about aborted build event
+        (default False)
+    :arg bool notify-not-built: post messages about build set to NOT_BUILT.
+        This status code is used in a multi-stage build where a problem in
+        earlier stage prevented later stages from building. (default False)
+    :arg bool notify-unstable: post messages about unstable build event
+        (default False)
+    :arg bool notify-failure:  post messages about build failure event
+        (default False)
+    :arg bool notify-back-to-normal: post messages about build being back to
+        normal after being unstable or failed (default False)
+    :arg str start-message: This will override the default start message
+        (optional)
+    :arg str complete-message: This will override the default complete message
+        (optional)
+
+    Example:
+
+    .. literalinclude::  /../../tests/publishers/fixtures/hipchat001.yaml
+       :language: yaml
+    """
+    hipchat = XML.SubElement(
+        xml_parent,
+        'jenkins.plugins.hipchat.HipChatNotifier')
+    XML.SubElement(hipchat, 'token').text = str(
+        data.get('token', ''))
+
+    if 'rooms' in data:
+        XML.SubElement(hipchat, 'room').text = str(
+            ",".join(data['rooms']))
+
+    XML.SubElement(hipchat, 'startNotification').text = str(
+        data.get('notify-start', False)).lower()
+    XML.SubElement(hipchat, 'notifySuccess').text = str(
+        data.get('notify-success', False)).lower()
+    XML.SubElement(hipchat, 'notifyAborted').text = str(
+        data.get('notify-aborted', False)).lower()
+    XML.SubElement(hipchat, 'notifyNotBuilt').text = str(
+        data.get('notify-not-built', False)).lower()
+    XML.SubElement(hipchat, 'notifyUnstable').text = str(
+        data.get('notify-unstable', False)).lower()
+    XML.SubElement(hipchat, 'notifyFailure').text = str(
+        data.get('notify-failure', False)).lower()
+    XML.SubElement(hipchat, 'notifyBackToNormal').text = str(
+        data.get('notify-back-to-normal', False)).lower()
+
+    # optional settings, so only add XML in if set.
+    if 'start-message' in data:
+        XML.SubElement(hipchat, 'startJobMessage').text = str(
+            data['start-message'])
+    if 'complete-message' in data:
+        XML.SubElement(hipchat, 'completeJobMessage').text = str(
+            data['complete-message'])
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

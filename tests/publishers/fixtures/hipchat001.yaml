@@ -1,0 +1,10 @@
+publishers:
+  - hipchat:
+      token: auth
+      rooms:
+        - room1
+        - room2
+      notify-start: true
+      notify-aborted: true
+      start-message: job started
+      complete-message: job completed
