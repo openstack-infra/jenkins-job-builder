@@ -826,7 +826,28 @@ def github_pull_request(parser, xml_parent, data):
         allows you to selectively test pull requests destined for these
         branches only. Supports regular expressions (e.g. 'master',
         'feature-.*'). (optional)
-
+    :arg string auth-id: the auth id to use (optional)
+    :arg string build-desc-template: the template for build descriptions in
+        jenkins (optional)
+    :arg string status-context: the context to include on PR status comments
+        (optional)
+    :arg string triggered-status: the status message to set when the build has
+        been triggered (optional)
+    :arg string started-status: the status comment to set when the build has
+        been started (optional)
+    :arg string status-url: the status URL to set (optional)
+    :arg string success-status: the status message to set if the job succeeds
+        (optional)
+    :arg string failure-status: the status message to set if the job fails
+        (optional)
+    :arg string error-status: the status message to set if the job errors
+        (optional)
+    :arg string success-comment: comment to add to the PR on a successful job
+        (optional)
+    :arg string failure-comment: comment to add to the PR on a failed job
+        (optional)
+    :arg string error-comment: comment to add to the PR on an errored job
+        (optional)
 
     Example:
 
@@ -844,6 +865,12 @@ def github_pull_request(parser, xml_parent, data):
     org_string = "\n".join(data.get('org-list', []))
     XML.SubElement(ghprb, 'orgslist').text = org_string
     XML.SubElement(ghprb, 'cron').text = data.get('cron', '')
+
+    build_desc_template = data.get('build-desc-template', '')
+    if build_desc_template:
+        XML.SubElement(ghprb, 'buildDescTemplate').text = str(
+            build_desc_template)
+
     XML.SubElement(ghprb, 'triggerPhrase').text = \
         data.get('trigger-phrase', '')
     XML.SubElement(ghprb, 'onlyTriggerPhrase').text = str(
@@ -862,6 +889,113 @@ def github_pull_request(parser, xml_parent, data):
             be = XML.SubElement(ghprb_wltb, 'org.jenkinsci.plugins.'
                                 'ghprb.GhprbBranch')
             XML.SubElement(be, 'branch').text = str(branch)
+
+    auth_id = data.get('auth-id', '')
+    if auth_id:
+        XML.SubElement(ghprb, 'gitHubAuthId').text = str(auth_id)
+
+    # PR status update fields
+    status_context = data.get('status-context', '')
+    triggered_status = data.get('triggered-status', '')
+    started_status = data.get('started-status', '')
+    status_url = data.get('status-url', '')
+    success_status = data.get('success-status', '')
+    failure_status = data.get('failure-status', '')
+    error_status = data.get('error-status', '')
+
+    # is status handling is required?
+    requires_status = (
+        status_context or
+        triggered_status or
+        started_status or
+        status_url or
+        success_status or
+        failure_status or
+        error_status
+    )
+
+    # is status message handling required?
+    requires_status_message = (
+        success_status or
+        failure_status or
+        error_status
+    )
+
+    # Both comment and status elements have this same type.  Using a const is
+    # much easier to read than repeating the tokens for this class each time
+    # it's used
+    comment_type = 'org.jenkinsci.plugins.ghprb.extensions.comments.'
+    comment_type = comment_type + 'GhprbBuildResultMessage'
+
+    if requires_status:
+        extensions = XML.SubElement(ghprb, 'extensions')
+        simple_status = XML.SubElement(extensions,
+                                       'org.jenkinsci.plugins'
+                                       '.ghprb.extensions.status.'
+                                       'GhprbSimpleStatus')
+        if status_context:
+            XML.SubElement(simple_status, 'commitStatusContext').text = str(
+                status_context)
+        if triggered_status:
+            XML.SubElement(simple_status, 'triggeredStatus').text = str(
+                triggered_status)
+        if started_status:
+            XML.SubElement(simple_status, 'startedStatus').text = str(
+                started_status)
+        if status_url:
+            XML.SubElement(simple_status, 'statusUrl').text = str(
+                status_url)
+
+        if requires_status_message:
+            completed_elem = XML.SubElement(simple_status, 'completedStatus')
+            if success_status:
+                success_elem = XML.SubElement(completed_elem, comment_type)
+                XML.SubElement(success_elem, 'message').text = str(
+                    success_status)
+                XML.SubElement(success_elem, 'result').text = 'SUCCESS'
+            if failure_status:
+                failure_elem = XML.SubElement(completed_elem, comment_type)
+                XML.SubElement(failure_elem, 'message').text = str(
+                    failure_status)
+                XML.SubElement(failure_elem, 'result').text = 'FAILURE'
+            if error_status:
+                error_elem = XML.SubElement(completed_elem, comment_type)
+                XML.SubElement(error_elem, 'message').text = str(error_status)
+                XML.SubElement(error_elem, 'result').text = 'ERROR'
+
+    # comment fields
+    success_comment = data.get('success-comment', '')
+    failure_comment = data.get('failure-comment', '')
+    error_comment = data.get('error-comment', '')
+    requires_job_comment = (
+        success_comment or
+        failure_comment or
+        error_comment
+    )
+
+    # job comment handling
+    if requires_job_comment:
+        extensions = XML.SubElement(ghprb, 'extensions')
+        build_status = XML.SubElement(extensions,
+                                      'org.jenkinsci.plugins.ghprb.extensions'
+                                      '.comments.'
+                                      'GhprbBuildStatus')
+        messages_elem = XML.SubElement(build_status, 'messages')
+        if success_comment:
+            success_comment_elem = XML.SubElement(messages_elem, comment_type)
+            XML.SubElement(success_comment_elem, 'message').text = str(
+                success_comment)
+            XML.SubElement(success_comment_elem, 'result').text = 'SUCCESS'
+        if failure_comment:
+            failure_comment_elem = XML.SubElement(messages_elem, comment_type)
+            XML.SubElement(failure_comment_elem, 'message').text = str(
+                failure_comment)
+            XML.SubElement(failure_comment_elem, 'result').text = 'FAILURE'
+        if error_comment:
+            error_comment_elem = XML.SubElement(messages_elem, comment_type)
+            XML.SubElement(error_comment_elem, 'message').text = str(
+                error_comment)
+            XML.SubElement(error_comment_elem, 'result').text = 'ERROR'
 
 
 def gitlab_merge_request(parser, xml_parent, data):

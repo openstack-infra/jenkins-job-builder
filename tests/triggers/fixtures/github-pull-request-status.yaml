@@ -10,14 +10,16 @@ triggers:
         - org1
         - org2
       cron: '* * * * *'
-      build-desc-template: "build description"
       trigger-phrase: 'retest this please'
       only-trigger-phrase: true
       github-hooks: true
       permit-all: false
       auto-close-on-fail: false
       allow-whitelist-orgs-as-admins: true
-      white-list-target-branches:
-        - master
-        - testing
-      auth-id: '123-456-789'
+      status-context: 'test status context'
+      triggered-status: 'triggered status message'
+      started-status: 'started status message'
+      status-url: 'http://example.com/status'
+      success-status: 'success status!'
+      failure-status: 'failure status :('
+      error-status: 'error status?!'
