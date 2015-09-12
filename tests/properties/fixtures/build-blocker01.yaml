@@ -1,0 +1,6 @@
+properties:
+  - build-blocker:
+      use-build-blocker: true
+      blocking-jobs:
+        - ".*-deploy"
+        - "^maintenance.*"
