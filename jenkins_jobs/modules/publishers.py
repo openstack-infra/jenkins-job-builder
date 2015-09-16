@@ -1959,16 +1959,20 @@ def aggregate_flow_tests(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Build Flow Test Aggregator Plugin
     <Build+Flow+Test+Aggregator+Plugin>`.
 
+    :arg bool show-test-results-trend: whether to show test results
+        trend graph (default true)
+
     Example:
 
-    .. literalinclude:: \
-    /../../tests/publishers/fixtures/aggregate-flow-tests.yaml
+    .. literalinclude::
+        /../../tests/publishers/fixtures/aggregate-flow-tests002.yaml
        :language: yaml
 
     """
-    XML.SubElement(xml_parent,
-                   'org.zeroturnaround.jenkins.'
-                   'flowbuildtestaggregator.FlowTestAggregator')
+    agg_flow = XML.SubElement(xml_parent, 'org.zeroturnaround.jenkins.'
+                              'flowbuildtestaggregator.FlowTestAggregator')
+    XML.SubElement(agg_flow, 'showTestResultTrend').text = str(
+        data.get('show-test-results-trend', True)).lower()
 
 
 def cppcheck(parser, xml_parent, data):
