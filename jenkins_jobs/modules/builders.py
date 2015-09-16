@@ -1870,6 +1870,37 @@ class Builders(jenkins_jobs.modules.base.Base):
             XML.SubElement(xml_parent, 'builders')
 
 
+def tox(parser, xml_parent, data):
+    """yaml: tox
+    Execute a tox environment. Requires the Jenkins
+    :jenkins-wiki:`ShiningPanda plugin <ShiningPanda+Plugin>`.
+
+    :arg str configuration-file:
+        Workspace relative path to tox configuration file. (default:
+        tox.ini)
+
+    :arg bool recreate:
+        Force recreation of virtual environments. (default: false)
+
+    Examples:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/tox-default.yaml
+       :language: yaml
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/tox.yaml
+       :language: yaml
+
+    """
+    tox = XML.SubElement(
+        xml_parent, 'jenkins.plugins.shiningpanda.builders.ToxBuilder')
+    configuration_file = XML.SubElement(tox, 'toxIni')
+    configuration_file.text = data.get('configuration-file', 'tox.ini')
+    recreate = XML.SubElement(tox, 'recreate')
+    recreate.text = str(data.get('recreate', False)).lower()
+
+
 def shining_panda(parser, xml_parent, data):
     """yaml: shining-panda
     Execute a command inside various python environments. Requires the Jenkins
