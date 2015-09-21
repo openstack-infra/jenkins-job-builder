@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.plugins.copyartifact.BuildSelectorParameter>
+          <name>BUILD_SELECTOR</name>
+          <description>Which build from upstream to copy artifacts from</description>
+          <defaultSelector class="hudson.plugins.copyartifact.WorkspaceSelector"/>
+        </hudson.plugins.copyartifact.BuildSelectorParameter>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+</project>
