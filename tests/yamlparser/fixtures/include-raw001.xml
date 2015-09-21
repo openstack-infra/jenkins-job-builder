@@ -19,20 +19,48 @@
     </EnvInjectJobProperty>
   </properties>
   <scm class="hudson.scm.NullSCM"/>
-  <builders>
-    <hudson.tasks.Shell>
-      <command>#!/bin/bash
-#
-# Sample script showing how the yaml include-raw tag can be used
-# to inline scripts that are maintained outside of the jenkins
-# job yaml configuration.
-
-echo &quot;hello world&quot;
-
-exit 0
-</command>
-    </hudson.tasks.Shell>
-  </builders>
+  <builders/>
   <publishers/>
-  <buildWrappers/>
+  <buildWrappers>
+    <hudson.plugins.build__timeout.BuildTimeoutWrapper>
+      <timeoutMinutes>3</timeoutMinutes>
+      <failBuild>true</failBuild>
+      <writingDescription>false</writingDescription>
+      <timeoutPercentage>150</timeoutPercentage>
+      <timeoutMinutesElasticDefault>90</timeoutMinutesElasticDefault>
+      <timeoutType>elastic</timeoutType>
+    </hudson.plugins.build__timeout.BuildTimeoutWrapper>
+    <org.jenkinsci.plugins.preSCMbuildstep.PreSCMBuildStepsWrapper>
+      <buildSteps>
+        <hudson.tasks.Shell>
+          <command>#!/bin/bash
+echo &quot;Doing somethiung cool&quot;
+</command>
+        </hudson.tasks.Shell>
+        <hudson.tasks.Shell>
+          <command>#!/bin/zsh
+echo &quot;Doing somethin cool with zsh&quot;
+</command>
+        </hudson.tasks.Shell>
+        <hudson.tasks.Ant>
+          <targets>target1 target2</targets>
+          <antName>Standard Ant</antName>
+        </hudson.tasks.Ant>
+        <EnvInjectBuilder>
+          <info>
+            <propertiesFilePath>example.prop</propertiesFilePath>
+            <propertiesContent>EXAMPLE=foo-bar</propertiesContent>
+          </info>
+        </EnvInjectBuilder>
+      </buildSteps>
+    </org.jenkinsci.plugins.preSCMbuildstep.PreSCMBuildStepsWrapper>
+    <com.michelin.cio.hudson.plugins.copytoslave.CopyToSlaveBuildWrapper>
+      <includes>file1,file2*.txt</includes>
+      <excludes>file2bad.txt</excludes>
+      <flatten>false</flatten>
+      <includeAntExcludes>false</includeAntExcludes>
+      <relativeTo>userContent</relativeTo>
+      <hudsonHomeRelative>false</hudsonHomeRelative>
+    </com.michelin.cio.hudson.plugins.copytoslave.CopyToSlaveBuildWrapper>
+  </buildWrappers>
 </project>

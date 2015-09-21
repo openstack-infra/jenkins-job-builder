@@ -11,7 +11,7 @@
           keep-system-variables: true
     builders:
       - shell:
-          !include-raw-escape include-raw-escape001-echo-vars.sh
+          !include-raw-escape: include-raw-escape001-echo-vars.sh
 
 
 - project:

@@ -2,6 +2,6 @@
     name: test-job-include-raw-1
     builders:
       - shell:
-          !include-raw include-raw001-hello-world.sh
+          !include-raw: include-raw001-hello-world.sh
       - shell:
-          !include-raw include-raw001-vars.sh
+          !include-raw: include-raw001-vars.sh

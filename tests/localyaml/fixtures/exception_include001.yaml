@@ -12,4 +12,4 @@
 - job:
     name: test-job-1
     builders:
-      !include exception_include001.yaml.inc
+        !include: exception_include001.yaml.inc
