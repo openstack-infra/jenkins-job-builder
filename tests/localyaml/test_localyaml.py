@@ -22,13 +22,14 @@ from yaml.composer import ComposerError
 
 from jenkins_jobs import builder
 from tests.base import get_scenarios, JsonTestCase, YamlTestCase
+from tests.base import LoggingFixture
 
 
 def _exclude_scenarios(input_filename):
     return os.path.basename(input_filename).startswith("custom_")
 
 
-class TestCaseLocalYamlInclude(TestWithScenarios, TestCase, JsonTestCase):
+class TestCaseLocalYamlInclude(TestWithScenarios, JsonTestCase, TestCase):
     """
     Verify application specific tags independently of any changes to
     modules XML parsing behaviour
@@ -47,7 +48,7 @@ class TestCaseLocalYamlInclude(TestWithScenarios, TestCase, JsonTestCase):
             super(TestCaseLocalYamlInclude, self).test_yaml_snippet()
 
 
-class TestCaseLocalYamlAnchorAlias(TestWithScenarios, TestCase, YamlTestCase):
+class TestCaseLocalYamlAnchorAlias(TestWithScenarios, YamlTestCase, TestCase):
     """
     Verify yaml input is expanded to the expected yaml output when using yaml
     anchors and aliases.
@@ -56,7 +57,7 @@ class TestCaseLocalYamlAnchorAlias(TestWithScenarios, TestCase, YamlTestCase):
     scenarios = get_scenarios(fixtures_path, 'iyaml', 'oyaml')
 
 
-class TestCaseLocalYamlIncludeAnchors(TestCase):
+class TestCaseLocalYamlIncludeAnchors(LoggingFixture, TestCase):
 
     fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
 

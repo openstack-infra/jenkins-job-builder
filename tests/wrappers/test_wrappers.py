@@ -22,7 +22,7 @@ from jenkins_jobs.modules import wrappers
 from tests.base import get_scenarios, BaseTestCase
 
 
-class TestCaseModuleWrappers(TestWithScenarios, TestCase, BaseTestCase):
+class TestCaseModuleWrappers(TestWithScenarios, BaseTestCase, TestCase):
     fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
     scenarios = get_scenarios(fixtures_path)
     klass = wrappers.Wrappers
