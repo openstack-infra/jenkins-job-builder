@@ -4287,6 +4287,11 @@ def conditional_publisher(parser, xml_parent, data):
                        executed by cmd, under Windows
 
                          :condition-command: Command to execute
+    regexp             Run the action if a regular expression matches
+
+                         :condition-expression: Regular Expression
+                         :condition-searchtext: Text to match against
+                           the regular expression
     file-exists        Run the action if a file exists
 
                          :condition-filename: Check existence of this file
@@ -4365,6 +4370,12 @@ def conditional_publisher(parser, xml_parent, data):
             ctag.set('class',
                      class_pkg + '.contributed.BatchFileCondition')
             XML.SubElement(ctag, "command").text = cdata['condition-command']
+        elif kind == "regexp":
+            ctag.set('class',
+                     class_pkg + '.core.ExpressionCondition')
+            XML.SubElement(ctag,
+                           "expression").text = cdata['condition-expression']
+            XML.SubElement(ctag, "label").text = cdata['condition-searchtext']
         elif kind == "file-exists":
             ctag.set('class',
                      class_pkg + '.core.FileExistsCondition')

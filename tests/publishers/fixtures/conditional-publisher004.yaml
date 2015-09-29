@@ -1,0 +1,10 @@
+publishers:
+    - conditional-publisher:
+        - condition-kind: regexp
+          condition-expression: ^(origin\/)?master$
+          condition-searchtext: $GIT_BRANCH
+          action:
+              - archive:
+                  artifacts: '**/**'
+                  allow-empty: 'true'
+
