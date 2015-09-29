@@ -1,0 +1,6 @@
+builders:
+  - openshift-svc-verify:
+      api-url: https://openshift.example.local.url/
+      svc-name: front
+      namespace: test4
+      auth-token: ose-key-svc-verify1

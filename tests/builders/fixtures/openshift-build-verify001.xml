@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.openshift.openshiftjenkinsbuildutils.OpenShiftBuildVerifier>
+      <apiURL>https://openshift.example.local.url/</apiURL>
+      <bldCfg>front</bldCfg>
+      <namespace>test-build</namespace>
+      <authToken>ose-key-buildv1</authToken>
+    </com.openshift.openshiftjenkinsbuildutils.OpenShiftBuildVerifier>
+  </builders>
+</project>

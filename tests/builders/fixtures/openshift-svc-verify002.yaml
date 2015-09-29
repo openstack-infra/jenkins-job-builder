@@ -1,0 +1,2 @@
+builders:
+  - openshift-svc-verify

@@ -1,0 +1,7 @@
+builders:
+  - openshift-scaler:
+      api-url: https://openshift.example.local.url/
+      dep-cfg: front
+      namespace: test2
+      replica-count: 4
+      auth-token: ose-key-scaler1

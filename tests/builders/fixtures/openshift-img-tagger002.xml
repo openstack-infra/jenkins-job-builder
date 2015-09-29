@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.openshift.openshiftjenkinsbuildutils.OpenShiftImageTagger>
+      <apiURL>https://openshift.default.svc.cluster.local</apiURL>
+      <testTag>origin-nodejs-sample:latest</testTag>
+      <prodTag>origin-nodejs-sample:prod</prodTag>
+      <namespace>test</namespace>
+    </com.openshift.openshiftjenkinsbuildutils.OpenShiftImageTagger>
+  </builders>
+</project>

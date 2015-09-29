@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.openshift.openshiftjenkinsbuildutils.OpenShiftServiceVerifier>
+      <apiURL>https://openshift.example.local.url/</apiURL>
+      <svcName>front</svcName>
+      <namespace>test4</namespace>
+      <authToken>ose-key-svc-verify1</authToken>
+    </com.openshift.openshiftjenkinsbuildutils.OpenShiftServiceVerifier>
+  </builders>
+</project>

@@ -1,0 +1,7 @@
+builders:
+  - openshift-dep-verify:
+      api-url: https://openshift.example.local.url/
+      dep-cfg: front
+      namespace: test6
+      replica-count: 4
+      auth-token: ose-key-dep-verify1
