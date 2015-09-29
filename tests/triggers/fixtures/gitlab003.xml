@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <com.dabsquared.gitlabjenkins.GitLabPushTrigger>
+      <spec/>
+      <triggerOnPush>true</triggerOnPush>
+      <triggerOnMergeRequest>true</triggerOnMergeRequest>
+      <triggerOpenMergeRequestOnPush>true</triggerOpenMergeRequestOnPush>
+      <ciSkip>true</ciSkip>
+      <setBuildDescription>true</setBuildDescription>
+      <addNoteOnMergeRequest>true</addNoteOnMergeRequest>
+      <addVoteOnMergeRequest>true</addVoteOnMergeRequest>
+      <allowAllBranches>false</allowAllBranches>
+      <includeBranchesSpec>master</includeBranchesSpec>
+      <excludeBranchesSpec>baz, foo, fnord</excludeBranchesSpec>
+    </com.dabsquared.gitlabjenkins.GitLabPushTrigger>
+  </triggers>
+</project>
