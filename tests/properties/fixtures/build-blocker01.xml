@@ -7,7 +7,7 @@
 ^maintenance.*
 </blockingJobs>
       <blockLevel>GLOBAL</blockLevel>
-      <scanQueueFor>DISABLED</scanQueueFor>
+      <scanQueueFor>BUILDABLE</scanQueueFor>
     </hudson.plugins.buildblocker.BuildBlockerProperty>
   </properties>
 </project>

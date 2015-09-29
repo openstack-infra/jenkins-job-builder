@@ -4,3 +4,5 @@ properties:
       blocking-jobs:
         - ".*-deploy"
         - "^maintenance.*"
+      block_level: 'GLOBAL'
+      queue-scanning: 'BUILDABLE'
