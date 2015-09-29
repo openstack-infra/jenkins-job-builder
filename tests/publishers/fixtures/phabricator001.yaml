@@ -1,0 +1,5 @@
+publishers:
+  - phabricator:
+      comment-on-success: false
+      uberalls-enabled: false
+      comment-with-console-link-on-failure: false

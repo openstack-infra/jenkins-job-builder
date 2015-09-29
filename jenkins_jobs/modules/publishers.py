@@ -5193,6 +5193,48 @@ def hipchat(parser, xml_parent, data):
             data['complete-message'])
 
 
+def phabricator(parser, xml_parent, data):
+    """yaml: phabricator
+    Integrate with `Phabricator <http://phabricator.org/>`_
+
+    Requires the Jenkins :jenkins-wiki:`Phabricator Plugin
+    <Phabricator+Plugin>`.
+
+    :arg bool comment-on-success: Post a *comment* when the build
+      succeeds. (optional)
+    :arg bool uberalls-enabled: Integrate with uberalls. (optional)
+    :arg str comment-file: Include contents of given file if
+      commenting is enabled. (optional)
+    :arg int comment-size: Maximum comment character length. (optional)
+    :arg bool comment-with-console-link-on-failure: Post a *comment*
+      when the build fails. (optional)
+
+    Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/phabricator001.yaml
+       :language: yaml
+    """
+
+    root = XML.SubElement(xml_parent,
+                          'com.uber.jenkins.phabricator.PhabricatorNotifier')
+
+    if 'comment-on-success' in data:
+        XML.SubElement(root, 'commentOnSuccess').text = str(
+            data.get('comment-on-success')).lower()
+    if 'uberalls-enabled' in data:
+        XML.SubElement(root, 'uberallsEnabled').text = str(
+            data.get('uberalls-enabled')).lower()
+    if 'comment-file' in data:
+        XML.SubElement(root, 'commentFile').text = data.get('comment-file')
+    if 'comment-size' in data:
+        XML.SubElement(root, 'commentSize').text = str(
+            data.get('comment-size'))
+    if 'comment-with-console-link-on-failure' in data:
+        XML.SubElement(root, 'commentWithConsoleLinkOnFailure').text = str(
+            data.get('comment-with-console-link-on-failure')).lower()
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
