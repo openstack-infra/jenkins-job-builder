@@ -32,6 +32,8 @@ from jenkins_jobs.parser import YamlParser
 
 logger = logging.getLogger(__name__)
 
+_DEFAULT_TIMEOUT = object()
+
 
 class CacheStorage(object):
     # ensure each instance of the class has a reference to the required
@@ -100,8 +102,11 @@ class CacheStorage(object):
 
 
 class Jenkins(object):
-    def __init__(self, url, user, password):
-        self.jenkins = jenkins.Jenkins(url, user, password)
+    def __init__(self, url, user, password, timeout=_DEFAULT_TIMEOUT):
+        if timeout != _DEFAULT_TIMEOUT:
+            self.jenkins = jenkins.Jenkins(url, user, password, timeout)
+        else:
+            self.jenkins = jenkins.Jenkins(url, user, password)
         self._jobs = None
         self._job_list = None
 
@@ -190,9 +195,10 @@ class Jenkins(object):
 
 class Builder(object):
     def __init__(self, jenkins_url, jenkins_user, jenkins_password,
-                 config=None, ignore_cache=False, flush_cache=False,
-                 plugins_list=None):
-        self.jenkins = Jenkins(jenkins_url, jenkins_user, jenkins_password)
+                 config=None, jenkins_timeout=_DEFAULT_TIMEOUT,
+                 ignore_cache=False, flush_cache=False, plugins_list=None):
+        self.jenkins = Jenkins(jenkins_url, jenkins_user, jenkins_password,
+                               jenkins_timeout)
         self.cache = CacheStorage(jenkins_url, flush=flush_cache)
         self.global_config = config
         self.ignore_cache = ignore_cache
