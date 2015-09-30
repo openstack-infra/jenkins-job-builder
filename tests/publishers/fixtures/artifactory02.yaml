@@ -1,0 +1,34 @@
+publishers:
+  - artifactory:
+      url: http://artifactory.example.net/artifactory
+      name: 'test'
+      release-repo-key: libs-release-local
+      snapshot-repo-key: libs-snapshot-local
+      publish-build-info: true
+      discard-old-builds: true
+      discard-build-artifacts: true
+      even-if-unstable: true
+      run-checks: true
+      include-publish-artifacts: true
+      pass-identified-downstream: true
+      license-auto-discovery: true
+      aggregate-build-issues: true
+      allow-promotion-of-non-staged-builds: true
+      filter-excluded-artifacts-from-build: true
+      violation-recipients: myfake@email.com
+      matrix-params: []
+      black-duck-app-name: myapp
+      black-duck-app-version: '1.0'
+      black-duck-report-recipients: myfake@email.com
+      black-duck-scopes: []
+      black-duck-run-checks: true
+      black-duck-include-published-artifacts: true
+      auto-create-missing-component-requests: false
+      auto-discard-stale-component-requests: false
+      deploy-artifacts: true
+      deployment-include-patterns: []
+      deployment-exclude-patterns: []
+      env-vars-include: true
+      env-vars-include-patterns: []
+      env-vars-exclude-patterns: []
+

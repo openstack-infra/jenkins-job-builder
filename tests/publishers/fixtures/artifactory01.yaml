@@ -1,0 +1,6 @@
+publishers:
+  - artifactory:
+      url: http://artifactory.example.net/artifactory
+      name: 'test'
+      release-repo-key: libs-release-local
+      snapshot-repo-key: libs-snapshot-local

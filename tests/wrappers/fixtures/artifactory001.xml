@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <org.jfrog.hudson.maven3.ArtifactoryMaven3NativeConfigurator>
+      <details>
+        <artifactoryName>test</artifactoryName>
+        <artifactoryUrl>http://artifactory.example.net/artifactory</artifactoryUrl>
+        <downloadRepositoryKey>repo</downloadRepositoryKey>
+      </details>
+    </org.jfrog.hudson.maven3.ArtifactoryMaven3NativeConfigurator>
+  </buildWrappers>
+</project>
