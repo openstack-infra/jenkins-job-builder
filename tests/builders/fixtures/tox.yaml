@@ -1,4 +1,0 @@
-builders:
-  - tox:
-      configuration-file: alternate-tox.ini
-      recreate: true
