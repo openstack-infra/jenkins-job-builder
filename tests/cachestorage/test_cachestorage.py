@@ -17,10 +17,11 @@ import os
 import testtools
 
 import jenkins_jobs
+from tests.base import LoggingFixture
 from tests.base import mock
 
 
-class TestCaseCacheStorage(testtools.TestCase):
+class TestCaseCacheStorage(LoggingFixture, testtools.TestCase):
 
     @mock.patch('jenkins_jobs.builder.CacheStorage.get_cache_dir',
                 lambda x: '/bad/file')

@@ -6,9 +6,11 @@ from six.moves import configparser, StringIO
 
 from jenkins_jobs import cmd
 from jenkins_jobs.registry import ModuleRegistry
+from tests.base import LoggingFixture
 
 
 class ModuleRegistryPluginInfoTestsWithScenarios(TestWithScenarios,
+                                                 LoggingFixture,
                                                  tt.TestCase):
     scenarios = [
         ('s1', dict(v1='1.0.0', op='__gt__', v2='0.8.0')),

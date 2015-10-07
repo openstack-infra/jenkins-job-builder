@@ -18,10 +18,11 @@
 # under the License.
 
 import io
-import logging
 import os
 import re
 import doctest
+import logging
+import fixtures
 import json
 import operator
 import testtools
@@ -96,15 +97,21 @@ def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml',
     return scenarios
 
 
-class BaseTestCase(object):
+class LoggingFixture(object):
+
+    def setUp(self):
+
+        super(LoggingFixture, self).setUp()
+        self.useFixture(fixtures.FakeLogger(level=logging.DEBUG))
+
+
+class BaseTestCase(LoggingFixture):
     scenarios = []
     fixtures_path = None
 
     # TestCase settings:
     maxDiff = None      # always dump text difference
     longMessage = True  # keep normal error message when providing our
-
-    logging.basicConfig()
 
     def _read_utf8_content(self):
         # if None assume empty file

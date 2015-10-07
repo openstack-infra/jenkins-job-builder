@@ -24,8 +24,8 @@ from tests.base import get_scenarios
 from tests.base import mock
 
 
-class TestCaseModuleDuplicates(TestWithScenarios, TestCase,
-                               SingleJobTestCase):
+class TestCaseModuleDuplicates(TestWithScenarios,
+                               SingleJobTestCase, TestCase):
     fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
     scenarios = get_scenarios(fixtures_path)
 

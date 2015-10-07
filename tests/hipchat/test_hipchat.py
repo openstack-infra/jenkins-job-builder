@@ -19,7 +19,7 @@ from jenkins_jobs.modules import hipchat_notif
 from tests.base import get_scenarios, BaseTestCase
 
 
-class TestCaseModulePublishers(TestWithScenarios, TestCase, BaseTestCase):
+class TestCaseModulePublishers(TestWithScenarios, BaseTestCase, TestCase):
     fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
     scenarios = get_scenarios(fixtures_path)
     klass = hipchat_notif.HipChat

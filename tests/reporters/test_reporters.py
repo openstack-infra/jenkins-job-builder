@@ -21,7 +21,7 @@ from jenkins_jobs.modules import reporters
 from tests.base import get_scenarios, BaseTestCase
 
 
-class TestCaseModuleReporters(TestWithScenarios, TestCase, BaseTestCase):
+class TestCaseModuleReporters(TestWithScenarios, BaseTestCase, TestCase):
     fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
     scenarios = get_scenarios(fixtures_path)
     klass = reporters.Reporters
