@@ -97,12 +97,12 @@ def copyartifact(parser, xml_parent, data):
     :arg str project: Project to copy from
     :arg str filter: what files to copy
     :arg str target: Target base directory for copy, blank means use workspace
-    :arg bool flatten: Flatten directories (default: false)
+    :arg bool flatten: Flatten directories (default false)
     :arg bool optional: If the artifact is missing (for any reason) and
         optional is true, the build won't fail because of this builder
-        (default: false)
+        (default false)
     :arg bool do-not-fingerprint: Disable automatic fingerprinting of copied
-        artifacts (default: false)
+        artifacts (default false)
     :arg str which-build: which build to get artifacts from
         (optional, default last-successful)
 
@@ -175,13 +175,13 @@ def change_assembly_version(parser, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: \
-    /../../tests/builders/fixtures/changeassemblyversion001.yaml
+    .. literalinclude::
+        /../../tests/builders/fixtures/changeassemblyversion001.yaml
        :language: yaml
     """
 
-    cav_builder_tag = 'org.jenkinsci.plugins.changeassemblyversion.' \
-        'ChangeAssemblyVersion'
+    cav_builder_tag = ('org.jenkinsci.plugins.changeassemblyversion.'
+                       'ChangeAssemblyVersion')
     cav = XML.SubElement(xml_parent, cav_builder_tag)
     XML.SubElement(cav, 'task').text = data.get('version', '1.0.0')
     XML.SubElement(cav, 'assemblyFile').text = str(
@@ -269,33 +269,28 @@ def trigger_remote(parser, xml_parent, data):
 
     :arg str remote-jenkins-name: the remote Jenkins server (required)
     :arg str job: the Jenkins project to trigger on the remote Jenkins server
-      (required)
-    :arg bool should-not-fail-build:
-      if true, remote job failure will not lead current job to fail
-      (default false)
-    :arg bool prevent-remote-build-queue:
-      if true, wait to trigger remote builds until no other builds
-      (default false)
+        (required)
+    :arg bool should-not-fail-build: if true, remote job failure will not lead
+        current job to fail (default false)
+    :arg bool prevent-remote-build-queue: if true, wait to trigger remote
+        builds until no other builds (default false)
     :arg bool block: whether to wait for the trigger jobs to finish or not
-      (default true)
+        (default true)
     :arg str poll-interval: polling interval in seconds for checking statues of
-      triggered remote job, only necessary if current job is configured to
-      block
-      (default 10)
+        triggered remote job, only necessary if current job is configured to
+        block (default 10)
     :arg str connection-retry-limit: number of connection attempts to remote
-      Jenkins server before giving up.
-      (default 5)
+        Jenkins server before giving up. (default 5)
     :arg str predefined-parameters: predefined parameters to send to the remote
-      job when triggering it
-      (optional)
+        job when triggering it (optional)
     :arg str property-file: file in workspace of current job containing
-      additional parameters to be set on remote job
-      (optional)
+        additional parameters to be set on remote job
+        (optional)
 
     Example:
 
-    .. literalinclude:: \
-    /../../tests/builders/fixtures/trigger-remote/trigger-remote001.yaml
+    .. literalinclude::
+        /../../tests/builders/fixtures/trigger-remote/trigger-remote001.yaml
        :language: yaml
     """
     triggerr = XML.SubElement(xml_parent,
@@ -359,88 +354,93 @@ def trigger_builds(parser, xml_parent, data):
     <Parameterized+Trigger+Plugin>`.
 
     :arg list project: the Jenkins project to trigger
-    :arg str predefined-parameters:
-      key/value pairs to be passed to the job (optional)
+    :arg str predefined-parameters: key/value pairs to be passed to the job
+        (optional)
     :arg list bool-parameters:
 
-      :Bool: * **name** (`str`) -- Parameter name
-             * **value** (`bool`) -- Value to set (default false)
+        :Bool:
+            * **name** (`str`) -- Parameter name
+            * **value** (`bool`) -- Value to set (default false)
 
     :arg str property-file:
-      Pass properties from file to the other job (optional)
+        Pass properties from file to the other job (optional)
     :arg bool property-file-fail-on-missing:
-      Don't trigger if any files are missing (optional)
-      (default true)
-    :arg bool current-parameters: Whether to include the
-      parameters passed to the current build to the
-      triggered job.
+        Don't trigger if any files are missing (default true)
+    :arg bool current-parameters: Whether to include the parameters passed
+        to the current build to the triggered job.
     :arg str node-label-name: Define a name for the NodeLabel parameter to be
-      set. Used in conjunction with node-label. Requires NodeLabel Parameter
-      Plugin (optional)
+        set. Used in conjunction with node-label. Requires NodeLabel Parameter
+        Plugin (optional)
     :arg str node-label: Label of the nodes where build should be triggered.
-      Used in conjunction with node-label-name.  Requires NodeLabel Parameter
-      Plugin (optional)
-    :arg bool svn-revision: Whether to pass the svn revision
-      to the triggered job
-    :arg bool git-revision: Whether to pass the git revision
-      to the triggered job
-    :arg bool block: whether to wait for the triggered jobs
-      to finish or not (default false)
+        Used in conjunction with node-label-name.  Requires NodeLabel Parameter
+        Plugin (optional)
+    :arg bool svn-revision: Whether to pass the svn revision to the triggered
+        job (optional)
+    :arg bool git-revision: Whether to pass the git revision to the triggered
+        job (optional)
+    :arg bool block: whether to wait for the triggered jobs to finish or not
+        (default false)
     :arg dict block-thresholds: Fail builds and/or mark as failed or unstable
-      based on thresholds. Only apply if block parameter is true (optional)
+        based on thresholds. Only apply if block parameter is true (optional)
 
-      * **build-step-failure-threshold** (`str`)
-        ['never', 'SUCCESS', 'UNSTABLE', 'FAILURE'] (default: 'FAILURE')
-      * **unstable-threshold** (`str`)
-        ['never', 'SUCCESS', 'UNSTABLE', 'FAILURE'] (default: 'UNSTABLE')
-      * **failure-threshold** (`str`)
-        ['never', 'SUCCESS', 'UNSTABLE', 'FAILURE'] (default: 'FAILURE')
+        :block-thresholds:
+            * **build-step-failure-threshold** (`str`) - build step failure
+              threshold, valid values are 'never', 'SUCCESS', 'UNSTABLE', or
+              'FAILURE'. (default 'FAILURE')
+            * **unstable-threshold** (`str`) - unstable threshold, valid
+              values are 'never', 'SUCCESS', 'UNSTABLE', or 'FAILURE'.
+              (default 'UNSTABLE')
+            * **failure-threshold** (`str`) - overall failure threshold, valid
+              values are 'never', 'SUCCESS', 'UNSTABLE', or 'FAILURE'.
+              (default 'FAILURE')
 
     :arg bool same-node: Use the same node for the triggered builds that was
-      used for this build (optional)
+        used for this build (optional)
     :arg list parameter-factories: list of parameter factories
 
-      :Factory: * **factory** (`str`) **filebuild** -- For every property file,
-                  invoke one build
-                * **file-pattern** (`str`) -- File wildcard pattern
-                * **no-files-found-action** (`str`) -- Action to perform when
-                  no files found  (optional) ['FAIL', 'SKIP', 'NOPARMS']
-                  (default 'SKIP')
+        :Factory:
+            * **factory** (`str`) **filebuild** -- For every property file,
+              invoke one build
+            * **file-pattern** (`str`) -- File wildcard pattern
+            * **no-files-found-action** (`str`) -- Action to perform when
+              no files found. Valid values 'FAIL', 'SKIP', or 'NOPARMS'.
+              (default 'SKIP')
 
-      :Factory: * **factory** (`str`) **binaryfile** -- For every matching
-                  file, invoke one build
-                * **file-pattern** (`str`) -- Artifact ID of the artifact
-                * **no-files-found-action** (`str`) -- Action to perform when
-                  no files found  (optional) ['FAIL', 'SKIP', 'NOPARMS']
-                  (default 'SKIP')
+        :Factory:
+            * **factory** (`str`) **binaryfile** -- For every matching
+              file, invoke one build
+            * **file-pattern** (`str`) -- Artifact ID of the artifact
+            * **no-files-found-action** (`str`) -- Action to perform when
+              no files found. Valid values 'FAIL', 'SKIP', or 'NOPARMS'.
+              (default 'SKIP')
 
-      :Factory: * **factory** (`str`) **counterbuild** -- Invoke i=0...N builds
-                * **from** (`int`) -- Artifact ID of the artifact
-                * **to** (`int`) -- Version of the artifact
-                * **step** (`int`) -- Classifier of the artifact
-                * **parameters** (`str`) -- KEY=value pairs, one per line
-                  (default '')
-                * **validation-fail** (`str`) -- Action to perform when
-                  stepping validation fails  (optional)
-                  ['FAIL', 'SKIP', 'NOPARMS']
-                  (default 'FAIL')
+        :Factory:
+            * **factory** (`str`) **counterbuild** -- Invoke i=0...N builds
+            * **from** (`int`) -- Artifact ID of the artifact
+            * **to** (`int`) -- Version of the artifact
+            * **step** (`int`) -- Classifier of the artifact
+            * **parameters** (`str`) -- KEY=value pairs, one per line
+              (default '')
+            * **validation-fail** (`str`) -- Action to perform when
+              stepping validation fails. Valid values 'FAIL', 'SKIP', or
+              'NOPARMS'. (default 'FAIL')
 
-      :Factory: * **factory** (`str`) **allnodesforlabel** -- Trigger a build
-                  on all nodes having specific label. Requires NodeLabel
-                  Parameter Plugin (optional)
-                * **name** (`str`) -- Name of the parameter to set (optional)
-                * **node-label** (`str`) -- Label of the nodes where build
-                  should be triggered
-                * **ignore-offline-nodes** (`bool`) -- Don't trigger build on
-                  offline nodes (optional)
-                  (default true)
+        :Factory:
+            * **factory** (`str`) **allnodesforlabel** -- Trigger a build
+              on all nodes having specific label. Requires NodeLabel
+              Parameter Plugin (optional)
+            * **name** (`str`) -- Name of the parameter to set (optional)
+            * **node-label** (`str`) -- Label of the nodes where build
+              should be triggered
+            * **ignore-offline-nodes** (`bool`) -- Don't trigger build on
+              offline nodes (default true)
 
     Examples:
 
     Basic usage with yaml list of projects.
 
     .. literalinclude::
-       /../../tests/builders/fixtures/trigger-builds/project-list.yaml
+        /../../tests/builders/fixtures/trigger-builds/project-list.yaml
        :language: yaml
 
     Basic usage with passing svn revision through.
@@ -455,8 +455,8 @@ def trigger_builds(parser, xml_parent, data):
 
     Example with all supported parameter factories.
 
-    .. literalinclude:: \
-    /../../tests/builders/fixtures/trigger-builds-configfactory-multi.yaml
+    .. literalinclude::
+        /../../tests/builders/fixtures/trigger-builds-configfactory-multi.yaml
        :language: yaml
     """
     tbuilder = XML.SubElement(xml_parent,
@@ -524,10 +524,8 @@ def trigger_builds(parser, xml_parent, data):
             node = XML.SubElement(tconfigs, 'org.jvnet.jenkins.plugins.'
                                   'nodelabelparameter.parameterizedtrigger.'
                                   'NodeLabelBuildParameter')
-            XML.SubElement(node, 'name').text = \
-                project_def.get('node-label-name')
-            XML.SubElement(node, 'nodeLabel').text = \
-                project_def.get('node-label')
+            XML.SubElement(node, 'name').text = project_def['node-label-name']
+            XML.SubElement(node, 'nodeLabel').text = project_def['node-label']
 
         if(len(list(tconfigs)) == 0):
             tconfigs.set('class', 'java.util.Collections$EmptyList')
@@ -725,15 +723,15 @@ def artifact_resolver(parser, xml_parent, data):
     :arg str target-directory: Where to resolve artifacts to
     :arg list artifacts: list of artifacts to resolve
 
-      :Artifact: * **group-id** (`str`) -- Group ID of the artifact
-                 * **artifact-id** (`str`) -- Artifact ID of the artifact
-                 * **version** (`str`) -- Version of the artifact
-                 * **classifier** (`str`) -- Classifier of the artifact
-                   (default '')
-                 * **extension** (`str`) -- Extension of the artifact
-                   (default 'jar')
-                 * **target-file-name** (`str`) -- What to name the artifact
-                   (default '')
+        :Artifact:
+            * **group-id** (`str`) -- Group ID of the artifact
+            * **artifact-id** (`str`) -- Artifact ID of the artifact
+            * **version** (`str`) -- Version of the artifact
+            * **classifier** (`str`) -- Classifier of the artifact (default '')
+            * **extension** (`str`) -- Extension of the artifact
+              (default 'jar')
+            * **target-file-name** (`str`) -- What to name the artifact
+              (default '')
 
     Example:
 
@@ -837,22 +835,22 @@ def groovy(parser, xml_parent, data):
     Execute a groovy script or command.
     Requires the Jenkins :jenkins-wiki:`Groovy Plugin <Groovy+plugin>`.
 
-    :arg str file: Groovy file to run.
-      (Alternative: you can chose a command instead)
-    :arg str command: Groovy command to run.
-      (Alternative: you can chose a script file instead)
+    :arg str file: Groovy file to run. (Alternative: you can chose a command
+        instead)
+    :arg str command: Groovy command to run. (Alternative: you can chose a
+        script file instead)
     :arg str version: Groovy version to use. (default '(Default)')
     :arg str parameters: Parameters for the Groovy executable. (optional)
     :arg str script-parameters: These parameters will be passed to the script.
-      (optional)
+        (optional)
     :arg str properties: Instead of passing properties using the -D parameter
-      you can define them here. (optional)
+        you can define them here. (optional)
     :arg str java-opts: Direct access to JAVA_OPTS. Properties allows only
-      -D properties, while sometimes also other properties like -XX need to
-      be setup. It can be done here. This line is appended at the end of
-      JAVA_OPTS string. (optional)
+        -D properties, while sometimes also other properties like -XX need to
+        be setup. It can be done here. This line is appended at the end of
+        JAVA_OPTS string. (optional)
     :arg str class-path: Specify script classpath here. Each line is one
-      class path item. (optional)
+        class path item. (optional)
 
     Examples:
 
@@ -866,11 +864,11 @@ def groovy(parser, xml_parent, data):
     groovy = XML.SubElement(xml_parent, root_tag)
 
     groovy.append(_groovy_common_scriptSource(data))
-    XML.SubElement(groovy, 'groovyName').text = \
-        str(data.get('version', "(Default)"))
+    XML.SubElement(groovy, 'groovyName').text = str(
+        data.get('version', "(Default)"))
     XML.SubElement(groovy, 'parameters').text = str(data.get('parameters', ""))
-    XML.SubElement(groovy, 'scriptParameters').text = \
-        str(data.get('script-parameters', ""))
+    XML.SubElement(groovy, 'scriptParameters').text = str(
+        data.get('script-parameters', ""))
     XML.SubElement(groovy, 'properties').text = str(data.get('properties', ""))
     XML.SubElement(groovy, 'javaOpts').text = str(data.get('java-opts', ""))
     XML.SubElement(groovy, 'classPath').text = str(data.get('class-path', ""))
@@ -881,14 +879,15 @@ def system_groovy(parser, xml_parent, data):
     Execute a system groovy script or command.
     Requires the Jenkins :jenkins-wiki:`Groovy Plugin <Groovy+plugin>`.
 
-    :arg str file: Groovy file to run.
-      (Alternative: you can chose a command instead)
-    :arg str command: Groovy command to run.
-      (Alternative: you can chose a script file instead)
+    :arg str file: Groovy file to run. (Alternative: you can chose a command
+        instead)
+    :arg str command: Groovy command to run. (Alternative: you can chose a
+        script file instead)
     :arg str bindings: Define variable bindings (in the properties file
-      format). Specified variables can be addressed from the script. (optional)
+        format). Specified variables can be addressed from the script.
+        (optional)
     :arg str class-path: Specify script classpath here. Each line is one class
-      path item. (optional)
+        path item. (optional)
 
     Examples:
 
@@ -902,8 +901,8 @@ def system_groovy(parser, xml_parent, data):
     sysgroovy = XML.SubElement(xml_parent, root_tag)
     sysgroovy.append(_groovy_common_scriptSource(data))
     XML.SubElement(sysgroovy, 'bindings').text = str(data.get('bindings', ""))
-    XML.SubElement(sysgroovy, 'classpath').text = \
-        str(data.get('class-path', ""))
+    XML.SubElement(sysgroovy, 'classpath').text = str(
+        data.get('class-path', ""))
 
 
 def batch(parser, xml_parent, data):
@@ -943,13 +942,13 @@ def msbuild(parser, xml_parent, data):
     MSBuild Plugin <MSBuild+Plugin>`.
 
     :arg str msbuild-version: which msbuild configured in Jenkins to use
-      (optional)
+        (optional)
     :arg str solution-file: location of the solution file to build
     :arg str extra-parameters: extra parameters to pass to msbuild (optional)
     :arg bool pass-build-variables: should build variables be passed
-      to msbuild (default true)
+        to msbuild (default true)
     :arg bool continue-on-build-failure: should the build continue if
-      msbuild returns an error (default false)
+        msbuild returns an error (default false)
 
     Example:
 
@@ -961,12 +960,12 @@ def msbuild(parser, xml_parent, data):
     XML.SubElement(msbuilder, 'msBuildName').text = data.get('msbuild-version',
                                                              '(Default)')
     XML.SubElement(msbuilder, 'msBuildFile').text = data['solution-file']
-    XML.SubElement(msbuilder, 'cmdLineArgs').text = \
-        data.get('extra-parameters', '')
-    XML.SubElement(msbuilder, 'buildVariablesAsProperties').text = \
-        str(data.get('pass-build-variables', True)).lower()
-    XML.SubElement(msbuilder, 'continueOnBuildFailure').text = \
-        str(data.get('continue-on-build-failure', False)).lower()
+    XML.SubElement(msbuilder, 'cmdLineArgs').text = (
+        data.get('extra-parameters', ''))
+    XML.SubElement(msbuilder, 'buildVariablesAsProperties').text = str(
+        data.get('pass-build-variables', True)).lower()
+    XML.SubElement(msbuilder, 'continueOnBuildFailure').text = str(
+        data.get('continue-on-build-failure', False)).lower()
 
 
 def create_builders(parser, step):
@@ -985,14 +984,14 @@ def conditional_step(parser, xml_parent, data):
     or a `Conditional steps (multiple)` is created in Jenkins.
 
     :arg str condition-kind: Condition kind that must be verified before the
-      steps are executed. Valid values and their additional attributes are
-      described in the conditions_ table.
+        steps are executed. Valid values and their additional attributes are
+        described in the conditions_ table.
     :arg str on-evaluation-failure: What should be the outcome of the build
-      if the evaluation of the condition fails. Possible values are `fail`,
-      `mark-unstable`, `run-and-mark-unstable`, `run` and `dont-run`.
-      Default is `fail`.
+        if the evaluation of the condition fails. Possible values are `fail`,
+        `mark-unstable`, `run-and-mark-unstable`, `run` and `dont-run`.
+        (default 'fail').
     :arg list steps: List of steps to run if the condition is verified. Items
-      in the list can be any builder known by Jenkins Job Builder.
+        in the list can be any builder known by Jenkins Job Builder.
 
     .. _conditions:
 
@@ -1157,28 +1156,28 @@ def conditional_step(parser, xml_parent, data):
 
     .. literalinclude::
         /../../tests/builders/fixtures/conditional-step-success-failure.yaml
-        :language: yaml
+       :language: yaml
     .. literalinclude::
         /../../tests/builders/fixtures/conditional-step-not-file-exists.yaml
-        :language: yaml
+       :language: yaml
     .. literalinclude::
         /../../tests/builders/fixtures/conditional-step-day-of-week001.yaml
-        :language: yaml
+       :language: yaml
     .. literalinclude::
         /../../tests/builders/fixtures/conditional-step-day-of-week003.yaml
-        :language: yaml
+       :language: yaml
     .. literalinclude::
         /../../tests/builders/fixtures/conditional-step-time.yaml
-        :language: yaml
+       :language: yaml
     .. literalinclude::
         /../../tests/builders/fixtures/conditional-step-regex-match.yaml
-        :language: yaml
+       :language: yaml
     .. literalinclude::
         /../../tests/builders/fixtures/conditional-step-or.yaml
-        :language: yaml
+       :language: yaml
     .. literalinclude::
         /../../tests/builders/fixtures/conditional-step-and.yaml
-        :language: yaml
+       :language: yaml
     """
     def build_condition(cdata, cond_root_tag):
         kind = cdata['condition-kind']
@@ -1192,8 +1191,8 @@ def conditional_step(parser, xml_parent, data):
         elif kind == "boolean-expression":
             ctag.set('class', core_prefix + 'BooleanCondition')
             try:
-                XML.SubElement(ctag, "token").text = \
-                    cdata['condition-expression']
+                XML.SubElement(ctag, "token").text = (
+                    cdata['condition-expression'])
             except KeyError:
                 raise MissingAttributeError('condition-expression')
         elif kind == "build-cause":
@@ -1264,8 +1263,8 @@ def conditional_step(parser, xml_parent, data):
             XML.SubElement(wr, "name").text = wr_threshold['name']
             XML.SubElement(wr, "ordinal").text = wr_threshold['ordinal']
             XML.SubElement(wr, "color").text = wr_threshold['color']
-            XML.SubElement(wr, "completeBuild").text = \
-                str(wr_threshold['complete']).lower()
+            XML.SubElement(wr, "completeBuild").text = str(
+                wr_threshold['complete']).lower()
 
             br = XML.SubElement(ctag, 'bestResult')
             br_name = cdata.get('condition-best', 'SUCCESS')
@@ -1276,8 +1275,8 @@ def conditional_step(parser, xml_parent, data):
             XML.SubElement(br, "name").text = br_threshold['name']
             XML.SubElement(br, "ordinal").text = br_threshold['ordinal']
             XML.SubElement(br, "color").text = br_threshold['color']
-            XML.SubElement(br, "completeBuild").text = \
-                str(wr_threshold['complete']).lower()
+            XML.SubElement(br, "completeBuild").text = str(
+                wr_threshold['complete']).lower()
         elif kind == "shell":
             ctag.set('class',
                      'org.jenkins_ci.plugins.run_condition.contributed.'
@@ -1294,8 +1293,8 @@ def conditional_step(parser, xml_parent, data):
             if kind == "file-exists":
                 ctag.set('class', core_prefix + 'FileExistsCondition')
                 try:
-                    XML.SubElement(ctag, "file").text = \
-                        cdata['condition-filename']
+                    XML.SubElement(ctag, "file").text = (
+                        cdata['condition-filename'])
                 except KeyError:
                     raise MissingAttributeError('condition-filename')
             else:
@@ -1386,10 +1385,10 @@ def conditional_step(parser, xml_parent, data):
                 edited_node.tag = 'buildStep'
             parent.append(edited_node)
 
-    cond_builder_tag = 'org.jenkinsci.plugins.conditionalbuildstep.'    \
-        'singlestep.SingleConditionalBuilder'
-    cond_builders_tag = 'org.jenkinsci.plugins.conditionalbuildstep.'   \
-        'ConditionalBuilder'
+    cond_builder_tag = ('org.jenkinsci.plugins.conditionalbuildstep.'
+                        'singlestep.SingleConditionalBuilder')
+    cond_builders_tag = ('org.jenkinsci.plugins.conditionalbuildstep.'
+                         'ConditionalBuilder')
     steps = data['steps']
     has_multiple_steps = len(steps) > 1
 
@@ -1463,17 +1462,17 @@ def maven_target(parser, xml_parent, data):
     :arg str properties: Properties for maven, can have multiples
     :arg str pom: Location of pom.xml (default 'pom.xml')
     :arg bool private-repository: Use private maven repository for this
-      job (default false)
+        job (default false)
     :arg str maven-version: Installation of maven which should be used
-      (optional)
+        (optional)
     :arg str java-opts: java options for maven, can have multiples,
         must be in quotes (optional)
     :arg str settings: Path to use as user settings.xml
-      It is possible to provide a ConfigFileProvider settings file, such as
-      see CFP Example below. (optional)
+        It is possible to provide a ConfigFileProvider settings file, such as
+        see CFP Example below. (optional)
     :arg str global-settings: Path to use as global settings.xml
-      It is possible to provide a ConfigFileProvider settings file, such as
-      see CFP Example below. (optional)
+        It is possible to provide a ConfigFileProvider settings file, such as
+        see CFP Example below. (optional)
 
     Requires the Jenkins `Config File Provider Plugin
     <https://wiki.jenkins-ci.org/display/JENKINS/Config+File+Provider+Plugin>`_
@@ -1482,6 +1481,7 @@ def maven_target(parser, xml_parent, data):
     Example:
 
     .. literalinclude:: /../../tests/builders/fixtures/maven-target-doc.yaml
+       :language: yaml
 
     CFP Example:
 
@@ -1509,7 +1509,7 @@ def multijob(parser, xml_parent, data):
     Define a multijob phase. Requires the Jenkins
     :jenkins-wiki:`Multijob Plugin <Multijob+Plugin>`.
 
-    This builder may only be used in \
+    This builder may only be used in
     :py:class:`jenkins_jobs.modules.project_multijob.MultiJob` projects.
 
     :arg str name: MultiJob phase name
@@ -1519,26 +1519,27 @@ def multijob(parser, xml_parent, data):
 
     :arg list projects: list of projects to include in the MultiJob phase
 
-      :Project: * **name** (`str`) -- Project name
-                * **current-parameters** (`bool`) -- Pass current build
-                  parameters to the other job (default false)
-                * **node-label-name** (`str`) -- Define a list of nodes
-                  on which the job should be allowed to be executed on.
-                  Requires NodeLabel Parameter Plugin (optional)
-                * **node-label** (`str`) -- Define a label
-                  of 'Restrict where this project can be run' on the fly.
-                  Requires NodeLabel Parameter Plugin (optional)
-                * **git-revision** (`bool`) -- Pass current git-revision
-                  to the other job (default false)
-                * **property-file** (`str`) -- Pass properties from file
-                  to the other job (optional)
-                * **predefined-parameters** (`str`) -- Pass predefined
-                  parameters to the other job (optional)
-                * **enable-condition** (`str`) -- Condition to run the
-                  job in groovy script format (optional)
-                * **kill-phase-on** (`str`) -- Stop the phase execution
-                  on specific job status. Can be 'FAILURE', 'UNSTABLE',
-                  'NEVER'. (optional)
+        :Project:
+            * **name** (`str`) -- Project name
+            * **current-parameters** (`bool`) -- Pass current build
+              parameters to the other job (default false)
+            * **node-label-name** (`str`) -- Define a list of nodes
+              on which the job should be allowed to be executed on.
+              Requires NodeLabel Parameter Plugin (optional)
+            * **node-label** (`str`) -- Define a label
+              of 'Restrict where this project can be run' on the fly.
+              Requires NodeLabel Parameter Plugin (optional)
+            * **git-revision** (`bool`) -- Pass current git-revision
+              to the other job (default false)
+            * **property-file** (`str`) -- Pass properties from file
+              to the other job (optional)
+            * **predefined-parameters** (`str`) -- Pass predefined
+              parameters to the other job (optional)
+            * **enable-condition** (`str`) -- Condition to run the
+              job in groovy script format (optional)
+            * **kill-phase-on** (`str`) -- Stop the phase execution
+              on specific job status. Can be 'FAILURE', 'UNSTABLE',
+              'NEVER'. (optional)
 
     Example:
 
@@ -1646,19 +1647,20 @@ def config_file_provider(parser, xml_parent, data):
     <Config+File+Provider+Plugin>`.
 
     :arg list files: List of managed config files made up of three
-      parameters
+        parameters
 
-      :files: * **file-id** (`str`) -- The identifier for the managed config
-                file
-              * **target** (`str`) -- Define where the file should be created
-                (optional)
-              * **variable** (`str`) -- Define an environment variable to be
-                used (optional)
+        :files:
+            * **file-id** (`str`) -- The identifier for the managed config
+              file
+            * **target** (`str`) -- Define where the file should be created
+              (optional)
+            * **variable** (`str`) -- Define an environment variable to be
+              used (optional)
 
     Example:
 
     .. literalinclude::
-       ../../tests/builders/fixtures/config-file-provider01.yaml
+        ../../tests/builders/fixtures/config-file-provider01.yaml
        :language: yaml
     """
     cfp = XML.SubElement(xml_parent,
@@ -1676,27 +1678,27 @@ def grails(parser, xml_parent, data):
     :arg bool use-wrapper: Use a grails wrapper (default false)
     :arg str name: Select a grails installation to use (optional)
     :arg bool force-upgrade: Run 'grails upgrade --non-interactive'
-                             first (default false)
+        first (default false)
     :arg bool non-interactive: append --non-interactive to all build targets
-                               (default false)
+        (default false)
     :arg str targets: Specify target(s) to run separated by spaces
     :arg str server-port: Specify a value for the server.port system
-                          property (optional)
+        property (optional)
     :arg str work-dir: Specify a value for the grails.work.dir system
-                       property (optional)
+        property (optional)
     :arg str project-dir: Specify a value for the grails.project.work.dir
-                          system property (optional)
+        system property (optional)
     :arg str base-dir: Specify a path to the root of the Grails
-                       project (optional)
+        project (optional)
     :arg str properties: Additional system properties to set (optional)
     :arg bool plain-output: append --plain-output to all build targets
-                            (default false)
+        (default false)
     :arg bool stack-trace: append --stack-trace to all build targets
-                           (default false)
+        (default false)
     :arg bool verbose: append --verbose to all build targets
-                       (default false)
+        (default false)
     :arg bool refresh-dependencies: append --refresh-dependencies to all
-                                    build targets (default false)
+        build targets (default false)
 
     Example:
 
@@ -1740,13 +1742,14 @@ def sbt(parser, xml_parent, data):
     <sbt+plugin>`.
 
     :arg str name: Select a sbt installation to use. If no name is
-                   provided, the first in the list of defined SBT
-                   builders will be used. (default to first in list)
+        provided, the first in the list of defined SBT builders will be
+        used. (default to first in list)
     :arg str jvm-flags: Parameters to pass to the JVM (default '')
     :arg str actions: Select the sbt tasks to execute (default '')
     :arg str sbt-flags: Add flags to SBT launcher
-                        (default '-Dsbt.log.noformat=true')
-    :arg str subdir-path: Path relative to workspace to run sbt in (default '')
+        (default '-Dsbt.log.noformat=true')
+    :arg str subdir-path: Path relative to workspace to run sbt in
+        (default '')
 
     Example:
 
@@ -1777,21 +1780,14 @@ def critical_block_start(parser, xml_parent, data):
 
     Requires Jenkins :jenkins-wiki:`Exclusion Plugin <Exclusion-Plugin>`.
 
-    Example::
+    Example:
 
-      wrappers:
-        - exclusion:
-            resources:
-              myresource1
-      builders:
-        - critical-block-start
-        - ... other builders
-        - critical-block-end
-
+    .. literalinclude::
+        ../../tests/yamlparser/fixtures/critical_block_complete001.yaml
+       :language: yaml
     """
-    cbs = \
-        XML.SubElement(xml_parent,
-                       'org.jvnet.hudson.plugins.exclusion.CriticalBlockStart')
+    cbs = XML.SubElement(
+        xml_parent, 'org.jvnet.hudson.plugins.exclusion.CriticalBlockStart')
     cbs.set('plugin', 'Exclusion')
 
 
@@ -1805,21 +1801,14 @@ def critical_block_end(parser, xml_parent, data):
 
     Requires Jenkins :jenkins-wiki:`Exclusion Plugin <Exclusion-Plugin>`.
 
-    Example::
+    Example:
 
-      wrappers:
-        - exclusion:
-            resources:
-              myresource1
-      builders:
-        - critical-block-start
-        - ... other builders
-        - critical-block-end
-
+    .. literalinclude::
+        ../../tests/yamlparser/fixtures/critical_block_complete001.yaml
+       :language: yaml
     """
-    cbs = \
-        XML.SubElement(xml_parent,
-                       'org.jvnet.hudson.plugins.exclusion.CriticalBlockEnd')
+    cbs = XML.SubElement(
+        xml_parent, 'org.jvnet.hudson.plugins.exclusion.CriticalBlockEnd')
     cbs.set('plugin', 'Exclusion')
 
 
@@ -1850,7 +1839,7 @@ def shining_panda(parser, xml_parent, data):
     Execute a command inside various python environments. Requires the Jenkins
     :jenkins-wiki:`ShiningPanda plugin <ShiningPanda+Plugin>`.
 
-    :arg str build-environment: Building environment to set up (Required).
+    :arg str build-environment: Building environment to set up (required).
 
         :build-environment values:
             * **python**: Use a python installation configured in Jenkins.
@@ -1860,56 +1849,54 @@ def shining_panda(parser, xml_parent, data):
     For the **python** environment
 
     :arg str python-version: Name of the python installation to use.
-        Must match one of the configured installations on server \
-        configuration
-        (default: System-CPython-2.7)
+        Must match one of the configured installations on server
+        configuration (default 'System-CPython-2.7')
 
     For the **custom** environment:
 
-    :arg str home: path to the home folder of the custom installation \
-        (Required)
+    :arg str home: path to the home folder of the custom installation
+        (required)
 
     For the **virtualenv** environment:
 
     :arg str python-version: Name of the python installation to use.
-        Must match one of the configured installations on server \
-        configuration
-        (default: System-CPython-2.7)
-    :arg str name: Name of this virtualenv. Two virtualenv builders with \
+        Must match one of the configured installations on server
+        configuration (default 'System-CPython-2.7')
+    :arg str name: Name of this virtualenv. Two virtualenv builders with
         the same name will use the same virtualenv installation (optional)
     :arg bool clear: If true, delete and recreate virtualenv on each build.
-        (default: false)
-    :arg bool use-distribute: if true use distribute, if false use \
-        setuptools. (default: true)
+        (default false)
+    :arg bool use-distribute: if true use distribute, if false use
+        setuptools. (default true)
     :arg bool system-site-packages: if true, give access to the global
-        site-packages directory to the virtualenv. (default: false)
+        site-packages directory to the virtualenv. (default false)
 
     Common to all environments:
 
-    :arg str nature: Nature of the command field. (default: shell)
+    :arg str nature: Nature of the command field. (default shell)
 
         :nature values:
             * **shell**: execute the Command contents with default shell
-            * **xshell**: like **shell** but performs platform conversion \
-                first
-            * **python**: execute the Command contents with the Python \
-                executable
+            * **xshell**: like **shell** but performs platform conversion
+              first
+            * **python**: execute the Command contents with the Python
+              executable
 
     :arg str command: The command to execute
     :arg bool ignore-exit-code: mark the build as failure if any of the
-        commands exits with a non-zero exit code. (default: false)
+        commands exits with a non-zero exit code. (default false)
 
     Examples:
 
-    .. literalinclude:: \
+    .. literalinclude::
         /../../tests/builders/fixtures/shining-panda-pythonenv.yaml
        :language: yaml
 
-    .. literalinclude:: \
+    .. literalinclude::
         /../../tests/builders/fixtures/shining-panda-customenv.yaml
        :language: yaml
 
-    .. literalinclude:: \
+    .. literalinclude::
         /../../tests/builders/fixtures/shining-panda-virtualenv.yaml
        :language: yaml
     """
@@ -1970,8 +1957,8 @@ def managed_script(parser, xml_parent, data):
     script within your build. Requires the Jenkins
     :jenkins-wiki:`Managed Script Plugin <Managed+Script+Plugin>`.
 
-    :arg str script-id: Id of script to execute (Required)
-    :arg str type: Type of managed file (default: script)
+    :arg str script-id: Id of script to execute (required)
+    :arg str type: Type of managed file (default script)
 
         :type values:
             * **batch**: Execute managed windows batch
@@ -2022,7 +2009,7 @@ def cmake(parser, xml_parent, data):
     :arg list build-type: Sets the "build type" option. A custom type different
         than the default ones specified on the CMake plugin can also be set,
         which will be automatically used in the "Other Build Type" option of
-        the plugin. (default: Debug)
+        the plugin. (default Debug)
 
         :type Default types present in the CMake plugin:
             * **Debug**
@@ -2030,7 +2017,7 @@ def cmake(parser, xml_parent, data):
             * **RelWithDebInfo**
             * **MinSizeRel**
 
-    :arg list generator: The makefile generator (default: "Unix Makefiles").
+    :arg list generator: The makefile generator (default "Unix Makefiles").
 
         :type Possible generators:
             * **Borland Makefiles**
@@ -2051,16 +2038,16 @@ def cmake(parser, xml_parent, data):
             * **Visual Studio 9 2008 Win64**
             * **Watcom WMake**
 
-    :arg str make-command: The make command (default: "make").
-    :arg str install-command: The install command (default: "make install").
+    :arg str make-command: The make command (default "make").
+    :arg str install-command: The install command (default "make install").
     :arg str preload-script: Path to a CMake preload script file. (optional)
     :arg str other-arguments: Other arguments to be added to the CMake
         call. (optional)
     :arg str custom-cmake-path: Path to cmake executable. (optional)
     :arg bool clean-build-dir: If true, delete the build directory before each
-        build (default: false).
+        build (default false).
     :arg bool clean-install-dir: If true, delete the install dir before each
-        build (default: false).
+        build (default false).
 
     Example:
 
@@ -2141,22 +2128,24 @@ def dsl(parser, xml_parent, data):
 
     Requires the Jenkins :jenkins-wiki:`Job DSL plugin <Job+DSL+Plugin>`.
 
-    :arg str script-text: dsl script which is Groovy code (Required if target
+    :arg str script-text: dsl script which is Groovy code (required if target
         is not specified)
     :arg str target: Newline separated list of DSL scripts, located in the
-        Workspace. Can use wildcards like 'jobs/\*\*/\*.groovy' (Required
+        Workspace. Can use wildcards like 'jobs/\*\*/\*.groovy' (required
         if script-text is not specified)
     :arg str ignore-existing: Ignore previously generated jobs and views
     :arg str removed-job-action: Specifies what to do when a previously
-        generated job is not referenced anymore (IGNORE (Default), DISABLE,
-        DELETE)
+        generated job is not referenced anymore, can be 'IGNORE', 'DISABLE',
+        or 'DELETE' (default 'IGNORE')
     :arg str removed-view-action: Specifies what to do when a previously
-        generated view is not referenced anymore (IGNORE (Default), DELETE)
+        generated view is not referenced anymore, can be 'IGNORE' or 'DELETE'.
+        (default 'IGNORE')
     :arg str lookup-strategy: Determines how relative job names in DSL
-        scripts are interpreted (JENKINS_ROOT (Default), SEED_JOB)
+        scripts are interpreted, can be 'JENKINS_ROOT' or 'SEED_JOB'.
+        (default 'JENKINS_ROOT')
     :arg str additional-classpath: Newline separated list of additional
         classpath entries for the Job DSL scripts. All entries must be
-        relative to the workspace root, e.g. build/classes/main.
+        relative to the workspace root, e.g. build/classes/main. (optional)
 
     Example:
 
@@ -2221,6 +2210,7 @@ def github_notifier(parser, xml_parent, data):
     Example:
 
     .. literalinclude:: /../../tests/builders/fixtures/github-notifier.yaml
+       :language: yaml
     """
     XML.SubElement(xml_parent,
                    'com.cloudbees.jenkins.GitHubSetCommitStatusBuilder')
@@ -2233,12 +2223,13 @@ def ssh_builder(parser, xml_parent, data):
     <https://wiki.jenkins-ci.org/display/JENKINS/SSH+plugin>`_
 
     :arg str ssh-user-ip: user@ip:ssh_port of machine that was defined
-                          in jenkins according to SSH plugin instructions
+        in jenkins according to SSH plugin instructions
     :arg str command: command to run on remote server
 
     Example:
 
     .. literalinclude:: /../../tests/builders/fixtures/ssh-builder.yaml
+       :language: yaml
     """
     builder = XML.SubElement(
         xml_parent, 'org.jvnet.hudson.plugins.SSHBuilder')
@@ -2265,6 +2256,7 @@ def sonar(parser, xml_parent, data):
     Example:
 
     .. literalinclude:: /../../tests/builders/fixtures/sonar.yaml
+       :language: yaml
     """
     sonar = XML.SubElement(xml_parent,
                            'hudson.plugins.sonar.SonarRunnerBuilder')
@@ -2283,12 +2275,12 @@ def sonatype_clm(parser, xml_parent, data):
     <Sonatype+CLM+%28formerly+Insight+for+CI%29>`.
 
     :arg str application-name: Determines the policy elements to associate
-        with this build. (Required)
+        with this build. (required)
     :arg bool fail-on-clm-server-failure: Controls the build outcome if there
-        is a failure in communicating with the CLM server. (Default: false)
+        is a failure in communicating with the CLM server. (default false)
     :arg str stage: Controls the stage the policy evaluation will be run
         against on the CLM server. Valid stages: build, stage-release, release,
-        operate. (Default: build)
+        operate. (default 'build')
     :arg str scan-targets: Pattern of files to include for scanning. (optional)
     :arg str module-excludes: Pattern of files to exclude. (optional)
     :arg str advanced-options: Options to be set on a case-by-case basis as
@@ -2297,6 +2289,7 @@ def sonatype_clm(parser, xml_parent, data):
     Example:
 
     .. literalinclude:: /../../tests/builders/fixtures/sonatype-clm01.yaml
+       :language: yaml
     """
     clm = XML.SubElement(xml_parent,
                          'com.sonatype.insight.ci.hudson.PreBuildScan')
@@ -2336,9 +2329,9 @@ def beaker(parser, xml_parent, data):
     Builder Plugin <Beaker+Builder+Plugin>`.
 
     :arg str content: Run job from string
-                      (Alternative: you can choose a path instead)
+        (Alternative: you can choose a path instead)
     :arg str path: Run job from file
-                   (Alternative: you can choose a content instead)
+        (Alternative: you can choose a content instead)
     :arg bool download-logs: Download Beaker log files (default false)
 
     Example:
@@ -2375,19 +2368,19 @@ def cloudformation(parser, xml_parent, data):
     delete them at the end.  Requires the Jenkins :jenkins-wiki:`AWS
     Cloudformation Plugin <AWS+Cloudformation+Plugin>`.
 
-    :arg list name: The names of the stacks to create (Required)
-    :arg str description: Description of the stack (Optional)
-    :arg str recipe: The cloudformation recipe file (Required)
+    :arg list name: The names of the stacks to create (required)
+    :arg str description: Description of the stack (optional)
+    :arg str recipe: The cloudformation recipe file (required)
     :arg list parameters: List of key/value pairs to pass
         into the recipe, will be joined together into a comma separated
-        string (Optional)
+        string (optional)
     :arg int timeout: Number of seconds to wait before giving up creating
         a stack (default 0)
-    :arg str access-key: The Amazon API Access Key (Required)
-    :arg str secret-key: The Amazon API Secret Key (Required)
+    :arg str access-key: The Amazon API Access Key (required)
+    :arg str secret-key: The Amazon API Secret Key (required)
     :arg int sleep: Number of seconds to wait before continuing to the
         next step (default 0)
-    :arg array region: The region to run cloudformation in (Required)
+    :arg array region: The region to run cloudformation in (required)
 
         :region values:
             * **us-east-1**
@@ -2423,12 +2416,12 @@ def openshift_build_verify(parser, xml_parent, data):
 
     :arg str api-url: this would be the value you specify if you leverage the
         --server option on the OpenShift `oc` command.
-        (default: \https://openshift.default.svc.cluster.local\)
+        (default '\https://openshift.default.svc.cluster.local')
     :arg str bld-cfg: The value here should be whatever was the output
         form `oc project` when you created the BuildConfig you
-        want to run a Build on (default: frontend)
+        want to run a Build on (default 'frontend')
     :arg str namespace: If you run `oc get bc` for the project listed in
-        "namespace", that is the value you want to put here. (default: test)
+        "namespace", that is the value you want to put here. (default 'test')
     :arg str auth-token: The value here is what you supply with the --token
         option when invoking the OpenShift `oc` command. (optional)
 
@@ -2466,16 +2459,16 @@ def openshift_builder(parser, xml_parent, data):
 
     :arg str api-url: this would be the value you specify if you leverage the
         --server option on the OpenShift `oc` command.
-        (default: \https://openshift.default.svc.cluster.local\)
+        (default '\https://openshift.default.svc.cluster.local')
     :arg str bld-cfg: The value here should be whatever was the output
         form `oc project` when you created the BuildConfig you want to run a
-        Build on (default: frontend)
+        Build on (default 'frontend')
     :arg str namespace: If you run `oc get bc` for the project listed in
-        "namespace", that is the value you want to put here. (default: test)
+        "namespace", that is the value you want to put here. (default 'test')
     :arg str auth-token: The value here is what you supply with the --token
         option when invoking the OpenShift `oc` command. (optional)
     :arg bool follow-log: The equivalent of using the --follow option with the
-        `oc start-build` command. (default: true)
+        `oc start-build` command. (default true)
 
     Full Example:
 
@@ -2513,14 +2506,14 @@ def openshift_dep_verify(parser, xml_parent, data):
 
     :arg str api-url: this would be the value you specify if you leverage the
         --server option on the OpenShift `oc` command.
-        (default: \https://openshift.default.svc.cluster.local\)
+        (default \https://openshift.default.svc.cluster.local\)
     :arg str dep-cfg: The value here should be whatever was the output
         form `oc project` when you created the BuildConfig you want to run a
-        Build on (default: frontend)
+        Build on (default frontend)
     :arg str namespace: If you run `oc get bc` for the project listed in
-        "namespace", that is the value you want to put here. (default: test)
+        "namespace", that is the value you want to put here. (default test)
     :arg str replica-count: The value here should be whatever the number
-        of pods you want started for the deployment. (default: 0)
+        of pods you want started for the deployment. (default 0)
     :arg str auth-token: The value here is what you supply with the --token
         option when invoking the OpenShift `oc` command. (optional)
 
@@ -2561,12 +2554,12 @@ def openshift_deployer(parser, xml_parent, data):
 
     :arg str api-url: this would be the value you specify if you leverage the
         --server option on the OpenShift `oc` command.
-        (default: \https://openshift.default.svc.cluster.local\)
+        (default '\https://openshift.default.svc.cluster.local')
     :arg str dep-cfg: The value here should be whatever was the output
         form `oc project` when you created the BuildConfig you want to run a
-        Build on (default: frontend)
+        Build on (default 'frontend')
     :arg str namespace: If you run `oc get bc` for the project listed in
-        "namespace", that is the value you want to put here. (default: test)
+        "namespace", that is the value you want to put here. (default 'test')
     :arg str auth-token: The value here is what you supply with the --token
         option when invoking the OpenShift `oc` command. (optional)
 
@@ -2606,15 +2599,15 @@ def openshift_img_tagger(parser, xml_parent, data):
 
     :arg str api-url: this would be the value you specify if you leverage the
         --server option on the OpenShift `oc` command.
-        (default: \https://openshift.default.svc.cluster.local\)
+        (default '\https://openshift.default.svc.cluster.local')
     :arg str test-tag: The equivalent to the name supplied to a
         `oc get service` command line invocation.
-        (default: origin-nodejs-sample:latest)
+        (default 'origin-nodejs-sample:latest')
     :arg str prod-tag: The equivalent to the name supplied to a
         `oc get service` command line invocation.
-        (default: origin-nodejs-sample:prod)
+        (default 'origin-nodejs-sample:prod')
     :arg str namespace: If you run `oc get bc` for the project listed in
-        "namespace", that is the value you want to put here. (default: test)
+        "namespace", that is the value you want to put here. (default 'test')
     :arg str auth-token: The value here is what you supply with the --token
         option when invoking the OpenShift `oc` command. (optional)
 
@@ -2622,7 +2615,7 @@ def openshift_img_tagger(parser, xml_parent, data):
 
     .. literalinclude::
         ../../tests/builders/fixtures/openshift-img-tagger001.yaml
-        :language: yaml
+       :language: yaml
 
     Minimal Example:
 
@@ -2654,14 +2647,14 @@ def openshift_scaler(parser, xml_parent, data):
 
     :arg str api-url: this would be the value you specify if you leverage the
         --server option on the OpenShift `oc` command.
-        (default \https://openshift.default.svc.cluster.local\)
+        (default '\https://openshift.default.svc.cluster.local')
     :arg str dep-cfg: The value here should be whatever was the output
         form `oc project` when you created the BuildConfig you want to run a
-        Build on (default: frontend)
+        Build on (default 'frontend')
     :arg str namespace: If you run `oc get bc` for the project listed in
-        "namespace", that is the value you want to put here. (default: test)
-    :arg str replica-count: The value here should be whatever the number
-        of pods you want started for the deployment. (default: 0)
+        "namespace", that is the value you want to put here. (default 'test')
+    :arg int replica-count: The value here should be whatever the number
+        of pods you want started for the deployment. (default 0)
     :arg str auth-token: The value here is what you supply with the --token
         option when invoking the OpenShift `oc` command. (optional)
 
@@ -2699,11 +2692,11 @@ def openshift_svc_verify(parser, xml_parent, data):
 
     :arg str api-url: this would be the value you specify if you leverage the
         --server option on the OpenShift `oc` command.
-        (default: \https://openshift.default.svc.cluster.local\)
+        (default '\https://openshift.default.svc.cluster.local')
     :arg str svc-name: The equivalent to the name supplied to a
-        `oc get service` command line invocation. (default: frontend)
+        `oc get service` command line invocation. (default 'frontend')
     :arg str namespace: If you run `oc get bc` for the project listed in
-        "namespace", that is the value you want to put here. (default: test)
+        "namespace", that is the value you want to put here. (default 'test')
     :arg str auth-token: The value here is what you supply with the --token
         option when invoking the OpenShift `oc` command. (optional)
 
@@ -2740,13 +2733,14 @@ def runscope(parser, xml_parent, data):
     Requires the Jenkins `Runscope Plugin.
     <https://wiki.jenkins-ci.org/display/JENKINS/Runscope+Plugin>`_
 
-    :arg str test-trigger-url: Trigger URL for test. (Required)
-    :arg str access-token: OAuth Personal Access token. (Required)
-    :arg int timeout: Timeout for test duration in seconds. (Default: 60)
+    :arg str test-trigger-url: Trigger URL for test. (required)
+    :arg str access-token: OAuth Personal Access token. (required)
+    :arg int timeout: Timeout for test duration in seconds. (default 60)
 
     Example:
 
     .. literalinclude:: /../../tests/builders/fixtures/runscope.yaml
+       :language: yaml
     """
     runscope = XML.SubElement(xml_parent,
                               'com.runscope.jenkins.Runscope.RunscopeBuilder')

@@ -1,0 +1,18 @@
+- wrapper:
+    name: critical-block-exclusion
+    wrappers:
+      - exclusion:
+          resources:
+            - myresource1
+
+- job:
+    name: critical-block-example
+    project-type: freestyle
+    wrappers:
+      - critical-block-exclusion
+    builders:
+      - critical-block-start
+      - shell:
+          #!/bin/bash -ex
+          rollback-my-data-base
+      - critical-block-end
