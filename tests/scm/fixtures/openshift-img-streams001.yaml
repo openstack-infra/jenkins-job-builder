@@ -1,0 +1,7 @@
+scm:
+  - openshift-img-streams:
+      image-stream-name: nodejs-010-fedora
+      tag: prod
+      api-url: https://openshift.example.local.url/
+      namespace: test-scm
+      auth-token: ose-key-img-streams1

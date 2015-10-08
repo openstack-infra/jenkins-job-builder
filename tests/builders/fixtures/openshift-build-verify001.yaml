@@ -1,0 +1,6 @@
+builders:
+  - openshift-build-verify:
+      api-url: https://openshift.example.local.url/
+      bld-cfg: front
+      namespace: test-build
+      auth-token: ose-key-buildv1

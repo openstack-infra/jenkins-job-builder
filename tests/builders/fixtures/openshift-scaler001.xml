@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.openshift.openshiftjenkinsbuildutils.OpenShiftScaler>
+      <apiURL>https://openshift.example.local.url/</apiURL>
+      <depCfg>front</depCfg>
+      <namespace>test2</namespace>
+      <replicaCount>4</replicaCount>
+      <authToken>ose-key-scaler1</authToken>
+    </com.openshift.openshiftjenkinsbuildutils.OpenShiftScaler>
+  </builders>
+</project>

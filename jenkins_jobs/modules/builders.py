@@ -2405,3 +2405,340 @@ def cloudformation(parser, xml_parent, data):
     for stack in data:
         cloudformation_stack(xml_parent, stack, 'PostBuildStackBean', stacks,
                              region_dict)
+
+
+def _openshift_common(osb, data, mapping):
+
+    for elem in mapping:
+        (optname, xmlname, val) = elem
+        val = data.get(optname, val)
+        # Skip adding xml entry if default is empty string
+        # and no value given
+        if not val and elem[2] is '':
+            continue
+        if str(val).lower() == 'true' or str(val).lower() == 'false':
+            val = str(val).lower()
+        xe = XML.SubElement(osb, xmlname)
+        xe.text = str(val)
+
+
+def openshift_build_verify(parser, xml_parent, data):
+    """yaml: openshift-build-verify
+    Performs the equivalent of an 'oc get builds` command invocation for the
+    provided buildConfig key provided; once the list of builds are obtained,
+    the state of the latest build is inspected for up to a minute to see if
+    it has completed successfully.
+    Requires the Jenkins `OpenShift3 Plugin
+    <https://github.com/gabemontero/openshift-jenkins-buildutils/>`_
+
+    :arg str api-url: this would be the value you specify if you leverage the
+        --server option on the OpenShift `oc` command.
+        (default: \https://openshift.default.svc.cluster.local\)
+    :arg str bld-cfg: The value here should be whatever was the output
+        form `oc project` when you created the BuildConfig you
+        want to run a Build on (default: frontend)
+    :arg str namespace: If you run `oc get bc` for the project listed in
+        "namespace", that is the value you want to put here. (default: test)
+    :arg str auth-token: The value here is what you supply with the --token
+        option when invoking the OpenShift `oc` command. (optional)
+
+    Full Example:
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/openshift-build-verify001.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/openshift-build-verify002.yaml
+       :language: yaml
+    """
+    osb = XML.SubElement(xml_parent,
+                         'com.openshift.'
+                         'openshiftjenkinsbuildutils.OpenShiftBuildVerifier')
+    mapping = [
+        # option, xml name, default value
+        ("api-url", 'apiURL', 'https://openshift.default.svc.cluster.local'),
+        ("bld-cfg", 'bldCfg', 'frontend'),
+        ("namespace", 'namespace', 'test'),
+        ("auth-token", 'authToken', ''),
+    ]
+
+    _openshift_common(osb, data, mapping)
+
+
+def openshift_builder(parser, xml_parent, data):
+    """yaml: openshift-builder
+    Perform builds in OpenShift for the job.
+    Requires the Jenkins `OpenShift3 Plugin
+    <https://github.com/gabemontero/openshift-jenkins-buildutils/>`_
+
+    :arg str api-url: this would be the value you specify if you leverage the
+        --server option on the OpenShift `oc` command.
+        (default: \https://openshift.default.svc.cluster.local\)
+    :arg str bld-cfg: The value here should be whatever was the output
+        form `oc project` when you created the BuildConfig you want to run a
+        Build on (default: frontend)
+    :arg str namespace: If you run `oc get bc` for the project listed in
+        "namespace", that is the value you want to put here. (default: test)
+    :arg str auth-token: The value here is what you supply with the --token
+        option when invoking the OpenShift `oc` command. (optional)
+    :arg bool follow-log: The equivalent of using the --follow option with the
+        `oc start-build` command. (default: true)
+
+    Full Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/openshift-builder001.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/openshift-builder002.yaml
+       :language: yaml
+    """
+    osb = XML.SubElement(xml_parent,
+                         'com.openshift.'
+                         'openshiftjenkinsbuildutils.OpenShiftBuilder')
+
+    mapping = [
+        # option, xml name, default value
+        ("api-url", 'apiURL', 'https://openshift.default.svc.cluster.local'),
+        ("bld-cfg", 'bldCfg', 'frontend'),
+        ("namespace", 'namespace', 'test'),
+        ("auth-token", 'authToken', ''),
+        ("follow-log", 'followLog', 'true'),
+    ]
+
+    _openshift_common(osb, data, mapping)
+
+
+def openshift_dep_verify(parser, xml_parent, data):
+    """yaml: openshift-dep-verify
+    Determines whether the expected set of DeploymentConfig's,
+    ReplicationController's, and active replicas are present based on prior
+    use of the scaler (2) and deployer (3) steps
+    Requires the Jenkins `OpenShift3 Plugin
+    <https://github.com/gabemontero/openshift-jenkins-buildutils/>`_
+
+    :arg str api-url: this would be the value you specify if you leverage the
+        --server option on the OpenShift `oc` command.
+        (default: \https://openshift.default.svc.cluster.local\)
+    :arg str dep-cfg: The value here should be whatever was the output
+        form `oc project` when you created the BuildConfig you want to run a
+        Build on (default: frontend)
+    :arg str namespace: If you run `oc get bc` for the project listed in
+        "namespace", that is the value you want to put here. (default: test)
+    :arg str replica-count: The value here should be whatever the number
+        of pods you want started for the deployment. (default: 0)
+    :arg str auth-token: The value here is what you supply with the --token
+        option when invoking the OpenShift `oc` command. (optional)
+
+    Full Example:
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/openshift-dep-verify001.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/openshift-dep-verify002.yaml
+       :language: yaml
+    """
+    osb = XML.SubElement(xml_parent,
+                         'com.openshift.'
+                         'openshiftjenkinsbuildutils.'
+                         'OpenShiftDeploymentVerifier')
+
+    mapping = [
+        # option, xml name, default value
+        ("api-url", 'apiURL', 'https://openshift.default.svc.cluster.local'),
+        ("dep-cfg", 'depCfg', 'frontend'),
+        ("namespace", 'namespace', 'test'),
+        ("replica-count", 'replicaCount', 0),
+        ("auth-token", 'authToken', ''),
+    ]
+
+    _openshift_common(osb, data, mapping)
+
+
+def openshift_deployer(parser, xml_parent, data):
+    """yaml: openshift-deployer
+    Start a deployment in OpenShift for the job.
+    Requires the Jenkins `OpenShift3 Plugin
+    <https://github.com/gabemontero/openshift-jenkins-buildutils/>`_
+
+    :arg str api-url: this would be the value you specify if you leverage the
+        --server option on the OpenShift `oc` command.
+        (default: \https://openshift.default.svc.cluster.local\)
+    :arg str dep-cfg: The value here should be whatever was the output
+        form `oc project` when you created the BuildConfig you want to run a
+        Build on (default: frontend)
+    :arg str namespace: If you run `oc get bc` for the project listed in
+        "namespace", that is the value you want to put here. (default: test)
+    :arg str auth-token: The value here is what you supply with the --token
+        option when invoking the OpenShift `oc` command. (optional)
+
+    Full Example:
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/openshift-deployer001.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/openshift-deployer002.yaml
+       :language: yaml
+    """
+    osb = XML.SubElement(xml_parent,
+                         'com.openshift.'
+                         'openshiftjenkinsbuildutils.OpenShiftDeployer')
+
+    mapping = [
+        # option, xml name, default value
+        ("api-url", 'apiURL', 'https://openshift.default.svc.cluster.local'),
+        ("dep-cfg", 'depCfg', 'frontend'),
+        ("namespace", 'namespace', 'test'),
+        ("auth-token", 'authToken', ''),
+    ]
+
+    _openshift_common(osb, data, mapping)
+
+
+def openshift_img_tagger(parser, xml_parent, data):
+    """yaml: openshift-img-tagger
+    Performs the equivalent of an oc tag command invocation in order to
+    manipulate tags for images in OpenShift ImageStream's
+    Requires the Jenkins `OpenShift3 Plugin
+    <https://github.com/gabemontero/openshift-jenkins-buildutils/>`_
+
+    :arg str api-url: this would be the value you specify if you leverage the
+        --server option on the OpenShift `oc` command.
+        (default: \https://openshift.default.svc.cluster.local\)
+    :arg str test-tag: The equivalent to the name supplied to a
+        `oc get service` command line invocation.
+        (default: origin-nodejs-sample:latest)
+    :arg str prod-tag: The equivalent to the name supplied to a
+        `oc get service` command line invocation.
+        (default: origin-nodejs-sample:prod)
+    :arg str namespace: If you run `oc get bc` for the project listed in
+        "namespace", that is the value you want to put here. (default: test)
+    :arg str auth-token: The value here is what you supply with the --token
+        option when invoking the OpenShift `oc` command. (optional)
+
+    Full Example:
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/openshift-img-tagger001.yaml
+        :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/openshift-img-tagger002.yaml
+       :language: yaml
+    """
+    osb = XML.SubElement(xml_parent,
+                         'com.openshift.'
+                         'openshiftjenkinsbuildutils.OpenShiftImageTagger')
+
+    mapping = [
+        # option, xml name, default value
+        ("api-url", 'apiURL', 'https://openshift.default.svc.cluster.local'),
+        ("test-tag", 'testTag', 'origin-nodejs-sample:latest'),
+        ("prod-tag", 'prodTag', 'origin-nodejs-sample:prod'),
+        ("namespace", 'namespace', 'test'),
+        ("auth-token", 'authToken', ''),
+    ]
+
+    _openshift_common(osb, data, mapping)
+
+
+def openshift_scaler(parser, xml_parent, data):
+    """yaml: openshift-scaler
+    Scale deployments in OpenShift for the job.
+    Requires the Jenkins `OpenShift3 Plugin
+    <https://github.com/gabemontero/openshift-jenkins-buildutils/>`_
+
+    :arg str api-url: this would be the value you specify if you leverage the
+        --server option on the OpenShift `oc` command.
+        (default \https://openshift.default.svc.cluster.local\)
+    :arg str dep-cfg: The value here should be whatever was the output
+        form `oc project` when you created the BuildConfig you want to run a
+        Build on (default: frontend)
+    :arg str namespace: If you run `oc get bc` for the project listed in
+        "namespace", that is the value you want to put here. (default: test)
+    :arg str replica-count: The value here should be whatever the number
+        of pods you want started for the deployment. (default: 0)
+    :arg str auth-token: The value here is what you supply with the --token
+        option when invoking the OpenShift `oc` command. (optional)
+
+    Full Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/openshift-scaler001.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/openshift-scaler002.yaml
+       :language: yaml
+    """
+    osb = XML.SubElement(xml_parent,
+                         'com.openshift.'
+                         'openshiftjenkinsbuildutils.OpenShiftScaler')
+
+    mapping = [
+        # option, xml name, default value
+        ("api-url", 'apiURL', 'https://openshift.default.svc.cluster.local'),
+        ("dep-cfg", 'depCfg', 'frontend'),
+        ("namespace", 'namespace', 'test'),
+        ("replica-count", 'replicaCount', 0),
+        ("auth-token", 'authToken', ''),
+    ]
+
+    _openshift_common(osb, data, mapping)
+
+
+def openshift_svc_verify(parser, xml_parent, data):
+    """yaml: openshift-svc-verify
+    Verify a service is up in OpenShift for the job.
+    Requires the Jenkins `OpenShift3 Plugin
+    <https://github.com/gabemontero/openshift-jenkins-buildutils/>`_
+
+    :arg str api-url: this would be the value you specify if you leverage the
+        --server option on the OpenShift `oc` command.
+        (default: \https://openshift.default.svc.cluster.local\)
+    :arg str svc-name: The equivalent to the name supplied to a
+        `oc get service` command line invocation. (default: frontend)
+    :arg str namespace: If you run `oc get bc` for the project listed in
+        "namespace", that is the value you want to put here. (default: test)
+    :arg str auth-token: The value here is what you supply with the --token
+        option when invoking the OpenShift `oc` command. (optional)
+
+    Full Example:
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/openshift-svc-verify001.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/openshift-svc-verify002.yaml
+       :language: yaml
+    """
+    osb = XML.SubElement(xml_parent,
+                         'com.openshift.'
+                         'openshiftjenkinsbuildutils.OpenShiftServiceVerifier')
+
+    mapping = [
+        # option, xml name, default value
+        ("api-url", 'apiURL', 'https://openshift.default.svc.cluster.local'),
+        ("svc-name", 'svcName', 'frontend'),
+        ("namespace", 'namespace', 'test'),
+        ("auth-token", 'authToken', ''),
+    ]
+
+    _openshift_common(osb, data, mapping)

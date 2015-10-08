@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.openshift.openshiftjenkinsbuildutils.OpenShiftBuilder>
+      <apiURL>https://openshift.default.svc.cluster.local</apiURL>
+      <bldCfg>frontend</bldCfg>
+      <namespace>test</namespace>
+      <followLog>true</followLog>
+    </com.openshift.openshiftjenkinsbuildutils.OpenShiftBuilder>
+  </builders>
+</project>

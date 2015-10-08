@@ -1,0 +1,6 @@
+builders:
+  - openshift-deployer:
+      api-url: https://openshift.example.local.url/
+      dep-cfg: front
+      namespace: test3
+      auth-token: ose-key-deployer1

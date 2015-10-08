@@ -1046,6 +1046,66 @@ def hg(self, xml_parent, data):
                                        "with browser.")
 
 
+def openshift_img_streams(parser, xml_parent, data):
+    """yaml: openshift-img-streams
+    Rather than a Build step extension plugin, this is an extension of the
+    Jenkins SCM plugin, where this baked-in polling mechanism provided by
+    Jenkins is leveraged by exposing some of the common semantics between
+    OpenShift ImageStreams (which are abstractions of Docker repositories)
+    and SCMs - versions / commit IDs of related artifacts
+    (images vs. programmatics files)
+    Requires the Jenkins `OpenShift3 Plugin
+    <https://github.com/gabemontero/openshift-jenkins-buildutils/>`_
+
+    :arg str image-stream-name: The name of the ImageStream is what shows up
+        in the NAME column if you dump all the ImageStream's with the
+        `oc get is` command invocation. (default: nodejs-010-centos7)
+    :arg str tag: The specific image tag within the ImageStream to monitor.
+        (default: latest)
+    :arg str api-url: This would be the value you specify if you leverage the
+        --server option on the OpenShift `oc` command.
+        (default: \https://openshift.default.svc.cluster.local\)
+    :arg str namespace: The value here should be whatever was the output
+        form `oc project` when you created the BuildConfig you want to run
+        a Build on. (default: test)
+    :arg str auth-token: The value here is what you supply with the --token
+        option when invoking the OpenShift `oc` command. (optional)
+
+    Full Example:
+
+    .. literalinclude::
+        ../../tests/scm/fixtures/openshift-img-streams001.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+        ../../tests/scm/fixtures/openshift-img-streams002.yaml
+       :language: yaml
+    """
+    scm = XML.SubElement(xml_parent,
+                         'scm', {'class':
+                                 'com.openshift.openshiftjenkinsbuildutils.'
+                                 'OpenShiftImageStreams'})
+    mapping = [
+        # option, xml name, default value
+        ("image-stream-name", 'imageStreamName', 'nodejs-010-centos7'),
+        ("tag", 'tag', 'latest'),
+        ("api-url", 'apiURL', 'https://openshift.default.svc.cluster.local'),
+        ("namespace", 'namespace', 'test'),
+        ("auth-token", 'authToken', ''),
+    ]
+
+    for elem in mapping:
+        (optname, xmlname, val) = elem
+        val = data.get(optname, val)
+        # Skip adding xml entry if default is empty string and no value given
+        if not val and elem[2] is '':
+            continue
+        xe = XML.SubElement(scm, xmlname)
+        xe.text = str(val)
+
+
 class SCM(jenkins_jobs.modules.base.Base):
     sequence = 30
 
