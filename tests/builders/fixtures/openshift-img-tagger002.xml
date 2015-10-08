@@ -6,6 +6,7 @@
       <testTag>origin-nodejs-sample:latest</testTag>
       <prodTag>origin-nodejs-sample:prod</prodTag>
       <namespace>test</namespace>
+      <authToken/>
     </com.openshift.openshiftjenkinsbuildutils.OpenShiftImageTagger>
   </builders>
 </project>

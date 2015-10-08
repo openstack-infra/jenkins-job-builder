@@ -6,6 +6,7 @@
       <depCfg>frontend</depCfg>
       <namespace>test</namespace>
       <replicaCount>0</replicaCount>
+      <authToken/>
     </com.openshift.openshiftjenkinsbuildutils.OpenShiftScaler>
   </builders>
 </project>

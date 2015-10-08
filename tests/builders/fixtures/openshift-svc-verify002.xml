@@ -5,6 +5,7 @@
       <apiURL>https://openshift.default.svc.cluster.local</apiURL>
       <svcName>frontend</svcName>
       <namespace>test</namespace>
+      <authToken/>
     </com.openshift.openshiftjenkinsbuildutils.OpenShiftServiceVerifier>
   </builders>
 </project>

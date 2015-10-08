@@ -39,6 +39,7 @@ Example of an empty ``scm``:
 import logging
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 from jenkins_jobs.errors import (InvalidAttributeError,
                                  JenkinsJobsException,
                                  MissingAttributeError)
@@ -1096,14 +1097,7 @@ def openshift_img_streams(parser, xml_parent, data):
         ("auth-token", 'authToken', ''),
     ]
 
-    for elem in mapping:
-        (optname, xmlname, val) = elem
-        val = data.get(optname, val)
-        # Skip adding xml entry if default is empty string and no value given
-        if not val and elem[2] is '':
-            continue
-        xe = XML.SubElement(scm, xmlname)
-        xe.text = str(val)
+    convert_mapping_to_xml(scm, data, mapping)
 
 
 class SCM(jenkins_jobs.modules.base.Base):
