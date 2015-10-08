@@ -65,7 +65,14 @@ class CacheStorage(object):
             os.path.join(home, '.cache')
         path = os.path.join(xdg_cache_home, 'jenkins_jobs')
         if not os.path.isdir(path):
-            os.makedirs(path)
+            try:
+                os.makedirs(path)
+            except OSError as ose:
+                # it could happen that two jjb instances are running at the
+                # same time and that the other instance created the directory
+                # after we made the check, in which case there is no error
+                if ose.errno != errno.EEXIST:
+                    raise ose
         return path
 
     def set(self, job, md5):
