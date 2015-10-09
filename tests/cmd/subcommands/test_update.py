@@ -15,6 +15,7 @@
 # under the License.
 
 import os
+import six
 
 from jenkins_jobs import cmd
 from jenkins_jobs import builder
@@ -38,6 +39,26 @@ class UpdateTests(CmdTestsBase):
 
         cmd.execute(args, self.config)
         update_job_mock.assert_called_with([path], [])
+
+    @mock.patch('jenkins_jobs.builder.Jenkins.is_job', return_value=True)
+    @mock.patch('jenkins_jobs.builder.Jenkins.get_jobs')
+    @mock.patch('jenkins_jobs.builder.Jenkins.get_job_md5')
+    @mock.patch('jenkins_jobs.builder.Jenkins.update_job')
+    def test_update_jobs_decode_job_output(self, update_job_mock,
+                                           get_job_md5_mock, get_jobs_mock,
+                                           is_job_mock):
+        """
+        Test that job xml output has been decoded before attempting to update
+        """
+        # don't care about the value returned here
+        update_job_mock.return_value = ([], 0)
+
+        path = os.path.join(self.fixtures_path, 'cmd-002.yaml')
+        args = self.parser.parse_args(['update', path])
+
+        cmd.execute(args, self.config)
+        self.assertTrue(isinstance(update_job_mock.call_args[0][1],
+                                   six.text_type))
 
     @mock.patch('jenkins_jobs.builder.Jenkins.is_job', return_value=True)
     @mock.patch('jenkins_jobs.builder.Jenkins.get_jobs')
