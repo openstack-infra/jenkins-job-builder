@@ -15,7 +15,7 @@
 
 import argparse
 import io
-from six.moves import configparser, StringIO
+from six.moves import configparser, StringIO, input
 import fnmatch
 import logging
 import os
@@ -50,7 +50,7 @@ send-as=Jenkins
 
 
 def confirm(question):
-    answer = raw_input('%s (Y/N): ' % question).upper().strip()
+    answer = input('%s (Y/N): ' % question).upper().strip()
     if not answer == 'Y':
         sys.exit('Aborted')
 
