@@ -40,6 +40,9 @@
       <hudson.plugins.git.extensions.impl.CheckoutOption>
         <timeout>20</timeout>
       </hudson.plugins.git.extensions.impl.CheckoutOption>
+      <hudson.plugins.git.extensions.impl.CloneOption>
+        <timeout>20</timeout>
+      </hudson.plugins.git.extensions.impl.CloneOption>
       <hudson.plugins.git.extensions.impl.WipeWorkspace/>
     </extensions>
     <browser class="hudson.plugins.git.browser.GithubWeb">

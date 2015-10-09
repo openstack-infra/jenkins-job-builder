@@ -372,6 +372,8 @@ def git(parser, xml_parent, data):
     if 'timeout' in data:
         co = XML.SubElement(exts_node, impl_prefix + 'CheckoutOption')
         XML.SubElement(co, 'timeout').text = str(data['timeout'])
+        clo = XML.SubElement(exts_node, impl_prefix + 'CloneOption')
+        XML.SubElement(clo, 'timeout').text = str(data['timeout'])
     polling_using_workspace = str(data.get('force-polling-using-workspace',
                                            False)).lower()
     if polling_using_workspace == 'true':
