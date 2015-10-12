@@ -72,6 +72,9 @@ class CacheStorage(object):
     def set(self, job, md5):
         self.data[job] = md5
 
+    def clear(self):
+        self.data.clear()
+
     def is_cached(self, job):
         if job in self.data:
             return True
@@ -298,6 +301,8 @@ class Builder(object):
         jobs = self.jenkins.get_jobs()
         logger.info("Number of jobs to delete:  %d", len(jobs))
         self.jenkins.delete_all_jobs()
+        # Need to clear the JJB cache after deletion
+        self.cache.clear()
 
     def update_job(self, input_fn, jobs_glob=None, output=None):
         self.load_files(input_fn)
