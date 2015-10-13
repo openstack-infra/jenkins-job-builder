@@ -46,6 +46,7 @@ from jenkins_jobs.modules.helpers import cloudformation_stack
 from jenkins_jobs.modules.helpers import config_file_provider_builder
 from jenkins_jobs.modules.helpers import config_file_provider_settings
 from jenkins_jobs.modules.helpers import copyartifact_build_selector
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 from jenkins_jobs.errors import (JenkinsJobsException,
                                  MissingAttributeError,
                                  InvalidAttributeError)
@@ -2407,21 +2408,6 @@ def cloudformation(parser, xml_parent, data):
                              region_dict)
 
 
-def _openshift_common(osb, data, mapping):
-
-    for elem in mapping:
-        (optname, xmlname, val) = elem
-        val = data.get(optname, val)
-        # Skip adding xml entry if default is empty string
-        # and no value given
-        if not val and elem[2] is '':
-            continue
-        if str(val).lower() == 'true' or str(val).lower() == 'false':
-            val = str(val).lower()
-        xe = XML.SubElement(osb, xmlname)
-        xe.text = str(val)
-
-
 def openshift_build_verify(parser, xml_parent, data):
     """yaml: openshift-build-verify
     Performs the equivalent of an 'oc get builds` command invocation for the
@@ -2465,7 +2451,7 @@ def openshift_build_verify(parser, xml_parent, data):
         ("auth-token", 'authToken', ''),
     ]
 
-    _openshift_common(osb, data, mapping)
+    convert_mapping_to_xml(osb, data, mapping)
 
 
 def openshift_builder(parser, xml_parent, data):
@@ -2510,7 +2496,7 @@ def openshift_builder(parser, xml_parent, data):
         ("follow-log", 'followLog', 'true'),
     ]
 
-    _openshift_common(osb, data, mapping)
+    convert_mapping_to_xml(osb, data, mapping)
 
 
 def openshift_dep_verify(parser, xml_parent, data):
@@ -2560,7 +2546,7 @@ def openshift_dep_verify(parser, xml_parent, data):
         ("auth-token", 'authToken', ''),
     ]
 
-    _openshift_common(osb, data, mapping)
+    convert_mapping_to_xml(osb, data, mapping)
 
 
 def openshift_deployer(parser, xml_parent, data):
@@ -2604,7 +2590,7 @@ def openshift_deployer(parser, xml_parent, data):
         ("auth-token", 'authToken', ''),
     ]
 
-    _openshift_common(osb, data, mapping)
+    convert_mapping_to_xml(osb, data, mapping)
 
 
 def openshift_img_tagger(parser, xml_parent, data):
@@ -2653,7 +2639,7 @@ def openshift_img_tagger(parser, xml_parent, data):
         ("auth-token", 'authToken', ''),
     ]
 
-    _openshift_common(osb, data, mapping)
+    convert_mapping_to_xml(osb, data, mapping)
 
 
 def openshift_scaler(parser, xml_parent, data):
@@ -2698,7 +2684,7 @@ def openshift_scaler(parser, xml_parent, data):
         ("auth-token", 'authToken', ''),
     ]
 
-    _openshift_common(osb, data, mapping)
+    convert_mapping_to_xml(osb, data, mapping)
 
 
 def openshift_svc_verify(parser, xml_parent, data):
@@ -2741,4 +2727,4 @@ def openshift_svc_verify(parser, xml_parent, data):
         ("auth-token", 'authToken', ''),
     ]
 
-    _openshift_common(osb, data, mapping)
+    convert_mapping_to_xml(osb, data, mapping)

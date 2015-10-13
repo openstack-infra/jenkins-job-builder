@@ -5,5 +5,6 @@
     <tag>latest</tag>
     <apiURL>https://openshift.default.svc.cluster.local</apiURL>
     <namespace>test</namespace>
+    <authToken/>
   </scm>
 </project>
