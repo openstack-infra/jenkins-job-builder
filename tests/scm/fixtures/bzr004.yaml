@@ -1,0 +1,6 @@
+scm:
+  - bzr:
+      url: lp:test_project
+      browser: opengrok
+      browser-url: http://browser.example.com
+      opengrok-root-module: root/module

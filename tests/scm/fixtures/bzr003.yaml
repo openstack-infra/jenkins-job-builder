@@ -1,0 +1,5 @@
+scm:
+  - bzr:
+      url: lp:test_project
+      browser: loggerhead
+      browser-url: http://browser.example.com

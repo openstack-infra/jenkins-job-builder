@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <scm class="hudson.plugins.bazaar.BazaarSCM">
+    <source>lp:test_project</source>
+    <cleantree>false</cleantree>
+    <checkout>false</checkout>
+  </scm>
+</project>
