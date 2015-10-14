@@ -352,7 +352,7 @@ class Builder(object):
                 self.cache.set(job.name, old_md5)
 
             if self.cache.has_changed(job.name, md5) or self.ignore_cache:
-                self.jenkins.update_job(job.name, job.output())
+                self.jenkins.update_job(job.name, job.output().decode('utf-8'))
                 updated_jobs += 1
                 self.cache.set(job.name, md5)
             else:
