@@ -1,0 +1,8 @@
+publishers:
+  - trigger-parameterized-builds:
+    - project:
+        - other_job
+      property-file: version.prop
+      use-matrix-child-files: True
+      matrix-child-combination-filter: "FOO && BAR"
+      only-exact-matrix-child-runs: True

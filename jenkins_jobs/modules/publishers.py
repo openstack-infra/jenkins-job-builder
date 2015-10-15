@@ -307,6 +307,12 @@ def trigger_parameterized_builds(parser, xml_parent, data):
     :arg str property-file: Use properties from file (optional)
     :arg bool fail-on-missing: Blocks the triggering of the downstream jobs
         if any of the files are not found in the workspace (default 'False')
+    :arg bool use-matrix-child-files: Use files in workspaces of child
+        builds (default 'False')
+    :arg str matrix-child-combination-filter: A Groovy expression to filter
+        the child builds to look in for files
+    :arg bool only-exact-matrix-child-runs: Use only child builds triggered
+        exactly by the parent.
     :arg str file-encoding: Encoding of contents of the files. If not
         specified, default encoding of the platform is used. Only valid when
         'property-file' is specified. (optional)
@@ -368,6 +374,17 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                 if 'file-encoding' in project_def:
                     XML.SubElement(params, 'encoding'
                                    ).text = project_def['file-encoding']
+                if 'use-matrix-child-files' in project_def:
+                    # TODO: These parameters only affect execution in
+                    # publishers of matrix projects; we should warn if they are
+                    # used in other contexts.
+                    XML.SubElement(params, "useMatrixChild").text = (
+                        str(project_def['use-matrix-child-files']).lower())
+                    XML.SubElement(params, "combinationFilter").text = (
+                        project_def.get('matrix-child-combination-filter', ''))
+                    XML.SubElement(params, "onlyExactRuns").text = (
+                        str(project_def.get('only-exact-matrix-child-runs',
+                                            False)).lower())
             if ('current-parameters' in project_def
                     and project_def['current-parameters']):
                 XML.SubElement(tconfigs, pt_prefix + 'CurrentBuildParameters')
