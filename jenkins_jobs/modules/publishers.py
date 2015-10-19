@@ -3420,6 +3420,9 @@ def plot(parser, xml_parent, data):
 
     .. literalinclude:: /../../tests/publishers/fixtures/plot004.yaml
        :language: yaml
+
+    .. literalinclude:: /../../tests/publishers/fixtures/plot005.yaml
+       :language: yaml
     """
     top = XML.SubElement(xml_parent, 'hudson.plugins.plot.PlotPublisher')
     plots = XML.SubElement(top, 'plots')
@@ -3462,6 +3465,12 @@ def plot(parser, xml_parent, data):
                     inclusion_dict.get(inclusion_flag)
                 XML.SubElement(subserie, 'exclusionValues').text = \
                     serie.get('exclude', '')
+                if serie.get('exclude', ''):
+                    exclude_strings = serie.get('exclude', '').split(',')
+                    exclusionset = XML.SubElement(subserie, 'strExclusionSet')
+                    for exclude_string in exclude_strings:
+                        XML.SubElement(exclusionset, 'string').text = \
+                            exclude_string
                 XML.SubElement(subserie, 'url').text = serie.get('url', '')
                 XML.SubElement(subserie, 'displayTableFlag').text = \
                     str(plot.get('display-table', False)).lower()

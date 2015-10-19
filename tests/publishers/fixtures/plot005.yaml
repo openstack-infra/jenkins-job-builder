@@ -1,0 +1,14 @@
+publishers:
+  - plot:
+      - title: 'Sample graph'
+        yaxis: ''
+        csv-file-name: 'persisted.csv'
+        group: 'bench'
+        numbuilds: '1'
+        style: 'line'
+        use-description: false
+        series:
+          - file: 'data.csv'
+            format: 'csv'
+            inclusion-flag: 'include-by-string'
+            exclude: 'Column 1,Column 2,Column 3'
