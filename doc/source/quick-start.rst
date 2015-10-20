@@ -64,7 +64,7 @@ Use Case 3: Working with JSON job definitions
 
 You can also define your jobs in json instead of yaml::
 
-    jenkins-jobs --config etc/jenkins_jobs.ini-sample update tests/jsonparser/fixtures/simple.json
+    jenkins-jobs --conf etc/jenkins_jobs.ini-sample update tests/jsonparser/fixtures/simple.json
 
 The above command just uses a simple job definition.  You can also convert any
 of the YAML examples to JSON and feed that to JJB.
@@ -76,7 +76,7 @@ Use Case 4: Deleting a job
 
 To delete a job::
 
-    jenkins-jobs --config etc/jenkins_jobs.ini-sample delete simple
+    jenkins-jobs --conf etc/jenkins_jobs.ini-sample delete simple
 
 The above command deletes the job `simple` from the Jenkins master.
 
