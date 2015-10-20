@@ -179,17 +179,28 @@ def main(argv=None):
     execute(options, config)
 
 
-def setup_config_settings(options):
-
+def get_config_file(options):
+    # Initialize with the global fallback location for the config.
     conf = '/etc/jenkins_jobs/jenkins_jobs.ini'
     if options.conf:
         conf = options.conf
     else:
-        # Fallback to script directory
+        # Allow a script directory config to override.
         localconf = os.path.join(os.path.dirname(__file__),
                                  'jenkins_jobs.ini')
         if os.path.isfile(localconf):
             conf = localconf
+        # Allow a user directory config to override.
+        userconf = os.path.join(os.path.expanduser('~'), '.config',
+                                'jenkins_jobs', 'jenkins_jobs.ini')
+        if os.path.isfile(userconf):
+            conf = userconf
+    return conf
+
+
+def setup_config_settings(options):
+
+    conf = get_config_file(options)
     config = configparser.ConfigParser()
     # Load default config always
     config.readfp(StringIO(DEFAULT_CONF))

@@ -2,10 +2,10 @@ Configuration File
 ------------------
 
 After installation, you will need to create a configuration file.  By
-default, ``jenkins-jobs`` looks in
-``/etc/jenkins_jobs/jenkins_jobs.ini`` but you may specify an
-alternative location when running ``jenkins-jobs``.  The file should have
-the following format:
+default, ``jenkins-jobs`` looks for ``~/.config/jenkins_jobs/jenkins_jobs.ini``,
+``<script directory>/jenkins_jobs.ini`` or ``/etc/jenkins_jobs/jenkins_jobs.ini``
+(in that order), but you may specify an alternative location when running
+``jenkins-jobs``.  The file should have the following format:
 
 .. literalinclude:: ../../etc/jenkins_jobs.ini-sample
    :language: ini
