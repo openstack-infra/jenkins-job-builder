@@ -2339,6 +2339,59 @@ def maven_release(parser, xml_parent, data):
         data.get('scm-password-env-var', ''))
 
 
+def version_number(parser, xml_parent, data):
+    """yaml: version-number
+    Generate a version number for the build using a format string. See the
+    wiki page for more detailed descriptions of options.
+
+    Requires the Jenkins :jenkins-wiki:`version number plugin
+    <Version+Number+Plugin>`.
+
+    :arg str variable-name: Name of environment variable to assign version
+        number to (required)
+    :arg str format-string: Format string used to generate version number
+        (required)
+    :arg bool skip-failed-builds: If the build fails, DO NOT increment any
+        auto-incrementing component of the version number (default: false)
+    :arg bool display-name: Use the version number for the build display
+        name (default: false)
+    :arg str start-date: The date the project began as a UTC timestamp
+        (default 1970-1-1 00:00:00.0 UTC)
+    :arg int builds-today: The number of builds that have been executed
+        today (optional)
+    :arg int builds-this-month: The number of builds that have been executed
+        since the start of the month (optional)
+    :arg int builds-this-year: The number of builds that have been executed
+        since the start of the year (optional)
+    :arg int builds-all-time: The number of builds that have been executed
+        since the start of the project (optional)
+
+    Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/version-number001.yaml
+       :language: yaml
+
+    """
+    version_number = XML.SubElement(
+        xml_parent, 'org.jvnet.hudson.tools.versionnumber.VersionNumberBuilder'
+    )
+
+    mapping = [
+        # option, xml name, default value
+        ("variable-name", 'environmentVariableName', None),
+        ("format-string", 'versionNumberString', None),
+        ("skip-failed-builds", 'skipFailedBuilds', False),
+        ("display-name", 'useAsBuildDisplayName', False),
+        ("start-date", 'projectStartDate', '1970-1-1 00:00:00.0 UTC'),
+        ("builds-today", 'oBuildsToday', '-1'),
+        ("builds-this-month", 'oBuildsThisMonth', '-1'),
+        ("builds-this-year", 'oBuildsThisYear', '-1'),
+        ("builds-all-time", 'oBuildsAllTime', '-1'),
+    ]
+
+    convert_mapping_to_xml(version_number, data, mapping, fail_required=True)
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 

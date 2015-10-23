@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <org.jvnet.hudson.tools.versionnumber.VersionNumberBuilder>
+      <environmentVariableName>relVersion</environmentVariableName>
+      <versionNumberString>${BUILD_DATE_FORMATTED, &quot;yy.M&quot;}.${BUILDS_THIS_MONTH_Z}</versionNumberString>
+      <skipFailedBuilds>false</skipFailedBuilds>
+      <useAsBuildDisplayName>false</useAsBuildDisplayName>
+      <projectStartDate>1970-1-1 00:00:00.0 UTC</projectStartDate>
+      <oBuildsToday>-1</oBuildsToday>
+      <oBuildsThisMonth>-1</oBuildsThisMonth>
+      <oBuildsThisYear>-1</oBuildsThisYear>
+      <oBuildsAllTime>-1</oBuildsAllTime>
+    </org.jvnet.hudson.tools.versionnumber.VersionNumberBuilder>
+  </buildWrappers>
+</project>
