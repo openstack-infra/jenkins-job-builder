@@ -2474,7 +2474,7 @@ def maven_deploy(parser, xml_parent, data):
 
 
 def artifactory(parser, xml_parent, data):
-    """ yaml: artifactory
+    """yaml: artifactory
     Uses/requires the Artifactory plugin to deploy artifacts to
     Artifactory Server.
 
