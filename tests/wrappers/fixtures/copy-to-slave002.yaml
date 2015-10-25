@@ -1,0 +1,10 @@
+wrappers:
+    - copy-to-slave:
+        includes:
+            - 'file1'
+            - 'file2*.txt'
+        excludes:
+            - 'file2bad.txt'
+        flatten: True
+        relative-to: 'somewhereElse'
+        include-ant-excludes: True

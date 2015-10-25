@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <com.michelin.cio.hudson.plugins.copytoslave.CopyToSlaveBuildWrapper>
+      <includes/>
+      <excludes/>
+      <flatten>false</flatten>
+      <includeAntExcludes>false</includeAntExcludes>
+      <relativeTo>userContent</relativeTo>
+      <hudsonHomeRelative>false</hudsonHomeRelative>
+    </com.michelin.cio.hudson.plugins.copytoslave.CopyToSlaveBuildWrapper>
+  </buildWrappers>
+</project>
