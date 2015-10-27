@@ -1189,6 +1189,38 @@ def bzr(parser, xml_parent, data):
             data['opengrok-root-module'])
 
 
+def url(parser, xml_parent, data):
+    """yaml: url
+
+    Watch for changes in, and download an artifact from a particular url.
+    Requires the Jenkins :jenkins-wiki:`URL SCM <URL+SCM>`.
+
+    :arg list url-list: List of URLs to watch. (required)
+    :arg bool clear-workspace: If set to true, clear the workspace before
+        downloading the artifact(s) specified in url-list. (default false)
+
+    Examples:
+
+    .. literalinclude:: ../../tests/scm/fixtures/url001.yaml
+       :language: yaml
+    .. literalinclude:: ../../tests/scm/fixtures/url002.yaml
+       :language: yaml
+    """
+
+    scm = XML.SubElement(xml_parent, 'scm', {'class':
+                         'hudson.plugins.URLSCM.URLSCM'})
+    urls = XML.SubElement(scm, 'urls')
+    try:
+        for data_url in data['url-list']:
+            url_tuple = XML.SubElement(
+                urls, 'hudson.plugins.URLSCM.URLSCM_-URLTuple')
+            XML.SubElement(url_tuple, 'urlString').text = data_url
+    except KeyError as e:
+        raise MissingAttributeError(e.args[0])
+    XML.SubElement(scm, 'clearWorkspace').text = str(
+        data.get('clear-workspace', False)).lower()
+
+
 class SCM(jenkins_jobs.modules.base.Base):
     sequence = 30
 
