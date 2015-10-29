@@ -14,3 +14,4 @@ publishers:
             - '/tmp/two.groovy'
         script-only-if-succeeded: False
         script-only-if-failed: True
+        mark-unstable-if-failed: True

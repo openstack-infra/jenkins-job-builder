@@ -2844,6 +2844,10 @@ def postbuildscript(parser, xml_parent, data):
     :arg bool onfailure: Deprecated, replaced with script-only-if-failed
     :arg bool script-only-if-failed: Scripts and builders are run only if the
                                      build failed (default False)
+    :arg bool mark-unstable-if-failed: Build will be marked unstable
+                                       if job will be successfully completed
+                                       but publishing script will return
+                                       non zero exit code (default False)
     :arg str execute-on: For matrix projects, scripts can be run after each
                          axis is built (`axes`), after all axis of the matrix
                          are built (`matrix`) or after each axis AND the matrix
@@ -2936,6 +2940,9 @@ def postbuildscript(parser, xml_parent, data):
     else:
         failure_xml.text = str(data.get('onfailure', False)).lower()
 
+    # Mark build unstable if publisher script return non zero exit code
+    XML.SubElement(pbs_xml, 'markBuildUnstable').text = str(
+        data.get('mark-unstable-if-failed', False)).lower()
     # TODO: we may want to avoid setting "execute-on" on non-matrix jobs,
     # either by skipping this part or by raising an error to let the user know
     # an attempt was made to set execute-on on a non-matrix job. There are

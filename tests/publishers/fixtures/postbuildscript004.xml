@@ -37,6 +37,7 @@
       </groovyScriptFileList>
       <scriptOnlyIfSuccess>false</scriptOnlyIfSuccess>
       <scriptOnlyIfFailure>true</scriptOnlyIfFailure>
+      <markBuildUnstable>true</markBuildUnstable>
     </org.jenkinsci.plugins.postbuildscript.PostBuildScript>
   </publishers>
 </project>
