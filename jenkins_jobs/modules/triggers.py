@@ -367,6 +367,15 @@ def gerrit(parser, xml_parent, data):
                               * **pattern** (`str`) -- Topic name pattern to
                                 match
 
+                * **disable-strict-forbidden-file-verification** (`bool`) --
+                      Enabling this option will allow an event to trigger a
+                      build if the event contains BOTH one or more wanted file
+                      paths AND one or more forbidden file paths.  In other
+                      words, with this option, the build will not get
+                      triggered if the change contains only forbidden files,
+                      otherwise it will get triggered. Requires plugin
+                      version >= 2.16.0 (default false)
+
     :arg dict skip-vote: map of build outcomes for which Jenkins must skip
         vote. Requires Gerrit Trigger Plugin version >= 2.7.0
 
@@ -520,6 +529,11 @@ def gerrit(parser, xml_parent, data):
                     get_compare_type('compare-type', topic.get('compare-type',
                                                                'PLAIN'))
                 XML.SubElement(topic_tag, 'pattern').text = topic['pattern']
+
+        XML.SubElement(gproj,
+                       'disableStrictForbiddenFileVerification').text = str(
+            project.get('disable-strict-forbidden-file-verification',
+                        False)).lower()
 
     build_gerrit_skip_votes(gtrig, data)
     XML.SubElement(gtrig, 'silentMode').text = str(

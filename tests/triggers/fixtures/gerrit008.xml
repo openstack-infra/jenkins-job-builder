@@ -35,6 +35,7 @@
               <pattern>refactor-xy**</pattern>
             </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.Topic>
           </topics>
+          <disableStrictForbiddenFileVerification>true</disableStrictForbiddenFileVerification>
         </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.GerritProject>
       </gerritProjects>
       <skipVote>
