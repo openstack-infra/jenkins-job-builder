@@ -3928,6 +3928,11 @@ def s3(parser, xml_parent, data):
         * **managed-artifacts** (`bool`) - Let Jenkins fully manage the
           published artifacts, similar to when artifacts are published to
           the Jenkins master. (Default: False)
+        * **s3-encryption** (`bool`) - Use S3 AES-256 server side encryption
+          support. (Default: False)
+        * **flatten** (`bool`) - Ignore the directory structure of the
+          artifacts in the source project and copy all matching artifacts
+          directly into the specified bucket. (Default: False)
     :arg list metadata-tags:
       :metadata-tags:
         * **key** Metadata key for files from this build. It will be
@@ -3959,7 +3964,9 @@ def s3(parser, xml_parent, data):
                     ('selectedRegion', 'bucket-region', ''),
                     ('noUploadOnFailure', 'upload-on-failure', False),
                     ('uploadFromSlave', 'upload-from-slave', False),
-                    ('managedArtifacts', 'managed-artifacts', False)]
+                    ('managedArtifacts', 'managed-artifacts', False),
+                    ('useServerSideEncryption', 's3-encryption', False),
+                    ('flatten', 'flatten', False)]
 
         for xml_key, yaml_key, default in settings:
             xml_config = XML.SubElement(fileset, xml_key)
