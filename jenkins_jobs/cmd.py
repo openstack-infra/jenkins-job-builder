@@ -187,6 +187,7 @@ def setup_config_settings(options):
     # Load default config always
     config.readfp(StringIO(DEFAULT_CONF))
     if os.path.isfile(conf):
+        options.conf = conf  # remember file we read from
         logger.debug("Reading config from {0}".format(conf))
         conffp = io.open(conf, 'r', encoding='utf-8')
         config.readfp(conffp)
