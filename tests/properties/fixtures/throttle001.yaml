@@ -6,3 +6,5 @@ properties:
         - cat1
         - cat2
       option: category
+      matrix-builds: false
+      matrix-configs: true
