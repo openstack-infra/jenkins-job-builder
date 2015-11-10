@@ -19,10 +19,9 @@ import logging
 import operator
 import pkg_resources
 import re
-import yaml
 
 from jenkins_jobs.errors import JenkinsJobsException
-from jenkins_jobs.formatter import CustomFormatter
+from jenkins_jobs.formatter import deep_format
 
 logger = logging.getLogger(__name__)
 
@@ -152,16 +151,15 @@ class ModuleRegistry(object):
             if template_data:
                 # Template data contains values that should be interpolated
                 # into the component definition
-                s = yaml.dump(component_data, default_flow_style=False)
                 allow_empty_variables = self.global_config \
                     and self.global_config.has_section('job_builder') \
                     and self.global_config.has_option(
                         'job_builder', 'allow_empty_variables') \
                     and self.global_config.getboolean(
                         'job_builder', 'allow_empty_variables')
-                s = CustomFormatter(
-                    allow_empty_variables).format(s, **template_data)
-                component_data = yaml.load(s)
+
+                component_data = deep_format(
+                    component_data, template_data, allow_empty_variables)
         else:
             # The component is a simple string name, eg "run-tests"
             name = component
