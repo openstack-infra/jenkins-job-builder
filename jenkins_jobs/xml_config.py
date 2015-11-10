@@ -71,7 +71,7 @@ def remove_ignorable_whitespace(node):
     if node.tail and node.tail.strip() == "":
         node.tail = None
 
-    for child in node.getchildren():
+    for child in node:
         # only strip whitespace from the text node if there are subelement
         # nodes as this means we are removing leading whitespace before such
         # sub elements. Otherwise risk removing whitespace from an element
