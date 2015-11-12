@@ -1103,7 +1103,7 @@ def xunit(parser, xml_parent, data):
             # Normalize and craft the element name for this threshold
             elname = "%sThreshold" % threshold_name.lower().replace(
                 'new', 'New')
-            XML.SubElement(el, elname).text = threshold_value
+            XML.SubElement(el, elname).text = str(threshold_value)
 
     # Whether to use percent of exact number of tests.
     # Thresholdmode is either:
