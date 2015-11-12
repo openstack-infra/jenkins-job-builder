@@ -1,0 +1,12 @@
+publishers:
+  - xunit:
+      thresholds:
+          - failed:
+                unstable: 10
+                failure: 5
+          - skipped:
+                unstablenew: 5
+                failurenew: 10
+      types:
+          - phpunit:
+              pattern: "junit.log"

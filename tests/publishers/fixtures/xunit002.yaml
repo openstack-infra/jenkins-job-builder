@@ -4,15 +4,15 @@ publishers:
       thresholdmode: 'number'
       thresholds:
           - failed:
-                unstable: '1'
-                unstablenew: '2'
-                failure: '3'
-                failurenew: '4'
+                unstable: 1
+                unstablenew: 2
+                failure: 3
+                failurenew: 4
           - skipped:
-                unstable: '5'
-                unstablenew: '6'
-                failure: '7'
-                failurenew: '8'
+                unstable: 5
+                unstablenew: 6
+                failure: 7
+                failurenew: 8
       types:
           - ctest:
               pattern: "build/tests/reports/ctest.xml"
