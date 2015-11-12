@@ -1028,6 +1028,8 @@ def junit(parser, xml_parent, data):
     :arg str results: results filename
     :arg bool keep-long-stdio: Retain long standard output/error in test
       results (default true).
+    :arg bool allow-empty-results: Do not fail builds if no junit reports
+       are found (default false)
     :arg float health-scale-factor: Amplification factor to apply to test
       failures when computing the test result contribution to the build health
       score. (default 1.0)
@@ -1062,6 +1064,8 @@ def junit(parser, xml_parent, data):
     XML.SubElement(junitresult, 'testResults').text = data['results']
     XML.SubElement(junitresult, 'keepLongStdio').text = str(
         data.get('keep-long-stdio', True)).lower()
+    XML.SubElement(junitresult, 'allowEmptyResults').text = str(
+        data.get('allow-empty-results', False)).lower()
     XML.SubElement(junitresult, 'healthScaleFactor').text = str(
         data.get('health-scale-factor', '1.0'))
     XML.SubElement(junitresult, 'allowEmptyResults').text = str(
