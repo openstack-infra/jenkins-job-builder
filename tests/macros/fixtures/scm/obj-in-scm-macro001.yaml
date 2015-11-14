@@ -1,0 +1,26 @@
+- scm:
+    name: multi-branch-git
+    scm:
+      - git:
+          url: 'git://github.com/{git_user}/{git_project}.git'
+          skip-tag: true
+          branches: '{obj:git_branches}'
+          wipe-workspace: false
+          shallow-clone: true
+          fastpoll: true
+          clean:
+            before: true
+            after: true
+          submodule:
+              recursive: true
+
+
+- job:
+    name: my-job
+    scm:
+      - multi-branch-git:
+          git_user: 'me'
+          git_project: 'my-project'
+          git_branches:
+            - main-branch
+            - other-branch

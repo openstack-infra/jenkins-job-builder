@@ -1,0 +1,27 @@
+- builder:
+    name: basic-builder
+    builders:
+      - shell: |
+          # Set environment variables
+          {env_setup}
+
+          # Debug output
+          echo -e "\n\n\n"
+          sort | env
+          echo -e "\n\n\n"
+
+          # Test Command
+          {test_command}
+
+- job:
+    name: my-job
+    builders:
+      - basic-builder:
+          env_setup: |
+            ENV_VAR_ONE=one
+            ENV_VAR_TWO=2
+
+            DIFFERENT_ENV_VAR=different
+          test_command: |
+            bundle install
+            bundle exec rake test
