@@ -1,0 +1,17 @@
+properties:
+  - authorization:
+      admin:
+        - job-delete
+        - job-configure
+        - job-read
+        - job-discover
+        - job-build
+        - job-workspace
+        - job-cancel
+        - run-delete
+        - run-update
+        - scm-tag
+      anonymous:
+        - job-discover
+        - job-read
+        - job-extended-read

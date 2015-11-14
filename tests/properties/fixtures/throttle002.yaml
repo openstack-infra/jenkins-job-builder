@@ -1,8 +1,6 @@
 properties:
   - throttle:
-      max-per-node: 2
-      max-total: 4
       categories:
         - cat1
         - cat2
-      option: category
+      option: project
