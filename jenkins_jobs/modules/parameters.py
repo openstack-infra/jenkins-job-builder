@@ -183,7 +183,7 @@ def node_param(parser, xml_parent, data):
 
     :arg str name: the name of the parameter
     :arg str description: a description of the parameter (optional)
-    :arg list default-nodes: The nodes used when job gets triggered
+    :arg list default-slaves: The nodes used when job gets triggered
         by anything else other than manually
     :arg list allowed-slaves: The nodes available for selection
         when job gets triggered manually. Empty means 'All'.
