@@ -294,6 +294,7 @@ class YamlParser(object):
                 if key not in params:
                     params[key] = template[key]
 
+            params['template-name'] = template_name
             expanded = deep_format(template, params, allow_empty_variables)
 
             job_name = expanded.get('name')

@@ -105,6 +105,9 @@
   </triggers>
   <builders>
     <hudson.tasks.Shell>
+      <command>echo JJB template: complete001_{version}</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
       <command>#!/usr/bin/env python
 #
 print(&quot;Doing something cool with python&quot;)

@@ -99,6 +99,7 @@
       - pre-scm-shell-ant
       - copy-files
     builders:
+      - shell: 'echo JJB template: {template-name}'
       - shell: |
          #!/usr/bin/env python
          #
