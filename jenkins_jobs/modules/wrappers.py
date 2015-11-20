@@ -806,6 +806,12 @@ def env_script(parser, xml_parent, data):
     <Environment+Script+Plugin>`.
 
     :arg script-content: The script to run (default: '')
+    :arg str script-type: The script type.
+
+        :script-types supported:
+            * **unix-script** (default)
+            * **power-shell**
+            * **batch-script**
     :arg only-run-on-parent: Only applicable for Matrix Jobs. If true, run only
       on the matrix parent job (default: false)
 
@@ -816,6 +822,18 @@ def env_script(parser, xml_parent, data):
     """
     el = XML.SubElement(xml_parent, 'com.lookout.jenkins.EnvironmentScript')
     XML.SubElement(el, 'script').text = data.get('script-content', '')
+
+    valid_script_types = {
+        'unix-script': 'unixScript',
+        'power-shell': 'powerShell',
+        'batch-script': 'batchScript',
+    }
+    script_type = data.get('script-type', 'unix-script')
+    if script_type not in valid_script_types:
+        raise InvalidAttributeError('script-type', script_type,
+                                    valid_script_types)
+    XML.SubElement(el, 'scriptType').text = valid_script_types[script_type]
+
     only_on_parent = str(data.get('only-run-on-parent', False)).lower()
     XML.SubElement(el, 'onlyRunOnParent').text = only_on_parent
 
