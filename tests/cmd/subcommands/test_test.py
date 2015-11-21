@@ -74,6 +74,32 @@ class TestTests(CmdTestsBase):
                               'r', encoding='utf-8').read()
         self.assertEqual(console_out.getvalue().decode('utf-8'), xml_content)
 
+    def test_output_dir(self):
+        """
+        Run test mode with output to directory and verify that output files are
+        generated.
+        """
+        tmpdir = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, tmpdir)
+        args = ['test', os.path.join(self.fixtures_path, 'cmd-001.yaml'),
+                '-o', tmpdir]
+        self.execute_jenkins_jobs_with_args(args)
+        self.expectThat(os.path.join(tmpdir, 'foo-job'),
+                        testtools.matchers.FileExists())
+
+    def test_output_dir_config_xml(self):
+        """
+        Run test mode with output to directory in "config.xml" mode and verify
+        that output files are generated.
+        """
+        tmpdir = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, tmpdir)
+        args = ['test', os.path.join(self.fixtures_path, 'cmd-001.yaml'),
+                '-o', tmpdir, '--config-xml']
+        self.execute_jenkins_jobs_with_args(args)
+        self.expectThat(os.path.join(tmpdir, 'foo-job', 'config.xml'),
+                        testtools.matchers.FileExists())
+
     def test_stream_input_output_no_encoding_exceed_recursion(self):
         """
         Test that we don't have issues processing large number of jobs and
