@@ -30,7 +30,7 @@ from tests.cmd.test_cmd import CmdTestsBase
 class UpdateTests(CmdTestsBase):
 
     @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.job_exists')
-    @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.get_jobs')
+    @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.get_all_jobs')
     @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.reconfig_job')
     def test_update_jobs(self,
                          jenkins_reconfig_job,
@@ -72,14 +72,14 @@ class UpdateTests(CmdTestsBase):
                                    six.text_type))
 
     @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.job_exists')
-    @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.get_jobs')
+    @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.get_all_jobs')
     @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.reconfig_job')
     @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.delete_job')
     def test_update_jobs_and_delete_old(self,
                                         jenkins_delete_job,
                                         jenkins_reconfig_job,
-                                        jenkins_get_jobs,
-                                        jenkins_job_exists, ):
+                                        jenkins_get_all_jobs,
+                                        jenkins_job_exists):
         """
         Test update behaviour with --delete-old option
 
@@ -99,8 +99,8 @@ class UpdateTests(CmdTestsBase):
         args = ['--conf', self.default_config_file, 'update', '--delete-old',
                 path]
 
-        jenkins_get_jobs.return_value = [{'name': name}
-                                         for name in yaml_jobs + extra_jobs]
+        jenkins_get_all_jobs.return_value = [
+            {'fullname': name} for name in yaml_jobs + extra_jobs]
 
         with mock.patch('jenkins_jobs.builder.JenkinsManager.is_managed',
                         side_effect=(lambda name: name != 'unmanaged')):

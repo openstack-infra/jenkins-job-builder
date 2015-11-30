@@ -1,0 +1,12 @@
+- defaults:
+    name: team1
+    folder: team1-jobs
+
+- job:
+    name: ruby-jobs/rspec
+    defaults: team1
+    builders:
+      - shell: |
+          rvm use --create ruby-2.3.0@rspec
+          bundle install
+          bundle exec rspec

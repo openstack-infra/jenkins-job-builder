@@ -65,18 +65,43 @@ class JenkinsManager(object):
         self._view_list = None
         self._jjb_config = jjb_config
 
+    def _setup_output(self, output, item, config_xml=False):
+        output_dir = output
+        output_fn = os.path.join(output, item)
+        if '/' in item:
+            # in item folder
+            output_fn = os.path.join(output, os.path.normpath(item))
+            output_dir = os.path.dirname(output_fn)
+
+        # if in a folder, re-adding name to the directory here
+        if config_xml:
+            output_dir = os.path.join(
+                output_dir, os.path.basename(item))
+            output_fn = os.path.join(output_dir, 'config.xml')
+
+        if output_dir != output:
+            logger.info("Creating directory %s" % output_dir)
+            try:
+                os.makedirs(output_dir)
+            except OSError:
+                if not os.path.isdir(output_dir):
+                    raise
+
+        return output_fn
+
     @property
     def jobs(self):
         if self._jobs is None:
             # populate jobs
-            self._jobs = self.jenkins.get_jobs()
+            self._jobs = self.jenkins.get_all_jobs()
 
         return self._jobs
 
     @property
     def job_list(self):
         if self._job_list is None:
-            self._job_list = set(job['name'] for job in self.jobs)
+            # python-jenkins uses 'fullname' for folder/name combination
+            self._job_list = set(job['fullname'] for job in self.jobs)
         return self._job_list
 
     def update_job(self, job_name, xml):
@@ -154,17 +179,18 @@ class JenkinsManager(object):
         if keep is None:
             keep = []
         for job in jobs:
-            if job['name'] not in keep:
-                if self.is_managed(job['name']):
+            # python-jenkins stores the folder and name as 'fullname'
+            if job['fullname'] not in keep:
+                if self.is_managed(job['fullname']):
                     logger.info("Removing obsolete jenkins job {0}"
-                                .format(job['name']))
-                    self.delete_job(job['name'])
+                                .format(job['fullname']))
+                    self.delete_job(job['fullname'])
                     deleted_jobs += 1
                 else:
                     logger.info("Not deleting unmanaged jenkins job %s",
-                                job['name'])
+                                job['fullname'])
             else:
-                logger.debug("Keeping job %s", job['name'])
+                logger.debug("Keeping job %s", job['fullname'])
         return deleted_jobs
 
     def delete_jobs(self, jobs):
@@ -231,17 +257,8 @@ class JenkinsManager(object):
                         raise
                     continue
 
-                if config_xml:
-                    output_dir = os.path.join(output, job.name)
-                    logger.info("Creating directory %s" % output_dir)
-                    try:
-                        os.makedirs(output_dir)
-                    except OSError:
-                        if not os.path.isdir(output_dir):
-                            raise
-                    output_fn = os.path.join(output_dir, 'config.xml')
-                else:
-                    output_fn = os.path.join(output, job.name)
+                output_fn = self._setup_output(output, job.name, config_xml)
+
                 logger.debug("Writing XML to '{0}'".format(output_fn))
                 with io.open(output_fn, 'w', encoding='utf-8') as f:
                     f.write(job.output().decode('utf-8'))
@@ -383,17 +400,8 @@ class JenkinsManager(object):
                         raise
                     continue
 
-                if config_xml:
-                    output_dir = os.path.join(output, view.name)
-                    logger.info("Creating directory %s" % output_dir)
-                    try:
-                        os.makedirs(output_dir)
-                    except OSError:
-                        if not os.path.isdir(output_dir):
-                            raise
-                    output_fn = os.path.join(output_dir, 'config.xml')
-                else:
-                    output_fn = os.path.join(output, view.name)
+                output_fn = self._setup_output(output, view.name, config_xml)
+
                 logger.debug("Writing XML to '{0}'".format(output_fn))
                 with io.open(output_fn, 'w', encoding='utf-8') as f:
                     f.write(view.output().decode('utf-8'))
