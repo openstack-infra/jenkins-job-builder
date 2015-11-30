@@ -1964,6 +1964,32 @@ def shining_panda(parser, xml_parent, data):
     XML.SubElement(t, 'ignoreExitCode').text = str(ignore_exit_code).lower()
 
 
+def tox(parser, xml_parent, data):
+    """yaml: tox
+    Use tox to build a multi-configuration project. Requires the Jenkins
+    :jenkins-wiki:`ShiningPanda plugin <ShiningPanda+Plugin>`.
+
+    :arg str ini: The TOX configuration file path (default: tox.ini)
+    :arg bool recreate: If true, create a new environment each time (default:
+        false)
+    :arg str toxenv-pattern: The pattern used to build the TOXENV environment
+        variable. (optional)
+
+    Example:
+
+    .. literalinclude:: /../../tests/builders/fixtures/tox001.yaml
+       :language: yaml
+    """
+    pluginelement = 'jenkins.plugins.shiningpanda.builders.ToxBuilder'
+    t = XML.SubElement(xml_parent, pluginelement)
+    XML.SubElement(t, 'toxIni').text = data.get('ini', 'tox.ini')
+    XML.SubElement(t, 'recreate').text = str(
+        data.get('recreate', False)).lower()
+    pattern = data.get('toxenv-pattern')
+    if pattern:
+        XML.SubElement(t, 'toxenvPattern').text = pattern
+
+
 def managed_script(parser, xml_parent, data):
     """yaml: managed-script
     This step allows to reference and execute a centrally managed

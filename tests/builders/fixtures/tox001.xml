@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <jenkins.plugins.shiningpanda.builders.ToxBuilder>
+      <toxIni>tox.ini</toxIni>
+      <recreate>true</recreate>
+    </jenkins.plugins.shiningpanda.builders.ToxBuilder>
+  </builders>
+</project>
