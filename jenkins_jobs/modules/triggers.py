@@ -632,7 +632,7 @@ def pollscm(parser, xml_parent, data):
         cron = data
         ipch = 'false'
 
-    if not cron:
+    if not cron and cron != '':
         raise InvalidAttributeError('cron', cron)
 
     scmtrig = XML.SubElement(xml_parent, 'hudson.triggers.SCMTrigger')
