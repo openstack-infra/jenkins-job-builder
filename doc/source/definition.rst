@@ -65,6 +65,11 @@ define a template that you can use to create jobs with a `Project`_
 definition.  It's name will depend on what is supplied to the
 `Project`_.
 
+If you use the variable ``{template-name}``, the name of the template
+itself (e.g. ``{name}-unit-tests`` in the above example) will be
+substituted in. This is useful in cases where you need to trace a job
+back to its template.
+
 .. _project:
 
 Project
