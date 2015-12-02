@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.fstrigger.triggers.FileNameTrigger>
+      <spec>* * * * *</spec>
+      <fileInfo>
+        <org.jenkinsci.plugins.fstrigger.triggers.FileNameTriggerInfo>
+          <filePathPattern>path1</filePathPattern>
+          <strategy>IGNORE</strategy>
+          <inspectingContentFile>false</inspectingContentFile>
+          <contentFileTypes/>
+        </org.jenkinsci.plugins.fstrigger.triggers.FileNameTriggerInfo>
+        <org.jenkinsci.plugins.fstrigger.triggers.FileNameTriggerInfo>
+          <filePathPattern>path2</filePathPattern>
+          <strategy>LATEST</strategy>
+          <inspectingContentFile>true</inspectingContentFile>
+          <contentFileTypes>
+            <org.jenkinsci.plugins.fstrigger.triggers.filecontent.SimpleFileContent/>
+            <org.jenkinsci.plugins.fstrigger.triggers.filecontent.JARFileContent/>
+            <org.jenkinsci.plugins.fstrigger.triggers.filecontent.TarFileContent/>
+            <org.jenkinsci.plugins.fstrigger.triggers.filecontent.ZIPFileContent/>
+            <org.jenkinsci.plugins.fstrigger.triggers.filecontent.SourceManifestFileContent>
+              <keys2Inspect>key1,key2</keys2Inspect>
+              <allKeys>false</allKeys>
+            </org.jenkinsci.plugins.fstrigger.triggers.filecontent.SourceManifestFileContent>
+            <org.jenkinsci.plugins.fstrigger.triggers.filecontent.JARManifestFileContent>
+              <keys2Inspect>key1,key2</keys2Inspect>
+              <allKeys>true</allKeys>
+            </org.jenkinsci.plugins.fstrigger.triggers.filecontent.JARManifestFileContent>
+            <org.jenkinsci.plugins.fstrigger.triggers.filecontent.PropertiesFileContent>
+              <keys2Inspect>prop1,prop2</keys2Inspect>
+              <allKeys>false</allKeys>
+            </org.jenkinsci.plugins.fstrigger.triggers.filecontent.PropertiesFileContent>
+            <org.jenkinsci.plugins.fstrigger.triggers.filecontent.XMLFileContent>
+              <expressions>
+                <org.jenkinsci.plugins.fstrigger.triggers.filecontent.XMLFileContentEntry>
+                  <expression>xpath1</expression>
+                </org.jenkinsci.plugins.fstrigger.triggers.filecontent.XMLFileContentEntry>
+                <org.jenkinsci.plugins.fstrigger.triggers.filecontent.XMLFileContentEntry>
+                  <expression>xpath2</expression>
+                </org.jenkinsci.plugins.fstrigger.triggers.filecontent.XMLFileContentEntry>
+              </expressions>
+            </org.jenkinsci.plugins.fstrigger.triggers.filecontent.XMLFileContent>
+            <org.jenkinsci.plugins.fstrigger.triggers.filecontent.TextFileContent>
+              <regexElements>
+                <org.jenkinsci.plugins.fstrigger.triggers.filecontent.TextFileContentEntry>
+                  <regex>regex1</regex>
+                </org.jenkinsci.plugins.fstrigger.triggers.filecontent.TextFileContentEntry>
+              </regexElements>
+            </org.jenkinsci.plugins.fstrigger.triggers.filecontent.TextFileContent>
+          </contentFileTypes>
+          <doNotCheckLastModificationDate>false</doNotCheckLastModificationDate>
+        </org.jenkinsci.plugins.fstrigger.triggers.FileNameTriggerInfo>
+      </fileInfo>
+    </org.jenkinsci.plugins.fstrigger.triggers.FileNameTrigger>
+  </triggers>
+</project>

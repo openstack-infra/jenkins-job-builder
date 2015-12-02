@@ -1,0 +1,32 @@
+triggers:
+  - monitor-files:
+      cron: '* * * * *'
+      files:
+          - path: 'path1'
+            strategy: 'IGNORE'
+          - path: 'path2'
+            check-content:
+                - simple: true
+                - jar: true
+                - tar: true
+                - zip: true
+                - source-manifest:
+                    - all-keys: false
+                      keys:
+                          - key1
+                          - key2
+                - jar-manifest:
+                    - keys:
+                          - key1
+                          - key2
+                - properties:
+                    - all-keys: false
+                      keys:
+                          - prop1
+                          - prop2
+                - xml:
+                    - 'xpath1'
+                    - 'xpath2'
+                - text:
+                    - 'regex1'
+            ignore-modificaton-date: false

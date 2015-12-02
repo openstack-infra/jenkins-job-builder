@@ -640,16 +640,16 @@ def pollscm(parser, xml_parent, data):
     XML.SubElement(scmtrig, 'ignorePostCommitHooks').text = ipch
 
 
-def build_pollurl_content_type(xml_parent, entries, prefix,
-                               collection_name, element_name):
-    namespace = 'org.jenkinsci.plugins.urltrigger.content'
+def build_content_type(xml_parent, entries, namespace, collection_suffix,
+                       entry_suffix, prefix, collection_name, element_name):
     content_type = XML.SubElement(
-        xml_parent, '{0}.{1}ContentType'.format(namespace, prefix))
+        xml_parent, '{0}.{1}{2}'.format(namespace, prefix, collection_suffix))
     if entries:
         collection = XML.SubElement(content_type, collection_name)
         for entry in entries:
             content_entry = XML.SubElement(
-                collection, '{0}.{1}ContentEntry'.format(namespace, prefix))
+                collection, '{0}.{1}{2}'.format(namespace, prefix,
+                                                entry_suffix))
             XML.SubElement(content_entry, element_name).text = entry
 
 
@@ -694,6 +694,7 @@ def pollurl(parser, xml_parent, data):
     .. literalinclude:: /../../tests/triggers/fixtures/pollurl001.yaml
     """
 
+    namespace = 'org.jenkinsci.plugins.urltrigger.'
     valid_content_types = {
         'simple': ['Simple', '', '', []],
         'json': ['JSON', 'jsonPaths', 'jsonPath', None],
@@ -701,7 +702,7 @@ def pollurl(parser, xml_parent, data):
         'xml': ['XML', 'xPaths', 'xPath', None]
     }
     urltrig = XML.SubElement(xml_parent,
-                             'org.jenkinsci.plugins.urltrigger.URLTrigger')
+                             namespace + 'URLTrigger')
     node = data.get('polling-node')
     XML.SubElement(urltrig, 'spec').text = data.get('cron', '')
     XML.SubElement(urltrig, 'labelRestriction').text = str(bool(node)).lower()
@@ -712,9 +713,7 @@ def pollurl(parser, xml_parent, data):
     if not urls:
         raise JenkinsJobsException('At least one url must be provided')
     for url in urls:
-        entry = XML.SubElement(entries,
-                               'org.jenkinsci.plugins.urltrigger.'
-                               'URLTriggerEntry')
+        entry = XML.SubElement(entries, namespace + 'URLTriggerEntry')
         XML.SubElement(entry, 'url').text = url['url']
         XML.SubElement(entry, 'proxyActivated').text = \
             str(url.get('proxy', False)).lower()
@@ -751,9 +750,9 @@ def pollurl(parser, xml_parent, data):
                 sub_entries = content_type[3]
                 if sub_entries is None:
                     sub_entries = entry[type_name]
-                build_pollurl_content_type(content_types,
-                                           sub_entries,
-                                           *content_type[0:3])
+                build_content_type(content_types, sub_entries,
+                                   namespace + 'content', 'ContentType',
+                                   'ContentEntry', *content_type[0:3])
 
 
 def timed(parser, xml_parent, data):
@@ -1257,6 +1256,150 @@ def monitor_folders(parser, xml_parent, data):
         not data.get('check-content', True)).lower()
     XML.SubElement(ft, 'excludeCheckFewerOrMoreFiles').text = str(
         not data.get('check-fewer', True)).lower()
+
+
+def monitor_files(parser, xml_parent, data):
+    """yaml: monitor-files
+    Configure Jenkins to monitor files.
+    Requires the Jenkins :jenkins-wiki:`Filesystem Trigger Plugin
+    <FSTriggerPlugin>`.
+
+    :arg list files: List of files to monitor
+
+        :File:
+            * **path** (`str`) -- File path to monitor. You can use a pattern
+              that specifies a set of files if you dont know the real file
+              path. (required)
+            * **strategy** (`str`) -- Choose your strategy if there is more
+              than one matching file. Can be one of Ignore file ('IGNORE') or
+              Use the most recent ('LATEST'). (default 'LATEST')
+            * **check-content** (`list`) -- List of content changes of the
+              file to monitor
+
+                :Content Nature:
+                    * **simple** (`bool`) -- Trigger on change in content of
+                      the specified file (whatever the type file).
+                      (default false)
+                    * **jar** (`bool`) -- Trigger on change in content of the
+                      specified JAR file. (default false)
+                    * **tar** (`bool`) -- Trigger on change in content of the
+                      specified Tar file. (default false)
+                    * **zip** (`bool`) -- Trigger on change in content of the
+                      specified ZIP file. (default false)
+                    * **source-manifest** (`list`) -- Trigger on change to
+                      MANIFEST files.
+
+                        :MANIFEST File:
+                            * **keys** (`list`) -- List of keys to inspect.
+                              (optional)
+                            * **all-keys** (`bool`) -- If true, take into
+                              account all keys. (default true)
+
+                    * **jar-manifest** (`list`) -- Trigger on change to
+                      MANIFEST files (contained in jar files).
+
+                        :MANIFEST File:
+                            * **keys** (`list`) -- List of keys to inspect.
+                              (optional)
+                            * **all-keys** (`bool`) -- If true, take into
+                              account all keys. (default true)
+
+                    * **properties** (`list`) -- Monitor the contents of the
+                      properties file.
+
+                        :Properties File:
+                            * **keys** (`list`) -- List of keys to inspect.
+                              (optional)
+                            * **all-keys** (`bool`) -- If true, take into
+                              account all keys. (default true)
+
+                    * **xml** (`list str`) -- Trigger on change to the listed
+                      XPath expressions.
+                    * **text** (`list str`) -- Trigger on change to the listed
+                      regular expressions.
+
+             * **ignore-modificaton-date** (`bool`) -- If true, ignore the file
+               modification date. Only valid when content changes of the file
+               are being monitored. (default true)
+    :arg str cron: cron syntax of when to run (default '')
+
+    Example:
+
+    .. literalinclude:: /../../tests/triggers/fixtures/monitor-files001.yaml
+       :language: yaml
+    """
+    ft_prefix = 'org.jenkinsci.plugins.fstrigger.triggers.'
+    valid_strategies = ['LATEST', 'IGNORE']
+    valid_content_types = {
+        'simple': ['Simple', '', '', []],
+        'jar': ['JAR', '', '', []],
+        'tar': ['Tar', '', '', []],
+        'zip': ['ZIP', '', '', []],
+        'source-manifest': ['SourceManifest'],
+        'jar-manifest': ['JARManifest'],
+        'properties': ['Properties'],
+        'xml': ['XML', 'expressions', 'expression', None],
+        'text': ['Text', 'regexElements', 'regex', None]
+    }
+
+    ft = XML.SubElement(xml_parent, ft_prefix + 'FileNameTrigger')
+    XML.SubElement(ft, 'spec').text = str(data.get('cron', ''))
+    files = data.get('files', [])
+    if not files:
+        raise JenkinsJobsException('At least one file must be provided')
+
+    files_tag = XML.SubElement(ft, 'fileInfo')
+    for file_info in files:
+        file_tag = XML.SubElement(files_tag, ft_prefix + 'FileNameTriggerInfo')
+        try:
+            XML.SubElement(file_tag,
+                           'filePathPattern').text = file_info['path']
+        except KeyError:
+            raise MissingAttributeError('path')
+
+        strategy = file_info.get('strategy', 'LATEST')
+        if strategy not in valid_strategies:
+            raise InvalidAttributeError('strategy', strategy, valid_strategies)
+        XML.SubElement(file_tag, 'strategy').text = strategy
+        check_content = file_info.get('check-content', [])
+        XML.SubElement(file_tag, 'inspectingContentFile').text = str(
+            bool(check_content)).lower()
+
+        base_content_tag = XML.SubElement(file_tag, 'contentFileTypes')
+        for content in check_content:
+            type_name = next(iter(content.keys()))
+            if type_name not in valid_content_types:
+                raise InvalidAttributeError('check-content', type_name,
+                                            valid_content_types.keys())
+            content_type = valid_content_types.get(type_name)
+            if len(content_type) == 1:
+                class_name = '{0}filecontent.{1}FileContent'.format(
+                    ft_prefix, content_type[0])
+                content_data = content.get(type_name)
+                if not content_data:
+                    raise JenkinsJobsException("Need to specify something "
+                                               "under " + type_name)
+                for entry in content_data:
+                    content_tag = XML.SubElement(base_content_tag, class_name)
+                    keys = entry.get('keys', [])
+                    if keys:
+                        XML.SubElement(content_tag, 'keys2Inspect'
+                                       ).text = ",".join(keys)
+                    XML.SubElement(content_tag, 'allKeys').text = str(
+                        entry.get('all-keys', True)).lower()
+            else:
+                if content[type_name]:
+                    sub_entries = content_type[3]
+                    if sub_entries is None:
+                        sub_entries = content[type_name]
+                    build_content_type(base_content_tag, sub_entries,
+                                       ft_prefix + 'filecontent',
+                                       'FileContent', 'FileContentEntry',
+                                       *content_type[0:3])
+        if bool(check_content):
+            XML.SubElement(file_tag,
+                           'doNotCheckLastModificationDate').text = str(
+                file_info.get('ignore-modificaton-date', True)).lower()
 
 
 def ivy(parser, xml_parent, data):
