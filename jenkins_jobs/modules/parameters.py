@@ -620,7 +620,7 @@ def matrix_combinations_param(parser, xml_parent, data):
 
 
 def copyartifact_build_selector_param(parser, xml_parent, data):
-    """yaml: copyartifact-build-selector-param
+    """yaml: copyartifact-build-selector
 
     Control via a build parameter, which build the copyartifact plugin should
     copy when it is configured to use 'build-param'. Requires the Jenkins
