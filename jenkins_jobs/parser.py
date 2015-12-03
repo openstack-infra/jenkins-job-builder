@@ -258,8 +258,6 @@ class YamlParser(object):
         for (k, v) in project.items():
             tmpk = '{{{0}}}'.format(k)
             if tmpk not in template_name:
-                logger.debug("Variable %s not in name %s, rejecting from job"
-                             " matrix expansion.", tmpk, template_name)
                 continue
             if type(v) == list:
                 dimensions.append(zip([k] * len(v), v))
