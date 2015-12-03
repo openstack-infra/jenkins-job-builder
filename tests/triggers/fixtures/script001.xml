@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.scripttrigger.ScriptTrigger>
+      <script>exit 0</script>
+      <spec>H/15 * * * *</spec>
+      <labelRestriction>true</labelRestriction>
+      <triggerLabel>master</triggerLabel>
+      <enableConcurrentBuild>false</enableConcurrentBuild>
+      <exitCode>0</exitCode>
+    </org.jenkinsci.plugins.scripttrigger.ScriptTrigger>
+  </triggers>
+</project>

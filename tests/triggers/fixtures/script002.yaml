@@ -1,0 +1,9 @@
+triggers:
+  - script:
+        script: 'exit 0'
+        script-file-path: '$WORKSPACE/scripts'
+        cron: 'H/15 * * * *'
+        enable-concurrent: False
+        label: master
+        exit-code: 0
+

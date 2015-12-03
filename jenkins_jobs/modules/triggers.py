@@ -1458,7 +1458,7 @@ def script(parser, xml_parent, data):
 
     :arg str label: Restrict where the polling should run. (default '')
     :arg str script: A shell or batch script. (default '')
-    :arg str script-file-path: A shell or batch script path. (default '')
+    :arg str script-file-path: A shell or batch script path. (optional)
     :arg str cron: cron syntax of when to run (default '')
     :arg bool enable-concurrent:  Enables triggering concurrent builds.
                                   (default false)
@@ -1477,8 +1477,9 @@ def script(parser, xml_parent, data):
     label = data.get('label')
 
     XML.SubElement(st, 'script').text = str(data.get('script', ''))
-    XML.SubElement(st, 'scriptFilePath').text = str(
-        data.get('script-file-path', ''))
+    if 'script-file-path' in data:
+        XML.SubElement(st, 'scriptFilePath').text = str(
+            data.get('script-file-path'))
     XML.SubElement(st, 'spec').text = str(data.get('cron', ''))
     XML.SubElement(st, 'labelRestriction').text = str(bool(label)).lower()
     if label:

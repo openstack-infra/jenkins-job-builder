@@ -3,7 +3,7 @@
   <triggers class="vector">
     <org.jenkinsci.plugins.scripttrigger.ScriptTrigger>
       <script>exit 0</script>
-      <scriptFilePath/>
+      <scriptFilePath>$WORKSPACE/scripts</scriptFilePath>
       <spec>H/15 * * * *</spec>
       <labelRestriction>true</labelRestriction>
       <triggerLabel>master</triggerLabel>
