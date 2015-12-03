@@ -4412,6 +4412,56 @@ def downstream_ext(parser, xml_parent, data):
         data.get('only-on-local-scm-change', False)).lower()
 
 
+def rundeck(parser, xml_parent, data):
+    """yaml: rundeck
+    Trigger a rundeck job when the build is complete.
+
+    Requires the Jenkins :jenkins-wiki:`RunDeck
+    Plugin <RunDeck+Plugin>`.
+
+    :arg str job-id: The RunDeck job identifier. (required)
+        This could be:
+        * ID example : "42"
+        * UUID example : "2027ce89-7924-4ecf-a963-30090ada834f"
+        * reference, in the format : "project:group/job"
+    :arg str options: List of options for the Rundeck job, in Java-Properties
+      format: key=value (default "")
+    :arg str node-filters: List of filters to optionally filter the nodes
+      included by the job. (default "")
+    :arg str tag: Used for on-demand job scheduling on rundeck: if a tag is
+      specified, the job will only execute if the given tag is present in the
+      SCM changelog. (default "")
+    :arg bool wait-for-rundeck: If true Jenkins will wait for the job to
+      complete, if false the job will be started and Jenkins will move on.
+      (default false)
+    :arg bool fail-the-build: If true a RunDeck job failure will cause the
+      Jenkins build to fail. (default false)
+
+    Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/rundeck001.yaml
+        :language: yaml
+
+    Full example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/rundeck002.yaml
+        :language: yaml
+    """
+
+    p = XML.SubElement(
+        xml_parent,
+        'org.jenkinsci.plugins.rundeck.RundeckNotifier')
+
+    XML.SubElement(p, 'jobId').text = str(data.get('job-id'))
+    XML.SubElement(p, 'options').text = str(data.get('options', ''))
+    XML.SubElement(p, 'nodeFilters').text = str(data.get('node-filters', ''))
+    XML.SubElement(p, 'tag').text = str(data.get('tag', ''))
+    XML.SubElement(p, 'shouldWaitForRundeckJob').text = str(
+        data.get('wait-for-rundeck', False)).lower()
+    XML.SubElement(p, 'shouldFailTheBuild').text = str(
+        data.get('fail-the-build', False)).lower()
+
+
 def create_publishers(parser, action):
     dummy_parent = XML.Element("dummy")
     parser.registry.dispatch('publisher', parser, dummy_parent, action)
