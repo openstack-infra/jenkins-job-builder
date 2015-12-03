@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <jenkins.plugins.shiningpanda.builders.ToxBuilder>
+      <toxIni>foo.conf</toxIni>
+      <recreate>false</recreate>
+      <toxenvPattern>TOX_ENV</toxenvPattern>
+    </jenkins.plugins.shiningpanda.builders.ToxBuilder>
+  </builders>
+</project>
