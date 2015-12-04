@@ -1,0 +1,11 @@
+- builder:
+    name: python
+    builders:
+      - shell:
+          bash {file}
+
+- job:
+    name: mask-internal-module
+    builders:
+      - python:
+          file: '/opt/bin/run_python.sh'
