@@ -978,7 +978,7 @@ def junit(parser, xml_parent, data):
 
 
 def cucumber_testresult(parser, xml_parent, data):
-    """yaml: cucumber
+    """yaml: cucumber-testresult
     Publish cucumber test results.
     Requires the Jenkins :jenkins-wiki:`cucumber testresult
     <Cucumber+Test+Result+Plugin>`.
