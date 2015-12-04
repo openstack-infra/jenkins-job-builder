@@ -1,3 +1,0 @@
-builders:
-  - tox:
-      recreate: True
