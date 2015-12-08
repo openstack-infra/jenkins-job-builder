@@ -9,7 +9,7 @@ similarly configured jobs is easy.
 
 To install::
 
-    $ sudo python setup.py install
+    $ pip install --user jenkins-job-builder
 
 Online documentation:
 
@@ -28,6 +28,13 @@ Repository:
 Cloning::
 
     git clone https://git.openstack.org/openstack-infra/jenkins-job-builder
+
+A virtual environment is recommended for development.  For example, Jenkins
+Job Builder may be installed from the top level directory::
+
+    $ virtualenv .venv
+    $ source .venv/bin/activate
+    $ pip install -r test-requirements.txt -e .
 
 Patches are submitted via Gerrit at:
 
