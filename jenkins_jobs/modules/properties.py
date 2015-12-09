@@ -579,6 +579,8 @@ def delivery_pipeline(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Delivery Pipeline Plugin
     <Delivery+Pipeline+Plugin>`.
 
+    :arg str description: task description template for this job
+        (default: '')
     :arg str stage: Name of the stage for this job (default: '')
     :arg str task: Name of the task for this job (default: '')
 
@@ -593,6 +595,8 @@ def delivery_pipeline(parser, xml_parent, data):
                               'PipelineProperty')
     XML.SubElement(pipeline, 'stageName').text = data.get('stage', '')
     XML.SubElement(pipeline, 'taskName').text = data.get('task', '')
+    XML.SubElement(pipeline, 'descriptionTemplate').text = str(
+        data.get('description', ''))
 
 
 def zeromq_event(parser, xml_parent, data):

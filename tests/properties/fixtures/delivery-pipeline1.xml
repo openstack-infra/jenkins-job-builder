@@ -4,6 +4,7 @@
     <se.diabol.jenkins.pipeline.PipelineProperty>
       <stageName>Stage</stageName>
       <taskName>Task</taskName>
+      <descriptionTemplate>Task-Description</descriptionTemplate>
     </se.diabol.jenkins.pipeline.PipelineProperty>
   </properties>
 </project>
