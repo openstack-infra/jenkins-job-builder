@@ -12,6 +12,8 @@
           <noUploadOnFailure>true</noUploadOnFailure>
           <uploadFromSlave>true</uploadFromSlave>
           <managedArtifacts>true</managedArtifacts>
+          <useServerSideEncryption>true</useServerSideEncryption>
+          <flatten>true</flatten>
         </hudson.plugins.s3.Entry>
       </entries>
       <userMetadata>
