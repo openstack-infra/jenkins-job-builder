@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <net.masterthought.jenkins.CucumberReportPublisher>
+      <jsonReportDirectory/>
+      <pluginUrlPath>http://example.com/</pluginUrlPath>
+      <fileIncludePattern/>
+      <fileExcludePattern/>
+      <skippedFails>false</skippedFails>
+      <pendingFails>false</pendingFails>
+      <undefinedFails>false</undefinedFails>
+      <missingFails>false</missingFails>
+      <noFlashCharts>false</noFlashCharts>
+      <ignoreFailedTests>false</ignoreFailedTests>
+      <parallelTesting>false</parallelTesting>
+    </net.masterthought.jenkins.CucumberReportPublisher>
+  </publishers>
+</project>
