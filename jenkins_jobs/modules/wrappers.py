@@ -385,7 +385,7 @@ def workspace_cleanup(parser, xml_parent, data):
 
     :arg list include: list of files to be included
     :arg list exclude: list of files to be excluded
-    :arg bool dirmatch: Apply pattern to directories too
+    :arg bool dirmatch: Apply pattern to directories too (default: false)
 
     Example::
 
