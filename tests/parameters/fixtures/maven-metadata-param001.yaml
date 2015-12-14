@@ -1,0 +1,13 @@
+parameters:
+  - maven-metadata:
+      name: 'maven metadata param'
+      repository-base-url: 'http://nexus.example.com'
+      repository-username: 'username'
+      repository-password: 'password'
+      artifact-group-id: 'com.example'
+      artifact-id: 'example'
+      packaging: 'jar'
+      versions-filter: '[0-9]+'
+      default-value: 'FIRST'
+      maximum-versions-to-display: "5"
+      sorting-order: "Ascending"
