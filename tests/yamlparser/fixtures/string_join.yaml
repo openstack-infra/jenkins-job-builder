@@ -1,0 +1,66 @@
+- project:
+    name: string_join_example
+    jobs:
+        - 'string-join-data-{name}':
+            name: set1
+            files: !join:
+              - ','
+              -
+                - /path/to/file1
+                - /path/to/file2
+                - /path/to/file3
+                - /path/to/file4
+                - /path/to/file5
+                - /path/to/file6
+                - /path/to/file7
+                - /path/to/file8
+                - /path/to/file9
+                - /path/to/file10
+                - /path/to/file11
+                - /path/to/file12
+                - /path/to/file13
+                - /path/to/file14
+                - /path/to/file15
+                - /path/to/file16
+                - /path/to/file17
+                - /path/to/file18
+                - /path/to/file19
+                - /path/to/file20
+        - 'string-join-data-{name}':
+            name: set2
+            files: !join:
+              - ','
+              -
+                - /another/different/path/to/file1
+                - /another/different/path/to/file2
+                - /another/different/path/to/file3
+                - /another/different/path/to/file4
+                - /another/different/path/to/file5
+                - /another/different/path/to/file6
+                - /another/different/path/to/file7
+                - /another/different/path/to/file8
+                - /another/different/path/to/file9
+                - /another/different/path/to/file10
+                - /another/different/path/to/file11
+                - /another/different/path/to/file12
+                - /another/different/path/to/file13
+                - /another/different/path/to/file14
+                - /another/different/path/to/file15
+                - /another/different/path/to/file16
+                - /another/different/path/to/file17
+                - /another/different/path/to/file18
+                - /another/different/path/to/file19
+                - /another/different/path/to/file20
+
+- job-template:
+    name: 'string-join-data-{name}'
+    properties:
+      - inject:
+          keep-system-variables: true
+          properties-content: |
+            FILE_LIST={files}
+    builders:
+      - shell: |
+         echo "Template name: {template-name}"
+         echo "Data to be processed:"
+         echo "${{INPUT_DATA}}"

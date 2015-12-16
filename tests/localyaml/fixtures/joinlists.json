@@ -1,0 +1,8 @@
+[
+    {
+        "string-with-comma": "item1,item2,item3"
+    },
+    {
+        "string-with-space": "item1 item2 item3"
+    }
+]

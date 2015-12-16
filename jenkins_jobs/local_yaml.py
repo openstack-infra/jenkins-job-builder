@@ -18,6 +18,52 @@
 """Custom application specific yamls tags are supported to provide
 enhancements when reading yaml configuration.
 
+Action Tags
+^^^^^^^^^^^
+
+These allow manipulation of data being stored in one layout in the source
+yaml for convenience and/or clarity, to another format to be processed by
+the targeted module instead of requiring all modules in JJB being capable
+of supporting multiple input formats.
+
+The tag ``!join:`` will treat the first element of the following list as
+the delimiter to use, when joining the remaining elements into a string
+and returning a single string to be consumed by the specified module option.
+
+This allows users to maintain elements of data in a list structure for ease
+of review/maintenance, and have the yaml parser convert it to a string for
+consumption as any argument for modules. The main expected use case is to
+allow for generic plugin data such as shell properties to be populated from
+a list construct which the yaml parser converts to a single string, instead
+of trying to support this within the module code which would require a
+templating engine similar to Jinja.
+
+Generic Example:
+
+    .. literalinclude:: /../../tests/localyaml/fixtures/joinlists.yaml
+
+
+Environment Inject:
+
+    .. literalinclude:: /../../tests/yamlparser/fixtures/string_join.yaml
+
+
+While this mechanism can also be used items where delimiters are supported by
+the module, that should be considered a bug that the existing code doesn't
+handle being provided a list and delimiter to perform the correct conversion
+for you. Should you discover a module that takes arguments with delimiters and
+the existing JJB codebase does not handle accepting lists, then this can be
+used as a temporary solution in place of using very long strings:
+
+Extended Params Example:
+
+    .. literalinclude::
+        /../../tests/parameters/fixtures/extended-choice-param-full.yaml
+
+
+Inclusion Tags
+^^^^^^^^^^^^^^
+
 These allow inclusion of arbitrary files as a method of having blocks of data
 managed separately to the yaml job configurations. A specific usage of this is
 inlining scripts contained in separate files, although such tags may also be
@@ -325,6 +371,25 @@ class J2String(BaseYAMLObject):
     @classmethod
     def from_yaml(cls, loader, node):
         return Jinja2Loader(node.value, loader.search_path)
+
+
+class YamlListJoin(BaseYAMLObject):
+    yaml_tag = u'!join:'
+
+    @classmethod
+    def from_yaml(cls, loader, node):
+        if isinstance(node, yaml.SequenceNode):
+            delimiter = node.value[0].value
+            if not isinstance(node.value[1], yaml.SequenceNode):
+                raise yaml.constructor.ConstructorError(
+                    None, None, "expected sequence node for join data, but "
+                                "found %s" % node.value[1].id, node.start_mark)
+
+            return delimiter.join((v.value for v in node.value[1].value))
+        else:
+            raise yaml.constructor.ConstructorError(
+                None, None, "expected sequence node, but found %s" % node.id,
+                node.start_mark)
 
 
 class YamlInclude(BaseYAMLObject):
