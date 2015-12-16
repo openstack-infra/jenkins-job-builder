@@ -1,0 +1,10 @@
+wrappers:
+  - docker-custom-build-env:
+      image-type: 'pull'
+      image: 'centos:7'
+      force-pull: true
+      privileged: true
+      verbose: true
+      group: jenkins
+      command: /bin/cat
+      net: bridge

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <com.cloudbees.jenkins.plugins.okidocki.DockerBuildWrapper plugin="docker-custom-build-environment">
+      <selector class="com.cloudbees.jenkins.plugins.okidocki.DockerfileImageSelector">
+        <contextPath>./docker</contextPath>
+        <dockerfile>Dockerfile</dockerfile>
+      </selector>
+      <dockerInstallation>Custom Docker</dockerInstallation>
+      <dockerHost plugin="docker-commons">
+        <uri>tcp://127.0.0.1:1234</uri>
+        <credentialsId>myCredentials</credentialsId>
+      </dockerHost>
+      <dockerRegistryCredentials>myRegistryCredentials</dockerRegistryCredentials>
+      <volumes>
+        <com.cloudbees.jenkins.plugins.okidocki.Volume>
+          <hostPath>/hostJenkins</hostPath>
+          <path>/jenkins</path>
+        </com.cloudbees.jenkins.plugins.okidocki.Volume>
+        <com.cloudbees.jenkins.plugins.okidocki.Volume>
+          <hostPath>/my-volume</hostPath>
+          <path>/my-volume</path>
+        </com.cloudbees.jenkins.plugins.okidocki.Volume>
+      </volumes>
+      <forcePull>false</forcePull>
+      <privileged>false</privileged>
+      <verbose>false</verbose>
+      <group/>
+      <command>/bin/cat</command>
+      <net>bridge</net>
+    </com.cloudbees.jenkins.plugins.okidocki.DockerBuildWrapper>
+  </buildWrappers>
+</project>
