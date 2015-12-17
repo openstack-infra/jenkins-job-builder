@@ -4425,7 +4425,7 @@ def downstream_ext(parser, xml_parent, data):
     <Downstream-Ext+Plugin>`.
 
     :arg list projects: Projects to build (required)
-    :arg string comparison: comparison used for the criteria.
+    :arg string condition: comparison condition used for the criteria.
       One of 'equal-or-over', 'equal-or-under', 'equal'
       (default: 'equal-or-over')
     :arg string criteria: Trigger downstream job if build results meets
