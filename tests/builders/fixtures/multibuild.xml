@@ -17,6 +17,7 @@
               <combineQueuedCommits>false</combineQueuedCommits>
             </hudson.plugins.git.GitRevisionBuildParameters>
           </configs>
+          <abortAllJob>true</abortAllJob>
         </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
           <jobName>PhaseOneJobB</jobName>
@@ -27,6 +28,7 @@
               <failTriggerOnMissing>true</failTriggerOnMissing>
             </hudson.plugins.parameterizedtrigger.FileBuildParameters>
           </configs>
+          <abortAllJob>false</abortAllJob>
         </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
       </phaseJobs>
     </com.tikal.jenkins.plugins.multijob.MultiJobBuilder>
@@ -42,11 +44,13 @@
               <properties>foo=bar</properties>
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
           </configs>
+          <abortAllJob>false</abortAllJob>
         </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
           <jobName>PhaseTwoJobB</jobName>
           <currParams>false</currParams>
           <configs/>
+          <abortAllJob>false</abortAllJob>
           <enableCondition>true</enableCondition>
           <condition>${BUILDNUMBER} % 2 == 1</condition>
           <killPhaseOnJobResultCondition>UNSTABLE</killPhaseOnJobResultCondition>

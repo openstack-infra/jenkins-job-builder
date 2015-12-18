@@ -8,6 +8,7 @@ builders:
           node-label-name: "vm_name"
           node-label: "agent-${BUILD_NUMBER}"
           git-revision: true
+          abort-all-job: true
         - name: PhaseOneJobB
           current-parameters: true
           property-file: build.props
