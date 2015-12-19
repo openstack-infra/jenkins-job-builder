@@ -115,6 +115,7 @@ def copyartifact(parser, xml_parent, data):
             * **permalink**
             * **workspace-latest**
             * **build-param**
+            * **downstream-build**
 
     :arg str build-number: specifies the build number to get when
         when specific-build is specified as which-build
@@ -135,6 +136,11 @@ def copyartifact(parser, xml_parent, data):
         last successful build when upstream-build is specified as which-build
     :arg string param: specifies to use a build parameter to get the build when
         build-param is specified as which-build
+    :arg str upstream-project-name: specifies the project name of downstream
+        when downstream-build is specified as which-build
+    :arg str upstream-build-number: specifies the number of the build to
+        find its downstream build when downstream-build is specified as
+        which-build
     :arg string parameter-filters: Filter matching jobs based on these
         parameters (optional)
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.plugins.copyartifact.CopyArtifact>
+      <project>foo</project>
+      <filter>*.tar.gz</filter>
+      <target>/home/foo</target>
+      <flatten>true</flatten>
+      <optional>true</optional>
+      <doNotFingerprintArtifacts>true</doNotFingerprintArtifacts>
+      <parameters>PUBLISH=true</parameters>
+      <selector class="hudson.plugins.copyartifact.DownstreamBuildSelector">
+        <upstreamProjectName>bar</upstreamProjectName>
+        <upstreamBuildNumber>123</upstreamBuildNumber>
+      </selector>
+    </hudson.plugins.copyartifact.CopyArtifact>
+  </builders>
+</project>

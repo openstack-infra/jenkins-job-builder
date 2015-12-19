@@ -1,0 +1,12 @@
+builders:
+  - copyartifact:
+      project: foo
+      filter: "*.tar.gz"
+      target: /home/foo
+      which-build: downstream-build
+      upstream-project-name: bar
+      upstream-build-number: "123"
+      optional: true
+      flatten: true
+      do-not-fingerprint: true
+      parameter-filters: PUBLISH=true
