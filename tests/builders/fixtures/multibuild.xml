@@ -49,7 +49,11 @@
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
           <jobName>PhaseTwoJobB</jobName>
           <currParams>false</currParams>
-          <configs/>
+          <configs>
+            <hudson.plugins.parameterizedtrigger.matrix.MatrixSubsetBuildParameters>
+              <filter>JVM_VARIANT == &quot;server&quot;</filter>
+            </hudson.plugins.parameterizedtrigger.matrix.MatrixSubsetBuildParameters>
+          </configs>
           <abortAllJob>false</abortAllJob>
           <enableCondition>true</enableCondition>
           <condition>${BUILDNUMBER} % 2 == 1</condition>

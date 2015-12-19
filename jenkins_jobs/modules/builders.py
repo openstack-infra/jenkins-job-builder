@@ -1544,6 +1544,9 @@ def multijob(parser, xml_parent, data):
             * **kill-phase-on** (`str`) -- Stop the phase execution
               on specific job status. Can be 'FAILURE', 'UNSTABLE',
               'NEVER'. (optional)
+            * **restrict-matrix-project** (`str`) -- Filter that
+              restricts the subset of the combinations that the
+              downstream project will run (optional)
 
     Example:
 
@@ -1620,6 +1623,14 @@ def multijob(parser, xml_parent, data):
         # Abort all other job
         abortAllJob = str(project.get('abort-all-job', False)).lower()
         XML.SubElement(phaseJob, 'abortAllJob').text = abortAllJob
+
+        # Restrict matrix jobs to a subset
+        if project.get('restrict-matrix-project') is not None:
+            subset = XML.SubElement(
+                configs, 'hudson.plugins.parameterizedtrigger.'
+                         'matrix.MatrixSubsetBuildParameters')
+            XML.SubElement(
+                subset, 'filter').text = project['restrict-matrix-project']
 
         # Enable Condition
         enable_condition = project.get('enable-condition')

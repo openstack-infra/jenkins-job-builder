@@ -23,3 +23,4 @@ builders:
           current-parameters: false
           kill-phase-on: UNSTABLE
           enable-condition: "${BUILDNUMBER} % 2 == 1"
+          restrict-matrix-project: 'JVM_VARIANT == "server"'
