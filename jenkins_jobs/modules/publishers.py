@@ -55,14 +55,16 @@ def archive(parser, xml_parent, data):
     Archive build artifacts
 
     :arg str artifacts: path specifier for artifacts to archive
-    :arg str excludes: path specifier for artifacts to exclude
+    :arg str excludes: path specifier for artifacts to exclude (optional)
     :arg bool latest-only: only keep the artifacts from the latest
-      successful build
+        successful build
     :arg bool allow-empty:  pass the build if no artifacts are
-      found (default false)
+        found (default false)
     :arg bool only-if-success: archive artifacts only if build is successful
-      (default false)
+        (default false)
     :arg bool fingerprint: fingerprint all archived artifacts (default false)
+    :arg bool default-excludes: This option allows to enable or disable the
+        default Ant exclusions. (default true)
 
     Example:
 
@@ -100,6 +102,9 @@ def archive(parser, xml_parent, data):
     if 'fingerprint' in data:
         fingerprint = XML.SubElement(archiver, 'fingerprint')
         fingerprint.text = str(data.get('fingerprint', False)).lower()
+
+    default_excludes = XML.SubElement(archiver, 'defaultExcludes')
+    default_excludes.text = str(data.get('default-excludes', True)).lower()
 
 
 def blame_upstream(parser, xml_parent, data):

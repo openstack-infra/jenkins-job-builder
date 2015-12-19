@@ -3,3 +3,4 @@ publishers:
       artifacts: '*.tar.gz'
       allow-empty: 'true'
       fingerprint: true
+      default-excludes: false
