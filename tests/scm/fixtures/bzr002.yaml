@@ -1,0 +1,5 @@
+scm:
+  - bzr:
+      url: lp:test_project
+      lightweight-checkout: True
+      clean-tree: True
