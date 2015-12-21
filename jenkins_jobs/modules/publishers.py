@@ -306,7 +306,9 @@ def trigger_parameterized_builds(parser, xml_parent, data):
       'UNSTABLE_OR_WORSE', 'FAILED', 'ALWAYS'. (default: 'ALWAYS')
     :arg str property-file: Use properties from file (optional)
     :arg bool fail-on-missing: Blocks the triggering of the downstream jobs
-        if any of the files are not found in the workspace (default 'False')
+        if any of the property files are not found in the workspace.
+        Only valid when 'property-file' is specified.
+        (default 'False')
     :arg bool use-matrix-child-files: Use files in workspaces of child
         builds (default 'False')
     :arg str matrix-child-combination-filter: A Groovy expression to filter
