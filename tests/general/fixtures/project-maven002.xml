@@ -8,7 +8,6 @@
   <incrementalBuild>false</incrementalBuild>
   <siteArchivingDisabled>false</siteArchivingDisabled>
   <fingerprintingDisabled>false</fingerprintingDisabled>
-  <perModuleEmail>true</perModuleEmail>
   <archivingDisabled>false</archivingDisabled>
   <resolveDependencies>false</resolveDependencies>
   <processPlugins>false</processPlugins>
