@@ -331,6 +331,79 @@ def ansicolor(parser, xml_parent, data):
         XML.SubElement(cwrapper, 'colorMapName').text = colormap
 
 
+def build_keeper(parser, xml_parent, data):
+    """yaml: build-keeper
+    Keep builds based on specific policy.
+    Requires the Jenkins :jenkins-wiki:`Build Keeper Plugin
+    <Build+Keeper+Plugin>`.
+
+    :arg str policy: Policy to keep builds.
+
+        :policy values:
+          * **by-day**
+          * **keep-since**
+          * **build-number**
+          * **keep-first-failed**
+    :arg int build-period: Number argument to calculate build to keep,
+        depends on the policy. (default 0)
+    :arg bool dont-keep-failed: Flag to indicate if to keep failed builds.
+        (default False)
+    :arg int number-of-fails: number of consecutive failed builds in order
+        to mark first as keep forever, only applies to keep-first-failed
+        policy (default 0)
+
+    Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/build-keeper0001.yaml
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/build-keeper0002.yaml
+
+    """
+
+    root = XML.SubElement(xml_parent,
+                          'org.jenkins__ci.plugins.build__keeper.BuildKeeper')
+
+    valid_policies = ('by-day', 'keep-since', 'build-number',
+                      'keep-first-failed')
+    policy = data.get('policy')
+    build_period = str(data.get('build-period', 0))
+    dont_keep_failed = str(data.get('dont-keep-failed', False)).lower()
+
+    if policy == 'by-day':
+        policy_element = XML.SubElement(root,
+                                        'policy',
+                                        {'class': 'org.jenkins_ci.plugins.'
+                                         'build_keeper.ByDayPolicy'})
+        XML.SubElement(policy_element, 'buildPeriod').text = build_period
+        XML.SubElement(policy_element,
+                       'dontKeepFailed').text = dont_keep_failed
+    elif policy == 'keep-since':
+        policy_element = XML.SubElement(root,
+                                        'policy',
+                                        {'class': 'org.jenkins_ci.plugins.'
+                                         'build_keeper.KeepSincePolicy'})
+        XML.SubElement(policy_element, 'buildPeriod').text = build_period
+        XML.SubElement(policy_element,
+                       'dontKeepFailed').text = dont_keep_failed
+    elif policy == 'build-number':
+        policy_element = XML.SubElement(root,
+                                        'policy',
+                                        {'class': 'org.jenkins_ci.plugins.'
+                                         'build_keeper.BuildNumberPolicy'})
+        XML.SubElement(policy_element, 'buildPeriod').text = build_period
+        XML.SubElement(policy_element,
+                       'dontKeepFailed').text = dont_keep_failed
+    elif policy == 'keep-first-failed':
+        policy_element = XML.SubElement(root,
+                                        'policy',
+                                        {'class': 'org.jenkins_ci.plugins.'
+                                         'build_keeper.KeepFirstFailedPolicy'})
+        XML.SubElement(policy_element, 'numberOfFails').text = str(
+            data.get('number-of-fails', 0))
+    else:
+        InvalidAttributeError('policy', policy, valid_policies)
+
+
 def live_screenshot(parser, xml_parent, data):
     """yaml: live-screenshot
     Show live screenshots of running jobs in the job list.

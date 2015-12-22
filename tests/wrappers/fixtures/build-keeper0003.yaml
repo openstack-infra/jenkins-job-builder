@@ -1,0 +1,4 @@
+wrappers:
+  - build-keeper:
+      policy: 'keep-since'
+      build-period: 1

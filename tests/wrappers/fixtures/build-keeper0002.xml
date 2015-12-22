@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <org.jenkins__ci.plugins.build__keeper.BuildKeeper>
+      <policy class="org.jenkins_ci.plugins.build_keeper.KeepFirstFailedPolicy">
+        <numberOfFails>1</numberOfFails>
+      </policy>
+    </org.jenkins__ci.plugins.build__keeper.BuildKeeper>
+  </buildWrappers>
+</project>
