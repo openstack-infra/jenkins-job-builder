@@ -3786,6 +3786,7 @@ def stash(parser, xml_parent, data):
     :arg string url: Base url of Stash Server (Default: "")
     :arg string username: Username of Stash Server (Default: "")
     :arg string password: Password of Stash Server (Default: "")
+    :arg string credentials-id: Credentials of Stash Server (optional)
     :arg bool   ignore-ssl: Ignore unverified SSL certificate (Default: False)
     :arg string commit-sha1: Commit SHA1 to notify (Default: "")
     :arg bool   include-build-number: Include build number in key
@@ -3800,12 +3801,17 @@ def stash(parser, xml_parent, data):
                          'org.jenkinsci.plugins.stashNotifier.StashNotifier')
 
     XML.SubElement(top, 'stashServerBaseUrl').text = data.get('url', '')
-    XML.SubElement(top, 'stashUserName'
-                   ).text = get_value_from_yaml_or_config_file(
-                       'username', 'stash', data, parser)
-    XML.SubElement(top, 'stashUserPassword'
-                   ).text = get_value_from_yaml_or_config_file(
-                       'password', 'stash', data, parser)
+    if data.get('credentials-id') is not None:
+        XML.SubElement(top, 'credentialsId').text = str(
+            data.get('credentials-id'))
+    else:
+        XML.SubElement(top, 'stashUserName'
+                       ).text = get_value_from_yaml_or_config_file(
+                           'username', 'stash', data, parser)
+        XML.SubElement(top, 'stashUserPassword'
+                       ).text = get_value_from_yaml_or_config_file(
+                           'password', 'stash', data, parser)
+
     XML.SubElement(top, 'ignoreUnverifiedSSLPeer').text = str(
         data.get('ignore-ssl', False)).lower()
     XML.SubElement(top, 'commitSha1').text = data.get('commit-sha1', '')
