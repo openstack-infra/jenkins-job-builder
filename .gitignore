@@ -5,6 +5,7 @@
 .test
 .testrepository
 .tox
+.idea
 AUTHORS
 build/*
 ChangeLog
