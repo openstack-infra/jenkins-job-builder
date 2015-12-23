@@ -26,19 +26,19 @@ from tests.cmd.test_cmd import CmdTestsBase
 @mock.patch('jenkins_jobs.builder.Jenkins.get_plugins_info', mock.MagicMock)
 class UpdateTests(CmdTestsBase):
 
-    @mock.patch('jenkins_jobs.cmd.Builder.update_job')
-    def test_update_jobs(self, update_job_mock):
+    @mock.patch('jenkins_jobs.cmd.Builder.update_jobs')
+    def test_update_jobs(self, update_jobs_mock):
         """
         Test update_job is called
         """
         # don't care about the value returned here
-        update_job_mock.return_value = ([], 0)
+        update_jobs_mock.return_value = ([], 0)
 
         path = os.path.join(self.fixtures_path, 'cmd-002.yaml')
         args = self.parser.parse_args(['update', path])
 
         cmd.execute(args, self.config)
-        update_job_mock.assert_called_with([path], [])
+        update_jobs_mock.assert_called_with([path], [], n_workers=mock.ANY)
 
     @mock.patch('jenkins_jobs.builder.Jenkins.is_job', return_value=True)
     @mock.patch('jenkins_jobs.builder.Jenkins.get_jobs')
@@ -88,7 +88,7 @@ class UpdateTests(CmdTestsBase):
         # mocks to call real methods on a the above test object.
         b_inst = builder_mock.return_value
         b_inst.plugins_list = builder_obj.plugins_list
-        b_inst.update_job.side_effect = builder_obj.update_job
+        b_inst.update_jobs.side_effect = builder_obj.update_jobs
         b_inst.delete_old_managed.side_effect = builder_obj.delete_old_managed
 
         def _get_jobs():
