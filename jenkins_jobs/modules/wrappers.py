@@ -1381,10 +1381,17 @@ def credentials_binding(parser, xml_parent, data):
             :language: yaml
 
     """
-    entry_xml = XML.SubElement(
-        xml_parent,
+    entry_xml = xml_parent.find(
         'org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper')
-    bindings_xml = XML.SubElement(entry_xml, 'bindings')
+    if entry_xml is None:
+        entry_xml = XML.SubElement(
+            xml_parent,
+            'org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper')
+
+    bindings_xml = entry_xml.find('bindings')
+    if bindings_xml is None:
+        bindings_xml = XML.SubElement(entry_xml, 'bindings')
+
     binding_types = {
         'zip-file': 'org.jenkinsci.plugins.credentialsbinding.impl.'
                     'ZipFileBinding',
