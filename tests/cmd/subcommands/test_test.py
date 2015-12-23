@@ -152,8 +152,8 @@ class TestTests(CmdTestsBase):
                 os.path.join(self.fixtures_path, 'cmd-001.yaml')]
 
         with mock.patch('sys.stdout'):
-            jenkins_jobs = entry.JenkinsJobs(args)
-            e = self.assertRaises(JenkinsJobsException, jenkins_jobs.execute)
+            e = self.assertRaises(JenkinsJobsException, entry.JenkinsJobs,
+                                  args)
         self.assertIn("must contain a Yaml list", str(e))
 
 

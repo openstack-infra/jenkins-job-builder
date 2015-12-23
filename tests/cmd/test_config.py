@@ -13,6 +13,8 @@ class TestConfigs(CmdTestsBase):
     global_conf = '/etc/jenkins_jobs/jenkins_jobs.ini'
     user_conf = os.path.join(os.path.expanduser('~'), '.config',
                              'jenkins_jobs', 'jenkins_jobs.ini')
+    local_conf = os.path.join(os.path.dirname(__file__),
+                              'jenkins_jobs.ini')
 
     def test_use_global_config(self):
         """
@@ -24,15 +26,14 @@ class TestConfigs(CmdTestsBase):
 
         with patch('os.path.isfile', return_value=True) as m_isfile:
             def side_effect(path):
-                if path == self.user_conf:
-                    return False
                 if path == self.global_conf:
                     return True
+                return False
 
             m_isfile.side_effect = side_effect
 
             with patch('io.open', return_value=conffp) as m_open:
-                entry.JenkinsJobs(args)
+                entry.JenkinsJobs(args, config_file_required=True)
                 m_open.assert_called_with(self.global_conf, 'r',
                                           encoding='utf-8')
 
@@ -48,10 +49,11 @@ class TestConfigs(CmdTestsBase):
             def side_effect(path):
                 if path == self.user_conf:
                     return True
+                return False
 
             m_isfile.side_effect = side_effect
             with patch('io.open', return_value=conffp) as m_open:
-                entry.JenkinsJobs(args)
+                entry.JenkinsJobs(args, config_file_required=True)
                 m_open.assert_called_with(self.user_conf, 'r',
                                           encoding='utf-8')
 

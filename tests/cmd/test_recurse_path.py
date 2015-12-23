@@ -3,7 +3,7 @@ import os
 from tests.base import mock
 import testtools
 
-from jenkins_jobs import cmd
+from jenkins_jobs import utils
 
 
 def fake_os_walk(paths):
@@ -25,14 +25,14 @@ def fake_os_walk(paths):
     return os_walk
 
 
-# Testing the cmd module can sometimes result in the CacheStorage class
+# Testing the utils module can sometimes result in the CacheStorage class
 # attempting to create the cache directory multiple times as the tests
 # are run in parallel.  Stub out the CacheStorage to ensure that each
 # test can safely create the object without effect.
 @mock.patch('jenkins_jobs.builder.CacheStorage', mock.MagicMock)
 class CmdRecursePath(testtools.TestCase):
 
-    @mock.patch('jenkins_jobs.cmd.os.walk')
+    @mock.patch('jenkins_jobs.utils.os.walk')
     def test_recursive_path_option_exclude_pattern(self, oswalk_mock):
         """
         Test paths returned by the recursive processing when using pattern
@@ -60,9 +60,9 @@ class CmdRecursePath(testtools.TestCase):
         paths = [k for k, v in os_walk_paths if v is not None]
 
         oswalk_mock.side_effect = fake_os_walk(os_walk_paths)
-        self.assertEqual(paths, cmd.recurse_path('/jjb_configs', ['test*']))
+        self.assertEqual(paths, utils.recurse_path('/jjb_configs', ['test*']))
 
-    @mock.patch('jenkins_jobs.cmd.os.walk')
+    @mock.patch('jenkins_jobs.utils.os.walk')
     def test_recursive_path_option_exclude_absolute(self, oswalk_mock):
         """
         Test paths returned by the recursive processing when using absolute
@@ -93,10 +93,10 @@ class CmdRecursePath(testtools.TestCase):
 
         oswalk_mock.side_effect = fake_os_walk(os_walk_paths)
 
-        self.assertEqual(paths, cmd.recurse_path('/jjb_configs',
-                                                 ['/jjb_configs/dir1']))
+        self.assertEqual(paths, utils.recurse_path('/jjb_configs',
+                                                   ['/jjb_configs/dir1']))
 
-    @mock.patch('jenkins_jobs.cmd.os.walk')
+    @mock.patch('jenkins_jobs.utils.os.walk')
     def test_recursive_path_option_exclude_relative(self, oswalk_mock):
         """
         Test paths returned by the recursive processing when using relative
@@ -132,5 +132,5 @@ class CmdRecursePath(testtools.TestCase):
 
         oswalk_mock.side_effect = fake_os_walk(rel_os_walk_paths)
 
-        self.assertEqual(paths, cmd.recurse_path('jjb_configs',
-                                                 ['jjb_configs/test3/bar']))
+        self.assertEqual(paths, utils.recurse_path('jjb_configs',
+                                                   ['jjb_configs/test3/bar']))
