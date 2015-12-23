@@ -223,20 +223,24 @@ class ModuleRegistry(object):
             logger.debug("Cached entry point group %s = %s",
                          component_list_type, eps)
 
-        if name in eps:
+        # check for macro first
+        component = parser.data.get(component_type, {}).get(name)
+        if component:
+            if name in eps:
+                logger.warn("You have a macro ('%s') defined for '%s' "
+                            "component type that is masking an inbuilt "
+                            "definition" % (name, component_type))
+
+            for b in component[component_list_type]:
+                # Pass component_data in as template data to this function
+                # so that if the macro is invoked with arguments,
+                # the arguments are interpolated into the real defn.
+                self.dispatch(component_type,
+                              parser, xml_parent, b, component_data)
+        elif name in eps:
             func = eps[name].load()
             func(parser, xml_parent, component_data)
         else:
-            # Otherwise, see if it's defined as a macro
-            component = parser.data.get(component_type, {}).get(name)
-            if component:
-                for b in component[component_list_type]:
-                    # Pass component_data in as template data to this function
-                    # so that if the macro is invoked with arguments,
-                    # the arguments are interpolated into the real defn.
-                    self.dispatch(component_type,
-                                  parser, xml_parent, b, component_data)
-            else:
-                raise JenkinsJobsException("Unknown entry point or macro '{0}'"
-                                           " for component type: '{1}'.".
-                                           format(name, component_type))
+            raise JenkinsJobsException("Unknown entry point or macro '{0}' "
+                                       "for component type: '{1}'.".
+                                       format(name, component_type))
