@@ -1,0 +1,10 @@
+publishers:
+  - test-fairy:
+      platform: ios
+      apikey: apikey
+      appfile: /tmp/appfile.ipa
+      notify-testers: false
+      autoupdate: false
+      cpu: false
+      memory: false
+      logs: false

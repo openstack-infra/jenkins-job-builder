@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.testfairy.TestFairyAndroidRecorder plugin="TestFairy">
+      <apiKey>apikey</apiKey>
+      <appFile>/tmp/appfile.apk</appFile>
+      <testersGroups/>
+      <notifyTesters>false</notifyTesters>
+      <autoUpdate>false</autoUpdate>
+      <maxDuration>10m</maxDuration>
+      <recordOnBackground>false</recordOnBackground>
+      <dataOnlyWifi>false</dataOnlyWifi>
+      <isVideoEnabled>true</isVideoEnabled>
+      <screenshotInterval>1</screenshotInterval>
+      <videoQuality>high</videoQuality>
+      <cpu>false</cpu>
+      <memory>false</memory>
+      <logs>false</logs>
+      <network>true</network>
+      <phoneSignal>true</phoneSignal>
+      <wifi>true</wifi>
+      <gps>true</gps>
+      <battery>true</battery>
+      <openGl>true</openGl>
+      <advancedOptions/>
+      <mappingFile/>
+      <keystorePath>/tmp/keystorefile</keystorePath>
+      <storepass>android</storepass>
+      <alias>androiddebugkey</alias>
+      <keypass/>
+    </org.jenkinsci.plugins.testfairy.TestFairyAndroidRecorder>
+  </publishers>
+</project>

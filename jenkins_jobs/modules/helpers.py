@@ -438,6 +438,40 @@ def append_git_revision_config(parent, config_def):
     XML.SubElement(params, 'combineQueuedCommits').text = combine_commits
 
 
+def test_fairy_common(xml_element, data):
+    xml_element.set('plugin', 'TestFairy')
+
+    mappings = [
+        # General
+        ('apikey', 'apiKey', None),
+        ('appfile', 'appFile', None),
+        ('tester-groups', 'testersGroups', ''),
+        ('notify-testers', 'notifyTesters', True),
+        ('autoupdate', 'autoUpdate', True),
+        # Session
+        ('max-duration', 'maxDuration', '10m'),
+        ('record-on-background', 'recordOnBackground', False),
+        ('data-only-wifi', 'dataOnlyWifi', False),
+        # Video
+        ('video-enabled', 'isVideoEnabled', True),
+        ('screenshot-interval', 'screenshotInterval', '1'),
+        ('video-quality', 'videoQuality', 'high'),
+        # Metrics
+        ('cpu', 'cpu', True),
+        ('memory', 'memory', True),
+        ('logs', 'logs', True),
+        ('network', 'network', False),
+        ('phone-signal', 'phoneSignal', False),
+        ('wifi', 'wifi', False),
+        ('gps', 'gps', False),
+        ('battery', 'battery', False),
+        ('opengl', 'openGl', False),
+        # Advanced options
+        ('advanced-options', 'advancedOptions', '')
+    ]
+    convert_mapping_to_xml(xml_element, data, mappings, fail_required=True)
+
+
 def convert_mapping_to_xml(parent, data, mapping, fail_required=False):
     """Convert mapping to XML
 
