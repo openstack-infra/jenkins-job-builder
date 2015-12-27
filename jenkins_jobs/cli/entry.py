@@ -21,8 +21,8 @@ import sys
 
 import yaml
 
+from jenkins_jobs.builder import Builder
 from jenkins_jobs.cli.parser import create_parser
-from jenkins_jobs import cmd
 from jenkins_jobs.config import JJBConfig
 from jenkins_jobs import utils
 from jenkins_jobs import version
@@ -118,7 +118,48 @@ class JenkinsJobs(object):
                 self.options.path = paths
 
     def execute(self):
-        cmd.execute(self.options, self.jjb_config)
+        config = self.jjb_config.config_parser
+        options = self.options
+
+        builder = Builder(config.get('jenkins', 'url'),
+                          self.jjb_config.user,
+                          self.jjb_config.password,
+                          self.jjb_config.config_parser,
+                          jenkins_timeout=self.jjb_config.timeout,
+                          ignore_cache=self.jjb_config.ignore_cache,
+                          flush_cache=options.flush_cache,
+                          plugins_list=self.jjb_config.plugins_info)
+
+        if options.command == 'delete':
+            for job in options.name:
+                builder.delete_job(job, options.path)
+        elif options.command == 'delete-all':
+            if not utils.confirm(
+                    'Sure you want to delete *ALL* jobs from Jenkins '
+                    'server?\n(including those not managed by Jenkins '
+                    'Job Builder)'):
+                sys.exit('Aborted')
+
+            logger.info("Deleting all jobs")
+            builder.delete_all_jobs()
+        elif options.command == 'update':
+            if options.n_workers < 0:
+                self.parser.error(
+                    'Number of workers must be equal or greater than 0')
+
+            logger.info("Updating jobs in {0} ({1})".format(
+                options.path, options.names))
+            jobs, num_updated_jobs = builder.update_jobs(
+                options.path, options.names,
+                n_workers=options.n_workers)
+            logger.info("Number of jobs updated: %d", num_updated_jobs)
+            if options.delete_old:
+                num_deleted_jobs = builder.delete_old_managed()
+                logger.info("Number of jobs deleted: %d", num_deleted_jobs)
+        elif options.command == 'test':
+            builder.update_jobs(options.path, options.name,
+                                output=options.output_dir,
+                                n_workers=1)
 
 
 def main():

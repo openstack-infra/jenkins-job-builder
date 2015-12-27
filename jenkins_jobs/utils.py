@@ -62,3 +62,8 @@ def recurse_path(root, excludes=None):
         pathlist.extend([os.path.join(root, path) for path in dirs])
 
     return pathlist
+
+
+def confirm(question):
+    answer = input('%s (Y/N): ' % question).upper().strip()
+    return not answer == 'Y'
