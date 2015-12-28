@@ -225,15 +225,16 @@ class Jenkins(object):
 
 
 class Builder(object):
-    def __init__(self, jenkins_url, jenkins_user, jenkins_password,
-                 config=None, jenkins_timeout=_DEFAULT_TIMEOUT,
-                 ignore_cache=False, flush_cache=False, plugins_list=None):
-        self.jenkins = Jenkins(jenkins_url, jenkins_user, jenkins_password,
-                               jenkins_timeout)
-        self.cache = CacheStorage(jenkins_url, flush=flush_cache)
-        self.global_config = config
-        self.ignore_cache = ignore_cache
-        self._plugins_list = plugins_list
+    def __init__(self, jjb_config):
+        self.jenkins = Jenkins(jjb_config.jenkins['url'],
+                               jjb_config.jenkins['user'],
+                               jjb_config.jenkins['password'],
+                               jjb_config.jenkins['timeout'])
+        self.cache = CacheStorage(jjb_config.jenkins['url'],
+                                  flush=jjb_config.builder['flush_cache'])
+        self._plugins_list = jjb_config.builder['plugins_info']
+
+        self.jjb_config = jjb_config
 
     @property
     def plugins_list(self):
@@ -242,7 +243,7 @@ class Builder(object):
         return self._plugins_list
 
     def load_files(self, fn):
-        self.parser = YamlParser(self.global_config, self.plugins_list)
+        self.parser = YamlParser(self.jjb_config, self.plugins_list)
 
         # handle deprecated behavior, and check that it's not a file like
         # object as these may implement the '__iter__' attribute.
@@ -337,7 +338,9 @@ class Builder(object):
     @parallelize
     def changed(self, job):
         md5 = job.md5()
-        changed = self.ignore_cache or self.cache.has_changed(job.name, md5)
+
+        changed = (self.jjb_config.builder['ignore_cache'] or
+                   self.cache.has_changed(job.name, md5))
         if not changed:
             logger.debug("'{0}' has not changed".format(job.name))
         return changed

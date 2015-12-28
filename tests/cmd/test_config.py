@@ -83,11 +83,12 @@ class TestConfigs(CmdTestsBase):
                                    'settings_from_config.ini')
         args = ['--conf', config_file, 'test', 'dummy.yaml']
         jenkins_jobs = entry.JenkinsJobs(args)
-        self.assertEqual(jenkins_jobs.jjb_config.ignore_cache, True)
-        self.assertEqual(jenkins_jobs.jjb_config.user, "jenkins_user")
-        self.assertEqual(jenkins_jobs.jjb_config.password, "jenkins_password")
-        self.assertEqual(jenkins_jobs.jjb_config.config_parser.get(
-            'job_builder', 'allow_empty_variables'), "True")
+        jjb_config = jenkins_jobs.jjb_config
+        self.assertEqual(jjb_config.jenkins['user'], "jenkins_user")
+        self.assertEqual(jjb_config.jenkins['password'], "jenkins_password")
+        self.assertEqual(jjb_config.builder['ignore_cache'], True)
+        self.assertEqual(
+            jjb_config.yamlparser['allow_empty_variables'], True)
 
     def test_config_options_overriden_by_cli(self):
         """
@@ -98,8 +99,9 @@ class TestConfigs(CmdTestsBase):
                 '--ignore-cache', '--allow-empty-variables',
                 'test', 'dummy.yaml']
         jenkins_jobs = entry.JenkinsJobs(args)
-        self.assertEqual(jenkins_jobs.jjb_config.ignore_cache, True)
-        self.assertEqual(jenkins_jobs.jjb_config.user, "myuser")
-        self.assertEqual(jenkins_jobs.jjb_config.password, "mypassword")
-        self.assertEqual(jenkins_jobs.jjb_config.config_parser.get(
-            'job_builder', 'allow_empty_variables'), "True")
+        jjb_config = jenkins_jobs.jjb_config
+        self.assertEqual(jjb_config.jenkins['user'], "myuser")
+        self.assertEqual(jjb_config.jenkins['password'], "mypassword")
+        self.assertEqual(jjb_config.builder['ignore_cache'], True)
+        self.assertEqual(
+            jjb_config.yamlparser['allow_empty_variables'], True)

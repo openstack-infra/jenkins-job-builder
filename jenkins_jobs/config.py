@@ -15,6 +15,7 @@
 
 # Manage JJB Configuration sources, defaults, and access.
 
+from collections import defaultdict
 import io
 import logging
 import os
@@ -118,11 +119,17 @@ class JJBConfig(object):
         self.config_parser = config_parser
 
         self.ignore_cache = False
+        self.flush_cache = False
         self.user = None
         self.password = None
         self.plugins_info = None
         self.timeout = builder._DEFAULT_TIMEOUT
         self.allow_empty_variables = None
+
+        self.jenkins = defaultdict(None)
+        self.builder = defaultdict(None)
+        self.yamlparser = defaultdict(None)
+        self.hipchat = defaultdict(None)
 
         self._setup()
 
@@ -205,27 +212,88 @@ class JJBConfig(object):
         self.recursive = config.getboolean('job_builder', 'recursive')
         self.excludes = config.get('job_builder', 'exclude').split(os.pathsep)
 
+        # The way we want to do things moving forward:
+        self.jenkins['url'] = config.get('jenkins', 'url')
+        self.jenkins['user'] = self.user
+        self.jenkins['password'] = self.password
+        self.jenkins['timeout'] = self.timeout
+
+        self.builder['ignore_cache'] = self.ignore_cache
+        self.builder['flush_cache'] = self.flush_cache
+        self.builder['plugins_info'] = self.plugins_info
+
+        # keep descriptions ? (used by yamlparser)
+        keep_desc = False
+        if (config and config.has_section('job_builder') and
+                config.has_option('job_builder', 'keep_descriptions')):
+            keep_desc = config.getboolean('job_builder',
+                                          'keep_descriptions')
+        self.yamlparser['keep_descriptions'] = keep_desc
+
+        # figure out the include path (used by yamlparser)
+        path = ["."]
+        if (config and config.has_section('job_builder') and
+                config.has_option('job_builder', 'include_path')):
+            path = config.get('job_builder',
+                              'include_path').split(':')
+        self.yamlparser['include_path'] = path
+
+        # allow duplicates?
+        allow_duplicates = False
+        if config and config.has_option('job_builder', 'allow_duplicates'):
+            allow_duplicates = config.getboolean('job_builder',
+                                                 'allow_duplicates')
+        self.yamlparser['allow_duplicates'] = allow_duplicates
+
+        # allow empty variables?
+        self.yamlparser['allow_empty_variables'] = (
+            self.allow_empty_variables or
+            config and config.has_section('job_builder') and
+            config.has_option('job_builder', 'allow_empty_variables') and
+            config.getboolean('job_builder', 'allow_empty_variables'))
+
     def validate(self):
         config = self.config_parser
 
         # Inform the user as to what is likely to happen, as they may specify
         # a real jenkins instance in test mode to get the plugin info to check
         # the XML generated.
-        if self.user is None and self.password is None:
+        if self.jenkins['user'] is None and self.jenkins['password'] is None:
             logger.info("Will use anonymous access to Jenkins if needed.")
-        elif (self.user is not None and self.password is None) or (
-                self.user is None and self.password is not None):
+        elif ((self.jenkins['user'] is not None and
+               self.jenkins['password'] is None) or
+              (self.jenkins['user'] is None and
+               self.jenkins['password'] is not None)):
             raise JenkinsJobsException(
                 "Cannot authenticate to Jenkins with only one of User and "
                 "Password provided, please check your configuration."
             )
 
-        if (self.plugins_info is not None and
-                not isinstance(self.plugins_info, list)):
+        if (self.builder['plugins_info'] is not None and
+                not isinstance(self.builder['plugins_info'], list)):
             raise JenkinsJobsException("plugins_info must contain a list!")
 
         # Temporary until yamlparser is refactored to query config object
-        if self.allow_empty_variables is not None:
+        if self.yamlparser['allow_empty_variables'] is not None:
             config.set('job_builder',
                        'allow_empty_variables',
-                       str(self.allow_empty_variables))
+                       str(self.yamlparser['allow_empty_variables']))
+
+    def get_module_config(self, section, key):
+        """ Given a section name and a key value, return the value assigned to
+        the key in the JJB .ini file if it exists, otherwise emit a warning
+        indicating that the value is not set. Default value returned if no
+        value is set in the file will be a blank string.
+        """
+        result = ''
+        try:
+            result = self.config_parser.get(
+                section, key
+            )
+        except (configparser.NoSectionError, configparser.NoOptionError,
+                JenkinsJobsException) as e:
+            logger.warning("You didn't set a " + key +
+                           " neither in the yaml job definition nor in" +
+                           " the " + section + " section, blank default" +
+                           " value will be applied:\n{0}".format(e))
+        return result

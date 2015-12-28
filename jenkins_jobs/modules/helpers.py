@@ -12,10 +12,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import logging
 import xml.etree.ElementTree as XML
-
-from six.moves import configparser
 
 from jenkins_jobs.errors import InvalidAttributeError
 from jenkins_jobs.errors import JenkinsJobsException
@@ -254,19 +251,10 @@ def findbugs_settings(xml_parent, data):
 
 
 def get_value_from_yaml_or_config_file(key, section, data, parser):
-    logger = logging.getLogger(__name__)
     result = data.get(key, '')
+    jjb_config = parser.jjb_config
     if result == '':
-        try:
-            result = parser.config.get(
-                section, key
-            )
-        except (configparser.NoSectionError, configparser.NoOptionError,
-                JenkinsJobsException) as e:
-            logger.warning("You didn't set a " + key +
-                           " neither in the yaml job definition nor in" +
-                           " the " + section + " section, blank default" +
-                           " value will be applied:\n{0}".format(e))
+        result = jjb_config.get_module_config(section, key)
     return result
 
 

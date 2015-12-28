@@ -14,9 +14,11 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from jenkins_jobs.config import JJBConfig
 import jenkins_jobs.builder
 from tests.base import LoggingFixture
 from tests.base import mock
+
 from testtools import TestCase
 
 
@@ -24,11 +26,10 @@ from testtools import TestCase
 class TestCaseTestBuilder(LoggingFixture, TestCase):
     def setUp(self):
         super(TestCaseTestBuilder, self).setUp()
-        self.builder = jenkins_jobs.builder.Builder(
-            'http://jenkins.example.com',
-            'doesnot', 'matter',
-            plugins_list=['plugin1', 'plugin2'],
-        )
+        jjb_config = JJBConfig()
+        jjb_config.builder['plugins_info'] = ['plugin1', 'plugin2']
+        jjb_config.validate()
+        self.builder = jenkins_jobs.builder.Builder(jjb_config)
 
     def test_plugins_list(self):
         self.assertEqual(self.builder.plugins_list, ['plugin1', 'plugin2'])

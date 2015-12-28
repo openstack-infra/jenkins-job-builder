@@ -73,12 +73,20 @@ class JenkinsJobs(object):
         self._parse_additional()
         self.jjb_config.validate()
 
+    def _set_config(self, target, option):
+        """
+        Sets the option in target only if the given option was explicitly set
+        """
+        opt_val = getattr(self.options, option, None)
+        if opt_val is not None:
+            target[option] = opt_val
+
     def _parse_additional(self):
-        for opt in ['ignore_cache', 'user', 'password',
-                    'allow_empty_variables']:
-            opt_val = getattr(self.options, opt, None)
-            if opt_val is not None:
-                setattr(self.jjb_config, opt, opt_val)
+
+        self._set_config(self.jjb_config.builder, 'ignore_cache')
+        self._set_config(self.jjb_config.yamlparser, 'allow_empty_variables')
+        self._set_config(self.jjb_config.jenkins, 'user')
+        self._set_config(self.jjb_config.jenkins, 'password')
 
         if getattr(self.options, 'plugins_info_path', None) is not None:
             with io.open(self.options.plugins_info_path, 'r',
@@ -87,7 +95,7 @@ class JenkinsJobs(object):
             if not isinstance(plugins_info, list):
                 self.parser.error("{0} must contain a Yaml list!".format(
                                   self.options.plugins_info_path))
-            self.jjb_config.plugins_info = plugins_info
+            self.jjb_config.builder['plugins_info'] = plugins_info
 
         if getattr(self.options, 'path', None):
             if hasattr(self.options.path, 'read'):
@@ -118,17 +126,8 @@ class JenkinsJobs(object):
                 self.options.path = paths
 
     def execute(self):
-        config = self.jjb_config.config_parser
         options = self.options
-
-        builder = Builder(config.get('jenkins', 'url'),
-                          self.jjb_config.user,
-                          self.jjb_config.password,
-                          self.jjb_config.config_parser,
-                          jenkins_timeout=self.jjb_config.timeout,
-                          ignore_cache=self.jjb_config.ignore_cache,
-                          flush_cache=options.flush_cache,
-                          plugins_list=self.jjb_config.plugins_info)
+        builder = Builder(self.jjb_config)
 
         if options.command == 'delete':
             for job in options.name:

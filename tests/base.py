@@ -131,14 +131,15 @@ class BaseTestCase(LoggingFixture):
 
     def _get_config(self):
         jjb_config = JJBConfig(self.conf_filename)
+        jjb_config.validate()
 
-        return jjb_config.config_parser
+        return jjb_config
 
     def test_yaml_snippet(self):
         if not self.in_filename:
             return
 
-        config = self._get_config()
+        jjb_config = self._get_config()
 
         expected_xml = self._read_utf8_content()
         yaml_content = self._read_yaml_content(self.in_filename)
@@ -151,7 +152,7 @@ class BaseTestCase(LoggingFixture):
             self.addDetail("plugins-info",
                            text_content(str(plugins_info)))
 
-        parser = YamlParser(config, plugins_info)
+        parser = YamlParser(jjb_config, plugins_info)
 
         pub = self.klass(parser.registry)
 

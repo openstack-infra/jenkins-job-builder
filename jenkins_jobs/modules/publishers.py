@@ -409,8 +409,8 @@ def trigger_parameterized_builds(parser, xml_parent, data):
     ]
 
     try:
-        if parser.config.getboolean('__future__',
-                                    'param_order_from_yaml'):
+        if parser.jjb_config.config_parser.getboolean('__future__',
+                                                      'param_order_from_yaml'):
             orig_order = None
     except six.moves.configparser.NoSectionError:
         pass

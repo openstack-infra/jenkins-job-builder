@@ -70,27 +70,17 @@ def combination_matches(combination, match_combinations):
 
 
 class YamlParser(object):
-    def __init__(self, config=None, plugins_info=None):
+    def __init__(self, jjb_config=None, plugins_info=None):
         self.data = {}
         self.jobs = []
         self.xml_jobs = []
-        self.config = config
-        self.registry = ModuleRegistry(self.config, plugins_info)
-        self.path = ["."]
-        if self.config:
-            if config.has_section('job_builder') and \
-                    config.has_option('job_builder', 'include_path'):
-                self.path = config.get('job_builder',
-                                       'include_path').split(':')
-        self.keep_desc = self.get_keep_desc()
 
-    def get_keep_desc(self):
-        keep_desc = False
-        if self.config and self.config.has_section('job_builder') and \
-                self.config.has_option('job_builder', 'keep_descriptions'):
-            keep_desc = self.config.getboolean('job_builder',
-                                               'keep_descriptions')
-        return keep_desc
+        self.jjb_config = jjb_config
+        self.keep_desc = jjb_config.yamlparser['keep_descriptions']
+        self.path = jjb_config.yamlparser['include_path']
+
+        self.registry = ModuleRegistry(jjb_config.config_parser,
+                                       plugins_info)
 
     def parse_fp(self, fp):
         # wrap provided file streams to ensure correct encoding used
@@ -129,8 +119,7 @@ class YamlParser(object):
 
     def _handle_dups(self, message):
 
-        if not (self.config and self.config.has_section('job_builder') and
-                self.config.getboolean('job_builder', 'allow_duplicates')):
+        if not self.jjb_config.yamlparser['allow_duplicates']:
             logger.error(message)
             raise JenkinsJobsException(message)
         else:
@@ -311,19 +300,14 @@ class YamlParser(object):
                 logger.debug('Excluding combination %s', str(params))
                 continue
 
-            allow_empty_variables = self.config \
-                and self.config.has_section('job_builder') \
-                and self.config.has_option(
-                    'job_builder', 'allow_empty_variables') \
-                and self.config.getboolean(
-                    'job_builder', 'allow_empty_variables')
-
             for key in template.keys():
                 if key not in params:
                     params[key] = template[key]
 
             params['template-name'] = template_name
-            expanded = deep_format(template, params, allow_empty_variables)
+            expanded = deep_format(
+                template, params,
+                self.jjb_config.yamlparser['allow_empty_variables'])
 
             job_name = expanded.get('name')
             if jobs_glob and not matches(job_name, jobs_glob):
