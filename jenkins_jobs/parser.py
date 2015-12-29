@@ -79,7 +79,7 @@ class YamlParser(object):
         self.keep_desc = jjb_config.yamlparser['keep_descriptions']
         self.path = jjb_config.yamlparser['include_path']
 
-        self.registry = ModuleRegistry(jjb_config.config_parser,
+        self.registry = ModuleRegistry(jjb_config,
                                        plugins_info)
 
     def parse_fp(self, fp):

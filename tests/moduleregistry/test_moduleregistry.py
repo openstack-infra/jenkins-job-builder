@@ -34,7 +34,6 @@ class ModuleRegistryPluginInfoTestsWithScenarios(TestWithScenarios,
 
         jjb_config = JJBConfig()
         jjb_config.validate()
-        config = jjb_config.config_parser
 
         plugin_info = [{'shortName': "HerpDerpPlugin",
                         'longName': "Blah Blah Blah Plugin"
@@ -45,7 +44,7 @@ class ModuleRegistryPluginInfoTestsWithScenarios(TestWithScenarios,
                             })
 
         self.addDetail("plugin_info", text_content(str(plugin_info)))
-        self.registry = ModuleRegistry(config, plugin_info)
+        self.registry = ModuleRegistry(jjb_config, plugin_info)
 
     def tearDown(self):
         super(ModuleRegistryPluginInfoTestsWithScenarios, self).tearDown()

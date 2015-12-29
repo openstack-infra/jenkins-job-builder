@@ -100,10 +100,11 @@ class HipChat(jenkins_jobs.modules.base.Base):
            This is done lazily to avoid looking up the '[hipchat]' section
            unless actually required.
         """
+        jjb_config = self.registry.jjb_config
         if(not self.authToken):
             try:
-                self.authToken = self.registry.global_config.get(
-                    'hipchat', 'authtoken')
+                self.authToken = jjb_config.get_module_config('hipchat',
+                                                              'authtoken')
                 # Require that the authtoken is non-null
                 if self.authToken == '':
                     raise jenkins_jobs.errors.JenkinsJobsException(
@@ -113,8 +114,8 @@ class HipChat(jenkins_jobs.modules.base.Base):
                 logger.fatal("The configuration file needs a hipchat section" +
                              " containing authtoken:\n{0}".format(e))
                 sys.exit(1)
-            self.jenkinsUrl = self.registry.global_config.get('jenkins', 'url')
-            self.sendAs = self.registry.global_config.get('hipchat', 'send-as')
+            self.jenkinsUrl = jjb_config.jenkins['url']
+            self.sendAs = jjb_config.get_module_config('hipchat', 'send-as')
 
     def gen_xml(self, parser, xml_parent, data):
         hipchat = data.get('hipchat')

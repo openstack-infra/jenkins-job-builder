@@ -30,11 +30,11 @@ logger = logging.getLogger(__name__)
 class ModuleRegistry(object):
     entry_points_cache = {}
 
-    def __init__(self, config, plugins_list=None):
+    def __init__(self, jjb_config, plugins_list=None):
         self.modules = []
         self.modules_by_component_type = {}
         self.handlers = {}
-        self.global_config = config
+        self.jjb_config = jjb_config
         self.masked_warned = {}
 
         if plugins_list is None:
@@ -153,15 +153,9 @@ class ModuleRegistry(object):
             if template_data:
                 # Template data contains values that should be interpolated
                 # into the component definition
-                allow_empty_variables = self.global_config \
-                    and self.global_config.has_section('job_builder') \
-                    and self.global_config.has_option(
-                        'job_builder', 'allow_empty_variables') \
-                    and self.global_config.getboolean(
-                        'job_builder', 'allow_empty_variables')
-
                 component_data = deep_format(
-                    component_data, template_data, allow_empty_variables)
+                    component_data, template_data,
+                    self.jjb_config.yamlparser['allow_empty_variables'])
         else:
             # The component is a simple string name, eg "run-tests"
             name = component
