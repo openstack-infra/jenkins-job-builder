@@ -21,8 +21,8 @@ from testtools import ExpectedException
 from testtools import TestCase
 from yaml.composer import ComposerError
 
-from jenkins_jobs import builder
 from jenkins_jobs.config import JJBConfig
+from jenkins_jobs.parser import YamlParser
 from tests.base import get_scenarios
 from tests.base import JsonTestCase
 from tests.base import LoggingFixture
@@ -83,5 +83,5 @@ class TestCaseLocalYamlIncludeAnchors(LoggingFixture, TestCase):
         jjb_config.jenkins['password'] = 'password'
         jjb_config.builder['plugins_info'] = []
         jjb_config.validate()
-        b = builder.Builder(jjb_config)
-        b.load_files([os.path.join(self.fixtures_path, f) for f in files])
+        j = YamlParser(jjb_config)
+        j.load_files([os.path.join(self.fixtures_path, f) for f in files])
