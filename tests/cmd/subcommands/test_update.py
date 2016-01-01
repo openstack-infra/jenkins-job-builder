@@ -1,4 +1,3 @@
-
 # Joint copyright:
 #  - Copyright 2015 Hewlett-Packard Development Company, L.P.
 #
@@ -14,11 +13,14 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+# The goal of these tests is to check that given a particular set of flags to
+# Jenkins Job Builder's command line tools it will result in a particular set
+# of actions by the JJB library, usually through interaction with the
+# python-jenkins library.
+
 import os
 import six
 
-from jenkins_jobs import builder
-from jenkins_jobs.config import JJBConfig
 from tests.base import mock
 from tests.cmd.test_cmd import CmdTestsBase
 
@@ -60,71 +62,47 @@ class UpdateTests(CmdTestsBase):
         self.assertTrue(isinstance(update_job_mock.call_args[0][1],
                                    six.text_type))
 
-    @mock.patch('jenkins_jobs.builder.Jenkins.is_job', return_value=True)
-    @mock.patch('jenkins_jobs.builder.Jenkins.get_jobs')
-    @mock.patch('jenkins_jobs.builder.Builder.delete_job')
-    @mock.patch('jenkins_jobs.cli.entry.Builder')
-    def test_update_jobs_and_delete_old(self, builder_mock, delete_job_mock,
-                                        get_jobs_mock, is_job_mock):
+    @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.job_exists')
+    @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.get_jobs')
+    @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.reconfig_job')
+    @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.delete_job')
+    def test_update_jobs_and_delete_old(self,
+                                        jenkins_delete_job,
+                                        jenkins_reconfig_job,
+                                        jenkins_get_jobs,
+                                        jenkins_job_exists, ):
         """
         Test update behaviour with --delete-old option
 
-        Test update of jobs with the --delete-old option enabled, where only
-        some jobs result in has_changed() to limit the number of times
-        update_job is called, and have the get_jobs() method return additional
-        jobs not in the input yaml to test that the code in cmd will call
-        delete_job() after update_job() when '--delete-old' is set but only
-        for the extra managed jobs.
+        * mock out a call to jenkins.Jenkins.get_jobs() to return a known list
+          of job names.
+        * mock out a call to jenkins.Jenkins.reconfig_job() and
+          jenkins.Jenkins.delete_job() to detect calls being made to determine
+          that JJB does correctly delete the jobs it should delete when passed
+          a specific set of inputs.
+        * mock out a call to jenkins.Jenkins.job_exists() to always return
+          True.
         """
-        # set up some test data
         jobs = ['old_job001', 'old_job002', 'unmanaged']
         extra_jobs = [{'name': name} for name in jobs]
-
-        jjb_config = JJBConfig()
-        jjb_config.jenkins['url'] = 'http://example.com'
-        jjb_config.jenkins['user'] = 'doesnot'
-        jjb_config.jenkins['password'] = 'matter'
-        jjb_config.builder['plugins_info'] = []
-        jjb_config.validate()
-        builder_obj = builder.Builder(jjb_config)
-
-        # get the instance created by mock and redirect some of the method
-        # mocks to call real methods on a the above test object.
-        b_inst = builder_mock.return_value
-        b_inst.plugins_list = builder_obj.plugins_list
-        b_inst.update_jobs.side_effect = builder_obj.update_jobs
-        b_inst.delete_old_managed.side_effect = builder_obj.delete_old_managed
-
-        def _get_jobs():
-            return builder_obj.parser.jobs + extra_jobs
-        get_jobs_mock.side_effect = _get_jobs
-
-        # override cache to ensure Jenkins.update_job called a limited number
-        # of times
-        self.cache_mock.return_value.has_changed.side_effect = (
-            [True] * 2 + [False] * 2)
 
         path = os.path.join(self.fixtures_path, 'cmd-002.yaml')
         args = ['--conf', self.default_config_file, 'update', '--delete-old',
                 path]
 
-        with mock.patch('jenkins_jobs.builder.Jenkins.update_job') as update:
-            with mock.patch('jenkins_jobs.builder.Jenkins.is_managed',
-                            side_effect=(lambda name: name != 'unmanaged')):
-                self.execute_jenkins_jobs_with_args(args)
-            self.assertEquals(2, update.call_count,
-                              "Expected Jenkins.update_job to be called '%d' "
-                              "times, got '%d' calls instead.\n"
-                              "Called with: %s" % (2, update.call_count,
-                                                   update.mock_calls))
+        jenkins_get_jobs.return_value = extra_jobs
 
-        calls = [mock.call(name) for name in jobs if name != 'unmanaged']
-        self.assertEqual(2, delete_job_mock.call_count,
-                         "Expected Jenkins.delete_job to be called '%d' "
-                         "times got '%d' calls instead.\n"
-                         "Called with: %s" % (2, delete_job_mock.call_count,
-                                              delete_job_mock.mock_calls))
-        delete_job_mock.assert_has_calls(calls, any_order=True)
+        with mock.patch('jenkins_jobs.builder.Jenkins.is_managed',
+                        side_effect=(lambda name: name != 'unmanaged')):
+            self.execute_jenkins_jobs_with_args(args)
+
+        jenkins_reconfig_job.assert_has_calls(
+            [mock.call(job_name, mock.ANY)
+             for job_name in ['bar001', 'bar002', 'baz001', 'bam001']],
+            any_order=True
+        )
+        jenkins_delete_job.assert_has_calls(
+            [mock.call(name) for name in jobs if name != 'unmanaged'])
 
     @mock.patch('jenkins_jobs.builder.jenkins.Jenkins')
     def test_update_timeout_not_set(self, jenkins_mock):
