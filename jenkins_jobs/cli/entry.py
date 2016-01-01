@@ -18,10 +18,12 @@ import os
 import logging
 import platform
 import sys
+import time
 
 import yaml
 
 from jenkins_jobs.builder import Builder
+from jenkins_jobs.parser import YamlParser
 from jenkins_jobs.cli.parser import create_parser
 from jenkins_jobs.config import JJBConfig
 from jenkins_jobs import utils
@@ -133,6 +135,7 @@ class JenkinsJobs(object):
         if options.command == 'delete':
             for job in options.name:
                 builder.delete_job(job, options.path)
+
         elif options.command == 'delete-all':
             if not utils.confirm(
                     'Sure you want to delete *ALL* jobs from Jenkins '
@@ -142,6 +145,7 @@ class JenkinsJobs(object):
 
             logger.info("Deleting all jobs")
             builder.delete_all_jobs()
+
         elif options.command == 'update':
             if options.n_workers < 0:
                 self.parser.error(
@@ -149,16 +153,45 @@ class JenkinsJobs(object):
 
             logger.info("Updating jobs in {0} ({1})".format(
                 options.path, options.names))
+            orig = time.time()
+
+            # Generate XML
+            parser = YamlParser(self.jjb_config, builder.plugins_list)
+            parser.load_files(options.path)
+            parser.expandYaml(options.names)
+            parser.generateXML()
+
+            jobs = parser.jobs
+            step = time.time()
+            logging.debug('%d XML files generated in %ss',
+                          len(jobs), str(step - orig))
+
             jobs, num_updated_jobs = builder.update_jobs(
-                options.path, options.names,
+                parser.xml_jobs,
                 n_workers=options.n_workers)
             logger.info("Number of jobs updated: %d", num_updated_jobs)
+
             if options.delete_old:
-                num_deleted_jobs = builder.delete_old_managed()
-                logger.info("Number of jobs deleted: %d", num_deleted_jobs)
+                n = builder.delete_old_managed(keep=parser.xml_jobs)
+                logger.info("Number of jobs deleted: %d", n)
+
         elif options.command == 'test':
-            builder.update_jobs(options.path, options.name,
-                                output=options.output_dir,
+            logger.info("Updating jobs in {0} ({1})".format(
+                options.path, options.name))
+            orig = time.time()
+
+            # Generate XML
+            parser = YamlParser(self.jjb_config, builder.plugins_list)
+            parser.load_files(options.path)
+            parser.expandYaml(options.name)
+            parser.generateXML()
+
+            jobs = parser.jobs
+            step = time.time()
+            logging.debug('%d XML files generated in %ss',
+                          len(jobs), str(step - orig))
+
+            builder.update_jobs(parser.xml_jobs, output=options.output_dir,
                                 n_workers=1)
 
 
