@@ -129,11 +129,11 @@ class YamlParser(object):
                 fname = in_file
             logger.debug("Parsing YAML file {0}".format(fname))
             if hasattr(in_file, 'read'):
-                self.parse_fp(in_file)
+                self._parse_fp(in_file)
             else:
                 self.parse(in_file)
 
-    def parse_fp(self, fp):
+    def _parse_fp(self, fp):
         # wrap provided file streams to ensure correct encoding used
         data = local_yaml.load(utils.wrap_stream(fp), search_path=self.path)
         if data:
@@ -166,7 +166,7 @@ class YamlParser(object):
 
     def parse(self, fn):
         with io.open(fn, 'r', encoding='utf-8') as fp:
-            self.parse_fp(fp)
+            self._parse_fp(fp)
 
     def _handle_dups(self, message):
 
@@ -176,22 +176,22 @@ class YamlParser(object):
         else:
             logger.warn(message)
 
-    def getJob(self, name):
+    def _getJob(self, name):
         job = self.data.get('job', {}).get(name, None)
         if not job:
             return job
-        return self.applyDefaults(job)
+        return self._applyDefaults(job)
 
-    def getJobGroup(self, name):
+    def _getJobGroup(self, name):
         return self.data.get('job-group', {}).get(name, None)
 
-    def getJobTemplate(self, name):
+    def _getJobTemplate(self, name):
         job = self.data.get('job-template', {}).get(name, None)
         if not job:
             return job
-        return self.applyDefaults(job)
+        return self._applyDefaults(job)
 
-    def applyDefaults(self, data, override_dict=None):
+    def _applyDefaults(self, data, override_dict=None):
         if override_dict is None:
             override_dict = {}
 
@@ -211,14 +211,14 @@ class YamlParser(object):
         newdata.update(data)
         return newdata
 
-    def formatDescription(self, job):
+    def _formatDescription(self, job):
         if self.keep_desc:
             description = job.get("description", None)
         else:
             description = job.get("description", '')
         if description is not None:
             job["description"] = description + \
-                self.get_managed_string().lstrip()
+                self._get_managed_string().lstrip()
 
     def expandYaml(self, jobs_glob=None):
         changed = True
@@ -234,8 +234,8 @@ class YamlParser(object):
                 logger.debug("Ignoring job {0}".format(job['name']))
                 continue
             logger.debug("Expanding job '{0}'".format(job['name']))
-            job = self.applyDefaults(job)
-            self.formatDescription(job)
+            job = self._applyDefaults(job)
+            self._formatDescription(job)
             self.jobs.append(job)
         for project in self.data.get('project', {}).values():
             logger.debug("Expanding project '{0}'".format(project['name']))
@@ -250,17 +250,17 @@ class YamlParser(object):
                 else:
                     jobname = jobspec
                     jobparams = {}
-                job = self.getJob(jobname)
+                job = self._getJob(jobname)
                 if job:
                     # Just naming an existing defined job
                     if jobname in seen:
                         self._handle_dups("Duplicate job '{0}' specified "
-                                          "for project '{1}'".format(
-                                              jobname, project['name']))
+                                          "for project '{1}'"
+                                          .format(jobname, project['name']))
                     seen.add(jobname)
                     continue
                 # see if it's a job group
-                group = self.getJobGroup(jobname)
+                group = self._getJobGroup(jobname)
                 if group:
                     for group_jobspec in group['jobs']:
                         if isinstance(group_jobspec, dict):
@@ -271,7 +271,7 @@ class YamlParser(object):
                         else:
                             group_jobname = group_jobspec
                             group_jobparams = {}
-                        job = self.getJob(group_jobname)
+                        job = self._getJob(group_jobname)
                         if job:
                             if group_jobname in seen:
                                 self._handle_dups(
@@ -280,7 +280,7 @@ class YamlParser(object):
                                                            project['name']))
                             seen.add(group_jobname)
                             continue
-                        template = self.getJobTemplate(group_jobname)
+                        template = self._getJobTemplate(group_jobname)
                         # Allow a group to override parameters set by a project
                         d = {}
                         d.update(project)
@@ -290,16 +290,16 @@ class YamlParser(object):
                         # Except name, since the group's name is not useful
                         d['name'] = project['name']
                         if template:
-                            self.expandYamlForTemplateJob(d, template,
-                                                          jobs_glob)
+                            self._expandYamlForTemplateJob(d, template,
+                                                           jobs_glob)
                     continue
                 # see if it's a template
-                template = self.getJobTemplate(jobname)
+                template = self._getJobTemplate(jobname)
                 if template:
                     d = {}
                     d.update(project)
                     d.update(jobparams)
-                    self.expandYamlForTemplateJob(d, template, jobs_glob)
+                    self._expandYamlForTemplateJob(d, template, jobs_glob)
                 else:
                     raise JenkinsJobsException("Failed to find suitable "
                                                "template named '{0}'"
@@ -314,7 +314,7 @@ class YamlParser(object):
                 self.jobs.remove(job)
             seen.add(job['name'])
 
-    def expandYamlForTemplateJob(self, project, template, jobs_glob=None):
+    def _expandYamlForTemplateJob(self, project, template, jobs_glob=None):
         dimensions = []
         template_name = template['name']
         # reject keys that are not useful during yaml expansion
@@ -334,7 +334,7 @@ class YamlParser(object):
 
         for values in itertools.product(*dimensions):
             params = copy.deepcopy(project)
-            params = self.applyDefaults(params, template)
+            params = self._applyDefaults(params, template)
 
             expanded_values = {}
             for (k, v) in values:
@@ -364,10 +364,10 @@ class YamlParser(object):
             if jobs_glob and not matches(job_name, jobs_glob):
                 continue
 
-            self.formatDescription(expanded)
+            self._formatDescription(expanded)
             self.jobs.append(expanded)
 
-    def get_managed_string(self):
+    def _get_managed_string(self):
         # The \n\n is not hard coded, because they get stripped if the
         # project does not otherwise have a description.
         return "\n\n" + MAGIC_MANAGE_STRING
