@@ -133,8 +133,21 @@ class JenkinsJobs(object):
         builder = Builder(self.jjb_config)
 
         if options.command == 'delete':
-            for job in options.name:
-                builder.delete_job(job, options.path)
+            parser = YamlParser(self.jjb_config, builder.plugins_list)
+
+            fn = options.path
+
+            for jobs_glob in options.name:
+                parser = YamlParser(self.jjb_config, builder.plugins_list)
+
+                if fn:
+                    parser.load_files(fn)
+                    parser.expandYaml([jobs_glob])
+                    jobs = [j['name'] for j in parser.jobs]
+                else:
+                    jobs = [jobs_glob]
+
+                builder.delete_job(jobs)
 
         elif options.command == 'delete-all':
             if not utils.confirm(

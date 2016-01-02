@@ -32,7 +32,6 @@ import jenkins
 
 from jenkins_jobs.constants import MAGIC_MANAGE_STRING
 from jenkins_jobs.parallel import parallelize
-from jenkins_jobs.parser import YamlParser
 from jenkins_jobs import utils
 
 
@@ -250,7 +249,7 @@ class Builder(object):
                 if self.jenkins.is_managed(job['name']):
                     logger.info("Removing obsolete jenkins job {0}"
                                 .format(job['name']))
-                    self.delete_job(job['name'])
+                    self.delete_job([job['name']])
                     deleted_jobs += 1
                 else:
                     logger.info("Not deleting unmanaged jenkins job %s",
@@ -259,16 +258,7 @@ class Builder(object):
                 logger.debug("Keeping job %s", job['name'])
         return deleted_jobs
 
-    def delete_job(self, jobs_glob, fn=None):
-        self.parser = YamlParser(self.jjb_config, self.plugins_list)
-
-        if fn:
-            self.parser.load_files(fn)
-            self.parser.expandYaml([jobs_glob])
-            jobs = [j['name'] for j in self.parser.jobs]
-        else:
-            jobs = [jobs_glob]
-
+    def delete_job(self, jobs):
         if jobs is not None:
             logger.info("Removing jenkins job(s): %s" % ", ".join(jobs))
         for job in jobs:
