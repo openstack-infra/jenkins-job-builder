@@ -28,19 +28,26 @@ from tests.cmd.test_cmd import CmdTestsBase
 @mock.patch('jenkins_jobs.builder.Jenkins.get_plugins_info', mock.MagicMock)
 class UpdateTests(CmdTestsBase):
 
-    @mock.patch('jenkins_jobs.cli.entry.Builder.update_jobs')
-    def test_update_jobs(self, update_jobs_mock):
+    @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.job_exists')
+    @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.get_jobs')
+    @mock.patch('jenkins_jobs.builder.jenkins.Jenkins.reconfig_job')
+    def test_update_jobs(self,
+                         jenkins_reconfig_job,
+                         jenkins_get_jobs,
+                         jenkins_job_exists, ):
         """
         Test update_job is called
         """
-        # don't care about the value returned here
-        update_jobs_mock.return_value = ([], 0)
-
         path = os.path.join(self.fixtures_path, 'cmd-002.yaml')
         args = ['--conf', self.default_config_file, 'update', path]
 
         self.execute_jenkins_jobs_with_args(args)
-        update_jobs_mock.assert_called_with([path], [], n_workers=mock.ANY)
+
+        jenkins_reconfig_job.assert_has_calls(
+            [mock.call(job_name, mock.ANY)
+             for job_name in ['bar001', 'bar002', 'baz001', 'bam001']],
+            any_order=True
+        )
 
     @mock.patch('jenkins_jobs.builder.Jenkins.is_job', return_value=True)
     @mock.patch('jenkins_jobs.builder.Jenkins.get_jobs')
