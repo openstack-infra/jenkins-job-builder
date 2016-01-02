@@ -15,28 +15,23 @@
 
 import logging
 import sys
-import time
 
-from jenkins_jobs.builder import Builder
-from jenkins_jobs.parser import YamlParser
-import jenkins_jobs.cli.subcommand.base as base
+import jenkins_jobs.cli.subcommand.update as update
 
 
 logger = logging.getLogger(__name__)
 
 
-class TestSubCommand(base.BaseSubCommand):
+class TestSubCommand(update.UpdateSubCommand):
+
     def parse_args(self, subparser):
         test = subparser.add_parser('test')
 
         self.parse_option_recursive_exclude(test)
 
-        test.add_argument(
-            'path',
-            help='''colon-separated list of paths to YAML files or
-            directories''',
-            nargs='?',
-            default=sys.stdin)
+        self.parse_arg_path(test)
+        self.parse_arg_names(test)
+
         test.add_argument(
             '-p',
             dest='plugins_info_path',
@@ -47,27 +42,9 @@ class TestSubCommand(base.BaseSubCommand):
             dest='output_dir',
             default=sys.stdout,
             help='path to output XML')
-        test.add_argument(
-            'name',
-            help='name(s) of job(s)', nargs='*')
 
     def execute(self, options, jjb_config):
-        builder = Builder(jjb_config)
 
-        logger.info("Updating jobs in {0} ({1})".format(
-            options.path, options.name))
-        orig = time.time()
+        builder, xml_jobs = self._generate_xmljobs(options, jjb_config)
 
-        # Generate XML
-        parser = YamlParser(jjb_config, builder.plugins_list)
-        parser.load_files(options.path)
-        parser.expandYaml(options.name)
-        parser.generateXML()
-
-        jobs = parser.jobs
-        step = time.time()
-        logging.debug('%d XML files generated in %ss',
-                      len(jobs), str(step - orig))
-
-        builder.update_jobs(parser.xml_jobs, output=options.output_dir,
-                            n_workers=1)
+        builder.update_jobs(xml_jobs, output=options.output_dir, n_workers=1)

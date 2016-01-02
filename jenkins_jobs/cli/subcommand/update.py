@@ -14,6 +14,7 @@
 # under the License.
 
 import logging
+import sys
 import time
 
 from jenkins_jobs.builder import Builder
@@ -26,18 +27,28 @@ logger = logging.getLogger(__name__)
 
 
 class UpdateSubCommand(base.BaseSubCommand):
+
+    def parse_arg_path(self, parser):
+        parser.add_argument(
+            'path',
+            nargs='?',
+            default=sys.stdin,
+            help='''colon-separated list of paths to YAML files or
+            directories''')
+
+    def parse_arg_names(self, parser):
+        parser.add_argument(
+            'names',
+            help='name(s) of job(s)', nargs='*')
+
     def parse_args(self, subparser):
         update = subparser.add_parser('update')
 
         self.parse_option_recursive_exclude(update)
 
-        update.add_argument(
-            'path',
-            help='''colon-separated list of paths to YAML files or
-            directories''')
-        update.add_argument(
-            'names',
-            help='name(s) of job(s)', nargs='*')
+        self.parse_arg_path(update)
+        self.parse_arg_names(update)
+
         update.add_argument(
             '--delete-old',
             action='store_true',
@@ -52,12 +63,8 @@ class UpdateSubCommand(base.BaseSubCommand):
             help='''number of workers to use, 0 for autodetection and 1 for
             just one worker.''')
 
-    def execute(self, options, jjb_config):
+    def _generate_xmljobs(self, options, jjb_config=None):
         builder = Builder(jjb_config)
-
-        if options.n_workers < 0:
-            raise JenkinsJobsException(
-                'Number of workers must be equal or greater than 0')
 
         logger.info("Updating jobs in {0} ({1})".format(
             options.path, options.names))
@@ -74,11 +81,21 @@ class UpdateSubCommand(base.BaseSubCommand):
         logging.debug('%d XML files generated in %ss',
                       len(jobs), str(step - orig))
 
+        return builder, parser.xml_jobs
+
+    def execute(self, options, jjb_config):
+
+        if options.n_workers < 0:
+            raise JenkinsJobsException(
+                'Number of workers must be equal or greater than 0')
+
+        builder, xml_jobs = self._generate_xmljobs(options, jjb_config)
+
         jobs, num_updated_jobs = builder.update_jobs(
-            parser.xml_jobs,
+            xml_jobs,
             n_workers=options.n_workers)
         logger.info("Number of jobs updated: %d", num_updated_jobs)
 
         if options.delete_old:
-            n = builder.delete_old_managed(keep=parser.xml_jobs)
+            n = builder.delete_old_managed(keep=xml_jobs)
             logger.info("Number of jobs deleted: %d", n)
