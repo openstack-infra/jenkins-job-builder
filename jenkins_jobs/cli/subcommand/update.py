@@ -1,5 +1,28 @@
+#!/usr/bin/env python
+# Copyright (C) 2015 Wayne Warren
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
 
+import logging
+import time
+
+from jenkins_jobs.builder import Builder
+from jenkins_jobs.parser import YamlParser
+from jenkins_jobs.errors import JenkinsJobsException
 import jenkins_jobs.cli.subcommand.base as base
+
+
+logger = logging.getLogger(__name__)
 
 
 class UpdateSubCommand(base.BaseSubCommand):
@@ -29,5 +52,33 @@ class UpdateSubCommand(base.BaseSubCommand):
             help='''number of workers to use, 0 for autodetection and 1 for
             just one worker.''')
 
-    def execute(self, config):
-        raise NotImplementedError
+    def execute(self, options, jjb_config):
+        builder = Builder(jjb_config)
+
+        if options.n_workers < 0:
+            raise JenkinsJobsException(
+                'Number of workers must be equal or greater than 0')
+
+        logger.info("Updating jobs in {0} ({1})".format(
+            options.path, options.names))
+        orig = time.time()
+
+        # Generate XML
+        parser = YamlParser(jjb_config, builder.plugins_list)
+        parser.load_files(options.path)
+        parser.expandYaml(options.names)
+        parser.generateXML()
+
+        jobs = parser.jobs
+        step = time.time()
+        logging.debug('%d XML files generated in %ss',
+                      len(jobs), str(step - orig))
+
+        jobs, num_updated_jobs = builder.update_jobs(
+            parser.xml_jobs,
+            n_workers=options.n_workers)
+        logger.info("Number of jobs updated: %d", num_updated_jobs)
+
+        if options.delete_old:
+            n = builder.delete_old_managed(keep=parser.xml_jobs)
+            logger.info("Number of jobs deleted: %d", n)

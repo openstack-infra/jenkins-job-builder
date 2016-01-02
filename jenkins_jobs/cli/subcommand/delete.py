@@ -1,4 +1,21 @@
+#!/usr/bin/env python
+# Copyright (C) 2015 Wayne Warren
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
 
+
+from jenkins_jobs.builder import Builder
+from jenkins_jobs.parser import YamlParser
 import jenkins_jobs.cli.subcommand.base as base
 
 
@@ -19,5 +36,21 @@ class DeleteSubCommand(base.BaseSubCommand):
             help='''colon-separated list of paths to YAML files or
             directories''')
 
-    def execute(self, config):
-        raise NotImplementedError
+    def execute(self, options, jjb_config):
+        builder = Builder(jjb_config)
+
+        parser = YamlParser(jjb_config, builder.plugins_list)
+
+        fn = options.path
+
+        for jobs_glob in options.name:
+            parser = YamlParser(jjb_config, builder.plugins_list)
+
+            if fn:
+                parser.load_files(fn)
+                parser.expandYaml([jobs_glob])
+                jobs = [j['name'] for j in parser.jobs]
+            else:
+                jobs = [jobs_glob]
+
+            builder.delete_job(jobs)
