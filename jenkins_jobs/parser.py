@@ -226,7 +226,7 @@ class YamlParser(object):
             changed = False
             for module in self.registry.modules:
                 if hasattr(module, 'handle_data'):
-                    if module.handle_data(self):
+                    if module.handle_data(self.data):
                         changed = True
 
         for job in self.data.get('job', {}).values():
