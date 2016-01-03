@@ -117,7 +117,7 @@ class General(jenkins_jobs.modules.base.Base):
     sequence = 10
     logrotate_warn_issued = False
 
-    def gen_xml(self, parser, xml, data):
+    def gen_xml(self, xml, data):
         jdk = data.get('jdk', None)
         if jdk:
             XML.SubElement(xml, 'jdk').text = jdk
@@ -190,10 +190,10 @@ class General(jenkins_jobs.modules.base.Base):
             lr_anum.text = str(logrotate.get('artifactNumToKeep', -1))
 
         if 'raw' in data:
-            raw(parser, xml, data['raw'])
+            raw(self.registry, xml, data['raw'])
 
 
-def raw(parser, xml_parent, data):
+def raw(registry, xml_parent, data):
     # documented in definition.rst since includes and docs is not working well
     # For cross cutting method like this
     root = XML.fromstring(data.get('xml'))

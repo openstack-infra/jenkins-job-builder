@@ -30,7 +30,7 @@ from jenkins_jobs.errors import JenkinsJobsException
 import jenkins_jobs.modules.base
 
 
-def http_endpoint(parser, xml_parent, data):
+def http_endpoint(registry, xml_parent, data):
     """yaml: http
     Defines an HTTP notification endpoint.
     Requires the Jenkins :jenkins-wiki:`Notification Plugin
@@ -87,7 +87,7 @@ class Notifications(jenkins_jobs.modules.base.Base):
     component_type = 'notification'
     component_list_type = 'notifications'
 
-    def gen_xml(self, parser, xml_parent, data):
+    def gen_xml(self, xml_parent, data):
         properties = xml_parent.find('properties')
         if properties is None:
             properties = XML.SubElement(xml_parent, 'properties')
@@ -102,4 +102,4 @@ class Notifications(jenkins_jobs.modules.base.Base):
 
             for endpoint in notifications:
                 self.registry.dispatch('notification',
-                                       parser, endpoints_element, endpoint)
+                                       endpoints_element, endpoint)

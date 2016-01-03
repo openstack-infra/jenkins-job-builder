@@ -42,7 +42,7 @@ import jenkins_jobs.modules.base
 from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 
 
-def builds_chain_fingerprinter(parser, xml_parent, data):
+def builds_chain_fingerprinter(registry, xml_parent, data):
     """yaml: builds-chain-fingerprinter
     Builds chain fingerprinter.
     Requires the Jenkins :jenkins-wiki:`Builds chain fingerprinter Plugin
@@ -68,7 +68,7 @@ def builds_chain_fingerprinter(parser, xml_parent, data):
         data.get('per-job-chain', False)).lower()
 
 
-def ownership(parser, xml_parent, data):
+def ownership(registry, xml_parent, data):
     """yaml: ownership
     Plugin provides explicit ownership for jobs and slave nodes.
     Requires the Jenkins :jenkins-wiki:`Ownership Plugin <Ownership+Plugin>`.
@@ -96,7 +96,7 @@ def ownership(parser, xml_parent, data):
         XML.SubElement(coownersIds, 'string').text = coowner
 
 
-def promoted_build(parser, xml_parent, data):
+def promoted_build(registry, xml_parent, data):
     """yaml: promoted-build
     Marks a build for promotion. A promotion process with an identical
     name must be created via the web interface in the job in order for the job
@@ -121,7 +121,7 @@ def promoted_build(parser, xml_parent, data):
             XML.SubElement(active_processes, 'string').text = str(n)
 
 
-def github(parser, xml_parent, data):
+def github(registry, xml_parent, data):
     """yaml: github
     Sets the GitHub URL for the project.
 
@@ -141,7 +141,7 @@ def github(parser, xml_parent, data):
         raise MissingAttributeError(e)
 
 
-def gitlab(parser, xml_parent, data):
+def gitlab(registry, xml_parent, data):
     """yaml: gitlab
     Sets the GitLab connection for the project. Configured via Jenkins Global
     Configuration.
@@ -163,7 +163,7 @@ def gitlab(parser, xml_parent, data):
         raise MissingAttributeError(e)
 
 
-def least_load(parser, xml_parent, data):
+def least_load(registry, xml_parent, data):
     """yaml: least-load
     Enables the Least Load Plugin.
     Requires the Jenkins :jenkins-wiki:`Least Load Plugin <Least+Load+Plugin>`.
@@ -183,7 +183,7 @@ def least_load(parser, xml_parent, data):
         data.get('disabled', True)).lower()
 
 
-def throttle(parser, xml_parent, data):
+def throttle(registry, xml_parent, data):
     """yaml: throttle
     Throttles the number of builds for this job.
     Requires the Jenkins :jenkins-wiki:`Throttle Concurrent Builds Plugin
@@ -235,7 +235,7 @@ def throttle(parser, xml_parent, data):
         data.get('matrix-configs', False)).lower()
 
 
-def sidebar(parser, xml_parent, data):
+def sidebar(registry, xml_parent, data):
     """yaml: sidebar
     Allows you to add links in the sidebar.
     Requires the Jenkins :jenkins-wiki:`Sidebar-Link Plugin
@@ -263,7 +263,7 @@ def sidebar(parser, xml_parent, data):
     XML.SubElement(action, 'icon').text = str(data.get('icon', ''))
 
 
-def inject(parser, xml_parent, data):
+def inject(registry, xml_parent, data):
     """yaml: inject
     Allows you to inject environment variables into the build.
     Requires the Jenkins :jenkins-wiki:`Env Inject Plugin <EnvInject+Plugin>`.
@@ -313,7 +313,7 @@ def inject(parser, xml_parent, data):
         data.get('override-build-parameters', False)).lower()
 
 
-def authenticated_build(parser, xml_parent, data):
+def authenticated_build(registry, xml_parent, data):
     """yaml: authenticated-build
     Specifies an authorization matrix where only authenticated users
     may trigger a build.
@@ -335,7 +335,7 @@ def authenticated_build(parser, xml_parent, data):
         'hudson.model.Item.Build:authenticated')
 
 
-def authorization(parser, xml_parent, data):
+def authorization(registry, xml_parent, data):
     """yaml: authorization
     Specifies an authorization matrix
 
@@ -408,7 +408,7 @@ def authorization(parser, xml_parent, data):
                     raise InvalidAttributeError(username, perm, mapping.keys())
 
 
-def priority_sorter(parser, xml_parent, data):
+def priority_sorter(registry, xml_parent, data):
     """yaml: priority-sorter
     Allows simple ordering of builds, using a configurable job priority.
 
@@ -433,7 +433,7 @@ def priority_sorter(parser, xml_parent, data):
         raise MissingAttributeError(e)
 
 
-def build_blocker(parser, xml_parent, data):
+def build_blocker(registry, xml_parent, data):
     """yaml: build-blocker
     This plugin keeps the actual job in the queue
     if at least one name of currently running jobs
@@ -487,7 +487,7 @@ def build_blocker(parser, xml_parent, data):
     XML.SubElement(blocker, 'scanQueueFor').text = queue_scanning
 
 
-def copyartifact(parser, xml_parent, data):
+def copyartifact(registry, xml_parent, data):
     """yaml: copyartifact
     Specify a list of projects that have access to copy the artifacts of
     this project.
@@ -518,7 +518,7 @@ def copyartifact(parser, xml_parent, data):
         XML.SubElement(projectlist, 'string').text = project
 
 
-def batch_tasks(parser, xml_parent, data):
+def batch_tasks(registry, xml_parent, data):
     """yaml: batch-tasks
     Batch tasks can be tasks for events like releases, integration, archiving,
     etc. In this way, anyone in the project team can execute them in a way that
@@ -553,7 +553,7 @@ def batch_tasks(parser, xml_parent, data):
         XML.SubElement(batch_task, 'script').text = task['script']
 
 
-def heavy_job(parser, xml_parent, data):
+def heavy_job(registry, xml_parent, data):
     """yaml: heavy-job
     This plugin allows you to define "weight" on each job,
     and making each job consume that many executors
@@ -576,7 +576,7 @@ def heavy_job(parser, xml_parent, data):
         data.get('weight', 1))
 
 
-def slave_utilization(parser, xml_parent, data):
+def slave_utilization(registry, xml_parent, data):
     """yaml: slave-utilization
     This plugin allows you to specify the percentage of a slave's capacity a
     job wants to use.
@@ -607,7 +607,7 @@ def slave_utilization(parser, xml_parent, data):
         data.get('single-instance-per-slave', False)).lower()
 
 
-def delivery_pipeline(parser, xml_parent, data):
+def delivery_pipeline(registry, xml_parent, data):
     """yaml: delivery-pipeline
     Requires the Jenkins :jenkins-wiki:`Delivery Pipeline Plugin
     <Delivery+Pipeline+Plugin>`.
@@ -641,7 +641,7 @@ def delivery_pipeline(parser, xml_parent, data):
     convert_mapping_to_xml(pipeline, data, mapping, fail_required=True)
 
 
-def zeromq_event(parser, xml_parent, data):
+def zeromq_event(registry, xml_parent, data):
     """yaml: zeromq-event
     This is a Jenkins plugin that will publish Jenkins Job run events
     (start, complete, finish) to a ZMQ PUB socket.
@@ -663,7 +663,7 @@ def zeromq_event(parser, xml_parent, data):
     XML.SubElement(zmq_event, 'enabled').text = 'true'
 
 
-def slack(parser, xml_parent, data):
+def slack(registry, xml_parent, data):
     """yaml: slack
     Requires the Jenkins :jenkins-wiki:`Slack Plugin <Slack+Plugin>`
 
@@ -708,7 +708,7 @@ def slack(parser, xml_parent, data):
 
     logger = logging.getLogger(__name__)
 
-    plugin_info = parser.registry.get_plugin_info('Slack Notification Plugin')
+    plugin_info = registry.get_plugin_info('Slack Notification Plugin')
     plugin_ver = pkg_resources.parse_version(plugin_info.get('version', "0"))
 
     if plugin_ver >= pkg_resources.parse_version("2.0"):
@@ -746,7 +746,7 @@ def slack(parser, xml_parent, data):
         _add_xml(slack, xml_name, data.get(yaml_name, default_value))
 
 
-def rebuild(parser, xml_parent, data):
+def rebuild(registry, xml_parent, data):
     """yaml: rebuild
     Requires the Jenkins :jenkins-wiki:`Rebuild Plugin
     <Rebuild+Plugin>`.
@@ -771,7 +771,7 @@ def rebuild(parser, xml_parent, data):
         data.get('rebuild-disabled', False)).lower()
 
 
-def build_discarder(parser, xml_parent, data):
+def build_discarder(registry, xml_parent, data):
     """yaml: build-discarder
 
     :arg int days-to-keep: Number of days to keep builds for (default -1)
@@ -811,10 +811,10 @@ class Properties(jenkins_jobs.modules.base.Base):
     component_type = 'property'
     component_list_type = 'properties'
 
-    def gen_xml(self, parser, xml_parent, data):
+    def gen_xml(self, xml_parent, data):
         properties = xml_parent.find('properties')
         if properties is None:
             properties = XML.SubElement(xml_parent, 'properties')
 
         for prop in data.get('properties', []):
-            self.registry.dispatch('property', parser, properties, prop)
+            self.registry.dispatch('property', properties, prop)

@@ -72,7 +72,7 @@ class Base(object):
 
         return False
 
-    def gen_xml(self, parser, xml_parent, data):
+    def gen_xml(self, xml_parent, data):
         """Update the XML element tree based on YAML data.  Override
         this method to add elements to the XML output.  Create new
         Element objects and add them to the xml_parent.  The YAML data

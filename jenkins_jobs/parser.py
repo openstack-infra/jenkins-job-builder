@@ -27,7 +27,6 @@ from jenkins_jobs.constants import MAGIC_MANAGE_STRING
 from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.formatter import deep_format
 import jenkins_jobs.local_yaml as local_yaml
-from jenkins_jobs.registry import ModuleRegistry
 from jenkins_jobs import utils
 from jenkins_jobs.xml_config import XmlJob
 
@@ -71,7 +70,7 @@ def combination_matches(combination, match_combinations):
 
 
 class YamlParser(object):
-    def __init__(self, jjb_config=None, plugins_info=None):
+    def __init__(self, jjb_config=None):
         self.data = {}
         self.jobs = []
         self.xml_jobs = []
@@ -79,9 +78,6 @@ class YamlParser(object):
         self.jjb_config = jjb_config
         self.keep_desc = jjb_config.yamlparser['keep_descriptions']
         self.path = jjb_config.yamlparser['include_path']
-
-        self.registry = ModuleRegistry(jjb_config,
-                                       plugins_info)
 
     def load_files(self, fn):
 
@@ -220,11 +216,11 @@ class YamlParser(object):
             job["description"] = description + \
                 self._get_managed_string().lstrip()
 
-    def expandYaml(self, jobs_glob=None):
+    def expandYaml(self, registry, jobs_glob=None):
         changed = True
         while changed:
             changed = False
-            for module in self.registry.modules:
+            for module in registry.modules:
                 if hasattr(module, 'handle_data'):
                     if module.handle_data(self.data):
                         changed = True
@@ -372,23 +368,23 @@ class YamlParser(object):
         # project does not otherwise have a description.
         return "\n\n" + MAGIC_MANAGE_STRING
 
-    def generateXML(self):
+    def generateXML(self, registry):
         for job in self.jobs:
-            self.xml_jobs.append(self.getXMLForJob(job))
+            self.xml_jobs.append(self.getXMLForJob(job, registry))
 
-    def getXMLForJob(self, data):
+    def getXMLForJob(self, data, registry):
         kind = data.get('project-type', 'freestyle')
 
         for ep in pkg_resources.iter_entry_points(
                 group='jenkins_jobs.projects', name=kind):
             Mod = ep.load()
-            mod = Mod(self.registry)
+            mod = Mod(registry)
             xml = mod.root_xml(data)
-            self.gen_xml(xml, data)
+            self.gen_xml(xml, data, registry)
             job = XmlJob(xml, data['name'])
             return job
 
-    def gen_xml(self, xml, data):
-        for module in self.registry.modules:
+    def gen_xml(self, xml, data, registry):
+        for module in registry.modules:
             if hasattr(module, 'gen_xml'):
-                module.gen_xml(self, xml, data)
+                module.gen_xml(xml, data)

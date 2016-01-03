@@ -46,7 +46,7 @@ import jenkins_jobs.modules.base
 from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 
 
-def git(parser, xml_parent, data):
+def git(registry, xml_parent, data):
     """yaml: git
     Specifies the git SCM repository for this job.
     Requires the Jenkins :jenkins-wiki:`Git Plugin <Git+Plugin>`.
@@ -476,7 +476,7 @@ def git(parser, xml_parent, data):
                 data.get('repo-name', ''))
 
 
-def cvs(parser, xml_parent, data):
+def cvs(registry, xml_parent, data):
     """yaml: cvs
     Specifies the CVS SCM repository for this job.
     Requires the Jenkins :jenkins-wiki:`CVS Plugin <CVS+Plugin>`.
@@ -606,7 +606,7 @@ def cvs(parser, xml_parent, data):
             data.get(opt, val)).lower()
 
 
-def repo(parser, xml_parent, data):
+def repo(registry, xml_parent, data):
     """yaml: repo
     Specifies the repo SCM repository for this job.
     Requires the Jenkins :jenkins-wiki:`Repo Plugin <Repo+Plugin>`.
@@ -683,7 +683,7 @@ def repo(parser, xml_parent, data):
         XML.SubElement(ip, 'string').text = str(ignored_project)
 
 
-def store(parser, xml_parent, data):
+def store(registry, xml_parent, data):
     """yaml: store
     Specifies the Visualworks Smalltalk Store repository for this job.
     Requires the Jenkins :jenkins-wiki:`Visualworks Smalltalk Store Plugin
@@ -745,7 +745,7 @@ def store(parser, xml_parent, data):
         XML.SubElement(scm, 'generateParcelBuilderInputFile').text = 'false'
 
 
-def svn(parser, xml_parent, data):
+def svn(registry, xml_parent, data):
     """yaml: svn
     Specifies the svn SCM repository for this job.
 
@@ -872,7 +872,7 @@ def svn(parser, xml_parent, data):
             xe.text = str(val)
 
 
-def tfs(parser, xml_parent, data):
+def tfs(registry, xml_parent, data):
     """yaml: tfs
     Specifies the Team Foundation Server repository for this job.
     Requires the Jenkins :jenkins-wiki:`Team Foundation Server Plugin
@@ -970,7 +970,7 @@ def tfs(parser, xml_parent, data):
                                                   'Browser'})
 
 
-def workspace(parser, xml_parent, data):
+def workspace(registry, xml_parent, data):
     """yaml: workspace
     Specifies the cloned workspace for this job to use as a SCM source.
     Requires the Jenkins :jenkins-wiki:`Clone Workspace SCM Plugin
@@ -1110,7 +1110,7 @@ def hg(self, xml_parent, data):
                                        "with browser.")
 
 
-def openshift_img_streams(parser, xml_parent, data):
+def openshift_img_streams(registry, xml_parent, data):
     """yaml: openshift-img-streams
     Rather than a Build step extension plugin, this is an extension of the
     Jenkins SCM plugin, where this baked-in polling mechanism provided by
@@ -1165,7 +1165,7 @@ def openshift_img_streams(parser, xml_parent, data):
     convert_mapping_to_xml(scm, data, mapping, fail_required=True)
 
 
-def bzr(parser, xml_parent, data):
+def bzr(registry, xml_parent, data):
     """yaml: bzr
     Specifies the bzr SCM repository for this job.
     Requires the Jenkins :jenkins-wiki:`Bazaar Plugin <Bazaar+Plugin>`.
@@ -1224,7 +1224,7 @@ def bzr(parser, xml_parent, data):
             data['opengrok-root-module'])
 
 
-def url(parser, xml_parent, data):
+def url(registry, xml_parent, data):
     """yaml: url
 
     Watch for changes in, and download an artifact from a particular url.
@@ -1262,10 +1262,10 @@ class SCM(jenkins_jobs.modules.base.Base):
     component_type = 'scm'
     component_list_type = 'scm'
 
-    def gen_xml(self, parser, xml_parent, data):
+    def gen_xml(self, xml_parent, data):
         scms_parent = XML.Element('scms')
         for scm in data.get('scm', []):
-            self.registry.dispatch('scm', parser, scms_parent, scm)
+            self.registry.dispatch('scm', scms_parent, scm)
         scms_count = len(scms_parent)
         if scms_count == 0:
             XML.SubElement(xml_parent, 'scm', {'class': 'hudson.scm.NullSCM'})

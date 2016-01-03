@@ -39,7 +39,7 @@ from jenkins_jobs.modules.helpers import build_trends_publisher
 from jenkins_jobs.modules.helpers import findbugs_settings
 
 
-def email(parser, xml_parent, data):
+def email(registry, xml_parent, data):
     """yaml: email
     Email notifications on build failure.
 
@@ -71,7 +71,7 @@ def email(parser, xml_parent, data):
     XML.SubElement(mailer, 'perModuleEmail').text = 'true'
 
 
-def findbugs(parser, xml_parent, data):
+def findbugs(registry, xml_parent, data):
     """yaml: findbugs
     FindBugs reporting for builds
 
@@ -142,7 +142,7 @@ class Reporters(jenkins_jobs.modules.base.Base):
     component_type = 'reporter'
     component_list_type = 'reporters'
 
-    def gen_xml(self, parser, xml_parent, data):
+    def gen_xml(self, xml_parent, data):
         if 'reporters' not in data:
             return
 
@@ -153,4 +153,4 @@ class Reporters(jenkins_jobs.modules.base.Base):
         reporters = XML.SubElement(xml_parent, 'reporters')
 
         for action in data.get('reporters', []):
-            self.registry.dispatch('reporter', parser, reporters, action)
+            self.registry.dispatch('reporter', reporters, action)

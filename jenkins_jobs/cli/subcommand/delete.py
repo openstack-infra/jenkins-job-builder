@@ -16,6 +16,7 @@
 
 from jenkins_jobs.builder import Builder
 from jenkins_jobs.parser import YamlParser
+from jenkins_jobs.registry import ModuleRegistry
 import jenkins_jobs.cli.subcommand.base as base
 
 
@@ -39,16 +40,15 @@ class DeleteSubCommand(base.BaseSubCommand):
     def execute(self, options, jjb_config):
         builder = Builder(jjb_config)
 
-        parser = YamlParser(jjb_config, builder.plugins_list)
-
         fn = options.path
 
+        registry = ModuleRegistry(jjb_config, builder.plugins_list)
         for jobs_glob in options.name:
-            parser = YamlParser(jjb_config, builder.plugins_list)
+            parser = YamlParser(jjb_config)
 
             if fn:
                 parser.load_files(fn)
-                parser.expandYaml([jobs_glob])
+                parser.expandYaml(registry, [jobs_glob])
                 jobs = [j['name'] for j in parser.jobs]
             else:
                 jobs = [jobs_glob]

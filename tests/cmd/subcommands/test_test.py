@@ -131,7 +131,7 @@ class TestTests(CmdTestsBase):
         self.assertIn("'ascii' codec can't encode character", str(e))
 
     @mock.patch('jenkins_jobs.cli.subcommand.update.YamlParser.generateXML')
-    @mock.patch('jenkins_jobs.parser.ModuleRegistry')
+    @mock.patch('jenkins_jobs.cli.subcommand.update.ModuleRegistry')
     def test_plugins_info_stub_option(self, registry_mock, generateXML_mock):
         """
         Test handling of plugins_info stub option.
@@ -155,7 +155,7 @@ class TestTests(CmdTestsBase):
                                          plugins_info_list)
 
     @mock.patch('jenkins_jobs.cli.subcommand.update.YamlParser.generateXML')
-    @mock.patch('jenkins_jobs.parser.ModuleRegistry')
+    @mock.patch('jenkins_jobs.cli.subcommand.update.ModuleRegistry')
     def test_bogus_plugins_info_stub_option(self, registry_mock,
                                             generateXML_mock):
         """

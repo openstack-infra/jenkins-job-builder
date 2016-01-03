@@ -41,7 +41,7 @@ from jenkins_jobs.modules import hudson_model
 import jenkins_jobs.modules.helpers as helpers
 
 
-def archive(parser, xml_parent, data):
+def archive(registry, xml_parent, data):
     """yaml: archive
     Archive build artifacts
 
@@ -98,7 +98,7 @@ def archive(parser, xml_parent, data):
     default_excludes.text = str(data.get('default-excludes', True)).lower()
 
 
-def blame_upstream(parser, xml_parent, data):
+def blame_upstream(registry, xml_parent, data):
     """yaml: blame-upstream
     Notify upstream commiters when build fails
     Requires the Jenkins :jenkins-wiki:`Blame upstream commiters Plugin
@@ -115,7 +115,7 @@ def blame_upstream(parser, xml_parent, data):
                    'BlameUpstreamCommitersPublisher')
 
 
-def jclouds(parser, xml_parent, data):
+def jclouds(registry, xml_parent, data):
     """yaml: jclouds
     JClouds Cloud Storage Settings provides a way to store artifacts on
     JClouds supported storage providers. Requires the Jenkins
@@ -161,7 +161,7 @@ def jclouds(parser, xml_parent, data):
         data.get('hierarchy', False)).lower()
 
 
-def javadoc(parser, xml_parent, data):
+def javadoc(registry, xml_parent, data):
     """yaml: javadoc
     Publish Javadoc
     Requires the Jenkins :jenkins-wiki:`Javadoc Plugin <Javadoc+Plugin>`.
@@ -187,7 +187,7 @@ def javadoc(parser, xml_parent, data):
         'keep-all-successful', False)).lower()
 
 
-def jdepend(parser, xml_parent, data):
+def jdepend(registry, xml_parent, data):
     """yaml: jdepend
     Publish jdepend report
     Requires the :jenkins-wiki:`JDepend Plugin <JDepend+Plugin>`.
@@ -208,7 +208,7 @@ def jdepend(parser, xml_parent, data):
     XML.SubElement(jdepend, 'configuredJDependFile').text = str(filepath)
 
 
-def hue_light(parser, xml_parent, data):
+def hue_light(registry, xml_parent, data):
     """yaml: hue-light
     This plugin shows the state of your builds using the awesome Philips hue
     lights.
@@ -253,7 +253,7 @@ def hue_light(parser, xml_parent, data):
         hue_light, data, build_mapping, fail_required=True)
 
 
-def campfire(parser, xml_parent, data):
+def campfire(registry, xml_parent, data):
     """yaml: campfire
     Send build notifications to Campfire rooms.
     Requires the Jenkins :jenkins-wiki:`Campfire Plugin <Campfire+Plugin>`.
@@ -297,7 +297,7 @@ def campfire(parser, xml_parent, data):
         XML.SubElement(room, 'campfire reference="../../campfire"')
 
 
-def codecover(parser, xml_parent, data):
+def codecover(registry, xml_parent, data):
     """yaml: codecover
     This plugin allows you to capture code coverage report from CodeCover.
     Jenkins will generate the trend report of coverage.
@@ -346,7 +346,7 @@ def codecover(parser, xml_parent, data):
         health_report, data, mapping, fail_required=True)
 
 
-def emotional_jenkins(parser, xml_parent, data):
+def emotional_jenkins(registry, xml_parent, data):
     """yaml: emotional-jenkins
     Emotional Jenkins. This funny plugin changes the expression of Mr. Jenkins
     in the background when your builds fail.
@@ -364,7 +364,7 @@ def emotional_jenkins(parser, xml_parent, data):
                    'EmotionalJenkinsPublisher')
 
 
-def trigger_parameterized_builds(parser, xml_parent, data):
+def trigger_parameterized_builds(registry, xml_parent, data):
     """yaml: trigger-parameterized-builds
     Trigger parameterized builds of other jobs.
     Requires the Jenkins :jenkins-wiki:`Parameterized Trigger Plugin
@@ -457,8 +457,8 @@ def trigger_parameterized_builds(parser, xml_parent, data):
     ]
 
     try:
-        if parser.jjb_config.config_parser.getboolean('__future__',
-                                                      'param_order_from_yaml'):
+        if registry.jjb_config.config_parser.getboolean(
+                '__future__', 'param_order_from_yaml'):
             orig_order = None
     except six.moves.configparser.NoSectionError:
         pass
@@ -586,7 +586,7 @@ def trigger_parameterized_builds(parser, xml_parent, data):
             project_def.get('trigger-with-no-params', False)).lower()
 
 
-def trigger(parser, xml_parent, data):
+def trigger(registry, xml_parent, data):
     """yaml: trigger
     Trigger non-parametrised builds of other jobs.
 
@@ -617,7 +617,7 @@ def trigger(parser, xml_parent, data):
     tcolor.text = hudson_model.THRESHOLDS[threshold]['color']
 
 
-def clone_workspace(parser, xml_parent, data):
+def clone_workspace(registry, xml_parent, data):
     """yaml: clone-workspace
     Archive the workspace from builds of one project and reuse them as the SCM
     source for another project.
@@ -689,7 +689,7 @@ def clone_workspace(parser, xml_parent, data):
     override_default_excludes_elem.text = override_default_excludes_str
 
 
-def cloverphp(parser, xml_parent, data):
+def cloverphp(registry, xml_parent, data):
     """yaml: cloverphp
     Capture code coverage reports from PHPUnit
     Requires the Jenkins :jenkins-wiki:`Clover PHP Plugin <Clover+PHP+Plugin>`.
@@ -795,7 +795,7 @@ def cloverphp(parser, xml_parent, data):
             XML.SubElement(cur_target, t_type + 'Coverage').text = str(val)
 
 
-def coverage(parser, xml_parent, data):
+def coverage(registry, xml_parent, data):
     """yaml: coverage
     WARNING: The coverage function is deprecated. Instead, use the
     cobertura function to generate a cobertura coverage report.
@@ -865,7 +865,7 @@ def coverage(parser, xml_parent, data):
     XML.SubElement(cobertura, 'sourceEncoding').text = 'ASCII'
 
 
-def cobertura(parser, xml_parent, data):
+def cobertura(registry, xml_parent, data):
     """yaml: cobertura
     Generate a cobertura coverage report.
     Requires the Jenkins :jenkins-wiki:`Cobertura Coverage Plugin
@@ -953,7 +953,7 @@ def cobertura(parser, xml_parent, data):
         'source-encoding', 'ASCII')
 
 
-def jacoco(parser, xml_parent, data):
+def jacoco(registry, xml_parent, data):
     """yaml: jacoco
     Generate a JaCoCo coverage report.
     Requires the Jenkins :jenkins-wiki:`JaCoCo Plugin <JaCoCo+Plugin>`.
@@ -1023,7 +1023,7 @@ def jacoco(parser, xml_parent, data):
                        'Coverage').text = str(item_values.get('unhealthy', 0))
 
 
-def ftp(parser, xml_parent, data):
+def ftp(registry, xml_parent, data):
     """yaml: ftp
     Upload files via FTP.
     Requires the Jenkins :jenkins-wiki:`Publish over FTP Plugin
@@ -1065,7 +1065,7 @@ def ftp(parser, xml_parent, data):
     XML.SubElement(transfer_node, 'asciiMode').text = 'false'
 
 
-def junit(parser, xml_parent, data):
+def junit(registry, xml_parent, data):
     """yaml: junit
     Publish JUnit test results.
 
@@ -1131,7 +1131,7 @@ def junit(parser, xml_parent, data):
                        '.JUnitFlakyTestDataPublisher')
 
 
-def cucumber_reports(parser, xml_parent, data):
+def cucumber_reports(registry, xml_parent, data):
     """yaml: cucumber-reports
     This plugin creates pretty cucumber-jvm html reports on jenkins.
 
@@ -1195,7 +1195,7 @@ def cucumber_reports(parser, xml_parent, data):
         cucumber_reports, data, mappings, fail_required=True)
 
 
-def cucumber_testresult(parser, xml_parent, data):
+def cucumber_testresult(registry, xml_parent, data):
     """yaml: cucumber-testresult
     Publish cucumber test results.
     Requires the Jenkins :jenkins-wiki:`cucumber testresult
@@ -1220,7 +1220,7 @@ def cucumber_testresult(parser, xml_parent, data):
     XML.SubElement(cucumber_result, 'testResults').text = str(filepath)
 
 
-def xunit(parser, xml_parent, data):
+def xunit(registry, xml_parent, data):
     """yaml: xunit
     Publish tests results. Requires the Jenkins :jenkins-wiki:`xUnit Plugin
     <xUnit+Plugin>`.
@@ -1375,7 +1375,7 @@ def _violations_add_entry(xml_parent, name, data):
         XML.SubElement(tconfig, 'pattern')
 
 
-def violations(parser, xml_parent, data):
+def violations(registry, xml_parent, data):
     """yaml: violations
     Publish code style violations.
     Requires the Jenkins :jenkins-wiki:`Violations Plugin <Violations>`.
@@ -1436,7 +1436,7 @@ def violations(parser, xml_parent, data):
     XML.SubElement(config, 'encoding').text = 'default'
 
 
-def findbugs(parser, xml_parent, data):
+def findbugs(registry, xml_parent, data):
     """yaml: findbugs
     FindBugs reporting for builds
 
@@ -1505,7 +1505,7 @@ def findbugs(parser, xml_parent, data):
     helpers.build_trends_publisher('[FINDBUGS] ', findbugs, data)
 
 
-def checkstyle(parser, xml_parent, data):
+def checkstyle(registry, xml_parent, data):
     """yaml: checkstyle
     Publish trend reports with Checkstyle.
     Requires the Jenkins :jenkins-wiki:`Checkstyle Plugin <Checkstyle+Plugin>`.
@@ -1603,7 +1603,7 @@ def checkstyle(parser, xml_parent, data):
     helpers.build_trends_publisher('[CHECKSTYLE] ', xml_element, data)
 
 
-def scp(parser, xml_parent, data):
+def scp(registry, xml_parent, data):
     """yaml: scp
     Upload files via SCP
     Requires the Jenkins :jenkins-wiki:`SCP Plugin <SCP+plugin>`.
@@ -1669,7 +1669,7 @@ def scp(parser, xml_parent, data):
             XML.SubElement(entry_e, 'copyAfterFailure').text = 'false'
 
 
-def ssh(parser, xml_parent, data):
+def ssh(registry, xml_parent, data):
     """yaml: ssh
     Upload files via SCP.
     Requires the Jenkins :jenkins-wiki:`Publish over SSH Plugin
@@ -1714,7 +1714,7 @@ def ssh(parser, xml_parent, data):
                       publisher_tag, transfer_tag, reference_tag)
 
 
-def pipeline(parser, xml_parent, data):
+def pipeline(registry, xml_parent, data):
     """yaml: pipeline
     Specify a downstream project in a pipeline.
     Requires the Jenkins :jenkins-wiki:`Build Pipeline Plugin
@@ -1787,7 +1787,7 @@ def pipeline(parser, xml_parent, data):
         XML.SubElement(pippub, 'downstreamProjectNames').text = data['project']
 
 
-def email(parser, xml_parent, data):
+def email(registry, xml_parent, data):
     """yaml: email
     Email notifications on build failure.
     Requires the Jenkins :jenkins-wiki:`Mailer Plugin
@@ -1828,7 +1828,7 @@ def email(parser, xml_parent, data):
         data.get('send-to-individuals', False)).lower()
 
 
-def claim_build(parser, xml_parent, data):
+def claim_build(registry, xml_parent, data):
     """yaml: claim-build
     Claim build failures
     Requires the Jenkins :jenkins-wiki:`Claim Plugin <Claim+plugin>`.
@@ -1842,7 +1842,7 @@ def claim_build(parser, xml_parent, data):
     XML.SubElement(xml_parent, 'hudson.plugins.claim.ClaimPublisher')
 
 
-def base_email_ext(parser, xml_parent, data, ttype):
+def base_email_ext(registry, xml_parent, data, ttype):
     trigger = XML.SubElement(xml_parent,
                              'hudson.plugins.emailext.plugins.trigger.'
                              + ttype)
@@ -1866,7 +1866,7 @@ def base_email_ext(parser, xml_parent, data, ttype):
         XML.SubElement(email, 'sendToRecipientList').text = 'true'
 
 
-def email_ext(parser, xml_parent, data):
+def email_ext(registry, xml_parent, data):
     """yaml: email-ext
     Extend Jenkin's built in email notification
     Requires the Jenkins :jenkins-wiki:`Email-ext Plugin
@@ -1942,33 +1942,33 @@ def email_ext(parser, xml_parent, data):
         XML.SubElement(emailext, 'recipientList').text = '$DEFAULT_RECIPIENTS'
     ctrigger = XML.SubElement(emailext, 'configuredTriggers')
     if data.get('always', False):
-        base_email_ext(parser, ctrigger, data, 'AlwaysTrigger')
+        base_email_ext(registry, ctrigger, data, 'AlwaysTrigger')
     if data.get('unstable', False):
-        base_email_ext(parser, ctrigger, data, 'UnstableTrigger')
+        base_email_ext(registry, ctrigger, data, 'UnstableTrigger')
     if data.get('first-failure', False):
-        base_email_ext(parser, ctrigger, data, 'FirstFailureTrigger')
+        base_email_ext(registry, ctrigger, data, 'FirstFailureTrigger')
     if data.get('not-built', False):
-        base_email_ext(parser, ctrigger, data, 'NotBuiltTrigger')
+        base_email_ext(registry, ctrigger, data, 'NotBuiltTrigger')
     if data.get('aborted', False):
-        base_email_ext(parser, ctrigger, data, 'AbortedTrigger')
+        base_email_ext(registry, ctrigger, data, 'AbortedTrigger')
     if data.get('regression', False):
-        base_email_ext(parser, ctrigger, data, 'RegressionTrigger')
+        base_email_ext(registry, ctrigger, data, 'RegressionTrigger')
     if data.get('failure', True):
-        base_email_ext(parser, ctrigger, data, 'FailureTrigger')
+        base_email_ext(registry, ctrigger, data, 'FailureTrigger')
     if data.get('second-failure', False):
-        base_email_ext(parser, ctrigger, data, 'SecondFailureTrigger')
+        base_email_ext(registry, ctrigger, data, 'SecondFailureTrigger')
     if data.get('improvement', False):
-        base_email_ext(parser, ctrigger, data, 'ImprovementTrigger')
+        base_email_ext(registry, ctrigger, data, 'ImprovementTrigger')
     if data.get('still-failing', False):
-        base_email_ext(parser, ctrigger, data, 'StillFailingTrigger')
+        base_email_ext(registry, ctrigger, data, 'StillFailingTrigger')
     if data.get('success', False):
-        base_email_ext(parser, ctrigger, data, 'SuccessTrigger')
+        base_email_ext(registry, ctrigger, data, 'SuccessTrigger')
     if data.get('fixed', False):
-        base_email_ext(parser, ctrigger, data, 'FixedTrigger')
+        base_email_ext(registry, ctrigger, data, 'FixedTrigger')
     if data.get('still-unstable', False):
-        base_email_ext(parser, ctrigger, data, 'StillUnstableTrigger')
+        base_email_ext(registry, ctrigger, data, 'StillUnstableTrigger')
     if data.get('pre-build', False):
-        base_email_ext(parser, ctrigger, data, 'PreBuildTrigger')
+        base_email_ext(registry, ctrigger, data, 'PreBuildTrigger')
 
     content_type_mime = {
         'text': 'text/plain',
@@ -2014,7 +2014,7 @@ def email_ext(parser, xml_parent, data):
             matrix_dict.get(matrix_trigger)
 
 
-def fingerprint(parser, xml_parent, data):
+def fingerprint(registry, xml_parent, data):
     """yaml: fingerprint
     Fingerprint files to track them across builds
 
@@ -2034,7 +2034,7 @@ def fingerprint(parser, xml_parent, data):
         'record-artifacts', False)).lower()
 
 
-def aggregate_tests(parser, xml_parent, data):
+def aggregate_tests(registry, xml_parent, data):
     """yaml: aggregate-tests
     Aggregate downstream test results
 
@@ -2052,7 +2052,7 @@ def aggregate_tests(parser, xml_parent, data):
         'include-failed-builds', False)).lower()
 
 
-def aggregate_flow_tests(parser, xml_parent, data):
+def aggregate_flow_tests(registry, xml_parent, data):
     """yaml: aggregate-flow-tests
     Aggregate downstream test results in a Build Flow job.
     Requires the Jenkins :jenkins-wiki:`Build Flow Test Aggregator Plugin
@@ -2074,7 +2074,7 @@ def aggregate_flow_tests(parser, xml_parent, data):
         data.get('show-test-results-trend', True)).lower()
 
 
-def cppcheck(parser, xml_parent, data):
+def cppcheck(registry, xml_parent, data):
     """yaml: cppcheck
     Cppcheck result publisher
     Requires the Jenkins :jenkins-wiki:`Cppcheck Plugin <Cppcheck+Plugin>`.
@@ -2140,7 +2140,7 @@ def cppcheck(parser, xml_parent, data):
         str(gdisplay.get('information', False)).lower()
 
 
-def logparser(parser, xml_parent, data):
+def logparser(registry, xml_parent, data):
     """yaml: logparser
     Requires the Jenkins :jenkins-wiki:`Log Parser Plugin <Log+Parser+Plugin>`.
 
@@ -2164,7 +2164,7 @@ def logparser(parser, xml_parent, data):
     XML.SubElement(clog, 'parsingRulesPath').text = data.get('parse-rules', '')
 
 
-def copy_to_master(parser, xml_parent, data):
+def copy_to_master(registry, xml_parent, data):
     """yaml: copy-to-master
     Copy files to master from slave
     Requires the Jenkins :jenkins-wiki:`Copy To Slave Plugin
@@ -2195,7 +2195,7 @@ def copy_to_master(parser, xml_parent, data):
         XML.SubElement(cm, 'overrideDestinationFolder').text = 'true'
 
 
-def jira(parser, xml_parent, data):
+def jira(registry, xml_parent, data):
     """yaml: jira
     Update relevant JIRA issues
     Requires the Jenkins :jenkins-wiki:`JIRA Plugin <JIRA+Plugin>`.
@@ -2208,7 +2208,7 @@ def jira(parser, xml_parent, data):
     XML.SubElement(xml_parent, 'hudson.plugins.jira.JiraIssueUpdater')
 
 
-def growl(parser, xml_parent, data):
+def growl(registry, xml_parent, data):
     """yaml: growl
     Push notifications to growl client.
     Requires the Jenkins :jenkins-wiki:`Growl Plugin <Growl+Plugin>`.
@@ -2237,7 +2237,7 @@ def growl(parser, xml_parent, data):
     helpers.convert_mapping_to_xml(growl, data, mapping, fail_required=True)
 
 
-def groovy_postbuild(parser, xml_parent, data):
+def groovy_postbuild(registry, xml_parent, data):
     """yaml: groovy-postbuild
     Execute a groovy script.
     Requires the Jenkins :jenkins-wiki:`Groovy Postbuild Plugin
@@ -2277,7 +2277,7 @@ def groovy_postbuild(parser, xml_parent, data):
             'script': data,
         }
     # There are incompatible changes, we need to know version
-    info = parser.registry.get_plugin_info('groovy-postbuild')
+    info = registry.get_plugin_info('groovy-postbuild')
     version = pkg_resources.parse_version(info.get('version', "0"))
     # Version specific predicates
     matrix_parent_support = version >= pkg_resources.parse_version("1.9")
@@ -2379,7 +2379,7 @@ def base_publish_over(xml_parent, data, console_prefix,
     return (outer, transfersset)
 
 
-def cifs(parser, xml_parent, data):
+def cifs(registry, xml_parent, data):
     """yaml: cifs
     Upload files via CIFS.
     Requires the Jenkins :jenkins-wiki:`Publish over CIFS Plugin
@@ -2420,7 +2420,7 @@ def cifs(parser, xml_parent, data):
                       plugin_reference_tag)
 
 
-def cigame(parser, xml_parent, data):
+def cigame(registry, xml_parent, data):
     """yaml: cigame
     This plugin introduces a game where users get points
     for improving the builds.
@@ -2435,7 +2435,7 @@ def cigame(parser, xml_parent, data):
     XML.SubElement(xml_parent, 'hudson.plugins.cigame.GamePublisher')
 
 
-def sonar(parser, xml_parent, data):
+def sonar(registry, xml_parent, data):
     """yaml: sonar
     Sonar plugin support.
     Requires the Jenkins `Sonar Plugin.
@@ -2498,7 +2498,7 @@ def sonar(parser, xml_parent, data):
     helpers.config_file_provider_settings(sonar, data)
 
 
-def performance(parser, xml_parent, data):
+def performance(registry, xml_parent, data):
     """yaml: performance
     Publish performance test results from jmeter and junit.
     Requires the Jenkins :jenkins-wiki:`Performance Plugin
@@ -2566,7 +2566,7 @@ def performance(parser, xml_parent, data):
                 sys.exit(1)
 
 
-def join_trigger(parser, xml_parent, data):
+def join_trigger(registry, xml_parent, data):
     """yaml: join-trigger
     Trigger a job after all the immediate downstream jobs have completed
 
@@ -2588,14 +2588,14 @@ def join_trigger(parser, xml_parent, data):
 
     publishers = XML.SubElement(jointrigger, 'joinPublishers')
     for pub in data.get('publishers', []):
-        for edited_node in create_publishers(parser, pub):
+        for edited_node in create_publishers(registry, pub):
             publishers.append(edited_node)
 
     unstable = str(data.get('even-if-unstable', 'false')).lower()
     XML.SubElement(jointrigger, 'evenIfDownstreamUnstable').text = unstable
 
 
-def jabber(parser, xml_parent, data):
+def jabber(registry, xml_parent, data):
     """yaml: jabber
     Integrates Jenkins with the Jabber/XMPP instant messaging protocol
     Requires the Jenkins :jenkins-wiki:`Jabber Plugin <Jabber+Plugin>`.
@@ -2682,7 +2682,7 @@ def jabber(parser, xml_parent, data):
     XML.SubElement(j, 'matrixMultiplier').text = 'ONLY_CONFIGURATIONS'
 
 
-def workspace_cleanup(parser, xml_parent, data):
+def workspace_cleanup(registry, xml_parent, data):
     """yaml: workspace-cleanup (post-build)
 
     Requires the Jenkins :jenkins-wiki:`Workspace Cleanup Plugin
@@ -2757,7 +2757,7 @@ def workspace_cleanup(parser, xml_parent, data):
         XML.SubElement(p, 'notFailBuild').text = 'false'
 
 
-def maven_deploy(parser, xml_parent, data):
+def maven_deploy(registry, xml_parent, data):
     """yaml: maven-deploy
     Deploy artifacts to Maven repository.
 
@@ -2790,7 +2790,7 @@ def maven_deploy(parser, xml_parent, data):
         XML.SubElement(p, 'releaseEnvVar').text = data['release-env-var']
 
 
-def artifactory(parser, xml_parent, data):
+def artifactory(registry, xml_parent, data):
     """yaml: artifactory
     Uses/requires the Artifactory plugin to deploy artifacts to
     Artifactory Server.
@@ -2928,7 +2928,7 @@ def artifactory(parser, xml_parent, data):
     helpers.artifactory_env_vars_patterns(artifactory, data)
 
 
-def test_fairy(parser, xml_parent, data):
+def test_fairy(registry, xml_parent, data):
     """yaml: test-fairy
     This plugin helps you to upload Android APKs or iOS IPA files to
     www.testfairy.com.
@@ -3030,7 +3030,7 @@ def test_fairy(parser, xml_parent, data):
         raise InvalidAttributeError('platform', platform, valid_platforms)
 
 
-def text_finder(parser, xml_parent, data):
+def text_finder(registry, xml_parent, data):
     """yaml: text-finder
     This plugin lets you search keywords in the files you specified and
     additionally check build status
@@ -3067,7 +3067,7 @@ def text_finder(parser, xml_parent, data):
     XML.SubElement(finder, 'unstableIfFound').text = unstable_if_found
 
 
-def html_publisher(parser, xml_parent, data):
+def html_publisher(registry, xml_parent, data):
     """yaml: html-publisher
     This plugin publishes HTML reports.
 
@@ -3106,7 +3106,7 @@ def html_publisher(parser, xml_parent, data):
     XML.SubElement(ptarget, 'wrapperName').text = "htmlpublisher-wrapper.html"
 
 
-def rich_text_publisher(parser, xml_parent, data):
+def rich_text_publisher(registry, xml_parent, data):
     """yaml: rich-text-publisher
     This plugin puts custom rich text message to the Build pages and Job main
     page.
@@ -3148,7 +3148,7 @@ def rich_text_publisher(parser, xml_parent, data):
     XML.SubElement(reporter, 'parserName').text = parser_name
 
 
-def tap(parser, xml_parent, data):
+def tap(registry, xml_parent, data):
     """yaml: tap
     Adds support to TAP test result files
 
@@ -3204,7 +3204,7 @@ def tap(parser, xml_parent, data):
     helpers.convert_mapping_to_xml(tap, data, mappings, fail_required=True)
 
 
-def post_tasks(parser, xml_parent, data):
+def post_tasks(registry, xml_parent, data):
     """yaml: post-tasks
     Adds support to post build task plugin
 
@@ -3257,7 +3257,7 @@ def post_tasks(parser, xml_parent, data):
             task.get('script', ''))
 
 
-def postbuildscript(parser, xml_parent, data):
+def postbuildscript(registry, xml_parent, data):
     """yaml: postbuildscript
     Executes additional builders, script or Groovy after the build is
     complete.
@@ -3350,8 +3350,7 @@ def postbuildscript(parser, xml_parent, data):
         if step == 'builders':
             build_steps_xml = XML.SubElement(pbs_xml, 'buildSteps')
             for builder in script_data:
-                parser.registry.dispatch('builder', parser, build_steps_xml,
-                                         builder)
+                registry.dispatch('builder', build_steps_xml, builder)
 
     # When to run the build? Note the plugin let one specify both options
     # although they are antinomic
@@ -3390,7 +3389,7 @@ def postbuildscript(parser, xml_parent, data):
         execute_on_xml.text = execute_on.upper()
 
 
-def xml_summary(parser, xml_parent, data):
+def xml_summary(registry, xml_parent, data):
     """yaml: xml-summary
     Adds support for the Summary Display Plugin
 
@@ -3415,7 +3414,7 @@ def xml_summary(parser, xml_parent, data):
         data.get('shown-on-project-page', 'false'))
 
 
-def robot(parser, xml_parent, data):
+def robot(registry, xml_parent, data):
     """yaml: robot
     Adds support for the Robot Framework Plugin
 
@@ -3470,7 +3469,7 @@ def robot(parser, xml_parent, data):
         not data.get('archive-output-xml', True)).lower()
 
 
-def warnings(parser, xml_parent, data):
+def warnings(registry, xml_parent, data):
     """yaml: warnings
     Generate trend report for compiler warnings in the console log or
     in log files. Requires the Jenkins :jenkins-wiki:`Warnings Plugin
@@ -3650,7 +3649,7 @@ def warnings(parser, xml_parent, data):
     XML.SubElement(warnings, 'defaultEncoding').text = encoding
 
 
-def sloccount(parser, xml_parent, data):
+def sloccount(registry, xml_parent, data):
     """yaml: sloccount
     Generates the trend report for SLOCCount
 
@@ -3678,7 +3677,7 @@ def sloccount(parser, xml_parent, data):
     XML.SubElement(top, 'encoding').text = data.get('charset', 'UTF-8')
 
 
-def ircbot(parser, xml_parent, data):
+def ircbot(registry, xml_parent, data):
     """yaml: ircbot
     ircbot enables Jenkins to send build notifications via IRC and lets you
     interact with Jenkins via an IRC bot.
@@ -3795,7 +3794,7 @@ def ircbot(parser, xml_parent, data):
     XML.SubElement(top, 'matrixMultiplier').text = matrix_dict.get(matrix)
 
 
-def plot(parser, xml_parent, data):
+def plot(registry, xml_parent, data):
     """yaml: plot
     Plot provides generic plotting (or graphing).
 
@@ -3946,7 +3945,7 @@ def plot(parser, xml_parent, data):
         XML.SubElement(plugin, 'style').text = style
 
 
-def git(parser, xml_parent, data):
+def git(registry, xml_parent, data):
     """yaml: git
     This plugin will configure the Jenkins Git plugin to
     push merge results, tags, and/or branches to
@@ -4049,7 +4048,7 @@ def git(parser, xml_parent, data):
                 xml_note, note['note'], note_mappings, fail_required=True)
 
 
-def github_notifier(parser, xml_parent, data):
+def github_notifier(registry, xml_parent, data):
     """yaml: github-notifier
     Set build status on Github commit.
     Requires the Jenkins :jenkins-wiki:`Github Plugin <GitHub+Plugin>`.
@@ -4063,7 +4062,7 @@ def github_notifier(parser, xml_parent, data):
                    'com.cloudbees.jenkins.GitHubCommitNotifier')
 
 
-def gitlab_notifier(parser, xml_parent, data):
+def gitlab_notifier(registry, xml_parent, data):
     """yaml: gitlab-notifier
     Set build status on GitLab commit.
     Requires the Jenkins :jenkins-wiki:`GitLab Plugin <GitLab+Plugin>`.
@@ -4078,7 +4077,7 @@ def gitlab_notifier(parser, xml_parent, data):
         'com.dabsquared.gitlabjenkins.publisher.GitLabCommitStatusPublisher')
 
 
-def zulip(parser, xml_parent, data):
+def zulip(registry, xml_parent, data):
     """yaml: zulip
     Set build status on zulip.
     Requires the Jenkins :jenkins-wiki:`Humbug Plugin <Humbug+Plugin>`.
@@ -4092,7 +4091,7 @@ def zulip(parser, xml_parent, data):
                    'hudson.plugins.humbug.HumbugNotifier')
 
 
-def build_publisher(parser, xml_parent, data):
+def build_publisher(registry, xml_parent, data):
     """yaml: build-publisher
     This plugin allows records from one Jenkins to be published
     on another Jenkins.
@@ -4134,7 +4133,7 @@ def build_publisher(parser, xml_parent, data):
         XML.SubElement(logrotator, 'artifactNumToKeep').text = "-1"
 
 
-def stash(parser, xml_parent, data):
+def stash(registry, xml_parent, data):
     """yaml: stash
     This plugin will configure the Jenkins Stash Notifier plugin to
     notify Atlassian Stash after job completes.
@@ -4166,10 +4165,10 @@ def stash(parser, xml_parent, data):
     else:
         XML.SubElement(top, 'stashUserName'
                        ).text = helpers.get_value_from_yaml_or_config_file(
-                           'username', 'stash', data, parser)
+                           'username', 'stash', data, registry.jjb_config)
         XML.SubElement(top, 'stashUserPassword'
                        ).text = helpers.get_value_from_yaml_or_config_file(
-                           'password', 'stash', data, parser)
+                           'password', 'stash', data, registry.jjb_config)
 
     XML.SubElement(top, 'ignoreUnverifiedSSLPeer').text = str(
         data.get('ignore-ssl', False)).lower()
@@ -4178,7 +4177,7 @@ def stash(parser, xml_parent, data):
         data.get('include-build-number', False)).lower()
 
 
-def dependency_check(parser, xml_parent, data):
+def dependency_check(registry, xml_parent, data):
     """yaml: dependency-check
     Dependency-Check is an open source utility that identifies project
     dependencies and checks if there are any known, publicly disclosed,
@@ -4249,7 +4248,7 @@ def dependency_check(parser, xml_parent, data):
         '[DEPENDENCYCHECK] ', dependency_check, data)
 
 
-def description_setter(parser, xml_parent, data):
+def description_setter(registry, xml_parent, data):
     """yaml: description-setter
     This plugin sets the description for each build,
     based upon a RegEx test of the build log file.
@@ -4289,7 +4288,7 @@ def description_setter(parser, xml_parent, data):
     XML.SubElement(descriptionsetter, 'setForMatrix').text = for_matrix
 
 
-def doxygen(parser, xml_parent, data):
+def doxygen(registry, xml_parent, data):
     """yaml: doxygen
     This plugin parses the Doxygen descriptor (Doxyfile) and provides a link to
     the generated Doxygen documentation.
@@ -4332,7 +4331,7 @@ def doxygen(parser, xml_parent, data):
         data.get('folder', ''))
 
 
-def sitemonitor(parser, xml_parent, data):
+def sitemonitor(registry, xml_parent, data):
     """yaml: sitemonitor
     This plugin checks the availability of an url.
 
@@ -4355,7 +4354,7 @@ def sitemonitor(parser, xml_parent, data):
             XML.SubElement(site, 'mUrl').text = siteurl['url']
 
 
-def testng(parser, xml_parent, data):
+def testng(registry, xml_parent, data):
     """yaml: testng
     This plugin publishes TestNG test reports.
 
@@ -4423,7 +4422,7 @@ def testng(parser, xml_parent, data):
             'threshold-mode', threshold_mode, valid_threshold_modes)
 
 
-def artifact_deployer(parser, xml_parent, data):
+def artifact_deployer(registry, xml_parent, data):
     """yaml: artifact-deployer
     This plugin makes it possible to copy artifacts to remote locations.
 
@@ -4489,7 +4488,7 @@ def artifact_deployer(parser, xml_parent, data):
     XML.SubElement(deployer, 'deployEvenBuildFail').text = deploy_if_fail
 
 
-def s3(parser, xml_parent, data):
+def s3(registry, xml_parent, data):
     """yaml: s3
     Upload build artifacts to Amazon S3.
 
@@ -4568,7 +4567,7 @@ def s3(parser, xml_parent, data):
         XML.SubElement(pair, 'value').text = tag.get('value')
 
 
-def ruby_metrics(parser, xml_parent, data):
+def ruby_metrics(registry, xml_parent, data):
     """yaml: ruby-metrics
     Rcov plugin parses rcov html report files and
     shows it in Jenkins with a trend graph.
@@ -4616,7 +4615,7 @@ def ruby_metrics(parser, xml_parent, data):
         raise JenkinsJobsException('Coverage metric targets must be set')
 
 
-def fitnesse(parser, xml_parent, data):
+def fitnesse(registry, xml_parent, data):
     """yaml: fitnesse
     Publish Fitnesse test results
 
@@ -4636,7 +4635,7 @@ def fitnesse(parser, xml_parent, data):
     XML.SubElement(fitnesse, 'fitnessePathToXmlResultsIn').text = results
 
 
-def valgrind(parser, xml_parent, data):
+def valgrind(registry, xml_parent, data):
     """yaml: valgrind
     This plugin publishes Valgrind Memcheck XML results.
 
@@ -4701,7 +4700,7 @@ def valgrind(parser, xml_parent, data):
         data.get('publish-if-failed', False)).lower()
 
 
-def pmd(parser, xml_parent, data):
+def pmd(registry, xml_parent, data):
     """yaml: pmd
     Publish trend reports with PMD.
     Requires the Jenkins :jenkins-wiki:`PMD Plugin <PMD+Plugin>`.
@@ -4770,7 +4769,7 @@ def pmd(parser, xml_parent, data):
     helpers.build_trends_publisher('[PMD] ', xml_element, data)
 
 
-def scan_build(parser, xml_parent, data):
+def scan_build(registry, xml_parent, data):
     """yaml: scan-build
     Publishes results from the Clang scan-build static analyzer.
 
@@ -4813,7 +4812,7 @@ def scan_build(parser, xml_parent, data):
     helpers.convert_mapping_to_xml(p, data, mappings, fail_required=True)
 
 
-def dry(parser, xml_parent, data):
+def dry(registry, xml_parent, data):
     """yaml: dry
     Publish trend reports with DRY.
     Requires the Jenkins :jenkins-wiki:`DRY Plugin <DRY+Plugin>`.
@@ -4892,7 +4891,7 @@ def dry(parser, xml_parent, data):
         xml_element, data, settings, fail_required=True)
 
 
-def shining_panda(parser, xml_parent, data):
+def shining_panda(registry, xml_parent, data):
     """yaml: shining-panda
     Publish coverage.py results. Requires the Jenkins
     :jenkins-wiki:`ShiningPanda Plugin <ShiningPanda+Plugin>`.
@@ -4913,7 +4912,7 @@ def shining_panda(parser, xml_parent, data):
             data['html-reports-directory'])
 
 
-def downstream_ext(parser, xml_parent, data):
+def downstream_ext(registry, xml_parent, data):
     """yaml: downstream-ext
     Trigger multiple downstream jobs when a job is completed and
     condition is met.
@@ -4983,7 +4982,7 @@ def downstream_ext(parser, xml_parent, data):
         data.get('only-on-local-scm-change', False)).lower()
 
 
-def rundeck(parser, xml_parent, data):
+def rundeck(registry, xml_parent, data):
     """yaml: rundeck
     Trigger a rundeck job when the build is complete.
 
@@ -5034,13 +5033,13 @@ def rundeck(parser, xml_parent, data):
     helpers.convert_mapping_to_xml(p, data, mappings, fail_required=True)
 
 
-def create_publishers(parser, action):
+def create_publishers(registry, action):
     dummy_parent = XML.Element("dummy")
-    parser.registry.dispatch('publisher', parser, dummy_parent, action)
+    registry.dispatch('publisher', dummy_parent, action)
     return list(dummy_parent)
 
 
-def conditional_publisher(parser, xml_parent, data):
+def conditional_publisher(registry, xml_parent, data):
     """yaml: conditional-publisher
     Conditionally execute some post-build steps. Requires the Jenkins
     :jenkins-wiki:`Flexible Publish Plugin <Flexible+Publish+Plugin>`.
@@ -5195,7 +5194,7 @@ def conditional_publisher(parser, xml_parent, data):
                                        'value.' % kind)
 
     def publish_action(parent, action):
-        for edited_node in create_publishers(parser, action):
+        for edited_node in create_publishers(registry, action):
             if not use_publisher_list:
                 edited_node.set('class', edited_node.tag)
                 edited_node.tag = 'publisher'
@@ -5240,7 +5239,7 @@ def conditional_publisher(parser, xml_parent, data):
             action_parent = cond_publisher
 
             plugin_info = \
-                parser.registry.get_plugin_info("Flexible Publish Plugin")
+                registry.get_plugin_info("Flexible Publish Plugin")
             version = pkg_resources.parse_version(plugin_info.get('version',
                                                                   '0'))
             # XML tag changed from publisher to publisherList in v0.13
@@ -5262,7 +5261,7 @@ def conditional_publisher(parser, xml_parent, data):
             raise JenkinsJobsException('action must be set for each condition')
 
 
-def scoverage(parser, xml_parent, data):
+def scoverage(registry, xml_parent, data):
     """yaml: scoverage
     Publish scoverage results as a trend graph.
     Requires the Jenkins :jenkins-wiki:`Scoverage Plugin <Scoverage+Plugin>`.
@@ -5290,7 +5289,7 @@ def scoverage(parser, xml_parent, data):
         scoverage, data, mappings, fail_required=True)
 
 
-def display_upstream_changes(parser, xml_parent, data):
+def display_upstream_changes(registry, xml_parent, data):
     """yaml: display-upstream-changes
     Display SCM changes of upstream jobs. Requires the Jenkins
     :jenkins-wiki:`Display Upstream Changes Plugin
@@ -5307,7 +5306,7 @@ def display_upstream_changes(parser, xml_parent, data):
         'DisplayUpstreamChangesRecorder')
 
 
-def gatling(parser, xml_parent, data):
+def gatling(registry, xml_parent, data):
     """yaml: gatling
     Publish gatling results as a trend graph
     Requires the Jenkins :jenkins-wiki:`Gatling Plugin <Gatling+Plugin>`.
@@ -5323,7 +5322,7 @@ def gatling(parser, xml_parent, data):
     XML.SubElement(gatling, 'enabled').text = 'true'
 
 
-def logstash(parser, xml_parent, data):
+def logstash(registry, xml_parent, data):
     """yaml: logstash
     Send job's console log to Logstash for processing and analyis of
     your job data. Also stores test metrics from Junit.
@@ -5356,7 +5355,7 @@ def logstash(parser, xml_parent, data):
     helpers.convert_mapping_to_xml(logstash, data, mapping, fail_required=True)
 
 
-def image_gallery(parser, xml_parent, data):
+def image_gallery(registry, xml_parent, data):
     """yaml: image-gallery
     Produce an image gallery using Javascript library. Requires the Jenkins
     :jenkins-wiki:`Image Gallery Plugin<Image+Gallery+Plugin>`.
@@ -5430,7 +5429,7 @@ def image_gallery(parser, xml_parent, data):
             include_comparative_elements(gallery_config, gallery_def)
 
 
-def naginator(parser, xml_parent, data):
+def naginator(registry, xml_parent, data):
     """yaml: naginator
     Automatically reschedule a build after a build failure
     Requires the Jenkins :jenkins-wiki:`Naginator Plugin <Naginator+Plugin>`.
@@ -5494,7 +5493,7 @@ def naginator(parser, xml_parent, data):
         data.get('max-failed-builds', '0'))
 
 
-def disable_failed_job(parser, xml_parent, data):
+def disable_failed_job(registry, xml_parent, data):
     """yaml: disable-failed-job
     Automatically disable failed jobs.
 
@@ -5544,7 +5543,7 @@ def disable_failed_job(parser, xml_parent, data):
         XML.SubElement(xml_element, 'optionalBrockChecked').text = 'false'
 
 
-def google_cloud_storage(parser, xml_parent, data):
+def google_cloud_storage(registry, xml_parent, data):
     """yaml: google-cloud-storage
     Upload build artifacts to Google Cloud Storage. Requires the
     Jenkins :jenkins-wiki:`Google Cloud Storage plugin
@@ -5742,7 +5741,7 @@ def google_cloud_storage(parser, xml_parent, data):
                     properties, upload_element, types)
 
 
-def flowdock(parser, xml_parent, data):
+def flowdock(registry, xml_parent, data):
     """yaml: flowdock
     This plugin publishes job build results to a Flowdock flow.
 
@@ -5820,7 +5819,7 @@ def flowdock(parser, xml_parent, data):
     gen_setting('NotBuilt', False)
 
 
-def clamav(parser, xml_parent, data):
+def clamav(registry, xml_parent, data):
     """yaml: clamav
     Check files with ClamAV, an open source antivirus engine.
     Requires the Jenkins :jenkins-wiki:`ClamAV Plugin <ClamAV+Plugin>`.
@@ -5852,7 +5851,7 @@ def clamav(parser, xml_parent, data):
     helpers.convert_mapping_to_xml(clamav, data, mappings, fail_required=True)
 
 
-def testselector(parser, xml_parent, data):
+def testselector(registry, xml_parent, data):
     """yaml: testselector
     This plugin allows you to choose specific tests you want to run.
 
@@ -5908,7 +5907,7 @@ def testselector(parser, xml_parent, data):
         'multiplicity-field', '')
 
 
-def cloudformation(parser, xml_parent, data):
+def cloudformation(registry, xml_parent, data):
     """yaml: cloudformation
     Create cloudformation stacks before running a build and optionally
     delete them at the end.  Requires the Jenkins :jenkins-wiki:`AWS
@@ -5983,7 +5982,7 @@ def cloudformation(parser, xml_parent, data):
                                      region_dict)
 
 
-def whitesource(parser, xml_parent, data):
+def whitesource(registry, xml_parent, data):
     """yaml: whitesource
     This plugin brings automatic open source management to Jenkins users.
 
@@ -6037,7 +6036,7 @@ def whitesource(parser, xml_parent, data):
     XML.SubElement(whitesource, 'ignorePomModules').text = 'false'
 
 
-def hipchat(parser, xml_parent, data):
+def hipchat(registry, xml_parent, data):
     """yaml: hipchat
     Publisher that sends hipchat notifications on job events
     Requires the Jenkins :jenkins-wiki:`Hipchat Plugin
@@ -6108,7 +6107,7 @@ def hipchat(parser, xml_parent, data):
             data['complete-message'])
 
 
-def slack(parser, xml_parent, data):
+def slack(registry, xml_parent, data):
     """yaml: slack
     Publisher that sends slack notifications on job events.
 
@@ -6180,7 +6179,7 @@ def slack(parser, xml_parent, data):
 
     logger = logging.getLogger(__name__)
 
-    plugin_info = parser.registry.get_plugin_info('Slack Notification Plugin')
+    plugin_info = registry.get_plugin_info('Slack Notification Plugin')
     plugin_ver = pkg_resources.parse_version(plugin_info.get('version', "0"))
 
     mapping = (
@@ -6247,7 +6246,7 @@ def slack(parser, xml_parent, data):
         _add_xml(slack, xml_name, value)
 
 
-def phabricator(parser, xml_parent, data):
+def phabricator(registry, xml_parent, data):
     """yaml: phabricator
     Integrate with `Phabricator <http://phabricator.org/>`_
 
@@ -6289,7 +6288,7 @@ def phabricator(parser, xml_parent, data):
             data.get('comment-with-console-link-on-failure')).lower()
 
 
-def openshift_build_canceller(parser, xml_parent, data):
+def openshift_build_canceller(registry, xml_parent, data):
     """yaml: openshift-build-canceller
     This action is intended to provide cleanup for a Jenkins job which failed
     because a build is hung (instead of terminating with a failure code);
@@ -6340,7 +6339,7 @@ def openshift_build_canceller(parser, xml_parent, data):
     helpers.convert_mapping_to_xml(osb, data, mapping, fail_required=True)
 
 
-def openshift_deploy_canceller(parser, xml_parent, data):
+def openshift_deploy_canceller(registry, xml_parent, data):
     """yaml: openshift-deploy-canceller
     This action is intended to provide cleanup for any OpenShift deployments
     left running when the Job completes; this step will allow you to perform
@@ -6388,7 +6387,7 @@ def openshift_deploy_canceller(parser, xml_parent, data):
     helpers.convert_mapping_to_xml(osb, data, mapping, fail_required=True)
 
 
-def github_pull_request_merge(parser, xml_parent, data):
+def github_pull_request_merge(registry, xml_parent, data):
     """yaml: github-pull-request-merge
     This action merges the pull request that triggered the build (see the
     github pull request trigger)
@@ -6440,8 +6439,8 @@ class Publishers(jenkins_jobs.modules.base.Base):
     component_type = 'publisher'
     component_list_type = 'publishers'
 
-    def gen_xml(self, parser, xml_parent, data):
+    def gen_xml(self, xml_parent, data):
         publishers = XML.SubElement(xml_parent, 'publishers')
 
         for action in data.get('publishers', []):
-            self.registry.dispatch('publisher', parser, publishers, action)
+            self.registry.dispatch('publisher', publishers, action)

@@ -19,6 +19,7 @@ import time
 
 from jenkins_jobs.builder import Builder
 from jenkins_jobs.parser import YamlParser
+from jenkins_jobs.registry import ModuleRegistry
 from jenkins_jobs.errors import JenkinsJobsException
 import jenkins_jobs.cli.subcommand.base as base
 
@@ -71,10 +72,14 @@ class UpdateSubCommand(base.BaseSubCommand):
         orig = time.time()
 
         # Generate XML
-        parser = YamlParser(jjb_config, builder.plugins_list)
+        parser = YamlParser(jjb_config)
+        registry = ModuleRegistry(jjb_config, builder.plugins_list)
+
         parser.load_files(options.path)
-        parser.expandYaml(options.names)
-        parser.generateXML()
+        registry.set_parser_data(parser.data)
+
+        parser.expandYaml(registry, options.names)
+        parser.generateXML(registry)
 
         jobs = parser.jobs
         step = time.time()

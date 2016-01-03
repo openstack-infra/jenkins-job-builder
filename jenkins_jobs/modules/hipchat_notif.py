@@ -117,7 +117,7 @@ class HipChat(jenkins_jobs.modules.base.Base):
             self.jenkinsUrl = jjb_config.jenkins['url']
             self.sendAs = jjb_config.get_module_config('hipchat', 'send-as')
 
-    def gen_xml(self, parser, xml_parent, data):
+    def gen_xml(self, xml_parent, data):
         hipchat = data.get('hipchat')
         if not hipchat or not hipchat.get('enabled', True):
             return
@@ -144,8 +144,7 @@ class HipChat(jenkins_jobs.modules.base.Base):
                 "'hipchat' module supports the old plugin versions <1.9, "
                 "newer versions are supported via the 'publishers' module. "
                 "Please upgrade you job definition")
-            return self.registry.dispatch('publisher', parser, publishers,
-                                          data)
+            return self.registry.dispatch('publisher', publishers, data)
         else:
             properties = xml_parent.find('properties')
             if properties is None:
