@@ -406,23 +406,6 @@ def authorization(parser, xml_parent, data):
                     raise InvalidAttributeError(username, perm, mapping.keys())
 
 
-def extended_choice(parser, xml_parent, data):
-    """yaml: extended-choice
-    Use of this config option is deprecated.  You should use the
-    `extended-choice` option in the parameter section of the job configuration
-    instead.
-    """
-    logger = logging.getLogger("%s:extended_choice" % __name__)
-    logger.warn('Use of the extended-choice property is deprecated.  You '
-                'should use the extended-choice option in the parameter '
-                'section instead.')
-    definition = XML.SubElement(xml_parent,
-                                'hudson.model.ParametersDefinitionProperty')
-    definitions = XML.SubElement(definition, 'parameterDefinitions')
-    parser.registry.dispatch('parameter', parser, definitions,
-                             {'extended-choice': data})
-
-
 def priority_sorter(parser, xml_parent, data):
     """yaml: priority-sorter
     Allows simple ordering of builds, using a configurable job priority.
