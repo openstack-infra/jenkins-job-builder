@@ -20,6 +20,7 @@ import time
 from jenkins_jobs.builder import Builder
 from jenkins_jobs.parser import YamlParser
 from jenkins_jobs.registry import ModuleRegistry
+from jenkins_jobs.xml_config import XmlJobGenerator
 from jenkins_jobs.errors import JenkinsJobsException
 import jenkins_jobs.cli.subcommand.base as base
 
@@ -74,19 +75,21 @@ class UpdateSubCommand(base.BaseSubCommand):
         # Generate XML
         parser = YamlParser(jjb_config)
         registry = ModuleRegistry(jjb_config, builder.plugins_list)
+        xml_generator = XmlJobGenerator(registry)
 
         parser.load_files(options.path)
         registry.set_parser_data(parser.data)
 
-        parser.expandYaml(registry, options.names)
-        parser.generateXML(registry)
+        job_data_list = parser.expandYaml(registry, options.names)
+
+        xml_jobs = xml_generator.generateXML(job_data_list)
 
         jobs = parser.jobs
         step = time.time()
         logging.debug('%d XML files generated in %ss',
                       len(jobs), str(step - orig))
 
-        return builder, parser.xml_jobs
+        return builder, xml_jobs
 
     def execute(self, options, jjb_config):
 

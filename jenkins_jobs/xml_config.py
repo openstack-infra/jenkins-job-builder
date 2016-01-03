@@ -16,6 +16,7 @@
 # Manage Jenkins XML config file output.
 
 import hashlib
+import pkg_resources
 from xml.dom import minidom
 import xml.etree.ElementTree as XML
 
@@ -53,3 +54,35 @@ class XmlJob(object):
     def output(self):
         out = minidom.parseString(XML.tostring(self.xml, encoding='UTF-8'))
         return out.toprettyxml(indent='  ', encoding='utf-8')
+
+
+class XmlJobGenerator(object):
+    """ This class is responsible for generating Jenkins Configuration XML from
+    a compatible intermediate representation of Jenkins Jobs.
+    """
+
+    def __init__(self, registry):
+        self.registry = registry
+
+    def generateXML(self, jobdict_list):
+        xml_jobs = []
+        for job in jobdict_list:
+            xml_jobs.append(self.__getXMLForJob(job))
+        return xml_jobs
+
+    def __getXMLForJob(self, data):
+        kind = data.get('project-type', 'freestyle')
+
+        for ep in pkg_resources.iter_entry_points(
+                group='jenkins_jobs.projects', name=kind):
+            Mod = ep.load()
+            mod = Mod(self.registry)
+            xml = mod.root_xml(data)
+            self.__gen_xml(xml, data)
+            job = XmlJob(xml, data['name'])
+            return job
+
+    def __gen_xml(self, xml, data):
+        for module in self.registry.modules:
+            if hasattr(module, 'gen_xml'):
+                module.gen_xml(xml, data)
