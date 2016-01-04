@@ -34,6 +34,9 @@ from jenkins_jobs.constants import MAGIC_MANAGE_STRING
 from jenkins_jobs.parallel import concurrent
 from jenkins_jobs import utils
 
+__all__ = [
+    "Jenkins"
+]
 
 logger = logging.getLogger(__name__)
 

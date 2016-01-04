@@ -24,6 +24,10 @@ import types
 from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.formatter import deep_format
 
+__all__ = [
+    "ModuleRegistry"
+]
+
 logger = logging.getLogger(__name__)
 
 

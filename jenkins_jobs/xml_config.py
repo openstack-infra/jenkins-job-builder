@@ -20,6 +20,11 @@ import pkg_resources
 from xml.dom import minidom
 import xml.etree.ElementTree as XML
 
+__all__ = [
+    "XmlJobGenerator",
+    "XmlJob"
+]
+
 
 def remove_ignorable_whitespace(node):
     """Remove insignificant whitespace from XML nodes

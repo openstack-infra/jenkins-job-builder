@@ -28,6 +28,10 @@ from jenkins_jobs.formatter import deep_format
 import jenkins_jobs.local_yaml as local_yaml
 from jenkins_jobs import utils
 
+__all__ = [
+    "YamlParser"
+]
+
 logger = logging.getLogger(__name__)
 
 
