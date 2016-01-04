@@ -831,8 +831,9 @@ def port_allocator(registry, xml_parent, data):
     names = data.get('names')
     if not names:
         logger = logging.getLogger(__name__)
-        logger.warn('port_allocator name is deprecated, use a names list '
-                    ' instead')
+        logger.warning(
+            'port_allocator name is deprecated, use a names list '
+            ' instead')
         names = [data['name']]
     for name in names:
         dpt = XML.SubElement(ports,
@@ -1642,12 +1643,13 @@ def ssh_agent_credentials(registry, xml_parent, data):
             entry_xml = XML.SubElement(entry_xml, 'credentialIds')
             xml_key = 'string'
         if 'user' in data:
-            logger.warn("Both 'users' and 'user' parameters specified for "
-                        "ssh-agent-credentials. 'users' is used, 'user' is "
-                        "ignored.")
+            logger.warning(
+                "Both 'users' and 'user' parameters specified for "
+                "ssh-agent-credentials. 'users' is used, 'user' is "
+                "ignored.")
     elif 'user' in data:
-        logger.warn("The 'user' param has been deprecated, "
-                    "use the 'users' param instead.")
+        logger.warning("The 'user' param has been deprecated, "
+                       "use the 'users' param instead.")
         user_list.append(data['user'])
     else:
         raise JenkinsJobsException("Missing 'user' or 'users' parameter "

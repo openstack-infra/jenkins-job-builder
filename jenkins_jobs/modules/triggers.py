@@ -59,8 +59,9 @@ def gerrit_handle_legacy_configuration(data):
         for old_key in old_keys:
             if old_key in d:
                 new_key = hyphenize(old_key)
-                logger.warn("'%s' is deprecated and will be removed after "
-                            "1.0.0, please use '%s' instead", old_key, new_key)
+                logger.warning(
+                    "'%s' is deprecated and will be removed after "
+                    "1.0.0, please use '%s' instead", old_key, new_key)
                 d[new_key] = d[old_key]
                 del d[old_key]
 
@@ -96,9 +97,10 @@ def gerrit_handle_legacy_configuration(data):
         if key.startswith('trigger-on-'))
     trigger_on = data.setdefault('trigger-on', [])
     if old_format_events:
-        logger.warn("The events: %s; which you used is/are deprecated. "
-                    "Please use 'trigger-on' instead.",
-                    ', '.join(old_format_events))
+        logger.warning(
+            "The events: %s; which you used is/are deprecated. "
+            "Please use 'trigger-on' instead.",
+            ', '.join(old_format_events))
 
     if old_format_events and trigger_on:
         raise JenkinsJobsException(
@@ -145,8 +147,9 @@ def build_gerrit_triggers(xml_parent, data):
         if isinstance(event, six.string_types):
             tag_name = available_simple_triggers.get(event)
             if event == 'patchset-uploaded-event':
-                logger.warn("'%s' is deprecated. Use 'patchset-created-event' "
-                            "format instead.", event)
+                logger.warning(
+                    "'%s' is deprecated. Use 'patchset-created-event' "
+                    "format instead.", event)
 
             if not tag_name:
                 known = ', '.join(available_simple_triggers.keys()
@@ -489,7 +492,7 @@ def gerrit(registry, xml_parent, data):
                            'branches section'
             else:
                 warning += 'please use branches section instead'
-            logger.warn(warning)
+            logger.warning(warning)
         if not project_branches:
             project_branches = [
                 {'branch-compare-type': project.get(
@@ -644,9 +647,10 @@ def pollscm(registry, xml_parent, data):
         raise MissingAttributeError(e)
     except TypeError:
         # To keep backward compatibility
-        logger.warn("Your pollscm usage is deprecated, please use"
-                    " the syntax described in the documentation"
-                    " instead")
+        logger.warning(
+            "Your pollscm usage is deprecated, please use"
+            " the syntax described in the documentation"
+            " instead")
         cron = data
         ipch = 'false'
 

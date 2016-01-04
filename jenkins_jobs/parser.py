@@ -167,7 +167,7 @@ class YamlParser(object):
             logger.error(message)
             raise JenkinsJobsException(message)
         else:
-            logger.warn(message)
+            logger.warning(message)
 
     def _getJob(self, name):
         job = self.data.get('job', {}).get(name, None)
