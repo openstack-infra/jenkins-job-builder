@@ -5,3 +5,4 @@ builders:
       prod-tag: origin-nodejs-sample:production
       namespace: test5
       auth-token: ose-key-img1
+      verbose: true

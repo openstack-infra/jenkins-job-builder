@@ -5,3 +5,4 @@ scm:
       api-url: https://openshift.example.local.url/
       namespace: test-scm
       auth-token: ose-key-img-streams1
+      verbose: true

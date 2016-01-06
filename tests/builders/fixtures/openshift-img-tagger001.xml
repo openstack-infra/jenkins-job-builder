@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <builders>
-    <com.openshift.openshiftjenkinsbuildutils.OpenShiftImageTagger>
+    <com.openshift.jenkins.plugins.pipeline.OpenShiftImageTagger>
       <apiURL>https://openshift.example.local.url/</apiURL>
       <testTag>origin-nodejs-sample:test</testTag>
       <prodTag>origin-nodejs-sample:production</prodTag>
       <namespace>test5</namespace>
       <authToken>ose-key-img1</authToken>
-    </com.openshift.openshiftjenkinsbuildutils.OpenShiftImageTagger>
+      <verbose>true</verbose>
+    </com.openshift.jenkins.plugins.pipeline.OpenShiftImageTagger>
   </builders>
 </project>

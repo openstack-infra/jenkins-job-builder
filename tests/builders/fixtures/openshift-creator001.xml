@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.openshift.jenkins.plugins.pipeline.OpenShiftCreator>
+      <apiURL>https://openshift.example.local.url/</apiURL>
+      <jsonyaml>front: back</jsonyaml>
+      <namespace>test6</namespace>
+      <authToken>ose-key-creator1</authToken>
+      <verbose>true</verbose>
+    </com.openshift.jenkins.plugins.pipeline.OpenShiftCreator>
+  </builders>
+</project>

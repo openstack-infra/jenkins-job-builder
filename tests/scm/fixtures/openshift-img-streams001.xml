@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-  <scm class="com.openshift.openshiftjenkinsbuildutils.OpenShiftImageStreams">
+  <scm class="com.openshift.jenkins.plugins.pipeline.OpenShiftImageStreams">
     <imageStreamName>nodejs-010-fedora</imageStreamName>
     <tag>prod</tag>
     <apiURL>https://openshift.example.local.url/</apiURL>
     <namespace>test-scm</namespace>
     <authToken>ose-key-img-streams1</authToken>
+    <verbose>true</verbose>
   </scm>
 </project>

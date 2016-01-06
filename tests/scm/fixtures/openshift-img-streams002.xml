@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-  <scm class="com.openshift.openshiftjenkinsbuildutils.OpenShiftImageStreams">
+  <scm class="com.openshift.jenkins.plugins.pipeline.OpenShiftImageStreams">
     <imageStreamName>nodejs-010-centos7</imageStreamName>
     <tag>latest</tag>
     <apiURL>https://openshift.default.svc.cluster.local</apiURL>
     <namespace>test</namespace>
     <authToken/>
+    <verbose/>
   </scm>
 </project>

@@ -4,4 +4,7 @@ builders:
       bld-cfg: front
       namespace: test9
       auth-token: ose-builder1
-      follow-log: false
+      commit-ID: ae489f7d
+      verbose: true
+      build-name: ose-test-build
+      show-build-logs: true
