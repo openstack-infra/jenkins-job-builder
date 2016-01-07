@@ -35,6 +35,7 @@ class ModuleRegistry(object):
         self.modules_by_component_type = {}
         self.handlers = {}
         self.global_config = config
+        self.masked_warned = {}
 
         if plugins_list is None:
             self.plugins_dict = {}
@@ -226,7 +227,9 @@ class ModuleRegistry(object):
         # check for macro first
         component = parser.data.get(component_type, {}).get(name)
         if component:
-            if name in eps:
+            if name in eps and name not in self.masked_warned:
+                # Warn only once for each macro
+                self.masked_warned[name] = True
                 logger.warn("You have a macro ('%s') defined for '%s' "
                             "component type that is masking an inbuilt "
                             "definition" % (name, component_type))
