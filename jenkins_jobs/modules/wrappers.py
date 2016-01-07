@@ -652,23 +652,25 @@ def copy_to_slave(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Copy To Slave Plugin
     <Copy+To+Slave+Plugin>`.
 
-    :arg list includes: list of file patterns to copy
-    :arg list excludes: list of file patterns to exclude
-    :arg bool flatten: flatten directory structure
-    :arg str relative-to: base location of includes/excludes,
-                          must be userContent ($JENKINS_HOME/userContent)
-                          home ($JENKINS_HOME) or workspace
+    :arg list includes: list of file patterns to copy (optional)
+    :arg list excludes: list of file patterns to exclude (optional)
+    :arg bool flatten: flatten directory structure (Default: False)
+    :arg str relative-to: base location of includes/excludes, must be home
+        ($JENKINS_HOME), somewhereElse ($JENKINS_HOME/copyToSlave),
+        userContent ($JENKINS_HOME/userContent) or workspace
+        (Default: userContent)
     :arg bool include-ant-excludes: exclude ant's default excludes
+        (Default: False)
 
-    Example::
+    Minimal Example:
 
-      wrappers:
-        - copy-to-slave:
-            includes:
-              - file1
-              - file2*.txt
-            excludes:
-              - file2bad.txt
+    .. literalinclude::  /../../tests/wrappers/fixtures/copy-to-slave001.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::  /../../tests/wrappers/fixtures/copy-to-slave002.yaml
+       :language: yaml
     """
     p = 'com.michelin.cio.hudson.plugins.copytoslave.CopyToSlaveBuildWrapper'
     cs = XML.SubElement(xml_parent, p)
@@ -681,7 +683,7 @@ def copy_to_slave(parser, xml_parent, data):
         str(data.get('include-ant-excludes', False)).lower()
 
     rel = str(data.get('relative-to', 'userContent'))
-    opt = ('userContent', 'home', 'workspace')
+    opt = ('home', 'somewhereElse', 'userContent', 'workspace')
     if rel not in opt:
         raise ValueError('relative-to must be one of %r' % opt)
     XML.SubElement(cs, 'relativeTo').text = rel
