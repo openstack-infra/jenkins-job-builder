@@ -28,8 +28,8 @@ then
 else
     git clone --depth=1 git://git.openstack.org/openstack-infra/project-config
 fi
-cp project-config/jenkins/jobs/* old/config
-cp project-config/jenkins/jobs/* new/config
+cp -r project-config/jenkins/jobs/* old/config
+cp -r project-config/jenkins/jobs/* new/config
 cd ..
 GITHEAD=`git rev-parse HEAD`
 
