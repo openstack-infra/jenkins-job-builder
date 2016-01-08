@@ -6,6 +6,7 @@
       <latestOnly>false</latestOnly>
       <allowEmptyArchive>true</allowEmptyArchive>
       <fingerprint>true</fingerprint>
+      <defaultExcludes>false</defaultExcludes>
     </hudson.tasks.ArtifactArchiver>
   </publishers>
 </project>

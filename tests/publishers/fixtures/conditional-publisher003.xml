@@ -11,6 +11,7 @@
               <artifacts>**/**</artifacts>
               <latestOnly>false</latestOnly>
               <allowEmptyArchive>true</allowEmptyArchive>
+              <defaultExcludes>true</defaultExcludes>
             </hudson.tasks.ArtifactArchiver>
             <hudson.tasks.test.AggregatedTestResultPublisher>
               <includeFailedBuilds>true</includeFailedBuilds>
