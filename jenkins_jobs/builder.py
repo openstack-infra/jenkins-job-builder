@@ -283,15 +283,17 @@ class Builder(object):
         if keep is None:
             keep = [job.name for job in self.parser.xml_jobs]
         for job in jobs:
-            if job['name'] not in keep and \
-                    self.jenkins.is_managed(job['name']):
-                logger.info("Removing obsolete jenkins job {0}"
-                            .format(job['name']))
-                self.delete_job(job['name'])
-                deleted_jobs += 1
+            if job['name'] not in keep:
+                if self.jenkins.is_managed(job['name']):
+                    logger.info("Removing obsolete jenkins job {0}"
+                                .format(job['name']))
+                    self.delete_job(job['name'])
+                    deleted_jobs += 1
+                else:
+                    logger.info("Not deleting unmanaged jenkins job %s",
+                                job['name'])
             else:
-                logger.debug("Ignoring unmanaged jenkins job %s",
-                             job['name'])
+                logger.debug("Keeping job %s", job['name'])
         return deleted_jobs
 
     def delete_job(self, jobs_glob, fn=None):
