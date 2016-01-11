@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <hudson.plugins.promoted__builds.JobPropertyImpl>
+      <activeProcessNames>
+        <string>Release to QA</string>
+        <string>Jane Must Approve</string>
+      </activeProcessNames>
+    </hudson.plugins.promoted__builds.JobPropertyImpl>
+  </properties>
+</project>

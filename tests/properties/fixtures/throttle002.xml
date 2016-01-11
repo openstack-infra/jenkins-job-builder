@@ -2,14 +2,14 @@
 <project>
   <properties>
     <hudson.plugins.throttleconcurrents.ThrottleJobProperty>
-      <maxConcurrentPerNode>2</maxConcurrentPerNode>
-      <maxConcurrentTotal>4</maxConcurrentTotal>
+      <maxConcurrentPerNode>0</maxConcurrentPerNode>
+      <maxConcurrentTotal>0</maxConcurrentTotal>
       <throttleEnabled>true</throttleEnabled>
       <categories>
         <string>cat1</string>
         <string>cat2</string>
       </categories>
-      <throttleOption>category</throttleOption>
+      <throttleOption>project</throttleOption>
       <configVersion>1</configVersion>
     </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
   </properties>
