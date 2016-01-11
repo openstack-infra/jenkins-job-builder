@@ -264,7 +264,9 @@ def campfire(parser, xml_parent, data):
 
 def emotional_jenkins(parser, xml_parent, data):
     """yaml: emotional-jenkins
-    Emotional Jenkins.
+    Emotional Jenkins. This funny plugin changes the expression of Mr. Jenkins
+    in the background when your builds fail.
+
     Requires the Jenkins :jenkins-wiki:`Emotional Jenkins Plugin
     <Emotional+Jenkins+Plugin>`.
 
