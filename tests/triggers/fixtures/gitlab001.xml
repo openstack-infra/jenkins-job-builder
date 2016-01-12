@@ -10,6 +10,7 @@
       <setBuildDescription>true</setBuildDescription>
       <addNoteOnMergeRequest>true</addNoteOnMergeRequest>
       <addVoteOnMergeRequest>true</addVoteOnMergeRequest>
+      <addCiMessage>true</addCiMessage>
       <allowAllBranches>true</allowAllBranches>
       <includeBranchesSpec>master, master2, local-test</includeBranchesSpec>
       <excludeBranchesSpec>broken-test, master-foo</excludeBranchesSpec>

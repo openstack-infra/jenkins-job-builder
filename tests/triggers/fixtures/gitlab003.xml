@@ -10,6 +10,7 @@
       <setBuildDescription>true</setBuildDescription>
       <addNoteOnMergeRequest>true</addNoteOnMergeRequest>
       <addVoteOnMergeRequest>true</addVoteOnMergeRequest>
+      <addCiMessage>false</addCiMessage>
       <allowAllBranches>false</allowAllBranches>
       <includeBranchesSpec>master</includeBranchesSpec>
       <excludeBranchesSpec>baz, foo, fnord</excludeBranchesSpec>
