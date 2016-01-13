@@ -36,6 +36,7 @@ import xml.etree.ElementTree as XML
 
 from jenkins_jobs.errors import InvalidAttributeError
 from jenkins_jobs.errors import JenkinsJobsException
+from jenkins_jobs.errors import MissingAttributeError
 import jenkins_jobs.modules.base
 
 
@@ -605,6 +606,75 @@ def zeromq_event(parser, xml_parent, data):
                                'org.jenkinsci.plugins.'
                                'ZMQEventPublisher.HudsonNotificationProperty')
     XML.SubElement(zmq_event, 'enabled').text = 'true'
+
+
+def slack(parser, xml_parent, data):
+    """yaml: slack
+    Requires the Jenkins :jenkins-wiki:`Slack Plugin <Slack+Plugin>`
+
+    As the Slack Plugin itself requires a publisher aswell as properties
+    please note that you have to add the publisher to your job configuration
+    aswell.
+
+    :arg bool notify-start: Send notification when the job starts
+        (default: False)
+    :arg bool notify-success: Send notification on success. (default: False)
+    :arg bool notify-aborted: Send notification when job is aborted. (
+        default: False)
+    :arg bool notify-not-built: Send notification when job set to NOT_BUILT
+        status. (default: False)
+    :arg bool notify-unstable: Send notification when job becomes unstable.
+        (default: False)
+    :arg bool notify-failure: Send notification when job fails.
+        (default: False)
+    :arg bool notifiy-back-to-normal: Send notification when job is
+        succeeding again after being unstable or failed. (default: False)
+    :arg bool include-test-summary: Include the test summary. (default:
+        False)
+    :arg bool include-custom-message: Include a custom message into the
+        notification. (default: False)
+    :arg str custom-message: Custom message to be included. (default: '')
+    :arg str room: A comma seperated list of rooms / channels to send
+        the notifications to. (default: '')
+
+    Example:
+
+    .. literalinclude::
+        /../../tests/properties/slack001.yaml
+        :language: yaml
+    """
+    def _add_xml(elem, name, value):
+        if isinstance(value, bool):
+            value = str(value).lower()
+        XML.SubElement(elem, name).text = value
+
+    mapping = (
+        ('notify-start', 'startNotification', False),
+        ('notify-success', 'notifySuccess', False),
+        ('notify-aborted', 'notifyAborted', False),
+        ('notify-not-built', 'notifyNotBuilt', False),
+        ('notify-unstable', 'notifyUnstable', False),
+        ('notify-failure', 'notifyFailure', False),
+        ('notify-back-to-normal', 'notifyBackToNormal', False),
+        ('include-test-summary', 'includeTestSummary', False),
+        ('include-custom-message', 'includeCustomMessage', False),
+        ('custom-message', 'customMessage', ''),
+        ('room', 'room', ''),
+    )
+
+    slack = XML.SubElement(
+        xml_parent,
+        'jenkins.plugins.slack.SlackNotifier_-SlackJobProperty',
+    )
+
+    # Ensure that custom-message is set when include-custom-message is set
+    # to true.
+    if data.get('include-custom-message', False):
+        if not data.get('custom-message', ''):
+            raise MissingAttributeError('custom-message')
+
+    for yaml_name, xml_name, default_value in mapping:
+        _add_xml(slack, xml_name, data.get(yaml_name, default_value))
 
 
 def rebuild(parser, xml_parent, data):

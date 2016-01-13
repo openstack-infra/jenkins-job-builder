@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <jenkins.plugins.slack.SlackNotifier_-SlackJobProperty>
+      <startNotification>true</startNotification>
+      <notifySuccess>true</notifySuccess>
+      <notifyAborted>false</notifyAborted>
+      <notifyNotBuilt>false</notifyNotBuilt>
+      <notifyUnstable>false</notifyUnstable>
+      <notifyFailure>false</notifyFailure>
+      <notifyBackToNormal>false</notifyBackToNormal>
+      <includeTestSummary>false</includeTestSummary>
+      <includeCustomMessage>false</includeCustomMessage>
+      <customMessage/>
+      <room>dummy, dummy2</room>
+    </jenkins.plugins.slack.SlackNotifier_-SlackJobProperty>
+  </properties>
+</project>

@@ -1,0 +1,6 @@
+publishers:
+  - slack:
+      room: '#builds'
+      team-domain: 'teamname'
+      auth-token: 'yourauthtoken'
+      build-server-url: 'http://localhost:8081'
