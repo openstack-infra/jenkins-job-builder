@@ -5,3 +5,4 @@ builders:
       namespace: test2
       replica-count: 4
       auth-token: ose-key-scaler1
+      verbose: true

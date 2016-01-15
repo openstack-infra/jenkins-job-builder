@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <builders>
-    <com.openshift.openshiftjenkinsbuildutils.OpenShiftBuilder>
+    <com.openshift.jenkins.plugins.pipeline.OpenShiftBuilder>
       <apiURL>https://openshift.default.svc.cluster.local</apiURL>
       <bldCfg>frontend</bldCfg>
       <namespace>test</namespace>
       <authToken/>
-      <followLog>true</followLog>
-    </com.openshift.openshiftjenkinsbuildutils.OpenShiftBuilder>
+      <commitID/>
+      <verbose>false</verbose>
+      <buildName/>
+      <showBuildLogs>false</showBuildLogs>
+    </com.openshift.jenkins.plugins.pipeline.OpenShiftBuilder>
   </builders>
 </project>

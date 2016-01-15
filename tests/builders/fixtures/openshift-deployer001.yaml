@@ -4,3 +4,4 @@ builders:
       dep-cfg: front
       namespace: test3
       auth-token: ose-key-deployer1
+      verbose: true

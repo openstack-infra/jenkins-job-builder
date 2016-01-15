@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <builders>
-    <com.openshift.openshiftjenkinsbuildutils.OpenShiftDeployer>
+    <com.openshift.jenkins.plugins.pipeline.OpenShiftDeployer>
       <apiURL>https://openshift.example.local.url/</apiURL>
       <depCfg>front</depCfg>
       <namespace>test3</namespace>
       <authToken>ose-key-deployer1</authToken>
-    </com.openshift.openshiftjenkinsbuildutils.OpenShiftDeployer>
+      <verbose>true</verbose>
+    </com.openshift.jenkins.plugins.pipeline.OpenShiftDeployer>
   </builders>
 </project>

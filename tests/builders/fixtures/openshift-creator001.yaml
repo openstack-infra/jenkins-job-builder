@@ -1,0 +1,7 @@
+builders:
+  - openshift-creator:
+      api-url: https://openshift.example.local.url/
+      jsonyaml: 'front: back'
+      namespace: test6
+      auth-token: ose-key-creator1
+      verbose: true

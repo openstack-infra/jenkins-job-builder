@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <builders>
-    <com.openshift.openshiftjenkinsbuildutils.OpenShiftBuilder>
+    <com.openshift.jenkins.plugins.pipeline.OpenShiftBuilder>
       <apiURL>https://openshift.example.local.url/</apiURL>
       <bldCfg>front</bldCfg>
       <namespace>test9</namespace>
       <authToken>ose-builder1</authToken>
-      <followLog>false</followLog>
-    </com.openshift.openshiftjenkinsbuildutils.OpenShiftBuilder>
+      <commitID>ae489f7d</commitID>
+      <verbose>true</verbose>
+      <buildName>ose-test-build</buildName>
+      <showBuildLogs>true</showBuildLogs>
+    </com.openshift.jenkins.plugins.pipeline.OpenShiftBuilder>
   </builders>
 </project>

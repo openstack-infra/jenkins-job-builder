@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <com.openshift.jenkins.plugins.pipeline.OpenShiftDeployCanceller>
+      <apiURL>https://openshift.example.local.url/</apiURL>
+      <depCfg>front</depCfg>
+      <namespace>test6</namespace>
+      <authToken>ose-key-dep-canceller1</authToken>
+      <verbose>true</verbose>
+    </com.openshift.jenkins.plugins.pipeline.OpenShiftDeployCanceller>
+  </publishers>
+</project>

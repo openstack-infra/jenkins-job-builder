@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-  <builders>
-    <com.openshift.jenkins.plugins.pipeline.OpenShiftBuildVerifier>
+  <publishers>
+    <com.openshift.jenkins.plugins.pipeline.OpenShiftBuildCanceller>
       <apiURL>https://openshift.example.local.url/</apiURL>
       <bldCfg>front</bldCfg>
       <namespace>test-build</namespace>
-      <authToken>ose-key-buildv1</authToken>
+      <authToken>ose-key-canceller1</authToken>
       <verbose>true</verbose>
-    </com.openshift.jenkins.plugins.pipeline.OpenShiftBuildVerifier>
-  </builders>
+    </com.openshift.jenkins.plugins.pipeline.OpenShiftBuildCanceller>
+  </publishers>
 </project>

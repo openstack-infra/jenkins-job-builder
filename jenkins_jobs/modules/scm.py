@@ -1058,8 +1058,8 @@ def openshift_img_streams(parser, xml_parent, data):
     OpenShift ImageStreams (which are abstractions of Docker repositories)
     and SCMs - versions / commit IDs of related artifacts
     (images vs. programmatics files)
-    Requires the Jenkins `OpenShift3 Plugin
-    <https://github.com/gabemontero/openshift-jenkins-buildutils/>`_
+    Requires the Jenkins :jenkins-wiki:`OpenShift
+    Pipeline Plugin <OpenShift+Pipeline+Plugin>`._
 
     :arg str image-stream-name: The name of the ImageStream is what shows up
         in the NAME column if you dump all the ImageStream's with the
@@ -1074,6 +1074,8 @@ def openshift_img_streams(parser, xml_parent, data):
         a Build on. (default: test)
     :arg str auth-token: The value here is what you supply with the --token
         option when invoking the OpenShift `oc` command. (optional)
+    :arg str verbose: This flag is the toggle for
+        turning on or off detailed logging in this plug-in. (optional)
 
     Full Example:
 
@@ -1089,7 +1091,7 @@ def openshift_img_streams(parser, xml_parent, data):
     """
     scm = XML.SubElement(xml_parent,
                          'scm', {'class':
-                                 'com.openshift.openshiftjenkinsbuildutils.'
+                                 'com.openshift.jenkins.plugins.pipeline.'
                                  'OpenShiftImageStreams'})
     mapping = [
         # option, xml name, default value
@@ -1098,6 +1100,7 @@ def openshift_img_streams(parser, xml_parent, data):
         ("api-url", 'apiURL', 'https://openshift.default.svc.cluster.local'),
         ("namespace", 'namespace', 'test'),
         ("auth-token", 'authToken', ''),
+        ("verbose", 'verbose', ''),
     ]
 
     convert_mapping_to_xml(scm, data, mapping)

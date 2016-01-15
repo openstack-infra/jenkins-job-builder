@@ -4,3 +4,4 @@ builders:
       svc-name: front
       namespace: test4
       auth-token: ose-key-svc-verify1
+      verbose: true
