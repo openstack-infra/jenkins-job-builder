@@ -219,6 +219,52 @@ def jdepend(parser, xml_parent, data):
     XML.SubElement(jdepend, 'configuredJDependFile').text = str(filepath)
 
 
+def hue_light(parser, xml_parent, data):
+    """yaml: hue-light
+    This plugin shows the state of your builds using the awesome Philips hue
+    lights.
+
+    Requires the Jenkins :jenkins-wiki:`hue-light Plugin
+    <hue-light+Plugin>`.
+
+    :arg int light-id: ID of light. Define multiple lights by a comma as a
+        separator (required)
+    :arg string pre-build: Colour of building state (default 'blue')
+    :arg string good-build: Colour of succesful state (default 'green')
+    :arg string unstable-build: Colour of unstable state (default 'yellow')
+    :arg string bad-build: Colour of unsuccessful state (default 'red')
+
+    Example:
+
+    .. literalinclude::
+       /../../tests/publishers/fixtures/hue-light-minimal.yaml
+       :language: yaml
+
+    .. literalinclude::
+       /../../tests/publishers/fixtures/hue-light001.yaml
+       :language: yaml
+    """
+
+    hue_light = XML.SubElement(
+        xml_parent, 'org.jenkinsci.plugins.hue__light.LightNotifier')
+    hue_light.set('plugin', 'hue-light')
+
+    if 'light-id' not in data:
+        raise MissingAttributeError('light-id')
+    lightId = XML.SubElement(hue_light, 'lightId')
+    XML.SubElement(lightId, 'string').text = str(data.get(
+        'light-id', ''))
+
+    XML.SubElement(hue_light, 'preBuild').text = data.get(
+        'pre-build', 'blue')
+    XML.SubElement(hue_light, 'goodBuild').text = data.get(
+        'good-build', 'green')
+    XML.SubElement(hue_light, 'unstableBuild').text = data.get(
+        'unstable-build', 'yellow')
+    XML.SubElement(hue_light, 'badBuild').text = data.get(
+        'bad-build', 'red')
+
+
 def campfire(parser, xml_parent, data):
     """yaml: campfire
     Send build notifications to Campfire rooms.

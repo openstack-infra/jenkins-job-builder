@@ -1,0 +1,7 @@
+publishers:
+  - hue-light:
+      light-id: 123
+      pre-build: blue
+      good-build: green
+      unstable-build: yellow
+      bad-build: red

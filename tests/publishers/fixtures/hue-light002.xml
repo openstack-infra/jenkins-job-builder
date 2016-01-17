@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.hue__light.LightNotifier plugin="hue-light">
+      <lightId>
+        <string>123</string>
+      </lightId>
+      <preBuild>yellow</preBuild>
+      <goodBuild>red</goodBuild>
+      <unstableBuild>blue</unstableBuild>
+      <badBuild>green</badBuild>
+    </org.jenkinsci.plugins.hue__light.LightNotifier>
+  </publishers>
+</project>
