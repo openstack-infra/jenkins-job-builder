@@ -11,6 +11,10 @@
       </categories>
       <throttleOption>project</throttleOption>
       <configVersion>1</configVersion>
+      <matrixOptions>
+        <throttleMatrixBuilds>true</throttleMatrixBuilds>
+        <throttleMatrixConfigurations>false</throttleMatrixConfigurations>
+      </matrixOptions>
     </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
   </properties>
 </project>
