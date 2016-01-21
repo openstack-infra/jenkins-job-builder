@@ -1047,7 +1047,7 @@ def cucumber_reports(parser, xml_parent, data):
     :arg str file-include-pattern: include pattern (default '')
     :arg str file-exclude-pattern: exclude pattern (default '')
     :arg str plugin-url-path: The path to the jenkins user content url
-      e.g. http://host:port[/jenkins/]plugin - leave empty if jenkins
+      e.g. :samp:`http://host:port[/jenkins/]plugin` - leave empty if jenkins
       url root is host:port (default '')
     :arg bool skipped-fails: skipped steps to cause the build to fail
       (default false)
@@ -2269,7 +2269,8 @@ def sonar(parser, xml_parent, data):
     """yaml: sonar
     Sonar plugin support.
     Requires the Jenkins `Sonar Plugin.
-    <http://docs.sonarqube.org/display/PLUG/Jenkins+Plugin>`_
+    <http://docs.sonarqube.org/display/SONAR/\
+        Analyzing+with+SonarQube+Scanner+for+Jenkins>`_
 
     :arg str jdk: JDK to use (inherited from the job if omitted). (optional)
     :arg str branch: branch onto which the analysis will be posted (optional)
@@ -5714,7 +5715,7 @@ def phabricator(parser, xml_parent, data):
     Integrate with `Phabricator <http://phabricator.org/>`_
 
     Requires the Jenkins :jenkins-wiki:`Phabricator Plugin
-    <Phabricator+Plugin>`.
+    <Phabricator+Differential+Plugin>`.
 
     :arg bool comment-on-success: Post a *comment* when the build
       succeeds. (optional)

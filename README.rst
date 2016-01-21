@@ -75,7 +75,7 @@ Then install the required python packages using pip_::
 
     $ sudo pip install PyYAML python-jenkins
 
-.. _Jenkins: http://jenkins-ci.org/
+.. _Jenkins: https://jenkins.io/
 .. _YAML: http://www.yaml.org/
 .. _JSON: http://json.org/
 .. _pep8: https://pypi.python.org/pypi/pep8

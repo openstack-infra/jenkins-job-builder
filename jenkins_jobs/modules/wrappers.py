@@ -498,10 +498,10 @@ def rbenv(parser, xml_parent, data):
         (default: 'bundler,rake')
     :arg str rbenv-root: RBENV_ROOT  (default: $HOME/.rbenv)
     :arg str rbenv-repo: Which repo to clone rbenv from
-        (default: https://github.com/sstephenson/rbenv.git)
+        (default: https://github.com/rbenv/rbenv)
     :arg str rbenv-branch: Which branch to clone rbenv from  (default: master)
     :arg str ruby-build-repo: Which repo to clone ruby-build from
-        (default: https://github.com/sstephenson/ruby-build.git)
+        (default: https://github.com/rbenv/ruby-build)
     :arg str ruby-build-branch: Which branch to clone ruby-build from
         (default: master)
 
@@ -515,10 +515,10 @@ def rbenv(parser, xml_parent, data):
         ("preinstall-gem-list", 'gem__list', 'bundler,rake'),
         ("rbenv-root", 'rbenv__root', '$HOME/.rbenv'),
         ("rbenv-repo", 'rbenv__repository',
-            'https://github.com/sstephenson/rbenv.git'),
+            'https://github.com/rbenv/rbenv'),
         ("rbenv-branch", 'rbenv__revision', 'master'),
         ("ruby-build-repo", 'ruby__build__repository',
-            'https://github.com/sstephenson/ruby-build.git'),
+            'https://github.com/rbenv/ruby-build'),
         ("ruby-build-branch", 'ruby__build__revision', 'master'),
         ("ruby-version", 'version', '1.9.3-p484'),
     ]
@@ -1708,7 +1708,7 @@ def artifactory_maven(parser, xml_parent, data):
     :jenkins-wiki:`Artifactory Plugin <Artifactory+Plugin>`
 
     :arg str url: URL of the Artifactory server. e.g.
-        http://www.jfrog.com/artifactory/ (default '')
+        https://www.jfrog.com/artifactory/ (default '')
     :arg str name: Artifactory user with permissions use for
         connected to the selected Artifactory Server
         (default '')
@@ -1753,7 +1753,7 @@ def artifactory_generic(parser, xml_parent, data):
     :jenkins-wiki:`Artifactory Plugin <Artifactory+Plugin>`
 
     :arg str url: URL of the Artifactory server. e.g.
-        http://www.jfrog.com/artifactory/ (default: '')
+        https://www.jfrog.com/artifactory/ (default: '')
     :arg str name: Artifactory user with permissions use for
         connected to the selected Artifactory Server
         (default '')
@@ -1830,7 +1830,7 @@ def artifactory_maven_freestyle(parser, xml_parent, data):
     Requires :jenkins-wiki:`Artifactory Plugin <Artifactory+Plugin>`
 
     :arg str url: URL of the Artifactory server. e.g.
-        http://www.jfrog.com/artifactory/ (default: '')
+        https://www.jfrog.com/artifactory/ (default: '')
     :arg str name: Artifactory user with permissions use for
         connected to the selected Artifactory Server (default '')
     :arg str release-repo-key: Release repository name (default '')
