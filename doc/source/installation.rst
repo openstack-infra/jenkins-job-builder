@@ -33,6 +33,15 @@ locally execute the command::
 The generated documentation is then available under
 ``doc/build/html/index.html``.
 
+As over time URLs change or become stale there is also a testenv available
+to verify any links added. To run locally execute the command::
+
+    tox -e docs-linkcheck
+
+* Note: When behind a proxy it is necessary to use ``TOX_TESTENV_PASSENV``
+  to pass any proxy settings for this test to be able to check links are
+  valid.
+
 Unit Tests
 ----------
 

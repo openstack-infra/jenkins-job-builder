@@ -69,6 +69,21 @@ This consistency will help users avoid simple mistakes when writing
 YAML, as well as developers when matching YAML components to Python
 implementation.
 
+Unit Tests
+----------
+
+Unit tests have been included and are in the ``tests`` folder. Many unit
+tests samples are included as examples in our documentation to ensure that
+examples are kept current with existing behaviour. To run the unit tests,
+execute the command::
+
+    tox -e py34,py27
+
+* Note: View ``tox.ini`` to run tests on other versions of Python,
+  generating the documentation and additionally for any special notes
+  on running the test to validate documentation external URLs from behind
+  proxies.
+
 Installing without setup.py
 ---------------------------
 
