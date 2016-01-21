@@ -7,6 +7,7 @@ triggers:
       set-build-description: true
       add-note-merge-request: true
       add-vote-merge-request: true
+      add-ci-message: true
       allow-all-branches: true
       include-branches:
         - 'master'
