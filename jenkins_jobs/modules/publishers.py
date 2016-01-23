@@ -3388,7 +3388,7 @@ def ircbot(parser, xml_parent, data):
 
         :strategy values:
             * **all** always (default)
-            * **any-failure** on any failure_and_fixed
+            * **any-failure** on any failure
             * **failure-and-fixed** on failure and fixes
             * **new-failure-and-fixed** on new failure and fixes
             * **statechange-only** only on state change
