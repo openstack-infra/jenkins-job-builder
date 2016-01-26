@@ -80,7 +80,7 @@ def gerrit_handle_legacy_configuration(data):
         'skipVote',
     ])
 
-    for project in data['projects']:
+    for project in data.get('projects', []):
         convert_dict(project, [
             'projectCompareType',
             'projectPattern',
@@ -443,7 +443,7 @@ def gerrit(parser, xml_parent, data):
 
     gerrit_handle_legacy_configuration(data)
 
-    projects = data['projects']
+    projects = data.get('projects', [])
     gtrig = XML.SubElement(xml_parent,
                            'com.sonyericsson.hudson.plugins.gerrit.trigger.'
                            'hudsontrigger.GerritTrigger')
