@@ -5793,6 +5793,52 @@ def openshift_deploy_canceller(parser, xml_parent, data):
     convert_mapping_to_xml(osb, data, mapping)
 
 
+def github_pull_request_merge(parser, xml_parent, data):
+    """yaml: github-pull-request-merge
+    This action merges the pull request that triggered the build (see the
+    github pull request trigger)
+    Requires the Jenkins :jenkins-wiki:`GitHub pull request builder plugin
+    <GitHub+pull+request+builder+plugin>
+
+
+    :arg bool only-admins-merge: if `true` only administrators can merge the
+        pull request, (default false)
+    :arg bool disallow-own-code: if `true` will allow merging your own pull
+        requests, in opposite to needing someone else to trigger the merge.
+        (default false)
+    :arg bool merge-comment: Comment to set on the merge commit (optional)
+    :arg bool fail-on-non-merge: fail the job if the merge was unsuccessful
+        (default false)
+    :arg bool delete-on-merge: Delete the branch of the pull request on
+        successful merge (default false)
+
+    Full Example:
+
+    .. literalinclude::
+        ../../tests/publishers/fixtures/github-pull-request-merge001.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+        ../../tests/publishers/fixtures/github-pull-request-merge002.yaml
+       :language: yaml
+    """
+
+    osb = XML.SubElement(xml_parent,
+                         'org.jenkinsci.plugins.ghprb.GhprbPullRequestMerge')
+    mapping = [
+        # option, xml name, default value
+        ("only-admins-merge", 'onlyAdminsMerge', 'false'),
+        ("disallow-own-code", 'disallowOwnCode', 'false'),
+        ("merge-comment", 'mergeComment', None),
+        ("fail-on-non-merge", 'failOnNonMerge', 'false'),
+        ("delete-on-merge", 'deleteOnMerge', 'false'),
+    ]
+
+    convert_mapping_to_xml(osb, data, mapping)
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

@@ -1,0 +1,7 @@
+publishers:
+  - github-pull-request-merge:
+      only-admins-merge: true
+      disallow-own-code: true
+      merge-comment: 'my fancy commit message'
+      fail-on-non-merge: true
+      delete-on-merge: true

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.ghprb.GhprbPullRequestMerge>
+      <onlyAdminsMerge>true</onlyAdminsMerge>
+      <disallowOwnCode>true</disallowOwnCode>
+      <mergeComment>my fancy commit message</mergeComment>
+      <failOnNonMerge>true</failOnNonMerge>
+      <deleteOnMerge>true</deleteOnMerge>
+    </org.jenkinsci.plugins.ghprb.GhprbPullRequestMerge>
+  </publishers>
+</project>
