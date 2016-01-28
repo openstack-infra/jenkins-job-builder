@@ -94,6 +94,8 @@ Example:
       The Logrotate section allows you to automatically remove old build
       history. It adds the ``logrotate`` attribute to the :ref:`Job`
       definition. All logrotate attributes default to "-1" (keep forever).
+      **Deprecated on jenkins >=1.637**: use the ``build-discarder``
+      property instead
 
     * **raw**:
       If present, this section should contain a single **xml** entry. This XML
@@ -101,6 +103,7 @@ Example:
 
 """
 
+import logging
 import xml.etree.ElementTree as XML
 
 import jenkins_jobs.modules.base
@@ -109,6 +112,7 @@ from jenkins_jobs.xml_config import remove_ignorable_whitespace
 
 class General(jenkins_jobs.modules.base.Base):
     sequence = 10
+    logrotate_warn_issued = False
 
     def gen_xml(self, parser, xml, data):
         jdk = data.get('jdk', None)
@@ -165,6 +169,12 @@ class General(jenkins_jobs.modules.base.Base):
                 str(data['retry-count'])
 
         if 'logrotate' in data:
+            if not self.logrotate_warn_issued:
+                logging.warn('logrotate is deprecated on jenkins>=1.637, use '
+                             'the property build-discarder on newer jenkins '
+                             'instead')
+                self.logrotate_warn_issued = True
+
             lr_xml = XML.SubElement(xml, 'logRotator')
             logrotate = data['logrotate']
             lr_days = XML.SubElement(lr_xml, 'daysToKeep')

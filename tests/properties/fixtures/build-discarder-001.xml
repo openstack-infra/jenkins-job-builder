@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>42</daysToKeep>
+        <numToKeep>43</numToKeep>
+        <artifactDaysToKeep>44</artifactDaysToKeep>
+        <artifactNumToKeep>45</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+  </properties>
+</project>

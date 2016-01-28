@@ -1,0 +1,6 @@
+properties:
+    - build-discarder:
+        days-to-keep: 42
+        num-to-keep: 43
+        artifact-days-to-keep: 44
+        artifact-num-to-keep: 45
