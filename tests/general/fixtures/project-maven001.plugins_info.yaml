@@ -1,0 +1,3 @@
+- longName: 'Maven Integration plugin'
+  shortName: 'maven-plugin'
+  version: "2.0.0"

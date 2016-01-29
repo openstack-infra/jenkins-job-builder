@@ -43,6 +43,8 @@ in the :ref:`Job` definition.
       documentation artifact archiving (default true).
     * **automatic-fingerprinting** (`bool`): Activate automatic fingerprinting
       of consumed and produced artifacts (default true).
+    * **per-module-email** (`bool`): Send an e-mail for each failed module
+      (default true).
     * **parallel-build-modules** (`bool`): Build modules in parallel
       (default false)
     * **resolve-dependencies** (`bool`): Resolve Dependencies during Pom
@@ -78,7 +80,7 @@ CFP Example:
 
     .. literalinclude:: /../../tests/general/fixtures/project-maven003.yaml
 """
-
+import pkg_resources
 import xml.etree.ElementTree as XML
 
 from jenkins_jobs.errors import InvalidAttributeError
@@ -103,6 +105,11 @@ class Maven(jenkins_jobs.modules.base.Base):
         xml_parent = XML.Element('maven2-moduleset')
         if 'maven' not in data:
             return xml_parent
+
+        # determine version of plugin
+        plugin_info = self.registry.get_plugin_info("Maven Integration plugin")
+        version = pkg_resources.parse_version(plugin_info.get('version', '0'))
+
         if 'root-module' in data['maven']:
             root_module = XML.SubElement(xml_parent, 'rootModule')
             XML.SubElement(root_module, 'groupId').text = \
@@ -144,6 +151,10 @@ class Maven(jenkins_jobs.modules.base.Base):
             not data['maven'].get('automatic-site-archiving', True)).lower()
         XML.SubElement(xml_parent, 'fingerprintingDisabled').text = str(
             not data['maven'].get('automatic-fingerprinting', True)).lower()
+        if (version > pkg_resources.parse_version('0') and
+                version < pkg_resources.parse_version('2.0.1')):
+            XML.SubElement(xml_parent, 'perModuleEmail').text = str(
+                data.get('per-module-email', True)).lower()
         XML.SubElement(xml_parent, 'archivingDisabled').text = str(
             not data['maven'].get('automatic-archiving', True)).lower()
         XML.SubElement(xml_parent, 'resolveDependencies').text = str(

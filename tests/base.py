@@ -146,23 +146,6 @@ class BaseTestCase(LoggingFixture):
 
         expected_xml = self._read_utf8_content()
         yaml_content = self._read_yaml_content(self.in_filename)
-        project = None
-        if ('project-type' in yaml_content):
-            if (yaml_content['project-type'] == "maven"):
-                project = project_maven.Maven(None)
-            elif (yaml_content['project-type'] == "matrix"):
-                project = project_matrix.Matrix(None)
-            elif (yaml_content['project-type'] == "flow"):
-                project = project_flow.Flow(None)
-            elif (yaml_content['project-type'] == "multijob"):
-                project = project_multijob.MultiJob(None)
-            elif (yaml_content['project-type'] == "externaljob"):
-                project = project_externaljob.ExternalJob(None)
-
-        if project:
-            xml_project = project.root_xml(yaml_content)
-        else:
-            xml_project = XML.Element('project')
 
         plugins_info = None
         if self.plugins_info_filename is not None:
@@ -175,6 +158,24 @@ class BaseTestCase(LoggingFixture):
         parser = YamlParser(config, plugins_info)
 
         pub = self.klass(parser.registry)
+
+        project = None
+        if ('project-type' in yaml_content):
+            if (yaml_content['project-type'] == "maven"):
+                project = project_maven.Maven(parser.registry)
+            elif (yaml_content['project-type'] == "matrix"):
+                project = project_matrix.Matrix(parser.registry)
+            elif (yaml_content['project-type'] == "flow"):
+                project = project_flow.Flow(parser.registry)
+            elif (yaml_content['project-type'] == "multijob"):
+                project = project_multijob.MultiJob(parser.registry)
+            elif (yaml_content['project-type'] == "externaljob"):
+                project = project_externaljob.ExternalJob(parser.registry)
+
+        if project:
+            xml_project = project.root_xml(yaml_content)
+        else:
+            xml_project = XML.Element('project')
 
         # Generate the XML tree directly with modules/general
         pub.gen_xml(parser, xml_project, yaml_content)
