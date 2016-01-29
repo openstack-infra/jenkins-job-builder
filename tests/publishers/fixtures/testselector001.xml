@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <il.ac.technion.jenkins.pluginsTestExecuter>
+      <name>tests</name>
+      <description>integration</description>
+      <propertiesFilePath>example.properties</propertiesFilePath>
+      <enableField>enabled</enableField>
+      <groupBy>testgroup</groupBy>
+      <fieldSeparator>.</fieldSeparator>
+      <showFields>testsuite,testcase</showFields>
+      <multiplicityField>multiplicity</multiplicityField>
+    </il.ac.technion.jenkins.pluginsTestExecuter>
+  </publishers>
+</project>

@@ -1,0 +1,10 @@
+publishers:
+  - testselector:
+      name: tests
+      description: integration
+      properties-file: example.properties
+      enable-field: enabled
+      groupby: testgroup
+      field-separator: .
+      show-fields: testsuite,testcase
+      multiplicity-field: multiplicity
