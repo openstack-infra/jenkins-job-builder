@@ -168,7 +168,7 @@ class Jenkins(object):
     def delete_all_jobs(self):
         # execute a groovy script to delete all jobs is much faster than
         # using the doDelete REST endpoint to delete one job at a time.
-        script = ('for(job in jenkins.model.Jenkins.theInstance.getProjects())'
+        script = ('for(job in jenkins.model.Jenkins.theInstance.getAllItems())'
                   '       { job.delete(); }')
         self.jenkins.run_script(script)
 
