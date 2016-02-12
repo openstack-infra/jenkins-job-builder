@@ -1,0 +1,22 @@
+builders:
+  - cmake:
+      source-dir: 'path/to/source'
+      working-dir: 'path/to/build'
+      install-dir: 'path/to/install'
+      build-type: 'CustomReleaseType'
+      generator: 'NMake Makefiles'
+      installation-name: 'CMake custom install'
+      preload-script: 'path/to/source/cmake.preload'
+      other-arguments: '-DCMAKE_FIND_ROOT_PATH="path/to/something/else"'
+      clean-build-dir: true
+      build-tool-invocations:
+        - use-cmake: true
+          arguments: 'clean'
+          environment-variables: |
+            DESTDIR=${WORKSPACE}/artifacts/dir
+            URL=http://www.example.org/
+        - use-cmake: false
+          arguments: 'test'
+          environment-variables: |
+            RESTRICT="TRUE"
+            TARGET="NONE"

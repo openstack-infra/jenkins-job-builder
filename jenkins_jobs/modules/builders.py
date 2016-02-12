@@ -44,6 +44,7 @@ from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.errors import MissingAttributeError
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules.helpers import append_git_revision_config
+import pkg_resources
 from jenkins_jobs.modules.helpers import cloudformation_init
 from jenkins_jobs.modules.helpers import cloudformation_region_dict
 from jenkins_jobs.modules.helpers import cloudformation_stack
@@ -2088,22 +2089,20 @@ def cmake(parser, xml_parent, data):
     Execute a CMake target. Requires the Jenkins `CMake Plugin
     <CMake+Plugin>`.
 
+    This builder is compatible with both versions 2.x and 1.x of the
+    plugin. When specifying paramenters from both versions only the ones from
+    the installed version in Jenkins will be used, and the rest will be
+    ignored.
+
     :arg str source-dir: the source code directory relative to the workspace
         directory. (required)
-    :arg str build-dir: The directory where the project will be built in.
-        Relative to the workspace directory. (optional)
-    :arg list install-dir: The directory where the project will be installed
-        in, relative to the workspace directory. (optional)
-    :arg list build-type: Sets the "build type" option. A custom type different
-        than the default ones specified on the CMake plugin can also be set,
-        which will be automatically used in the "Other Build Type" option of
-        the plugin. (default Debug)
-
-        :type Default types present in the CMake plugin:
-            * **Debug**
-            * **Release**
-            * **RelWithDebInfo**
-            * **MinSizeRel**
+    :arg str build-type: Sets the "build type" option for CMake (default
+        "Debug").
+    :arg str preload-script: Path to a CMake preload script file. (optional)
+    :arg str other-arguments: Other arguments to be added to the CMake
+        call. (optional)
+    :arg bool clean-build-dir: If true, delete the build directory before each
+        build (default false).
 
     :arg list generator: The makefile generator (default "Unix Makefiles").
 
@@ -2126,20 +2125,68 @@ def cmake(parser, xml_parent, data):
             * **Visual Studio 9 2008 Win64**
             * **Watcom WMake**
 
-    :arg str make-command: The make command (default "make").
-    :arg str install-command: The install command (default "make install").
-    :arg str preload-script: Path to a CMake preload script file. (optional)
-    :arg str other-arguments: Other arguments to be added to the CMake
-        call. (optional)
-    :arg str custom-cmake-path: Path to cmake executable. (optional)
-    :arg bool clean-build-dir: If true, delete the build directory before each
-        build (default false).
-    :arg bool clean-install-dir: If true, delete the install dir before each
-        build (default false).
+    :Version 2.x: Parameters that available only to versions 2.x of the plugin
 
-    Example:
+        * **working-dir** (`str`): The directory where the project will be
+          built in. Relative to the workspace directory. (optional)
+        * **installation-name** (`str`): The CMake installation to be used on
+          this builder. Use one defined in your Jenkins global configuration
+          page (default "InSearchPath").
+        * **build-tool-invocations** (`list`): list of build tool invocations
+          that will happen during the build:
 
-    .. literalinclude:: ../../tests/builders/fixtures/cmake-complete.yaml
+            :Build tool invocations:
+                * **use-cmake** (`str`) -- Whether to run the actual build tool
+                    directly (by expanding ``$CMAKE_BUILD_TOOL``) or to have
+                    cmake run the build tool (by invoking ``cmake --build
+                    <dir>``) (default false).
+                * **arguments** (`str`) -- Specify arguments to pass to the
+                    build tool or cmake (separated by spaces). Arguments may
+                    contain spaces if they are enclosed in double
+                    quotes. (optional)
+                * **environment-variables** (`str`) -- Specify extra
+                    environment variables to pass to the build tool as
+                    key-value pairs here. Each entry must be on its own line,
+                    for example:
+
+                      ``DESTDIR=${WORKSPACE}/artifacts/dir``
+
+                      ``KEY=VALUE``
+
+    :Version 1.x: Parameters available only to versions 1.x of the plugin
+
+        * **build-dir** (`str`): The directory where the project will be built
+          in.  Relative to the workspace directory. (optional)
+        * **install-dir** (`str`): The directory where the project will be
+          installed in, relative to the workspace directory. (optional)
+        * **build-type** (`list`): Sets the "build type" option. A custom type
+          different than the default ones specified on the CMake plugin can
+          also be set, which will be automatically used in the "Other Build
+          Type" option of the plugin. (default "Debug")
+
+            :Default types present in the CMake plugin:
+                * **Debug**
+                * **Release**
+                * **RelWithDebInfo**
+                * **MinSizeRel**
+
+        * **make-command** (`str`): The make command (default "make").
+        * **install-command** (`arg`): The install command (default "make
+          install").
+        * **custom-cmake-path** (`str`): Path to cmake executable. (optional)
+        * **clean-install-dir** (`bool`): If true, delete the install dir
+          before each build (default false).
+
+    Example (Versions 2.x):
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/cmake/version-2.0/complete-2.x.yaml
+       :language: yaml
+
+    Example (Versions 1.x):
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/cmake/version-1.10/complete-1.x.yaml
        :language: yaml
     """
 
@@ -2153,61 +2200,96 @@ def cmake(parser, xml_parent, data):
     except KeyError:
         raise MissingAttributeError('source-dir')
 
-    build_dir = XML.SubElement(cmake, 'buildDir')
-    build_dir.text = data.get('build-dir', '')
+    XML.SubElement(cmake, 'generator').text = str(
+        data.get('generator', "Unix Makefiles"))
 
-    install_dir = XML.SubElement(cmake, 'installDir')
-    install_dir.text = data.get('install-dir', '')
+    XML.SubElement(cmake, 'preloadScript').text = str(
+        data.get('preload-script', ''))
 
-    # The options buildType and otherBuildType work together on the CMake
-    # plugin:
-    #  * If the passed value is one of the predefined values, set buildType to
-    #    it and otherBuildType to blank;
-    #  * Otherwise, set otherBuildType to the value, and buildType to
-    #    "Debug". The CMake plugin will ignore the buildType option.
-    #
-    # It is strange and confusing that the plugin author chose to do something
-    # like that instead of simply passing a string "buildType" option, so this
-    # was done to simplify it for the JJB user.
-    build_type = XML.SubElement(cmake, 'buildType')
-    build_type.text = data.get('build-type', BUILD_TYPES[0])
+    XML.SubElement(cmake, 'cleanBuild').text = str(
+        data.get('clean-build-dir', False)).lower()
 
-    other_build_type = XML.SubElement(cmake, 'otherBuildType')
+    plugin_info = parser.registry.get_plugin_info("CMake plugin")
+    version = pkg_resources.parse_version(plugin_info.get("version", "1.0"))
 
-    if(build_type.text not in BUILD_TYPES):
-        other_build_type.text = build_type.text
-        build_type.text = BUILD_TYPES[0]
+    # Version 2.x breaks compatibility. So parse the input data differently
+    # based on it:
+    if version >= pkg_resources.parse_version("2.0"):
+        XML.SubElement(cmake, 'workingDir').text = str(
+            data.get('working-dir', ''))
+
+        XML.SubElement(cmake, 'buildType').text = str(
+            data.get('build-type', 'Debug'))
+
+        XML.SubElement(cmake, 'installationName').text = str(
+            data.get('installation-name', 'InSearchPath'))
+
+        XML.SubElement(cmake, 'toolArgs').text = str(
+            data.get('other-arguments', ''))
+
+        tool_steps = XML.SubElement(cmake, 'toolSteps')
+
+        for step_data in data.get('build-tool-invocations', []):
+            tagname = 'hudson.plugins.cmake.BuildToolStep'
+            step = XML.SubElement(tool_steps, tagname)
+
+            XML.SubElement(step, 'withCmake').text = str(
+                step_data.get('use-cmake', False)).lower()
+
+            XML.SubElement(step, 'args').text = str(
+                step_data.get('arguments', ''))
+
+            XML.SubElement(step, 'vars').text = str(
+                step_data.get('environment-variables', ''))
+
     else:
-        other_build_type.text = ''
+        build_dir = XML.SubElement(cmake, 'buildDir')
+        build_dir.text = data.get('build-dir', '')
 
-    generator = XML.SubElement(cmake, 'generator')
-    generator.text = data.get('generator', "Unix Makefiles")
+        install_dir = XML.SubElement(cmake, 'installDir')
+        install_dir.text = data.get('install-dir', '')
 
-    make_command = XML.SubElement(cmake, 'makeCommand')
-    make_command.text = data.get('make-command', 'make')
+        # The options buildType and otherBuildType work together on the CMake
+        # plugin:
+        #  * If the passed value is one of the predefined values, set buildType
+        #    to it and otherBuildType to blank;
+        #  * Otherwise, set otherBuildType to the value, and buildType to
+        #    "Debug". The CMake plugin will ignore the buildType option.
+        #
+        # It is strange and confusing that the plugin author chose to do
+        # something like that instead of simply passing a string "buildType"
+        # option, so this was done to simplify it for the JJB user.
+        build_type = XML.SubElement(cmake, 'buildType')
+        build_type.text = data.get('build-type', BUILD_TYPES[0])
 
-    install_command = XML.SubElement(cmake, 'installCommand')
-    install_command.text = data.get('install-command', 'make install')
+        other_build_type = XML.SubElement(cmake, 'otherBuildType')
 
-    preload_script = XML.SubElement(cmake, 'preloadScript')
-    preload_script.text = data.get('preload-script', '')
+        if(build_type.text not in BUILD_TYPES):
+            other_build_type.text = build_type.text
+            build_type.text = BUILD_TYPES[0]
+        else:
+            other_build_type.text = ''
 
-    other_cmake_args = XML.SubElement(cmake, 'cmakeArgs')
-    other_cmake_args.text = data.get('other-arguments', '')
+        make_command = XML.SubElement(cmake, 'makeCommand')
+        make_command.text = data.get('make-command', 'make')
 
-    custom_cmake_path = XML.SubElement(cmake, 'projectCmakePath')
-    custom_cmake_path.text = data.get('custom-cmake-path', '')
+        install_command = XML.SubElement(cmake, 'installCommand')
+        install_command.text = data.get('install-command', 'make install')
 
-    clean_build_dir = XML.SubElement(cmake, 'cleanBuild')
-    clean_build_dir.text = str(data.get('clean-build-dir', False)).lower()
+        other_cmake_args = XML.SubElement(cmake, 'cmakeArgs')
+        other_cmake_args.text = data.get('other-arguments', '')
 
-    clean_install_dir = XML.SubElement(cmake, 'cleanInstallDir')
-    clean_install_dir.text = str(data.get('clean-install-dir',
-                                          False)).lower()
+        custom_cmake_path = XML.SubElement(cmake, 'projectCmakePath')
+        custom_cmake_path.text = data.get('custom-cmake-path', '')
 
-    # The plugin generates this tag, but there doesn't seem to be anything
-    # that can be configurable by it. Let's keep it to mantain compatibility:
-    XML.SubElement(cmake, 'builderImpl')
+        clean_install_dir = XML.SubElement(cmake, 'cleanInstallDir')
+        clean_install_dir.text = str(data.get('clean-install-dir',
+                                              False)).lower()
+
+        # The plugin generates this tag, but there doesn't seem to be anything
+        # that can be configurable by it. Let's keep it to maintain
+        # compatibility:
+        XML.SubElement(cmake, 'builderImpl')
 
 
 def dsl(parser, xml_parent, data):

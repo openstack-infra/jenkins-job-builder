@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.plugins.cmake.CmakeBuilder>
+      <sourceDir>path/to/source</sourceDir>
+      <generator>NMake Makefiles</generator>
+      <preloadScript>path/to/source/cmake.preload</preloadScript>
+      <cleanBuild>true</cleanBuild>
+      <workingDir>path/to/build</workingDir>
+      <buildType>CustomReleaseType</buildType>
+      <installationName>CMake custom install</installationName>
+      <toolArgs>-DCMAKE_FIND_ROOT_PATH=&quot;path/to/something/else&quot;</toolArgs>
+      <toolSteps>
+        <hudson.plugins.cmake.BuildToolStep>
+          <withCmake>true</withCmake>
+          <args>clean</args>
+          <vars>DESTDIR=${WORKSPACE}/artifacts/dir
+URL=http://www.example.org/
+</vars>
+        </hudson.plugins.cmake.BuildToolStep>
+        <hudson.plugins.cmake.BuildToolStep>
+          <withCmake>false</withCmake>
+          <args>test</args>
+          <vars>RESTRICT=&quot;TRUE&quot;
+TARGET=&quot;NONE&quot;
+</vars>
+        </hudson.plugins.cmake.BuildToolStep>
+      </toolSteps>
+    </hudson.plugins.cmake.CmakeBuilder>
+  </builders>
+</project>

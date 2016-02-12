@@ -1,0 +1,3 @@
+- longName: 'CMake plugin'
+  shortName: 'cmakebuilder'
+  version: "1.10"

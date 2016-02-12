@@ -1,0 +1,7 @@
+builders:
+  - cmake:
+      source-dir: 'path/to/source'
+      working-dir: 'path/to/build'
+      build-type: 'Debug'
+      clean-build-dir: false
+      clean-install-dir: false
