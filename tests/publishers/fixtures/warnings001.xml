@@ -48,6 +48,7 @@
       </thresholds>
       <dontComputeNew>false</dontComputeNew>
       <useDeltaValues>true</useDeltaValues>
+      <usePreviousBuildAsReference>true</usePreviousBuildAsReference>
       <useStableBuildAsReference>true</useStableBuildAsReference>
       <defaultEncoding>ISO-8859-9</defaultEncoding>
     </hudson.plugins.warnings.WarningsPublisher>
