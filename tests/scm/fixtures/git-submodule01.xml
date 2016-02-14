@@ -36,6 +36,7 @@
         <disableSubmodules>true</disableSubmodules>
         <recursiveSubmodules>true</recursiveSubmodules>
         <trackingSubmodules>true</trackingSubmodules>
+        <reference>/jenkins_home/.gitcache/submodules</reference>
         <timeout>15</timeout>
       </hudson.plugins.git.extensions.impl.SubmoduleOption>
       <hudson.plugins.git.extensions.impl.WipeWorkspace/>
