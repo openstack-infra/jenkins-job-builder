@@ -2956,7 +2956,7 @@ def post_tasks(parser, xml_parent, data):
                 matches_xml,
                 'hudson.plugins.postbuildtask.LogProperties')
             XML.SubElement(lt_xml, 'logText').text = str(
-                match.get('log-text', ''))
+                match.get('log-text', False) or '')
             XML.SubElement(lt_xml, 'operator').text = str(
                 match.get('operator', 'AND')).upper()
         XML.SubElement(task_xml, 'EscalateStatus').text = str(
