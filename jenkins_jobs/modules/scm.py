@@ -589,6 +589,8 @@ def repo(parser, xml_parent, data):
     :arg bool no-tags: Don't fetch tags (default false)
     :arg bool trace: Trace git command execution into the build logs. (default
         false)
+    :arg bool show-all-changes: When this is checked --first-parent is no
+        longer passed to git log when determining changesets (default false)
     :arg str local-manifest: Contents of .repo/local_manifest.xml, written
         prior to calling sync (optional)
 
@@ -622,6 +624,7 @@ def repo(parser, xml_parent, data):
         ("force-sync", 'forceSync', False),
         ("no-tags", 'noTags', False),
         ("trace", 'trace', False),
+        ("show-all-changes", 'showAllChanges', False),
         ("local-manifest", 'localManifest', ''),
     ]
 
