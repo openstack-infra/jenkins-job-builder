@@ -12,6 +12,7 @@
          jobs: 3
          current-branch: false
          quiet: false
+         force-sync: false
 
 - scm:
     name: second-scm
