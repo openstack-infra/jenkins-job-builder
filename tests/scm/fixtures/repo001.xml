@@ -14,6 +14,7 @@
     <resetFirst>true</resetFirst>
     <quiet>false</quiet>
     <forceSync>true</forceSync>
+    <noTags>true</noTags>
     <localManifest>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;manifest&gt;
   &lt;project path=&quot;external/project&quot; name=&quot;org/project&quot;

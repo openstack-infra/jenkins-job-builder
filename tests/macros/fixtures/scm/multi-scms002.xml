@@ -24,6 +24,7 @@
         <resetFirst>false</resetFirst>
         <quiet>false</quiet>
         <forceSync>false</forceSync>
+        <noTags>false</noTags>
       </scm>
       <scm class="hudson.plugins.git.GitSCM">
         <configVersion>2</configVersion>

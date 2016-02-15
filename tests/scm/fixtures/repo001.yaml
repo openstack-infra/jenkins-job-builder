@@ -12,6 +12,7 @@ scm:
       reset-first: true
       quiet: false
       force-sync: true
+      no-tags: true
       local-manifest: |
         <?xml version="1.0" encoding="UTF-8"?>
         <manifest>
