@@ -574,6 +574,9 @@ def repo(parser, xml_parent, data):
     :arg str mirror-dir: Path to mirror directory to reference when
         initialising (optional)
     :arg int jobs: Number of projects to fetch simultaneously (default 0)
+    :arg int depth: Specify the depth in history to sync from the source. The
+        default is to sync all of the history. Use 1 to just sync the most
+        recent commit (default 0)
     :arg bool current-branch: Fetch only the current branch from the server
         (default true)
     :arg bool quiet: Make repo more quiet
@@ -606,6 +609,7 @@ def repo(parser, xml_parent, data):
         ("repo-url", 'repoUrl', ''),
         ("mirror-dir", 'mirrorDir', ''),
         ("jobs", 'jobs', 0),
+        ("depth", 'depth', 0),
         ("current-branch", 'currentBranch', True),
         ("quiet", 'quiet', True),
         ("force-sync", 'forceSync', False),

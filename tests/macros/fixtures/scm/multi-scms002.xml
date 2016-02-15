@@ -19,6 +19,7 @@
         <repoUrl>https://internal.net/projects/repo</repoUrl>
         <mirrorDir>~/git/project/</mirrorDir>
         <jobs>3</jobs>
+        <depth>2</depth>
         <currentBranch>false</currentBranch>
         <quiet>false</quiet>
         <forceSync>false</forceSync>
