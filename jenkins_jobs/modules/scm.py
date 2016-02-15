@@ -587,6 +587,8 @@ def repo(parser, xml_parent, data):
     :arg bool force-sync: Continue sync even if a project fails to sync
         (default false)
     :arg bool no-tags: Don't fetch tags (default false)
+    :arg bool trace: Trace git command execution into the build logs. (default
+        false)
     :arg str local-manifest: Contents of .repo/local_manifest.xml, written
         prior to calling sync (optional)
 
@@ -619,6 +621,7 @@ def repo(parser, xml_parent, data):
         ("quiet", 'quiet', True),
         ("force-sync", 'forceSync', False),
         ("no-tags", 'noTags', False),
+        ("trace", 'trace', False),
         ("local-manifest", 'localManifest', ''),
     ]
 

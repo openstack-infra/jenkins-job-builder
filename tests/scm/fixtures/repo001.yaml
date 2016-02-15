@@ -13,6 +13,7 @@ scm:
       quiet: false
       force-sync: true
       no-tags: true
+      trace: true
       local-manifest: |
         <?xml version="1.0" encoding="UTF-8"?>
         <manifest>

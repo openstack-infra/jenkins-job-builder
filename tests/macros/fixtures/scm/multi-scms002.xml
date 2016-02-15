@@ -25,6 +25,7 @@
         <quiet>false</quiet>
         <forceSync>false</forceSync>
         <noTags>false</noTags>
+        <trace>false</trace>
       </scm>
       <scm class="hudson.plugins.git.GitSCM">
         <configVersion>2</configVersion>
