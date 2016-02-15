@@ -579,6 +579,9 @@ def repo(parser, xml_parent, data):
         recent commit (default 0)
     :arg bool current-branch: Fetch only the current branch from the server
         (default true)
+    :arg bool reset-first: Remove any commits that are not on the repositories
+        by running the following command before anything else (default false):
+        ``repo forall -c "git reset --hard"``
     :arg bool quiet: Make repo more quiet
         (default true)
     :arg bool force-sync: Continue sync even if a project fails to sync
@@ -611,6 +614,7 @@ def repo(parser, xml_parent, data):
         ("jobs", 'jobs', 0),
         ("depth", 'depth', 0),
         ("current-branch", 'currentBranch', True),
+        ("reset-first", 'resetFirst', False),
         ("quiet", 'quiet', True),
         ("force-sync", 'forceSync', False),
         ("local-manifest", 'localManifest', ''),

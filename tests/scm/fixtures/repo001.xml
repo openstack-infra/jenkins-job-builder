@@ -11,6 +11,7 @@
     <jobs>3</jobs>
     <depth>0</depth>
     <currentBranch>false</currentBranch>
+    <resetFirst>true</resetFirst>
     <quiet>false</quiet>
     <forceSync>true</forceSync>
     <localManifest>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
