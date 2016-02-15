@@ -2873,3 +2873,31 @@ def runscope(parser, xml_parent, data):
     except KeyError as e:
         raise MissingAttributeError(e.args[0])
     XML.SubElement(runscope, 'timeout').text = str(data.get('timeout', '60'))
+
+
+def description_setter(parser, xml_parent, data):
+    """yaml: description-setter
+    This plugin sets the description for each build,
+    based upon a RegEx test of the build log file.
+
+    Requires the Jenkins :jenkins-wiki:`Description Setter Plugin
+    <Description+Setter+Plugin>`.
+
+    :arg str regexp: A RegEx which is used to scan the build log file
+        (default '')
+    :arg str description: The description to set on the build (optional)
+
+    Example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/description-setter001.yaml
+       :language: yaml
+    """
+
+    descriptionsetter = XML.SubElement(
+        xml_parent,
+        'hudson.plugins.descriptionsetter.DescriptionSetterBuilder')
+    XML.SubElement(descriptionsetter, 'regexp').text = data.get('regexp', '')
+    if 'description' in data:
+        XML.SubElement(descriptionsetter, 'description').text = data[
+            'description']

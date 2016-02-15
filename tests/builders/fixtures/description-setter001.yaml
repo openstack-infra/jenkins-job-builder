@@ -1,0 +1,4 @@
+builders:
+  - description-setter:
+      regexp: ".*(<a href=.*a>)"
+      description: "some description"
