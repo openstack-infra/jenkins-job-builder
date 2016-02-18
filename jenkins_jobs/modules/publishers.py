@@ -5678,6 +5678,7 @@ def slack(parser, xml_parent, data):
         (default: '/')
     :arg str room: A comma seperated list of rooms / channels to post the
         notifications to. (default: '')
+
     Example:
 
     .. literalinclude::
