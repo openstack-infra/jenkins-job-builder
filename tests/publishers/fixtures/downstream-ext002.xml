@@ -9,7 +9,7 @@
         <color>YELLOW</color>
         <completeBuild>true</completeBuild>
       </threshold>
-      <thresholdStrategy>EQUAL</thresholdStrategy>
+      <thresholdStrategy>EXACT</thresholdStrategy>
       <onlyIfSCMChanges>true</onlyIfSCMChanges>
       <onlyIfLocalSCMChanges>false</onlyIfLocalSCMChanges>
     </hudson.plugins.downstream__ext.DownstreamTrigger>

@@ -4509,7 +4509,7 @@ def downstream_ext(parser, xml_parent, data):
     conditions = {
         "equal-or-over": "AND_HIGHER",
         "equal-or-under": "AND_LOWER",
-        "equal": "EQUAL"
+        "equal": "EXACT"
     }
 
     p = XML.SubElement(xml_parent,
