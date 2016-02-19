@@ -1200,7 +1200,7 @@ def reverse(parser, xml_parent, data):
         jobs
 
     threshold = XML.SubElement(reserveBuildTrigger, 'threshold')
-    result = data.get('result').upper()
+    result = str(data.get('result', 'success')).upper()
     if result not in supported_thresholds:
         raise jenkins_jobs.errors.JenkinsJobsException(
             "Choice should be one of the following options: %s." %
