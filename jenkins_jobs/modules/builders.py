@@ -773,6 +773,38 @@ def artifact_resolver(parser, xml_parent, data):
     XML.SubElement(ar, 'releaseChecksumPolicy').text = 'warn'
 
 
+def doxygen(parser, xml_parent, data):
+    """yaml: doxygen
+    Builds doxygen HTML documentation. Requires the Jenkins
+    :jenkins-wiki:`Doxygen plugin <Doxygen+Plugin>`.
+
+    :arg str doxyfile: The doxyfile path (required)
+    :arg str install: The doxygen installation to use (required)
+    :arg bool ignore-failure: Keep executing build even on doxygen generation
+        failure (default false)
+    :arg bool unstable-warning: Mark the build as unstable if warnings are
+        generated (default false)
+
+    Example:
+
+    .. literalinclude:: /../../tests/builders/fixtures/doxygen001.yaml
+       :language: yaml
+
+    """
+    doxygen = XML.SubElement(xml_parent,
+                             'hudson.plugins.doxygen.DoxygenBuilder')
+    try:
+        XML.SubElement(doxygen, 'doxyfilePath').text = str(data['doxyfile'])
+        XML.SubElement(doxygen, 'installationName').text = str(data['install'])
+    except KeyError as e:
+        raise MissingAttributeError(e.arg[0])
+
+    XML.SubElement(doxygen, 'continueOnBuildFailure').text = str(
+        data.get('ignore-failure', False)).lower()
+    XML.SubElement(doxygen, 'unstableIfWarnings').text = str(
+        data.get('unstable-warning', False)).lower()
+
+
 def gradle(parser, xml_parent, data):
     """yaml: gradle
     Execute gradle tasks. Requires the Jenkins :jenkins-wiki:`Gradle Plugin

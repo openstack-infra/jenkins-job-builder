@@ -3,6 +3,7 @@
   <publishers>
     <hudson.plugins.doxygen.DoxygenArchiver>
       <doxyfilePath>Doxyfile</doxyfilePath>
+      <runOnChild>doxygen-slave</runOnChild>
       <keepAll>false</keepAll>
       <folderWhereYouRunDoxygen>build</folderWhereYouRunDoxygen>
     </hudson.plugins.doxygen.DoxygenArchiver>

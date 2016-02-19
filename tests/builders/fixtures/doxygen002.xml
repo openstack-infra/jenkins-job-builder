@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.plugins.doxygen.DoxygenBuilder>
+      <doxyfilePath>Doxyfile</doxyfilePath>
+      <installationName>doxygen</installationName>
+      <continueOnBuildFailure>false</continueOnBuildFailure>
+      <unstableIfWarnings>false</unstableIfWarnings>
+    </hudson.plugins.doxygen.DoxygenBuilder>
+  </builders>
+</project>
