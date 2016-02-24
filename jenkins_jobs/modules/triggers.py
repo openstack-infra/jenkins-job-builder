@@ -362,10 +362,10 @@ def gerrit(parser, xml_parent, data):
                 * **topics** (`list`) -- List of topics to match
                   (optional)
 
-                  :File Path: * **compare-type** (`str`) -- ''PLAIN'', ''ANT''
-                                or ''REG_EXP'' (optional) (default ''PLAIN'')
-                              * **pattern** (`str`) -- Topic name pattern to
-                                match
+                  :Topic: * **compare-type** (`str`) -- ''PLAIN'', ''ANT'' or
+                            ''REG_EXP'' (optional) (default ''PLAIN'')
+                          * **pattern** (`str`) -- Topic name pattern to
+                            match
 
     :arg dict skip-vote: map of build outcomes for which Jenkins must skip
         vote. Requires Gerrit Trigger Plugin version >= 2.7.0
