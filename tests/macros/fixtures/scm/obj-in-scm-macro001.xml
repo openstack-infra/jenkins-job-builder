@@ -49,6 +49,7 @@
         <disableSubmodules>false</disableSubmodules>
         <recursiveSubmodules>true</recursiveSubmodules>
         <trackingSubmodules>false</trackingSubmodules>
+        <reference/>
         <timeout>10</timeout>
       </hudson.plugins.git.extensions.impl.SubmoduleOption>
     </extensions>
