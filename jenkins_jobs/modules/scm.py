@@ -587,6 +587,7 @@ def repo(parser, xml_parent, data):
         (default true)
     :arg bool force-sync: Continue sync even if a project fails to sync
         (default false)
+    :arg bool no-tags: Don't fetch tags (default false)
     :arg str local-manifest: Contents of .repo/local_manifest.xml, written
         prior to calling sync (optional)
 
@@ -618,6 +619,7 @@ def repo(parser, xml_parent, data):
         ("reset-first", 'resetFirst', False),
         ("quiet", 'quiet', True),
         ("force-sync", 'forceSync', False),
+        ("no-tags", 'noTags', False),
         ("local-manifest", 'localManifest', ''),
     ]
 
