@@ -39,5 +39,6 @@ publishers:
           new-normal: 50
           new-low: 40
       use-delta-for-new-warnings: true
+      use-previous-build-as-reference: true
       only-use-stable-builds-as-reference: true
       default-encoding: ISO-8859-9

@@ -3268,6 +3268,14 @@ def warnings(parser, xml_parent, data):
         decreasing. However, sometimes false positives will be reported due
         to minor changes in a warning (refactoring of variable of method
         names, etc.) (default false)
+    :arg bool use-previous-build-as-reference: If set the number of new
+        warnings will always be computed based on the previous build, even if
+        that build is unstable (due to a violated warning threshold).
+        Otherwise the last build that did not violate any given threshold will
+        be used as
+        reference. It is recommended to uncheck this option if the plug-in
+        should ensure that all new warnings will be finally fixed in subsequent
+        builds. (default false)
     :arg bool only-use-stable-builds-as-reference: The number of new warnings
         will be calculated based on the last stable build, allowing reverts
         of unstable builds where the number of warnings was decreased.
@@ -3337,6 +3345,9 @@ def warnings(parser, xml_parent, data):
         XML.SubElement(warnings, 'dontComputeNew').text = 'false'
         delta = data.get('use-delta-for-new-warnings', False)
         XML.SubElement(warnings, 'useDeltaValues').text = str(delta).lower()
+        use_previous_build = data.get('use-previous-build-as-reference', False)
+        XML.SubElement(warnings, 'usePreviousBuildAsReference').text = str(
+            use_previous_build).lower()
         use_stable_builds = data.get('only-use-stable-builds-as-reference',
                                      False)
         XML.SubElement(warnings, 'useStableBuildAsReference').text = str(
