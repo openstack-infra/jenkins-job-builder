@@ -14,6 +14,7 @@ scm:
       force-sync: true
       no-tags: true
       trace: true
+      show-all-changes: true
       local-manifest: |
         <?xml version="1.0" encoding="UTF-8"?>
         <manifest>
