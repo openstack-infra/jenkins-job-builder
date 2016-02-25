@@ -9,6 +9,7 @@ scm:
       mirror-dir: ~/git/project/
       jobs: 3
       current-branch: false
+      reset-first: true
       quiet: false
       force-sync: true
       local-manifest: |

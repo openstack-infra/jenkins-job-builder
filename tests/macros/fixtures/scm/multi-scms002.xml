@@ -21,6 +21,7 @@
         <jobs>3</jobs>
         <depth>2</depth>
         <currentBranch>false</currentBranch>
+        <resetFirst>false</resetFirst>
         <quiet>false</quiet>
         <forceSync>false</forceSync>
       </scm>
