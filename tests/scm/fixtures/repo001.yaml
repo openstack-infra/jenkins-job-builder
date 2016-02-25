@@ -10,6 +10,7 @@ scm:
       jobs: 3
       current-branch: false
       quiet: false
+      force-sync: true
       local-manifest: |
         <?xml version="1.0" encoding="UTF-8"?>
         <manifest>

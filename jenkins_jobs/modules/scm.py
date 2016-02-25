@@ -579,6 +579,8 @@ def repo(parser, xml_parent, data):
         (default true)
     :arg bool quiet: Make repo more quiet
         (default true)
+    :arg bool force-sync: Continue sync even if a project fails to sync
+        (default false)
     :arg str local-manifest: Contents of .repo/local_manifest.xml, written
         prior to calling sync (optional)
 
@@ -607,6 +609,7 @@ def repo(parser, xml_parent, data):
         ("jobs", 'jobs', 0),
         ("current-branch", 'currentBranch', True),
         ("quiet", 'quiet', True),
+        ("force-sync", 'forceSync', False),
         ("local-manifest", 'localManifest', ''),
     ]
 
