@@ -5650,6 +5650,52 @@ def hipchat(parser, xml_parent, data):
             data['complete-message'])
 
 
+def slack(parser, xml_parent, data):
+    """yaml: slack
+    Publisher that sends slack notifications on job events.
+
+    Requires the Jenkins :jenkins-wiki:`Slack Plugin <Slack+Plugin>`
+
+    As the Slack Plugin itself requires a publisher aswell as properties
+    please note that you have to create those too.
+
+    :arg str team-domain: Your team's domain at slack. (default: '')
+    :arg str auth-token: The integration token to be used when sending
+        notifications. (default: '')
+    :arg str build-server-url: Specify the URL for your server installation.
+        (default: '/')
+    :arg str room: A comma seperated list of rooms / channels to post the
+        notifications to. (default: '')
+    Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/slack001.yaml
+        :language: yaml
+    """
+    def _add_xml(elem, name, value=''):
+        XML.SubElement(elem, name).text = value
+
+    mapping = (
+        ('team-domain', 'teamDomain', ''),
+        ('auth-token', 'authToken', ''),
+        ('build-server-url', 'buildServerUrl', '/'),
+        ('room', 'room', ''),
+    )
+
+    slack = XML.SubElement(
+        xml_parent,
+        'jenkins.plugins.slack.SlackNotifier',
+    )
+
+    for yaml_name, xml_name, default_value in mapping:
+        value = data.get(yaml_name, default_value)
+        # All arguments that don't have a default value are mandatory for the
+        # plugin to work as intended.
+        if not value:
+            raise MissingAttributeError(yaml_name)
+        _add_xml(slack, xml_name, value)
+
+
 def phabricator(parser, xml_parent, data):
     """yaml: phabricator
     Integrate with `Phabricator <http://phabricator.org/>`_

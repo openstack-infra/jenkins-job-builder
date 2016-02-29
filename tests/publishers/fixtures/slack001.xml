@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <jenkins.plugins.slack.SlackNotifier>
+      <teamDomain>teamname</teamDomain>
+      <authToken>yourauthtoken</authToken>
+      <buildServerUrl>/</buildServerUrl>
+      <room>#builds</room>
+    </jenkins.plugins.slack.SlackNotifier>
+  </publishers>
+</project>

@@ -1,0 +1,7 @@
+properties:
+    - slack:
+        notify-start: true
+        notify-success: true
+        notify-aborted: true
+        include-custom-message: true
+        custom-message: 'Custom foo message'
