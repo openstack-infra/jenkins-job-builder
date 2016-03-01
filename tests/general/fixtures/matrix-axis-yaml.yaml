@@ -1,0 +1,11 @@
+name: matrix-with-yaml-axis
+project-type: matrix
+axes:
+    - axis:
+        type: yaml
+        filename: config.yaml
+        name: python
+    - axis:
+        type: yaml
+        filename: config.yaml
+        name: database

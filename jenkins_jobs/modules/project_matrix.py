@@ -34,6 +34,8 @@ The module also supports additional, plugin-defined axes:
   :jenkins-wiki:`DynamicAxis Plugin <DynamicAxis+Plugin>`
 * GroovyAxis (``groovy``), requires the Jenkins
   :jenkins-wiki:`GroovyAxis Plugin <GroovyAxis>`
+* YamlAxis (``yaml``), requires the Jenkins
+  :jenkins-wiki:`Yaml Axis Plugin <Yaml+Axis+Plugin>`
 
 To tie the parent job to a specific node, you should use ``node`` parameter.
 On a matrix project, this will tie *only* the parent job.  To restrict axes
@@ -67,6 +69,10 @@ Example:
   .. literalinclude::  /../../tests/yamlparser/fixtures/project-matrix001.yaml
     :language: yaml
 
+Example for yaml axis:
+
+  .. literalinclude::  /../../tests/general/fixtures/matrix-axis-yaml.yaml
+    :language: yaml
 """
 
 import xml.etree.ElementTree as XML
@@ -87,6 +93,7 @@ class Matrix(jenkins_jobs.modules.base.Base):
         'python': 'jenkins.plugins.shiningpanda.matrix.PythonAxis',
         'tox': 'jenkins.plugins.shiningpanda.matrix.ToxAxis',
         'groovy': 'org.jenkinsci.plugins.GroovyAxis',
+        'yaml': 'org.jenkinsci.plugins.yamlaxis.YamlAxis',
     }
 
     def root_xml(self, data):
@@ -145,6 +152,8 @@ class Matrix(jenkins_jobs.modules.base.Base):
                 command = XML.SubElement(lbl_root, 'groovyString')
                 command.text = axis.get('command')
                 XML.SubElement(lbl_root, 'computedValues').text = ''
+            elif axis_type == "yaml":
+                XML.SubElement(v_root, 'string').text = axis.get('filename')
             else:
                 for v in values:
                     XML.SubElement(v_root, 'string').text = str(v)
