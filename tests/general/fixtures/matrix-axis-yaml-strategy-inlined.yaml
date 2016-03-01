@@ -1,0 +1,19 @@
+name: matrix-with-yaml-strategy-and-inlined-exclude
+project-type: matrix
+yaml-strategy:
+    exclude-key: 'exclude'
+    text: |
+        exclude:
+            - database: postgre
+              python: py27
+            - python: py35
+              database: mysql
+axes:
+    - axis:
+        type: yaml
+        filename: config.yaml
+        name: python
+    - axis:
+        type: yaml
+        filename: config.yaml
+        name: database

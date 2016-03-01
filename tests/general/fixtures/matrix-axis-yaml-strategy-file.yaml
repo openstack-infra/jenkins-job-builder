@@ -1,0 +1,14 @@
+name: matrix-with-yaml-strategy-and-exclude-in-file
+project-type: matrix
+yaml-strategy:
+    exclude-key: 'exclude'
+    filename: 'exclude.yaml'
+axes:
+    - axis:
+        type: yaml
+        filename: 'config.yaml'
+        name: python
+    - axis:
+        type: yaml
+        filename: 'config.yaml'
+        name: database
