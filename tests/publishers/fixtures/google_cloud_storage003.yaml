@@ -10,17 +10,21 @@ publishers:
                 storage-location: 'gs://myBucket'
                 share-publicly: 'true'
                 upload-for-failed-jobs: 'true'
+                strip-prefix: 'path/to/'
             - classic:
                 file-pattern: 'target/*.war'
                 storage-location: 'gs://myBucket'
+                strip-prefix: 'path/to/'
             - expiring-elements:
                 bucket-name: 'gs://myBucket/artifacts/'
                 days-to-retain: 7
             - build-log:
                 log-name: 'console.log'
                 storage-location: 'gs://myBucket/artifacts/'
+                strip-prefix: 'path/to/'
             - classic:
                 file-pattern: 'target/*.war'
                 storage-location: 'gs://myBucket/artifacts/'
                 share-publicly: 'true'
                 upload-for-failed-jobs: 'true'
+                strip-prefix: 'path/to/'

@@ -5157,6 +5157,9 @@ def google_cloud_storage(parser, xml_parent, data):
                       share uploaded artifacts with everyone (default false)
                     * **upload-for-failed-jobs** (`bool`) whether to upload
                       artifacts even if the build fails (default false)
+                    * **strip-prefix** (`str`) strip this prefix off the
+                      file names (default: not set)
+
             * **classic** (`dict`)
                 :params:
                     * **file-pattern** (`str`) ant style globs to match the
@@ -5167,6 +5170,8 @@ def google_cloud_storage(parser, xml_parent, data):
                       share uploaded artifacts with everyone (default false)
                     * **upload-for-failed-jobs** (`bool`) whether to upload
                       artifacts even if the build fails (default false)
+                    * **strip-prefix** (`str`) strip this prefix off the
+                      file names (default: not set)
 
     Example:
 
@@ -5227,6 +5232,9 @@ def google_cloud_storage(parser, xml_parent, data):
         XML.SubElement(xml_element, 'forFailedJobs').text = str(
             properties.get('upload-for-failed-jobs', False)).lower()
 
+        XML.SubElement(xml_element, 'pathPrefix').text = str(
+            properties.get('strip-prefix', ''))
+
         if types.count('build-log') > 1:
             XML.SubElement(xml_element, 'module',
                            {'reference': '../../com.google.jenkins.plugins.'
@@ -5256,6 +5264,9 @@ def google_cloud_storage(parser, xml_parent, data):
 
         XML.SubElement(xml_element, 'forFailedJobs').text = str(
             properties.get('upload-for-failed-jobs', False)).lower()
+
+        XML.SubElement(xml_element, 'pathPrefix').text = str(
+            properties.get('strip-prefix', ''))
 
         if types.count('classic') > 1:
             XML.SubElement(xml_element, 'module',

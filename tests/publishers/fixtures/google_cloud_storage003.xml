@@ -15,6 +15,7 @@
           <bucketNameWithVars>gs://myBucket</bucketNameWithVars>
           <sharedPublicly>true</sharedPublicly>
           <forFailedJobs>true</forFailedJobs>
+          <pathPrefix>path/to/</pathPrefix>
           <module/>
           <logName>console.log</logName>
         </com.google.jenkins.plugins.storage.StdoutUpload>
@@ -22,6 +23,7 @@
           <bucketNameWithVars>gs://myBucket</bucketNameWithVars>
           <sharedPublicly>false</sharedPublicly>
           <forFailedJobs>false</forFailedJobs>
+          <pathPrefix>path/to/</pathPrefix>
           <module/>
           <sourceGlobWithVars>target/*.war</sourceGlobWithVars>
         </com.google.jenkins.plugins.storage.ClassicUpload>
@@ -36,6 +38,7 @@
           <bucketNameWithVars>gs://myBucket/artifacts/</bucketNameWithVars>
           <sharedPublicly>false</sharedPublicly>
           <forFailedJobs>false</forFailedJobs>
+          <pathPrefix>path/to/</pathPrefix>
           <module reference="../../com.google.jenkins.plugins.storage.StdoutUpload/module"/>
           <logName>console.log</logName>
         </com.google.jenkins.plugins.storage.StdoutUpload>
@@ -43,6 +46,7 @@
           <bucketNameWithVars>gs://myBucket/artifacts/</bucketNameWithVars>
           <sharedPublicly>true</sharedPublicly>
           <forFailedJobs>true</forFailedJobs>
+          <pathPrefix>path/to/</pathPrefix>
           <module reference="../../com.google.jenkins.plugins.storage.ClassicUpload/module"/>
           <sourceGlobWithVars>target/*.war</sourceGlobWithVars>
         </com.google.jenkins.plugins.storage.ClassicUpload>

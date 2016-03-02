@@ -18,3 +18,4 @@ publishers:
                 file-pattern: '**/build/*.iso'
                 storage-location: 'gs://myBucket/artifacts/'
                 share-publicly: true
+                strip-prefix: 'path/to/'
