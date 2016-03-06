@@ -1563,6 +1563,8 @@ def multijob(parser, xml_parent, data):
             * **node-label** (`str`) -- Define a label
               of 'Restrict where this project can be run' on the fly.
               Requires NodeLabel Parameter Plugin (optional)
+            * **node-parameters** (`bool`) -- Use the same Node for
+              the triggered builds that was used for this build. (optional)
             * **git-revision** (`bool`) -- Pass current git-revision
               to the other job (default false)
             * **property-file** (`str`) -- Pass properties from file
@@ -1621,6 +1623,11 @@ def multijob(parser, xml_parent, data):
                          'parameterizedtrigger.NodeLabelBuildParameter')
             XML.SubElement(node, 'name').text = nodeLabelName
             XML.SubElement(node, 'nodeLabel').text = nodeLabel
+
+        # Node parameter
+        if project.get('node-parameters', False):
+            XML.SubElement(configs, 'hudson.plugins.parameterizedtrigger.'
+                                    'NodeParameters')
 
         # Git Revision
         if project.get('git-revision', False):
