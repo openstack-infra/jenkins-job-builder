@@ -45,11 +45,11 @@ def deep_format(obj, paramdict, allow_empty=False):
                 missing_key, obj, pformat(paramdict))
             raise JenkinsJobsException(desc)
     elif isinstance(obj, list):
-        ret = []
+        ret = type(obj)()
         for item in obj:
             ret.append(deep_format(item, paramdict, allow_empty))
     elif isinstance(obj, dict):
-        ret = {}
+        ret = type(obj)()
         for item in obj:
             try:
                 ret[CustomFormatter(allow_empty).format(item, **paramdict)] = \
