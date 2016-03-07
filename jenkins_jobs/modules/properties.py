@@ -325,6 +325,8 @@ def authorization(parser, xml_parent, data):
             * **run-update**
             * **scm-tag**
 
+    .. _authorization:
+
     Example:
 
     .. literalinclude::
@@ -648,7 +650,7 @@ def slack(parser, xml_parent, data):
     Example:
 
     .. literalinclude::
-        /../../tests/properties/slack001.yaml
+        /../../tests/properties/fixtures/slack001.yaml
         :language: yaml
     """
     def _add_xml(elem, name, value):

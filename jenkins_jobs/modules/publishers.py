@@ -5844,7 +5844,7 @@ def github_pull_request_merge(parser, xml_parent, data):
     This action merges the pull request that triggered the build (see the
     github pull request trigger)
     Requires the Jenkins :jenkins-wiki:`GitHub pull request builder plugin
-    <GitHub+pull+request+builder+plugin>
+    <GitHub+pull+request+builder+plugin>`.
 
 
     :arg bool only-admins-merge: if `true` only administrators can merge the
