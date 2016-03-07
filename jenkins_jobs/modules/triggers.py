@@ -1467,7 +1467,7 @@ def script(parser, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: /../../tests/triggers/fixtures/script.yaml
+    .. literalinclude:: /../../tests/triggers/fixtures/script001.yaml
     """
     data = data if data else {}
     st = XML.SubElement(
