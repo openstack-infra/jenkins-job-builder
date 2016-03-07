@@ -29,7 +29,6 @@ Example::
       - timed: '@daily'
 """
 
-from collections import OrderedDict
 import logging
 import re
 import xml.etree.ElementTree as XML
@@ -88,7 +87,9 @@ def gerrit_handle_legacy_configuration(data):
             'branchPattern',
         ])
 
-    old_format_events = OrderedDict(
+    mapping_obj_type = type(data)
+
+    old_format_events = mapping_obj_type(
         (key, should_register) for key, should_register in six.iteritems(data)
         if key.startswith('trigger-on-'))
     trigger_on = data.setdefault('trigger-on', [])
@@ -109,8 +110,8 @@ def gerrit_handle_legacy_configuration(data):
 
     for idx, event in enumerate(trigger_on):
         if event == 'comment-added-event':
-            trigger_on[idx] = events = OrderedDict()
-            events['comment-added-event'] = OrderedDict((
+            trigger_on[idx] = events = mapping_obj_type()
+            events['comment-added-event'] = mapping_obj_type((
                 ('approval-category', data['trigger-approval-category']),
                 ('approval-value', data['trigger-approval-value'])
             ))
