@@ -710,6 +710,40 @@ def rebuild(parser, xml_parent, data):
         data.get('rebuild-disabled', False)).lower()
 
 
+def build_discarder(parser, xml_parent, data):
+    """yaml: build-discarder
+
+    :arg int days-to-keep: Number of days to keep builds for (default -1)
+    :arg int num-to-keep: Number of builds to keep (default -1)
+    :arg int artifact-days-to-keep: Number of days to keep builds with
+        artifacts (default -1)
+    :arg int artifact-num-to-keep: Number of builds with artifacts to keep
+        (default -1)
+
+    Example:
+
+    .. literalinclude::
+        /../../tests/properties/fixtures/build-discarder-001.yaml
+       :language: yaml
+
+    .. literalinclude::
+        /../../tests/properties/fixtures/build-discarder-002.yaml
+       :language: yaml
+    """
+    base_sub = XML.SubElement(xml_parent,
+                              'jenkins.model.BuildDiscarderProperty')
+    strategy = XML.SubElement(base_sub, 'strategy')
+    strategy.set('class', 'hudson.tasks.LogRotator')
+    days = XML.SubElement(strategy, 'daysToKeep')
+    days.text = str(data.get('days-to-keep', -1))
+    num = XML.SubElement(strategy, 'numToKeep')
+    num.text = str(data.get('num-to-keep', -1))
+    adays = XML.SubElement(strategy, 'artifactDaysToKeep')
+    adays.text = str(data.get('artifact-days-to-keep', -1))
+    anum = XML.SubElement(strategy, 'artifactNumToKeep')
+    anum.text = str(data.get('artifact-num-to-keep', -1))
+
+
 class Properties(jenkins_jobs.modules.base.Base):
     sequence = 20
 
