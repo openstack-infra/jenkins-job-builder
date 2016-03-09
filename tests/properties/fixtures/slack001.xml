@@ -9,6 +9,7 @@
       <notifyUnstable>false</notifyUnstable>
       <notifyFailure>false</notifyFailure>
       <notifyBackToNormal>false</notifyBackToNormal>
+      <notifyRepeatedFailure>false</notifyRepeatedFailure>
       <includeTestSummary>false</includeTestSummary>
       <includeCustomMessage>false</includeCustomMessage>
       <customMessage/>

@@ -656,6 +656,8 @@ def slack(parser, xml_parent, data):
         (default: False)
     :arg bool notifiy-back-to-normal: Send notification when job is
         succeeding again after being unstable or failed. (default: False)
+    :arg bool 'notify-repeated-failure': Send notification when job is
+        still failing after last failure. (default: False)
     :arg bool include-test-summary: Include the test summary. (default:
         False)
     :arg bool include-custom-message: Include a custom message into the
@@ -683,6 +685,7 @@ def slack(parser, xml_parent, data):
         ('notify-unstable', 'notifyUnstable', False),
         ('notify-failure', 'notifyFailure', False),
         ('notify-back-to-normal', 'notifyBackToNormal', False),
+        ('notify-repeated-failure', 'notifyRepeatedFailure', False),
         ('include-test-summary', 'includeTestSummary', False),
         ('include-custom-message', 'includeCustomMessage', False),
         ('custom-message', 'customMessage', ''),
