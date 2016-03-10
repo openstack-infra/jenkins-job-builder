@@ -454,7 +454,8 @@ def gerrit(parser, xml_parent, data):
                                'com.sonyericsson.hudson.plugins.gerrit.'
                                'trigger.hudsontrigger.data.GerritProject')
         XML.SubElement(gproj, 'compareType').text = get_compare_type(
-            'project-compare-type', project['project-compare-type'])
+            'project-compare-type', project.get(
+                'project-compare-type', 'PLAIN'))
         XML.SubElement(gproj, 'pattern').text = project['project-pattern']
 
         branches = XML.SubElement(gproj, 'branches')
@@ -472,14 +473,16 @@ def gerrit(parser, xml_parent, data):
             logger.warn(warning)
         if not project_branches:
             project_branches = [
-                {'branch-compare-type': project['branch-compare-type'],
+                {'branch-compare-type': project.get(
+                    'branch-compare-type', 'PLAIN'),
                  'branch-pattern': project['branch-pattern']}]
         for branch in project_branches:
             gbranch = XML.SubElement(
                 branches, 'com.sonyericsson.hudson.plugins.'
                 'gerrit.trigger.hudsontrigger.data.Branch')
             XML.SubElement(gbranch, 'compareType').text = get_compare_type(
-                'branch-compare-type', branch['branch-compare-type'])
+                'branch-compare-type', branch.get(
+                    'branch-compare-type', 'PLAIN'))
             XML.SubElement(gbranch, 'pattern').text = branch['branch-pattern']
 
         project_file_paths = project.get('file-paths', [])
