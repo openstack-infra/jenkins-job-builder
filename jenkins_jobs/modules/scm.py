@@ -573,6 +573,8 @@ def repo(parser, xml_parent, data):
         (optional)
     :arg str manifest-group: Only retrieve those projects in the manifest
         tagged with the provided group name (optional)
+    :arg list(str) ignore-projects: a list of projects in which changes would
+        not be considered to trigger a build when pooling (optional)
     :arg str destination-dir: Location relative to the workspace root to clone
         under (optional)
     :arg str repo-url: custom url to retrieve the repo application (optional)
@@ -644,6 +646,13 @@ def repo(parser, xml_parent, data):
             xe.text = str(val).lower()
         else:
             xe.text = str(val)
+
+    # ignore-projects does not follow the same pattern of the other parameters,
+    # so process it here:
+    ip = XML.SubElement(scm, 'ignoreProjects', {'class': 'linked-hash-set'})
+    ignored_projects = data.get('ignore-projects', [''])
+    for ignored_project in ignored_projects:
+        XML.SubElement(ip, 'string').text = str(ignored_project)
 
 
 def store(parser, xml_parent, data):
