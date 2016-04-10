@@ -24,3 +24,10 @@ builders:
           kill-phase-on: UNSTABLE
           enable-condition: "${BUILDNUMBER} % 2 == 1"
           restrict-matrix-project: 'JVM_VARIANT == "server"'
+  - multijob:
+      name: PhaseThree
+      condition: ALWAYS
+      projects:
+        - name: PhaseThreeJobA
+          current-parameters: true
+          kill-phase-on: FAILURE

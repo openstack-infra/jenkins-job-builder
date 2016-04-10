@@ -1548,7 +1548,7 @@ def multijob(parser, xml_parent, data):
 
     :arg str name: MultiJob phase name
     :arg str condition: when to trigger the other job.
-        Can be: 'SUCCESSFUL', 'UNSTABLE', 'COMPLETED', 'FAILURE'.
+        Can be: 'SUCCESSFUL', 'UNSTABLE', 'COMPLETED', 'FAILURE', 'ALWAYS'.
         (default 'SUCCESSFUL')
 
     :arg list projects: list of projects to include in the MultiJob phase
@@ -1590,7 +1590,8 @@ def multijob(parser, xml_parent, data):
     XML.SubElement(builder, 'phaseName').text = data['name']
 
     condition = data.get('condition', 'SUCCESSFUL')
-    conditions_available = ('SUCCESSFUL', 'UNSTABLE', 'COMPLETED', 'FAILURE')
+    conditions_available = ('SUCCESSFUL', 'UNSTABLE', 'COMPLETED', 'FAILURE',
+                            'ALWAYS')
     if condition not in conditions_available:
         raise JenkinsJobsException('Multijob condition must be one of: %s.'
                                    % ', '.join(conditions_available))
