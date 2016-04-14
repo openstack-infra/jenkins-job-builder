@@ -1,0 +1,18 @@
+publishers:
+  - slack:
+      team-domain: 'teamname'
+      auth-token: 'yourauthtoken'
+      build-server-url: 'http://localhost:8081'
+      room: '#builds'
+      notify-start: True
+      notify-success: True
+      notify-aborted: True
+      notify-not-built: True
+      notify-unstable: True
+      notify-failure: True
+      notify-back-to-normal: True
+      notify-repeated-failure: True
+      include-test-summary: True
+      commit-info-choice: 'AUTHORS_AND_TITLES'
+      include-custom-message: True
+      custom-message: 'A custom message.'
