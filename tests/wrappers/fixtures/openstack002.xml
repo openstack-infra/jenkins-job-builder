@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <jenkins.plugins.openstack.compute.JCloudsBuildWrapper>
+      <instancesToRun>
+        <jenkins.plugins.openstack.compute.InstancesToRun>
+          <cloudName>mycloud1</cloudName>
+          <templateName>jenkins-dev-slave</templateName>
+          <count>1</count>
+        </jenkins.plugins.openstack.compute.InstancesToRun>
+      </instancesToRun>
+    </jenkins.plugins.openstack.compute.JCloudsBuildWrapper>
+  </buildWrappers>
+</project>
