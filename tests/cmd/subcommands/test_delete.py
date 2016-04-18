@@ -41,7 +41,7 @@ class DeleteTests(CmdTestsBase):
         cmd.execute(args, self.config)
         calls = [mock.call('bar001'), mock.call('bar002')]
         delete_job_mock.assert_has_calls(calls, any_order=True)
-        self.assertEquals(delete_job_mock.call_count, len(calls),
-                          "Jenkins.delete_job() was called '%s' times when "
-                          "expected '%s'" % (delete_job_mock.call_count,
-                                             len(calls)))
+        self.assertEqual(delete_job_mock.call_count, len(calls),
+                         "Jenkins.delete_job() was called '%s' times when "
+                         "expected '%s'" % (delete_job_mock.call_count,
+                                            len(calls)))

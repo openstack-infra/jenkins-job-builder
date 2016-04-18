@@ -107,18 +107,18 @@ class UpdateTests(CmdTestsBase):
             with mock.patch('jenkins_jobs.builder.Jenkins.is_managed',
                             return_value=True):
                 cmd.execute(args, self.config)
-            self.assertEquals(2, update.call_count,
-                              "Expected Jenkins.update_job to be called '%d' "
-                              "times, got '%d' calls instead.\n"
-                              "Called with: %s" % (2, update.call_count,
-                                                   update.mock_calls))
+            self.assertEqual(2, update.call_count,
+                             "Expected Jenkins.update_job to be called '%d' "
+                             "times, got '%d' calls instead.\n"
+                             "Called with: %s" % (2, update.call_count,
+                                                  update.mock_calls))
 
         calls = [mock.call(name) for name in jobs]
-        self.assertEquals(2, delete_job_mock.call_count,
-                          "Expected Jenkins.delete_job to be called '%d' "
-                          "times got '%d' calls instead.\n"
-                          "Called with: %s" % (2, delete_job_mock.call_count,
-                                               delete_job_mock.mock_calls))
+        self.assertEqual(2, delete_job_mock.call_count,
+                         "Expected Jenkins.delete_job to be called '%d' "
+                         "times got '%d' calls instead.\n"
+                         "Called with: %s" % (2, delete_job_mock.call_count,
+                                              delete_job_mock.mock_calls))
         delete_job_mock.assert_has_calls(calls, any_order=True)
 
     @mock.patch('jenkins_jobs.builder.jenkins.Jenkins')
@@ -137,7 +137,7 @@ class UpdateTests(CmdTestsBase):
             cmd.execute(args, self.config)
         # unless the timeout is set, should only call with 3 arguments
         # (url, user, password)
-        self.assertEquals(len(jenkins_mock.call_args[0]), 3)
+        self.assertEqual(len(jenkins_mock.call_args[0]), 3)
 
     @mock.patch('jenkins_jobs.builder.jenkins.Jenkins')
     def test_update_timeout_set(self, jenkins_mock):
@@ -156,4 +156,4 @@ class UpdateTests(CmdTestsBase):
             cmd.execute(args, self.config)
         # when timeout is set, the fourth argument to the Jenkins api init
         # should be the value specified from the config
-        self.assertEquals(jenkins_mock.call_args[0][3], 0.2)
+        self.assertEqual(jenkins_mock.call_args[0][3], 0.2)
