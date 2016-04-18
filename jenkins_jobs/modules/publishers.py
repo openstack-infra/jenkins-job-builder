@@ -1674,7 +1674,8 @@ def email(parser, xml_parent, data):
     """yaml: email
     Email notifications on build failure.
 
-    :arg str recipients: Recipient email addresses (optional)
+    :arg str recipients: Space separated list of recipient email addresses
+      (optional)
     :arg bool notify-every-unstable-build: Send an email for every
       unstable build (default true)
     :arg bool send-to-individuals: Send an email to the individual
