@@ -1750,9 +1750,9 @@ def email_ext(parser, xml_parent, data):
         in the build, not send out e-mails during the testing. A message will
         be printed to the build log saying that the publisher is disabled.
         (default false)
-    :arg str recipients: Comma separated list of emails
-    :arg str reply-to: Comma separated list of emails that should be in
-        the Reply-To header for this project (default $DEFAULT_REPLYTO)
+    :arg str recipients: Comma separated list of recipient email addresses
+    :arg str reply-to: Comma separated list of email addresses that should be
+        in the Reply-To header for this project (default $DEFAULT_REPLYTO)
     :arg str content-type: The content type of the emails sent. If not set, the
         Jenkins plugin uses the value set on the main configuration page.
         Possible values: 'html', 'text', 'both-html-text' or 'default'
