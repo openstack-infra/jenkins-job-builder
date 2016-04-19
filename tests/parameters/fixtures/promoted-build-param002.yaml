@@ -1,0 +1,4 @@
+parameters:
+  - promoted:
+      name: FOO
+      project-name: "foo-build"

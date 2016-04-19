@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.plugins.promoted__builds.parameters.PromotedBuildParameterDefinition>
+          <name>FOO</name>
+          <description/>
+          <projectName>foo-build</projectName>
+          <promotionProcessName/>
+        </hudson.plugins.promoted__builds.parameters.PromotedBuildParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+</project>
