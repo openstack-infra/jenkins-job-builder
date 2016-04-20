@@ -2989,3 +2989,45 @@ def docker_build_publish(parse, xml_parent, data):
         data.get('skip-', False)).lower()
     XML.SubElement(db, 'dockerfilePath').text = str(
         data.get('file-path', ''))
+
+
+def build_name_setter(parser, xml_parent, data):
+    """yaml: build-name-setter
+    Define Build Name Setter options which allows your build name to be
+    updated during the build process.
+    Requires the Jenkins :jenkins-wiki:`Build Name Setter Plugin
+    <Build+Name+Setter+Plugin>`.
+
+    :arg str name: Filename to use for Build Name Setter, only used if
+        file bool is true. (default 'version.txt')
+    :arg str template: Macro Template string, only used if macro
+        bool is true. (default '#${BUILD_NUMBER}')
+    :arg bool file: Read from named file (default false)
+    :arg bool macro: Read from macro template (default false)
+    :arg bool macro-first: Insert macro first (default false)
+
+    File Example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/build-name-setter001.yaml
+       :language: yaml
+
+    Macro Example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/build-name-setter002.yaml
+       :language: yaml
+    """
+    build_name_setter = XML.SubElement(
+        xml_parent,
+        'org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater')
+    XML.SubElement(build_name_setter, 'buildName').text = data.get(
+        'name', 'version.txt')
+    XML.SubElement(build_name_setter, 'macroTemplate').text = data.get(
+        'template', '#${BUILD_NUMBER}')
+    XML.SubElement(build_name_setter, 'fromFile').text = str(
+        data.get('file', False)).lower()
+    XML.SubElement(build_name_setter, 'fromMacro').text = str(
+        data.get('macro', False)).lower()
+    XML.SubElement(build_name_setter, 'macroFirst').text = str(
+        data.get('macro-first', False)).lower()

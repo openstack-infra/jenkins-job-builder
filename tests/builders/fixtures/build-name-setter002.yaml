@@ -1,0 +1,4 @@
+builders:
+      - build-name-setter:
+          template: '#${BUILD_NUMBER}'
+          macro: true
