@@ -1,0 +1,24 @@
+- project:
+    name: project-name
+    axe1:
+      - axe1val1
+      - axe1val2
+    axe2:
+      - axe2val1
+      - axe2val2
+    axe3:
+      - axe3val1
+      - axe3val2
+    exclude:
+      - axe1: axe1val1
+        axe2: axe2val1
+        axe3: axe3val2
+      - axe2: axe2val2
+        axe3: axe3val1
+    jobs:
+      - build-{axe1}-{axe2}-{axe3}
+
+- job-template:
+    name: build-{axe1}-{axe2}-{axe3}
+    builders:
+      - shell: "echo Combination {axe1}:{axe2}:{axe3}"
