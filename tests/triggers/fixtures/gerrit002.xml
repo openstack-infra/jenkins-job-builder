@@ -23,6 +23,7 @@
               <pattern>subdirectory/**</pattern>
             </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.FilePath>
           </filePaths>
+          <disableStrictForbiddenFileVerification>false</disableStrictForbiddenFileVerification>
         </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.GerritProject>
       </gerritProjects>
       <skipVote>

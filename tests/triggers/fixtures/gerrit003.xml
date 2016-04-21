@@ -19,6 +19,7 @@
               <pattern>subdirectory/**</pattern>
             </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.FilePath>
           </filePaths>
+          <disableStrictForbiddenFileVerification>false</disableStrictForbiddenFileVerification>
         </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.GerritProject>
         <com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.GerritProject>
           <compareType>PLAIN</compareType>
@@ -39,6 +40,7 @@
               <pattern>subdirectory/**</pattern>
             </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.FilePath>
           </filePaths>
+          <disableStrictForbiddenFileVerification>false</disableStrictForbiddenFileVerification>
         </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.data.GerritProject>
       </gerritProjects>
       <skipVote>

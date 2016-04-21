@@ -21,6 +21,7 @@ triggers:
           forbidden-file-paths:
               - compare-type: ANT
                 pattern: subdirectory/**
+          disable-strict-forbidden-file-verification: true
           topics:
               - compare-type: ANT
                 pattern: refactor-xy**
