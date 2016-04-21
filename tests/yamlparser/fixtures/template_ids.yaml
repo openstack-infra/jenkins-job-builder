@@ -1,0 +1,31 @@
+- project:
+    name: test_template_id
+    jobs:
+        - 'simple-template':
+            test_var: Hello World
+            type: periodic
+            num: 1
+        - 'not-as-simple-template':
+            test_var: Goodbye World
+            type: canary
+            num: 2
+
+- job-template:
+    name: 'template-test-ids-{num}-{type}'
+    id: simple-template
+    builders:
+      - shell: |
+         echo "Template name: {template-name}"
+         echo "Job name: template-test-ids-{num}-{type}"
+         echo "{test_var}"
+
+- job-template:
+    name: 'template-test-ids-{num}-{type}'
+    id: not-as-simple-template
+    builders:
+      - shell: |
+         echo "Template name: {template-name}"
+         echo "Job name: template-test-ids-{num}-{type}"
+      - shell: |
+         echo "{test_var}"
+

@@ -70,6 +70,10 @@ itself (e.g. ``{name}-unit-tests`` in the above example) will be
 substituted in. This is useful in cases where you need to trace a job
 back to its template.
 
+Sometimes it is useful to have the same job name format used even
+where the template contents may vary. `Ids` provide a mechanism to
+support such use cases.
+
 .. _project:
 
 Project
@@ -281,6 +285,27 @@ least a ``name``).  Thus embedded-shell within a ``job-template`` should
 always use ``{{`` to achieve a literal ``{``.  A generic builder will need
 to consider the correct quoting based on its use of parameters.
 
+
+.. _ids:
+
+Item ID's
+^^^^^^^^^
+
+It's possible to assign an `id` to any of the blocks and then use that
+to reference it instead of the name. This has two primary functions:
+
+* A unique identifier where you wish to use the same naming format for
+  multiple templates. This allows to follow a naming scheme while
+  still using multiple templates to handle subtle variables in job
+  requirements.
+* Provides a simpler name for a `job-template` where you have multiple
+  variables in the name and don't wish to have to include this information
+  in every use. This also allows changing the template output name without
+  impacting references.
+
+Example:
+
+.. literalinclude::  /../../tests/yamlparser/fixtures/template_ids.yaml
 
 .. _raw:
 

@@ -114,11 +114,13 @@ class YamlParser(object):
                     raise JenkinsJobsException("Syntax error, for item "
                                                "named '{0}'. Missing indent?"
                                                .format(n))
-                name = dfn['name']
-                if name in group:
-                    self._handle_dups("Duplicate entry found in '{0}: '{1}' "
-                                      "already defined".format(fp.name, name))
-                group[name] = dfn
+                # allow any entry to specify an id that can also be used
+                id = dfn.get('id', dfn['name'])
+                if id in group:
+                    self._handle_dups(
+                        "Duplicate entry found in '{0}: '{1}' already "
+                        "defined".format(fp.name, id))
+                group[id] = dfn
                 self.data[cls] = group
 
     def parse(self, fn):
