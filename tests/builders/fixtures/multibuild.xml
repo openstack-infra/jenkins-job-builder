@@ -61,5 +61,18 @@
         </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
       </phaseJobs>
     </com.tikal.jenkins.plugins.multijob.MultiJobBuilder>
+    <com.tikal.jenkins.plugins.multijob.MultiJobBuilder>
+      <phaseName>PhaseThree</phaseName>
+      <continuationCondition>ALWAYS</continuationCondition>
+      <phaseJobs>
+        <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
+          <jobName>PhaseThreeJobA</jobName>
+          <currParams>true</currParams>
+          <configs/>
+          <abortAllJob>false</abortAllJob>
+          <killPhaseOnJobResultCondition>FAILURE</killPhaseOnJobResultCondition>
+        </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
+      </phaseJobs>
+    </com.tikal.jenkins.plugins.multijob.MultiJobBuilder>
   </builders>
 </project>
