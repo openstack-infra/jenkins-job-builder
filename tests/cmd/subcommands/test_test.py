@@ -95,7 +95,7 @@ class TestTests(CmdTestsBase):
                                        os.path.join(self.fixtures_path,
                                                     'cmd-001.yaml'),
                                        'invalid'])
-        args.output_dir = mock.MagicMock()
+        args.output_dir = mock.MagicMock(wraps=io.BytesIO())
         cmd.execute(args, self.config)   # probably better to fail here
 
     def test_valid_job(self):

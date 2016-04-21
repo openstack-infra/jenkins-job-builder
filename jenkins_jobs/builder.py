@@ -350,12 +350,15 @@ class Builder(object):
                     raise
 
         if output:
+            # ensure only wrapped once
+            if hasattr(output, 'write'):
+                output = utils.wrap_stream(output)
+
             for job in self.parser.xml_jobs:
                 if hasattr(output, 'write'):
                     # `output` is a file-like object
                     logger.info("Job name:  %s", job.name)
                     logger.debug("Writing XML to '{0}'".format(output))
-                    output = utils.wrap_stream(output)
                     try:
                         output.write(job.output())
                     except IOError as exc:
