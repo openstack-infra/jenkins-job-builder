@@ -1757,8 +1757,13 @@ def artifactory_generic(parser, xml_parent, data):
     :arg str name: Artifactory user with permissions use for
         connected to the selected Artifactory Server
         (default '')
-    :arg str repo-key: Release repository name (default '')
-    :arg str snapshot-repo-key: Snapshots repository name (default '')
+    :arg str repo-key: Release repository name (plugin < 2.3.0) (default '')
+    :arg str snapshot-repo-key: Snapshots repository name (plugin < 2.3.0)
+        (default '')
+    :arg str key-from-select: Repository key to use (plugin >= 2.3.0)
+        (default '')
+    :arg str key-from-text: Repository key to use that can be configured
+        dynamically using Jenkins variables (plugin >= 2.3.0) (default '')
     :arg list deploy-pattern: List of patterns for mappings
         build artifacts to published artifacts. Supports Ant-style wildcards
         mapping to target directories. E.g.: */*.zip=>dir (default [])
@@ -1800,9 +1805,23 @@ def artifactory_generic(parser, xml_parent, data):
     details = XML.SubElement(artifactory, 'details')
     artifactory_common_details(details, data)
 
-    XML.SubElement(details, 'repositoryKey').text = data.get('repo-key', '')
-    XML.SubElement(details, 'snapshotsRepositoryKey').text = data.get(
-        'snapshot-repo-key', '')
+    # Get plugin information to maintain backwards compatibility
+    info = parser.registry.get_plugin_info('artifactory')
+    version = pkg_resources.parse_version(info.get('version', '0'))
+
+    if version >= pkg_resources.parse_version('2.3.0'):
+        deployReleaseRepo = XML.SubElement(details, 'deployReleaseRepository')
+        XML.SubElement(deployReleaseRepo, 'keyFromText').text = data.get(
+            'key-from-text', '')
+        XML.SubElement(deployReleaseRepo, 'keyFromSelect').text = data.get(
+            'key-from-select', '')
+        XML.SubElement(deployReleaseRepo, 'dynamicMode').text = str(
+            'key-from-text' in data.keys()).lower()
+    else:
+        XML.SubElement(details, 'repositoryKey').text = data.get(
+            'repo-key', '')
+        XML.SubElement(details, 'snapshotsRepositoryKey').text = data.get(
+            'snapshot-repo-key', '')
 
     XML.SubElement(artifactory, 'deployPattern').text = ','.join(data.get(
         'deploy-pattern', []))
