@@ -1,0 +1,12 @@
+ wrappers:
+    - jclouds:
+        single-use: True
+        instances:
+          - jenkins-dev-slave:
+              cloud-name: mycloud1
+              count: 1
+              stop-on-terminate: True
+          - jenkins-test-slave:
+              cloud-name: mycloud2
+              count: 2
+              stop-on-terminate: False
