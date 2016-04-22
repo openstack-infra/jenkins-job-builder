@@ -129,8 +129,8 @@ def blame_upstream(parser, xml_parent, data):
 def jclouds(parser, xml_parent, data):
     """yaml: jclouds
     JClouds Cloud Storage Settings provides a way to store artifacts on
-    JClouds supported storage providers. Requires the Jenkins `JClouds Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/JClouds+Plugin>`_
+    JClouds supported storage providers. Requires the Jenkins
+    :jenkins-wiki:`JClouds Plugin <JClouds+Plugin>`.
 
     JClouds Cloud Storage Settings must be configured for the Jenkins instance.
 
@@ -201,7 +201,7 @@ def javadoc(parser, xml_parent, data):
 def jdepend(parser, xml_parent, data):
     """yaml: jdepend
     Publish jdepend report
-    Requires the :jenkins-wiki:`JDepend Plugin<JDepend+Plugin>`.
+    Requires the :jenkins-wiki:`JDepend Plugin <JDepend+Plugin>`.
 
     :arg str file: path to jdepend file (required)
 
@@ -1001,8 +1001,8 @@ def junit(parser, xml_parent, data):
     :arg bool claim-build: Allow claiming of failed tests (default false)
         Requires the Jenkins :jenkins-wiki:`Claim Plugin <Claim+plugin>`.
     :arg bool measurement-plots: Create measurement plots (default false)
-        Requires the Jenkins `Measurement Plots Plugin.
-        <https://wiki.jenkins-ci.org/display/JENKINS/Measurement+Plots+Plugin>`_.
+        Requires the Jenkins :jenkins-wiki:`Measurement Plots Plugin
+        <Measurement+Plots+Plugin>`.
 
     Minimal example using defaults:
 
@@ -1517,9 +1517,9 @@ def scp(parser, xml_parent, data):
 
     When writing a publisher macro, it is important to keep in mind that
     Jenkins uses Ant's `SCP Task
-    <https://ant.apache.org/manual/Tasks/scp.html>`_ via the Jenkins `SCP
-    Plugin <https://wiki.jenkins-ci.org/display/JENKINS/SCP+plugin>`_ which
-    relies on `FileSet <https://ant.apache.org/manual/Types/fileset.html>`_
+    <https://ant.apache.org/manual/Tasks/scp.html>`_ via the Jenkins
+    :jenkins-wiki:`SCP Plugin <SCP+plugin>` which relies on `FileSet
+    <https://ant.apache.org/manual/Types/fileset.html>`_
     and `DirSet <https://ant.apache.org/manual/Types/dirset.html>`_ patterns.
     The relevant piece of documentation is excerpted below:
 
@@ -1925,9 +1925,8 @@ def aggregate_tests(parser, xml_parent, data):
 def aggregate_flow_tests(parser, xml_parent, data):
     """yaml: aggregate-flow-tests
     Aggregate downstream test results in a Build Flow job.
-    Requires the Jenkins `Build Flow Test Aggregator Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/
-    Build+Flow+Test+Aggregator+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Build Flow Test Aggregator Plugin
+    <Build+Flow+Test+Aggregator+Plugin>`.
 
     Example:
 
@@ -2621,8 +2620,8 @@ def artifactory(parser, xml_parent, data):
     Uses/requires the Artifactory plugin to deploy artifacts to
     Artifactory Server.
 
-    Requires the Jenkins `Artifactory Plugin.
-    :jenkins-wiki: `Artifactory Plugin <Artifactory+Plugin>`.
+    Requires the Jenkins :jenkins-wiki:`Artifactory Plugin
+    <Artifactory+Plugin>`.
 
     :arg str url: Artifactory server url (default '')
     :arg str name: Artifactory user with permissions use for

@@ -1461,14 +1461,15 @@ def maven_builder(parser, xml_parent, data):
     """yaml: maven-builder
     Execute Maven3 builder
 
+    Allows your build jobs to deploy artifacts automatically to Artifactory.
+
+    Requires the Jenkins :jenkins-wiki:`Artifactory Plugin
+    <Artifactory+Plugin>`.
+
     :arg str name: Name of maven installation from the configuration
     :arg str pom: Location of pom.xml (default 'pom.xml')
     :arg str goals: Goals to execute
     :arg str maven-opts: Additional options for maven (optional)
-
-    Requires the Jenkins `Artifactory Plugin
-    <https://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin>`_
-    allows your build jobs to deploy artifacts automatically to Artifactory.
 
     Example:
 
@@ -1490,7 +1491,11 @@ def maven_builder(parser, xml_parent, data):
 
 def maven_target(parser, xml_parent, data):
     """yaml: maven-target
-    Execute top-level Maven targets
+    Execute top-level Maven targets.
+
+    Requires the Jenkins :jenkins-wiki:`Config File Provider Plugin
+    <Config+File+Provider+Plugin>` for the Config File Provider "settings"
+    and "global-settings" config.
 
     :arg str goals: Goals to execute
     :arg str properties: Properties for maven, can have multiples
@@ -1507,10 +1512,6 @@ def maven_target(parser, xml_parent, data):
     :arg str global-settings: Path to use as global settings.xml
         It is possible to provide a ConfigFileProvider settings file, such as
         see CFP Example below. (optional)
-
-    Requires the Jenkins `Config File Provider Plugin
-    <https://wiki.jenkins-ci.org/display/JENKINS/Config+File+Provider+Plugin>`_
-    for the Config File Provider "settings" and "global-settings" config.
 
     Example:
 
@@ -2075,8 +2076,8 @@ def managed_script(parser, xml_parent, data):
 
 def cmake(parser, xml_parent, data):
     """yaml: cmake
-    Execute a CMake target. Requires the Hudson `cmakebuilder Plugin.
-    <http://wiki.hudson-ci.org/display/HUDSON/cmakebuilder+Plugin>`_
+    Execute a CMake target. Requires the Jenkins `CMake Plugin
+    <CMake+Plugin>`.
 
     :arg str source-dir: the source code directory relative to the workspace
         directory. (required)
@@ -2297,8 +2298,7 @@ def github_notifier(parser, xml_parent, data):
 def ssh_builder(parser, xml_parent, data):
     """yaml: ssh-builder
     Executes command on remote host
-    Requires the Jenkins `SSH plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/SSH+plugin>`_
+    Requires the Jenkins :jenkins-wiki:`SSH plugin <SSH+plugin>`.
 
     :arg str ssh-user-ip: user@ip:ssh_port of machine that was defined
         in jenkins according to SSH plugin instructions
@@ -2888,8 +2888,7 @@ def openshift_svc_verify(parser, xml_parent, data):
 def runscope(parser, xml_parent, data):
     """yaml: runscope
     Execute a Runscope test.
-    Requires the Jenkins `Runscope Plugin.
-    <https://wiki.jenkins-ci.org/display/JENKINS/Runscope+Plugin>`_
+    Requires the Jenkins :jenkins-wiki:`Runscope Plugin <Runscope+Plugin>`.
 
     :arg str test-trigger-url: Trigger URL for test. (required)
     :arg str access-token: OAuth Personal Access token. (required)
