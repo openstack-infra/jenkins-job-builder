@@ -52,12 +52,16 @@ in the :ref:`Job` definition.
       (default false).
     * **custom-workspace** (`str`): Path to the custom workspace. If no path is
       provided, custom workspace is not used. (optional)
-    * **settings** (`str`): Path to custom maven settings file.
-      It is possible to provide a ConfigFileProvider settings file as well
-      see CFP Example below. (optional)
+    * **settings** (`str`): Path to custom maven settings file. If settings
+      type is 'file' then this is a Path. Otherwise it is the id for
+      ConfigFileProvider. (optional)
+    * **settings-type** (`str`): Type of settings file file|cfp.
+      (default: file)
     * **global-settings** (`str`): Path to custom maven global settings file.
-      It is possible to provide a ConfigFileProvider settings file as well
-      see CFP Example below. (optional)
+      If settings type is 'file' then this is a Path. Otherwise it is the id
+      for ConfigFileProvider. (optional)
+    * **global-settings-type** (`str`): Type of settings file file|cfp.
+      (default: file)
     * **post-step-run-condition** (`str`): Run the post-build steps only if the
       build succeeds ('SUCCESS'), build succeeds or is unstable ('UNSTABLE'),
       regardless of build result ('FAILURE'). (default 'FAILURE').

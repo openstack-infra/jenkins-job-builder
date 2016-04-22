@@ -1,0 +1,9 @@
+project-type: maven
+maven:
+  root-pom: pom.xml
+  goals: deploy
+  settings: test-settings
+  settings-type: cfp
+  global-settings: test-global-settings
+  global-settings-type: cfp
+  post-step-run-condition: SUCCESS

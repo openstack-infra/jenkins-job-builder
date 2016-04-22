@@ -108,6 +108,7 @@ def config_file_provider_builder(xml_parent, data):
 
 
 def config_file_provider_settings(xml_parent, data):
+    SETTINGS_TYPES = ['file', 'cfp']
     settings = {
         'default-settings':
         'jenkins.mvn.DefaultSettingsProvider',
@@ -127,17 +128,28 @@ def config_file_provider_settings(xml_parent, data):
     if 'settings' in data:
         # Support for Config File Provider
         settings_file = str(data['settings'])
+        settings_type = data.get('settings-type', 'file')
+
+        # For cfp versions <2.10.0 we are able to detect cfp via the config
+        # settings name.
         if settings_file.startswith(
-            'org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig'):
+                'org.jenkinsci.plugins.configfiles.maven.'
+                'MavenSettingsConfig'):
+            settings_type = 'cfp'
+
+        if settings_type == 'file':
+            lsettings = XML.SubElement(
+                xml_parent, 'settings',
+                {'class': settings['settings']})
+            XML.SubElement(lsettings, 'path').text = settings_file
+        elif settings_type == 'cfp':
             lsettings = XML.SubElement(
                 xml_parent, 'settings',
                 {'class': settings['config-file-provider-settings']})
             XML.SubElement(lsettings, 'settingsConfigId').text = settings_file
         else:
-            lsettings = XML.SubElement(
-                xml_parent, 'settings',
-                {'class': settings['settings']})
-            XML.SubElement(lsettings, 'path').text = settings_file
+            raise InvalidAttributeError(
+                'settings-type', settings_type, SETTINGS_TYPES)
     else:
         XML.SubElement(xml_parent, 'settings',
                        {'class': settings['default-settings']})
@@ -145,9 +157,20 @@ def config_file_provider_settings(xml_parent, data):
     if 'global-settings' in data:
         # Support for Config File Provider
         global_settings_file = str(data['global-settings'])
+        global_settings_type = data.get('settings-type', 'file')
+
+        # For cfp versions <2.10.0 we are able to detect cfp via the config
+        # settings name.
         if global_settings_file.startswith(
                 'org.jenkinsci.plugins.configfiles.maven.'
                 'GlobalMavenSettingsConfig'):
+            global_settings_type = 'cfp'
+
+        if global_settings_type == 'file':
+            gsettings = XML.SubElement(xml_parent, 'globalSettings',
+                                       {'class': settings['global-settings']})
+            XML.SubElement(gsettings, 'path').text = global_settings_file
+        elif global_settings_type == 'cfp':
             gsettings = XML.SubElement(
                 xml_parent, 'globalSettings',
                 {'class': settings['config-file-provider-global-settings']})
@@ -155,9 +178,8 @@ def config_file_provider_settings(xml_parent, data):
                 gsettings,
                 'settingsConfigId').text = global_settings_file
         else:
-            gsettings = XML.SubElement(xml_parent, 'globalSettings',
-                                       {'class': settings['global-settings']})
-            XML.SubElement(gsettings, 'path').text = global_settings_file
+            raise InvalidAttributeError(
+                'settings-type', global_settings_type, SETTINGS_TYPES)
     else:
         XML.SubElement(xml_parent, 'globalSettings',
                        {'class': settings['default-global-settings']})
