@@ -5699,8 +5699,10 @@ def slack(parser, xml_parent, data):
 
     Requires the Jenkins :jenkins-wiki:`Slack Plugin <Slack+Plugin>`
 
-    As the Slack Plugin itself requires a publisher aswell as properties
-    please note that you have to create those too.
+    When using Slack Plugin version < 2.0, Slack Plugin itself requires a
+    publisher aswell as properties please note that you have to create those
+    too.  When using Slack Plugin version >= 2.0, you should only configure the
+    publisher.
 
     :arg str team-domain: Your team's domain at slack. (default: '')
     :arg str auth-token: The integration token to be used when sending
@@ -5709,15 +5711,62 @@ def slack(parser, xml_parent, data):
         (default: '/')
     :arg str room: A comma seperated list of rooms / channels to post the
         notifications to. (default: '')
+    :arg bool notify-start: Send notification when the job starts (>=2.0).
+        (default: False)
+    :arg bool notify-success: Send notification on success (>=2.0).
+        (default: False)
+    :arg bool notify-aborted: Send notification when job is aborted (>=2.0).
+        (default: False)
+    :arg bool notify-not-built: Send notification when job set to NOT_BUILT
+        status (>=2.0). (default: False)
+    :arg bool notify-unstable: Send notification when job becomes unstable
+        (>=2.0). (default: False)
+    :arg bool notify-failure: Send notification when job fails for the first
+        time (previous build was a success) (>=2.0).  (default: False)
+    :arg bool notifiy-back-to-normal: Send notification when job is succeeding
+        again after being unstable or failed (>=2.0). (default: False)
+    :arg bool notify-repeated-failure: Send notification when job fails
+        successively (previous build was also a failure) (>=2.0).
+        (default: False)
+    :arg bool include-test-summary: Include the test summary (>=2.0).
+        (default: False)
+    :arg str commit-info-choice: What commit information to include into
+        notification message, "NONE" includes nothing about commits, "AUTHORS"
+        includes commit list with authors only, and "AUTHORS_AND_TITLES"
+        includes commit list with authors and titles (>=2.0). (default: "NONE")
+    :arg bool include-custom-message: Include a custom message into the
+        notification (>=2.0). (default: False)
+    :arg str custom-message: Custom message to be included (>=2.0).
+        (default: '')
 
-    Example:
+    Example (version < 2.0):
 
     .. literalinclude::
         /../../tests/publishers/fixtures/slack001.yaml
         :language: yaml
+
+    Minimal example (version >= 2.0):
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/slack003.yaml
+        :language: yaml
+
+    Full example (version >= 2.0):
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/slack004.yaml
+        :language: yaml
+
     """
     def _add_xml(elem, name, value=''):
+        if isinstance(value, bool):
+            value = str(value).lower()
         XML.SubElement(elem, name).text = value
+
+    logger = logging.getLogger(__name__)
+
+    plugin_info = parser.registry.get_plugin_info('Slack Notification Plugin')
+    plugin_ver = pkg_resources.parse_version(plugin_info.get('version', "0"))
 
     mapping = (
         ('team-domain', 'teamDomain', ''),
@@ -5725,18 +5774,61 @@ def slack(parser, xml_parent, data):
         ('build-server-url', 'buildServerUrl', '/'),
         ('room', 'room', ''),
     )
+    mapping_20 = (
+        ('notify-start', 'startNotification', False),
+        ('notify-success', 'notifySuccess', False),
+        ('notify-aborted', 'notifyAborted', False),
+        ('notify-not-built', 'notifyNotBuilt', False),
+        ('notify-unstable', 'notifyUnstable', False),
+        ('notify-failure', 'notifyFailure', False),
+        ('notify-back-to-normal', 'notifyBackToNormal', False),
+        ('notify-repeated-failure', 'notifyRepeatedFailure', False),
+        ('include-test-summary', 'includeTestSummary', False),
+        ('commit-info-choice', 'commitInfoChoice', 'NONE'),
+        ('include-custom-message', 'includeCustomMessage', False),
+        ('custom-message', 'customMessage', ''),
+    )
+
+    commit_info_choices = ['NONE', 'AUTHORS', 'AUTHORS_AND_TITLES']
 
     slack = XML.SubElement(
         xml_parent,
         'jenkins.plugins.slack.SlackNotifier',
     )
 
+    if plugin_ver >= pkg_resources.parse_version("2.0"):
+        mapping = mapping + mapping_20
+
+    if plugin_ver < pkg_resources.parse_version("2.0"):
+        for yaml_name, _, default_value in mapping:
+            # All arguments that don't have a default value are mandatory for
+            # the plugin to work as intended.
+            if not data.get(yaml_name, default_value):
+                raise MissingAttributeError(yaml_name)
+
+        for yaml_name, _, _ in mapping_20:
+            if yaml_name in data:
+                logger.warn(
+                    "'%s' is invalid with plugin version < 2.0, ignored",
+                    yaml_name,
+                )
+
     for yaml_name, xml_name, default_value in mapping:
         value = data.get(yaml_name, default_value)
-        # All arguments that don't have a default value are mandatory for the
-        # plugin to work as intended.
-        if not value:
-            raise MissingAttributeError(yaml_name)
+
+        # 'commit-info-choice' is enumerated type
+        if yaml_name == 'commit-info-choice':
+            if value not in commit_info_choices:
+                raise InvalidAttributeError(
+                    yaml_name, value, commit_info_choices,
+                )
+
+        # Ensure that custom-message is set when include-custom-message is set
+        # to true.
+        if yaml_name == 'include-custom-message' and data is False:
+            if not data.get('custom-message', ''):
+                raise MissingAttributeError('custom-message')
+
         _add_xml(slack, xml_name, value)
 
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <jenkins.plugins.slack.SlackNotifier>
+      <teamDomain>teamname</teamDomain>
+      <authToken>yourauthtoken</authToken>
+      <buildServerUrl>http://localhost:8081</buildServerUrl>
+      <room>#builds</room>
+      <startNotification>true</startNotification>
+      <notifySuccess>true</notifySuccess>
+      <notifyAborted>true</notifyAborted>
+      <notifyNotBuilt>true</notifyNotBuilt>
+      <notifyUnstable>true</notifyUnstable>
+      <notifyFailure>true</notifyFailure>
+      <notifyBackToNormal>true</notifyBackToNormal>
+      <notifyRepeatedFailure>true</notifyRepeatedFailure>
+      <includeTestSummary>true</includeTestSummary>
+      <commitInfoChoice>AUTHORS_AND_TITLES</commitInfoChoice>
+      <includeCustomMessage>true</includeCustomMessage>
+      <customMessage>A custom message.</customMessage>
+    </jenkins.plugins.slack.SlackNotifier>
+  </publishers>
+</project>

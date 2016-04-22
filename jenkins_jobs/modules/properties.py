@@ -32,6 +32,7 @@ Example::
 """
 
 import logging
+import pkg_resources
 import xml.etree.ElementTree as XML
 
 from jenkins_jobs.errors import InvalidAttributeError
@@ -650,9 +651,10 @@ def slack(parser, xml_parent, data):
     """yaml: slack
     Requires the Jenkins :jenkins-wiki:`Slack Plugin <Slack+Plugin>`
 
-    As the Slack Plugin itself requires a publisher aswell as properties
-    please note that you have to add the publisher to your job configuration
-    aswell.
+    When using Slack Plugin version < 2.0, Slack Plugin itself requires a
+    publisher aswell as properties please note that you have to add the
+    publisher to your job configuration aswell. When using Slack Plugin
+    version >= 2.0, you should only configure the publisher.
 
     :arg bool notify-start: Send notification when the job starts
         (default: False)
@@ -687,6 +689,16 @@ def slack(parser, xml_parent, data):
         if isinstance(value, bool):
             value = str(value).lower()
         XML.SubElement(elem, name).text = value
+
+    logger = logging.getLogger(__name__)
+
+    plugin_info = parser.registry.get_plugin_info('Slack Notification Plugin')
+    plugin_ver = pkg_resources.parse_version(plugin_info.get('version', "0"))
+
+    if plugin_ver >= pkg_resources.parse_version("2.0"):
+        logger.warn(
+            "properties section is not used with plugin version >= 2.0",
+        )
 
     mapping = (
         ('notify-start', 'startNotification', False),
