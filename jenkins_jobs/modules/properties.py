@@ -309,6 +309,8 @@ def authorization(parser, xml_parent, data):
     """yaml: authorization
     Specifies an authorization matrix
 
+    .. _authorization:
+
     :arg list <name>: `<name>` is the name of the group or user, containing
         the list of rights to grant.
 
@@ -332,8 +334,6 @@ def authorization(parser, xml_parent, data):
             * **run-delete**
             * **run-update**
             * **scm-tag**
-
-    .. _authorization:
 
     Example:
 
