@@ -2322,7 +2322,10 @@ def sonar(parser, xml_parent, data):
     """yaml: sonar
     Invoke standalone Sonar analysis.
     Requires the Jenkins `Sonar Plugin.
-    <http://docs.codehaus.org/pages/viewpage.action?pageId=116359341>`_
+    <http://docs.sonarqube.org/display/SCAN/\
+        Analyzing+with+SonarQube+Scanner+for+Jenkins\
+        #AnalyzingwithSonarQubeScannerforJenkins-\
+        AnalyzingwiththeSonarQubeScanner>`_
 
     :arg str sonar-name: Name of the Sonar installation.
     :arg str task: Task to run. (optional)
