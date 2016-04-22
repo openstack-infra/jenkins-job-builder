@@ -1,0 +1,58 @@
+- wrapper:
+    name: timeout-wrapper
+    wrappers:
+      - timeout:
+          fail: true
+          elastic-percentage: 150
+          elastic-default-timeout: 90
+          type: elastic
+
+- publisher:
+    name: trigger_parameterized_1.0
+    publishers:
+      - trigger-parameterized-builds:
+        - project: first_job
+          predefined-parameters: BUILD_NUM=${BUILD_NUMBER}
+          property-file: default_version.prop
+          current-parameters: true
+        - project: second_job
+          current-parameters: true
+          predefined-parameters: foo=bar
+          property-file: version.prop
+
+- publisher:
+    name: trigger_parameterized_1.2
+    publishers:
+      - trigger-parameterized-builds:
+        - project: 1.2_first_job
+          predefined-parameters: BUILD_NUM=${BUILD_NUMBER}
+          current-parameters: true
+          property-file: version.prop
+        - project: 1.2_second_job
+          current-parameters: true
+          property-file: 1.2_version.prop
+          predefined-parameters: foo=bar
+
+- job-template:
+    name: 'trigger_parameterized_{version}'
+    description: testing macro trigger-parameterized-builds order v{version}
+    builders:
+      - shell: |
+         #!/usr/bin/env python
+         #
+         print("Doing something cool with python")
+    publishers:
+      - trigger-parameterized-builds:
+        - project: default_job
+          predefined-parameters: BUILD_NUM=${{BUILD_NUMBER}}
+          property-file: default_version.prop
+          current-parameters: true
+      - trigger_parameterized_{version}
+
+- project:
+    name: complete_trigger_paramterized
+    version:
+      - 1.0
+      - 1.2
+    jobs:
+      - 'trigger_parameterized_{version}'
