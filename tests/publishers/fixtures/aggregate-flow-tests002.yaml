@@ -1,0 +1,3 @@
+publishers:
+  - aggregate-flow-tests:
+      show-test-results-trend: false
