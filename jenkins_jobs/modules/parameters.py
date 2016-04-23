@@ -296,10 +296,16 @@ def extended_choice_param(parser, xml_parent, data):
         or multi-select box (optional, default '')
     :arg str default-value: used to set the initial selection of the
         single-select or multi-select box (optional, default '')
+    :arg str value-description: comma separated list of value descriptions
+        for the single select or multi-select box (optional, default '')
     :arg str default-property-file: location of property file when default
         value needs to come from a property file (optional, default '')
     :arg str default-property-key: key for the default property file
         (optional, default '')
+    :arg str description-property-file: location of property file when value
+        description needs to come from a property file (optional, default '')
+    :arg str description-property-key: key for the value description
+        property file (optional, default '')
     :arg str multi-select-delimiter: value between selections when the
         parameter is a multi-select (optiona, default ',')
 
@@ -323,7 +329,8 @@ def extended_choice_param(parser, xml_parent, data):
                                                   False)).lower()
     XML.SubElement(pdef, 'defaultValue').text = data.get(
         'default-value', '')
-
+    XML.SubElement(pdef, 'descriptionPropertyValue').text = data.get(
+        'value-description', '')
     choice = data.get('type', 'single-select')
     choicedict = {'single-select': 'PT_SINGLE_SELECT',
                   'multi-select': 'PT_MULTI_SELECT',
@@ -348,6 +355,10 @@ def extended_choice_param(parser, xml_parent, data):
         'default-property-file', '')
     XML.SubElement(pdef, 'defaultPropertyKey').text = data.get(
         'default-property-key', '')
+    XML.SubElement(pdef, 'descriptionPropertyFile').text = data.get(
+        'description-property-file', '')
+    XML.SubElement(pdef, 'descriptionPropertyKey').text = data.get(
+        'description-property-key', '')
 
 
 def validating_string_param(parser, xml_parent, data):

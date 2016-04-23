@@ -1,0 +1,13 @@
+parameters:
+  - extended-choice:
+      name: OPTIONS
+      description: "Available options"
+      property-file: /home/foo/property.prop
+      property-key: key
+      visible-items: 2
+      default-value: foo
+      default-property-file: /home/property.prop
+      default-property-key: fookey
+      description-property-file: /home/foo/bar.properties
+      description-property-key: bar_desc
+      value-description: bar1, bar2, bar3
