@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <com.cloudbees.jenkins.plugins.okidocki.DockerBuildWrapper plugin="docker-custom-build-environment">
+      <selector class="com.cloudbees.jenkins.plugins.okidocki.PullDockerImageSelector">
+        <image>centos:7</image>
+      </selector>
+      <dockerInstallation>Default</dockerInstallation>
+      <dockerHost plugin="docker-commons"/>
+      <dockerRegistryCredentials/>
+      <volumes class="empty-list"/>
+      <forcePull>true</forcePull>
+      <privileged>true</privileged>
+      <verbose>true</verbose>
+      <group>jenkins</group>
+      <command>/bin/cat</command>
+      <net>bridge</net>
+    </com.cloudbees.jenkins.plugins.okidocki.DockerBuildWrapper>
+  </buildWrappers>
+</project>

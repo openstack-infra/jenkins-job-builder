@@ -1,0 +1,19 @@
+wrappers:
+  - docker-custom-build-env:
+      image-type: 'dockerfile'
+      context-path: './docker'
+      dockerfile: 'Dockerfile'
+      docker-tool: 'Custom Docker'
+      host: 'tcp://127.0.0.1:1234'
+      credentials-id: 'myCredentials'
+      registry-credentials-id: 'myRegistryCredentials'
+      volumes:
+        - volume:
+            host-path: '/hostJenkins'
+            path: '/jenkins'
+        - volume:
+            host-path: '/my-volume'
+            path: '/my-volume'
+      force-pull: false
+      privileged: false
+      verbose: false
