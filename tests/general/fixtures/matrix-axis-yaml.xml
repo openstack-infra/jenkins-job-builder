@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<matrix-project>
+  <executionStrategy class="hudson.matrix.DefaultMatrixExecutionStrategyImpl">
+    <runSequentially>false</runSequentially>
+  </executionStrategy>
+  <combinationFilter/>
+  <axes>
+    <org.jenkinsci.plugins.yamlaxis.YamlAxis>
+      <name>python</name>
+      <values>
+        <string>config.yaml</string>
+      </values>
+    </org.jenkinsci.plugins.yamlaxis.YamlAxis>
+    <org.jenkinsci.plugins.yamlaxis.YamlAxis>
+      <name>database</name>
+      <values>
+        <string>config.yaml</string>
+      </values>
+    </org.jenkinsci.plugins.yamlaxis.YamlAxis>
+  </axes>
+  <actions/>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+</matrix-project>
