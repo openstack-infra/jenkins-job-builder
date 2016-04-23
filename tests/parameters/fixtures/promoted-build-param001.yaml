@@ -1,0 +1,6 @@
+parameters:
+  - promoted:
+      name: FOO
+      project-name: "foo-build"
+      promotion-name: "passed-promotion"
+      description: "Select a foo-build for promotion"

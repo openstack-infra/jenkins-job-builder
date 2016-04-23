@@ -74,6 +74,36 @@ def string_param(parser, xml_parent, data):
                'hudson.model.StringParameterDefinition')
 
 
+def promoted_param(parser, xml_parent, data):
+    """yaml: promoted build
+    A promoted build parameter.
+    Requires the Jenkins :jenkins-wiki:`Promoted Builds Plugin
+    <Promoted+Builds+Plugin>`.
+
+    :arg str name: the name of the parameter (required)
+    :arg str project-name: the job from which the user can pick runs (required)
+    :arg str promotion-name: promotion process to choose from (optional)
+    :arg str description: a description of the parameter (optional)
+
+    Example:
+
+    .. literalinclude::
+        /../../tests/parameters/fixtures/promoted-build-param001.yaml
+       :language: yaml
+
+    """
+    pdef = base_param(parser, xml_parent, data, False,
+                      'hudson.plugins.promoted__builds.parameters.'
+                      'PromotedBuildParameterDefinition')
+    try:
+        XML.SubElement(pdef, 'projectName').text = data['project-name']
+    except KeyError:
+        raise MissingAttributeError('project-name')
+
+    XML.SubElement(pdef, 'promotionProcessName').text = data.get(
+        'promotion-name', None)
+
+
 def password_param(parser, xml_parent, data):
     """yaml: password
     A password parameter.
