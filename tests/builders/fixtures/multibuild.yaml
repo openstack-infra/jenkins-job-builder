@@ -19,6 +19,7 @@ builders:
         - name: PhaseTwoJobA
           current-parameters: true
           predefined-parameters: foo=bar
+          node-parameters: true
         - name: PhaseTwoJobB
           current-parameters: false
           kill-phase-on: UNSTABLE

@@ -40,6 +40,7 @@
           <jobName>PhaseTwoJobA</jobName>
           <currParams>true</currParams>
           <configs>
+            <hudson.plugins.parameterizedtrigger.NodeParameters/>
             <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
               <properties>foo=bar</properties>
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
