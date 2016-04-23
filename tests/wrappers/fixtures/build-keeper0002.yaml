@@ -1,0 +1,4 @@
+wrappers:
+  - build-keeper:
+      policy: 'keep-first-failed'
+      number-of-fails: 1
