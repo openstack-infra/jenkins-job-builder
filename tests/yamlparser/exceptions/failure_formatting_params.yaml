@@ -1,0 +1,18 @@
+- defaults:
+    name: global
+    date: 20161015
+
+- project:
+    name: missing_params_for_params
+    # deliberately missing value for 'bdate' to trigger
+    # problem formatting params with default
+    flavor:
+      - trusty-{date}
+      - xenial-{bdate}
+    jobs:
+      - 'template-requiring-param-{os}':
+        os: 'ubuntu-{flavour}'
+
+- job-template:
+    name: 'template-requiring-param-{os}'
+    disabled: true

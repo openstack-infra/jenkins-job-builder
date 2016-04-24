@@ -1,0 +1,21 @@
+- scm:
+    name: default-git-scm
+    scm:
+      - git:
+          url: https://github.com/openstack-infra/jenkins-job-builder.git
+          branches:
+            '{branches}'
+          clean: true
+
+- project:
+    name: missing_params_for_component
+    jobs:
+      - 'template-requiring-component-param-{os}':
+          os: 'ubuntu-xenial'
+
+- job-template:
+    name: 'template-requiring-component-param-{os}'
+    disabled: true
+    scm:
+      - default-git-scm:
+          branch: master

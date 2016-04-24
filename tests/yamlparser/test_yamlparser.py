@@ -44,3 +44,26 @@ class TestYamlParserExceptions(base.BaseTestCase):
         e = self.assertRaises(Exception, yp.expandYaml, reg)
         self.assertIn("'NoneType' object is not iterable", str(e))
         self.assertIn("- branch: current\n  current: null", self.logger.output)
+
+
+class TestYamlParserFailureFormattingExceptions(base.BaseScenariosTestCase):
+    fixtures_path = os.path.join(os.path.dirname(__file__), 'exceptions')
+    scenarios = [
+        ('s1', {'name': 'template'}),
+        ('s2', {'name': 'params'})
+    ]
+
+    def test_yaml_snippet(self):
+        self.conf_filename = None
+        config = self._get_config()
+
+        yp = parser.YamlParser(config)
+        yp.parse(os.path.join(self.fixtures_path,
+                              "failure_formatting_{}.yaml".format(self.name)))
+
+        reg = registry.ModuleRegistry(config)
+
+        self.assertRaises(Exception, yp.expandYaml, reg)
+        self.assertIn("Failure formatting {}".format(self.name),
+                      self.logger.output)
+        self.assertIn("Problem formatting with args", self.logger.output)

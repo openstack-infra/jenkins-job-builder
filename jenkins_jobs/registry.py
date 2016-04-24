@@ -163,9 +163,15 @@ class ModuleRegistry(object):
             if template_data:
                 # Template data contains values that should be interpolated
                 # into the component definition
-                component_data = deep_format(
-                    component_data, template_data,
-                    self.jjb_config.yamlparser['allow_empty_variables'])
+                try:
+                    component_data = deep_format(
+                        component_data, template_data,
+                        self.jjb_config.yamlparser['allow_empty_variables'])
+                except Exception:
+                    logging.error(
+                        "Failure formatting component ('%s') data '%s'",
+                        name, component_data)
+                    raise
         else:
             # The component is a simple string name, eg "run-tests"
             name = component
