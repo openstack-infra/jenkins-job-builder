@@ -1,0 +1,10 @@
+wrappers:
+  - maven-release:
+      release-goals: -Dresume=false release:prepare release:perform
+      dry-run-goals: -Dresume=false -DdryRun=true release:prepare
+      num-successful-builds: 1
+      select-custom-scm-comment-prefix: false
+      select-append-jenkins-username: false
+      select-scm-credentials: false
+      release-env-var: IS_M2RELEASEBUILD
+      scm-user-env-var: SCM_USER
