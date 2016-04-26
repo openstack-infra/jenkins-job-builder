@@ -1,0 +1,25 @@
+- project:
+    name: template_variable_defaults
+    jobs:
+        - 'template-variable-defaults-{num}':
+            num: 1
+            disabled_var: true
+        - 'template-variable-defaults-{num}':
+            test_var: Goodbye World
+            num: 2
+
+- job-template:
+    # template specific defaults
+    # empty value causes disabled_var to be ignored internally
+    disabled_var:
+    test_var: Hello World
+    type: periodic
+
+    # template settings
+    name: 'template-variable-defaults-{num}-{type}'
+    id: 'template-variable-defaults-{num}'
+    disabled: '{obj:disabled_var}'
+    builders:
+      - shell: |
+         echo "Job Name: template-variable-defaults-{num}-{type}"
+         echo "Variable: {test_var}"

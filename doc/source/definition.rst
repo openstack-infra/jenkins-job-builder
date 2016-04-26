@@ -74,6 +74,26 @@ Sometimes it is useful to have the same job name format used even
 where the template contents may vary. `Ids` provide a mechanism to
 support such use cases.
 
+
+Default Values for Template Variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To facilitate reuse of templates with many variables that can be
+substituted, but where in most cases the same or no value is needed,
+it is possible to specify defaults for the variables within the
+templates themselves.
+
+This can be used to provide common settings for particular templates.
+For example:
+
+.. literalinclude::
+    /../..tests/yamlparser/fixtures/template_default_variables.yaml
+   :language: yaml
+
+To use a default value for a variable used in the name would be
+uncommon unless it was in addition to another variable. However you
+can use `Ids`_ simplify such use cases.
+
 .. _project:
 
 Project
