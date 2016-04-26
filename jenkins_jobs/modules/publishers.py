@@ -2567,6 +2567,8 @@ def workspace_cleanup(parser, xml_parent, data):
             * **not-built** (`bool`)  (default: true)
     :arg bool fail-build: Fail the build if the cleanup fails (default: true)
     :arg bool clean-parent: Cleanup matrix parent workspace (default: false)
+    :arg str external-deletion-command: external deletion command to run
+        against files and directories
 
     Example:
 
@@ -2577,7 +2579,7 @@ def workspace_cleanup(parser, xml_parent, data):
 
     p = XML.SubElement(xml_parent,
                        'hudson.plugins.ws__cleanup.WsCleanup')
-    p.set("plugin", "ws-cleanup@0.14")
+    p.set("plugin", "ws-cleanup")
     if "include" in data or "exclude" in data:
         patterns = XML.SubElement(p, 'patterns')
 
@@ -2595,6 +2597,8 @@ def workspace_cleanup(parser, xml_parent, data):
         str(data.get("dirmatch", False)).lower()
     XML.SubElement(p, 'cleanupMatrixParent').text = \
         str(data.get("clean-parent", False)).lower()
+    XML.SubElement(p, 'externalDelete').text = \
+        str(data.get('external-deletion-command', ''))
 
     mask = [('success', 'cleanWhenSuccess'),
             ('unstable', 'cleanWhenUnstable'),

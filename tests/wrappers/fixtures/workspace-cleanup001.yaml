@@ -1,0 +1,6 @@
+wrappers:
+  - workspace-cleanup:
+      exclude:
+        - "*.py"
+      check-parameter: "DO_WS_CLEANUP"
+      external-deletion-command: "shred -u %s"
