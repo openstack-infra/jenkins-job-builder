@@ -43,6 +43,7 @@ from jenkins_jobs.errors import InvalidAttributeError
 from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.errors import MissingAttributeError
 import jenkins_jobs.modules.base
+from jenkins_jobs.modules.helpers import append_git_revision_config
 from jenkins_jobs.modules.helpers import cloudformation_init
 from jenkins_jobs.modules.helpers import cloudformation_region_dict
 from jenkins_jobs.modules.helpers import cloudformation_stack
@@ -382,8 +383,11 @@ def trigger_builds(parser, xml_parent, data):
         Plugin (optional)
     :arg bool svn-revision: Whether to pass the svn revision to the triggered
         job (optional)
-    :arg bool git-revision: Whether to pass the git revision to the triggered
-        job (optional)
+    :arg dict git-revision: Passes git revision to the triggered job
+        (optional).
+
+        * **combine-queued-commits** (bool): Whether to combine queued git
+          hashes or not (default false)
     :arg bool block: whether to wait for the triggered jobs to finish or not
         (default false)
     :arg dict block-thresholds: Fail builds and/or mark as failed or unstable
@@ -485,12 +489,10 @@ def trigger_builds(parser, xml_parent, data):
             XML.SubElement(tconfigs,
                            'hudson.plugins.parameterizedtrigger.'
                            'SubversionRevisionBuildParameters')
+
         if(project_def.get('git-revision')):
-            params = XML.SubElement(tconfigs,
-                                    'hudson.plugins.git.'
-                                    'GitRevisionBuildParameters')
-            combine = XML.SubElement(params, 'combineQueuedCommits')
-            combine.text = 'false'
+            append_git_revision_config(tconfigs, project_def['git-revision'])
+
         if(project_def.get('same-node')):
             XML.SubElement(tconfigs,
                            'hudson.plugins.parameterizedtrigger.'

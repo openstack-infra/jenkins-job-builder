@@ -9,11 +9,13 @@ publishers:
         bar=foo
     - project: other_job1, other_job2
       predefined-parameters: BUILD_NUM=${BUILD_NUMBER}
+      git-revision: true
       property-file: version.prop
       fail-on-missing: true
     - project: yet_another_job
       predefined-parameters: foo=bar
-      git-revision: true
+      git-revision:
+        combine-queued-commits: true
       restrict-matrix-project: label=="x86"
     - project: yet_another_job_2
       node-label-name: foo

@@ -1,6 +1,8 @@
 builders:
   - trigger-builds:
     - project: "build_started"
+      git-revision:
+        combine-queued-commits: true
       property-file: propfile.txt
       block: true
       block-thresholds:
