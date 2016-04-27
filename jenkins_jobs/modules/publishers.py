@@ -360,7 +360,7 @@ def trigger_parameterized_builds(parser, xml_parent, data):
     :arg bool combine-queued-commits: Combine Queued git hashes. Only valid
         when 'git-revision' is true. (default false)
 
-        .. deprecated:: 1.4.0. Please use `combine-queued-commits` under the
+        .. deprecated:: 1.5.0 Please use `combine-queued-commits` under the
             `git-revision` argument instead.
 
     :arg dict boolean-parameters: Pass boolean parameters to the downstream
