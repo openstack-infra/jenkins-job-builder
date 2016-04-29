@@ -1696,10 +1696,21 @@ def pipeline(parser, xml_parent, data):
       job (optional)
     :arg bool current-parameters: Whether to include the parameters passed
       to the current build to the triggered job (optional)
+    :arg str property-file: Use properties from file (optional)
+    :arg bool fail-on-missing: Blocks the triggering of the downstream jobs
+        if any of the property files are not found in the workspace.
+        Only valid when 'property-file' is specified.
+        (default false)
+    :arg str file-encoding: Encoding of contents of the files. If not
+        specified, default encoding of the platform is used. Only valid when
+        'property-file' is specified. (optional)
 
     Example:
 
     .. literalinclude:: /../../tests/publishers/fixtures/pipeline002.yaml
+       :language: yaml
+
+    .. literalinclude:: /../../tests/publishers/fixtures/pipeline003.yaml
        :language: yaml
 
 
@@ -1730,6 +1741,19 @@ def pipeline(parser, xml_parent, data):
             XML.SubElement(configs,
                            'hudson.plugins.parameterizedtrigger.'
                            'CurrentBuildParameters')
+
+        if 'property-file' in data and data['property-file']:
+            params = XML.SubElement(configs,
+                                    'hudson.plugins.parameterizedtrigger.'
+                                    'FileBuildParameters')
+            properties = XML.SubElement(params, 'propertiesFile')
+            properties.text = data['property-file']
+            failOnMissing = XML.SubElement(params, 'failTriggerOnMissing')
+            failOnMissing.text = str(
+                data.get('fail-on-missing', False)).lower()
+            if 'file-encoding' in data:
+                XML.SubElement(params, 'encoding'
+                               ).text = data['file-encoding']
 
         XML.SubElement(pippub, 'downstreamProjectNames').text = data['project']
 

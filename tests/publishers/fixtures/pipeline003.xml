@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <au.com.centrumsystems.hudson.plugin.buildpipeline.trigger.BuildPipelineTrigger>
+      <configs>
+        <hudson.plugins.parameterizedtrigger.FileBuildParameters>
+          <propertiesFile>vars.txt</propertiesFile>
+          <failTriggerOnMissing>true</failTriggerOnMissing>
+          <encoding>UTF-8</encoding>
+        </hudson.plugins.parameterizedtrigger.FileBuildParameters>
+      </configs>
+      <downstreamProjectNames>test_project</downstreamProjectNames>
+    </au.com.centrumsystems.hudson.plugin.buildpipeline.trigger.BuildPipelineTrigger>
+  </publishers>
+</project>
