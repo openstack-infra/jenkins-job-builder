@@ -1,0 +1,18 @@
+wrappers:
+  - artifactory-generic:
+      url: http://artifactory.example.net/artifactory
+      name: 'test'
+      deploy-build-info: true
+      key-from-select: 'repo'
+      deploy-pattern:
+      - '*.zip=>results'
+      resolve-pattern:
+      - 'libs-release-local:prod/*=>prod-jars'
+      matrix-params:
+      - 'custom_prop=${PROJECT_ENV_VAR}'
+      env-vars-include: true
+      env-vars-include-patterns:
+      - 'PROJECT_*'
+      - 'ORG_*'
+      discard-old-builds: true
+      discard-build-artifacts: true

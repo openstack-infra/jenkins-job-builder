@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <org.jfrog.hudson.generic.ArtifactoryGenericConfigurator>
+      <details>
+        <artifactoryName>test</artifactoryName>
+        <artifactoryUrl>http://artifactory.example.net/artifactory</artifactoryUrl>
+        <deployReleaseRepository>
+          <keyFromText/>
+          <keyFromSelect>repo</keyFromSelect>
+          <dynamicMode>false</dynamicMode>
+        </deployReleaseRepository>
+      </details>
+      <deployPattern>*.zip=&gt;results</deployPattern>
+      <resolvePattern>libs-release-local:prod/*=&gt;prod-jars</resolvePattern>
+      <matrixParams>custom_prop=${PROJECT_ENV_VAR}</matrixParams>
+      <deployBuildInfo>true</deployBuildInfo>
+      <includeEnvVars>true</includeEnvVars>
+      <discardOldBuilds>true</discardOldBuilds>
+      <discardBuildArtifacts>true</discardBuildArtifacts>
+      <envVarsPatterns>
+        <includePatterns>PROJECT_*,ORG_*</includePatterns>
+        <excludePatterns/>
+      </envVarsPatterns>
+    </org.jfrog.hudson.generic.ArtifactoryGenericConfigurator>
+  </buildWrappers>
+</project>

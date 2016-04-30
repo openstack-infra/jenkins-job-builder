@@ -1,0 +1,3 @@
+- longName: 'Jenkins Artifactory Plugin'
+  shortName: 'artifactory'
+  version: "2.3.0"
