@@ -5,7 +5,6 @@
       <isRankActivated>true</isRankActivated>
       <includePattern>f,d,e,.*</includePattern>
       <excludePattern>a,c,d,.*</excludePattern>
-      <usePreviousBuildAsReference>true</usePreviousBuildAsReference>
       <healthy>80</healthy>
       <unHealthy>10</unHealthy>
       <thresholdLimit>high</thresholdLimit>
@@ -13,6 +12,7 @@
       <defaultEncoding/>
       <canRunOnFailed>true</canRunOnFailed>
       <useStableBuildAsReference>true</useStableBuildAsReference>
+      <usePreviousBuildAsReference>true</usePreviousBuildAsReference>
       <useDeltaValues>true</useDeltaValues>
       <thresholds>
         <unstableTotalAll>90</unstableTotalAll>

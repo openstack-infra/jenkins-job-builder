@@ -1,0 +1,4 @@
+publishers:
+  - dependency-check:
+      pattern: '**/dependency-check-report.xml'
+      use-stable-build-as-reference: true

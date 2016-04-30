@@ -60,6 +60,8 @@ def build_trends_publisher(plugin_name, xml_element, data):
         ('default-encoding', 'defaultEncoding', ''),
         ('can-run-on-failed', 'canRunOnFailed', False),
         ('use-stable-build-as-reference', 'useStableBuildAsReference', False),
+        ('use-previous-build-as-reference',
+         'usePreviousBuildAsReference', False),
         ('use-delta-values', 'useDeltaValues', False),
         ('thresholds', 'thresholds', {}),
         ('should-detect-modules', 'shouldDetectModules', False),
@@ -132,9 +134,8 @@ def config_file_provider_settings(xml_parent, data):
 
         # For cfp versions <2.10.0 we are able to detect cfp via the config
         # settings name.
-        if settings_file.startswith(
-                'org.jenkinsci.plugins.configfiles.maven.'
-                'MavenSettingsConfig'):
+        text = 'org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig'
+        if settings_file.startswith(text):
             settings_type = 'cfp'
 
         if settings_type == 'file':
@@ -161,9 +162,9 @@ def config_file_provider_settings(xml_parent, data):
 
         # For cfp versions <2.10.0 we are able to detect cfp via the config
         # settings name.
-        if global_settings_file.startswith(
-                'org.jenkinsci.plugins.configfiles.maven.'
-                'GlobalMavenSettingsConfig'):
+        text = ('org.jenkinsci.plugins.configfiles.maven.'
+                'GlobalMavenSettingsConfig')
+        if global_settings_file.startswith(text):
             global_settings_type = 'cfp'
 
         if global_settings_type == 'file':
@@ -242,10 +243,6 @@ def findbugs_settings(xml_parent, data):
     XML.SubElement(xml_parent, 'includePattern').text = include_files
     exclude_files = data.get('exclude-files', '')
     XML.SubElement(xml_parent, 'excludePattern').text = exclude_files
-    use_previous_build = str(data.get('use-previous-build-as-reference',
-                                      False)).lower()
-    XML.SubElement(xml_parent,
-                   'usePreviousBuildAsReference').text = use_previous_build
 
 
 def get_value_from_yaml_or_config_file(key, section, data, parser):
