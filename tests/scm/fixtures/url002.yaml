@@ -1,0 +1,6 @@
+scm:
+  - url:
+      url-list:
+        - 'http://jenkins.domain.local/jnlpJars/jenkins-cli.jar'
+        - 'http://code.jquery.com/jquery-1.11.3.min.js'
+      clear-workspace: true

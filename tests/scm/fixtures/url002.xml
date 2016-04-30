@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <scm class="hudson.plugins.URLSCM.URLSCM">
+    <urls>
+      <hudson.plugins.URLSCM.URLSCM_-URLTuple>
+        <urlString>http://jenkins.domain.local/jnlpJars/jenkins-cli.jar</urlString>
+      </hudson.plugins.URLSCM.URLSCM_-URLTuple>
+      <hudson.plugins.URLSCM.URLSCM_-URLTuple>
+        <urlString>http://code.jquery.com/jquery-1.11.3.min.js</urlString>
+      </hudson.plugins.URLSCM.URLSCM_-URLTuple>
+    </urls>
+    <clearWorkspace>true</clearWorkspace>
+  </scm>
+</project>
