@@ -1,0 +1,8 @@
+hipchat:
+  enabled: true
+  rooms:
+    - room1
+    - room2
+  notify-start: true
+  start-message: "project_start"
+  complete-message: "project_completed"
