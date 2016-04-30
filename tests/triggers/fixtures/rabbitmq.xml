@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.rabbitmqbuildtrigger.RemoteBuildTrigger>
+      <spec/>
+      <remoteBuildToken>build_trigger_token</remoteBuildToken>
+    </org.jenkinsci.plugins.rabbitmqbuildtrigger.RemoteBuildTrigger>
+  </triggers>
+</project>
