@@ -144,7 +144,6 @@ class Maven(jenkins_jobs.modules.base.Base):
             not data['maven'].get('automatic-site-archiving', True)).lower()
         XML.SubElement(xml_parent, 'fingerprintingDisabled').text = str(
             not data['maven'].get('automatic-fingerprinting', True)).lower()
-        XML.SubElement(xml_parent, 'perModuleEmail').text = 'true'
         XML.SubElement(xml_parent, 'archivingDisabled').text = str(
             not data['maven'].get('automatic-archiving', True)).lower()
         XML.SubElement(xml_parent, 'resolveDependencies').text = str(

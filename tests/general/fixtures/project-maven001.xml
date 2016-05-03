@@ -11,7 +11,6 @@
   <incrementalBuild>true</incrementalBuild>
   <siteArchivingDisabled>true</siteArchivingDisabled>
   <fingerprintingDisabled>false</fingerprintingDisabled>
-  <perModuleEmail>true</perModuleEmail>
   <archivingDisabled>true</archivingDisabled>
   <resolveDependencies>true</resolveDependencies>
   <processPlugins>true</processPlugins>
