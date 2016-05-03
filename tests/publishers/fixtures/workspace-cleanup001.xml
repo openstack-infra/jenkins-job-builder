@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <hudson.plugins.ws__cleanup.WsCleanup plugin="ws-cleanup@0.14">
+    <hudson.plugins.ws__cleanup.WsCleanup plugin="ws-cleanup">
       <patterns>
         <hudson.plugins.ws__cleanup.Pattern>
           <pattern>*.zip</pattern>
@@ -10,6 +10,7 @@
       </patterns>
       <deleteDirs>false</deleteDirs>
       <cleanupMatrixParent>false</cleanupMatrixParent>
+      <externalDelete/>
       <cleanWhenSuccess>true</cleanWhenSuccess>
       <cleanWhenUnstable>true</cleanWhenUnstable>
       <cleanWhenFailure>true</cleanWhenFailure>
