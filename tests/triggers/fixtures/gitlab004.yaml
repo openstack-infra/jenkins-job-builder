@@ -1,0 +1,18 @@
+triggers:
+  - gitlab:
+      trigger-push: false
+      trigger-merge-request: false
+      trigger-open-merge-request-push: both
+      ci-skip: false
+      set-build-description: false
+      add-note-merge-request: false
+      add-vote-merge-request: false
+      add-ci-message: true
+      allow-all-branches: true
+      include-branches:
+        - 'master'
+        - 'master2'
+        - 'local-test'
+      exclude-branches:
+        - 'broken-test'
+        - 'master-foo'

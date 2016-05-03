@@ -2,14 +2,14 @@
 <project>
   <triggers class="vector">
     <com.dabsquared.gitlabjenkins.GitLabPushTrigger>
-      <triggerOpenMergeRequestOnPush>true</triggerOpenMergeRequestOnPush>
+      <triggerOpenMergeRequestOnPush>both</triggerOpenMergeRequestOnPush>
       <spec/>
-      <triggerOnPush>true</triggerOnPush>
-      <triggerOnMergeRequest>true</triggerOnMergeRequest>
-      <ciSkip>true</ciSkip>
-      <setBuildDescription>true</setBuildDescription>
-      <addNoteOnMergeRequest>true</addNoteOnMergeRequest>
-      <addVoteOnMergeRequest>true</addVoteOnMergeRequest>
+      <triggerOnPush>false</triggerOnPush>
+      <triggerOnMergeRequest>false</triggerOnMergeRequest>
+      <ciSkip>false</ciSkip>
+      <setBuildDescription>false</setBuildDescription>
+      <addNoteOnMergeRequest>false</addNoteOnMergeRequest>
+      <addVoteOnMergeRequest>false</addVoteOnMergeRequest>
       <addCiMessage>true</addCiMessage>
       <allowAllBranches>true</allowAllBranches>
       <includeBranchesSpec>master, master2, local-test</includeBranchesSpec>

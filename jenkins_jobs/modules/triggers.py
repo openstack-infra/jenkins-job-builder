@@ -30,6 +30,7 @@ Example::
 """
 
 import logging
+import pkg_resources
 import re
 import xml.etree.ElementTree as XML
 
@@ -1066,14 +1067,22 @@ def gitlab_merge_request(parser, xml_parent, data):
 def gitlab(parser, xml_parent, data):
     """yaml: gitlab
     Makes Jenkins act like a GitlabCI server
-    Requires the Jenkins :jenkins-wiki:`Gitlab Plugin.
-    <Gitlab+Plugin>`.
+    Requires the Jenkins :jenkins-wiki:`GitLab Plugin
+    <GitLab+Plugin>`.
 
     :arg bool trigger-push: Build on Push Events (default true)
     :arg bool trigger-merge-request: Build on Merge Request Events (default
         True)
-    :arg bool trigger-open-merge-request-push: Rebuild open Merge Requests on
-        Push Events (default true)
+    :arg str trigger-open-merge-request-push: Rebuild open Merge Requests
+        on Push Events.
+
+        :trigger-open-merge-request-push values (< 1.1.26):
+            * **true** (default)
+            * **false**
+        :trigger-open-merge-request-push values (>= 1.1.26):
+            * **never** (default)
+            * **source**
+            * **both**
     :arg bool ci-skip: Enable [ci-skip] (default true)
     :arg bool set-build-description: Set build description to build cause
         (eg. Merge request or Git Push ) (default true)
@@ -1089,10 +1098,20 @@ def gitlab(parser, xml_parent, data):
     :arg list exclude-branches: Defined list of branches to exclude
         (default [])
 
-    Example:
+    Example (version < 1.1.26):
 
-    .. literalinclude::
-        /../../tests/triggers/fixtures/gitlab001.yaml
+    .. literalinclude:: /../../tests/triggers/fixtures/gitlab001.yaml
+       :language: yaml
+
+    Minimal example (version >= 1.1.26):
+
+    .. literalinclude:: /../../tests/triggers/fixtures/gitlab005.yaml
+       :language: yaml
+
+    Full example (version >= 1.1.26):
+
+    .. literalinclude:: /../../tests/triggers/fixtures/gitlab004.yaml
+       :language: yaml
     """
     def _add_xml(elem, name, value):
         XML.SubElement(elem, name).text = value
@@ -1100,29 +1119,37 @@ def gitlab(parser, xml_parent, data):
     gitlab = XML.SubElement(
         xml_parent, 'com.dabsquared.gitlabjenkins.GitLabPushTrigger'
     )
+    plugin_info = parser.registry.get_plugin_info('GitLab Plugin')
+    plugin_ver = pkg_resources.parse_version(plugin_info.get('version', "0"))
+    valid_merge_request = ['never', 'source', 'both']
 
-    bool_mapping = (
+    if plugin_ver >= pkg_resources.parse_version("1.1.26"):
+        mapping = [
+            ('trigger-open-merge-request-push',
+             'triggerOpenMergeRequestOnPush', 'never', valid_merge_request)]
+        convert_mapping_to_xml(gitlab, data, mapping, fail_required=True)
+    else:
+        mapping = [
+            ('trigger-open-merge-request-push',
+             'triggerOpenMergeRequestOnPush', True)]
+        convert_mapping_to_xml(gitlab, data, mapping, fail_required=True)
+
+    XML.SubElement(gitlab, 'spec').text = ''
+    bool_mapping = [
         ('trigger-push', 'triggerOnPush', True),
         ('trigger-merge-request', 'triggerOnMergeRequest', True),
-        ('trigger-open-merge-request-push', 'triggerOpenMergeRequestOnPush',
-            True),
         ('ci-skip', 'ciSkip', True),
         ('set-build-description', 'setBuildDescription', True),
         ('add-note-merge-request', 'addNoteOnMergeRequest', True),
         ('add-vote-merge-request', 'addVoteOnMergeRequest', True),
         ('add-ci-message', 'addCiMessage', False),
         ('allow-all-branches', 'allowAllBranches', False),
-    )
+    ]
     list_mapping = (
         ('include-branches', 'includeBranchesSpec', []),
         ('exclude-branches', 'excludeBranchesSpec', []),
     )
-
-    XML.SubElement(gitlab, 'spec').text = ''
-
-    for yaml_name, xml_name, default_val in bool_mapping:
-        value = str(data.get(yaml_name, default_val)).lower()
-        _add_xml(gitlab, xml_name, value)
+    convert_mapping_to_xml(gitlab, data, bool_mapping, fail_required=True)
 
     for yaml_name, xml_name, default_val in list_mapping:
         value = ', '.join(data.get(yaml_name, default_val))
