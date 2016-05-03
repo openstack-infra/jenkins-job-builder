@@ -265,6 +265,7 @@ def timeout(parser, xml_parent, data):
         * **no-activity**
         * **elastic**
         * **absolute**
+        * **deadline**
 
     :arg int elastic-percentage: Percentage of the three most recent builds
         where to declare a timeout, only applies to **elastic** type.
@@ -273,6 +274,12 @@ def timeout(parser, xml_parent, data):
         average duration, only applies to **elastic** type. (default 3)
     :arg int elastic-default-timeout: Timeout to use if there were no previous
         builds, only applies to **elastic** type. (default 3)
+
+    :arg str deadline-time: Build terminate automatically at next deadline time
+        (HH:MM:SS), only applies to **deadline** type. (default 0:00:00)
+    :arg int deadline-tolerance: Period in minutes after deadline when a job
+        should be immediately aborted, only applies to **deadline** type.
+        (default 1)
 
     Example (Version < 1.14):
 
@@ -296,6 +303,9 @@ def timeout(parser, xml_parent, data):
     .. literalinclude::
         /../../tests/wrappers/fixtures/timeout/version-1.14/elastic001.yaml
 
+    .. literalinclude::
+        /../../tests/wrappers/fixtures/timeout/version-1.15/deadline001.yaml
+
     """
     prefix = 'hudson.plugins.build__timeout.'
     twrapper = XML.SubElement(xml_parent, prefix + 'BuildTimeoutWrapper')
@@ -304,7 +314,8 @@ def timeout(parser, xml_parent, data):
         "Jenkins build timeout plugin")
     version = pkg_resources.parse_version(plugin_info.get("version", "0"))
 
-    valid_strategies = ['absolute', 'no-activity', 'likely-stuck', 'elastic']
+    valid_strategies = ['absolute', 'no-activity', 'likely-stuck', 'elastic',
+                        'deadline']
 
     if version >= pkg_resources.parse_version("1.14"):
         strategy = data.get('type', 'absolute')
@@ -344,6 +355,18 @@ def timeout(parser, xml_parent, data):
                            ).text = str(data.get('elastic-number-builds', 0))
             XML.SubElement(strategy_element, 'timeoutMinutesElasticDefault'
                            ).text = str(data.get('elastic-default-timeout', 3))
+
+        elif strategy == "deadline":
+            strategy_element = XML.SubElement(
+                twrapper, 'strategy',
+                {'class': "hudson.plugins.build_timeout."
+                          "impl.DeadlineTimeOutStrategy"})
+            deadline_time = str(data.get('deadline-time', '0:00:00'))
+            XML.SubElement(strategy_element,
+                           'deadlineTime').text = str(deadline_time)
+            deadline_tolerance = int(data.get('deadline-tolerance', 1))
+            XML.SubElement(strategy_element, 'deadlineToleranceInMinutes'
+                           ).text = str(deadline_tolerance)
 
         actions = []
 
