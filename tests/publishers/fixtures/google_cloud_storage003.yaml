@@ -10,6 +10,7 @@ publishers:
                 storage-location: 'gs://myBucket'
                 share-publicly: 'true'
                 upload-for-failed-jobs: 'true'
+                show-inline: 'false'
                 strip-prefix: 'path/to/'
             - classic:
                 file-pattern: 'target/*.war'
@@ -27,4 +28,5 @@ publishers:
                 storage-location: 'gs://myBucket/artifacts/'
                 share-publicly: 'true'
                 upload-for-failed-jobs: 'true'
+                show-inline: 'true'
                 strip-prefix: 'path/to/'
