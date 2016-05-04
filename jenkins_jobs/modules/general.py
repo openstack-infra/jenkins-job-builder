@@ -22,7 +22,7 @@ Example:
 :Job Parameters:
     * **project-type**:
       Defaults to "freestyle", but "maven" as well as "multijob", "flow",
-      "workflow" or "externaljob" can also be specified.
+      "pipeline" or "externaljob" can also be specified.
 
     * **defaults**:
       Specifies a set of :ref:`defaults` to use for this job, defaults to

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow-definition plugin="workflow-job">
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps">
+    <sandbox>false</sandbox>
+    <scm class="hudson.plugins.mercurial.MercurialSCM">
+      <source>http://hg.example.org/project</source>
+      <revisionType>BRANCH</revisionType>
+      <revision>default</revision>
+      <clean>true</clean>
+      <modules/>
+      <disableChangeLog>false</disableChangeLog>
+    </scm>
+    <scriptPath>Jenkinsfile</scriptPath>
+  </definition>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <publishers>
+    <hudson.tasks.Mailer plugin="mailer">
+      <recipients>qa@example.org</recipients>
+      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>false</sendToIndividuals>
+    </hudson.tasks.Mailer>
+  </publishers>
+  <buildWrappers/>
+</flow-definition>
+<BLANKLINE>
+<?xml version="1.0" encoding="utf-8"?>
+<flow-definition plugin="workflow-job">
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps">
+    <sandbox>true</sandbox>
+    <scm class="hudson.plugins.mercurial.MercurialSCM">
+      <source>http://hg.example.org/project</source>
+      <revisionType>BRANCH</revisionType>
+      <revision>default</revision>
+      <clean>true</clean>
+      <modules/>
+      <disableChangeLog>false</disableChangeLog>
+    </scm>
+    <scriptPath>Jenkinsfile</scriptPath>
+  </definition>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <publishers>
+    <hudson.tasks.Mailer plugin="mailer">
+      <recipients>dev@example.org</recipients>
+      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>false</sendToIndividuals>
+    </hudson.tasks.Mailer>
+  </publishers>
+  <buildWrappers/>
+</flow-definition>
