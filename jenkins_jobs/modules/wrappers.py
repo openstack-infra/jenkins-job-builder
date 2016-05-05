@@ -576,7 +576,7 @@ def workspace_cleanup(parser, xml_parent, data):
     :arg str external-deletion-command: external deletion command to run
         against files and directories
 
-    Example::
+    Example:
 
     .. literalinclude::
         /../../tests/wrappers/fixtures/workspace-cleanup001.yaml
