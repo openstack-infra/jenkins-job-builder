@@ -1,0 +1,3 @@
+publishers:
+  - email:
+      recipients: foo@example.com
