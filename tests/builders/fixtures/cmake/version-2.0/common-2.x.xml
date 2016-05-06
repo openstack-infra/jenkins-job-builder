@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.plugins.cmake.CmakeBuilder>
+      <sourceDir>path/to/source</sourceDir>
+      <generator>Unix Makefiles</generator>
+      <preloadScript/>
+      <cleanBuild>false</cleanBuild>
+      <workingDir>path/to/build</workingDir>
+      <buildType>Debug</buildType>
+      <installationName>InSearchPath</installationName>
+      <toolArgs/>
+      <toolSteps/>
+    </hudson.plugins.cmake.CmakeBuilder>
+  </builders>
+</project>
