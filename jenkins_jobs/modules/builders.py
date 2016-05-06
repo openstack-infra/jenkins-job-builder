@@ -2086,7 +2086,7 @@ def managed_script(parser, xml_parent, data):
 
 def cmake(parser, xml_parent, data):
     """yaml: cmake
-    Execute a CMake target. Requires the Jenkins `CMake Plugin
+    Execute a CMake target. Requires the Jenkins :jenkins-wiki:`CMake Plugin
     <CMake+Plugin>`.
 
     This builder is compatible with both versions 2.x and 1.x of the
