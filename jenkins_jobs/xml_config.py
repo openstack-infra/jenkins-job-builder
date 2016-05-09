@@ -20,6 +20,8 @@ import pkg_resources
 from xml.dom import minidom
 import xml.etree.ElementTree as XML
 
+from jenkins_jobs import errors
+
 __all__ = [
     "XmlJobGenerator",
     "XmlJob"
@@ -86,6 +88,9 @@ class XmlJobGenerator(object):
             self.__gen_xml(xml, data)
             job = XmlJob(xml, data['name'])
             return job
+
+        raise errors.JenkinsJobsException("Unrecognized project type: '%s'"
+                                          % kind)
 
     def __gen_xml(self, xml, data):
         for module in self.registry.modules:
