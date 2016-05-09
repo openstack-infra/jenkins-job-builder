@@ -3,11 +3,33 @@
   <publishers>
     <au.com.centrumsystems.hudson.plugin.buildpipeline.trigger.BuildPipelineTrigger>
       <configs>
+        <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+          <properties>BUILD_NUM=${BUILD_NUMBER}</properties>
+        </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+        <hudson.plugins.git.GitRevisionBuildParameters>
+          <combineQueuedCommits>true</combineQueuedCommits>
+        </hudson.plugins.git.GitRevisionBuildParameters>
         <hudson.plugins.parameterizedtrigger.FileBuildParameters>
           <propertiesFile>vars.txt</propertiesFile>
           <failTriggerOnMissing>true</failTriggerOnMissing>
           <encoding>UTF-8</encoding>
         </hudson.plugins.parameterizedtrigger.FileBuildParameters>
+        <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
+        <hudson.plugins.parameterizedtrigger.SubversionRevisionBuildParameters>
+          <includeUpstreamParameters>true</includeUpstreamParameters>
+        </hudson.plugins.parameterizedtrigger.SubversionRevisionBuildParameters>
+        <hudson.plugins.parameterizedtrigger.BooleanParameters>
+          <configs>
+            <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+              <name>p1</name>
+              <value>true</value>
+            </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+            <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+              <name>p2</name>
+              <value>false</value>
+            </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+          </configs>
+        </hudson.plugins.parameterizedtrigger.BooleanParameters>
       </configs>
       <downstreamProjectNames>test_project</downstreamProjectNames>
     </au.com.centrumsystems.hudson.plugin.buildpipeline.trigger.BuildPipelineTrigger>

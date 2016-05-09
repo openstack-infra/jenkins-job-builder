@@ -1,6 +1,16 @@
 publishers:
   - pipeline:
-      project: test_project
+      projects:
+        - test_project
+      predefined-parameters: BUILD_NUM=${BUILD_NUMBER}
+      current-parameters: true
       property-file: vars.txt
+      git-revision:
+        combine-queued-commits: true
       fail-on-missing: true
       file-encoding: UTF-8
+      boolean-parameters:
+          p1: true
+          p2: false
+      svn-revision: true
+      include-upstream: true

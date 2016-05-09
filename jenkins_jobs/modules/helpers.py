@@ -12,6 +12,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import logging
+
+import six
 import xml.etree.ElementTree as XML
 
 from jenkins_jobs.errors import InvalidAttributeError
@@ -464,6 +467,137 @@ def test_fairy_common(xml_element, data):
         ('advanced-options', 'advancedOptions', '')
     ]
     convert_mapping_to_xml(xml_element, data, mappings, fail_required=True)
+
+
+def trigger_get_parameter_order(registry):
+    logger = logging.getLogger("%s:trigger_get_parameter_order" % __name__)
+    # original order
+    param_order = [
+        'predefined-parameters',
+        'git-revision',
+        'property-file',
+        'current-parameters',
+        'node-parameters',
+        'svn-revision',
+        'restrict-matrix-project',
+        'node-label-name',
+        'node-label',
+        'boolean-parameters',
+    ]
+
+    try:
+        if registry.jjb_config.config_parser.getboolean(
+                '__future__', 'param_order_from_yaml'):
+            param_order = None
+    except six.moves.configparser.NoSectionError:
+        pass
+
+    if param_order:
+        logger.warning(
+            "Using deprecated order for parameter sets in "
+            "triggered-parameterized-builds. This will be changed in a future "
+            "release to inherit the order from the user defined yaml. To "
+            "enable this behaviour immediately, set the config option "
+            "'__future__.param_order_from_yaml' to 'true' and change the "
+            "input job configuration to use the desired order")
+
+    return param_order
+
+
+def trigger_project(tconfigs, project_def, param_order=None):
+
+    logger = logging.getLogger("%s:trigger_project" % __name__)
+    pt_prefix = 'hudson.plugins.parameterizedtrigger.'
+    if param_order:
+        parameters = param_order
+    else:
+        parameters = project_def.keys()
+
+    for param_type in parameters:
+        param_value = project_def.get(param_type)
+        if param_value is None:
+            continue
+
+        if param_type == 'predefined-parameters':
+            params = XML.SubElement(tconfigs, pt_prefix +
+                                    'PredefinedBuildParameters')
+            properties = XML.SubElement(params, 'properties')
+            properties.text = param_value
+        elif param_type == 'git-revision' and param_value:
+            if 'combine-queued-commits' in project_def:
+                logger.warning(
+                    "'combine-queued-commit' has moved to reside under "
+                    "'git-revision' configuration, please update your "
+                    "configs as support for this will be removed."
+                )
+                git_revision = {
+                    'combine-queued-commits':
+                    project_def['combine-queued-commits']
+                }
+            else:
+                git_revision = project_def['git-revision']
+            append_git_revision_config(tconfigs, git_revision)
+        elif param_type == 'property-file':
+            params = XML.SubElement(tconfigs,
+                                    pt_prefix + 'FileBuildParameters')
+            properties = XML.SubElement(params, 'propertiesFile')
+            properties.text = project_def['property-file']
+            failOnMissing = XML.SubElement(params, 'failTriggerOnMissing')
+            failOnMissing.text = str(project_def.get('fail-on-missing',
+                                                     False)).lower()
+            if 'file-encoding' in project_def:
+                XML.SubElement(params, 'encoding'
+                               ).text = project_def['file-encoding']
+            if 'use-matrix-child-files' in project_def:
+                # TODO: These parameters only affect execution in
+                # publishers of matrix projects; we should warn if they are
+                # used in other contexts.
+                XML.SubElement(params, "useMatrixChild").text = (
+                    str(project_def['use-matrix-child-files']).lower())
+                XML.SubElement(params, "combinationFilter").text = (
+                    project_def.get('matrix-child-combination-filter', ''))
+                XML.SubElement(params, "onlyExactRuns").text = (
+                    str(project_def.get('only-exact-matrix-child-runs',
+                                        False)).lower())
+        elif param_type == 'current-parameters' and param_value:
+            XML.SubElement(tconfigs, pt_prefix + 'CurrentBuildParameters')
+        elif param_type == 'node-parameters' and param_value:
+            XML.SubElement(tconfigs, pt_prefix + 'NodeParameters')
+        elif param_type == 'svn-revision' and param_value:
+            param = XML.SubElement(tconfigs, pt_prefix +
+                                   'SubversionRevisionBuildParameters')
+            XML.SubElement(param, 'includeUpstreamParameters').text = str(
+                project_def.get('include-upstream', False)).lower()
+        elif param_type == 'restrict-matrix-project' and param_value:
+            subset = XML.SubElement(tconfigs, pt_prefix +
+                                    'matrix.MatrixSubsetBuildParameters')
+            XML.SubElement(subset, 'filter'
+                           ).text = project_def['restrict-matrix-project']
+        elif (param_type == 'node-label-name' or
+                param_type == 'node-label'):
+            tag_name = ('org.jvnet.jenkins.plugins.nodelabelparameter.'
+                        'parameterizedtrigger.NodeLabelBuildParameter')
+            if tconfigs.find(tag_name) is not None:
+                # already processed and can only have one
+                continue
+            params = XML.SubElement(tconfigs, tag_name)
+            name = XML.SubElement(params, 'name')
+            if 'node-label-name' in project_def:
+                name.text = project_def['node-label-name']
+            label = XML.SubElement(params, 'nodeLabel')
+            if 'node-label' in project_def:
+                label.text = project_def['node-label']
+        elif param_type == 'boolean-parameters' and param_value:
+            params = XML.SubElement(tconfigs,
+                                    pt_prefix + 'BooleanParameters')
+            config_tag = XML.SubElement(params, 'configs')
+            param_tag_text = pt_prefix + 'BooleanParameterConfig'
+            params_list = param_value
+            for name, value in params_list.items():
+                param_tag = XML.SubElement(config_tag, param_tag_text)
+                XML.SubElement(param_tag, 'name').text = name
+                XML.SubElement(param_tag, 'value').text = str(
+                    value or False).lower()
 
 
 def convert_mapping_to_xml(parent, data, mapping, fail_required=False):
