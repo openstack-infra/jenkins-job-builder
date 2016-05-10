@@ -2,7 +2,7 @@
 <project>
   <scm class="org.jenkinsci.plugins.multiplescms.MultiSCM">
     <scms>
-      <scm class="hudson.plugins.git.GitSCM">
+      <hudson.plugins.git.GitSCM>
         <configVersion>2</configVersion>
         <userRemoteConfigs>
           <hudson.plugins.git.UserRemoteConfig>
@@ -38,7 +38,7 @@
         <extensions>
           <hudson.plugins.git.extensions.impl.WipeWorkspace/>
         </extensions>
-      </scm>
+      </hudson.plugins.git.GitSCM>
       <scm>
         <scmraw/>
       </scm>

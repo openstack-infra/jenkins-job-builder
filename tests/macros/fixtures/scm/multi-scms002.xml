@@ -10,7 +10,7 @@
   <properties/>
   <scm class="org.jenkinsci.plugins.multiplescms.MultiSCM">
     <scms>
-      <scm class="hudson.plugins.repo.RepoScm">
+      <hudson.plugins.repo.RepoScm>
         <manifestRepositoryUrl>https://example.com/project/</manifestRepositoryUrl>
         <manifestBranch>stable</manifestBranch>
         <manifestFile>repo.xml</manifestFile>
@@ -27,8 +27,8 @@
         <noTags>false</noTags>
         <trace>false</trace>
         <showAllChanges>false</showAllChanges>
-      </scm>
-      <scm class="hudson.plugins.git.GitSCM">
+      </hudson.plugins.repo.RepoScm>
+      <hudson.plugins.git.GitSCM>
         <configVersion>2</configVersion>
         <userRemoteConfigs>
           <hudson.plugins.git.UserRemoteConfig>
@@ -64,7 +64,7 @@
         <extensions>
           <hudson.plugins.git.extensions.impl.WipeWorkspace/>
         </extensions>
-      </scm>
+      </hudson.plugins.git.GitSCM>
     </scms>
   </scm>
   <builders/>
