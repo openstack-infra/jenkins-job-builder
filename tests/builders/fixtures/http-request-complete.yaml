@@ -1,0 +1,18 @@
+builders:
+  - http-request:
+      url: http://example.com/jenkinsTest
+      mode: POST
+      pass-build: true
+      content-type: TEXT_HTML
+      accept-type: TEXT_HTML
+      output-file: response_file.txt
+      authentication-key: authenticationkey
+      console-log: true
+      time-out: 10
+      valid-response-codes: 100:399
+      valid-response-content: foo
+      custom-headers:
+        - name: header
+          value: value
+        - name: header2
+          value: value2

@@ -692,6 +692,127 @@ def builders_from(parser, xml_parent, data):
     XML.SubElement(pbs, 'projectName').text = data
 
 
+def http_request(parser, xml_parent, data):
+    """yaml: http-request
+    This plugin sends a http request to an url with some parameters.
+    Requires the Jenkins :jenkins-wiki:`HTTP Request Plugin
+    <HTTP+Request+Plugin>`.
+
+    :arg str url: Specify an URL to be requested (required)
+    :arg str mode: The http mode of the request (default GET)
+
+        :mode values:
+            * **GET**
+            * **POST**
+            * **PUT**
+            * **DELETE**
+            * **HEAD**
+    :arg str content-type: Add 'Content-type: foo' HTTP request headers
+        where foo is the http content-type the request is using.
+        (default: NOT_SET)
+    :arg str accept-type: Add 'Accept: foo' HTTP request headers
+        where foo is the http content-type to accept (default: NOT_SET)
+
+        :content-type and accept-type values:
+            * **NOT_SET**
+            * **TEXT_HTML**
+            * **APPLICATION_JSON**
+            * **APPLICATION_TAR**
+            * **APPLICATION_ZIP**
+            * **APPLICATION_OCTETSTREAM**
+    :arg str output-file: Name of the file in which to write response data
+        (default: '')
+    :arg int time-out: Specify a timeout value in seconds (default: 0)
+    :arg bool console-log: This allows you to turn off writing the response
+        body to the log (default: False)
+    :arg bool pass-build: Should build parameters be passed to the URL
+        being called (default: False)
+    :arg str valid-response-codes: Configure response code to mark an
+        execution as success. You can configure simple code such as "200"
+        or multiple codes separeted by comma(',') e.g. "200,404,500"
+        Interval of codes should be in format From:To e.g. "100:399".
+        The default (as if empty) is to fail to 4xx and 5xx.
+        That means success from 100 to 399 "100:399"
+        To ignore any response code use "100:599". (default: '')
+    :arg str valid-response-content: If set response must contain this string
+        to mark an execution as success (default: '')
+    :arg str authentication-key: Authentication that will be used before this
+        request. Authentications are created in global configuration under a
+        key name that is selected here.
+    :arg list custom-headers: list of header parameters
+
+        :custom-header:
+            * **name** (`str`) -- Name of the header
+            * **value** (`str`) -- Value of the header
+
+    Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/http-request-minimal.yaml
+       :language: yaml
+
+    .. literalinclude::
+       ../../tests/builders/fixtures/http-request-complete.yaml
+       :language: yaml
+    """
+
+    http_request = XML.SubElement(xml_parent,
+                                  'jenkins.plugins.http__request.HttpRequest')
+    http_request.set('plugin', 'http_request')
+
+    valid_modes = ['GET',
+                   'POST',
+                   'PUT',
+                   'DELETE',
+                   'HEAD']
+    valid_types = ['NOT_SET',
+                   'TEXT_HTML',
+                   'APPLICATION_JSON',
+                   'APPLICATION_TAR',
+                   'APPLICATION_ZIP',
+                   'APPLICATION_OCTETSTREAM']
+
+    if data.get('mode', valid_modes[0]) not in valid_modes:
+        raise InvalidAttributeError('mode', data.get('mode'), valid_modes)
+    if data.get('content-type', valid_types[0]) not in valid_types:
+        raise InvalidAttributeError('content-type',
+                                    data.get('content-type'),
+                                    valid_types)
+    if data.get('accept-type', valid_types[0]) not in valid_types:
+        raise InvalidAttributeError('accept-type',
+                                    data.get('accept-type'),
+                                    valid_types)
+
+    mappings = [
+        ('url', 'url', None),
+        ('mode', 'httpMode', 'GET'),
+        ('content-type', 'contentType', 'NOT_SET'),
+        ('accept-type', 'acceptType', 'NOT_SET'),
+        ('output-file', 'outputFile', ''),
+        ('console-log', 'consoleLogResponseBody', False),
+        ('pass-build', 'passBuildParameters', False),
+        ('time-out', 'timeout', 0),
+        ('valid-response-codes', 'validResponseCodes', ''),
+        ('valid-response-content', 'validResponseContent', '')]
+    convert_mapping_to_xml(http_request, data, mappings, fail_required=True)
+
+    if 'authentication-key' in data:
+        XML.SubElement(
+            http_request, 'authentication').text = data['authentication-key']
+
+    if 'custom-headers' in data:
+        customHeader = XML.SubElement(http_request, 'customHeaders')
+        header_mappings = [
+            ('name', 'name', None),
+            ('value', 'value', None)
+        ]
+        for customhead in data['custom-headers']:
+            pair = XML.SubElement(customHeader, 'pair')
+            convert_mapping_to_xml(pair,
+                                   customhead,
+                                   header_mappings,
+                                   fail_required=True)
+
+
 def inject(parser, xml_parent, data):
     """yaml: inject
     Inject an environment for the job.
