@@ -3571,10 +3571,9 @@ def plot(parser, xml_parent, data):
 
     Requires the Jenkins :jenkins-wiki:`Plot Plugin <Plot+Plugin>`.
 
-    :arg str title: title for the graph
-                    (default: '')
-    :arg str yaxis: title of Y axis
-    :arg str group: name of the group to which the plot belongs
+    :arg str title: title for the graph (default: '')
+    :arg str yaxis: title of Y axis (default: '')
+    :arg str group: name of the group to which the plot belongs (required)
     :arg int num-builds: number of builds to plot across
                          (default: plot all builds)
     :arg str style:  Specifies the graph style of the plot
@@ -3705,16 +3704,16 @@ def plot(parser, xml_parent, data):
                 XML.SubElement(subserie, 'nodeTypeString').text = \
                     xpath_dict.get(xpathtype)
             XML.SubElement(subserie, 'fileType').text = serie.get('format')
-        XML.SubElement(plugin, 'group').text = plot['group']
-        XML.SubElement(plugin, 'useDescr').text = \
-            str(plot.get('use-description', False)).lower()
-        XML.SubElement(plugin, 'exclZero').text = \
-            str(plot.get('exclude-zero-yaxis', False)).lower()
-        XML.SubElement(plugin, 'logarithmic').text = \
-            str(plot.get('logarithmic-yaxis', False)).lower()
-        XML.SubElement(plugin, 'keepRecords').text = \
-            str(plot.get('keep-records', False)).lower()
-        XML.SubElement(plugin, 'numBuilds').text = plot.get('num-builds', '')
+
+        mappings = [
+            ('group', 'group', None),
+            ('use-description', 'useDescr', False),
+            ('exclude-zero-yaxis', 'exclZero', False),
+            ('logarithmic-yaxis', 'logarithmic', False),
+            ('keep-records', 'keepRecords', False),
+            ('num-builds', 'numBuilds', '')]
+        convert_mapping_to_xml(plugin, plot, mappings, fail_required=True)
+
         style_list = ['area', 'bar', 'bar3d', 'line', 'line3d', 'stackedArea',
                       'stackedbar', 'stackedbar3d', 'waterfall']
         style = plot.get('style', 'line')
