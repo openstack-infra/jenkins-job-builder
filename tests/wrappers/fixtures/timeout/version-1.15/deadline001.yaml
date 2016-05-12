@@ -1,0 +1,6 @@
+ wrappers:
+    - timeout:
+        deadline-time: '0:00:00'
+        deadline-tolerance: 1
+        timeout-var: 'BUILD_TIMEOUT'
+        type: deadline
