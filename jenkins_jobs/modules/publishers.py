@@ -1201,9 +1201,9 @@ def xunit(parser, xml_parent, data):
         configured framework. (default 3000)
     :arg list types: Frameworks to configure, and options. Supports the
         following: ``aunit``, ``boosttest``, ``checktype``, ``cpptest``,
-        ``cppunit``, ``ctest``, ``embunit``, ``fpcunit``, ``gtest``, ``junit``,
-        ``mstest``, ``nunit``, ``phpunit``, ``tusar``, ``unittest``,
-        and ``valgrind``.
+        ``cppunit``, ``ctest``, ``dotnettest``, ``embunit``, ``fpcunit``,
+        ``gtest``, ``junit``, ``mstest``, ``nunit``, ``phpunit``, ``tusar``,
+        ``unittest``, and ``valgrind``.
 
             The 'custom' type is not supported.
 
@@ -1237,6 +1237,7 @@ def xunit(parser, xml_parent, data):
         'cpptest': 'CppTestJunitHudsonTestType',
         'cppunit': 'CppUnitJunitHudsonTestType',
         'ctest': 'CTestType',
+        'dotnettest': 'XUnitDotNetTestType',  # since plugin v1.93
         'embunit': 'EmbUnitType',  # since plugin v1.84
         'fpcunit': 'FPCUnitJunitHudsonTestType',
         'gtest': 'GoogleTestType',
