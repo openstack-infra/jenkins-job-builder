@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <jenkins.plugins.openstack.compute.JCloudsOneOffSlave/>
+  </buildWrappers>
+</project>

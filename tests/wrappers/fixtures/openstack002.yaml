@@ -1,0 +1,6 @@
+wrappers:
+  - openstack:
+      instances:
+        - cloud-name: mycloud1
+          template-name: jenkins-dev-slave
+          count: 1
