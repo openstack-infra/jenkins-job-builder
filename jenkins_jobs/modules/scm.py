@@ -550,16 +550,14 @@ def cvs(parser, xml_parent, data):
             raise InvalidAttributeError('compression-level',
                                         compression_level, range(-1, 10))
         XML.SubElement(repo_tag, 'compressionLevel').text = compression_level
-    mapping = [('use-update', 'canUseUpdate', True),
-               ('prune-empty', 'pruneEmptyDirectories', True),
-               ('skip-changelog', 'skipChangeLog', False),
-               ('show-all-output', 'disableCvsQuiet', False),
-               ('clean-checkout', 'cleanOnFailedUpdate', False),
-               ('clean-copy', 'forceCleanCopy', False)]
-    for elem in mapping:
-        opt, xml_tag, val = elem[:]
-        XML.SubElement(cvs, xml_tag).text = str(
-            data.get(opt, val)).lower()
+    mappings = [
+        ('use-update', 'canUseUpdate', True),
+        ('prune-empty', 'pruneEmptyDirectories', True),
+        ('skip-changelog', 'skipChangeLog', False),
+        ('show-all-output', 'disableCvsQuiet', False),
+        ('clean-checkout', 'cleanOnFailedUpdate', False),
+        ('clean-copy', 'forceCleanCopy', False)]
+    convert_mapping_to_xml(cvs, data, mappings, fail_required=True)
 
 
 def repo(parser, xml_parent, data):
