@@ -14,7 +14,7 @@
 # under the License.
 
 
-from jenkins_jobs.builder import Builder
+from jenkins_jobs.builder import JenkinsManager
 from jenkins_jobs.parser import YamlParser
 from jenkins_jobs.registry import ModuleRegistry
 import jenkins_jobs.cli.subcommand.base as base
@@ -38,7 +38,7 @@ class DeleteSubCommand(base.BaseSubCommand):
             directories''')
 
     def execute(self, options, jjb_config):
-        builder = Builder(jjb_config)
+        builder = JenkinsManager(jjb_config)
 
         fn = options.path
 
