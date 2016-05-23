@@ -22,7 +22,7 @@ from tests.base import mock
 from testtools import TestCase
 
 
-@mock.patch('jenkins_jobs.builder.CacheStorage', mock.MagicMock)
+@mock.patch('jenkins_jobs.builder.JobCache', mock.MagicMock)
 class TestCaseTestBuilder(LoggingFixture, TestCase):
     def setUp(self):
         super(TestCaseTestBuilder, self).setUp()

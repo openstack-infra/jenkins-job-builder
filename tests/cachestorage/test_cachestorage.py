@@ -21,21 +21,21 @@ from tests.base import LoggingFixture
 from tests.base import mock
 
 
-class TestCaseCacheStorage(LoggingFixture, testtools.TestCase):
+class TestCaseJobCache(LoggingFixture, testtools.TestCase):
 
-    @mock.patch('jenkins_jobs.builder.CacheStorage.get_cache_dir',
+    @mock.patch('jenkins_jobs.builder.JobCache.get_cache_dir',
                 lambda x: '/bad/file')
     def test_save_on_exit(self):
         """
         Test that the cache is saved on normal object deletion
         """
 
-        with mock.patch('jenkins_jobs.builder.CacheStorage.save') as save_mock:
+        with mock.patch('jenkins_jobs.builder.JobCache.save') as save_mock:
             with mock.patch('os.path.isfile', return_value=False):
-                jenkins_jobs.builder.CacheStorage("dummy")
+                jenkins_jobs.builder.JobCache("dummy")
             save_mock.assert_called_with()
 
-    @mock.patch('jenkins_jobs.builder.CacheStorage.get_cache_dir',
+    @mock.patch('jenkins_jobs.builder.JobCache.get_cache_dir',
                 lambda x: '/bad/file')
     def test_cache_file(self):
         """
@@ -44,4 +44,4 @@ class TestCaseCacheStorage(LoggingFixture, testtools.TestCase):
         test_file = os.path.abspath(__file__)
         with mock.patch('os.path.join', return_value=test_file):
             with mock.patch('yaml.load'):
-                jenkins_jobs.builder.CacheStorage("dummy").data = None
+                jenkins_jobs.builder.JobCache("dummy").data = None
