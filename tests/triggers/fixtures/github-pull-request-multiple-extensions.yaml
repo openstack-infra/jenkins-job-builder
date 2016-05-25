@@ -16,6 +16,9 @@ triggers:
       permit-all: false
       auto-close-on-fail: false
       allow-whitelist-orgs-as-admins: true
+      success-comment: 'success comment'
+      failure-comment: 'failure comment'
+      error-comment: 'error comment'
       status-context: 'test status context'
       triggered-status: 'triggered status message'
       started-status: 'started status message'

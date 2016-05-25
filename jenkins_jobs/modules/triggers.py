@@ -858,6 +858,8 @@ def github_pull_request(parser, xml_parent, data):
     :arg string started-status: the status comment to set when the build has
         been started (optional)
     :arg string status-url: the status URL to set (optional)
+    :arg bool status-add-test-results: add test result one-liner to status
+        message (optional)
     :arg string success-status: the status message to set if the job succeeds
         (optional)
     :arg string failure-status: the status message to set if the job fails
@@ -921,6 +923,7 @@ def github_pull_request(parser, xml_parent, data):
     triggered_status = data.get('triggered-status', '')
     started_status = data.get('started-status', '')
     status_url = data.get('status-url', '')
+    status_add_test_results = data.get('status-add-test-results', '')
     success_status = data.get('success-status', '')
     failure_status = data.get('failure-status', '')
     error_status = data.get('error-status', '')
@@ -931,6 +934,7 @@ def github_pull_request(parser, xml_parent, data):
         triggered_status or
         started_status or
         status_url or
+        status_add_test_results or
         success_status or
         failure_status or
         error_status
@@ -943,6 +947,21 @@ def github_pull_request(parser, xml_parent, data):
         error_status
     )
 
+    # is comment handling required?
+    success_comment = data.get('success-comment', '')
+    failure_comment = data.get('failure-comment', '')
+    error_comment = data.get('error-comment', '')
+    requires_job_comment = (
+        success_comment or
+        failure_comment or
+        error_comment
+    )
+
+    # We want to have only one 'extensions' subelement, even if both status
+    # handling and comment handling is needed.
+    if requires_status or requires_job_comment:
+        extensions = XML.SubElement(ghprb, 'extensions')
+
     # Both comment and status elements have this same type.  Using a const is
     # much easier to read than repeating the tokens for this class each time
     # it's used
@@ -950,7 +969,6 @@ def github_pull_request(parser, xml_parent, data):
     comment_type = comment_type + 'GhprbBuildResultMessage'
 
     if requires_status:
-        extensions = XML.SubElement(ghprb, 'extensions')
         simple_status = XML.SubElement(extensions,
                                        'org.jenkinsci.plugins'
                                        '.ghprb.extensions.status.'
@@ -967,6 +985,9 @@ def github_pull_request(parser, xml_parent, data):
         if status_url:
             XML.SubElement(simple_status, 'statusUrl').text = str(
                 status_url)
+        if status_add_test_results:
+            XML.SubElement(simple_status, 'addTestResults').text = str(
+                status_add_test_results).lower()
 
         if requires_status_message:
             completed_elem = XML.SubElement(simple_status, 'completedStatus')
@@ -985,19 +1006,8 @@ def github_pull_request(parser, xml_parent, data):
                 XML.SubElement(error_elem, 'message').text = str(error_status)
                 XML.SubElement(error_elem, 'result').text = 'ERROR'
 
-    # comment fields
-    success_comment = data.get('success-comment', '')
-    failure_comment = data.get('failure-comment', '')
-    error_comment = data.get('error-comment', '')
-    requires_job_comment = (
-        success_comment or
-        failure_comment or
-        error_comment
-    )
-
     # job comment handling
     if requires_job_comment:
-        extensions = XML.SubElement(ghprb, 'extensions')
         build_status = XML.SubElement(extensions,
                                       'org.jenkinsci.plugins.ghprb.extensions'
                                       '.comments.'

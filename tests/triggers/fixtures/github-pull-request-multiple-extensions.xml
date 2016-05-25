@@ -38,6 +38,22 @@ org2</orgslist>
             </org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildResultMessage>
           </completedStatus>
         </org.jenkinsci.plugins.ghprb.extensions.status.GhprbSimpleStatus>
+        <org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildStatus>
+          <messages>
+            <org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildResultMessage>
+              <message>success comment</message>
+              <result>SUCCESS</result>
+            </org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildResultMessage>
+            <org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildResultMessage>
+              <message>failure comment</message>
+              <result>FAILURE</result>
+            </org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildResultMessage>
+            <org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildResultMessage>
+              <message>error comment</message>
+              <result>ERROR</result>
+            </org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildResultMessage>
+          </messages>
+        </org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildStatus>
       </extensions>
     </org.jenkinsci.plugins.ghprb.GhprbTrigger>
   </triggers>
