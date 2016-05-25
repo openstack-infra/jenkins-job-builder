@@ -105,7 +105,7 @@ class CacheStorage(object):
         # issues around corruption such the process be killed
         tfile = self._tempfile.NamedTemporaryFile(dir=self.get_cache_dir(),
                                                   delete=False)
-        self._yaml.dump(self.data, utils.wrap_stream(tfile))
+        tfile.write(self._yaml.dump(self.data).encode('utf-8'))
         # force contents to be synced on disk before overwriting cachefile
         tfile.flush()
         self._os.fsync(tfile.fileno())
