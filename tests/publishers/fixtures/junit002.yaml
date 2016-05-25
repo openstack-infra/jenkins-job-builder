@@ -3,6 +3,8 @@ publishers:
     results: nosetests-example.xml
     keep-long-stdio: false
     health-scale-factor: 2.0
+    allow-empty-results: true
     test-stability: true
     claim-build: true
     measurement-plots: true
+    flaky-test-reports: true
