@@ -1,0 +1,27 @@
+publishers:
+  - jacoco:
+      exec-pattern: '**/**.exec'
+      class-pattern: '**/classes'
+      source-pattern: '**/src/main/java'
+      update-build-status: true
+      inclusion-pattern: '**/*.class'
+      exclusion-pattern: '**/*Test*.class'
+      targets:
+        - instruction:
+            healthy: 7
+            unhealthy: 1
+        - branch:
+            healthy: 8
+            unhealthy: 2
+        - complexity:
+            healthy: 9
+            unhealthy: 3
+        - line:
+            healthy: 10
+            unhealthy: 4
+        - method:
+            healthy: 11
+            unhealthy: 5
+        - class:
+            healthy: 12
+            unhealthy: 6

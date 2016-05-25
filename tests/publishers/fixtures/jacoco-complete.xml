@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.jacoco.JacocoPublisher plugin="jacoco">
+      <execPattern>**/**.exec</execPattern>
+      <classPattern>**/classes</classPattern>
+      <sourcePattern>**/src/main/java</sourcePattern>
+      <changeBuildStatus>true</changeBuildStatus>
+      <inclusionPattern>**/*.class</inclusionPattern>
+      <exclusionPattern>**/*Test*.class</exclusionPattern>
+      <maximumInstructionCoverage>7</maximumInstructionCoverage>
+      <minimumInstructionCoverage>1</minimumInstructionCoverage>
+      <maximumBranchCoverage>8</maximumBranchCoverage>
+      <minimumBranchCoverage>2</minimumBranchCoverage>
+      <maximumComplexityCoverage>9</maximumComplexityCoverage>
+      <minimumComplexityCoverage>3</minimumComplexityCoverage>
+      <maximumLineCoverage>10</maximumLineCoverage>
+      <minimumLineCoverage>4</minimumLineCoverage>
+      <maximumMethodCoverage>11</maximumMethodCoverage>
+      <minimumMethodCoverage>5</minimumMethodCoverage>
+      <maximumClassCoverage>12</maximumClassCoverage>
+      <minimumClassCoverage>6</minimumClassCoverage>
+    </hudson.plugins.jacoco.JacocoPublisher>
+  </publishers>
+</project>
