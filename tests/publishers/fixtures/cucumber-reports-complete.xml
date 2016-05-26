@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <net.masterthought.jenkins.CucumberReportPublisher>
+    <net.masterthought.jenkins.CucumberReportPublisher plugin="cucumber-reports">
       <jsonReportDirectory>path</jsonReportDirectory>
       <pluginUrlPath>http://example.com/</pluginUrlPath>
       <fileIncludePattern>**/*.json</fileIncludePattern>
