@@ -446,6 +446,10 @@ def trigger_builds(parser, xml_parent, data):
             * **ignore-offline-nodes** (`bool`) -- Don't trigger build on
               offline nodes (default true)
 
+        :Factory:
+            * **factory** (`str`) **allonlinenodes** -- Trigger a build on
+              every online node. Requires NodeLabel Parameter Plugin (optional)
+
     Examples:
 
     Basic usage with yaml list of projects.
@@ -545,7 +549,8 @@ def trigger_builds(parser, xml_parent, data):
             supported_factories = ['filebuild',
                                    'binaryfile',
                                    'counterbuild',
-                                   'allnodesforlabel']
+                                   'allnodesforlabel',
+                                   'allonlinenodes']
             supported_actions = ['SKIP', 'NOPARMS', 'FAIL']
             for factory in project_def['parameter-factories']:
 
@@ -618,6 +623,12 @@ def trigger_builds(parser, xml_parent, data):
                         'ignoreOfflineNodes')
                     ignoreOfflineNodes.text = str(factory.get(
                         'ignore-offline-nodes', True)).lower()
+                if factory['factory'] == 'allonlinenodes':
+                    params = XML.SubElement(
+                        fconfigs,
+                        'org.jvnet.jenkins.plugins.nodelabelparameter.'
+                        'parameterizedtrigger.'
+                        'AllNodesBuildParameterFactory')
 
         projects = XML.SubElement(tconfig, 'projects')
         if isinstance(project_def['project'], list):

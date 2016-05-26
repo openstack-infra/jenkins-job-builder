@@ -19,4 +19,5 @@ builders:
           name: parametername
           node-label: labelname
           ignore-offline-nodes: false
+        - factory: allonlinenodes
       block: true

@@ -33,6 +33,7 @@
               <nodeLabel>labelname</nodeLabel>
               <ignoreOfflineNodes>false</ignoreOfflineNodes>
             </org.jvnet.jenkins.plugins.nodelabelparameter.parameterizedtrigger.AllNodesForLabelBuildParameterFactory>
+            <org.jvnet.jenkins.plugins.nodelabelparameter.parameterizedtrigger.AllNodesBuildParameterFactory/>
           </configFactories>
           <projects>build_started</projects>
           <condition>ALWAYS</condition>

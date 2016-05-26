@@ -1,0 +1,6 @@
+builders:
+  - trigger-builds:
+    - project: "every-node"
+      parameter-factories:
+        - factory: allonlinenodes
+      block: true
