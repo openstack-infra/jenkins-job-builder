@@ -1,0 +1,12 @@
+triggers:
+  - build-result:
+      cron: H/15 * * * *
+      combine: true
+      groups:
+        - jobs: test, test2
+          results:
+            - success
+            - not-built
+        - jobs: test3
+          results:
+            - unstable
