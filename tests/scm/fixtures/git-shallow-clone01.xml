@@ -15,27 +15,20 @@
         <name>master</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
-    <excludedUsers/>
-    <buildChooser class="hudson.plugins.git.util.DefaultBuildChooser"/>
     <disableSubmodules>false</disableSubmodules>
     <recursiveSubmodules>false</recursiveSubmodules>
     <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
-    <authorOrCommitter>false</authorOrCommitter>
-    <wipeOutWorkspace>true</wipeOutWorkspace>
-    <pruneBranches>false</pruneBranches>
     <remotePoll>false</remotePoll>
     <gitTool>Default</gitTool>
     <submoduleCfg class="list"/>
-    <relativeTargetDir/>
     <reference/>
     <gitConfigName/>
     <gitConfigEmail/>
-    <skipTag>false</skipTag>
-    <scmName/>
-    <useShallowClone>true</useShallowClone>
-    <ignoreNotifyCommit>false</ignoreNotifyCommit>
     <extensions>
       <hudson.plugins.git.extensions.impl.CleanCheckout/>
+      <hudson.plugins.git.extensions.impl.CloneOption>
+        <shallow>true</shallow>
+      </hudson.plugins.git.extensions.impl.CloneOption>
       <hudson.plugins.git.extensions.impl.WipeWorkspace/>
     </extensions>
   </scm>

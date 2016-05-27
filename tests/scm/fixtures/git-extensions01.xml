@@ -13,9 +13,6 @@
       <hudson.plugins.git.BranchSpec>
         <name>master</name>
       </hudson.plugins.git.BranchSpec>
-      <hudson.plugins.git.BranchSpec>
-        <name>stable</name>
-      </hudson.plugins.git.BranchSpec>
     </branches>
     <disableSubmodules>false</disableSubmodules>
     <recursiveSubmodules>false</recursiveSubmodules>
@@ -27,14 +24,19 @@
     <gitConfigName/>
     <gitConfigEmail/>
     <extensions>
-      <hudson.plugins.git.extensions.impl.CloneOption>
-        <shallow>false</shallow>
-        <timeout>20</timeout>
-      </hudson.plugins.git.extensions.impl.CloneOption>
-      <hudson.plugins.git.extensions.impl.CheckoutOption>
-        <timeout>20</timeout>
-      </hudson.plugins.git.extensions.impl.CheckoutOption>
-      <hudson.plugins.git.extensions.impl.WipeWorkspace/>
+      <hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+        <relativeTargetDir>go/src/github.com/foo/example</relativeTargetDir>
+      </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+      <hudson.plugins.git.extensions.impl.UserExclusion>
+        <excludedUsers>alice@example.com
+bob@example.com</excludedUsers>
+      </hudson.plugins.git.extensions.impl.UserExclusion>
+      <hudson.plugins.git.extensions.impl.ScmName>
+        <name>something_special</name>
+      </hudson.plugins.git.extensions.impl.ScmName>
+      <hudson.plugins.git.extensions.impl.PerBuildTag/>
+      <hudson.plugins.git.extensions.impl.PruneStaleBranch/>
+      <hudson.plugins.git.extensions.impl.AuthorInChangelog/>
     </extensions>
     <browser class="hudson.plugins.git.browser.GithubWeb">
       <url>http://github.com/foo/example.git</url>
