@@ -1,0 +1,10 @@
+---
+builders:
+  - ansible-playbook:
+      playbook: "path/to/playbook.yml"
+      inventory-type: "path"
+      inventory:
+        path: "path/to/inventory-file"
+      variables:
+        - name: "my_variable"
+          value: "my_value"

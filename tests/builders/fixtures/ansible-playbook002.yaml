@@ -1,0 +1,30 @@
+---
+builders:
+  - ansible-playbook:
+      playbook: "path/to/playbook.yml"
+      inventory-type: "content"
+      inventory:
+        content: |
+          [all]
+          machine01.example.com
+          machine02.example.com
+      hosts: "masters"
+      tags-to-run: "ose"
+      tags-to-skip: "ovirt"
+      task-to-start-at: "Deploy application"
+      workers: 2
+      credentials-id: "0891c950-487b-4749-aa69-d87425e14459"
+      sudo: true
+      sudo-user: "cloud-user"
+      unbuffered-output: false
+      colorized-output: true
+      host-key-checking: true
+      additional-parameters: "-vvv"
+      variables:
+        - name: "complete_var"
+          value: "complete value"
+          hidden: false
+        - name: "empty_var"
+        - name: "hidden_var"
+          value: "Do not appear in console"
+          hidden: true
