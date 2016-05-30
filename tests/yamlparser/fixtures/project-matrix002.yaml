@@ -1,0 +1,7 @@
+- job:
+    name: matrix-test-stable
+    project-type: matrix
+    execution-strategy:
+      touchstone:
+        expr: 'os == "linux"'
+        result: stable

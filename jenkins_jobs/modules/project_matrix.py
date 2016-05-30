@@ -104,6 +104,8 @@ Examples for yaml axis:
 import xml.etree.ElementTree as XML
 
 import jenkins_jobs.modules.base
+from jenkins_jobs.errors import InvalidAttributeError
+from jenkins_jobs.modules import hudson_model
 
 
 class Matrix(jenkins_jobs.modules.base.Base):
@@ -142,44 +144,51 @@ class Matrix(jenkins_jobs.modules.base.Base):
             raise ValueError(
                 'matrix-project does not support multiple strategies. '
                 'Given %s: %s' % (len(strategies), ', '.join(strategies)))
-        strategy = strategies[0]
+        strategy_name = strategies[0]
 
-        if strategy not in self.supported_strategies:
+        if strategy_name not in self.supported_strategies:
             raise ValueError(
                 'Given strategy %s. Only %s strategies are supported'
-                % (strategy, self.supported_strategies.keys()))
+                % (strategy_name, self.supported_strategies.keys()))
 
         ex_r = XML.SubElement(
             root, 'executionStrategy',
-            {'class': self.supported_strategies[strategy]})
+            {'class': self.supported_strategies[strategy_name]})
 
-        ex_d = data.get(strategy, {})
+        strategy = data.get(strategy_name, {})
 
-        if strategy == 'execution-strategy':
-            XML.SubElement(root, 'combinationFilter').text = \
-                str(ex_d.get('combination-filter', '')).rstrip()
-            XML.SubElement(ex_r, 'runSequentially').text = \
-                str(ex_d.get('sequential', False)).lower()
-            if 'touchstone' in ex_d:
-                XML.SubElement(ex_r, 'touchStoneCombinationFilter').text = \
-                    str(ex_d['touchstone'].get('expr', ''))
+        if strategy_name == 'execution-strategy':
+            XML.SubElement(root, 'combinationFilter').text = (
+                str(strategy.get('combination-filter', '')).rstrip()
+            )
+            XML.SubElement(ex_r, 'runSequentially').text = (
+                str(strategy.get('sequential', False)).lower()
+            )
+            if 'touchstone' in strategy:
+                XML.SubElement(ex_r, 'touchStoneCombinationFilter').text = (
+                    str(strategy['touchstone'].get('expr', ''))
+                )
+
+                threshold = strategy['touchstone'].get(
+                    'result', 'stable').upper()
+                supported_thresholds = ('STABLE', 'UNSTABLE')
+                if threshold not in supported_thresholds:
+                    raise InvalidAttributeError(
+                        'touchstone', threshold, supported_thresholds)
+
+                # Web ui uses Stable but hudson.model.Result has Success
+                if threshold == 'STABLE':
+                    threshold = 'SUCCESS'
+
                 t_r = XML.SubElement(ex_r, 'touchStoneResultCondition')
-                n = ex_d['touchstone'].get('result', 'stable').upper()
-                if n not in ('STABLE', 'UNSTABLE'):
-                    raise ValueError('Required result must be stable '
-                                     'or unstable')
+                for sub_elem in ('name', 'ordinal', 'color'):
+                    XML.SubElement(t_r, sub_elem).text = (
+                        hudson_model.THRESHOLDS[threshold][sub_elem])
 
-                XML.SubElement(t_r, 'name').text = n
-                if n == "STABLE":
-                    XML.SubElement(t_r, 'ordinal').text = '0'
-                    XML.SubElement(t_r, 'color').text = 'BLUE'
-                else:
-                    XML.SubElement(t_r, 'ordinal').text = '1'
-                    XML.SubElement(t_r, 'color').text = 'YELLOW'
-        elif strategy == 'yaml-strategy':
-            filename = str(ex_d.get('filename', ''))
-            text = str(ex_d.get('text', ''))
-            exclude_key = str(ex_d.get('exclude-key', ''))
+        elif strategy_name == 'yaml-strategy':
+            filename = str(strategy.get('filename', ''))
+            text = str(strategy.get('text', ''))
+            exclude_key = str(strategy.get('exclude-key', ''))
 
             if bool(filename) == bool(text):  # xor with str
                 raise ValueError('yaml-strategy must be given '
