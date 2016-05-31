@@ -197,7 +197,8 @@ def copyartifact_build_selector(xml_parent, data, select_tag='selector'):
                   'permalink': 'PermalinkBuildSelector',
                   'workspace-latest': 'WorkspaceSelector',
                   'build-param': 'ParameterizedBuildSelector',
-                  'downstream-build': 'DownstreamBuildSelector'}
+                  'downstream-build': 'DownstreamBuildSelector',
+                  'multijob-build': 'MultiJobBuildSelector'}
     if select not in selectdict:
         raise InvalidAttributeError('which-build',
                                     select,
@@ -213,9 +214,16 @@ def copyartifact_build_selector(xml_parent, data, select_tag='selector'):
         raise InvalidAttributeError('permalink',
                                     permalink,
                                     permalinkdict.keys())
-    selector = XML.SubElement(xml_parent, select_tag,
-                              {'class': 'hudson.plugins.copyartifact.' +
-                               selectdict[select]})
+    if select == 'multijob-build':
+        selector = XML.SubElement(xml_parent, select_tag,
+                                  {'class':
+                                   'com.tikal.jenkins.plugins.multijob.' +
+                                      selectdict[select]})
+    else:
+        selector = XML.SubElement(xml_parent, select_tag,
+                                  {'class':
+                                   'hudson.plugins.copyartifact.' +
+                                      selectdict[select]})
     if select == 'specific-build':
         XML.SubElement(selector, 'buildNumber').text = data['build-number']
     if select == 'last-successful':
