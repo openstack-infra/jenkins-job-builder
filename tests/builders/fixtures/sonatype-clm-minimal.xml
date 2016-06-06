@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.sonatype.insight.ci.hudson.PreBuildScan plugin="sonatype-clm-ci">
+      <applicationSelectType>
+        <value>list</value>
+        <applicationId>jenkins-job-builder</applicationId>
+      </applicationSelectType>
+      <pathConfig>
+        <scanTargets/>
+        <moduleExcludes/>
+        <scanProperties/>
+      </pathConfig>
+      <failOnClmServerFailures>false</failOnClmServerFailures>
+      <stageId>build</stageId>
+      <username/>
+      <password/>
+    </com.sonatype.insight.ci.hudson.PreBuildScan>
+  </builders>
+</project>

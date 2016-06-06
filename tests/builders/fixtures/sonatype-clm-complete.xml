@@ -2,14 +2,19 @@
 <project>
   <builders>
     <com.sonatype.insight.ci.hudson.PreBuildScan plugin="sonatype-clm-ci">
-      <billOfMaterialsToken>jenkins-job-builder</billOfMaterialsToken>
-      <failOnClmServerFailures>true</failOnClmServerFailures>
-      <stageId>release</stageId>
+      <applicationSelectType>
+        <value>manual</value>
+        <applicationId>jenkins-job-builder</applicationId>
+      </applicationSelectType>
       <pathConfig>
         <scanTargets>**/*.jar</scanTargets>
         <moduleExcludes>**/my-module/target/**</moduleExcludes>
         <scanProperties>test</scanProperties>
       </pathConfig>
+      <failOnClmServerFailures>true</failOnClmServerFailures>
+      <stageId>build</stageId>
+      <username>bar</username>
+      <password>06XQY39LHGACt3r3kzSULg==</password>
     </com.sonatype.insight.ci.hudson.PreBuildScan>
   </builders>
 </project>

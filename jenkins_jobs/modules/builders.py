@@ -2586,53 +2586,78 @@ def sonatype_clm(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Sonatype CLM Plugin
     <Sonatype+CLM+%28formerly+Insight+for+CI%29>`.
 
+    :arg str value: Select CLM application from a list of available CLM
+        applications or specify CLM Application ID (default: list)
     :arg str application-name: Determines the policy elements to associate
         with this build. (required)
+    :arg str username: Username on the Sonatype CLM server. Leave empty to
+        use the username configured at global level. (default: '')
+    :arg str password: Password on the Sonatype CLM server. Leave empty to
+        use the password configured at global level. (default: '')
     :arg bool fail-on-clm-server-failure: Controls the build outcome if there
-        is a failure in communicating with the CLM server. (default false)
+        is a failure in communicating with the CLM server. (default: False)
     :arg str stage: Controls the stage the policy evaluation will be run
         against on the CLM server. Valid stages: build, stage-release, release,
-        operate. (default 'build')
-    :arg str scan-targets: Pattern of files to include for scanning. (optional)
-    :arg str module-excludes: Pattern of files to exclude. (optional)
+        operate. (default: 'build')
+    :arg str scan-targets: Pattern of files to include for scanning.
+        (default: '')
+    :arg str module-excludes: Pattern of files to exclude. (default: '')
     :arg str advanced-options: Options to be set on a case-by-case basis as
-        advised by Sonatype Support. (optional)
+        advised by Sonatype Support. (default: '')
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/builders/fixtures/sonatype-clm01.yaml
+    .. literalinclude::
+        /../../tests/builders/fixtures/sonatype-clm-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/sonatype-clm-complete.yaml
        :language: yaml
     """
     clm = XML.SubElement(xml_parent,
                          'com.sonatype.insight.ci.hudson.PreBuildScan')
     clm.set('plugin', 'sonatype-clm-ci')
 
-    if 'application-name' not in data:
-        raise MissingAttributeError("application-name",
-                                    "builders.sonatype-clm")
-    XML.SubElement(clm, 'billOfMaterialsToken').text = str(
-        data['application-name'])
-    XML.SubElement(clm, 'failOnClmServerFailures').text = str(
-        data.get('fail-on-clm-server-failure', False)).lower()
-
+    SUPPORTED_VALUES = ['list', 'manual']
+    clm_value = data.get('value')
+    if clm_value and clm_value not in SUPPORTED_VALUES:
+        raise InvalidAttributeError('value',
+                                    clm_value,
+                                    SUPPORTED_VALUES)
     SUPPORTED_STAGES = ['build', 'stage-release', 'release', 'operate']
-    stage = str(data.get('stage', 'build')).lower()
-    if stage not in SUPPORTED_STAGES:
-        raise InvalidAttributeError("stage",
-                                    stage,
-                                    "builders.sonatype-clm",
+    clm_stage = data.get('stage')
+    if clm_stage and clm_stage not in SUPPORTED_STAGES:
+        raise InvalidAttributeError('stage',
+                                    clm_stage,
                                     SUPPORTED_STAGES)
-    XML.SubElement(clm, 'stageId').text = stage
 
-    # Path Configs
-    path_config = XML.SubElement(clm,
-                                 'pathConfig')
-    XML.SubElement(path_config, 'scanTargets').text = str(
-        data.get('scan-targets', '')).lower()
-    XML.SubElement(path_config, 'moduleExcludes').text = str(
-        data.get('module-excludes', '')).lower()
-    XML.SubElement(path_config, 'scanProperties').text = str(
-        data.get('advanced-options', '')).lower()
+    application_select = XML.SubElement(clm,
+                                        'applicationSelectType')
+    application_mappings = [
+        ('value', 'value', 'list'),
+        ('application-name', 'applicationId', None),
+    ]
+    convert_mapping_to_xml(
+        application_select, data, application_mappings, fail_required=True)
+
+    path = XML.SubElement(clm, 'pathConfig')
+    path_mappings = [
+        ('scan-targets', 'scanTargets', ''),
+        ('module-excludes', 'moduleExcludes', ''),
+        ('advanced-options', 'scanProperties', ''),
+    ]
+    convert_mapping_to_xml(path, data, path_mappings, fail_required=True)
+
+    mappings = [
+        ('fail-on-clm-server-failure', 'failOnClmServerFailures', False),
+        ('stage', 'stageId', 'build'),
+        ('username', 'username', ''),
+        ('password', 'password', ''),
+    ]
+    convert_mapping_to_xml(clm, data, mappings, fail_required=True)
 
 
 def beaker(parser, xml_parent, data):
