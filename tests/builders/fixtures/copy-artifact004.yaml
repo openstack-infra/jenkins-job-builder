@@ -1,0 +1,9 @@
+builders:
+  - copyartifact:
+      project: foo
+      filter: "*.json"
+      target: /home/foo
+      which-build: multijob-build
+      optional: true
+      flatten: true
+      parameter-filters: PUBLISH=true
