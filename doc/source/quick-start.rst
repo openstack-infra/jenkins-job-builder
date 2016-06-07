@@ -80,6 +80,18 @@ To delete a job::
 
 The above command deletes the job `simple` from the Jenkins master.
 
+.. _use-case-5:
+
+Use Case 5: Providing plugins info
+----------------------------------
+
+To generate a plugins info, using an account with Administrator rights:
+
+    jenkins-jobs get-plugins-info -o plugins_info.yaml
+
+To run JJB update using the plugins_info.yaml:
+
+    jenkins-jobs update -p plugins_info.yaml ./myjobs
 
 
 Please refer to the jenkins-jobs :ref:`command-reference` and the

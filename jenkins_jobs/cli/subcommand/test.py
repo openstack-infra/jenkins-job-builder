@@ -39,7 +39,7 @@ class TestSubCommand(update.UpdateSubCommand):
             default=False,
             help='use alternative output file layout using config.xml files')
         test.add_argument(
-            '-p',
+            '-p', '--plugin-info',
             dest='plugins_info_path',
             default=None,
             help='path to plugin info YAML file')
