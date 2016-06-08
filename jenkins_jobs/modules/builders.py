@@ -3235,7 +3235,7 @@ def docker_build_publish(parse, xml_parent, data):
     XML.SubElement(db, 'skipTagLatest').text = str(
         data.get('skip-tag-latest', False)).lower()
     XML.SubElement(db, 'skipPush').text = str(
-        data.get('skip-', False)).lower()
+        data.get('skip-push', False)).lower()
     XML.SubElement(db, 'dockerfilePath').text = str(
         data.get('file-path', ''))
 
