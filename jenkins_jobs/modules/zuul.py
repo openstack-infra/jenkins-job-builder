@@ -95,6 +95,9 @@ ZUUL_PARAMETERS = [
     {'string':
         {'description': 'Patchset of triggering change',
          'name': 'ZUUL_PATCHSET'}},
+    {'string':
+        {'description': 'Zuul considered this job voting or not',
+         'name': 'ZUUL_VOTING'}},
 ]
 
 ZUUL_POST_PARAMETERS = [
