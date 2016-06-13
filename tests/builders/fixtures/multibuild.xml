@@ -18,6 +18,7 @@
             </hudson.plugins.git.GitRevisionBuildParameters>
           </configs>
           <abortAllJob>true</abortAllJob>
+          <enableRetryStrategy>false</enableRetryStrategy>
         </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
           <jobName>PhaseOneJobB</jobName>
@@ -29,6 +30,7 @@
             </hudson.plugins.parameterizedtrigger.FileBuildParameters>
           </configs>
           <abortAllJob>false</abortAllJob>
+          <enableRetryStrategy>false</enableRetryStrategy>
         </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
       </phaseJobs>
     </com.tikal.jenkins.plugins.multijob.MultiJobBuilder>
@@ -46,6 +48,7 @@
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
           </configs>
           <abortAllJob>false</abortAllJob>
+          <enableRetryStrategy>false</enableRetryStrategy>
         </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
           <jobName>PhaseTwoJobB</jobName>
@@ -56,6 +59,7 @@
             </hudson.plugins.parameterizedtrigger.matrix.MatrixSubsetBuildParameters>
           </configs>
           <abortAllJob>false</abortAllJob>
+          <enableRetryStrategy>false</enableRetryStrategy>
           <enableCondition>true</enableCondition>
           <condition>${BUILDNUMBER} % 2 == 1</condition>
           <killPhaseOnJobResultCondition>UNSTABLE</killPhaseOnJobResultCondition>
@@ -71,7 +75,23 @@
           <currParams>true</currParams>
           <configs/>
           <abortAllJob>false</abortAllJob>
+          <enableRetryStrategy>false</enableRetryStrategy>
           <killPhaseOnJobResultCondition>FAILURE</killPhaseOnJobResultCondition>
+        </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
+      </phaseJobs>
+    </com.tikal.jenkins.plugins.multijob.MultiJobBuilder>
+    <com.tikal.jenkins.plugins.multijob.MultiJobBuilder>
+      <phaseName>PhaseFour</phaseName>
+      <continuationCondition>SUCCESSFUL</continuationCondition>
+      <phaseJobs>
+        <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
+          <jobName>PhaseFourJobA</jobName>
+          <currParams>false</currParams>
+          <configs/>
+          <abortAllJob>false</abortAllJob>
+          <parsingRulesPath>/PhaseFour/PhaseFourRetry.prop</parsingRulesPath>
+          <maxRetries>3</maxRetries>
+          <enableRetryStrategy>true</enableRetryStrategy>
         </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
       </phaseJobs>
     </com.tikal.jenkins.plugins.multijob.MultiJobBuilder>
