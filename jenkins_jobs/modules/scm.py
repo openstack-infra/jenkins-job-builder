@@ -1240,4 +1240,12 @@ class SCM(jenkins_jobs.modules.base.Base):
             class_name = 'org.jenkinsci.plugins.multiplescms.MultiSCM'
             xml_attribs = {'class': class_name}
             xml_parent = XML.SubElement(xml_parent, 'scm', xml_attribs)
+
+            for scms_child in scms_parent:
+                try:
+                    scms_child.tag = scms_child.attrib['class']
+                    del(scms_child.attrib['class'])
+                except KeyError:
+                    pass
+
             xml_parent.append(scms_parent)
