@@ -1044,6 +1044,8 @@ def junit(parser, xml_parent, data):
     :arg float health-scale-factor: Amplification factor to apply to test
       failures when computing the test result contribution to the build health
       score. (default 1.0)
+    :arg bool allow-empty-results: Do not fail the build if the JUnit files are
+      missing (default false).
     :arg bool test-stability: Add historical information about test
         results stability (default false).
         Requires the Jenkins :jenkins-wiki:`Test stability Plugin
@@ -1053,6 +1055,9 @@ def junit(parser, xml_parent, data):
     :arg bool measurement-plots: Create measurement plots (default false)
         Requires the Jenkins :jenkins-wiki:`Measurement Plots Plugin
         <Measurement+Plots+Plugin>`.
+    :arg bool flaky-test-reports: Publish flaky test reports (default false).
+        Requires the Jenkins :jenkins-wiki:`Flaky Test Handler Plugin
+        <Flaky+Test+Handler+Plugin>`.
 
     Minimal example using defaults:
 
@@ -1071,6 +1076,8 @@ def junit(parser, xml_parent, data):
         data.get('keep-long-stdio', True)).lower()
     XML.SubElement(junitresult, 'healthScaleFactor').text = str(
         data.get('health-scale-factor', '1.0'))
+    XML.SubElement(junitresult, 'allowEmptyResults').text = str(
+        data.get('allow-empty-results', False)).lower()
     datapublisher = XML.SubElement(junitresult, 'testDataPublishers')
     if str(data.get('test-stability', False)).lower() == 'true':
         XML.SubElement(datapublisher,
@@ -1082,6 +1089,10 @@ def junit(parser, xml_parent, data):
     if str(data.get('measurement-plots', False)).lower() == 'true':
         XML.SubElement(datapublisher,
                        'hudson.plugins.measurement__plots.TestDataPublisher')
+    if str(data.get('flaky-test-reports', False)).lower() == 'true':
+        XML.SubElement(datapublisher,
+                       'com.google.jenkins.flakyTestHandler.plugin'
+                       '.JUnitFlakyTestDataPublisher')
 
 
 def cucumber_reports(parser, xml_parent, data):
