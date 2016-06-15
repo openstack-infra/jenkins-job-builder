@@ -140,6 +140,28 @@ def github(parser, xml_parent, data):
         raise MissingAttributeError(e)
 
 
+def gitlab(parser, xml_parent, data):
+    """yaml: gitlab
+    Sets the GitLab connection for the project. Configured via Jenkins Global
+    Configuration.
+    Requires the Jenkins :jenkins-wiki:`GitLab Plugin <GitLab+Plugin>`.
+
+    :arg str connection: the GitLab connection name (required)
+
+    Example:
+
+    .. literalinclude:: /../../tests/properties/fixtures/gitlab.yaml
+       :language: yaml
+    """
+    gitlab = XML.SubElement(xml_parent,
+                            'com.dabsquared.gitlabjenkins.connection.'
+                            'GitLabConnectionProperty')
+    try:
+        XML.SubElement(gitlab, 'gitLabConnection').text = data['connection']
+    except KeyError as e:
+        raise MissingAttributeError(e)
+
+
 def least_load(parser, xml_parent, data):
     """yaml: least-load
     Enables the Least Load Plugin.
