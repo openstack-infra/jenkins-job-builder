@@ -1,0 +1,17 @@
+publishers:
+  - test-fairy:
+      platform: android
+      apikey: apikey
+      appfile: /tmp/appfile.apk
+      keystorepath: /tmp/keystorefile
+      notify-testers: false
+      autoupdate: false
+      cpu: false
+      memory: false
+      logs: false
+      network: true
+      phone-signal: true
+      wifi: true
+      gps: true
+      battery: true
+      opengl: true

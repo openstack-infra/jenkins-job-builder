@@ -48,9 +48,10 @@ from jenkins_jobs.modules.helpers import cloudformation_init
 from jenkins_jobs.modules.helpers import cloudformation_region_dict
 from jenkins_jobs.modules.helpers import cloudformation_stack
 from jenkins_jobs.modules.helpers import config_file_provider_settings
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 from jenkins_jobs.modules.helpers import findbugs_settings
 from jenkins_jobs.modules.helpers import get_value_from_yaml_or_config_file
-from jenkins_jobs.modules.helpers import convert_mapping_to_xml
+from jenkins_jobs.modules.helpers import test_fairy_common
 
 
 def archive(parser, xml_parent, data):
@@ -2821,6 +2822,106 @@ def artifactory(parser, xml_parent, data):
 
     # envVarsPatterns
     artifactory_env_vars_patterns(artifactory, data)
+
+
+def test_fairy(parser, xml_parent, data):
+    """yaml: test-fairy
+    This plugin helps you to upload Android APKs or iOS IPA files to
+    www.testfairy.com.
+
+    Requires the Jenkins :jenkins-wiki:`Test Fairy Plugin
+    <TestFairy+Plugin>`.
+
+    :arg str platform: Select platform to upload to, **android** or **ios**
+        (required)
+
+    Android Only:
+
+    :arg str proguard-file: Path to Proguard file. Path of mapping.txt from
+        your proguard output directory. (default: '')
+    :arg str storepass: Password for the keystore (default: android)
+    :arg str alias: alias for key (default: androiddebugkey)
+    :arg str keypass: password for the key (default: '')
+    :arg str keystorepath: Path to Keystore file (required)
+
+    IOS Only:
+
+    :arg str dSYM-file: Path to .dSYM.zip file (default: '')
+
+    All:
+
+    :arg str apikey: TestFairy API_KEY. Find it in your TestFairy account
+        settings (required)
+    :arg str appfile: Path to App file (.apk) or (.ipa). For example:
+        $WORKSPACE/[YOUR_FILE_NAME].apk or full path to the apk file.
+        (required)
+    :arg str tester-groups: Tester groups to notify (default: '')
+    :arg bool notify-testers: Send email with changelogs to testers
+        (default: False)
+    :arg bool autoupdate: Automatic update (default False)
+
+    :arg str max-duration: Duration of the session (default: 10m)
+    :arg bool record-on-background: Record on background (default: False)
+    :arg bool data-only-wifi: Record data only in wifi (default: False)
+    :arg bool video-enabled: Record video (default: True)
+    :arg str screenshot-interval: Time interval between screenshots
+        (default: 1)
+    :arg str video-quality: Video quality (default: high)
+    :arg bool cpu: Enable CPU metrics (default: True)
+    :arg bool memory: Enable memory metrics (default: True)
+    :arg bool logs: Enable logs metrics (default: True)
+    :arg bool network: Enable network metrics (default: False)
+    :arg bool phone-signal: Enable phone signal metrics (default: False)
+    :arg bool wifi: Enable wifi metrics (default: False)
+    :arg bool gps: Enable gps metrics (default: False)
+    :arg bool battery: Enable battery metrics (default: False)
+    :arg bool opengl: Enable opengl metrics (default: False)
+
+    Example:
+
+    .. literalinclude::
+       /../../tests/publishers/fixtures/test-fairy-android-minimal.yaml
+       :language: yaml
+
+    .. literalinclude::
+       /../../tests/publishers/fixtures/test-fairy-android001.yaml
+       :language: yaml
+
+    .. literalinclude::
+       /../../tests/publishers/fixtures/test-fairy-ios-minimal.yaml
+       :language: yaml
+
+    .. literalinclude::
+       /../../tests/publishers/fixtures/test-fairy-ios001.yaml
+       :language: yaml
+    """
+    platform = data.get('platform')
+    valid_platforms = ['android', 'ios']
+
+    if 'platform' not in data:
+        raise MissingAttributeError('platform')
+    if platform == 'android':
+        root = XML.SubElement(
+            xml_parent,
+            'org.jenkinsci.plugins.testfairy.TestFairyAndroidRecorder')
+        test_fairy_common(root, data)
+
+        mappings = [
+            ('proguard-file', 'mappingFile', ''),
+            ('keystorepath', 'keystorePath', None),
+            ('storepass', 'storepass', 'android'),
+            ('alias', 'alias', 'androiddebugkey'),
+            ('keypass', 'keypass', '')]
+        convert_mapping_to_xml(root, data, mappings, fail_required=True)
+    elif platform == 'ios':
+        root = XML.SubElement(
+            xml_parent, 'org.jenkinsci.plugins.testfairy.TestFairyIosRecorder')
+        test_fairy_common(root, data)
+
+        mappings = [('dSYM-file', 'mappingFile', '')]
+        convert_mapping_to_xml(root, data, mappings, fail_required=True)
+    else:
+        raise InvalidAttributeError('platform', platform, valid_platforms)
 
 
 def text_finder(parser, xml_parent, data):

@@ -1,0 +1,13 @@
+publishers:
+  - test-fairy:
+      platform: android
+      apikey: apikey
+      appfile: /tmp/appfile.apk
+      proguard-file: /tmp/proguardfile
+      keystorepath: /tmp/keystorefile
+      storepass: android
+      alias: androiddebugkey
+      keypass: keypass
+      tester-groups: testergroups
+      notify-testers: true
+      autoupdate: true
