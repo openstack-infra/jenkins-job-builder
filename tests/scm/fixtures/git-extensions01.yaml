@@ -1,0 +1,16 @@
+scm:
+  - git:
+      url: https://example.com/project.git
+      branches:
+        - master
+      browser: githubweb
+      browser-url: http://github.com/foo/example.git
+      basedir: 'go/src/github.com/foo/example'
+      excluded-users:
+        - alice@example.com
+        - bob@example.com
+      per-build-tag: true
+      prune: true
+      scm-name: something_special
+      use-author: true
+      wipe-workspace: false

@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-  <actions/>
-  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
-  <keepDependencies>false</keepDependencies>
-  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
-  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-  <concurrentBuild>false</concurrentBuild>
-  <canRoam>true</canRoam>
-  <properties/>
   <scm class="hudson.plugins.git.GitSCM">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
         <name>origin</name>
         <refspec>+refs/heads/*:refs/remotes/origin/*</refspec>
-        <url>ssh://jenkins@review.openstack.org:29418/openstack-infra/jenkins-job-builder.git</url>
+        <url>https://example.com/project.git</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-        <name>**</name>
+        <name>master</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <disableSubmodules>false</disableSubmodules>
@@ -31,11 +23,9 @@
     <reference/>
     <gitConfigName/>
     <gitConfigEmail/>
-    <extensions>
-      <hudson.plugins.git.extensions.impl.WipeWorkspace/>
-    </extensions>
+    <extensions/>
+    <browser class="hudson.plugins.git.browser.GithubWeb">
+      <url>http://github.com/foo/example.git</url>
+    </browser>
   </scm>
-  <builders/>
-  <publishers/>
-  <buildWrappers/>
 </project>

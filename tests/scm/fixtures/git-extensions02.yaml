@@ -1,0 +1,11 @@
+scm:
+  - git:
+      url: https://example.com/project.git
+      branches:
+        - master
+      browser: githubweb
+      browser-url: http://github.com/foo/example.git
+      per-build-tag: false
+      prune: false
+      use-author: false
+      wipe-workspace: false

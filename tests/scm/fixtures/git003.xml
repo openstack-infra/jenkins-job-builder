@@ -14,32 +14,24 @@
         <name>**</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
-    <excludedUsers/>
-    <userMergeOptions>
-      <mergeRemote>repo_name</mergeRemote>
-      <mergeTarget>branch_name</mergeTarget>
-      <mergeStrategy>recursive</mergeStrategy>
-      <fastForwardMode>FF_ONLY</fastForwardMode>
-    </userMergeOptions>
-    <buildChooser class="hudson.plugins.git.util.DefaultBuildChooser"/>
     <disableSubmodules>false</disableSubmodules>
     <recursiveSubmodules>false</recursiveSubmodules>
     <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
-    <authorOrCommitter>false</authorOrCommitter>
-    <wipeOutWorkspace>true</wipeOutWorkspace>
-    <pruneBranches>false</pruneBranches>
     <remotePoll>false</remotePoll>
     <gitTool>Default</gitTool>
     <submoduleCfg class="list"/>
-    <relativeTargetDir/>
     <reference/>
     <gitConfigName/>
     <gitConfigEmail/>
-    <skipTag>false</skipTag>
-    <scmName/>
-    <useShallowClone>false</useShallowClone>
-    <ignoreNotifyCommit>false</ignoreNotifyCommit>
     <extensions>
+      <hudson.plugins.git.extensions.impl.PreBuildMerge>
+        <options>
+          <mergeRemote>repo_name</mergeRemote>
+          <mergeTarget>branch_name</mergeTarget>
+          <mergeStrategy>recursive</mergeStrategy>
+          <fastForwardMode>FF_ONLY</fastForwardMode>
+        </options>
+      </hudson.plugins.git.extensions.impl.PreBuildMerge>
       <hudson.plugins.git.extensions.impl.DisableRemotePoll/>
       <hudson.plugins.git.extensions.impl.WipeWorkspace/>
     </extensions>
