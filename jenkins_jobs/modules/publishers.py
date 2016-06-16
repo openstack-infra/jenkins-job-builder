@@ -369,7 +369,7 @@ def trigger_parameterized_builds(parser, xml_parent, data):
         (optional)
     :arg str condition: when to trigger the other job. Can be: 'SUCCESS',
       'UNSTABLE', 'FAILED_OR_BETTER', 'UNSTABLE_OR_BETTER',
-      'UNSTABLE_OR_WORSE', 'FAILED', 'ALWAYS'. (default: 'ALWAYS')
+      'UNSTABLE_OR_WORSE', 'FAILED', 'ALWAYS'. (default 'ALWAYS')
     :arg str property-file: Use properties from file (optional)
     :arg bool fail-on-missing: Blocks the triggering of the downstream jobs
         if any of the property files are not found in the workspace.
@@ -592,11 +592,11 @@ def clone_workspace(parser, xml_parent, data):
     :arg str workspace-glob: Files to include in cloned workspace
     :arg str workspace-exclude-glob: Files to exclude from cloned workspace
     :arg str criteria: Criteria for build to be archived.  Can be 'any',
-        'not failed', or 'successful'. (default: any )
+        'not failed', or 'successful'. (default any )
     :arg str archive-method: Choose the method to use for archiving the
-        workspace.  Can be 'tar' or 'zip'.  (default: tar)
+        workspace.  Can be 'tar' or 'zip'.  (default tar)
     :arg bool override-default-excludes: Override default ant excludes.
-        (default: false)
+        (default false)
 
     Minimal example:
 
@@ -1415,26 +1415,26 @@ def findbugs(parser, xml_parent, data):
     :arg str pattern: specifies the generated raw FindBugs XML report files,
                       such as \*\*/findbugs.xml or \*\*/findbugsXml.xml.
                       (Optional)
-    :arg bool rank-priority: Use rank as priority (default: false)
+    :arg bool rank-priority: Use rank as priority (default false)
     :arg str include-files: Comma separated list of files to include.
                             (Optional)
     :arg str exclude-files: Comma separated list of files to exclude.
                             (Optional)
     :arg bool can-run-on-failed: Weather or not to run plug-in on failed builds
-                                 (default: false)
+                                 (default false)
     :arg bool should-detect-modules: Determines if Ant or Maven modules should
                                      be detected for all files that contain
-                                     warnings. (default: false)
+                                     warnings. (default false)
     :arg int healthy: Sunny threshold (optional)
     :arg int unhealthy: Stormy threshold (optional)
     :arg str health-threshold: Threshold priority for health status
       ('low', 'normal' or 'high', defaulted to 'low')
     :arg bool dont-compute-new: If set to false, computes new warnings based on
                                 the reference build (default true)
-    :arg bool use-delta-values: Use delta for new warnings. (Default: false)
+    :arg bool use-delta-values: Use delta for new warnings. (default false)
     :arg bool use-previous-build-as-reference:  If set then the number of new
       warnings will always be calculated based on the previous build. Otherwise
-      the reference build. (Default: false)
+      the reference build. (default false)
     :arg bool use-stable-build-as-reference: The number of new warnings will be
       calculated based on the last stable build, allowing reverts of unstable
       builds where the number of warnings was decreased. (default false)
@@ -1521,7 +1521,7 @@ def checkstyle(parser, xml_parent, data):
     :arg bool dont-compute-new: If set to false, computes new warnings based on
       the reference build (default true)
     :arg bool use-previous-build-as-reference: determines whether to always
-        use the previous build as the reference build (Default false)
+        use the previous build as the reference build (default false)
     :arg bool use-stable-build-as-reference: The number of new warnings will be
       calculated based on the last stable build, allowing reverts of unstable
       builds where the number of warnings was decreased. (default false)
@@ -2599,17 +2599,17 @@ def workspace_cleanup(parser, xml_parent, data):
 
     :arg list include: list of files to be included
     :arg list exclude: list of files to be excluded
-    :arg bool dirmatch: Apply pattern to directories too (default: false)
+    :arg bool dirmatch: Apply pattern to directories too (default false)
     :arg list clean-if: clean depending on build status
 
         :clean-if values:
-            * **success** (`bool`) (default: true)
-            * **unstable** (`bool`) (default: true)
-            * **failure** (`bool`) (default: true)
-            * **aborted** (`bool`) (default: true)
-            * **not-built** (`bool`)  (default: true)
-    :arg bool fail-build: Fail the build if the cleanup fails (default: true)
-    :arg bool clean-parent: Cleanup matrix parent workspace (default: false)
+            * **success** (`bool`) (default true)
+            * **unstable** (`bool`) (default true)
+            * **failure** (`bool`) (default true)
+            * **aborted** (`bool`) (default true)
+            * **not-built** (`bool`)  (default true)
+    :arg bool fail-build: Fail the build if the cleanup fails (default true)
+    :arg bool clean-parent: Cleanup matrix parent workspace (default false)
     :arg str external-deletion-command: external deletion command to run
         against files and directories
 
@@ -2849,15 +2849,15 @@ def test_fairy(parser, xml_parent, data):
     Android Only:
 
     :arg str proguard-file: Path to Proguard file. Path of mapping.txt from
-        your proguard output directory. (default: '')
-    :arg str storepass: Password for the keystore (default: android)
-    :arg str alias: alias for key (default: androiddebugkey)
-    :arg str keypass: password for the key (default: '')
+        your proguard output directory. (default '')
+    :arg str storepass: Password for the keystore (default android)
+    :arg str alias: alias for key (default androiddebugkey)
+    :arg str keypass: password for the key (default '')
     :arg str keystorepath: Path to Keystore file (required)
 
     IOS Only:
 
-    :arg str dSYM-file: Path to .dSYM.zip file (default: '')
+    :arg str dSYM-file: Path to .dSYM.zip file (default '')
 
     All:
 
@@ -2866,27 +2866,27 @@ def test_fairy(parser, xml_parent, data):
     :arg str appfile: Path to App file (.apk) or (.ipa). For example:
         $WORKSPACE/[YOUR_FILE_NAME].apk or full path to the apk file.
         (required)
-    :arg str tester-groups: Tester groups to notify (default: '')
+    :arg str tester-groups: Tester groups to notify (default '')
     :arg bool notify-testers: Send email with changelogs to testers
-        (default: False)
+        (default False)
     :arg bool autoupdate: Automatic update (default False)
 
-    :arg str max-duration: Duration of the session (default: 10m)
-    :arg bool record-on-background: Record on background (default: False)
-    :arg bool data-only-wifi: Record data only in wifi (default: False)
-    :arg bool video-enabled: Record video (default: True)
+    :arg str max-duration: Duration of the session (default 10m)
+    :arg bool record-on-background: Record on background (default False)
+    :arg bool data-only-wifi: Record data only in wifi (default False)
+    :arg bool video-enabled: Record video (default True)
     :arg str screenshot-interval: Time interval between screenshots
-        (default: 1)
-    :arg str video-quality: Video quality (default: high)
-    :arg bool cpu: Enable CPU metrics (default: True)
-    :arg bool memory: Enable memory metrics (default: True)
-    :arg bool logs: Enable logs metrics (default: True)
-    :arg bool network: Enable network metrics (default: False)
-    :arg bool phone-signal: Enable phone signal metrics (default: False)
-    :arg bool wifi: Enable wifi metrics (default: False)
-    :arg bool gps: Enable gps metrics (default: False)
-    :arg bool battery: Enable battery metrics (default: False)
-    :arg bool opengl: Enable opengl metrics (default: False)
+        (default 1)
+    :arg str video-quality: Video quality (default high)
+    :arg bool cpu: Enable CPU metrics (default True)
+    :arg bool memory: Enable memory metrics (default True)
+    :arg bool logs: Enable logs metrics (default True)
+    :arg bool network: Enable network metrics (default False)
+    :arg bool phone-signal: Enable phone signal metrics (default False)
+    :arg bool wifi: Enable wifi metrics (default False)
+    :arg bool gps: Enable gps metrics (default False)
+    :arg bool battery: Enable battery metrics (default False)
+    :arg bool opengl: Enable opengl metrics (default False)
 
     Example:
 
@@ -2982,8 +2982,8 @@ def html_publisher(parser, xml_parent, data):
     :arg str name: Report name
     :arg str dir: HTML directory to archive
     :arg str files: Specify the pages to display
-    :arg bool keep-all: keep HTML reports for each past build (Default False)
-    :arg bool allow-missing: Allow missing HTML reports (Default False)
+    :arg bool keep-all: keep HTML reports for each past build (default False)
+    :arg bool allow-missing: Allow missing HTML reports (default False)
     :arg bool link-to-last-build: If this and 'keep-all' both are true, it
         publishes the link on project level even if build failed.
         (default false)
@@ -3063,9 +3063,9 @@ def tap(parser, xml_parent, data):
     :arg bool failed-tests-mark-build-as-failure:
                 Mark build as failure if test fails (default False)
     :arg bool output-tap-to-console: Output tap to console (default True)
-    :arg bool enable-subtests: Enable subtests (Default True)
-    :arg bool discard-old-reports: Discard old reports (Default False)
-    :arg bool todo-is-failure: Handle TODO's as failures (Default True)
+    :arg bool enable-subtests: Enable subtests (default True)
+    :arg bool discard-old-reports: Discard old reports (default False)
+    :arg bool todo-is-failure: Handle TODO's as failures (default True)
 
 
     Example:
@@ -3555,9 +3555,9 @@ def sloccount(parser, xml_parent, data):
                            this pattern. The report files must have been
                            generated by sloccount using the
                            "--wide --details" options.
-                           (default: '\*\*/sloccount.sc')
+                           (default '\*\*/sloccount.sc')
     :arg str charset: The character encoding to be used to read the SLOCCount
-                      result files. (default: 'UTF-8')
+                      result files. (default 'UTF-8')
 
     Example:
 
@@ -3588,20 +3588,20 @@ def ircbot(parser, xml_parent, data):
             * **statechange-only** only on state change
     :arg bool notify-start: Whether to send notifications to channels when a
                            build starts
-                           (default: false)
+                           (default false)
     :arg bool notify-committers: Whether to send notifications to the users
                                 that are suspected of having broken this build
-                                (default: false)
+                                (default false)
     :arg bool notify-culprits: Also send notifications to 'culprits' from
                               previous unstable/failed builds
-                              (default: false)
+                              (default false)
     :arg bool notify-upstream: Whether to send notifications to upstream
                               committers if no committers were found for a
                               broken build
-                              (default: false)
+                              (default false)
     :arg bool notify-fixers: Whether to send notifications to the users that
                             have fixed a broken build
-                            (default: false)
+                            (default false)
     :arg string message-type: Channel Notification Message.
 
         :message-type values:
@@ -3611,7 +3611,7 @@ def ircbot(parser, xml_parent, data):
             * **summary-scm-fail** for summary, SCM changes, failures)
     :arg list channels: list channels definitions
                         If empty, it takes channel from Jenkins configuration.
-                        (default: empty)
+                        (default empty)
                         WARNING: the IRC plugin requires the channel to be
                         configured in the system wide configuration or the jobs
                         will fail to emit notifications to the channel
@@ -3619,7 +3619,7 @@ def ircbot(parser, xml_parent, data):
         :Channel: * **name** (`str`) Channel name
                   * **password** (`str`) Channel password (optional)
                   * **notify-only** (`bool`) Set to true if you want to
-                    disallow bot commands (default: false)
+                    disallow bot commands (default false)
     :arg string matrix-notifier: notify for matrix projects
                                  instant-messaging-plugin injects an additional
                                  field in the configuration form whenever the
@@ -3694,15 +3694,15 @@ def plot(parser, xml_parent, data):
 
     Requires the Jenkins :jenkins-wiki:`Plot Plugin <Plot+Plugin>`.
 
-    :arg str title: title for the graph (default: '')
-    :arg str yaxis: title of Y axis (default: '')
+    :arg str title: title for the graph (default '')
+    :arg str yaxis: title of Y axis (default '')
     :arg str group: name of the group to which the plot belongs (required)
     :arg int num-builds: number of builds to plot across
-                         (default: plot all builds)
+                         (default plot all builds)
     :arg str style:  Specifies the graph style of the plot
                      Can be: area, bar, bar3d, line, line3d, stackedArea,
                      stackedbar, stackedbar3d, waterfall
-                     (default: 'line')
+                     (default 'line')
     :arg bool use-description: When false, the X-axis labels are formed
                                using build numbers and dates, and the
                                corresponding tooltips contain the build
@@ -3710,21 +3710,21 @@ def plot(parser, xml_parent, data):
                                the labels and tooltips are swapped, with the
                                descriptions used as X-axis labels and the
                                build number and date used for tooltips.
-                               (default: False)
+                               (default False)
     :arg bool exclude-zero-yaxis: When false, Y-axis contains the value zero
                                   even if it is not included in the data
                                   series. When true, the value zero is not
-                                  automatically included. (default: False)
+                                  automatically included. (default False)
     :arg bool logarithmic-yaxis: When true, the Y-axis will use a logarithmic
                                  scale. By default, the Y-axis uses a linear
-                                 scale. (default: False)
+                                 scale. (default False)
     :arg bool keep-records: When true, show all builds up to 'Number of
-                            builds to include'. (default: false)
+                            builds to include'. (default false)
     :arg str csv-file-name: Use for choosing the file name in which the data
                             will be persisted. If none specified and random
                             name is generated as done in the Jenkins Plot
                             plugin.
-                            (default: random generated .csv filename, same
+                            (default random generated .csv filename, same
                             behaviour as the Jenkins Plot plugin)
     :arg list series: list data series definitions
 
@@ -3740,19 +3740,19 @@ def plot(parser, xml_parent, data):
 
               * **exclude** (`str`) : exclude pattern for CSV file.
               * **url** (`str`) : for 'csv' and 'xml' file types
-                used when you click on a point (default: empty)
+                used when you click on a point (default empty)
               * **display-table** (`bool`) : for 'csv' file type
-                if true, original CSV will be shown above plot (default: False)
+                if true, original CSV will be shown above plot (default False)
               * **label** (`str`) : used by 'properties' file type
                 Specifies the legend label for this data series.
-                (default: empty)
+                (default empty)
               * **format** (`str`) : Type of file where we get datas.
                 Can be: properties, csv, xml
               * **xpath-type** (`str`) : The result type of the expression must
                 be supplied due to limitations in the java.xml.xpath parsing.
                 The result can be: node, nodeset, boolean, string, or number.
                 Strings and numbers will be converted to double. Boolean will
-                be converted to 1 for true, and 0 for false. (default: 'node')
+                be converted to 1 for true, and 0 for false. (default 'node')
               * **xpath** (`str`) : used by 'xml' file type
                 Xpath which selects the values that should be plotted.
 
@@ -3855,38 +3855,38 @@ def git(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Git Plugin <Git+Plugin>`.
 
     :arg bool push-merge: push merges back to the origin specified in the
-                          pre-build merge options (Default: False)
+                          pre-build merge options (default False)
     :arg bool push-only-if-success: Only push to remotes if the build succeeds
                                     - otherwise, nothing will be pushed.
-                                    (Default: True)
-    :arg bool force-push: Add force option to git push (Default: False)
+                                    (default True)
+    :arg bool force-push: Add force option to git push (default False)
     :arg list tags: tags to push at the completion of the build
 
         :tag: * **remote** (`str`) remote repo name to push to
-                (Default: 'origin')
+                (default 'origin')
               * **name** (`str`) name of tag to push
               * **message** (`str`) message content of the tag
               * **create-tag** (`bool`) whether or not to create the tag
                 after the build, if this is False then the tag needs to
-                exist locally (Default: False)
+                exist locally (default False)
               * **update-tag** (`bool`) whether to overwrite a remote tag
-                or not (Default: False)
+                or not (default False)
 
     :arg list branches: branches to push at the completion of the build
 
         :branch: * **remote** (`str`) remote repo name to push to
-                   (Default: 'origin')
+                   (default 'origin')
                  * **name** (`str`) name of remote branch to push to
 
     :arg list notes: notes to push at the completion of the build
 
         :note: * **remote** (`str`) remote repo name to push to
-                 (Default: 'origin')
+                 (default 'origin')
                * **message** (`str`) content of the note
                * **namespace** (`str`) namespace of the note
-                 (Default: master)
+                 (default master)
                * **replace-note** (`bool`) whether to overwrite a note or not
-                 (Default: False)
+                 (default False)
 
 
     Example:
@@ -3991,8 +3991,8 @@ def build_publisher(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Build Publisher Plugin
     <Build+Publisher+Plugin>`.
 
-    :arg bool publish-unstable-builds: publish unstable builds (default: true)
-    :arg bool publish-failed-builds: publish failed builds (default: true)
+    :arg bool publish-unstable-builds: publish unstable builds (default true)
+    :arg bool publish-failed-builds: publish failed builds (default true)
     :arg int days-to-keep: days to keep when publishing results (optional)
     :arg int num-to-keep: number of jobs to keep in the published results
       (optional)
@@ -4033,14 +4033,14 @@ def stash(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`StashNotifier Plugin
     <StashNotifier+Plugin>`.
 
-    :arg string url: Base url of Stash Server (Default: "")
-    :arg string username: Username of Stash Server (Default: "")
-    :arg string password: Password of Stash Server (Default: "")
+    :arg string url: Base url of Stash Server (default "")
+    :arg string username: Username of Stash Server (default "")
+    :arg string password: Password of Stash Server (default "")
     :arg string credentials-id: Credentials of Stash Server (optional)
-    :arg bool   ignore-ssl: Ignore unverified SSL certificate (Default: False)
-    :arg string commit-sha1: Commit SHA1 to notify (Default: "")
+    :arg bool   ignore-ssl: Ignore unverified SSL certificate (default False)
+    :arg string commit-sha1: Commit SHA1 to notify (default "")
     :arg bool   include-build-number: Include build number in key
-                (Default: False)
+                (default False)
 
     Example:
 
@@ -4115,7 +4115,7 @@ def dependency_check(parser, xml_parent, data):
     :arg bool dont-compute-new: If set to false, computes new warnings based on
       the reference build (default true)
     :arg bool use-previous-build-as-reference: determines whether to always
-        use the previous build as the reference build (Default false)
+        use the previous build as the reference build (default false)
     :arg bool use-stable-build-as-reference: The number of new warnings will be
       calculated based on the last stable build, allowing reverts of unstable
       builds where the number of warnings was decreased. (default false)
@@ -4154,7 +4154,7 @@ def description_setter(parser, xml_parent, data):
     :arg str description-for-failed: The description to set on
         the failed builds (optional)
     :arg bool set-for-matrix: Also set the description on
-        a multi-configuration build (Default False)
+        a multi-configuration build (default False)
 
     Example:
 
@@ -4189,8 +4189,8 @@ def doxygen(parser, xml_parent, data):
     :arg str doxyfile: The doxyfile path
     :arg str slave: The node or label to pull the doxygen HTML files from
     :arg bool keep-all: Retain doxygen generation for each successful build
-        (default: false)
-    :arg str folder: Folder where you run doxygen (default: '')
+        (default false)
+    :arg str folder: Folder where you run doxygen (default '')
 
     Example:
 
@@ -4254,9 +4254,9 @@ def testng(parser, xml_parent, data):
     :arg str pattern: filename pattern to locate the TestNG XML report files
     :arg bool escape-test-description: escapes the description string
       associated with the test method while displaying test method details
-      (Default True)
+      (default True)
     :arg bool escape-exception-msg: escapes the test method's exception
-      messages. (Default True)
+      messages. (default True)
 
     Example:
 
@@ -4288,17 +4288,17 @@ def artifact_deployer(parser, xml_parent, data):
             * **excludes** (`str`) - the mask to exclude files
             * **remote** (`str`) - a remote output directory
             * **flatten** (`bool`) - ignore the source directory structure
-              (Default: False)
+              (default False)
             * **delete-remote** (`bool`) - clean-up remote directory
-              before deployment (Default: False)
+              before deployment (default False)
             * **delete-remote-artifacts** (`bool`) - delete remote artifacts
-              when the build is deleted (Default: False)
+              when the build is deleted (default False)
             * **fail-no-files** (`bool`) - fail build if there are no files
-              (Default: False)
+              (default False)
             * **groovy-script** (`str`) - execute a Groovy script
               before a build is deleted
 
-    :arg bool deploy-if-fail: Deploy if the build is failed (Default: False)
+    :arg bool deploy-if-fail: Deploy if the build is failed (default False)
 
     Example:
 
@@ -4356,17 +4356,17 @@ def s3(parser, xml_parent, data):
         * **bucket-region** (`str`) - S3 bucket region (capitalized with
           underscores)
         * **upload-on-failure** (`bool`) - Upload files even if the build
-          failed (Default: False)
+          failed (default False)
         * **upload-from-slave** (`bool`) - Perform the upload directly from
-          the Jenkins slave rather than the master node. (Default: False)
+          the Jenkins slave rather than the master node. (default False)
         * **managed-artifacts** (`bool`) - Let Jenkins fully manage the
           published artifacts, similar to when artifacts are published to
-          the Jenkins master. (Default: False)
+          the Jenkins master. (default False)
         * **s3-encryption** (`bool`) - Use S3 AES-256 server side encryption
-          support. (Default: False)
+          support. (default False)
         * **flatten** (`bool`) - Ignore the directory structure of the
           artifacts in the source project and copy all matching artifacts
-          directly into the specified bucket. (Default: False)
+          directly into the specified bucket. (default False)
     :arg list metadata-tags:
       :metadata-tags:
         * **key** Metadata key for files from this build. It will be
@@ -4596,7 +4596,7 @@ def pmd(parser, xml_parent, data):
     :arg bool dont-compute-new: If set to false, computes new warnings based on
       the reference build (default true)
     :arg bool use-previous-build-as-reference: determines whether to always
-        use the previous build as the reference build (Default false)
+        use the previous build as the reference build (default false)
     :arg bool use-stable-build-as-reference: The number of new warnings will be
       calculated based on the last stable build, allowing reverts of unstable
       builds where the number of warnings was decreased. (default false)
@@ -4632,10 +4632,10 @@ def scan_build(parser, xml_parent, data):
     <Clang+Scan-Build+Plugin>`.
 
     :arg bool mark-unstable: Mark build as unstable if the number of bugs
-        exceeds a threshold (default: false)
-    :arg int threshold: Threshold for marking builds as unstable (default: 0)
+        exceeds a threshold (default false)
+    :arg int threshold: Threshold for marking builds as unstable (default 0)
     :arg string exclude-paths: Comma separated paths to exclude from reports
-        (default: '')
+        (default '')
 
     Example:
 
@@ -4706,7 +4706,7 @@ def dry(parser, xml_parent, data):
     :arg bool dont-compute-new: If set to false, computes new warnings based on
       the reference build (default true)
     :arg bool use-previous-build-as-reference: determines whether to always
-        use the previous build as the reference build (Default false)
+        use the previous build as the reference build (default false)
     :arg bool use-stable-build-as-reference: The number of new warnings will be
       calculated based on the last stable build, allowing reverts of unstable
       builds where the number of warnings was decreased. (default false)
@@ -4774,14 +4774,14 @@ def downstream_ext(parser, xml_parent, data):
     :arg list projects: Projects to build (required)
     :arg string condition: comparison condition used for the criteria.
       One of 'equal-or-over', 'equal-or-under', 'equal'
-      (default: 'equal-or-over')
+      (default 'equal-or-over')
     :arg string criteria: Trigger downstream job if build results meets
       condition. One of 'success', 'unstable', 'failure' or
-      'aborted' (default: 'success')
+      'aborted' (default 'success')
     :arg bool only-on-scm-change: Trigger only if downstream project
-      has SCM changes (default: false)
+      has SCM changes (default false)
     :arg bool only-on-local-scm-change: Trigger only if current project
-      has SCM changes (default: false)
+      has SCM changes (default false)
 
     Example:
 
@@ -5281,17 +5281,17 @@ def naginator(parser, xml_parent, data):
         as failures (default False)
     :arg int fixed-delay: Fixed delay before retrying build (cannot be used
         with progressive-delay-increment or progressive-delay-maximum.
-        This is the default delay type.  (Default 0)
+        This is the default delay type.  (default 0)
     :arg int progressive-delay-increment: Progressive delay before retrying
         build increment (cannot be used when fixed-delay is being used)
-        (Default 0)
+        (default 0)
     :arg int progressive-delay-maximum: Progressive delay before retrying
         maximum delay (cannot be used when fixed-delay is being used)
-        (Default 0)
+        (default 0)
     :arg int max-failed-builds: Maximum number of successive failed builds
-        (Default 0)
+        (default 0)
     :arg str regular-expression: Only rerun build if regular expression is
-        found in output (Default '')
+        found in output (default '')
 
     Example:
 
@@ -5417,7 +5417,7 @@ def google_cloud_storage(parser, xml_parent, data):
                       log inline in web browsers, rather than forcing it to be
                       downloaded (default true)
                     * **strip-prefix** (`str`) strip this prefix off the
-                      file names (default: not set)
+                      file names (default not set)
 
             * **classic** (`dict`)
                 :params:
@@ -5433,7 +5433,7 @@ def google_cloud_storage(parser, xml_parent, data):
                       artifacts inline in web browsers, rather than forcing
                       them to be downloaded (default false)
                     * **strip-prefix** (`str`) strip this prefix off the
-                      file names (default: not set)
+                      file names (default not set)
 
     Example:
 
@@ -5779,7 +5779,7 @@ def cloudformation(parser, xml_parent, data):
             * **arg str secret-key** - The Amazon API Secret Key (Required)
             * **arg bool prefix** - If selected the tear down process will look
               for the stack that Starts with the stack name with the oldest
-              creation date and will delete it.  (Default False)
+              creation date and will delete it.  (default False)
             * **arg array region** - The region to run cloudformation in.
               (Required)
 
@@ -5819,16 +5819,16 @@ def whitesource(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Whitesource Plugin
     <Whitesource+Plugin>`.
 
-    :arg str product-token: Product name or token to update (Default '')
-    :arg str version: Product version (Default '')
+    :arg str product-token: Product name or token to update (default '')
+    :arg str version: Product version (default '')
     :arg str override-token: Override the api token from the global config
-        (Default '')
+        (default '')
     :arg str project-token: Token uniquely identifying the project to update
-        (Default '')
-    :arg list includes: list of libraries to include (Default '[]')
-    :arg list excludes: list of libraries to exclude (Default '[]')
+        (default '')
+    :arg list includes: list of libraries to include (default '[]')
+    :arg list excludes: list of libraries to exclude (default '[]')
     :arg str policies: Whether to override the global settings.  Valid values:
-        global, enable, disable (Default 'global')
+        global, enable, disable (default 'global')
 
     Example:
 
@@ -5940,40 +5940,40 @@ def slack(parser, xml_parent, data):
     too.  When using Slack Plugin version >= 2.0, you should only configure the
     publisher.
 
-    :arg str team-domain: Your team's domain at slack. (default: '')
+    :arg str team-domain: Your team's domain at slack. (default '')
     :arg str auth-token: The integration token to be used when sending
-        notifications. (default: '')
+        notifications. (default '')
     :arg str build-server-url: Specify the URL for your server installation.
-        (default: '/')
+        (default '/')
     :arg str room: A comma seperated list of rooms / channels to post the
-        notifications to. (default: '')
+        notifications to. (default '')
     :arg bool notify-start: Send notification when the job starts (>=2.0).
-        (default: False)
+        (default False)
     :arg bool notify-success: Send notification on success (>=2.0).
-        (default: False)
+        (default False)
     :arg bool notify-aborted: Send notification when job is aborted (>=2.0).
-        (default: False)
+        (default False)
     :arg bool notify-not-built: Send notification when job set to NOT_BUILT
-        status (>=2.0). (default: False)
+        status (>=2.0). (default False)
     :arg bool notify-unstable: Send notification when job becomes unstable
-        (>=2.0). (default: False)
+        (>=2.0). (default False)
     :arg bool notify-failure: Send notification when job fails for the first
-        time (previous build was a success) (>=2.0).  (default: False)
+        time (previous build was a success) (>=2.0).  (default False)
     :arg bool notifiy-back-to-normal: Send notification when job is succeeding
-        again after being unstable or failed (>=2.0). (default: False)
+        again after being unstable or failed (>=2.0). (default False)
     :arg bool notify-repeated-failure: Send notification when job fails
         successively (previous build was also a failure) (>=2.0).
-        (default: False)
+        (default False)
     :arg bool include-test-summary: Include the test summary (>=2.0).
-        (default: False)
+        (default False)
     :arg str commit-info-choice: What commit information to include into
         notification message, "NONE" includes nothing about commits, "AUTHORS"
         includes commit list with authors only, and "AUTHORS_AND_TITLES"
-        includes commit list with authors and titles (>=2.0). (default: "NONE")
+        includes commit list with authors and titles (>=2.0). (default "NONE")
     :arg bool include-custom-message: Include a custom message into the
-        notification (>=2.0). (default: False)
+        notification (>=2.0). (default False)
     :arg str custom-message: Custom message to be included (>=2.0).
-        (default: '')
+        (default '')
 
     Example (version < 2.0):
 

@@ -184,7 +184,7 @@ def git(parser, xml_parent, data):
             * **reference-repo** (`str`) - Path of the reference repo to use
               during clone (optional)
             * **timeout** (`int`) - Specify a timeout (in minutes) for
-              submodules operations (default: 10).
+              submodules operations (default 10).
         * **timeout** (`str`) - Timeout for git commands in minutes (optional)
         * **use-author** (`bool`): Use author rather than committer in Jenkin's
             build changeset (default false)
@@ -990,7 +990,7 @@ def workspace(parser, xml_parent, data):
         workspace from.
     :arg str criteria: Set the criteria to determine what build of the parent
         project to use. Can be one of 'Any', 'Not Failed' or 'Successful'.
-        (default: Any)
+        (default Any)
 
 
     Example:
@@ -1130,15 +1130,15 @@ def openshift_img_streams(parser, xml_parent, data):
 
     :arg str image-stream-name: The name of the ImageStream is what shows up
         in the NAME column if you dump all the ImageStream's with the
-        `oc get is` command invocation. (default: nodejs-010-centos7)
+        `oc get is` command invocation. (default nodejs-010-centos7)
     :arg str tag: The specific image tag within the ImageStream to monitor.
-        (default: latest)
+        (default latest)
     :arg str api-url: This would be the value you specify if you leverage the
         --server option on the OpenShift `oc` command.
-        (default: \https://openshift.default.svc.cluster.local\)
+        (default \https://openshift.default.svc.cluster.local\)
     :arg str namespace: The value here should be whatever was the output
         form `oc project` when you created the BuildConfig you want to run
-        a Build on. (default: test)
+        a Build on. (default test)
     :arg str auth-token: The value here is what you supply with the --token
         option when invoking the OpenShift `oc` command. (optional)
     :arg str verbose: This flag is the toggle for
@@ -1180,9 +1180,9 @@ def bzr(parser, xml_parent, data):
 
     :arg str url: URL of the bzr branch
     :arg bool clean-tree: Clean up the workspace (using bzr) before pulling
-        the branch (default: false)
+        the branch (default false)
     :arg bool lightweight-checkout: Use a lightweight checkout instead of a
-        full branch (default: false)
+        full branch (default false)
     :arg str browser: The repository browser to use.
 
         :browsers supported:

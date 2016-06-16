@@ -224,11 +224,11 @@ def gerrit(parser, xml_parent, data):
            creation.
 
            :Patchset created:
-               * **exclude-drafts** (`bool`) -- exclude drafts (Default: False)
+               * **exclude-drafts** (`bool`) -- exclude drafts (default False)
                * **exclude-trivial-rebase** (`bool`) -- exclude trivial rebase
-                 (Default: False)
+                 (default False)
                * **exclude-no-code-change** (`bool`) -- exclude no code change
-                 (Default: False)
+                 (default False)
 
            Exclude drafts|trivial-rebase|no-code-change needs
            Gerrit Trigger v2.12.0
@@ -1058,25 +1058,25 @@ def gitlab(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Gitlab Plugin.
     <Gitlab+Plugin>`.
 
-    :arg bool trigger-push: Build on Push Events (default: true)
-    :arg bool trigger-merge-request: Build on Merge Request Events (default:
+    :arg bool trigger-push: Build on Push Events (default true)
+    :arg bool trigger-merge-request: Build on Merge Request Events (default
         True)
     :arg bool trigger-open-merge-request-push: Rebuild open Merge Requests on
-        Push Events (default: True)
+        Push Events (default True)
     :arg bool ci-skip: Enable [ci-skip] (default True)
     :arg bool set-build-description: Set build description to build cause
-        (eg. Merge request or Git Push ) (default: True)
+        (eg. Merge request or Git Push ) (default True)
     :arg bool add-note-merge-request: Add note with build status on
-        merge requests (default: True)
+        merge requests (default True)
     :arg bool add-vote-merge-request: Vote added to note with build status
-        on merge requests (default: True)
-    :arg bool add-ci-message: Add CI build status (default: False)
+        on merge requests (default True)
+    :arg bool add-ci-message: Add CI build status (default False)
     :arg bool allow-all-branches: Allow all branches (Ignoring Filtered
-        Branches) (default: False)
+        Branches) (default False)
     :arg list include-branches: Defined list of branches to include
-        (default: [])
+        (default [])
     :arg list exclude-branches: Defined list of branches to exclude
-        (default: [])
+        (default [])
 
     Example:
 

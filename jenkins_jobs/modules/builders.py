@@ -718,9 +718,9 @@ def http_request(parser, xml_parent, data):
             * **HEAD**
     :arg str content-type: Add 'Content-type: foo' HTTP request headers
         where foo is the http content-type the request is using.
-        (default: NOT_SET)
+        (default NOT_SET)
     :arg str accept-type: Add 'Accept: foo' HTTP request headers
-        where foo is the http content-type to accept (default: NOT_SET)
+        where foo is the http content-type to accept (default NOT_SET)
 
         :content-type and accept-type values:
             * **NOT_SET**
@@ -730,21 +730,21 @@ def http_request(parser, xml_parent, data):
             * **APPLICATION_ZIP**
             * **APPLICATION_OCTETSTREAM**
     :arg str output-file: Name of the file in which to write response data
-        (default: '')
-    :arg int time-out: Specify a timeout value in seconds (default: 0)
+        (default '')
+    :arg int time-out: Specify a timeout value in seconds (default 0)
     :arg bool console-log: This allows you to turn off writing the response
-        body to the log (default: False)
+        body to the log (default False)
     :arg bool pass-build: Should build parameters be passed to the URL
-        being called (default: False)
+        being called (default False)
     :arg str valid-response-codes: Configure response code to mark an
         execution as success. You can configure simple code such as "200"
         or multiple codes separeted by comma(',') e.g. "200,404,500"
         Interval of codes should be in format From:To e.g. "100:399".
         The default (as if empty) is to fail to 4xx and 5xx.
         That means success from 100 to 399 "100:399"
-        To ignore any response code use "100:599". (default: '')
+        To ignore any response code use "100:599". (default '')
     :arg str valid-response-content: If set response must contain this string
-        to mark an execution as success (default: '')
+        to mark an execution as success (default '')
     :arg str authentication-key: Authentication that will be used before this
         request. Authentications are created in global configuration under a
         key name that is selected here.
@@ -2149,8 +2149,8 @@ def tox(parser, xml_parent, data):
     Use tox to build a multi-configuration project. Requires the Jenkins
     :jenkins-wiki:`ShiningPanda plugin <ShiningPanda+Plugin>`.
 
-    :arg str ini: The TOX configuration file path (default: tox.ini)
-    :arg bool recreate: If true, create a new environment each time (default:
+    :arg str ini: The TOX configuration file path (default tox.ini)
+    :arg bool recreate: If true, create a new environment each time (default
         false)
     :arg str toxenv-pattern: The pattern used to build the TOXENV environment
         variable. (optional)
@@ -2587,23 +2587,23 @@ def sonatype_clm(parser, xml_parent, data):
     <Sonatype+CLM+%28formerly+Insight+for+CI%29>`.
 
     :arg str value: Select CLM application from a list of available CLM
-        applications or specify CLM Application ID (default: list)
+        applications or specify CLM Application ID (default list)
     :arg str application-name: Determines the policy elements to associate
         with this build. (required)
     :arg str username: Username on the Sonatype CLM server. Leave empty to
-        use the username configured at global level. (default: '')
+        use the username configured at global level. (default '')
     :arg str password: Password on the Sonatype CLM server. Leave empty to
-        use the password configured at global level. (default: '')
+        use the password configured at global level. (default '')
     :arg bool fail-on-clm-server-failure: Controls the build outcome if there
-        is a failure in communicating with the CLM server. (default: False)
+        is a failure in communicating with the CLM server. (default False)
     :arg str stage: Controls the stage the policy evaluation will be run
         against on the CLM server. Valid stages: build, stage-release, release,
-        operate. (default: 'build')
+        operate. (default 'build')
     :arg str scan-targets: Pattern of files to include for scanning.
-        (default: '')
-    :arg str module-excludes: Pattern of files to exclude. (default: '')
+        (default '')
+    :arg str module-excludes: Pattern of files to exclude. (default '')
     :arg str advanced-options: Options to be set on a case-by-case basis as
-        advised by Sonatype Support. (default: '')
+        advised by Sonatype Support. (default '')
 
     Minimal Example:
 

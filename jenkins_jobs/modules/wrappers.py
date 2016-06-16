@@ -593,7 +593,7 @@ def workspace_cleanup(parser, xml_parent, data):
 
     :arg list include: list of files to be included
     :arg list exclude: list of files to be excluded
-    :arg bool dirmatch: Apply pattern to directories too (default: false)
+    :arg bool dirmatch: Apply pattern to directories too (default false)
     :arg str check-parameter: boolean environment variable to check to
         determine whether to actually clean up
     :arg str external-deletion-command: external deletion command to run
@@ -706,20 +706,20 @@ def rbenv(parser, xml_parent, data):
 
     All parameters are optional.
 
-    :arg str ruby-version: Version of Ruby to use  (default: 1.9.3-p484)
+    :arg str ruby-version: Version of Ruby to use  (default 1.9.3-p484)
     :arg bool ignore-local-version: If true, ignore local Ruby
         version (defined in the ".ruby-version" file in workspace) even if it
-        has been defined  (default: false)
+        has been defined  (default false)
     :arg str preinstall-gem-list: List of gems to install
-        (default: 'bundler,rake')
-    :arg str rbenv-root: RBENV_ROOT  (default: $HOME/.rbenv)
+        (default 'bundler,rake')
+    :arg str rbenv-root: RBENV_ROOT  (default $HOME/.rbenv)
     :arg str rbenv-repo: Which repo to clone rbenv from
-        (default: https://github.com/rbenv/rbenv)
-    :arg str rbenv-branch: Which branch to clone rbenv from  (default: master)
+        (default https://github.com/rbenv/rbenv)
+    :arg str rbenv-branch: Which branch to clone rbenv from  (default master)
     :arg str ruby-build-repo: Which repo to clone ruby-build from
-        (default: https://github.com/rbenv/ruby-build)
+        (default https://github.com/rbenv/ruby-build)
     :arg str ruby-build-branch: Which branch to clone ruby-build from
-        (default: master)
+        (default master)
 
     Example:
 
@@ -870,13 +870,13 @@ def copy_to_slave(parser, xml_parent, data):
 
     :arg list includes: list of file patterns to copy (optional)
     :arg list excludes: list of file patterns to exclude (optional)
-    :arg bool flatten: flatten directory structure (Default: False)
+    :arg bool flatten: flatten directory structure (default False)
     :arg str relative-to: base location of includes/excludes, must be home
         ($JENKINS_HOME), somewhereElse ($JENKINS_HOME/copyToSlave),
         userContent ($JENKINS_HOME/userContent) or workspace
-        (Default: userContent)
+        (default userContent)
     :arg bool include-ant-excludes: exclude ant's default excludes
-        (Default: False)
+        (default False)
 
     Minimal Example:
 
@@ -1021,7 +1021,7 @@ def env_script(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Environment Script Plugin
     <Environment+Script+Plugin>`.
 
-    :arg script-content: The script to run (default: '')
+    :arg script-content: The script to run (default '')
     :arg str script-type: The script type.
 
         :script-types supported:
@@ -1029,7 +1029,7 @@ def env_script(parser, xml_parent, data):
             * **power-shell**
             * **batch-script**
     :arg only-run-on-parent: Only applicable for Matrix Jobs. If true, run only
-      on the matrix parent job (default: false)
+      on the matrix parent job (default false)
 
     Example:
 
@@ -1061,14 +1061,14 @@ def jclouds(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`JClouds Plugin <JClouds+Plugin>`.
 
     :arg bool single-use: Whether or not to terminate the slave after use
-                          (default: False).
+                          (default False).
     :arg list instances: The name of the jclouds template to create an
                          instance from, and its parameters.
     :arg str cloud-name: The name of the jclouds profile containing the
                          specified template.
-    :arg int count: How many instances to create (default: 1).
+    :arg int count: How many instances to create (default 1).
     :arg bool stop-on-terminate: Whether or not to suspend instead of terminate
-                                 the instance (default: False).
+                                 the instance (default False).
 
     Example::
 
@@ -1125,11 +1125,11 @@ def openstack(parser, xml_parent, data):
               will be put in 'Specify Template Name as String' option. Not
               specifying or specifying False, instance template name will be
               put in 'Select Template from List' option. To use parameter
-              replacement, set this to True.  (default: False)
-            * **count** (`int`) -- How many instances to create (default: 1).
+              replacement, set this to True.  (default False)
+            * **count** (`int`) -- How many instances to create (default 1).
 
     :arg bool single-use: Whether or not to terminate the slave after use
-        (default: False).
+        (default False).
 
     Example:
 
@@ -1414,7 +1414,7 @@ def logstash(parser, xml_parent, data):
     Dump the Jenkins console output to Logstash
     Requires the Jenkins :jenkins-wiki:`logstash plugin <Logstash+Plugin>`.
 
-    :arg use-redis: Boolean to use Redis. (default: true)
+    :arg use-redis: Boolean to use Redis. (default true)
     :arg redis: Redis config params
 
         :Parameter: * **host** (`str`) Redis hostname\
@@ -1512,9 +1512,9 @@ def delivery_pipeline(parser, xml_parent, data):
     <Delivery+Pipeline+Plugin>`.
 
     :arg str version-template: Template for generated version e.g
-        1.0.${BUILD_NUMBER} (default: '')
+        1.0.${BUILD_NUMBER} (default '')
     :arg bool set-display-name: Set the generated version as the display name
-        for the build (default: false)
+        for the build (default false)
 
     Example:
 
@@ -1815,9 +1815,9 @@ def xvnc(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`xvnc plugin <Xvnc+Plugin>`.
 
     :arg bool screenshot: Take screenshot upon build completion
-                          (default: false)
+                          (default false)
     :arg bool xauthority: Create a dedicated Xauthority file per build
-                          (default: true)
+                          (default true)
 
     Example:
 
@@ -1839,7 +1839,7 @@ def job_log_logger(parser, xml_parent, data):
     <Job+Log+Logger+Plugin>`.
 
     :arg bool suppress-empty: Suppress empty log messages
-                              (default: true)
+                              (default true)
 
     Example:
 
@@ -1859,10 +1859,10 @@ def xvfb(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Xvfb Plugin <Xvfb+Plugin>`.
 
     :arg str installation-name: The name of the Xvfb tool instalation
-                                (default: default)
+                                (default default)
     :arg bool auto-display-name: Uses the -displayfd option of Xvfb by which it
                                  chooses it's own display name
-                                 (default: false)
+                                 (default false)
     :arg str display-name: Ordinal of the display Xvfb will be running on, if
                            left empty choosen based on current build executor
                            number (optional)
@@ -1870,18 +1870,18 @@ def xvfb(parser, xml_parent, data):
                               specify its name or label (optional)
     :arg bool parallel-build: When running multiple Jenkins nodes on the same
                               machine this setting influences the display
-                              number generation (default: false)
+                              number generation (default false)
     :arg int timeout: A timeout of given seconds to wait before returning
-                      control to the job (default: 0)
-    :arg str screen: Resolution and color depth. (default: 1024x768x24)
-    :arg str display-name-offset: Offset for display names. (default: 1)
+                      control to the job (default 0)
+    :arg str screen: Resolution and color depth. (default 1024x768x24)
+    :arg str display-name-offset: Offset for display names. (default 1)
     :arg str additional-options: Additional options to be added with the
                                  options above to the Xvfb command line
                                  (optional)
     :arg bool debug: If Xvfb output should appear in console log of this job
-                     (default: false)
+                     (default false)
     :arg bool shutdown-with-build: Should the display be kept until the whole
-                                   job ends (default: false)
+                                   job ends (default false)
 
     Example:
 
@@ -2051,7 +2051,7 @@ def artifactory_generic(parser, xml_parent, data):
     :jenkins-wiki:`Artifactory Plugin <Artifactory+Plugin>`
 
     :arg str url: URL of the Artifactory server. e.g.
-        https://www.jfrog.com/artifactory/ (default: '')
+        https://www.jfrog.com/artifactory/ (default '')
     :arg str name: Artifactory user with permissions use for
         connected to the selected Artifactory Server
         (default '')
@@ -2147,7 +2147,7 @@ def artifactory_maven_freestyle(parser, xml_parent, data):
     Requires :jenkins-wiki:`Artifactory Plugin <Artifactory+Plugin>`
 
     :arg str url: URL of the Artifactory server. e.g.
-        https://www.jfrog.com/artifactory/ (default: '')
+        https://www.jfrog.com/artifactory/ (default '')
     :arg str name: Artifactory user with permissions use for
         connected to the selected Artifactory Server (default '')
     :arg str release-repo-key: Release repository name (default '')

@@ -78,23 +78,23 @@ def findbugs(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`FindBugs Plugin
     <FindBugs+Plugin>`.
 
-    :arg bool rank-priority: Use rank as priority (default: false)
+    :arg bool rank-priority: Use rank as priority (default false)
     :arg str include-files: Comma separated list of files to include.
                             (Optional)
     :arg str exclude-files: Comma separated list of files to exclude.
                             (Optional)
     :arg bool can-run-on-failed: Weather or not to run plug-in on failed builds
-                                 (default: false)
+                                 (default false)
     :arg int healthy: Sunny threshold (optional)
     :arg int unhealthy: Stormy threshold (optional)
     :arg str health-threshold: Threshold priority for health status
       ('low', 'normal' or 'high', defaulted to 'low')
     :arg bool dont-compute-new: If set to false, computes new warnings based on
                                 the reference build (default true)
-    :arg bool use-delta-values: Use delta for new warnings. (Default: false)
+    :arg bool use-delta-values: Use delta for new warnings. (default false)
     :arg bool use-previous-build-as-reference:  If set then the number of new
       warnings will always be calculated based on the previous build. Otherwise
-      the reference build. (Default: false)
+      the reference build. (default false)
     :arg bool use-stable-build-as-reference: The number of new warnings will be
       calculated based on the last stable build, allowing reverts of unstable
       builds where the number of warnings was decreased. (default false)

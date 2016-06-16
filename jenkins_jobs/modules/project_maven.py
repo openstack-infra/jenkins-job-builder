@@ -58,12 +58,12 @@ in the :ref:`Job` definition.
       type is 'file' then this is a Path. Otherwise it is the id for
       ConfigFileProvider. (optional)
     * **settings-type** (`str`): Type of settings file file|cfp.
-      (default: file)
+      (default file)
     * **global-settings** (`str`): Path to custom maven global settings file.
       If settings type is 'file' then this is a Path. Otherwise it is the id
       for ConfigFileProvider. (optional)
     * **global-settings-type** (`str`): Type of settings file file|cfp.
-      (default: file)
+      (default file)
     * **post-step-run-condition** (`str`): Run the post-build steps only if the
       build succeeds ('SUCCESS'), build succeeds or is unstable ('UNSTABLE'),
       regardless of build result ('FAILURE'). (default 'FAILURE').
