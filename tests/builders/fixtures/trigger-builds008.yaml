@@ -1,0 +1,4 @@
+builders:
+  - trigger-builds:
+    - project: "build_started"
+      restrict-matrix-project: label=="x86"

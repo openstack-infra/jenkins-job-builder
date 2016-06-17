@@ -391,6 +391,8 @@ def trigger_builds(parser, xml_parent, data):
     :arg str node-label: Label of the nodes where build should be triggered.
         Used in conjunction with node-label-name.  Requires NodeLabel Parameter
         Plugin (optional)
+    :arg str restrict-matrix-project: Filter that restricts the subset
+        of the combinations that the triggered job will run (optional)
     :arg bool svn-revision: Whether to pass the svn revision to the triggered
         job (optional)
     :arg dict git-revision: Passes git revision to the triggered job
@@ -544,6 +546,13 @@ def trigger_builds(parser, xml_parent, data):
                                   'NodeLabelBuildParameter')
             XML.SubElement(node, 'name').text = project_def['node-label-name']
             XML.SubElement(node, 'nodeLabel').text = project_def['node-label']
+
+        if 'restrict-matrix-project' in project_def:
+            params = XML.SubElement(tconfigs,
+                                    'hudson.plugins.parameterizedtrigger.'
+                                    'matrix.MatrixSubsetBuildParameters')
+            XML.SubElement(params, 'filter').text = project_def[
+                'restrict-matrix-project']
 
         if(len(list(tconfigs)) == 0):
             tconfigs.set('class', 'java.util.Collections$EmptyList')
