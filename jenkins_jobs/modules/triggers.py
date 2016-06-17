@@ -224,11 +224,11 @@ def gerrit(parser, xml_parent, data):
            creation.
 
            :Patchset created:
-               * **exclude-drafts** (`bool`) -- exclude drafts (default False)
+               * **exclude-drafts** (`bool`) -- exclude drafts (default false)
                * **exclude-trivial-rebase** (`bool`) -- exclude trivial rebase
-                 (default False)
+                 (default false)
                * **exclude-no-code-change** (`bool`) -- exclude no code change
-                 (default False)
+                 (default false)
 
            Exclude drafts|trivial-rebase|no-code-change needs
            Gerrit Trigger v2.12.0
@@ -1062,17 +1062,17 @@ def gitlab(parser, xml_parent, data):
     :arg bool trigger-merge-request: Build on Merge Request Events (default
         True)
     :arg bool trigger-open-merge-request-push: Rebuild open Merge Requests on
-        Push Events (default True)
-    :arg bool ci-skip: Enable [ci-skip] (default True)
+        Push Events (default true)
+    :arg bool ci-skip: Enable [ci-skip] (default true)
     :arg bool set-build-description: Set build description to build cause
-        (eg. Merge request or Git Push ) (default True)
+        (eg. Merge request or Git Push ) (default true)
     :arg bool add-note-merge-request: Add note with build status on
-        merge requests (default True)
+        merge requests (default true)
     :arg bool add-vote-merge-request: Vote added to note with build status
-        on merge requests (default True)
-    :arg bool add-ci-message: Add CI build status (default False)
+        on merge requests (default true)
+    :arg bool add-ci-message: Add CI build status (default false)
     :arg bool allow-all-branches: Allow all branches (Ignoring Filtered
-        Branches) (default False)
+        Branches) (default false)
     :arg list include-branches: Defined list of branches to include
         (default [])
     :arg list exclude-branches: Defined list of branches to exclude

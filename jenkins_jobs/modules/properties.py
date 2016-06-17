@@ -657,24 +657,24 @@ def slack(parser, xml_parent, data):
     version >= 2.0, you should only configure the publisher.
 
     :arg bool notify-start: Send notification when the job starts
-        (default False)
-    :arg bool notify-success: Send notification on success. (default False)
+        (default false)
+    :arg bool notify-success: Send notification on success. (default false)
     :arg bool notify-aborted: Send notification when job is aborted. (
-        default False)
+        default false)
     :arg bool notify-not-built: Send notification when job set to NOT_BUILT
-        status. (default False)
+        status. (default false)
     :arg bool notify-unstable: Send notification when job becomes unstable.
-        (default False)
+        (default false)
     :arg bool notify-failure: Send notification when job fails.
-        (default False)
+        (default false)
     :arg bool notifiy-back-to-normal: Send notification when job is
-        succeeding again after being unstable or failed. (default False)
+        succeeding again after being unstable or failed. (default false)
     :arg bool 'notify-repeated-failure': Send notification when job is
-        still failing after last failure. (default False)
+        still failing after last failure. (default false)
     :arg bool include-test-summary: Include the test summary. (default
         False)
     :arg bool include-custom-message: Include a custom message into the
-        notification. (default False)
+        notification. (default false)
     :arg str custom-message: Custom message to be included. (default '')
     :arg str room: A comma seperated list of rooms / channels to send
         the notifications to. (default '')

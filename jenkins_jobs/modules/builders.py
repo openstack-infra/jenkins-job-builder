@@ -733,9 +733,9 @@ def http_request(parser, xml_parent, data):
         (default '')
     :arg int time-out: Specify a timeout value in seconds (default 0)
     :arg bool console-log: This allows you to turn off writing the response
-        body to the log (default False)
+        body to the log (default false)
     :arg bool pass-build: Should build parameters be passed to the URL
-        being called (default False)
+        being called (default false)
     :arg str valid-response-codes: Configure response code to mark an
         execution as success. You can configure simple code such as "200"
         or multiple codes separeted by comma(',') e.g. "200,404,500"
@@ -1206,7 +1206,7 @@ def conditional_step(parser, xml_parent, data):
                            casues causing a build to be triggered, with
                            this true, the cause must be the only one
                            causing this build this build to be triggered.
-                           (default False)
+                           (default false)
     day-of-week        Only run on specific days of the week.
 
                          :day-selector: Days you want the build to run on.
@@ -1221,16 +1221,16 @@ def conditional_step(parser, xml_parent, data):
                              day-selector, at the same level as day-selector.
                              Define the days to run under this.
 
-                             :SUN: Run on Sunday (default False)
-                             :MON: Run on Monday (default False)
-                             :TUES: Run on Tuesday (default False)
-                             :WED: Run on Wednesday (default False)
-                             :THURS: Run on Thursday (default False)
-                             :FRI: Run on Friday (default False)
-                             :SAT: Run on Saturday (default False)
+                             :SUN: Run on Sunday (default false)
+                             :MON: Run on Monday (default false)
+                             :TUES: Run on Tuesday (default false)
+                             :WED: Run on Wednesday (default false)
+                             :THURS: Run on Thursday (default false)
+                             :FRI: Run on Friday (default false)
+                             :SAT: Run on Saturday (default false)
                          :use-build-time: (bool) Use the build time instead of
                            the the time that the condition is evaluated.
-                           (default False)
+                           (default false)
     execution-node     Run only on selected nodes.
 
                          :nodes: (list) List of nodes to execute on. (required)
@@ -1239,7 +1239,7 @@ def conditional_step(parser, xml_parent, data):
                          :condition-string1: First string (optional)
                          :condition-string2: Second string (optional)
                          :condition-case-insensitive: Case insensitive
-                           (default False)
+                           (default false)
     current-status     Run the build step if the current build status is
                        within the configured range
 
@@ -1303,7 +1303,7 @@ def conditional_step(parser, xml_parent, data):
                          :latest-min: Ending min (default "30")
                          :use-build-time: (bool) Use the build time instead of
                            the the time that the condition is evaluated.
-                           (default False)
+                           (default false)
     not                Run the step if the inverse of the condition-operand
                        is true
 
@@ -2595,7 +2595,7 @@ def sonatype_clm(parser, xml_parent, data):
     :arg str password: Password on the Sonatype CLM server. Leave empty to
         use the password configured at global level. (default '')
     :arg bool fail-on-clm-server-failure: Controls the build outcome if there
-        is a failure in communicating with the CLM server. (default False)
+        is a failure in communicating with the CLM server. (default false)
     :arg str stage: Controls the stage the policy evaluation will be run
         against on the CLM server. Valid stages: build, stage-release, release,
         operate. (default 'build')

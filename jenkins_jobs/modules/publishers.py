@@ -671,7 +671,7 @@ def cloverphp(parser, xml_parent, data):
 
         * **dir** (str): Directory where HTML report will be generated relative
                          to workspace. (required in `html` dict).
-        * **archive** (bool): Whether to archive HTML reports (default True).
+        * **archive** (bool): Whether to archive HTML reports (default true).
 
     :arg list metric-targets: List of metric targets to reach, must be one of
       **healthy**, **unhealthy** and **failing**. Each metric target can takes
@@ -935,7 +935,7 @@ def jacoco(parser, xml_parent, data):
     :arg str source-pattern: This is a file name pattern that can be used
                           to locate source files (default ``**/src/main/java``)
     :arg bool update-build-status: Update the build according to the results
-                          (default False)
+                          (default false)
     :arg str inclusion-pattern: This is a file name pattern that can be used
                           to include certain class files (optional)
     :arg str exclusion-pattern: This is a file name pattern that can be used
@@ -2711,40 +2711,40 @@ def artifactory(parser, xml_parent, data):
     :arg str release-repo-key: Release repository name (default '')
     :arg str snapshot-repo-key: Snapshots repository name (default '')
     :arg bool publish-build-info: Push build metadata with artifacts
-        (default False)
+        (default false)
     :arg bool discard-old-builds:
-        Remove older build info from Artifactory (default False)
+        Remove older build info from Artifactory (default false)
     :arg bool discard-build-artifacts:
-        Remove older build artifacts from Artifactory (default False)
+        Remove older build artifacts from Artifactory (default false)
     :arg bool even-if-unstable: Deploy artifacts even when the build
-        is unstable (default False)
+        is unstable (default false)
     :arg bool run-checks: Run automatic license scanning check after the
-        build is complete (default False)
+        build is complete (default false)
     :arg bool include-publish-artifacts: Include the build's published
         module artifacts in the license violation checks if they are
         also used as dependencies for other modules in this build
-        (default False)
+        (default false)
     :arg bool pass-identified-downstream: When true, a build parameter
         named ARTIFACTORY_BUILD_ROOT with a value of
         ${JOB_NAME}-${BUILD_NUMBER} will be sent to downstream builds
-        (default False)
+        (default false)
     :arg bool license-auto-discovery: Tells Artifactory not to try
         and automatically analyze and tag the build's dependencies
-        with license information upon deployment (default True)
+        with license information upon deployment (default true)
     :arg bool enable-issue-tracker-integration: When the Jenkins
         JIRA plugin is enabled, synchronize information about JIRA
         issues to Artifactory and attach issue information to build
-        artifacts (default False)
+        artifacts (default false)
     :arg bool aggregate-build-issues: When the Jenkins JIRA plugin
         is enabled, include all issues from previous builds up to the
         latest build status defined in "Aggregation Build Status"
-        (default False)
+        (default false)
     :arg bool allow-promotion-of-non-staged-builds: The build
         promotion operation will be available to all successful builds
-        instead of only staged ones (default False)
+        instead of only staged ones (default false)
     :arg bool filter-excluded-artifacts-from-build: Add the excluded
         files to the excludedArtifacts list and remove them from the
-        artifacts list in the build info (default False)
+        artifacts list in the build info (default false)
     :arg str scopes:  A list of dependency scopes/configurations to run
         license violation checks on. If left empty all dependencies from
         all scopes will be checked (default '')
@@ -2765,22 +2765,22 @@ def artifactory(parser, xml_parent, data):
         all dependencies from all scopes will be checked (default '')
     :arg bool black-duck-run-checks: Automatic Black Duck Code Center
         compliance checks will occur after the build completes
-        (default False)
+        (default false)
     :arg bool black-duck-include-published-artifacts: Include the build's
         published module artifacts in the license violation checks if they
         are also used as dependencies for other modules in this build
-        (default False)
+        (default false)
     :arg bool auto-create-missing-component-requests: Auto create
         missing components in Black Duck Code Center application after
         the build is completed and deployed in Artifactory
-        (default True)
+        (default true)
     :arg bool auto-discard-stale-component-requests: Auto discard
         stale components in Black Duck Code Center application after
         the build is completed and deployed in Artifactory
-        (default True)
+        (default true)
     :arg bool deploy-artifacts: Push artifacts to the Artifactory
         Server. Use deployment-include-patterns and
-        deployment-exclude-patterns to filter deploy artifacts. (default True)
+        deployment-exclude-patterns to filter deploy artifacts. (default true)
     :arg list deployment-include-patterns: New line or comma separated mappings
         of build artifacts to published artifacts. Supports Ant-style wildcards
         mapping to target directories. E.g.: */*.zip=>dir (default [])
@@ -2790,7 +2790,7 @@ def artifactory(parser, xml_parent, data):
         accessible by the build process. Jenkins-specific env variables
         are always included. Use env-vars-include-patterns and
         env-vars-exclude-patterns to filter variables to publish,
-        (default False)
+        (default false)
     :arg list env-vars-include-patterns: Comma or space-separated list of
         environment variables that will be included as part of the published
         build info. Environment variables may contain the * and the ? wildcards
@@ -2868,25 +2868,25 @@ def test_fairy(parser, xml_parent, data):
         (required)
     :arg str tester-groups: Tester groups to notify (default '')
     :arg bool notify-testers: Send email with changelogs to testers
-        (default False)
-    :arg bool autoupdate: Automatic update (default False)
+        (default false)
+    :arg bool autoupdate: Automatic update (default false)
 
     :arg str max-duration: Duration of the session (default 10m)
-    :arg bool record-on-background: Record on background (default False)
-    :arg bool data-only-wifi: Record data only in wifi (default False)
-    :arg bool video-enabled: Record video (default True)
+    :arg bool record-on-background: Record on background (default false)
+    :arg bool data-only-wifi: Record data only in wifi (default false)
+    :arg bool video-enabled: Record video (default true)
     :arg str screenshot-interval: Time interval between screenshots
         (default 1)
     :arg str video-quality: Video quality (default high)
-    :arg bool cpu: Enable CPU metrics (default True)
-    :arg bool memory: Enable memory metrics (default True)
-    :arg bool logs: Enable logs metrics (default True)
-    :arg bool network: Enable network metrics (default False)
-    :arg bool phone-signal: Enable phone signal metrics (default False)
-    :arg bool wifi: Enable wifi metrics (default False)
-    :arg bool gps: Enable gps metrics (default False)
-    :arg bool battery: Enable battery metrics (default False)
-    :arg bool opengl: Enable opengl metrics (default False)
+    :arg bool cpu: Enable CPU metrics (default true)
+    :arg bool memory: Enable memory metrics (default true)
+    :arg bool logs: Enable logs metrics (default true)
+    :arg bool network: Enable network metrics (default false)
+    :arg bool phone-signal: Enable phone signal metrics (default false)
+    :arg bool wifi: Enable wifi metrics (default false)
+    :arg bool gps: Enable gps metrics (default false)
+    :arg bool battery: Enable battery metrics (default false)
+    :arg bool opengl: Enable opengl metrics (default false)
 
     Example:
 
@@ -2946,11 +2946,11 @@ def text_finder(parser, xml_parent, data):
     :arg str regexp: Specify a regular expression
     :arg str fileset: Specify the path to search
     :arg bool also-check-console-output:
-              Search the console output (default False)
+              Search the console output (default false)
     :arg bool succeed-if-found:
-              Force a build to succeed if a string was found (default False)
+              Force a build to succeed if a string was found (default false)
     :arg bool unstable-if-found:
-              Set build unstable instead of failing the build (default False)
+              Set build unstable instead of failing the build (default false)
 
 
     Example:
@@ -2982,8 +2982,8 @@ def html_publisher(parser, xml_parent, data):
     :arg str name: Report name
     :arg str dir: HTML directory to archive
     :arg str files: Specify the pages to display
-    :arg bool keep-all: keep HTML reports for each past build (default False)
-    :arg bool allow-missing: Allow missing HTML reports (default False)
+    :arg bool keep-all: keep HTML reports for each past build (default false)
+    :arg bool allow-missing: Allow missing HTML reports (default false)
     :arg bool link-to-last-build: If this and 'keep-all' both are true, it
         publishes the link on project level even if build failed.
         (default false)
@@ -3059,13 +3059,13 @@ def tap(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`TAP Plugin <TAP+Plugin>`.
 
     :arg str results: TAP test result files
-    :arg bool fail-if-no-results: Fail if no result (default False)
+    :arg bool fail-if-no-results: Fail if no result (default false)
     :arg bool failed-tests-mark-build-as-failure:
-                Mark build as failure if test fails (default False)
-    :arg bool output-tap-to-console: Output tap to console (default True)
-    :arg bool enable-subtests: Enable subtests (default True)
-    :arg bool discard-old-reports: Discard old reports (default False)
-    :arg bool todo-is-failure: Handle TODO's as failures (default True)
+                Mark build as failure if test fails (default false)
+    :arg bool output-tap-to-console: Output tap to console (default true)
+    :arg bool enable-subtests: Enable subtests (default true)
+    :arg bool discard-old-reports: Discard old reports (default false)
+    :arg bool todo-is-failure: Handle TODO's as failures (default true)
 
 
     Example:
@@ -3164,14 +3164,14 @@ def postbuildscript(parser, xml_parent, data):
     :arg list builders: Any supported builders, see :doc:`builders`.
     :arg bool onsuccess: Deprecated, replaced with script-only-if-succeeded
     :arg bool script-only-if-succeeded: Scripts and builders are run only if
-                                        the build succeeded (default True)
+                                        the build succeeded (default true)
     :arg bool onfailure: Deprecated, replaced with script-only-if-failed
     :arg bool script-only-if-failed: Scripts and builders are run only if the
-                                     build failed (default False)
+                                     build failed (default false)
     :arg bool mark-unstable-if-failed: Build will be marked unstable
                                        if job will be successfully completed
                                        but publishing script will return
-                                       non zero exit code (default False)
+                                       non zero exit code (default false)
     :arg str execute-on: For matrix projects, scripts can be run after each
                          axis is built (`axes`), after all axis of the matrix
                          are built (`matrix`) or after each axis AND the matrix
@@ -3710,14 +3710,14 @@ def plot(parser, xml_parent, data):
                                the labels and tooltips are swapped, with the
                                descriptions used as X-axis labels and the
                                build number and date used for tooltips.
-                               (default False)
+                               (default false)
     :arg bool exclude-zero-yaxis: When false, Y-axis contains the value zero
                                   even if it is not included in the data
                                   series. When true, the value zero is not
-                                  automatically included. (default False)
+                                  automatically included. (default false)
     :arg bool logarithmic-yaxis: When true, the Y-axis will use a logarithmic
                                  scale. By default, the Y-axis uses a linear
-                                 scale. (default False)
+                                 scale. (default false)
     :arg bool keep-records: When true, show all builds up to 'Number of
                             builds to include'. (default false)
     :arg str csv-file-name: Use for choosing the file name in which the data
@@ -3742,7 +3742,7 @@ def plot(parser, xml_parent, data):
               * **url** (`str`) : for 'csv' and 'xml' file types
                 used when you click on a point (default empty)
               * **display-table** (`bool`) : for 'csv' file type
-                if true, original CSV will be shown above plot (default False)
+                if true, original CSV will be shown above plot (default false)
               * **label** (`str`) : used by 'properties' file type
                 Specifies the legend label for this data series.
                 (default empty)
@@ -3855,11 +3855,11 @@ def git(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Git Plugin <Git+Plugin>`.
 
     :arg bool push-merge: push merges back to the origin specified in the
-                          pre-build merge options (default False)
+                          pre-build merge options (default false)
     :arg bool push-only-if-success: Only push to remotes if the build succeeds
                                     - otherwise, nothing will be pushed.
-                                    (default True)
-    :arg bool force-push: Add force option to git push (default False)
+                                    (default true)
+    :arg bool force-push: Add force option to git push (default false)
     :arg list tags: tags to push at the completion of the build
 
         :tag: * **remote** (`str`) remote repo name to push to
@@ -3868,9 +3868,9 @@ def git(parser, xml_parent, data):
               * **message** (`str`) message content of the tag
               * **create-tag** (`bool`) whether or not to create the tag
                 after the build, if this is False then the tag needs to
-                exist locally (default False)
+                exist locally (default false)
               * **update-tag** (`bool`) whether to overwrite a remote tag
-                or not (default False)
+                or not (default false)
 
     :arg list branches: branches to push at the completion of the build
 
@@ -3886,7 +3886,7 @@ def git(parser, xml_parent, data):
                * **namespace** (`str`) namespace of the note
                  (default master)
                * **replace-note** (`bool`) whether to overwrite a note or not
-                 (default False)
+                 (default false)
 
 
     Example:
@@ -4037,10 +4037,10 @@ def stash(parser, xml_parent, data):
     :arg string username: Username of Stash Server (default "")
     :arg string password: Password of Stash Server (default "")
     :arg string credentials-id: Credentials of Stash Server (optional)
-    :arg bool   ignore-ssl: Ignore unverified SSL certificate (default False)
+    :arg bool   ignore-ssl: Ignore unverified SSL certificate (default false)
     :arg string commit-sha1: Commit SHA1 to notify (default "")
     :arg bool   include-build-number: Include build number in key
-                (default False)
+                (default false)
 
     Example:
 
@@ -4154,7 +4154,7 @@ def description_setter(parser, xml_parent, data):
     :arg str description-for-failed: The description to set on
         the failed builds (optional)
     :arg bool set-for-matrix: Also set the description on
-        a multi-configuration build (default False)
+        a multi-configuration build (default false)
 
     Example:
 
@@ -4254,9 +4254,9 @@ def testng(parser, xml_parent, data):
     :arg str pattern: filename pattern to locate the TestNG XML report files
     :arg bool escape-test-description: escapes the description string
       associated with the test method while displaying test method details
-      (default True)
+      (default true)
     :arg bool escape-exception-msg: escapes the test method's exception
-      messages. (default True)
+      messages. (default true)
 
     Example:
 
@@ -4288,17 +4288,17 @@ def artifact_deployer(parser, xml_parent, data):
             * **excludes** (`str`) - the mask to exclude files
             * **remote** (`str`) - a remote output directory
             * **flatten** (`bool`) - ignore the source directory structure
-              (default False)
+              (default false)
             * **delete-remote** (`bool`) - clean-up remote directory
-              before deployment (default False)
+              before deployment (default false)
             * **delete-remote-artifacts** (`bool`) - delete remote artifacts
-              when the build is deleted (default False)
+              when the build is deleted (default false)
             * **fail-no-files** (`bool`) - fail build if there are no files
-              (default False)
+              (default false)
             * **groovy-script** (`str`) - execute a Groovy script
               before a build is deleted
 
-    :arg bool deploy-if-fail: Deploy if the build is failed (default False)
+    :arg bool deploy-if-fail: Deploy if the build is failed (default false)
 
     Example:
 
@@ -4356,17 +4356,17 @@ def s3(parser, xml_parent, data):
         * **bucket-region** (`str`) - S3 bucket region (capitalized with
           underscores)
         * **upload-on-failure** (`bool`) - Upload files even if the build
-          failed (default False)
+          failed (default false)
         * **upload-from-slave** (`bool`) - Perform the upload directly from
-          the Jenkins slave rather than the master node. (default False)
+          the Jenkins slave rather than the master node. (default false)
         * **managed-artifacts** (`bool`) - Let Jenkins fully manage the
           published artifacts, similar to when artifacts are published to
-          the Jenkins master. (default False)
+          the Jenkins master. (default false)
         * **s3-encryption** (`bool`) - Use S3 AES-256 server side encryption
-          support. (default False)
+          support. (default false)
         * **flatten** (`bool`) - Ignore the directory structure of the
           artifacts in the source project and copy all matching artifacts
-          directly into the specified bucket. (default False)
+          directly into the specified bucket. (default false)
     :arg list metadata-tags:
       :metadata-tags:
         * **key** Metadata key for files from this build. It will be
@@ -5212,7 +5212,7 @@ def image_gallery(parser, xml_parent, data):
     :arg str title: gallery title (optional)
     :arg int image-width: width of the image (optional)
     :arg bool unstable-if-no-artifacts: mark build as unstable
-        if no archived artifacts were found (default False)
+        if no archived artifacts were found (default false)
     :arg str includes: include pattern (valid for archived-images-gallery
         gallery)
     :arg str base-root-folder: base root dir (valid for comparative gallery)
@@ -5278,7 +5278,7 @@ def naginator(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Naginator Plugin <Naginator+Plugin>`.
 
     :arg bool rerun-unstable-builds: Rerun build for unstable builds as well
-        as failures (default False)
+        as failures (default false)
     :arg int fixed-delay: Fixed delay before retrying build (cannot be used
         with progressive-delay-increment or progressive-delay-maximum.
         This is the default delay type.  (default 0)
@@ -5779,7 +5779,7 @@ def cloudformation(parser, xml_parent, data):
             * **arg str secret-key** - The Amazon API Secret Key (Required)
             * **arg bool prefix** - If selected the tear down process will look
               for the stack that Starts with the stack name with the oldest
-              creation date and will delete it.  (default False)
+              creation date and will delete it.  (default false)
             * **arg array region** - The region to run cloudformation in.
               (Required)
 
@@ -5871,20 +5871,20 @@ def hipchat(parser, xml_parent, data):
     :arg list rooms: list of HipChat rooms to post messages to, overrides
         global default (optional)
     :arg bool notify-start: post messages about build start event
-        (default False)
+        (default false)
     :arg bool notify-success: post messages about successful build event
-        (default False)
+        (default false)
     :arg bool notify-aborted: post messages about aborted build event
-        (default False)
+        (default false)
     :arg bool notify-not-built: post messages about build set to NOT_BUILT.
         This status code is used in a multi-stage build where a problem in
-        earlier stage prevented later stages from building. (default False)
+        earlier stage prevented later stages from building. (default false)
     :arg bool notify-unstable: post messages about unstable build event
-        (default False)
+        (default false)
     :arg bool notify-failure:  post messages about build failure event
-        (default False)
+        (default false)
     :arg bool notify-back-to-normal: post messages about build being back to
-        normal after being unstable or failed (default False)
+        normal after being unstable or failed (default false)
     :arg str start-message: This will override the default start message
         (optional)
     :arg str complete-message: This will override the default complete message
@@ -5948,30 +5948,30 @@ def slack(parser, xml_parent, data):
     :arg str room: A comma seperated list of rooms / channels to post the
         notifications to. (default '')
     :arg bool notify-start: Send notification when the job starts (>=2.0).
-        (default False)
+        (default false)
     :arg bool notify-success: Send notification on success (>=2.0).
-        (default False)
+        (default false)
     :arg bool notify-aborted: Send notification when job is aborted (>=2.0).
-        (default False)
+        (default false)
     :arg bool notify-not-built: Send notification when job set to NOT_BUILT
-        status (>=2.0). (default False)
+        status (>=2.0). (default false)
     :arg bool notify-unstable: Send notification when job becomes unstable
-        (>=2.0). (default False)
+        (>=2.0). (default false)
     :arg bool notify-failure: Send notification when job fails for the first
-        time (previous build was a success) (>=2.0).  (default False)
+        time (previous build was a success) (>=2.0).  (default false)
     :arg bool notifiy-back-to-normal: Send notification when job is succeeding
-        again after being unstable or failed (>=2.0). (default False)
+        again after being unstable or failed (>=2.0). (default false)
     :arg bool notify-repeated-failure: Send notification when job fails
         successively (previous build was also a failure) (>=2.0).
-        (default False)
+        (default false)
     :arg bool include-test-summary: Include the test summary (>=2.0).
-        (default False)
+        (default false)
     :arg str commit-info-choice: What commit information to include into
         notification message, "NONE" includes nothing about commits, "AUTHORS"
         includes commit list with authors only, and "AUTHORS_AND_TITLES"
         includes commit list with authors and titles (>=2.0). (default "NONE")
     :arg bool include-custom-message: Include a custom message into the
-        notification (>=2.0). (default False)
+        notification (>=2.0). (default false)
     :arg str custom-message: Custom message to be included (>=2.0).
         (default '')
 
