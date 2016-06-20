@@ -40,6 +40,7 @@ from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.errors import MissingAttributeError
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 
 logger = logging.getLogger(str(__name__))
 
@@ -1483,35 +1484,41 @@ def script(parser, xml_parent, data):
 
     :arg str label: Restrict where the polling should run. (default '')
     :arg str script: A shell or batch script. (default '')
-    :arg str script-file-path: A shell or batch script path. (optional)
+    :arg str script-file-path: A shell or batch script path. (default '')
     :arg str cron: cron syntax of when to run (default '')
     :arg bool enable-concurrent:  Enables triggering concurrent builds.
                                   (default false)
     :arg int exit-code:  If the exit code of the script execution returns this
                          expected exit code, a build is scheduled. (default 0)
 
-    Example:
+    Full Example:
 
-    .. literalinclude:: /../../tests/triggers/fixtures/script001.yaml
+    .. literalinclude:: /../../tests/triggers/fixtures/script-full.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude:: /../../tests/triggers/fixtures/script-minimal.yaml
+       :language: yaml
     """
-    data = data if data else {}
     st = XML.SubElement(
         xml_parent,
         'org.jenkinsci.plugins.scripttrigger.ScriptTrigger'
     )
+    st.set('plugin', 'scripttrigger')
     label = data.get('label')
+    mappings = [
+        ('script', 'script', ''),
+        ('script-file-path', 'scriptFilePath', ''),
+        ('cron', 'spec', ''),
+        ('enable-concurrent', 'enableConcurrentBuild', False),
+        ('exit-code', 'exitCode', 0)
+    ]
+    convert_mapping_to_xml(st, data, mappings, fail_required=True)
 
-    XML.SubElement(st, 'script').text = str(data.get('script', ''))
-    if 'script-file-path' in data:
-        XML.SubElement(st, 'scriptFilePath').text = str(
-            data.get('script-file-path'))
-    XML.SubElement(st, 'spec').text = str(data.get('cron', ''))
     XML.SubElement(st, 'labelRestriction').text = str(bool(label)).lower()
     if label:
         XML.SubElement(st, 'triggerLabel').text = label
-    XML.SubElement(st, 'enableConcurrentBuild').text = str(
-        data.get('enable-concurrent', False)).lower()
-    XML.SubElement(st, 'exitCode').text = str(data.get('exit-code', 0))
 
 
 def groovy_script(parser, xml_parent, data):
@@ -1528,35 +1535,42 @@ def groovy_script(parser, xml_parent, data):
       evaluated to true, a build is scheduled. (default '')
     :arg str script-file-path: Groovy script path. (default '')
     :arg str property-file-path: Property file path. All properties will be set
-      as parameters for the triggered build. (optional)
+      as parameters for the triggered build. (default '')
     :arg bool enable-concurrent: Enable concurrent build. (default false)
     :arg str label: Restrict where the polling should run. (default '')
     :arg str cron: cron syntax of when to run (default '')
 
-    Example:
+    Full Example:
 
-    .. literalinclude:: /../../tests/triggers/fixtures/groovy-script.yaml
+    .. literalinclude:: /../../tests/triggers/fixtures/groovy-script-full.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+        /../../tests/triggers/fixtures/groovy-script-minimal.yaml
+       :language: yaml
     """
     gst = XML.SubElement(
         xml_parent,
         'org.jenkinsci.plugins.scripttrigger.groovy.GroovyScriptTrigger'
     )
+    gst.set('plugin', 'scripttrigger')
 
-    XML.SubElement(gst, 'groovySystemScript').text = str(
-        data.get('system-script', False)).lower()
-    XML.SubElement(gst, 'groovyExpression').text = str(data.get('script', ''))
-    XML.SubElement(gst, 'groovyFilePath').text = str(data.get(
-        'script-file-path', ''))
-    if 'property-file-path' in data:
-        XML.SubElement(gst, 'propertiesFilePath').text = str(
-            data.get('property-file-path'))
-    XML.SubElement(gst, 'enableConcurrentBuild').text = str(
-        data.get('enable-concurrent', False)).lower()
+    mappings = [
+        ('system-script', 'groovySystemScript', False),
+        ('script', 'groovyExpression', ''),
+        ('script-file-path', 'groovyFilePath', ''),
+        ('property-file-path', 'propertiesFilePath', ''),
+        ('enable-concurrent', 'enableConcurrentBuild', False),
+        ('cron', 'spec', ''),
+    ]
+    convert_mapping_to_xml(gst, data, mappings, fail_required=True)
+
     label = data.get('label')
     XML.SubElement(gst, 'labelRestriction').text = str(bool(label)).lower()
     if label:
         XML.SubElement(gst, 'triggerLabel').text = label
-    XML.SubElement(gst, 'spec').text = str(data.get('cron', ''))
 
 
 def rabbitmq(parser, xml_parent, data):
