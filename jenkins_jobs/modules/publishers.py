@@ -1414,19 +1414,19 @@ def findbugs(parser, xml_parent, data):
 
     :arg str pattern: specifies the generated raw FindBugs XML report files,
                       such as \*\*/findbugs.xml or \*\*/findbugsXml.xml.
-                      (Optional)
+                      (default '')
     :arg bool rank-priority: Use rank as priority (default false)
     :arg str include-files: Comma separated list of files to include.
-                            (Optional)
+                            (default '')
     :arg str exclude-files: Comma separated list of files to exclude.
-                            (Optional)
+                            (default '')
     :arg bool can-run-on-failed: Weather or not to run plug-in on failed builds
                                  (default false)
     :arg bool should-detect-modules: Determines if Ant or Maven modules should
                                      be detected for all files that contain
                                      warnings. (default false)
-    :arg int healthy: Sunny threshold (optional)
-    :arg int unhealthy: Stormy threshold (optional)
+    :arg int healthy: Sunny threshold (default '')
+    :arg int unhealthy: Stormy threshold (default '')
     :arg str health-threshold: Threshold priority for health status
       ('low', 'normal' or 'high', defaulted to 'low')
     :arg bool dont-compute-new: If set to false, computes new warnings based on
