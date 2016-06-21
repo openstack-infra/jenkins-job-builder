@@ -1071,6 +1071,7 @@ def junit(parser, xml_parent, data):
     """
     junitresult = XML.SubElement(xml_parent,
                                  'hudson.tasks.junit.JUnitResultArchiver')
+    junitresult.set('plugin', 'junit')
     XML.SubElement(junitresult, 'testResults').text = data['results']
     XML.SubElement(junitresult, 'keepLongStdio').text = str(
         data.get('keep-long-stdio', True)).lower()

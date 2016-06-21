@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <hudson.tasks.junit.JUnitResultArchiver>
+    <hudson.tasks.junit.JUnitResultArchiver plugin="junit">
       <testResults>nosetests-example.xml</testResults>
       <keepLongStdio>false</keepLongStdio>
       <healthScaleFactor>2.0</healthScaleFactor>
