@@ -548,18 +548,15 @@ def gerrit(parser, xml_parent, data):
                         False)).lower()
 
     build_gerrit_skip_votes(gtrig, data)
-    XML.SubElement(gtrig, 'silentMode').text = str(
-        data.get('silent', False)).lower()
-    XML.SubElement(gtrig, 'silentStartMode').text = str(
-        data.get('silent-start', False)).lower()
-    XML.SubElement(gtrig, 'escapeQuotes').text = str(
-        data.get('escape-quotes', True)).lower()
-    XML.SubElement(gtrig, 'noNameAndEmailParameters').text = str(
-        data.get('no-name-and-email', False)).lower()
-    XML.SubElement(gtrig, 'readableMessage').text = str(
-        data.get('readable-message', False)).lower()
-    XML.SubElement(gtrig, 'dependencyJobsNames').text = str(
-        data.get('dependency-jobs', ''))
+    general_mappings = [
+        ('silent', 'silentMode', False),
+        ('silent-start', 'silentStartMode', False),
+        ('escape-quotes', 'escapeQuotes', True),
+        ('no-name-and-email', 'noNameAndEmailParameters', False),
+        ('readable-message', 'readableMessage', False),
+        ('dependency-jobs', 'dependencyJobsNames', ''),
+    ]
+    convert_mapping_to_xml(gtrig, data, general_mappings, fail_required=True)
     notification_levels = ['NONE', 'OWNER', 'OWNER_REVIEWERS', 'ALL',
                            'SERVER_DEFAULT']
     notification_level = data.get('notification-level', 'SERVER_DEFAULT')
@@ -603,21 +600,17 @@ def gerrit(parser, xml_parent, data):
                 # str(int(x)) makes input values like '+1' work
                 XML.SubElement(gtrig, xmlkey).text = str(
                     int(data.get(yamlkey)))
-    XML.SubElement(gtrig, 'buildStartMessage').text = str(
-        data.get('start-message', ''))
-    XML.SubElement(gtrig, 'buildFailureMessage').text = \
-        data.get('failure-message', '')
-    XML.SubElement(gtrig, 'buildSuccessfulMessage').text = str(
-        data.get('successful-message', ''))
-    XML.SubElement(gtrig, 'buildUnstableMessage').text = str(
-        data.get('unstable-message', ''))
-    XML.SubElement(gtrig, 'buildNotBuiltMessage').text = str(
-        data.get('notbuilt-message', ''))
-    XML.SubElement(gtrig, 'buildUnsuccessfulFilepath').text = str(
-        data.get('failure-message-file', ''))
-    XML.SubElement(gtrig, 'customUrl').text = str(data.get('custom-url', ''))
-    XML.SubElement(gtrig, 'serverName').text = str(
-        data.get('server-name', '__ANY__'))
+    message_mappings = [
+        ('start-message', 'buildStartMessage', ''),
+        ('failure-message', 'buildFailureMessage', ''),
+        ('successful-message', 'buildSuccessfulMessage', ''),
+        ('unstable-message', 'buildUnstableMessage', ''),
+        ('notbuilt-message', 'buildNotBuiltMessage', ''),
+        ('failure-message-file', 'buildUnsuccessfulFilepath', ''),
+        ('custom-url', 'customUrl', ''),
+        ('server-name', 'serverName', '__ANY__'),
+    ]
+    convert_mapping_to_xml(gtrig, data, message_mappings, fail_required=True)
 
 
 def pollscm(parser, xml_parent, data):
