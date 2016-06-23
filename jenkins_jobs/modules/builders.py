@@ -2559,10 +2559,12 @@ def sonar(parser, xml_parent, data):
         AnalyzingwiththeSonarQubeScanner>`_
 
     :arg str sonar-name: Name of the Sonar installation.
-    :arg str task: Task to run. (optional)
-    :arg str project: Path to Sonar project properties file. (optional)
-    :arg str properties: Sonar configuration properties. (optional)
-    :arg str java-opts: Java options for Sonnar Runner. (optional)
+    :arg str task: Task to run. (default '')
+    :arg str project: Path to Sonar project properties file. (default '')
+    :arg str properties: Sonar configuration properties. (default '')
+    :arg str java-opts: Java options for Sonnar Runner. (default '')
+    :arg str additional-arguments: additional command line arguments
+        (default '')
     :arg str jdk: JDK to use (inherited from the job if omitted). (optional)
 
     Example:
@@ -2572,11 +2574,16 @@ def sonar(parser, xml_parent, data):
     """
     sonar = XML.SubElement(xml_parent,
                            'hudson.plugins.sonar.SonarRunnerBuilder')
+    sonar.set('plugin', 'sonar')
     XML.SubElement(sonar, 'installationName').text = data['sonar-name']
-    XML.SubElement(sonar, 'task').text = data.get('task', '')
-    XML.SubElement(sonar, 'project').text = data.get('project', '')
-    XML.SubElement(sonar, 'properties').text = data.get('properties', '')
-    XML.SubElement(sonar, 'javaOpts').text = data.get('java-opts', '')
+    mappings = [
+        ('task', 'task', ''),
+        ('project', 'project', ''),
+        ('properties', 'properties', ''),
+        ('java-opts', 'javaOpts', ''),
+        ('additional-arguments', 'additionalArguments', ''),
+    ]
+    convert_mapping_to_xml(sonar, data, mappings, fail_required=True)
     if 'jdk' in data:
         XML.SubElement(sonar, 'jdk').text = data['jdk']
 
