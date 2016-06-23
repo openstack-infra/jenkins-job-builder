@@ -31,7 +31,7 @@ import yaml
 import jenkins
 
 from jenkins_jobs.constants import MAGIC_MANAGE_STRING
-from jenkins_jobs.parallel import parallelize
+from jenkins_jobs.parallel import concurrent
 from jenkins_jobs import utils
 
 
@@ -153,7 +153,6 @@ class Jenkins(object):
             self._job_list = set(job['name'] for job in self.jobs)
         return self._job_list
 
-    @parallelize
     def update_job(self, job_name, xml):
         if self.is_job(job_name):
             logger.info("Reconfiguring jenkins job {0}".format(job_name))
@@ -274,7 +273,6 @@ class Builder(object):
         # Need to clear the JJB cache after deletion
         self.cache.clear()
 
-    @parallelize
     def changed(self, job):
         md5 = job.md5()
 
@@ -344,9 +342,9 @@ class Builder(object):
         p_params = [{'job': job} for job in jobs]
         results = self.parallel_update_job(
             n_workers=n_workers,
-            parallelize=p_params)
+            concurrent=p_params)
         logging.debug("Parsing results")
-        # generalize the result parsing, as a parallelized job always returns a
+        # generalize the result parsing, as a concurrent job always returns a
         # list
         if len(p_params) in (1, 0):
             results = [results]
@@ -365,7 +363,7 @@ class Builder(object):
         logging.debug("Total run took %ss", (time.time() - orig))
         return jobs, len(jobs)
 
-    @parallelize
+    @concurrent
     def parallel_update_job(self, job):
         self.jenkins.update_job(job.name, job.output().decode('utf-8'))
         return (job.name, job.md5())
