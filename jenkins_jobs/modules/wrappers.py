@@ -195,9 +195,9 @@ def config_file_provider(parser, xml_parent, data):
       :files: * **file-id** (`str`) -- The identifier for the managed config
                 file
               * **target** (`str`) -- Define where the file should be created
-                (optional)
+                (default '')
               * **variable** (`str`) -- Define an environment variable to be
-                used (optional)
+                used (default '')
 
     Example:
 
