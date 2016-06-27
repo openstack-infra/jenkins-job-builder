@@ -507,7 +507,8 @@ def copyartifact(parser, xml_parent, data):
         raise JenkinsJobsException("projects string must exist and "
                                    "not be empty")
     projectlist = XML.SubElement(copyartifact, 'projectNameList')
-    XML.SubElement(projectlist, 'string').text = data.get('projects')
+    for project in str(data.get('projects')).split(','):
+        XML.SubElement(projectlist, 'string').text = project
 
 
 def batch_tasks(parser, xml_parent, data):
