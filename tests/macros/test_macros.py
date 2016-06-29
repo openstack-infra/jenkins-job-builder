@@ -17,13 +17,9 @@
 
 import os
 
-from testscenarios.testcase import TestWithScenarios
-from testtools import TestCase
-
-from tests.base import get_scenarios
-from tests.base import SingleJobTestCase
+from tests import base
 
 
-class TestCaseModuleSCMMacro(TestWithScenarios, SingleJobTestCase, TestCase):
+class TestCaseModuleSCMMacro(base.SingleJobTestCase):
     fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
-    scenarios = get_scenarios(fixtures_path)
+    scenarios = base.get_scenarios(fixtures_path)

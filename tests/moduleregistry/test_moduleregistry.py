@@ -1,18 +1,15 @@
 import pkg_resources
 
-from testscenarios.testcase import TestWithScenarios
-
-import testtools as tt
 from testtools.content import text_content
+import testscenarios
 
 from jenkins_jobs.config import JJBConfig
 from jenkins_jobs.registry import ModuleRegistry
-from tests.base import LoggingFixture
+from tests import base
 
 
-class ModuleRegistryPluginInfoTestsWithScenarios(TestWithScenarios,
-                                                 LoggingFixture,
-                                                 tt.TestCase):
+class ModuleRegistryPluginInfoTestsWithScenarios(
+        testscenarios.TestWithScenarios, base.BaseTestCase):
     scenarios = [
         ('s1', dict(v1='1.0.0', op='__gt__', v2='0.8.0')),
         ('s2', dict(v1='1.0.1alpha', op='__gt__', v2='1.0.0')),

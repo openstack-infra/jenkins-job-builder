@@ -17,15 +17,11 @@
 
 import os
 
-from testscenarios.testcase import TestWithScenarios
-from testtools import TestCase
-
 from jenkins_jobs.modules import publishers
-from tests.base import BaseTestCase
-from tests.base import get_scenarios
+from tests import base
 
 
-class TestCaseModulePublishers(TestWithScenarios, BaseTestCase, TestCase):
+class TestCaseModulePublishers(base.BaseScenariosTestCase):
     fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
-    scenarios = get_scenarios(fixtures_path)
+    scenarios = base.get_scenarios(fixtures_path)
     klass = publishers.Publishers
