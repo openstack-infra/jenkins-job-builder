@@ -6259,7 +6259,7 @@ def github_pull_request_merge(parser, xml_parent, data):
     :arg bool disallow-own-code: if `true` will allow merging your own pull
         requests, in opposite to needing someone else to trigger the merge.
         (default false)
-    :arg bool merge-comment: Comment to set on the merge commit (optional)
+    :arg str merge-comment: Comment to set on the merge commit (default '')
     :arg bool fail-on-non-merge: fail the job if the merge was unsuccessful
         (default false)
     :arg bool delete-on-merge: Delete the branch of the pull request on
@@ -6284,12 +6284,12 @@ def github_pull_request_merge(parser, xml_parent, data):
         # option, xml name, default value
         ("only-admins-merge", 'onlyAdminsMerge', 'false'),
         ("disallow-own-code", 'disallowOwnCode', 'false'),
-        ("merge-comment", 'mergeComment', None),
+        ("merge-comment", 'mergeComment', ''),
         ("fail-on-non-merge", 'failOnNonMerge', 'false'),
         ("delete-on-merge", 'deleteOnMerge', 'false'),
     ]
 
-    helpers.convert_mapping_to_xml(osb, data, mapping)
+    helpers.convert_mapping_to_xml(osb, data, mapping, fail_required=True)
 
 
 class Publishers(jenkins_jobs.modules.base.Base):
