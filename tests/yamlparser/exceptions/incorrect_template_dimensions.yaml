@@ -1,0 +1,16 @@
+- project:
+    name: template_incorrect_args
+    os:
+      - ubuntu
+      - jessie
+    stream:
+      - current:
+        branch: current
+      - master:
+          branch: master
+    jobs:
+      - 'template-incorrect-args-{stream}-{os}'
+
+- job-template:
+    name: 'template-incorrect-args-{stream}-{os}'
+    disabled: true

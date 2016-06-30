@@ -279,8 +279,7 @@ class YamlParser(object):
                             continue
                         template = self._getJobTemplate(group_jobname)
                         # Allow a group to override parameters set by a project
-                        d = {}
-                        d.update(project)
+                        d = type(project)(project)
                         d.update(jobparams)
                         d.update(group)
                         d.update(group_jobparams)
@@ -293,8 +292,7 @@ class YamlParser(object):
                 # see if it's a template
                 template = self._getJobTemplate(jobname)
                 if template:
-                    d = {}
-                    d.update(project)
+                    d = type(project)(project)
                     d.update(jobparams)
                     self._expandYamlForTemplateJob(d, template, jobs_glob)
                 else:
@@ -334,14 +332,29 @@ class YamlParser(object):
             params = copy.deepcopy(project)
             params = self._applyDefaults(params, template)
 
-            expanded_values = {}
-            for (k, v) in values:
-                if isinstance(v, dict):
-                    inner_key = next(iter(v))
-                    expanded_values[k] = inner_key
-                    expanded_values.update(v[inner_key])
-                else:
-                    expanded_values[k] = v
+            try:
+                expanded_values = {}
+                for (k, v) in values:
+                    if isinstance(v, dict):
+                        inner_key = next(iter(v))
+                        expanded_values[k] = inner_key
+                        expanded_values.update(v[inner_key])
+                    else:
+                        expanded_values[k] = v
+            except TypeError:
+                project_name = project.pop('name')
+                logger.error(
+                    "Exception thrown while expanding template '%s' for "
+                    "project '%s', with expansion arguments of:\n%s\n"
+                    "Original project input variables for template:\n%s\n"
+                    "Most likely the inputs have items indented incorrectly "
+                    "to describe how they should be applied.\n\nNote yaml "
+                    "'null' is mapped to python's 'None'", template_name,
+                    project_name,
+                    "".join(local_yaml.dump({k: v}, default_flow_style=False)
+                            for (k, v) in values),
+                    local_yaml.dump(project, default_flow_style=False))
+                raise
 
             params.update(expanded_values)
             params = deep_format(params, params)

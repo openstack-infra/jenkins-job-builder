@@ -100,6 +100,7 @@ import re
 
 import yaml
 from yaml.constructor import BaseConstructor
+from yaml.representer import BaseRepresenter
 from yaml import YAMLObject
 
 from collections import OrderedDict
@@ -143,6 +144,14 @@ class OrderedConstructor(BaseConstructor):
             value = self.construct_object(value_node, deep=False)
             mapping[key] = value
         data.update(mapping)
+
+
+class OrderedRepresenter(BaseRepresenter):
+
+    def represent_yaml_mapping(self, mapping, flow_style=None):
+        tag = u'tag:yaml.org,2002:map'
+        node = self.represent_mapping(tag, mapping, flow_style=flow_style)
+        return node
 
 
 class LocalAnchorLoader(yaml.Loader):
@@ -230,9 +239,23 @@ class LocalLoader(OrderedConstructor, LocalAnchorLoader):
         return re.sub(r'({|})', r'\1\1', data)
 
 
+class LocalDumper(OrderedRepresenter, yaml.Dumper):
+    def __init__(self, *args, **kwargs):
+        super(LocalDumper, self).__init__(*args, **kwargs)
+
+        # representer to ensure conversion back looks like normal
+        # mapping and hides that we use OrderedDict internally
+        self.add_representer(OrderedDict,
+                             type(self).represent_yaml_mapping)
+        # convert any tuples to lists as the JJB input is generally
+        # in list format
+        self.add_representer(tuple,
+                             type(self).represent_list)
+
+
 class BaseYAMLObject(YAMLObject):
     yaml_loader = LocalLoader
-    yaml_dumper = yaml.Dumper
+    yaml_dumper = LocalDumper
 
 
 class YamlInclude(BaseYAMLObject):
@@ -323,3 +346,7 @@ class YamlIncludeRawEscapeDeprecated(DeprecatedTag):
 def load(stream, **kwargs):
     LocalAnchorLoader.reset_anchors()
     return yaml.load(stream, functools.partial(LocalLoader, **kwargs))
+
+
+def dump(data, stream=None, **kwargs):
+    return yaml.dump(data, stream, Dumper=LocalDumper, **kwargs)
