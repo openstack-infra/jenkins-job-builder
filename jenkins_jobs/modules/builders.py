@@ -3543,6 +3543,14 @@ def docker_build_publish(parse, xml_parent, data):
 
     :arg str repo-name: Name of repository to push to.
     :arg str repo-tag: Tag for image. (default '')
+    :arg dict server: The docker daemon (optional)
+        * **uri** (str): Define the docker server to use. (optional)
+        * **credentials-id** (str): ID of credentials to use to connect
+          (optional)
+    :arg dict registry: Registry to push to
+        * **url** (str) repository url to use (optional)
+        * **credentials-id** (str): ID of credentials to use to connect
+          (optional)
     :arg bool no-cache: If build should be cached. (default false)
     :arg bool no-force-pull: Don't update the source image before building when
         it exists locally. (default false)
@@ -3554,9 +3562,13 @@ def docker_build_publish(parse, xml_parent, data):
     :arg str build-context: Project root path for the build, defaults to the
         workspace if not specified. (default '')
 
-    Example:
+    Minimal example:
 
     .. literalinclude:: /../../tests/builders/fixtures/docker-builder001.yaml
+
+    Full example:
+
+    .. literalinclude:: /../../tests/builders/fixtures/docker-builder002.yaml
     """
     db = XML.SubElement(xml_parent,
                         'com.cloudbees.dockerpublish.DockerBuilder')
@@ -3575,6 +3587,28 @@ def docker_build_publish(parse, xml_parent, data):
         ('build-context', 'buildContext', ''),
     ]
     convert_mapping_to_xml(db, data, mapping, fail_required=True)
+
+    if 'server' in data:
+        server = XML.SubElement(db, 'server')
+        server.set('plugin', 'docker-commons')
+        server_data = data['server']
+        if 'credentials-id' in server_data:
+            XML.SubElement(server, 'credentialsId').text = str(
+                server_data['credentials-id'])
+        if 'uri' in server_data:
+            XML.SubElement(server, 'uri').text = str(
+                server_data['uri'])
+
+    if 'registry' in data:
+        registry = XML.SubElement(db, 'registry')
+        registry.set('plugin', 'docker-commons')
+        registry_data = data['registry']
+        if 'credentials-id' in registry_data:
+            XML.SubElement(registry, 'credentialsId').text = str(
+                registry_data['credentials-id'])
+        if 'url' in registry_data:
+            XML.SubElement(registry, 'url').text = str(
+                registry_data['url'])
 
 
 def build_name_setter(registry, xml_parent, data):
