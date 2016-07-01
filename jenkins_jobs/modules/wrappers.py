@@ -482,7 +482,7 @@ def build_keeper(parser, xml_parent, data):
     :arg int build-period: Number argument to calculate build to keep,
         depends on the policy. (default 0)
     :arg bool dont-keep-failed: Flag to indicate if to keep failed builds.
-        (default False)
+        (default false)
     :arg int number-of-fails: number of consecutive failed builds in order
         to mark first as keep forever, only applies to keep-first-failed
         policy (default 0)
@@ -870,13 +870,13 @@ def copy_to_slave(parser, xml_parent, data):
 
     :arg list includes: list of file patterns to copy (optional)
     :arg list excludes: list of file patterns to exclude (optional)
-    :arg bool flatten: flatten directory structure (default False)
+    :arg bool flatten: flatten directory structure (default false)
     :arg str relative-to: base location of includes/excludes, must be home
         ($JENKINS_HOME), somewhereElse ($JENKINS_HOME/copyToSlave),
         userContent ($JENKINS_HOME/userContent) or workspace
         (default userContent)
     :arg bool include-ant-excludes: exclude ant's default excludes
-        (default False)
+        (default false)
 
     Minimal Example:
 
@@ -1061,14 +1061,14 @@ def jclouds(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`JClouds Plugin <JClouds+Plugin>`.
 
     :arg bool single-use: Whether or not to terminate the slave after use
-                          (default False).
+                          (default false).
     :arg list instances: The name of the jclouds template to create an
                          instance from, and its parameters.
     :arg str cloud-name: The name of the jclouds profile containing the
                          specified template.
     :arg int count: How many instances to create (default 1).
     :arg bool stop-on-terminate: Whether or not to suspend instead of terminate
-                                 the instance (default False).
+                                 the instance (default false).
 
     Example::
 
@@ -1125,11 +1125,11 @@ def openstack(parser, xml_parent, data):
               will be put in 'Specify Template Name as String' option. Not
               specifying or specifying False, instance template name will be
               put in 'Select Template from List' option. To use parameter
-              replacement, set this to True.  (default False)
+              replacement, set this to True.  (default false)
             * **count** (`int`) -- How many instances to create (default 1).
 
     :arg bool single-use: Whether or not to terminate the slave after use
-        (default False).
+        (default false).
 
     Example:
 
@@ -2071,12 +2071,12 @@ def artifactory_generic(parser, xml_parent, data):
         artifacts in addition to the default ones: build.name, build.number,
         and vcs.revision (default [])
     :arg bool deploy-build-info: Deploy jenkins build metadata with
-        artifacts to Artifactory (default False)
+        artifacts to Artifactory (default false)
     :arg bool env-vars-include: Include environment variables accessible by
         the build process. Jenkins-specific env variables are always included.
         Use the env-vars-include-patterns and env-vars-exclude-patterns to
         filter the environment variables published to artifactory.
-        (default False)
+        (default false)
     :arg list env-vars-include-patterns: List of environment variable patterns
         for including env vars as part of the published build info. Environment
         variables may contain the * and the ? wildcards (default [])
@@ -2084,9 +2084,9 @@ def artifactory_generic(parser, xml_parent, data):
         that determine the env vars excluded from the published build info
         (default [])
     :arg bool discard-old-builds:
-        Remove older build info from Artifactory (default False)
+        Remove older build info from Artifactory (default false)
     :arg bool discard-build-artifacts:
-        Remove older build artifacts from Artifactory (default False)
+        Remove older build artifacts from Artifactory (default false)
 
     Example:
 
@@ -2153,34 +2153,34 @@ def artifactory_maven_freestyle(parser, xml_parent, data):
     :arg str release-repo-key: Release repository name (default '')
     :arg str snapshot-repo-key: Snapshots repository name (default '')
     :arg bool publish-build-info: Push build metadata with artifacts
-        (default False)
+        (default false)
     :arg bool discard-old-builds:
-        Remove older build info from Artifactory (default True)
+        Remove older build info from Artifactory (default true)
     :arg bool discard-build-artifacts:
-        Remove older build artifacts from Artifactory (default False)
+        Remove older build artifacts from Artifactory (default false)
     :arg bool include-env-vars: Include all environment variables
         accessible by the build process. Jenkins-specific env variables
-        are always included (default False)
+        are always included (default false)
     :arg bool run-checks: Run automatic license scanning check after the
-        build is complete (default False)
+        build is complete (default false)
     :arg bool include-publish-artifacts: Include the build's published
         module artifacts in the license violation checks if they are
         also used as dependencies for other modules in this build
-        (default False)
+        (default false)
     :arg bool license-auto-discovery: Tells Artifactory not to try
         and automatically analyze and tag the build's dependencies
-        with license information upon deployment (default True)
+        with license information upon deployment (default true)
     :arg bool enable-issue-tracker-integration: When the Jenkins
         JIRA plugin is enabled, synchronize information about JIRA
         issues to Artifactory and attach issue information to build
-        artifacts (default False)
+        artifacts (default false)
     :arg bool aggregate-build-issues: When the Jenkins JIRA plugin
         is enabled, include all issues from previous builds up to the
         latest build status defined in "Aggregation Build Status"
-        (default False)
+        (default false)
     :arg bool filter-excluded-artifacts-from-build: Add the excluded
         files to the excludedArtifacts list and remove them from the
-        artifacts list in the build info (default False)
+        artifacts list in the build info (default false)
     :arg str scopes:  A list of dependency scopes/configurations to run
         license violation checks on. If left empty all dependencies from
         all scopes will be checked (default '')
@@ -2201,23 +2201,23 @@ def artifactory_maven_freestyle(parser, xml_parent, data):
         all dependencies from all scopes will be checked (default '')
     :arg bool black-duck-run-checks: Automatic Black Duck Code Center
         compliance checks will occur after the build completes
-        (default False)
+        (default false)
     :arg bool black-duck-include-published-artifacts: Include the build's
         published module artifacts in the license violation checks if they
         are also used as dependencies for other modules in this build
-        (default False)
+        (default false)
     :arg bool auto-create-missing-component-requests: Auto create
         missing components in Black Duck Code Center application after
         the build is completed and deployed in Artifactory
-        (default True)
+        (default true)
     :arg bool auto-discard-stale-component-requests: Auto discard
         stale components in Black Duck Code Center application after
         the build is completed and deployed in Artifactory
-        (default True)
+        (default true)
     :arg bool deploy-artifacts: Push artifacts to the Artifactory
         Server. The specific artifacts to push are controlled using
         the deployment-include-patterns and deployment-exclude-patterns.
-        (default True)
+        (default true)
     :arg list deployment-include-patterns: List of patterns for including
         build artifacts to publish to artifactory. (default[]')
     :arg list deployment-exclude-patterns: List of patterns
@@ -2227,7 +2227,7 @@ def artifactory_maven_freestyle(parser, xml_parent, data):
         accessible by the build process. Jenkins-specific env variables
         are always included. Environment variables can be filtered using
         the env-vars-include-patterns nad env-vars-exclude-patterns.
-        (default False)
+        (default false)
     :arg list env-vars-include-patterns: List of environment variable patterns
         that will be included as part of the published build info. Environment
         variables may contain the * and the ? wildcards (default [])
