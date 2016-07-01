@@ -3969,6 +3969,21 @@ def github_notifier(parser, xml_parent, data):
                    'com.cloudbees.jenkins.GitHubCommitNotifier')
 
 
+def gitlab_notifier(parser, xml_parent, data):
+    """yaml: gitlab-notifier
+    Set build status on GitLab commit.
+    Requires the Jenkins :jenkins-wiki:`GitLab Plugin <GitLab+Plugin>`.
+
+    Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/gitlab-notifier.yaml
+       :language: yaml
+    """
+    XML.SubElement(
+        xml_parent,
+        'com.dabsquared.gitlabjenkins.publisher.GitLabCommitStatusPublisher')
+
+
 def zulip(parser, xml_parent, data):
     """yaml: zulip
     Set build status on zulip.

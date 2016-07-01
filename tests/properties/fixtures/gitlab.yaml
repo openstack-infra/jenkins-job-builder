@@ -1,0 +1,3 @@
+properties:
+  - gitlab:
+      connection: gitlab-connection
