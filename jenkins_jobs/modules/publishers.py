@@ -4651,6 +4651,8 @@ def scan_build(parser, xml_parent, data):
     :arg int threshold: Threshold for marking builds as unstable (default 0)
     :arg string exclude-paths: Comma separated paths to exclude from reports
         (default '')
+    :arg string report-folder: Folder where generated reports are located
+        (default 'clangScanBuildReports')
 
     Example:
 
@@ -4671,6 +4673,8 @@ def scan_build(parser, xml_parent, data):
     XML.SubElement(p, 'bugThreshold').text = threshold
     XML.SubElement(p, 'clangexcludedpaths').text = str(
         data.get('exclude-paths', ''))
+    XML.SubElement(p, 'reportFolderName').text = str(
+        data.get('report-folder', 'clangScanBuildReports'))
 
 
 def dry(parser, xml_parent, data):

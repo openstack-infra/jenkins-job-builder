@@ -3,3 +3,4 @@ publishers:
       mark-unstable: true
       threshold: 0
       exclude-paths: external-lib
+      report-folder: scan-build-report

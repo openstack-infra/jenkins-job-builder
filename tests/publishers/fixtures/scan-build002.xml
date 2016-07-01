@@ -5,6 +5,7 @@
       <markBuildUnstableWhenThresholdIsExceeded>false</markBuildUnstableWhenThresholdIsExceeded>
       <bugThreshold>0</bugThreshold>
       <clangexcludedpaths/>
+      <reportFolderName>clangScanBuildReports</reportFolderName>
     </jenkins.plugins.clangscanbuild.publisher.ClangScanBuildPublisher>
   </publishers>
 </project>
