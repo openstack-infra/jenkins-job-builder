@@ -1,0 +1,6 @@
+publishers:
+  - pipeline:
+      project: test_project
+      property-file: vars.txt
+      fail-on-missing: true
+      file-encoding: UTF-8
