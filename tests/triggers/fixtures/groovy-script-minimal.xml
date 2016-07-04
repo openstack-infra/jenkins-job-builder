@@ -2,14 +2,13 @@
 <project>
   <triggers class="vector">
     <org.jenkinsci.plugins.scripttrigger.groovy.GroovyScriptTrigger plugin="scripttrigger">
-      <groovySystemScript>true</groovySystemScript>
+      <groovySystemScript>false</groovySystemScript>
       <groovyExpression/>
-      <groovyFilePath>path/to/filename</groovyFilePath>
+      <groovyFilePath/>
       <propertiesFilePath/>
-      <enableConcurrentBuild>true</enableConcurrentBuild>
-      <spec>H/15 * * * *</spec>
-      <labelRestriction>true</labelRestriction>
-      <triggerLabel>master</triggerLabel>
+      <enableConcurrentBuild>false</enableConcurrentBuild>
+      <spec/>
+      <labelRestriction>false</labelRestriction>
     </org.jenkinsci.plugins.scripttrigger.groovy.GroovyScriptTrigger>
   </triggers>
 </project>

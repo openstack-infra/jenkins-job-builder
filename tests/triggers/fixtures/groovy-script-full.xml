@@ -3,9 +3,9 @@
   <triggers class="vector">
     <org.jenkinsci.plugins.scripttrigger.groovy.GroovyScriptTrigger plugin="scripttrigger">
       <groovySystemScript>true</groovySystemScript>
-      <groovyExpression/>
+      <groovyExpression>groovy-content</groovyExpression>
       <groovyFilePath>path/to/filename</groovyFilePath>
-      <propertiesFilePath/>
+      <propertiesFilePath>/path/to/properties/file</propertiesFilePath>
       <enableConcurrentBuild>true</enableConcurrentBuild>
       <spec>H/15 * * * *</spec>
       <labelRestriction>true</labelRestriction>

@@ -1,0 +1,9 @@
+triggers:
+  - groovy-script:
+        script: groovy-content
+        script-file-path: path/to/filename
+        property-file-path: /path/to/properties/file
+        cron: H/15 * * * *
+        enable-concurrent: true
+        label: master
+        system-script: true

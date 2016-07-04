@@ -2,13 +2,12 @@
 <project>
   <triggers class="vector">
     <org.jenkinsci.plugins.scripttrigger.ScriptTrigger plugin="scripttrigger">
-      <script>exit 0</script>
+      <script/>
       <scriptFilePath/>
-      <spec>H/15 * * * *</spec>
+      <spec/>
       <enableConcurrentBuild>false</enableConcurrentBuild>
       <exitCode>0</exitCode>
-      <labelRestriction>true</labelRestriction>
-      <triggerLabel>master</triggerLabel>
+      <labelRestriction>false</labelRestriction>
     </org.jenkinsci.plugins.scripttrigger.ScriptTrigger>
   </triggers>
 </project>
