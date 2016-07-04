@@ -492,10 +492,18 @@ def convert_mapping_to_xml(parent, data, mapping, fail_required=False):
     configuring the XML tag for the parameter. We recommend for new plugins to
     set fail_required=True and instead of optional parameters provide a default
     value for all paramters that are not required instead.
+
+    valid_options provides a way to check if the value the user input is from a
+    list of available options. When the user pass a value that is not supported
+    from the list, it raise an InvalidAttributeError.
     """
     for elem in mapping:
-        (optname, xmlname, val) = elem
+        (optname, xmlname, val) = elem[:3]
         val = data.get(optname, val)
+
+        valid_options = []
+        if len(elem) == 4:
+            valid_options = elem[3]
 
         # Use fail_required setting to allow support for optional parameters
         # we will phase this out in the future as we rework plugins so that
@@ -508,6 +516,10 @@ def convert_mapping_to_xml(parent, data, mapping, fail_required=False):
         # up to the user if they want to use an empty XML tag
         if val is None and fail_required is False:
             continue
+
+        if valid_options:
+            if val not in valid_options:
+                raise InvalidAttributeError(optname, val, valid_options)
 
         if type(val) == bool:
             val = str(val).lower()
