@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.g2one.hudson.grails.GrailsBuilder plugin="grails">
+      <targets>foo</targets>
+      <name>(Default)</name>
+      <grailsWorkDir/>
+      <projectWorkDir/>
+      <projectBaseDir/>
+      <serverPort/>
+      <properties/>
+      <forceUpgrade>false</forceUpgrade>
+      <nonInteractive>false</nonInteractive>
+      <useWrapper>false</useWrapper>
+      <plainOutput>false</plainOutput>
+      <stackTrace>false</stackTrace>
+      <verbose>false</verbose>
+      <refreshDependencies>false</refreshDependencies>
+    </com.g2one.hudson.grails.GrailsBuilder>
+  </builders>
+</project>
