@@ -73,7 +73,7 @@ def git(parser, xml_parent, data):
     :arg bool skip-tag: Skip tagging (default true)
 
         .. deprecated:: 1.6.0. Please use per-build-tag extension, which has
-        the inverse meaning.
+           the inverse meaning.
 
     :arg bool clean: Clean after checkout (default false)
 
