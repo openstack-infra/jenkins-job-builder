@@ -5,6 +5,9 @@ publishers:
       appfile: /tmp/appfile.ipa
       notify-testers: false
       autoupdate: false
+      max-duration: 1440m
+      screenshot-interval: 5
+      video-quality: medium
       cpu: false
       memory: false
       logs: false
