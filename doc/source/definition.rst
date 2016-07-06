@@ -87,7 +87,7 @@ This can be used to provide common settings for particular templates.
 For example:
 
 .. literalinclude::
-    /../..tests/yamlparser/fixtures/template_default_variables.yaml
+    /../../tests/yamlparser/fixtures/template_default_variables.yaml
    :language: yaml
 
 To use a default value for a variable used in the name would be
