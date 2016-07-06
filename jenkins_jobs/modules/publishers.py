@@ -38,20 +38,7 @@ from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.errors import MissingAttributeError
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
-from jenkins_jobs.modules.helpers import append_git_revision_config
-from jenkins_jobs.modules.helpers import artifactory_common_details
-from jenkins_jobs.modules.helpers import artifactory_deployment_patterns
-from jenkins_jobs.modules.helpers import artifactory_env_vars_patterns
-from jenkins_jobs.modules.helpers import artifactory_optional_props
-from jenkins_jobs.modules.helpers import build_trends_publisher
-from jenkins_jobs.modules.helpers import cloudformation_init
-from jenkins_jobs.modules.helpers import cloudformation_region_dict
-from jenkins_jobs.modules.helpers import cloudformation_stack
-from jenkins_jobs.modules.helpers import config_file_provider_settings
-from jenkins_jobs.modules.helpers import convert_mapping_to_xml
-from jenkins_jobs.modules.helpers import findbugs_settings
-from jenkins_jobs.modules.helpers import get_value_from_yaml_or_config_file
-from jenkins_jobs.modules.helpers import test_fairy_common
+import jenkins_jobs.modules.helpers as helpers
 
 
 def archive(parser, xml_parent, data):
@@ -469,7 +456,7 @@ def trigger_parameterized_builds(parser, xml_parent, data):
                     }
                 else:
                     git_revision = project_def['git-revision']
-                append_git_revision_config(tconfigs, git_revision)
+                helpers.append_git_revision_config(tconfigs, git_revision)
             elif param_type == 'property-file':
                 params = XML.SubElement(tconfigs,
                                         pt_prefix + 'FileBuildParameters')
@@ -1472,8 +1459,8 @@ def findbugs(parser, xml_parent, data):
                               'hudson.plugins.findbugs.FindBugsPublisher')
     findbugs.set('plugin', 'findbugs')
 
-    findbugs_settings(findbugs, data)
-    build_trends_publisher('[FINDBUGS] ', findbugs, data)
+    helpers.findbugs_settings(findbugs, data)
+    helpers.build_trends_publisher('[FINDBUGS] ', findbugs, data)
 
 
 def checkstyle(parser, xml_parent, data):
@@ -1571,7 +1558,7 @@ def checkstyle(parser, xml_parent, data):
             'totalLow': 'total-low'
         }, threshold_data.get(threshold, {}))
 
-    build_trends_publisher('[CHECKSTYLE] ', xml_element, data)
+    helpers.build_trends_publisher('[CHECKSTYLE] ', xml_element, data)
 
 
 def scp(parser, xml_parent, data):
@@ -2426,7 +2413,7 @@ def sonar(parser, xml_parent, data):
             str(data_triggers.get('skip-when-upstream-build', False)).lower()
         XML.SubElement(triggers, 'envVar').text =  \
             data_triggers.get('skip-when-envvar-defined', '')
-    config_file_provider_settings(sonar, data)
+    helpers.config_file_provider_settings(sonar, data)
 
 
 def performance(parser, xml_parent, data):
@@ -2835,14 +2822,14 @@ def artifactory(parser, xml_parent, data):
         xml_parent, 'org.jfrog.hudson.ArtifactoryRedeployPublisher')
 
     # optional_props
-    artifactory_optional_props(artifactory, data, 'publishers')
+    helpers.artifactory_optional_props(artifactory, data, 'publishers')
 
     XML.SubElement(artifactory, 'matrixParams').text = ','.join(
         data.get('matrix-params', []))
 
     # details
     details = XML.SubElement(artifactory, 'details')
-    artifactory_common_details(details, data)
+    helpers.artifactory_common_details(details, data)
 
     XML.SubElement(details, 'repositoryKey').text = data.get(
         'release-repo-key', '')
@@ -2853,10 +2840,10 @@ def artifactory(parser, xml_parent, data):
     XML.SubElement(plugin, 'pluginName').text = 'None'
 
     # artifactDeploymentPatterns
-    artifactory_deployment_patterns(artifactory, data)
+    helpers.artifactory_deployment_patterns(artifactory, data)
 
     # envVarsPatterns
-    artifactory_env_vars_patterns(artifactory, data)
+    helpers.artifactory_env_vars_patterns(artifactory, data)
 
 
 def test_fairy(parser, xml_parent, data):
@@ -2939,7 +2926,7 @@ def test_fairy(parser, xml_parent, data):
         root = XML.SubElement(
             xml_parent,
             'org.jenkinsci.plugins.testfairy.TestFairyAndroidRecorder')
-        test_fairy_common(root, data)
+        helpers.test_fairy_common(root, data)
 
         mappings = [
             ('proguard-file', 'mappingFile', ''),
@@ -2947,14 +2934,16 @@ def test_fairy(parser, xml_parent, data):
             ('storepass', 'storepass', 'android'),
             ('alias', 'alias', 'androiddebugkey'),
             ('keypass', 'keypass', '')]
-        convert_mapping_to_xml(root, data, mappings, fail_required=True)
+        helpers.convert_mapping_to_xml(
+            root, data, mappings, fail_required=True)
     elif platform == 'ios':
         root = XML.SubElement(
             xml_parent, 'org.jenkinsci.plugins.testfairy.TestFairyIosRecorder')
-        test_fairy_common(root, data)
+        helpers.test_fairy_common(root, data)
 
         mappings = [('dSYM-file', 'mappingFile', '')]
-        convert_mapping_to_xml(root, data, mappings, fail_required=True)
+        helpers.convert_mapping_to_xml(
+            root, data, mappings, fail_required=True)
     else:
         raise InvalidAttributeError('platform', platform, valid_platforms)
 
@@ -3859,7 +3848,8 @@ def plot(parser, xml_parent, data):
             ('logarithmic-yaxis', 'logarithmic', False),
             ('keep-records', 'keepRecords', False),
             ('num-builds', 'numBuilds', '')]
-        convert_mapping_to_xml(plugin, plot, mappings, fail_required=True)
+        helpers.convert_mapping_to_xml(
+            plugin, plot, mappings, fail_required=True)
 
         style_list = ['area', 'bar', 'bar3d', 'line', 'line3d', 'stackedArea',
                       'stackedbar', 'stackedbar3d', 'waterfall']
@@ -4095,10 +4085,10 @@ def stash(parser, xml_parent, data):
             data.get('credentials-id'))
     else:
         XML.SubElement(top, 'stashUserName'
-                       ).text = get_value_from_yaml_or_config_file(
+                       ).text = helpers.get_value_from_yaml_or_config_file(
                            'username', 'stash', data, parser)
         XML.SubElement(top, 'stashUserPassword'
-                       ).text = get_value_from_yaml_or_config_file(
+                       ).text = helpers.get_value_from_yaml_or_config_file(
                            'password', 'stash', data, parser)
 
     XML.SubElement(top, 'ignoreUnverifiedSSLPeer').text = str(
@@ -4175,7 +4165,8 @@ def dependency_check(parser, xml_parent, data):
         'org.jenkinsci.plugins.DependencyCheck.DependencyCheckPublisher')
 
     # trends
-    build_trends_publisher('[DEPENDENCYCHECK] ', dependency_check, data)
+    helpers.build_trends_publisher(
+        '[DEPENDENCYCHECK] ', dependency_check, data)
 
 
 def description_setter(parser, xml_parent, data):
@@ -4657,7 +4648,7 @@ def pmd(parser, xml_parent, data):
 
     xml_element = XML.SubElement(xml_parent, 'hudson.plugins.pmd.PmdPublisher')
 
-    build_trends_publisher('[PMD] ', xml_element, data)
+    helpers.build_trends_publisher('[PMD] ', xml_element, data)
 
 
 def scan_build(parser, xml_parent, data):
@@ -4771,7 +4762,7 @@ def dry(parser, xml_parent, data):
 
     xml_element = XML.SubElement(xml_parent, 'hudson.plugins.dry.DryPublisher')
 
-    build_trends_publisher('[DRY] ', xml_element, data)
+    helpers.build_trends_publisher('[DRY] ', xml_element, data)
 
     # Add specific settings for this trends publisher
     settings = [
@@ -5842,17 +5833,18 @@ def cloudformation(parser, xml_parent, data):
     .. literalinclude:: /../../tests/publishers/fixtures/cloudformation.yaml
        :language: yaml
     """
-    region_dict = cloudformation_region_dict()
-    stacks = cloudformation_init(xml_parent, data, 'CloudFormationPostBuild'
-                                 'Notifier')
+    region_dict = helpers.cloudformation_region_dict()
+    stacks = helpers.cloudformation_init(
+        xml_parent, data, 'CloudFormationPostBuildNotifier')
     for stack in data.get('create-stacks', []):
-        cloudformation_stack(xml_parent, stack, 'PostBuildStackBean',
-                             stacks, region_dict)
-    delete_stacks = cloudformation_init(xml_parent, data, 'CloudFormation'
-                                                          'Notifier')
+        helpers.cloudformation_stack(xml_parent, stack, 'PostBuildStackBean',
+                                     stacks, region_dict)
+    delete_stacks = helpers.cloudformation_init(
+        xml_parent, data, 'CloudFormationNotifier')
     for delete_stack in data.get('delete-stacks', []):
-        cloudformation_stack(xml_parent, delete_stack, 'SimpleStackBean',
-                             delete_stacks, region_dict)
+        helpers.cloudformation_stack(xml_parent, delete_stack,
+                                     'SimpleStackBean', delete_stacks,
+                                     region_dict)
 
 
 def whitesource(parser, xml_parent, data):
@@ -6202,7 +6194,7 @@ def openshift_build_canceller(parser, xml_parent, data):
         ("verbose", 'verbose', 'false'),
     ]
 
-    convert_mapping_to_xml(osb, data, mapping)
+    helpers.convert_mapping_to_xml(osb, data, mapping)
 
 
 def openshift_deploy_canceller(parser, xml_parent, data):
@@ -6251,7 +6243,7 @@ def openshift_deploy_canceller(parser, xml_parent, data):
         ("verbose", 'verbose', 'false'),
     ]
 
-    convert_mapping_to_xml(osb, data, mapping)
+    helpers.convert_mapping_to_xml(osb, data, mapping)
 
 
 def github_pull_request_merge(parser, xml_parent, data):
@@ -6297,7 +6289,7 @@ def github_pull_request_merge(parser, xml_parent, data):
         ("delete-on-merge", 'deleteOnMerge', 'false'),
     ]
 
-    convert_mapping_to_xml(osb, data, mapping)
+    helpers.convert_mapping_to_xml(osb, data, mapping)
 
 
 class Publishers(jenkins_jobs.modules.base.Base):
