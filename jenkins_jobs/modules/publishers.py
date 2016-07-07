@@ -3071,7 +3071,7 @@ def tap(parser, xml_parent, data):
 
     Requires the Jenkins :jenkins-wiki:`TAP Plugin <TAP+Plugin>`.
 
-    :arg str results: TAP test result files
+    :arg str results: TAP test result files (required)
     :arg bool fail-if-no-results: Fail if no result (default false)
     :arg bool failed-tests-mark-build-as-failure:
                 Mark build as failure if test fails (default false)
@@ -3079,35 +3079,46 @@ def tap(parser, xml_parent, data):
     :arg bool enable-subtests: Enable subtests (default true)
     :arg bool discard-old-reports: Discard old reports (default false)
     :arg bool todo-is-failure: Handle TODO's as failures (default true)
+    :arg bool include-comment-diagnostics: Include comment diagnostics (#) in
+        the results table (>=1.12) (default false)
+    :arg bool validate-tests: Validate number of tests (>=1.13) (default false)
+    :arg bool plan-required: TAP plan required? (>=1.17) (default true)
+    :arg bool verbose: Print a message for each TAP stream file (>=1.17)
+        (default true)
+    :arg bool show-only-failures: show only test failures (>=1.17)
+        (default false)
 
+    Full Example:
 
-    Example:
+    .. literalinclude:: /../../tests/publishers/fixtures/tap-full.yaml
+       :language: yaml
 
-    .. literalinclude:: /../../tests/publishers/fixtures/tap001.yaml
+    Minimal Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/tap-minimal.yaml
        :language: yaml
     """
 
     tap = XML.SubElement(xml_parent, 'org.tap4j.plugin.TapPublisher')
+    tap.set('plugin', 'tap')
 
-    XML.SubElement(tap, 'testResults').text = data['results']
-
-    XML.SubElement(tap, 'failIfNoResults').text = str(
-        data.get('fail-if-no-results', False)).lower()
-
-    XML.SubElement(tap, 'failedTestsMarkBuildAsFailure').text = str(
-        data.get('failed-tests-mark-build-as-failure', False)).lower()
-
-    XML.SubElement(tap, 'outputTapToConsole').text = str(
-        data.get('output-tap-to-console', True)).lower()
-
-    XML.SubElement(tap, 'enableSubtests').text = str(
-        data.get('enable-subtests', True)).lower()
-
-    XML.SubElement(tap, 'discardOldReports').text = str(
-        data.get('discard-old-reports', False)).lower()
-
-    XML.SubElement(tap, 'todoIsFailure').text = str(
-        data.get('todo-is-failure', True)).lower()
+    mappings = [
+        ('results', 'testResults', None),
+        ('fail-if-no-results', 'failIfNoResults', False),
+        ('failed-tests-mark-build-as-failure',
+         'failedTestsMarkBuildAsFailure',
+         False),
+        ('output-tap-to-console', 'outputTapToConsole', True),
+        ('enable-subtests', 'enableSubtests', True),
+        ('discard-old-reports', 'discardOldReports', False),
+        ('todo-is-failure', 'todoIsFailure', True),
+        ('include-comment-diagnostics', 'includeCommentDiagnostics', False),
+        ('validate-tests', 'validateNumberOfTests', False),
+        ('plan-required', 'planRequired', True),
+        ('verbose', 'verbose', True),
+        ('show-only-failures', 'showOnlyFailures', False),
+    ]
+    helpers.convert_mapping_to_xml(tap, data, mappings, fail_required=True)
 
 
 def post_tasks(parser, xml_parent, data):

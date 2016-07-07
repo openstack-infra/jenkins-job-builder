@@ -1,0 +1,14 @@
+publishers:
+  - tap:
+      results: puiparts.tap
+      fail-if-no-results: true
+      failed-tests-mark-build-as-failure: true
+      output-tap-to-console: false
+      enable-subtests: false
+      discard-old-reports: true
+      todo-is-failure: false
+      include-comment-diagnostics: true
+      validate-tests: true
+      plan-required: false
+      verbose: false
+      show-only-failures: true
