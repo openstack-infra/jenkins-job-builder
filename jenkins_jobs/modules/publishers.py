@@ -4282,26 +4282,65 @@ def testng(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`TestNG Results Plugin <testng-plugin>`.
 
     :arg str pattern: filename pattern to locate the TestNG XML report files
+        (required)
     :arg bool escape-test-description: escapes the description string
       associated with the test method while displaying test method details
       (default true)
     :arg bool escape-exception-msg: escapes the test method's exception
       messages. (default true)
+    :arg bool fail-on-failed-test-config: Allows for a distinction between
+        failing tests and failing configuration methods (>=1.10) (default
+        false)
+    :arg bool show-failed-builds: include results from failed builds in the
+        trend graph (>=1.6) (default false)
+    :arg int unstable-skips: Build is marked UNSTABLE if the number/percentage
+        of skipped tests exceeds the specified threshold (>=1.11) (default 100)
+    :arg int unstable-fails: Build is marked UNSTABLE if the number/percentage
+        of failed tests exceeds the specified threshold (>=1.11) (default 0)
+    :arg int failed-skips: Build is marked FAILURE if the number/percentage of
+        skipped tests exceeds the specified threshold (>=1.11) (default 100)
+    :arg int failed-fails: Build is marked FAILURE if the number/percentage of
+        failed tests exceeds the specified threshold (>=1.11) (default 100)
+    :arg str threshold-mode: Interpret threshold as number of tests or
+        percentage of tests (>=1.11) (default percentage)
 
-    Example:
+    Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/testng001.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/testng-full.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/testng-minimal.yaml
        :language: yaml
     """
 
     reporter = XML.SubElement(xml_parent, 'hudson.plugins.testng.Publisher')
-    if not data['pattern']:
-        raise JenkinsJobsException("A filename pattern must be specified.")
-    XML.SubElement(reporter, 'reportFilenamePattern').text = data['pattern']
-    XML.SubElement(reporter, 'escapeTestDescp').text = str(data.get(
-        'escape-test-description', True))
-    XML.SubElement(reporter, 'escapeExceptionMsg').text = str(data.get(
-        'escape-exception-msg', True))
+    reporter.set('plugin', 'testng-plugin')
+    valid_threshold_modes = ['number', 'percentage']
+    threshold_mode = data.get('threshold-mode', 'percentage')
+
+    mappings = [
+        ('pattern', 'reportFilenamePattern', None),
+        ('escape-test-description', 'escapeTestDescp', True),
+        ('escape-exception-msg', 'escapeExceptionMsg', True),
+        ('fail-on-failed-test-config', 'failureOnFailedTestConfig', False),
+        ('show-failed-builds', 'showFailedBuilds', False),
+        ('unstable-skips', 'unstableSkips', 100),
+        ('unstable-fails', 'unstableFails', 0),
+        ('failed-skips', 'failedSkips', 100),
+        ('failed-fails', 'failedFails', 100),
+    ]
+    helpers.convert_mapping_to_xml(
+        reporter, data, mappings, fail_required=True)
+
+    if threshold_mode == 'number':
+        XML.SubElement(reporter, 'thresholdMode').text = str(1)
+    elif threshold_mode == 'percentage':
+        XML.SubElement(reporter, 'thresholdMode').text = str(2)
+    else:
+        raise InvalidAttributeError(
+            'threshold-mode', threshold_mode, valid_threshold_modes)
 
 
 def artifact_deployer(parser, xml_parent, data):

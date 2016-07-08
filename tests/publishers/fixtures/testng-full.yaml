@@ -1,0 +1,12 @@
+publishers:
+    - testng:
+        pattern: "**/testng-results.xml"
+        escape-test-description: false
+        escape-exception-msg: false
+        fail-on-failed-test-config: true
+        show-failed-builds: true
+        unstable-skips: 50
+        unstable-fails: 25
+        failed-skips: 75
+        failed-fails: 66
+        threshold-mode: number
