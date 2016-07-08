@@ -13,15 +13,21 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import io
+import os
 import logging
+import platform
 import sys
 
-from jenkins_jobs import cmd
-from jenkins_jobs import version
-from jenkins_jobs.cli.parser import create_parser
-from jenkins_jobs.config import JJBConfig
+import yaml
 
-logging.basicConfig(level=logging.INFO)
+from jenkins_jobs.cli.parser import create_parser
+from jenkins_jobs import cmd
+from jenkins_jobs.config import JJBConfig
+from jenkins_jobs import utils
+from jenkins_jobs import version
+
+logger = logging.getLogger()
 
 
 def __version__():
@@ -49,24 +55,70 @@ class JenkinsJobs(object):
     def __init__(self, args=None, **kwargs):
         if args is None:
             args = []
-        parser = create_parser()
-        options = parser.parse_args(args)
+        self.parser = create_parser()
+        self.options = self.parser.parse_args(args)
 
-        self.jjb_config = JJBConfig(arguments=options, **kwargs)
-        self.jjb_config.do_magical_things()
+        self.jjb_config = JJBConfig(self.options.conf, **kwargs)
 
-        if not options.command:
-            parser.error("Must specify a 'command' to be performed")
+        if not self.options.command:
+            self.parser.error("Must specify a 'command' to be performed")
 
         logger = logging.getLogger()
-        if (options.log_level is not None):
-            options.log_level = getattr(logging,
-                                        options.log_level.upper(),
-                                        logger.getEffectiveLevel())
-            logger.setLevel(options.log_level)
+        if (self.options.log_level is not None):
+            self.options.log_level = getattr(logging,
+                                             self.options.log_level.upper(),
+                                             logger.getEffectiveLevel())
+            logger.setLevel(self.options.log_level)
+
+        self._parse_additional()
+        self.jjb_config.validate()
+
+    def _parse_additional(self):
+        for opt in ['ignore_cache', 'user', 'password',
+                    'allow_empty_variables']:
+            opt_val = getattr(self.options, opt, None)
+            if opt_val is not None:
+                setattr(self.jjb_config, opt, opt_val)
+
+        if getattr(self.options, 'plugins_info_path', None) is not None:
+            with io.open(self.options.plugins_info_path, 'r',
+                         encoding='utf-8') as yaml_file:
+                plugins_info = yaml.load(yaml_file)
+            if not isinstance(plugins_info, list):
+                self.parser.error("{0} must contain a Yaml list!".format(
+                                  self.options.plugins_info_path))
+            self.jjb_config.plugins_info = plugins_info
+
+        if getattr(self.options, 'path', None):
+            if hasattr(self.options.path, 'read'):
+                logger.debug("Input file is stdin")
+                if self.options.path.isatty():
+                    if platform.system() == 'Windows':
+                        key = 'CTRL+Z'
+                    else:
+                        key = 'CTRL+D'
+                    logger.warn("Reading configuration from STDIN. "
+                                "Press %s to end input.", key)
+            else:
+                # take list of paths
+                self.options.path = self.options.path.split(os.pathsep)
+
+                do_recurse = (getattr(self.options, 'recursive', False) or
+                              self.jjb_config.recursive)
+
+                excludes = ([e for elist in self.options.exclude
+                             for e in elist.split(os.pathsep)] or
+                            self.jjb_config.excludes)
+                paths = []
+                for path in self.options.path:
+                    if do_recurse and os.path.isdir(path):
+                        paths.extend(utils.recurse_path(path, excludes))
+                    else:
+                        paths.append(path)
+                self.options.path = paths
 
     def execute(self):
-        cmd.execute(self.jjb_config)
+        cmd.execute(self.options, self.jjb_config)
 
 
 def main():

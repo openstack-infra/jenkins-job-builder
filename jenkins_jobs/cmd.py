@@ -53,9 +53,8 @@ def confirm(question):
         sys.exit('Aborted')
 
 
-def execute(jjb_config):
+def execute(options, jjb_config):
     config = jjb_config.config_parser
-    options = jjb_config.arguments
 
     builder = Builder(config.get('jenkins', 'url'),
                       jjb_config.user,

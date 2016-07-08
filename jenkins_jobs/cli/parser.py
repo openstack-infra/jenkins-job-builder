@@ -43,7 +43,7 @@ def create_parser():
         '--ignore-cache',
         action='store_true',
         dest='ignore_cache',
-        default=False,
+        default=None,
         help='''ignore the cache and update the jobs anyhow (that will only
         flush the specified jobs cache)''')
     parser.add_argument(

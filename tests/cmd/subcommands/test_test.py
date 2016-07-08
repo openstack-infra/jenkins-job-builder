@@ -7,10 +7,10 @@ import tempfile
 import yaml
 
 import jenkins
+from six.moves import StringIO
 import testtools
 
 from jenkins_jobs.cli import entry
-from jenkins_jobs.errors import JenkinsJobsException
 from tests.base import mock
 from tests.cmd.test_cmd import CmdTestsBase
 
@@ -151,10 +151,11 @@ class TestTests(CmdTestsBase):
                 plugins_info_stub_yaml_file,
                 os.path.join(self.fixtures_path, 'cmd-001.yaml')]
 
-        with mock.patch('sys.stdout'):
-            e = self.assertRaises(JenkinsJobsException, entry.JenkinsJobs,
-                                  args)
-        self.assertIn("must contain a Yaml list", str(e))
+        stderr = StringIO()
+        with mock.patch('sys.stderr', stderr):
+            self.assertRaises(SystemExit, entry.JenkinsJobs, args)
+        self.assertIn("must contain a Yaml list",
+                      stderr.getvalue())
 
 
 class TestJenkinsGetPluginInfoError(CmdTestsBase):

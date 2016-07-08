@@ -73,3 +73,33 @@ class TestConfigs(CmdTestsBase):
                 'non-existing.yaml']
         jenkins_jobs = entry.JenkinsJobs(args)
         self.assertRaises(IOError, jenkins_jobs.execute)
+
+    def test_config_options_not_replaced_by_cli_defaults(self):
+        """
+        Run test mode and check config settings from conf file retained
+        when non of the global CLI options are set.
+        """
+        config_file = os.path.join(self.fixtures_path,
+                                   'settings_from_config.ini')
+        args = ['--conf', config_file, 'test', 'dummy.yaml']
+        jenkins_jobs = entry.JenkinsJobs(args)
+        self.assertEqual(jenkins_jobs.jjb_config.ignore_cache, True)
+        self.assertEqual(jenkins_jobs.jjb_config.user, "jenkins_user")
+        self.assertEqual(jenkins_jobs.jjb_config.password, "jenkins_password")
+        self.assertEqual(jenkins_jobs.jjb_config.config_parser.get(
+            'job_builder', 'allow_empty_variables'), "True")
+
+    def test_config_options_overriden_by_cli(self):
+        """
+        Run test mode and check config settings from conf file retained
+        when non of the global CLI options are set.
+        """
+        args = ['--user', 'myuser', '--password', 'mypassword',
+                '--ignore-cache', '--allow-empty-variables',
+                'test', 'dummy.yaml']
+        jenkins_jobs = entry.JenkinsJobs(args)
+        self.assertEqual(jenkins_jobs.jjb_config.ignore_cache, True)
+        self.assertEqual(jenkins_jobs.jjb_config.user, "myuser")
+        self.assertEqual(jenkins_jobs.jjb_config.password, "mypassword")
+        self.assertEqual(jenkins_jobs.jjb_config.config_parser.get(
+            'job_builder', 'allow_empty_variables'), "True")

@@ -17,15 +17,11 @@
 
 import io
 import logging
-import platform
 import os
-import yaml
 
 from six.moves import configparser, StringIO
 
 from jenkins_jobs import builder
-from jenkins_jobs import utils
-from jenkins_jobs.cli.parser import create_parser
 from jenkins_jobs.errors import JenkinsJobsException
 
 __all__ = [
@@ -59,8 +55,7 @@ class JJBConfigException(JenkinsJobsException):
 
 class JJBConfig(object):
 
-    def __init__(self, config_filename=None, arguments=None,
-                 config_file_required=False):
+    def __init__(self, config_filename=None, config_file_required=False):
 
         """
         The JJBConfig class is intended to encapsulate and resolve priority
@@ -70,15 +65,12 @@ class JJBConfig(object):
 
         It also allows users of JJB-as-an-API to create minimally valid
         configuration and easily make minor modifications to default values
-        without strictly adhering to the confusing setup (see the
-        do_magical_things method, the behavior of which largely lived in the
-        cmd.execute method previously) necessary for the jenkins-jobs command
-        line tool.
+        without strictly adhering to the confusing setup (see the _setup
+        method, the behavior of which largely lived in the cmd.execute method
+        previously) necessary for the jenkins-jobs command line tool.
 
         :arg str config_filename: Name of configuration file on which to base
             this config object.
-        :arg dict arguments: A argparse.Namespace object as produced by the
-            jenkins-jobs argument parser.
         :arg bool config_file_required: Allows users of the JJBConfig class to
             decide whether or not it's really necessary for a config file to be
             passed in when creating an instance. This has two effects on the
@@ -92,10 +84,6 @@ class JJBConfig(object):
 
         config_parser = self._init_defaults()
 
-        if arguments is None:
-            jenkins_jobs_parser = create_parser()
-            arguments = jenkins_jobs_parser.parse_args(['test'])
-
         global_conf = '/etc/jenkins_jobs/jenkins_jobs.ini'
         user_conf = os.path.join(os.path.expanduser('~'), '.config',
                                  'jenkins_jobs', 'jenkins_jobs.ini')
@@ -104,9 +92,6 @@ class JJBConfig(object):
         conf = None
         if config_filename is not None:
             conf = config_filename
-
-        elif hasattr(arguments, 'conf') and arguments.conf is not None:
-            conf = arguments.conf
 
         elif config_file_required:
             if os.path.isfile(local_conf):
@@ -124,14 +109,22 @@ class JJBConfig(object):
                 if config_file_required:
                     raise e
                 else:
-                    logger.warn("""Config file, {0}, not found. Using default
-                    config values.""".format(conf))
+                    logger.warn("Config file, {0}, not found. Using default "
+                                "config values.".format(conf))
 
         if config_fp is not None:
             config_parser.readfp(config_fp)
 
         self.config_parser = config_parser
-        self.arguments = arguments
+
+        self.ignore_cache = False
+        self.user = None
+        self.password = None
+        self.plugins_info = None
+        self.timeout = builder._DEFAULT_TIMEOUT
+        self.allow_empty_variables = None
+
+        self._setup()
 
     def _init_defaults(self):
         """ Initialize default configuration values using DEFAULT_CONF
@@ -155,18 +148,14 @@ class JJBConfig(object):
 
         return config_fp
 
-    def do_magical_things(self):
+    def _setup(self):
         config = self.config_parser
-        options = self.arguments
 
         logger.debug("Config: {0}".format(config))
 
         # check the ignore_cache setting: first from command line,
         # if not present check from ini file
-        self.ignore_cache = False
-        if options.ignore_cache:
-            self.ignore_cache = options.ignore_cache
-        elif config.has_option('jenkins', 'ignore_cache'):
+        if config.has_option('jenkins', 'ignore_cache'):
             logging.warn('''ignore_cache option should be moved to the
                           [job_builder] section in the config file, the one
                           specified in the [jenkins] section will be ignored in
@@ -185,21 +174,39 @@ class JJBConfig(object):
         # catching 'TypeError' is a workaround for python 2.6 interpolation
         # error
         # https://bugs.launchpad.net/openstack-ci/+bug/1259631
-        if options.user:
-            self.user = options.user
-        else:
-            try:
-                self.user = config.get('jenkins', 'user')
-            except (TypeError, configparser.NoOptionError):
-                self.user = None
+        try:
+            self.user = config.get('jenkins', 'user')
+        except (TypeError, configparser.NoOptionError):
+            pass
 
-        if options.password:
-            self.password = options.password
-        else:
-            try:
-                self.password = config.get('jenkins', 'password')
-            except (TypeError, configparser.NoOptionError):
-                self.password = None
+        try:
+            self.password = config.get('jenkins', 'password')
+        except (TypeError, configparser.NoOptionError):
+            pass
+
+        # None -- no timeout, blocking mode; same as setblocking(True)
+        # 0.0 -- non-blocking mode; same as setblocking(False) <--- default
+        # > 0 -- timeout mode; operations time out after timeout seconds
+        # < 0 -- illegal; raises an exception
+        # to retain the default must use
+        # "timeout=jenkins_jobs.builder._DEFAULT_TIMEOUT" or not set timeout at
+        # all.
+        try:
+            self.timeout = config.getfloat('jenkins', 'timeout')
+        except (ValueError):
+            raise JenkinsJobsException("Jenkins timeout config is invalid")
+        except (TypeError, configparser.NoOptionError):
+            pass
+
+        if not config.getboolean("jenkins", "query_plugins_info"):
+            logger.debug("Skipping plugin info retrieval")
+            self.plugins_info = []
+
+        self.recursive = config.getboolean('job_builder', 'recursive')
+        self.excludes = config.get('job_builder', 'exclude').split(os.pathsep)
+
+    def validate(self):
+        config = self.config_parser
 
         # Inform the user as to what is likely to happen, as they may specify
         # a real jenkins instance in test mode to get the plugin info to check
@@ -213,67 +220,12 @@ class JJBConfig(object):
                 "Password provided, please check your configuration."
             )
 
-        # None -- no timeout, blocking mode; same as setblocking(True)
-        # 0.0 -- non-blocking mode; same as setblocking(False) <--- default
-        # > 0 -- timeout mode; operations time out after timeout seconds
-        # < 0 -- illegal; raises an exception
-        # to retain the default must use
-        # "timeout=jenkins_jobs.builder._DEFAULT_TIMEOUT" or not set timeout at
-        # all.
-        self.timeout = builder._DEFAULT_TIMEOUT
-        try:
-            self.timeout = config.getfloat('jenkins', 'timeout')
-        except (ValueError):
-            raise JenkinsJobsException("Jenkins timeout config is invalid")
-        except (TypeError, configparser.NoOptionError):
-            pass
+        if (self.plugins_info is not None and
+                not isinstance(self.plugins_info, list)):
+            raise JenkinsJobsException("plugins_info must contain a list!")
 
-        self.plugins_info = None
-
-        if getattr(options, 'plugins_info_path', None) is not None:
-            with io.open(options.plugins_info_path, 'r',
-                         encoding='utf-8') as yaml_file:
-                self.plugins_info = yaml.load(yaml_file)
-            if not isinstance(self.plugins_info, list):
-                raise JenkinsJobsException("{0} must contain a Yaml list!"
-                                           .format(options.plugins_info_path))
-        elif (not options.conf or not
-              config.getboolean("jenkins", "query_plugins_info")):
-            logger.debug("Skipping plugin info retrieval")
-            self.plugins_info = {}
-
-        if options.allow_empty_variables is not None:
+        # Temporary until yamlparser is refactored to query config object
+        if self.allow_empty_variables is not None:
             config.set('job_builder',
                        'allow_empty_variables',
-                       str(options.allow_empty_variables))
-
-        if getattr(options, 'path', None):
-            if hasattr(options.path, 'read'):
-                logger.debug("Input file is stdin")
-                if options.path.isatty():
-                    if platform.system() == 'Windows':
-                        key = 'CTRL+Z'
-                    else:
-                        key = 'CTRL+D'
-                    logger.warn("""Reading configuration from STDIN. Press %s
-                    to end input.""", key)
-            else:
-                # take list of paths
-                options.path = options.path.split(os.pathsep)
-
-                do_recurse = (getattr(options, 'recursive', False) or
-                              config.getboolean('job_builder', 'recursive'))
-
-                excludes = [e for elist in options.exclude
-                            for e in elist.split(os.pathsep)] or \
-                    config.get('job_builder', 'exclude').split(os.pathsep)
-                paths = []
-                for path in options.path:
-                    if do_recurse and os.path.isdir(path):
-                        paths.extend(utils.recurse_path(path, excludes))
-                    else:
-                        paths.append(path)
-                options.path = paths
-
-        self.config_parser = config
-        self.arguments = options
+                       str(self.allow_empty_variables))
