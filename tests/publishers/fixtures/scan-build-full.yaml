@@ -1,0 +1,6 @@
+publishers:
+  - scan-build:
+      mark-unstable: true
+      threshold: 50
+      exclude-paths: external-lib
+      report-folder: scan-build-report

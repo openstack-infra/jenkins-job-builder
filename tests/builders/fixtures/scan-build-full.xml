@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <jenkins.plugins.clangscanbuild.ClangScanBuildBuilder plugin="clang-scanbuild">
+      <target>path/to/target</target>
+      <targetSdk>iphonesimulator</targetSdk>
+      <config>Debug</config>
+      <clangInstallationName>Analyzer</clangInstallationName>
+      <xcodeProjectSubPath>myProj/subfolder</xcodeProjectSubPath>
+      <workspace>workspace</workspace>
+      <scheme>SchemeName</scheme>
+      <scanbuildargs>--use-analyzer Xcode</scanbuildargs>
+      <xcodebuildargs>-derivedDataPath $WORKSPACE/build</xcodebuildargs>
+      <outputFolderName>clangScanBuildReports</outputFolderName>
+    </jenkins.plugins.clangscanbuild.ClangScanBuildBuilder>
+  </builders>
+</project>

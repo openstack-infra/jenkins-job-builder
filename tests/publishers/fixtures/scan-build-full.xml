@@ -3,7 +3,7 @@
   <publishers>
     <jenkins.plugins.clangscanbuild.publisher.ClangScanBuildPublisher plugin="clang-scanbuild">
       <markBuildUnstableWhenThresholdIsExceeded>true</markBuildUnstableWhenThresholdIsExceeded>
-      <bugThreshold>0</bugThreshold>
+      <bugThreshold>50</bugThreshold>
       <clangexcludedpaths>external-lib</clangexcludedpaths>
       <reportFolderName>scan-build-report</reportFolderName>
     </jenkins.plugins.clangscanbuild.publisher.ClangScanBuildPublisher>

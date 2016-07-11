@@ -2546,6 +2546,69 @@ def github_notifier(parser, xml_parent, data):
                    'com.cloudbees.jenkins.GitHubSetCommitStatusBuilder')
 
 
+def scan_build(parser, xml_parent, data):
+    """yaml: scan-build
+    This plugin allows you configure a build step that will execute the Clang
+    scan-build static analysis tool against an XCode project.
+
+    The scan-build report has to be generated in the directory
+    ``${WORKSPACE}/clangScanBuildReports`` for the publisher to find it.
+
+    Requires the Jenkins :jenkins-wiki:`Clang Scan-Build Plugin
+    <Clang+Scan-Build+Plugin>`.
+
+    :arg str target: Provide the exact name of the XCode target you wish to
+        have compiled and analyzed (required)
+    :arg str target-sdk: Set the simulator version of a currently installed SDK
+        (default iphonesimulator)
+    :arg str config: Provide the XCode config you wish to execute scan-build
+        against (default Debug)
+    :arg str clang-install-name: Name of clang static analyzer to use (default
+        '')
+    :arg str xcode-sub-path: Path of XCode project relative to the workspace
+        (default '')
+    :arg str workspace: Name of workspace (default '')
+    :arg str scheme: Name of scheme (default '')
+    :arg str scan-build-args: Additional arguments to clang scan-build
+        (default --use-analyzer Xcode)
+    :arg str xcode-build-args: Additional arguments to XCode (default
+        -derivedDataPath $WORKSPACE/build)
+    :arg str report-folder: Folder where generated reports are located
+        (>=1.7) (default clangScanBuildReports)
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/builders/fixtures/scan-build-full.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+       /../../tests/builders/fixtures/scan-build-minimal.yaml
+       :language: yaml
+    """
+    p = XML.SubElement(
+        xml_parent,
+        'jenkins.plugins.clangscanbuild.ClangScanBuildBuilder')
+    p.set('plugin', 'clang-scanbuild')
+
+    mappings = [
+        ('target', 'target', None),
+        ('target-sdk', 'targetSdk', 'iphonesimulator'),
+        ('config', 'config', 'Debug'),
+        ('clang-install-name', 'clangInstallationName', ''),
+        ('xcode-sub-path', 'xcodeProjectSubPath', 'myProj/subfolder'),
+        ('workspace', 'workspace', ''),
+        ('scheme', 'scheme', ''),
+        ('scan-build-args', 'scanbuildargs', '--use-analyzer Xcode'),
+        ('xcode-build-args',
+         'xcodebuildargs',
+         '-derivedDataPath $WORKSPACE/build'),
+        ('report-folder', 'outputFolderName', 'clangScanBuildReports'),
+    ]
+    convert_mapping_to_xml(p, data, mappings, fail_required=True)
+
+
 def ssh_builder(parser, xml_parent, data):
     """yaml: ssh-builder
     Executes command on remote host

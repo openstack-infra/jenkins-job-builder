@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <jenkins.plugins.clangscanbuild.publisher.ClangScanBuildPublisher>
+    <jenkins.plugins.clangscanbuild.publisher.ClangScanBuildPublisher plugin="clang-scanbuild">
       <markBuildUnstableWhenThresholdIsExceeded>false</markBuildUnstableWhenThresholdIsExceeded>
       <bugThreshold>0</bugThreshold>
       <clangexcludedpaths/>
