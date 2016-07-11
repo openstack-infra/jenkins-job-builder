@@ -2647,24 +2647,13 @@ def sonatype_clm(parser, xml_parent, data):
     clm = XML.SubElement(xml_parent,
                          'com.sonatype.insight.ci.hudson.PreBuildScan')
     clm.set('plugin', 'sonatype-clm-ci')
-
     SUPPORTED_VALUES = ['list', 'manual']
-    clm_value = data.get('value')
-    if clm_value and clm_value not in SUPPORTED_VALUES:
-        raise InvalidAttributeError('value',
-                                    clm_value,
-                                    SUPPORTED_VALUES)
     SUPPORTED_STAGES = ['build', 'stage-release', 'release', 'operate']
-    clm_stage = data.get('stage')
-    if clm_stage and clm_stage not in SUPPORTED_STAGES:
-        raise InvalidAttributeError('stage',
-                                    clm_stage,
-                                    SUPPORTED_STAGES)
 
     application_select = XML.SubElement(clm,
                                         'applicationSelectType')
     application_mappings = [
-        ('value', 'value', 'list'),
+        ('value', 'value', 'list', SUPPORTED_VALUES),
         ('application-name', 'applicationId', None),
     ]
     convert_mapping_to_xml(
@@ -2680,7 +2669,7 @@ def sonatype_clm(parser, xml_parent, data):
 
     mappings = [
         ('fail-on-clm-server-failure', 'failOnClmServerFailures', False),
-        ('stage', 'stageId', 'build'),
+        ('stage', 'stageId', 'build', SUPPORTED_STAGES),
         ('username', 'username', ''),
         ('password', 'password', ''),
     ]
