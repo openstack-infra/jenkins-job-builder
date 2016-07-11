@@ -18,6 +18,7 @@ from testtools.matchers import Equals
 import xml.etree.ElementTree as XML
 import yaml
 
+from jenkins_jobs.errors import InvalidAttributeError
 from jenkins_jobs.errors import MissingAttributeError
 from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 from tests.base import LoggingFixture
@@ -68,3 +69,16 @@ class TestCaseTestHelpers(LoggingFixture, testtools.TestCase):
                           required_data,
                           required_mappings,
                           fail_required=True)
+
+        # Test invalid user input
+        user_input_root = XML.Element('testUserInput')
+        user_input_data = yaml.load("user-input-string: bye")
+        valid_inputs = ['hello']
+        user_input_mappings = [('user-input-string', 'userInputString',
+                                'user-input', valid_inputs)]
+
+        self.assertRaises(InvalidAttributeError,
+                          convert_mapping_to_xml,
+                          user_input_root,
+                          user_input_data,
+                          user_input_mappings)
