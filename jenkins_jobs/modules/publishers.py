@@ -5864,28 +5864,36 @@ def whitesource(parser, xml_parent, data):
     :arg list excludes: list of libraries to exclude (default '[]')
     :arg str policies: Whether to override the global settings.  Valid values:
         global, enable, disable (default 'global')
+    :arg str requester-email: Email of the WhiteSource user that requests to
+        update WhiteSource (>=1.5.1) (default '')
 
-    Example:
+    Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/whitesource001.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/whitesource-full.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+       /../../tests/publishers/fixtures/whitesource-minimal.yaml
        :language: yaml
     """
-
-    policies = ['global', 'enable', 'disable']
-    policies_value = str(data.get('policies', 'global').lower())
-    if policies_value not in policies:
-        raise InvalidAttributeError('policies', policies_value, policies)
     whitesource = XML.SubElement(xml_parent, 'org.whitesource.jenkins.'
                                              'WhiteSourcePublisher')
-    XML.SubElement(whitesource, 'jobCheckPolicies').text = policies_value
-    XML.SubElement(whitesource, 'jobApiToken').text = data.get(
-        'override-token', '')
-    XML.SubElement(whitesource, 'product').text = data.get(
-        'product-token', '')
-    XML.SubElement(whitesource, 'productVersion').text = data.get(
-        'version', '')
-    XML.SubElement(whitesource, 'projectToken').text = data.get(
-        'project-token', '')
+    whitesource.set('plugin', 'whitesource')
+    policies = ['global', 'enable', 'disable']
+
+    mappings = [
+        ('policies', 'jobCheckPolicies', 'global', policies),
+        ('override-token', 'jobApiToken', ''),
+        ('product-token', 'product', ''),
+        ('version', 'productVersion', ''),
+        ('project-token', 'projectToken', ''),
+        ('requester-email', 'requesterEmail', ''),
+    ]
+    helpers.convert_mapping_to_xml(
+        whitesource, data, mappings, fail_required=True)
+
     XML.SubElement(whitesource, 'libIncludes').text = ' '.join(
         data.get('includes', []))
     XML.SubElement(whitesource, 'libExcludes').text = ' '.join(
