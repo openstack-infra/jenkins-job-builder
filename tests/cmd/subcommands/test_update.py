@@ -73,10 +73,10 @@ class UpdateTests(CmdTestsBase):
         update_job is called, and have the get_jobs() method return additional
         jobs not in the input yaml to test that the code in cmd will call
         delete_job() after update_job() when '--delete-old' is set but only
-        for the extra jobs.
+        for the extra managed jobs.
         """
         # set up some test data
-        jobs = ['old_job001', 'old_job002']
+        jobs = ['old_job001', 'old_job002', 'unmanaged']
         extra_jobs = [{'name': name} for name in jobs]
 
         builder_obj = builder.Builder('http://jenkins.example.com',
@@ -105,7 +105,7 @@ class UpdateTests(CmdTestsBase):
 
         with mock.patch('jenkins_jobs.builder.Jenkins.update_job') as update:
             with mock.patch('jenkins_jobs.builder.Jenkins.is_managed',
-                            return_value=True):
+                            side_effect=(lambda name: name != 'unmanaged')):
                 self.execute_jenkins_jobs_with_args(args)
             self.assertEquals(2, update.call_count,
                               "Expected Jenkins.update_job to be called '%d' "
@@ -113,7 +113,7 @@ class UpdateTests(CmdTestsBase):
                               "Called with: %s" % (2, update.call_count,
                                                    update.mock_calls))
 
-        calls = [mock.call(name) for name in jobs]
+        calls = [mock.call(name) for name in jobs if name != 'unmanaged']
         self.assertEqual(2, delete_job_mock.call_count,
                          "Expected Jenkins.delete_job to be called '%d' "
                          "times got '%d' calls instead.\n"
