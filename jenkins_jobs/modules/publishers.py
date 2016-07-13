@@ -5754,23 +5754,31 @@ def clamav(parser, xml_parent, data):
     Check files with ClamAV, an open source antivirus engine.
     Requires the Jenkins :jenkins-wiki:`ClamAV Plugin <ClamAV+Plugin>`.
 
-    :arg str includes: Files that should be scanned.
-      (default "")
-    :arg str excludes: Files that should be ignored.
-      (default "")
+    :arg str includes: Comma seperated list of files that should be scanned.
+        Must be set for ClamAV to check for artifacts. (default '')
+    :arg str excludes: Comma seperated list of files that should be ignored
+        (default '')
 
-    Example:
+    Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/clamav001.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/clamav-full.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/clamav-minimal.yaml
        :language: yaml
     """
     clamav = XML.SubElement(
         xml_parent,
         'org.jenkinsci.plugins.clamav.ClamAvRecorder')
-    XML.SubElement(clamav, 'includes').text = str(
-        data.get('includes', ''))
-    XML.SubElement(clamav, 'excludes').text = str(
-        data.get('excludes', ''))
+    clamav.set('plugin', 'clamav')
+
+    mappings = [
+        ('includes', 'includes', ''),
+        ('excludes', 'excludes', ''),
+    ]
+    helpers.convert_mapping_to_xml(clamav, data, mappings, fail_required=True)
 
 
 def testselector(parser, xml_parent, data):
