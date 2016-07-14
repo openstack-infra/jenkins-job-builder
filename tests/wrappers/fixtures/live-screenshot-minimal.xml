@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <buildWrappers>
-    <org.jenkinsci.plugins.livescreenshot.LiveScreenshotBuildWrapper>
+    <org.jenkinsci.plugins.livescreenshot.LiveScreenshotBuildWrapper plugin="livescreenshot">
       <fullscreenFilename>screenshot.png</fullscreenFilename>
       <thumbnailFilename>screenshot-thumb.png</thumbnailFilename>
     </org.jenkinsci.plugins.livescreenshot.LiveScreenshotBuildWrapper>
