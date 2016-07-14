@@ -3,8 +3,8 @@
   <buildWrappers>
     <hudson.plugins.logfilesizechecker.LogfilesizecheckerWrapper plugin="logfilesizechecker">
       <setOwn>true</setOwn>
-      <maxLogSize>1024</maxLogSize>
-      <failBuild>true</failBuild>
+      <maxLogSize>2048</maxLogSize>
+      <failBuild>false</failBuild>
     </hudson.plugins.logfilesizechecker.LogfilesizecheckerWrapper>
   </buildWrappers>
 </project>

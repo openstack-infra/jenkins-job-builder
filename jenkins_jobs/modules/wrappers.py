@@ -37,6 +37,7 @@ from jenkins_jobs.modules.helpers import artifactory_env_vars_patterns
 from jenkins_jobs.modules.helpers import artifactory_optional_props
 from jenkins_jobs.modules.helpers import artifactory_repository
 from jenkins_jobs.modules.helpers import config_file_provider_builder
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 
 logger = logging.getLogger(__name__)
 
@@ -224,26 +225,25 @@ def logfilesize(parser, xml_parent, data):
     :arg int size: Abort the build if logfile size is bigger than this
         value (in MiB, default 128). Only applies if set-own is true.
 
-    Minimum config example:
+    Full Example:
 
-    .. literalinclude:: /../../tests/wrappers/fixtures/logfilesize002.yaml
+    .. literalinclude:: /../../tests/wrappers/fixtures/logfilesize-full.yaml
 
-    Full config example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/wrappers/fixtures/logfilesize001.yaml
-
+    .. literalinclude:: /../../tests/wrappers/fixtures/logfilesize-minimal.yaml
     """
     lfswrapper = XML.SubElement(xml_parent,
                                 'hudson.plugins.logfilesizechecker.'
                                 'LogfilesizecheckerWrapper')
     lfswrapper.set("plugin", "logfilesizechecker")
 
-    XML.SubElement(lfswrapper, 'setOwn').text = str(
-        data.get('set-own', 'false')).lower()
-    XML.SubElement(lfswrapper, 'maxLogSize').text = str(
-        data.get('size', '128')).lower()
-    XML.SubElement(lfswrapper, 'failBuild').text = str(
-        data.get('fail', 'false')).lower()
+    mapping = [
+        ('set-own', 'setOwn', False),
+        ('size', 'maxLogSize', 128),
+        ('fail', 'failBuild', False),
+    ]
+    convert_mapping_to_xml(lfswrapper, data, mapping, fail_required=True)
 
 
 def timeout(parser, xml_parent, data):
