@@ -1178,7 +1178,7 @@ def bzr(parser, xml_parent, data):
     Specifies the bzr SCM repository for this job.
     Requires the Jenkins :jenkins-wiki:`Bazaar Plugin <Bazaar+Plugin>`.
 
-    :arg str url: URL of the bzr branch
+    :arg str url: URL of the bzr branch (required)
     :arg bool clean-tree: Clean up the workspace (using bzr) before pulling
         the branch (default false)
     :arg bool lightweight-checkout: Use a lightweight checkout instead of a
@@ -1199,18 +1199,17 @@ def bzr(parser, xml_parent, data):
     Example:
 
     .. literalinclude:: /../../tests/scm/fixtures/bzr001.yaml
+       :language: yaml
     """
-    if 'url' not in data:
-        raise JenkinsJobsException('Must specify a url for bzr scm')
     mapping = [
         # option, xml name, default value (text), attributes (hard coded)
-        ('url', 'source', ''),
+        ('url', 'source', None),
         ('clean-tree', 'cleantree', False),
         ('lightweight-checkout', 'checkout', False),
     ]
     scm_element = XML.SubElement(
         xml_parent, 'scm', {'class': 'hudson.plugins.bazaar.BazaarSCM'})
-    convert_mapping_to_xml(scm_element, data, mapping)
+    convert_mapping_to_xml(scm_element, data, mapping, fail_required=True)
 
     browser_name_to_class = {
         'loggerhead': 'Loggerhead',
