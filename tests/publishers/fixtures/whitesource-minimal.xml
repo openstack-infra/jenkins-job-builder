@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.whitesource.jenkins.WhiteSourcePublisher plugin="whitesource">
+      <jobCheckPolicies>global</jobCheckPolicies>
+      <jobApiToken/>
+      <product/>
+      <productVersion/>
+      <projectToken/>
+      <requesterEmail/>
+      <libIncludes/>
+      <libExcludes/>
+      <ignorePomModules>false</ignorePomModules>
+    </org.whitesource.jenkins.WhiteSourcePublisher>
+  </publishers>
+</project>

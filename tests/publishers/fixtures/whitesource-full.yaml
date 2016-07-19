@@ -5,6 +5,7 @@ publishers:
       policies: enable
       override-token: "1231424523412"
       project-token: sd;fkljsdfkljasdfkj
+      requester-email: foo@email.com
       includes:
         - lib/*.jar
         - test/lib/*.jar

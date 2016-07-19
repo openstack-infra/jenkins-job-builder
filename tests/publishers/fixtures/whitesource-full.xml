@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <org.whitesource.jenkins.WhiteSourcePublisher>
+    <org.whitesource.jenkins.WhiteSourcePublisher plugin="whitesource">
       <jobCheckPolicies>enable</jobCheckPolicies>
       <jobApiToken>1231424523412</jobApiToken>
       <product>abcdefghijklmnopqrstuvwxyzabcdef</product>
       <productVersion>1.0.17</productVersion>
       <projectToken>sd;fkljsdfkljasdfkj</projectToken>
+      <requesterEmail>foo@email.com</requesterEmail>
       <libIncludes>lib/*.jar test/lib/*.jar</libIncludes>
       <libExcludes>lib/ant*.jar test/lib/ant*.jar</libExcludes>
       <ignorePomModules>false</ignorePomModules>
