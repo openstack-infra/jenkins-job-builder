@@ -2287,6 +2287,55 @@ def artifactory_maven_freestyle(parser, xml_parent, data):
     artifactory_optional_props(artifactory, data, 'wrappers')
 
 
+def maven_release(parser, xml_parent, data):
+    """yaml: maven-release
+    Wrapper for Maven projects
+    Requires :jenkins-wiki:`M2 Release Plugin <M2+Release+Plugin>`
+
+    :arg str release-goals: Release goals and options (default '')
+    :arg str dry-run-goals: DryRun goals and options (default '')
+    :arg int num-successful-builds: Number of successful release builds to keep
+        (default 1)
+    :arg bool select-custom-scm-comment-prefix: Preselect 'Specify custom SCM
+        comment prefix' (default false)
+    :arg bool select-append-jenkins-username: Preselect 'Append Jenkins
+        Username' (default false)
+    :arg bool select-scm-credentials: Preselect 'Specify SCM login/password'
+        (default false)
+    :arg str release-env-var: Release environment variable (default '')
+    :arg str scm-user-env-var: SCM username environment variable (default '')
+    :arg str scm-password-env-var: SCM password environment variable
+        (default '')
+
+    Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/maven-release001.yaml
+       :language: yaml
+
+    """
+    mvn_release = XML.SubElement(xml_parent,
+                                 'org.jvnet.hudson.plugins.m2release.'
+                                 'M2ReleaseBuildWrapper')
+    XML.SubElement(mvn_release, 'releaseGoals').text = str(
+        data.get('release-goals', ''))
+    XML.SubElement(mvn_release, 'dryRunGoals').text = str(
+        data.get('dry-run-goals', ''))
+    XML.SubElement(mvn_release, 'numberOfReleaseBuildsToKeep').text = str(
+        data.get('num-successful-builds', '1'))
+    XML.SubElement(mvn_release, 'selectCustomScmCommentPrefix').text = str(
+        data.get('select-custom-scm-comment-prefix', 'false')).lower()
+    XML.SubElement(mvn_release, 'selectAppendHudsonUsername').text = str(
+        data.get('select-append-jenkins-username', 'false')).lower()
+    XML.SubElement(mvn_release, 'selectScmCredentials').text = str(
+        data.get('select-scm-credentials', 'false')).lower()
+    XML.SubElement(mvn_release, 'releaseEnvVar').text = str(
+        data.get('release-env-var', ''))
+    XML.SubElement(mvn_release, 'scmUserEnvVar').text = str(
+        data.get('scm-user-env-var', ''))
+    XML.SubElement(mvn_release, 'scmPasswordEnvVar').text = str(
+        data.get('scm-password-env-var', ''))
+
+
 class Wrappers(jenkins_jobs.modules.base.Base):
     sequence = 80
 
