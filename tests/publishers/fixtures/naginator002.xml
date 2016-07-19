@@ -5,6 +5,7 @@
       <regexpForRerun/>
       <checkRegexp>false</checkRegexp>
       <rerunIfUnstable>false</rerunIfUnstable>
+      <rerunMatrixPart>false</rerunMatrixPart>
       <delay class="com.chikli.hudson.plugin.naginator.FixedDelay">
         <delay>0</delay>
       </delay>

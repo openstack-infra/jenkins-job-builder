@@ -5,6 +5,7 @@
       <regexpForRerun>foo</regexpForRerun>
       <checkRegexp>true</checkRegexp>
       <rerunIfUnstable>true</rerunIfUnstable>
+      <rerunMatrixPart>true</rerunMatrixPart>
       <delay class="com.chikli.hudson.plugin.naginator.ProgressiveDelay">
         <increment>5</increment>
         <max>15</max>

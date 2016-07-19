@@ -5368,6 +5368,8 @@ def naginator(parser, xml_parent, data):
 
     :arg bool rerun-unstable-builds: Rerun build for unstable builds as well
         as failures (default false)
+    :arg bool rerun-matrix-part: Rerun build only for failed parts on the
+        matrix (>=1.12) (default false)
     :arg int fixed-delay: Fixed delay before retrying build (cannot be used
         with progressive-delay-increment or progressive-delay-maximum.
         This is the default delay type.  (default 0)
@@ -5396,6 +5398,8 @@ def naginator(parser, xml_parent, data):
         'regular-expression' in data).lower()
     XML.SubElement(naginator, 'rerunIfUnstable').text = str(
         data.get('rerun-unstable-builds', False)).lower()
+    XML.SubElement(naginator, 'rerunMatrixPart').text = str(
+        data.get('rerun-matrix-part', False)).lower()
     progressive_delay = ('progressive-delay-increment' in data or
                          'progressive-delay-maximum' in data)
     if 'fixed-delay' in data and progressive_delay:
