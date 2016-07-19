@@ -1,0 +1,12 @@
+builders:
+  - scan-build:
+      target: path/to/target
+      target-sdk: iphonesimulator
+      config: Debug
+      clang-install-name: Analyzer
+      xcode-sub-path: myProj/subfolder
+      workspace: workspace
+      scheme: SchemeName
+      scan-build-args: --use-analyzer Xcode
+      xcode-build-args: -derivedDataPath $WORKSPACE/build
+      report-folder: clangScanBuildReports
