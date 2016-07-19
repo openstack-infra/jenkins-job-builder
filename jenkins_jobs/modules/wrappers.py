@@ -37,6 +37,7 @@ from jenkins_jobs.modules.helpers import artifactory_env_vars_patterns
 from jenkins_jobs.modules.helpers import artifactory_optional_props
 from jenkins_jobs.modules.helpers import artifactory_repository
 from jenkins_jobs.modules.helpers import config_file_provider_builder
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 
 logger = logging.getLogger(__name__)
 
@@ -1473,33 +1474,34 @@ def mongo_db(parser, xml_parent, data):
     Initalizes a MongoDB database while running the build.
     Requires the Jenkins :jenkins-wiki:`MongoDB plugin <MongoDB+Plugin>`.
 
-    :arg str name: The name of the MongoDB install to use
-    :arg str data-directory: Data directory for the server (optional)
-    :arg int port: Port for the server (optional)
-    :arg str startup-params: Startup parameters for the server (optional)
+    :arg str name: The name of the MongoDB install to use (required)
+    :arg str data-directory: Data directory for the server (default '')
+    :arg int port: Port for the server (default '')
+    :arg str startup-params: Startup parameters for the server (default '')
     :arg int start-timeout: How long to wait for the server to start in
-        milliseconds. 0 means no timeout. (default '0')
+        milliseconds. 0 means no timeout. (default 0)
 
-    Example:
+    Full Example:
 
-    .. literalinclude:: /../../tests/wrappers/fixtures/mongo-db001.yaml
+    .. literalinclude:: /../../tests/wrappers/fixtures/mongo-db-full.yaml
 
+    Minimal Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/mongo-db-minimal.yaml
     """
     mongodb = XML.SubElement(xml_parent,
                              'org.jenkinsci.plugins.mongodb.'
                              'MongoBuildWrapper')
     mongodb.set('plugin', 'mongodb')
 
-    if not str(data.get('name', '')):
-        raise JenkinsJobsException('The mongo install name must be specified.')
-    XML.SubElement(mongodb, 'mongodbName').text = str(data.get('name', ''))
-    XML.SubElement(mongodb, 'port').text = str(data.get('port', ''))
-    XML.SubElement(mongodb, 'dbpath').text = str(data.get(
-        'data-directory', ''))
-    XML.SubElement(mongodb, 'parameters').text = str(data.get(
-        'startup-params', ''))
-    XML.SubElement(mongodb, 'startTimeout').text = str(data.get(
-        'start-timeout', '0'))
+    mapping = [
+        ('name', 'mongodbName', None),
+        ('port', 'port', ''),
+        ('data-directory', 'dbpath', ''),
+        ('startup-params', 'parameters', ''),
+        ('start-timeout', 'startTimeout', 0),
+    ]
+    convert_mapping_to_xml(mongodb, data, mapping, fail_required=True)
 
 
 def delivery_pipeline(parser, xml_parent, data):
