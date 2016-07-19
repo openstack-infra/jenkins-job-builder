@@ -5202,9 +5202,9 @@ def scoverage(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Scoverage Plugin <Scoverage+Plugin>`.
 
     :arg str report-directory: This is a directory that specifies the locations
-                          where the xml scoverage report is generated
+        where the xml scoverage report is generated (required)
     :arg str report-file: This is a file name that is given to the xml
-                          scoverage report.
+        scoverage report (required)
 
     Example:
 
@@ -5214,10 +5214,14 @@ def scoverage(parser, xml_parent, data):
     scoverage = XML.SubElement(
         xml_parent,
         'org.jenkinsci.plugins.scoverage.ScoveragePublisher')
-    XML.SubElement(scoverage, 'reportDir').text = str(
-        data.get('report-directory', ''))
-    XML.SubElement(scoverage, 'reportFile').text = str(
-        data.get('report-file', ''))
+    scoverage.set('plugin', 'scoverage')
+
+    mappings = [
+        ('report-directory', 'reportDir', None),
+        ('report-file', 'reportFile', None),
+    ]
+    helpers.convert_mapping_to_xml(
+        scoverage, data, mappings, fail_required=True)
 
 
 def display_upstream_changes(parser, xml_parent, data):

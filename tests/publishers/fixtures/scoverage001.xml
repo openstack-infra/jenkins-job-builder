@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <org.jenkinsci.plugins.scoverage.ScoveragePublisher>
+    <org.jenkinsci.plugins.scoverage.ScoveragePublisher plugin="scoverage">
       <reportDir>target/scala-2.10/scoverage-report/</reportDir>
       <reportFile>scoverage.xml</reportFile>
     </org.jenkinsci.plugins.scoverage.ScoveragePublisher>
