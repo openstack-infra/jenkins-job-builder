@@ -4,6 +4,7 @@
     <org.jenkinsci.plugins.ghprb.GhprbPullRequestMerge>
       <onlyAdminsMerge>false</onlyAdminsMerge>
       <disallowOwnCode>false</disallowOwnCode>
+      <mergeComment/>
       <failOnNonMerge>false</failOnNonMerge>
       <deleteOnMerge>false</deleteOnMerge>
     </org.jenkinsci.plugins.ghprb.GhprbPullRequestMerge>
