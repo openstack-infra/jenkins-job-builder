@@ -27,6 +27,9 @@
         <noTags>false</noTags>
         <trace>false</trace>
         <showAllChanges>false</showAllChanges>
+        <ignoreProjects class="linked-hash-set">
+          <string/>
+        </ignoreProjects>
       </hudson.plugins.repo.RepoScm>
       <hudson.plugins.git.GitSCM>
         <configVersion>2</configVersion>

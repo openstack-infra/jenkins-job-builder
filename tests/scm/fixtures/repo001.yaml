@@ -4,6 +4,9 @@ scm:
       manifest-branch: stable
       manifest-file: repo.xml
       manifest-group: drivers
+      ignore-projects:
+        - static-project
+        - unimportant-project
       destination-dir: build
       repo-url: https://internal.net/projects/repo
       mirror-dir: ~/git/project/
