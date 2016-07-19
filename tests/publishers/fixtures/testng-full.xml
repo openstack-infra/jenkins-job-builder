@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.testng.Publisher plugin="testng-plugin">
+      <reportFilenamePattern>**/testng-results.xml</reportFilenamePattern>
+      <escapeTestDescp>false</escapeTestDescp>
+      <escapeExceptionMsg>false</escapeExceptionMsg>
+      <failureOnFailedTestConfig>true</failureOnFailedTestConfig>
+      <showFailedBuilds>true</showFailedBuilds>
+      <unstableSkips>50</unstableSkips>
+      <unstableFails>25</unstableFails>
+      <failedSkips>75</failedSkips>
+      <failedFails>66</failedFails>
+      <thresholdMode>1</thresholdMode>
+    </hudson.plugins.testng.Publisher>
+  </publishers>
+</project>

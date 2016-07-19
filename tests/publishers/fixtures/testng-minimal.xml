@@ -2,8 +2,8 @@
 <project>
   <publishers>
     <hudson.plugins.testng.Publisher plugin="testng-plugin">
-      <reportFilenamePattern>**/target/surefire-reports/testng-results.xml</reportFilenamePattern>
-      <escapeTestDescp>false</escapeTestDescp>
+      <reportFilenamePattern>**/testng-results.xml</reportFilenamePattern>
+      <escapeTestDescp>true</escapeTestDescp>
       <escapeExceptionMsg>true</escapeExceptionMsg>
       <failureOnFailedTestConfig>false</failureOnFailedTestConfig>
       <showFailedBuilds>false</showFailedBuilds>
