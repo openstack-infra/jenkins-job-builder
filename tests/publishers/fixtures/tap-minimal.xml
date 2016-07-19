@@ -8,7 +8,7 @@
       <outputTapToConsole>true</outputTapToConsole>
       <enableSubtests>true</enableSubtests>
       <discardOldReports>false</discardOldReports>
-      <todoIsFailure>false</todoIsFailure>
+      <todoIsFailure>true</todoIsFailure>
       <includeCommentDiagnostics>false</includeCommentDiagnostics>
       <validateNumberOfTests>false</validateNumberOfTests>
       <planRequired>true</planRequired>

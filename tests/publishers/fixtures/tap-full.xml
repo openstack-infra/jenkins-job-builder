@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.tap4j.plugin.TapPublisher plugin="tap">
+      <testResults>puiparts.tap</testResults>
+      <failIfNoResults>true</failIfNoResults>
+      <failedTestsMarkBuildAsFailure>true</failedTestsMarkBuildAsFailure>
+      <outputTapToConsole>false</outputTapToConsole>
+      <enableSubtests>false</enableSubtests>
+      <discardOldReports>true</discardOldReports>
+      <todoIsFailure>false</todoIsFailure>
+      <includeCommentDiagnostics>true</includeCommentDiagnostics>
+      <validateNumberOfTests>true</validateNumberOfTests>
+      <planRequired>false</planRequired>
+      <verbose>false</verbose>
+      <showOnlyFailures>true</showOnlyFailures>
+    </org.tap4j.plugin.TapPublisher>
+  </publishers>
+</project>
