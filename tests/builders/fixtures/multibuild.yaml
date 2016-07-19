@@ -32,3 +32,10 @@ builders:
         - name: PhaseThreeJobA
           current-parameters: true
           kill-phase-on: FAILURE
+  - multijob:
+      name: PhaseFour
+      projects:
+        - name: PhaseFourJobA
+          retry:
+              max-retry: 3
+              strategy-path: "/PhaseFour/PhaseFourRetry.prop"
