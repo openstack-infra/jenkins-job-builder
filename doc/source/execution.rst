@@ -266,8 +266,9 @@ jobs::
 
   jenkins-jobs update --delete-old /path/to/defs
 
-Obsolete jobs are *all* jobs not managed by JJB, even jobs which
-were *never* managed by JJB.
+Obsolete jobs are jobs once managed by JJB (as distinguished by a special
+comment that JJB appends to their description), that were not generated in this
+JJB run.
 
 There is also a command to delete **all** jobs.
 **WARNING**: Use with caution::
