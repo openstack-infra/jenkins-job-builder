@@ -4752,13 +4752,13 @@ def dry(parser, xml_parent, data):
 
     The DRY component accepts a dictionary with the following values:
 
-    :arg str pattern: Report filename pattern (optional)
+    :arg str pattern: Report filename pattern (default '')
     :arg bool can-run-on-failed: Also runs for failed builds, instead of just
       stable or unstable builds (default false)
     :arg bool should-detect-modules: Determines if Ant or Maven modules should
       be detected for all files that contain warnings (default false)
-    :arg int healthy: Sunny threshold (optional)
-    :arg int unhealthy: Stormy threshold (optional)
+    :arg int healthy: Sunny threshold (default '')
+    :arg int unhealthy: Stormy threshold (default '')
     :arg str health-threshold: Threshold priority for health status
       ('low', 'normal' or 'high', defaulted to 'low')
     :arg int high-threshold: Minimum number of duplicated lines for high
@@ -4766,7 +4766,7 @@ def dry(parser, xml_parent, data):
     :arg int normal-threshold: Minimum number of duplicated lines for normal
       priority warnings. (default 25)
     :arg dict thresholds: Mark build as failed or unstable if the number of
-      errors exceeds a threshold. (optional)
+      errors exceeds a threshold. (default '')
 
         :thresholds:
             * **unstable** (`dict`)
@@ -4799,8 +4799,7 @@ def dry(parser, xml_parent, data):
       builds where the number of warnings was decreased. (default false)
     :arg bool use-delta-values: If set then the number of new warnings is
       calculated by subtracting the total number of warnings of the current
-      build from the reference build.
-      (default false)
+      build from the reference build. (default false)
 
     Example:
 
@@ -4821,12 +4820,8 @@ def dry(parser, xml_parent, data):
     settings = [
         ('high-threshold', 'highThreshold', 50),
         ('normal-threshold', 'normalThreshold', 25)]
-
-    for key, tag_name, default in settings:
-        xml_config = XML.SubElement(xml_element, tag_name)
-        config_value = data.get(key, default)
-
-        xml_config.text = str(config_value)
+    helpers.convert_mapping_to_xml(
+        xml_element, data, settings, fail_required=True)
 
 
 def shining_panda(parser, xml_parent, data):
