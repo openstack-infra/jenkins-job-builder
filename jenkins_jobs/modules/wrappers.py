@@ -551,21 +551,25 @@ def live_screenshot(parser, xml_parent, data):
 
     File type must be .png and they must be located inside the $WORKDIR.
 
-    Example using defaults:
+    Full Example:
 
-    .. literalinclude:: /../../tests/wrappers/fixtures/live_screenshot001.yaml
+    .. literalinclude::
+       /../../tests/wrappers/fixtures/live-screenshot-full.yaml
 
-    or specifying the files to use:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/wrappers/fixtures/live_screenshot002.yaml
+    .. literalinclude::
+       /../../tests/wrappers/fixtures/live-screenshot-minimal.yaml
     """
     live = XML.SubElement(
         xml_parent,
         'org.jenkinsci.plugins.livescreenshot.LiveScreenshotBuildWrapper')
-    XML.SubElement(live, 'fullscreenFilename').text = data.get(
-        'full-size', 'screenshot.png')
-    XML.SubElement(live, 'thumbnailFilename').text = data.get(
-        'thumbnail', 'screenshot-thumb.png')
+    live.set('plugin', 'livescreenshot')
+    mapping = [
+        ('full-size', 'fullscreenFilename', 'screenshot.png'),
+        ('thumbnail', 'thumbnailFilename', 'screenshot-thumb.png'),
+    ]
+    convert_mapping_to_xml(live, data, mapping, fail_required=True)
 
 
 def mask_passwords(parser, xml_parent, data):
