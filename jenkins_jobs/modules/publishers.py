@@ -4958,14 +4958,15 @@ def rundeck(parser, xml_parent, data):
         xml_parent,
         'org.jenkinsci.plugins.rundeck.RundeckNotifier')
 
-    XML.SubElement(p, 'jobId').text = str(data.get('job-id'))
-    XML.SubElement(p, 'options').text = str(data.get('options', ''))
-    XML.SubElement(p, 'nodeFilters').text = str(data.get('node-filters', ''))
-    XML.SubElement(p, 'tag').text = str(data.get('tag', ''))
-    XML.SubElement(p, 'shouldWaitForRundeckJob').text = str(
-        data.get('wait-for-rundeck', False)).lower()
-    XML.SubElement(p, 'shouldFailTheBuild').text = str(
-        data.get('fail-the-build', False)).lower()
+    mappings = [
+        ('job-id', 'jobId', None),
+        ('options', 'options', ''),
+        ('node-filters', 'nodeFilters', ''),
+        ('tag', 'tag', ''),
+        ('wait-for-rundeck', 'shouldWaitForRundeckJob', False),
+        ('fail-the-build', 'shouldFailTheBuild', False),
+    ]
+    helpers.convert_mapping_to_xml(p, data, mappings, fail_required=True)
 
 
 def create_publishers(parser, action):
