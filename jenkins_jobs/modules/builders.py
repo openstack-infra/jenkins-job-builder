@@ -788,34 +788,16 @@ def http_request(parser, xml_parent, data):
                                   'jenkins.plugins.http__request.HttpRequest')
     http_request.set('plugin', 'http_request')
 
-    valid_modes = ['GET',
-                   'POST',
-                   'PUT',
-                   'DELETE',
-                   'HEAD']
-    valid_types = ['NOT_SET',
-                   'TEXT_HTML',
-                   'APPLICATION_JSON',
-                   'APPLICATION_TAR',
-                   'APPLICATION_ZIP',
+    valid_modes = ['GET', 'POST', 'PUT', 'DELETE', 'HEAD']
+    valid_types = ['NOT_SET', 'TEXT_HTML', 'APPLICATION_JSON',
+                   'APPLICATION_TAR', 'APPLICATION_ZIP',
                    'APPLICATION_OCTETSTREAM']
-
-    if data.get('mode', valid_modes[0]) not in valid_modes:
-        raise InvalidAttributeError('mode', data.get('mode'), valid_modes)
-    if data.get('content-type', valid_types[0]) not in valid_types:
-        raise InvalidAttributeError('content-type',
-                                    data.get('content-type'),
-                                    valid_types)
-    if data.get('accept-type', valid_types[0]) not in valid_types:
-        raise InvalidAttributeError('accept-type',
-                                    data.get('accept-type'),
-                                    valid_types)
 
     mappings = [
         ('url', 'url', None),
-        ('mode', 'httpMode', 'GET'),
-        ('content-type', 'contentType', 'NOT_SET'),
-        ('accept-type', 'acceptType', 'NOT_SET'),
+        ('mode', 'httpMode', 'GET', valid_modes),
+        ('content-type', 'contentType', 'NOT_SET', valid_types),
+        ('accept-type', 'acceptType', 'NOT_SET', valid_types),
         ('output-file', 'outputFile', ''),
         ('console-log', 'consoleLogResponseBody', False),
         ('pass-build', 'passBuildParameters', False),
