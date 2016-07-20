@@ -12,7 +12,7 @@
         <scanProperties>test</scanProperties>
       </pathConfig>
       <failOnClmServerFailures>true</failOnClmServerFailures>
-      <stageId>build</stageId>
+      <stageId>release</stageId>
       <username>bar</username>
       <password>06XQY39LHGACt3r3kzSULg==</password>
     </com.sonatype.insight.ci.hudson.PreBuildScan>
