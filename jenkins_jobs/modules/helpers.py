@@ -496,14 +496,23 @@ def convert_mapping_to_xml(parent, data, mapping, fail_required=False):
     valid_options provides a way to check if the value the user input is from a
     list of available options. When the user pass a value that is not supported
     from the list, it raise an InvalidAttributeError.
+
+    valid_dict provides a way to set options through their key and value. If
+    the user input corresponds to a key, the XML tag will use the key's value
+    for its element. When the user pass a value that there are no keys for,
+    it raise an InvalidAttributeError.
     """
     for elem in mapping:
         (optname, xmlname, val) = elem[:3]
         val = data.get(optname, val)
 
         valid_options = []
+        valid_dict = {}
         if len(elem) == 4:
-            valid_options = elem[3]
+            if type(elem[3]) is list:
+                valid_options = elem[3]
+            if type(elem[3]) is dict:
+                valid_dict = elem[3]
 
         # Use fail_required setting to allow support for optional parameters
         # we will phase this out in the future as we rework plugins so that
@@ -517,10 +526,18 @@ def convert_mapping_to_xml(parent, data, mapping, fail_required=False):
         if val is None and fail_required is False:
             continue
 
+        if valid_dict:
+            if val not in valid_dict:
+                raise InvalidAttributeError(optname, val, valid_dict.keys())
+
         if valid_options:
             if val not in valid_options:
                 raise InvalidAttributeError(optname, val, valid_options)
 
         if type(val) == bool:
             val = str(val).lower()
-        XML.SubElement(parent, xmlname).text = str(val)
+
+        if val in valid_dict:
+            XML.SubElement(parent, xmlname).text = str(valid_dict[val])
+        else:
+            XML.SubElement(parent, xmlname).text = str(val)
