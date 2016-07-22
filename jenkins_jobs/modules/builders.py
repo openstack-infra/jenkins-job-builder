@@ -1133,30 +1133,39 @@ def msbuild(parser, xml_parent, data):
     MSBuild Plugin <MSBuild+Plugin>`.
 
     :arg str msbuild-version: which msbuild configured in Jenkins to use
-        (optional)
-    :arg str solution-file: location of the solution file to build
-    :arg str extra-parameters: extra parameters to pass to msbuild (optional)
+        (default '(Default)')
+    :arg str solution-file: location of the solution file to build (required)
+    :arg str extra-parameters: extra parameters to pass to msbuild (default '')
     :arg bool pass-build-variables: should build variables be passed
         to msbuild (default true)
     :arg bool continue-on-build-failure: should the build continue if
         msbuild returns an error (default false)
+    :arg bool unstable-if-warnings: If set to true and warnings on compilation,
+        the build will be unstable (>=1.20) (default false)
 
-    Example:
+    Full Example:
 
-    .. literalinclude:: ../../tests/builders/fixtures/msbuild.yaml
+    .. literalinclude:: ../../tests/builders/fixtures/msbuild-full.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/msbuild-minimal.yaml
        :language: yaml
     """
     msbuilder = XML.SubElement(xml_parent,
                                'hudson.plugins.msbuild.MsBuildBuilder')
-    XML.SubElement(msbuilder, 'msBuildName').text = data.get('msbuild-version',
-                                                             '(Default)')
-    XML.SubElement(msbuilder, 'msBuildFile').text = data['solution-file']
-    XML.SubElement(msbuilder, 'cmdLineArgs').text = (
-        data.get('extra-parameters', ''))
-    XML.SubElement(msbuilder, 'buildVariablesAsProperties').text = str(
-        data.get('pass-build-variables', True)).lower()
-    XML.SubElement(msbuilder, 'continueOnBuildFailure').text = str(
-        data.get('continue-on-build-failure', False)).lower()
+    msbuilder.set('plugin', 'msbuild')
+
+    mapping = [
+        ('msbuild-version', 'msBuildName', '(Default)'),
+        ('solution-file', 'msBuildFile', None),
+        ('extra-parameters', 'cmdLineArgs', ''),
+        ('pass-build-variables', 'buildVariablesAsProperties', True),
+        ('continue-on-build-failure', 'continueOnBuildFailure', False),
+        ('unstable-if-warnings', 'unstableIfWarnings', False)
+    ]
+    convert_mapping_to_xml(msbuilder, data, mapping, fail_required=True)
 
 
 def create_builders(parser, step):

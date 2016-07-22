@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <builders>
-    <hudson.plugins.msbuild.MsBuildBuilder>
+    <hudson.plugins.msbuild.MsBuildBuilder plugin="msbuild">
       <msBuildName>msbuild-4.0</msBuildName>
       <msBuildFile>MySolution.sln</msBuildFile>
       <cmdLineArgs>/maxcpucount:4</cmdLineArgs>
       <buildVariablesAsProperties>false</buildVariablesAsProperties>
       <continueOnBuildFailure>true</continueOnBuildFailure>
+      <unstableIfWarnings>true</unstableIfWarnings>
     </hudson.plugins.msbuild.MsBuildBuilder>
   </builders>
 </project>
