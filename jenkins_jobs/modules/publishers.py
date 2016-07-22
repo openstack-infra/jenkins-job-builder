@@ -388,7 +388,8 @@ def mqtt(registry, xml_parent, data):
                                         'EXACTLY_ONCE': '2'}),
         ('retain-message', 'retainMessage', False)
     ]
-    helpers.convert_mapping_to_xml(mqtt, data, mqtt_mapping)
+    helpers.convert_mapping_to_xml(mqtt, data, mqtt_mapping,
+                                   fail_required=False)
 
 
 def codecover(registry, xml_parent, data):
