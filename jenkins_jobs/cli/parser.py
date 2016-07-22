@@ -50,7 +50,7 @@ def create_parser():
         '--flush-cache',
         action='store_true',
         dest='flush_cache',
-        default=False,
+        default=None,
         help='''flush all the cache entries before updating''')
     parser.add_argument(
         '--version',

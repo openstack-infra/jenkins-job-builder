@@ -84,6 +84,7 @@ class JenkinsJobs(object):
     def _parse_additional(self):
 
         self._set_config(self.jjb_config.builder, 'ignore_cache')
+        self._set_config(self.jjb_config.builder, 'flush_cache')
         self._set_config(self.jjb_config.yamlparser, 'allow_empty_variables')
         self._set_config(self.jjb_config.jenkins, 'user')
         self._set_config(self.jjb_config.jenkins, 'password')
