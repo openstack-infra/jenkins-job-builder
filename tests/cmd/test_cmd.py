@@ -31,7 +31,7 @@ class CmdTestsBase(LoggingFixture, testtools.TestCase):
         jenkins_jobs.execute()
 
 
-class CmdTests(CmdTestsBase):
+class TestCmd(CmdTestsBase):
 
     def test_with_empty_args(self):
         """
