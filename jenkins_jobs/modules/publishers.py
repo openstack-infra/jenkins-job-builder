@@ -3723,34 +3723,26 @@ def plot(parser, xml_parent, data):
     :arg str yaxis: title of Y axis (default '')
     :arg str group: name of the group to which the plot belongs (required)
     :arg int num-builds: number of builds to plot across
-                         (default plot all builds)
+        (default plot all builds)
     :arg str style:  Specifies the graph style of the plot
-                     Can be: area, bar, bar3d, line, line3d, stackedArea,
-                     stackedbar, stackedbar3d, waterfall
-                     (default 'line')
-    :arg bool use-description: When false, the X-axis labels are formed
-                               using build numbers and dates, and the
-                               corresponding tooltips contain the build
-                               descriptions. When enabled, the contents of
-                               the labels and tooltips are swapped, with the
-                               descriptions used as X-axis labels and the
-                               build number and date used for tooltips.
-                               (default false)
+        Can be: area, bar, bar3d, line, line3d, stackedArea, stackedbar,
+        stackedbar3d, waterfall (default 'line')
+    :arg bool use-description: When false, the X-axis labels are formed using
+        build numbers and dates, and the corresponding tooltips contain the
+        build descriptions. When enabled, the contents of the labels and
+        tooltips are swapped, with the descriptions used as X-axis labels and
+        the build number and date used for tooltips. (default false)
     :arg bool exclude-zero-yaxis: When false, Y-axis contains the value zero
-                                  even if it is not included in the data
-                                  series. When true, the value zero is not
-                                  automatically included. (default false)
+        even if it is not included in the data series. When true, the value
+        zero is not automatically included. (default false)
     :arg bool logarithmic-yaxis: When true, the Y-axis will use a logarithmic
-                                 scale. By default, the Y-axis uses a linear
-                                 scale. (default false)
+        scale. By default, the Y-axis uses a linear scale. (default false)
     :arg bool keep-records: When true, show all builds up to 'Number of
-                            builds to include'. (default false)
+        builds to include'. (default false)
     :arg str csv-file-name: Use for choosing the file name in which the data
-                            will be persisted. If none specified and random
-                            name is generated as done in the Jenkins Plot
-                            plugin.
-                            (default random generated .csv filename, same
-                            behaviour as the Jenkins Plot plugin)
+        will be persisted. If none specified and random name is generated as
+        done in the Jenkins Plot plugin. (default random generated .csv
+        filename, same behaviour as the Jenkins Plot plugin)
     :arg list series: list data series definitions
 
       :Serie: * **file** (`str`) : files to include
