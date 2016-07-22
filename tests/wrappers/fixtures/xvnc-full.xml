@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <buildWrappers>
-    <hudson.plugins.xvnc.Xvnc>
+    <hudson.plugins.xvnc.Xvnc plugin="xvnc">
       <takeScreenshot>true</takeScreenshot>
       <useXauthority>false</useXauthority>
     </hudson.plugins.xvnc.Xvnc>

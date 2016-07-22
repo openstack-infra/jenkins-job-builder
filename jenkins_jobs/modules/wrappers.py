@@ -1819,22 +1819,29 @@ def xvnc(parser, xml_parent, data):
     Enable xvnc during the build.
     Requires the Jenkins :jenkins-wiki:`xvnc plugin <Xvnc+Plugin>`.
 
-    :arg bool screenshot: Take screenshot upon build completion
-                          (default false)
-    :arg bool xauthority: Create a dedicated Xauthority file per build
-                          (default true)
+    :arg bool screenshot: Take screenshot upon build completion (default false)
+    :arg bool xauthority: Create a dedicated Xauthority file per build (default
+        true)
 
-    Example:
+    Full Example:
 
-    .. literalinclude:: /../../tests/wrappers/fixtures/xvnc001.yaml
+    .. literalinclude:: /../../tests/wrappers/fixtures/xvnc-full.yaml
+       :language: yaml
 
+    Minimal Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/xvnc-minimal.yaml
+       :language: yaml
     """
     xwrapper = XML.SubElement(xml_parent,
                               'hudson.plugins.xvnc.Xvnc')
-    XML.SubElement(xwrapper, 'takeScreenshot').text = str(
-        data.get('screenshot', False)).lower()
-    XML.SubElement(xwrapper, 'useXauthority').text = str(
-        data.get('xauthority', True)).lower()
+    xwrapper.set('plugin', 'xvnc')
+
+    mapping = [
+        ('screenshot', 'takeScreenshot', False),
+        ('xauthority', 'useXauthority', True),
+    ]
+    convert_mapping_to_xml(xwrapper, data, mapping, fail_required=True)
 
 
 def job_log_logger(parser, xml_parent, data):
