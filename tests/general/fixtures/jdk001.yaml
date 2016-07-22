@@ -1,0 +1,3 @@
+name: jdk-project
+project-type: freestyle
+jdk: OpenJDK1.8
