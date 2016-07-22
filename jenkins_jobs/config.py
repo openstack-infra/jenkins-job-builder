@@ -23,6 +23,7 @@ import os
 from six.moves import configparser, StringIO
 
 from jenkins_jobs import builder
+from jenkins_jobs.errors import JJBConfigException
 from jenkins_jobs.errors import JenkinsJobsException
 
 __all__ = [
@@ -48,10 +49,6 @@ query_plugins_info=True
 authtoken=dummy
 send-as=Jenkins
 """
-
-
-class JJBConfigException(JenkinsJobsException):
-    pass
 
 
 class JJBConfig(object):

@@ -67,3 +67,7 @@ class MissingAttributeError(ModuleError):
 
 class YAMLFormatError(JenkinsJobsException):
     pass
+
+
+class JJBConfigException(JenkinsJobsException):
+    pass
