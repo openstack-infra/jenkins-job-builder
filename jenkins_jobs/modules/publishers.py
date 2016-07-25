@@ -298,6 +298,55 @@ def campfire(parser, xml_parent, data):
         XML.SubElement(room, 'campfire reference="../../campfire"')
 
 
+def codecover(parser, xml_parent, data):
+    """yaml: codecover
+    This plugin allows you to capture code coverage report from CodeCover.
+    Jenkins will generate the trend report of coverage.
+    Requires the Jenkins :jenkins-wiki:`CodeCover Plugin <CodeCover+Plugin>`.
+
+    :arg str include: Specify the path to the CodeCover HTML report file,
+        relative to the workspace root (default '')
+    :arg int min-statement: Minimum statement threshold (default 0)
+    :arg int max-statement: Maximum statement threshold (default 90)
+    :arg int min-branch: Minimum branch threshold (default 0)
+    :arg int max-branch: Maximum branch threshold (default 80)
+    :arg int min-loop: Minimum loop threshold (default 0)
+    :arg int max-loop: Maximum loop threshold (default 50)
+    :arg int min-condition: Minimum condition threshold (default 0)
+    :arg int max-condition: Maximum conditon threshold (default 50)
+
+    Minimal Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/codecover-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/codecover-full.yaml
+       :language: yaml
+    """
+
+    codecover = XML.SubElement(
+        xml_parent, 'hudson.plugins.codecover.CodeCoverPublisher')
+    codecover.set('plugin', 'codecover')
+
+    XML.SubElement(codecover, 'includes').text = str(data.get('include', ''))
+
+    health_report = XML.SubElement(codecover, 'healthReports')
+    mapping = [
+        ('min-statement', 'minStatement', 0),
+        ('max-statement', 'maxStatement', 90),
+        ('min-branch', 'minBranch', 0),
+        ('max-branch', 'maxBranch', 80),
+        ('min-loop', 'minLoop', 0),
+        ('max-loop', 'maxLoop', 50),
+        ('min-condition', 'minCondition', 0),
+        ('max-condition', 'maxCondition', 50),
+    ]
+    helpers.convert_mapping_to_xml(
+        health_report, data, mapping, fail_required=True)
+
+
 def emotional_jenkins(parser, xml_parent, data):
     """yaml: emotional-jenkins
     Emotional Jenkins. This funny plugin changes the expression of Mr. Jenkins

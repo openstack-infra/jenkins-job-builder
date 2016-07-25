@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.codecover.CodeCoverPublisher plugin="codecover">
+      <includes/>
+      <healthReports>
+        <minStatement>0</minStatement>
+        <maxStatement>90</maxStatement>
+        <minBranch>0</minBranch>
+        <maxBranch>80</maxBranch>
+        <minLoop>0</minLoop>
+        <maxLoop>50</maxLoop>
+        <minCondition>0</minCondition>
+        <maxCondition>50</maxCondition>
+      </healthReports>
+    </hudson.plugins.codecover.CodeCoverPublisher>
+  </publishers>
+</project>
