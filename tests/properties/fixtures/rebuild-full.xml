@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <properties>
-    <com.sonyericsson.rebuild.RebuildSettings>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild">
       <autoRebuild>true</autoRebuild>
       <rebuildDisabled>true</rebuildDisabled>
     </com.sonyericsson.rebuild.RebuildSettings>
