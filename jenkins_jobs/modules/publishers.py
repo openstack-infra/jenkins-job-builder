@@ -1450,11 +1450,11 @@ def findbugs(parser, xml_parent, data):
 
     Minimal Example:
 
-    .. literalinclude::  /../../tests/reporters/fixtures/findbugs-minimal.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/findbugs-minimal.yaml
 
     Full Example:
 
-    .. literalinclude::  /../../tests/publishers/fixtures/findbugs01.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/findbugs-full.yaml
     """
     findbugs = XML.SubElement(xml_parent,
                               'hudson.plugins.findbugs.FindBugsPublisher')
