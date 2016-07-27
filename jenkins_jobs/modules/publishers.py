@@ -2993,9 +2993,9 @@ def html_publisher(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`HTML Publisher Plugin
     <HTML+Publisher+Plugin>`.
 
-    :arg str name: Report name
-    :arg str dir: HTML directory to archive
-    :arg str files: Specify the pages to display
+    :arg str name: Report name (required)
+    :arg str dir: HTML directory to archive (required)
+    :arg str files: Specify the pages to display (required)
     :arg bool keep-all: keep HTML reports for each past build (default false)
     :arg bool allow-missing: Allow missing HTML reports (default false)
     :arg bool link-to-last-build: If this and 'keep-all' both are true, it
@@ -3012,15 +3012,16 @@ def html_publisher(parser, xml_parent, data):
     reporter = XML.SubElement(xml_parent, 'htmlpublisher.HtmlPublisher')
     targets = XML.SubElement(reporter, 'reportTargets')
     ptarget = XML.SubElement(targets, 'htmlpublisher.HtmlPublisherTarget')
-    XML.SubElement(ptarget, 'reportName').text = data['name']
-    XML.SubElement(ptarget, 'reportDir').text = data['dir']
-    XML.SubElement(ptarget, 'reportFiles').text = data['files']
-    XML.SubElement(ptarget, 'alwaysLinkToLastBuild').text = str(
-        data.get('link-to-last-build', False)).lower()
-    keep_all = str(data.get('keep-all', False)).lower()
-    XML.SubElement(ptarget, 'keepAll').text = keep_all
-    allow_missing = str(data.get('allow-missing', False)).lower()
-    XML.SubElement(ptarget, 'allowMissing').text = allow_missing
+
+    mapping = [
+        ('name', 'reportName', None),
+        ('dir', 'reportDir', None),
+        ('files', 'reportFiles', None),
+        ('link-to-last-build', 'alwaysLinkToLastBuild', False),
+        ('keep-all', 'keepAll', False),
+        ('allow-missing', 'allowMissing', False),
+    ]
+    helpers.convert_mapping_to_xml(ptarget, data, mapping, fail_required=True)
     XML.SubElement(ptarget, 'wrapperName').text = "htmlpublisher-wrapper.html"
 
 
