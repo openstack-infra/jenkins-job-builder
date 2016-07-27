@@ -1,0 +1,11 @@
+publishers:
+  - ftp-publisher:
+      uploads:
+        - file-path: destination/folder
+          source-file: folder/dist/*.jar
+        - file-path: foo/bar
+          source-file: foo/bar/*.ear
+      site-name: foo
+      use-timestamps: true
+      flatten-files: true
+      skip-publishing: true

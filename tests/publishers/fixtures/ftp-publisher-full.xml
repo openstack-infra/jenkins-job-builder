@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <com.zanox.hudson.plugins.FTPPublisher plugin="ftppublisher">
+      <entries>
+        <com.zanox.hudson.plugins.Entry>
+          <filePath>destination/folder</filePath>
+          <sourceFile>folder/dist/*.jar</sourceFile>
+        </com.zanox.hudson.plugins.Entry>
+        <com.zanox.hudson.plugins.Entry>
+          <filePath>foo/bar</filePath>
+          <sourceFile>foo/bar/*.ear</sourceFile>
+        </com.zanox.hudson.plugins.Entry>
+      </entries>
+      <siteName>foo</siteName>
+      <useTimestamps>true</useTimestamps>
+      <flatten>true</flatten>
+      <skip>true</skip>
+    </com.zanox.hudson.plugins.FTPPublisher>
+  </publishers>
+</project>
