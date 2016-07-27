@@ -50,6 +50,9 @@ authtoken=dummy
 send-as=Jenkins
 """
 
+CONFIG_REQUIRED_MESSAGE = ("A valid configuration file is required. "
+                           "No configuration file passed.")
+
 
 class JJBConfig(object):
 
@@ -90,8 +93,7 @@ class JJBConfig(object):
         conf = None
         if config_filename is not None:
             conf = config_filename
-
-        elif config_file_required:
+        else:
             if os.path.isfile(local_conf):
                 conf = local_conf
             elif os.path.isfile(user_conf):
@@ -99,13 +101,16 @@ class JJBConfig(object):
             else:
                 conf = global_conf
 
+        if config_file_required and conf is None:
+            raise JJBConfigException(CONFIG_REQUIRED_MESSAGE)
+
         config_fp = None
         if conf is not None:
             try:
                 config_fp = self._read_config_file(conf)
-            except JJBConfigException as e:
+            except JJBConfigException:
                 if config_file_required:
-                    raise e
+                    raise JJBConfigException(CONFIG_REQUIRED_MESSAGE)
                 else:
                     logger.warn("Config file, {0}, not found. Using default "
                                 "config values.".format(conf))
