@@ -3927,19 +3927,9 @@ def git(parser, xml_parent, data):
                      ('namespace', 'noteNamespace', 'master'),
                      ('replace-note', 'noteReplace', False)]
 
-    def handle_entity_children(entity, entity_xml, child_mapping):
-        for prop in child_mapping:
-            opt, xmlopt, default_val = prop[:3]
-            val = entity.get(opt, default_val)
-            if val is None:
-                raise JenkinsJobsException('Required option missing: %s' % opt)
-            if type(val) == bool:
-                val = str(val).lower()
-            XML.SubElement(entity_xml, xmlopt).text = val
-
     top = XML.SubElement(xml_parent, 'hudson.plugins.git.GitPublisher')
     XML.SubElement(top, 'configVersion').text = '2'
-    handle_entity_children(data, top, mappings)
+    helpers.convert_mapping_to_xml(top, data, mappings, fail_required=True)
 
     tags = data.get('tags', [])
     if tags:
@@ -3948,7 +3938,8 @@ def git(parser, xml_parent, data):
             xml_tag = XML.SubElement(
                 xml_tags,
                 'hudson.plugins.git.GitPublisher_-TagToPush')
-            handle_entity_children(tag['tag'], xml_tag, tag_mappings)
+            helpers.convert_mapping_to_xml(
+                xml_tag, tag['tag'], tag_mappings, fail_required=True)
 
     branches = data.get('branches', [])
     if branches:
@@ -3957,8 +3948,10 @@ def git(parser, xml_parent, data):
             xml_branch = XML.SubElement(
                 xml_branches,
                 'hudson.plugins.git.GitPublisher_-BranchToPush')
-            handle_entity_children(branch['branch'], xml_branch,
-                                   branch_mappings)
+            helpers.convert_mapping_to_xml(xml_branch,
+                                           branch['branch'],
+                                           branch_mappings,
+                                           fail_required=True)
 
     notes = data.get('notes', [])
     if notes:
@@ -3967,7 +3960,8 @@ def git(parser, xml_parent, data):
             xml_note = XML.SubElement(
                 xml_notes,
                 'hudson.plugins.git.GitPublisher_-NoteToPush')
-            handle_entity_children(note['note'], xml_note, note_mappings)
+            helpers.convert_mapping_to_xml(
+                xml_note, note['note'], note_mappings, fail_required=True)
 
 
 def github_notifier(parser, xml_parent, data):
