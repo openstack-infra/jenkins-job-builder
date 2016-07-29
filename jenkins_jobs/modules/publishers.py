@@ -824,20 +824,19 @@ def cobertura(parser, xml_parent, data):
     <Cobertura+Plugin>`.
 
     :arg str report-file: This is a file name pattern that can be used
-                          to locate the cobertura xml report files (optional)
+        to locate the cobertura xml report files (optional)
     :arg bool only-stable: Include only stable builds (default false)
     :arg bool fail-no-reports: fail builds if no coverage reports are found
-                               (default false)
-    :arg bool fail-unhealthy: Unhealthy projects will be failed
-                              (default false)
+        (default false)
+    :arg bool fail-unhealthy: Unhealthy projects will be failed (default false)
     :arg bool fail-unstable: Unstable projects will be failed (default false)
     :arg bool health-auto-update: Auto update threshold for health on
-                                  successful build (default false)
+        successful build (default false)
     :arg bool stability-auto-update: Auto update threshold for stability on
-                                     successful build (default false)
+        successful build (default false)
     :arg bool zoom-coverage-chart: Zoom the coverage chart and crop area below
-                                   the minimum and above the maximum coverage
-                                   of the past reports (default false)
+        the minimum and above the maximum coverage of the past reports
+        (default false)
     :arg str source-encoding: Override the source encoding (default ASCII)
     :arg dict targets:
 
