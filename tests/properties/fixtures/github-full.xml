@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github">
+      <projectUrl>https://github.com/openstack-infra/jenkins-job-builder/</projectUrl>
+      <displayName>foo</displayName>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+  </properties>
+</project>

@@ -1,0 +1,4 @@
+properties:
+  - github:
+      url: https://github.com/openstack-infra/jenkins-job-builder/
+      display-name: foo
