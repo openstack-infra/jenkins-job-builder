@@ -5253,28 +5253,31 @@ def logstash(parser, xml_parent, data):
     your job data. Also stores test metrics from Junit.
     Requires the Jenkins :jenkins-wiki:`Logstash Plugin <Logstash+Plugin>`.
 
-    :arg num max-lines: The maximum number of log lines to send to Logstash.
-        ( default 1000 )
+    :arg int max-lines: The maximum number of log lines to send to Logstash.
+        (default 1000)
     :arg bool fail-build: Mark build as failed if this step fails.
-        ( default false )
+        (default false)
 
     Minimal Example:
 
     .. literalinclude::  /../../tests/publishers/fixtures/logstash-min.yaml
+       :language: yaml
 
     Full Example:
 
     .. literalinclude::  /../../tests/publishers/fixtures/logstash-full.yaml
-
+       :language: yaml
     """
 
     logstash = XML.SubElement(xml_parent,
                               'jenkins.plugins.logstash.LogstashNotifier')
-    XML.SubElement(logstash, 'maxLines').text = str(
-        data.get('max-lines', 1000))
+    logstash.set('plugin', 'logstash')
 
-    XML.SubElement(logstash, 'failBuild').text = str(
-        data.get('fail-build', False))
+    mapping = [
+        ('max-lines', 'maxLines', 1000),
+        ('fail-build', 'failBuild', False),
+    ]
+    helpers.convert_mapping_to_xml(logstash, data, mapping, fail_required=True)
 
 
 def image_gallery(parser, xml_parent, data):
