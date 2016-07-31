@@ -1066,13 +1066,13 @@ def gitlab_merge_request(parser, xml_parent, data):
 
 def gitlab(parser, xml_parent, data):
     """yaml: gitlab
-    Makes Jenkins act like a GitlabCI server
+    Makes Jenkins act like a GitLab CI server.
     Requires the Jenkins :jenkins-wiki:`GitLab Plugin
     <GitLab+Plugin>`.
 
     :arg bool trigger-push: Build on Push Events (default true)
     :arg bool trigger-merge-request: Build on Merge Request Events (default
-        True)
+        true)
     :arg str trigger-open-merge-request-push: Rebuild open Merge Requests
         on Push Events.
 
@@ -1083,20 +1083,56 @@ def gitlab(parser, xml_parent, data):
             * **never** (default)
             * **source**
             * **both**
-    :arg bool ci-skip: Enable [ci-skip] (default true)
+    :arg bool trigger-note: Build when comment is added with defined phrase
+        (>= 1.2.4) (default true)
+    :arg str note-regex: Phrase that triggers the build (>= 1.2.4) (default
+        'Jenkins please retry a build')
+    :arg bool ci-skip: Enable skipping builds of commits that contain
+        [ci-skip] in the commit message (default true)
+    :arg bool wip-skip: Enable skipping builds of WIP Merge Requests (>= 1.2.4)
+        (default false)
     :arg bool set-build-description: Set build description to build cause
-        (eg. Merge request or Git Push ) (default true)
+        (eg. Merge request or Git Push) (default true)
     :arg bool add-note-merge-request: Add note with build status on
         merge requests (default true)
     :arg bool add-vote-merge-request: Vote added to note with build status
-        on merge requests (default true)
-    :arg bool add-ci-message: Add CI build status (default false)
+        on merge requests (>= 1.1.27) (default true)
+    :arg bool accept-merge-request-on-success: Automatically accept the Merge
+        Request if the build is successful (>= 1.1.27) (default false)
+    :arg bool add-ci-message: Add CI build status (1.1.28 - 1.2.0) (default
+        false)
     :arg bool allow-all-branches: Allow all branches (Ignoring Filtered
-        Branches) (default false)
+        Branches) (< 1.1.29) (default false)
+    :arg str branch-filter-type: Filter branches that can trigger a build.
+        Valid values and their additional attributes are described in the
+        `branch filter type`_ table (>= 1.1.29) (default 'All').
     :arg list include-branches: Defined list of branches to include
         (default [])
     :arg list exclude-branches: Defined list of branches to exclude
         (default [])
+    :arg str target-branch-regex: Regular expression to select branches
+
+    .. _`branch filter type`:
+
+    ================== ====================================================
+    Branch filter type Description
+    ================== ====================================================
+    All                All branches are allowed to trigger this job.
+    NameBasedFilter    Filter branches by name.
+                       List source branches that are allowed to trigger a
+                       build from a Push event or a Merge Request event. If
+                       both fields are left empty, all branches are allowed
+                       to trigger this job. For Merge Request events only
+                       the target branch name is filtered out by the
+                       **include-branches** and **exclude-branches** lists.
+
+    RegexBasedFilter   Filter branches by regex
+                       The target branch regex allows to limit the
+                       execution of this job to certain branches. Any
+                       branch matching the specified pattern in
+                       **target-branch-regex** triggers the job. No
+                       filtering is performed if the field is left empty.
+    ================== ====================================================
 
     Example (version < 1.1.26):
 
@@ -1134,22 +1170,42 @@ def gitlab(parser, xml_parent, data):
              'triggerOpenMergeRequestOnPush', True)]
         convert_mapping_to_xml(gitlab, data, mapping, fail_required=True)
 
+    if plugin_ver == pkg_resources.parse_version('1.1.29'):
+        if data.get('branch-filter-type', '') == 'All':
+            data['branch-filter-type'] = ''
+        valid_filters = ['', 'NameBasedFilter', 'RegexBasedFilter']
+        mapping = [
+            ('branch-filter-type', 'branchFilterName', '', valid_filters)]
+        convert_mapping_to_xml(gitlab, data, mapping, fail_required=True)
+    else:
+        valid_filters = ['All', 'NameBasedFilter', 'RegexBasedFilter']
+        mapping = [
+            ('branch-filter-type', 'branchFilterType', 'All', valid_filters)]
+        convert_mapping_to_xml(gitlab, data, mapping, fail_required=True)
+
     XML.SubElement(gitlab, 'spec').text = ''
-    bool_mapping = [
+    mapping = [
         ('trigger-push', 'triggerOnPush', True),
         ('trigger-merge-request', 'triggerOnMergeRequest', True),
+        ('trigger-note', 'triggerOnNoteRequest', True),
+        ('note-regex', 'noteRegex', 'Jenkins please retry a build'),
         ('ci-skip', 'ciSkip', True),
+        ('wip-skip', 'skipWorkInProgressMergeRequest', True),
         ('set-build-description', 'setBuildDescription', True),
         ('add-note-merge-request', 'addNoteOnMergeRequest', True),
         ('add-vote-merge-request', 'addVoteOnMergeRequest', True),
+        ('accept-merge-request-on-success', 'acceptMergeRequestOnSuccess',
+         False),
         ('add-ci-message', 'addCiMessage', False),
         ('allow-all-branches', 'allowAllBranches', False),
+        ('target-branch-regex', 'targetBranchRegex', '')
     ]
+
     list_mapping = (
         ('include-branches', 'includeBranchesSpec', []),
         ('exclude-branches', 'excludeBranchesSpec', []),
     )
-    convert_mapping_to_xml(gitlab, data, bool_mapping, fail_required=True)
+    convert_mapping_to_xml(gitlab, data, mapping, fail_required=True)
 
     for yaml_name, xml_name, default_val in list_mapping:
         value = ', '.join(data.get(yaml_name, default_val))

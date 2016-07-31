@@ -1,0 +1,22 @@
+triggers:
+  - gitlab:
+      trigger-push: false
+      trigger-merge-request: false
+      trigger-open-merge-request-push: both
+      trigger-note-request: false
+      note-regex: Retrigger
+      ci-skip: false
+      wip-skip: false
+      set-build-description: false
+      add-note-merge-request: false
+      add-vote-merge-request: false
+      accept-merge-request-on-success: true
+      add-ci-message: true
+      branch-filter-type: RegexBasedFilter
+      include-branches:
+          - include1
+          - include2
+      exclude-branches:
+          - exclude1
+          - exclude2
+      target-branch-regex: '(.*debug.*|.*release.*)'
