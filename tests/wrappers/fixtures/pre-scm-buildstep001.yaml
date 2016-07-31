@@ -1,0 +1,15 @@
+wrappers:
+  - pre-scm-buildstep:
+      failOnError: true
+      buildsteps:
+        - shell: |
+            #!/bin/bash
+            echo "Doing something cool"
+        - shell: |
+            #!/bin/zsh
+            echo "Doing something cool with zsh"
+        - ant: "target1 target2"
+          ant-name: "Standard Ant"
+        - inject:
+             properties-file: example.prop
+             properties-content: EXAMPLE=foo-bar

@@ -1,0 +1,8 @@
+wrappers:
+  - pre-scm-buildstep:
+      - shell: |
+          #!/bin/bash
+          echo "Doing something cool"
+      - shell: |
+          #!/bin/zsh
+          echo "Doing something cool with zsh"

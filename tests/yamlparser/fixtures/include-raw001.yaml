@@ -12,16 +12,17 @@
     name: pre-scm-shell-ant
     wrappers:
       - pre-scm-buildstep:
-          - shell:
-              !include-raw: include-raw002-cool.sh
-          - shell:
-              !include-raw: include-raw002-cool.zsh
-          - ant:
-              targets: "target1 target2"
-              ant-name: "Standard Ant"
-          - inject:
-               properties-file: example.prop
-               properties-content: EXAMPLE=foo-bar
+          buildsteps:
+            - shell:
+                !include-raw: include-raw002-cool.sh
+            - shell:
+                !include-raw: include-raw002-cool.zsh
+            - ant:
+                targets: "target1 target2"
+                ant-name: "Standard Ant"
+            - inject:
+                 properties-file: example.prop
+                 properties-content: EXAMPLE=foo-bar
 
 - wrapper:
     name: copy-files
@@ -42,4 +43,3 @@
       - inject:
           keep-build-variables: true
           keep-system-variables: true
-
