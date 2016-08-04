@@ -2161,6 +2161,35 @@ def jira(parser, xml_parent, data):
     XML.SubElement(xml_parent, 'hudson.plugins.jira.JiraIssueUpdater')
 
 
+def growl(parser, xml_parent, data):
+    """yaml: growl
+    Push notifications to growl client.
+    Requires the Jenkins :jenkins-wiki:`Growl Plugin <Growl+Plugin>`.
+
+    :arg str ip: IP address to send growl notifications to (required)
+    :arg bool notify-only-on-fail-or-recovery: send a growl only when build
+        fails or recovers from a failure (default false)
+
+    Minimal Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/growl-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/growl-full.yaml
+       :language: yaml
+    """
+    growl = XML.SubElement(xml_parent, 'hudson.plugins.growl.GrowlPublisher')
+    growl.set('plugin', 'growl')
+
+    mapping = [
+        ('ip', 'IP', None),
+        ('notify-only-on-fail-or-recovery', 'onlyOnFailureOrRecovery', False),
+    ]
+    helpers.convert_mapping_to_xml(growl, data, mapping, fail_required=True)
+
+
 def groovy_postbuild(parser, xml_parent, data):
     """yaml: groovy-postbuild
     Execute a groovy script.
