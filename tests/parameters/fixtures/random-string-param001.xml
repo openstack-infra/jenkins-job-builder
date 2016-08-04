@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.plugins.random__string__parameter.RandomStringParameterDefinition>
+          <name>job-string</name>
+          <description>A random string passed to the job</description>
+          <failedValidationMessage>Your input string is invalid</failedValidationMessage>
+        </hudson.plugins.random__string__parameter.RandomStringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+</project>

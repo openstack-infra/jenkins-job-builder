@@ -783,6 +783,35 @@ def hidden_param(parser, xml_parent, data):
                'com.wangyin.parameter.WHideParameterDefinition')
 
 
+def random_string_param(registry, xml_parent, data):
+    """yaml: random-string
+    This parameter generates a random string and passes it to the
+    build, preventing Jenkins from combining queued builds.
+    Requires the Jenkins :jenkins-wiki:`Random String Parameter Plugin
+    <Random+String+Parameter+Plugin>`.
+
+    :arg str name: Name of the parameter
+    :arg str description: Description of the parameter (default '')
+    :arg str failed-validation-message: Failure message to display for invalid
+        input (default '')
+
+    Example:
+
+    .. literalinclude::
+       /../../tests/parameters/fixtures/random-string-param001.yaml
+       :language: yaml
+    """
+    pdef = XML.SubElement(xml_parent,
+                          'hudson.plugins.random__string__parameter.'
+                          'RandomStringParameterDefinition')
+    if 'name' not in data:
+        raise JenkinsJobsException('random-string must have a name parameter.')
+    XML.SubElement(pdef, 'name').text = data['name']
+    XML.SubElement(pdef, 'description').text = data.get('description', '')
+    XML.SubElement(pdef, 'failedValidationMessage').text = data.get(
+        'failed-validation-message', '')
+
+
 class Parameters(jenkins_jobs.modules.base.Base):
     sequence = 21
 

@@ -1,0 +1,5 @@
+parameters:
+  - random-string:
+      name: job-string
+      description: "A random string passed to the job"
+      failed-validation-message: "Your input string is invalid"
