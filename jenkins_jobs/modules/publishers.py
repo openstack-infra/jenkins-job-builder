@@ -666,6 +666,157 @@ def clone_workspace(registry, xml_parent, data):
         XML.SubElement(cloneworkspace, 'archiveMethod').text = archive_method
 
 
+def cloud_foundry(parser, xml_parent, data):
+    """yaml: cloudfoundry
+    Pushes a project to Cloud Foundry or a CF-based platform (e.g. Stackato) at
+    the end of a build. Requires the Jenkins :jenkins-wiki:`Cloud Foundry
+    Plugin <Cloud+Foundry+Plugin>`.
+
+    :arg str target: The API endpoint of the platform you want to push to.
+        This is the URL you use to access the platform, possibly with ".api"
+        added. (required)
+    :arg str organization: An org is a development account that an individual
+        or multiple collaborators can own and use (required)
+    :arg str space: Provide users with access to a shared location for
+        application development, deployment, and maintenance (required)
+    :arg str credentials-id: credentials-id of the user (required)
+    :arg bool self-signed: Allow self-signed SSL certificates from the target
+        (default false)
+    :arg bool reset-app: Delete app before pushing app's configurations
+        (default false)
+    :arg int plugin-timeout: The time in seconds before the Cloud Foundry
+        plugin stops fetching logs and marks the build a failure (default 120)
+    :arg list create-services: Create services automatically (default '')
+
+        :create-services:
+            * **name** ('str') -- Service name (default '')
+            * **type** ('str') -- Service type (default '')
+            * **plan** ('str') -- Service plan (default '')
+            * **reset-service** ('bool') -- Delete the service before creating
+                the new one (default false)
+    :arg str value: Select to read configuration from manifest file or to enter
+        configuration in Jenkins (default 'manifestFile')
+    :arg str manifest-file: Path to manifest file (default 'manifest.yml')
+    :arg str app-name: The application's name. Default to Jenkins build name.
+        (default '')
+    :arg int memory: The application's memory usage in MB (default 512)
+    :arg str host-name: The hostname of the URI to access your application.
+        Default to app-name (default '')
+    :arg int instances: Number of instances of your application on creation
+        (default 1)
+    :arg int manifest-timeout: The time in seconds before the health-manager
+        gives up on starting the application (default 60)
+    :arg bool no-route: No URI path will be created to access the application
+        (default false)
+    :arg str app-path: Path to application (default '')
+    :arg build-pack: If your application requires a custom buildpack, you can
+        use this to specify its URL or name (default '')
+    :arg str stack: If your application requires a custom stack, you can use
+        this to specify its name. (default '')
+    :arg str command: Set a custom start command for your application
+        (default '')
+    :arg str domain: The domain of the URI to access your application
+        (default '')
+    :arg list environment-variables: Inject environment variables
+
+        :environment-variables:
+            * **key** ('str') -- Environment variable key (default '')
+            * **value** ('str') -- Environment variable value (default '')
+    :arg list services-names: Name of service instances
+
+        :services-names:
+            * **name** ('str') -- Name of the service instance (default '')
+
+    Minimal example:
+
+    .. literalinclude::
+       /../../tests/publishers/fixtures/cloudfoundry-minimal.yaml
+       :language: yaml
+
+    Full example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/cloudfoundry-full.yaml
+       :language: yaml
+    """
+    cloud_foundry = XML.SubElement(
+        xml_parent, 'com.hpe.cloudfoundryjenkins.CloudFoundryPushPublisher')
+    cloud_foundry.set('plugin', 'cloudfoundry')
+
+    mapping = [
+        ('target', 'target', None),
+        ('organization', 'organization', None),
+        ('space', 'cloudSpace', None),
+        ('credentials-id', 'credentialsId', None),
+        ('self-signed', 'selfSigned', False),
+        ('reset-app', 'resetIfExists', False),
+        ('timeout', 'pluginTimeout', 120),
+    ]
+    helpers.convert_mapping_to_xml(
+        cloud_foundry, data, mapping, fail_required=True)
+    XML.SubElement(cloud_foundry, 'appURIs').text = ''
+
+    create_services = XML.SubElement(cloud_foundry, 'servicesToCreate')
+    create_services_mapping = [
+        ('name', 'name', ''),
+        ('type', 'type', ''),
+        ('plan', 'plan', ''),
+        ('reset-service', 'resetService', '')]
+    for service in data.get('create-services', ''):
+        create_services_sub = XML.SubElement(
+            create_services,
+            'com.hpe.cloudfoundryjenkins.CloudFoundryPushPublisher_-Service')
+        helpers.convert_mapping_to_xml(create_services_sub,
+                                       service,
+                                       create_services_mapping,
+                                       fail_required=True)
+
+    manifest = XML.SubElement(cloud_foundry, 'manifestChoice')
+    valid_values = ['manifestFile', 'jenkinsConfig']
+    manifest_mapping = [
+        ('value', 'value', 'manifestFile', valid_values),
+        ('manifest-file', 'manifestFile', 'manifest.yml'),
+        ('app-name', 'appName', ''),
+        ('memory', 'memory', 512),
+        ('host-name', 'hostname', ''),
+        ('instances', 'instances', 1),
+        ('manifest-timeout', 'timeout', 60),
+        ('no-route', 'noRoute', False),
+        ('app-path', 'appPath', ''),
+        ('build-pack', 'buildpack', ''),
+        ('stack', 'stack', ''),
+        ('command', 'command', ''),
+        ('domain', 'domain', ''),
+    ]
+    helpers.convert_mapping_to_xml(
+        manifest, data, manifest_mapping, fail_required=True)
+
+    if 'environment-variables' in data:
+        env_vars = XML.SubElement(manifest, 'envVars')
+        env_vars_mapping = [
+            ('key', 'key', ''),
+            ('value', 'value', '')]
+        for var in data['environment-variables']:
+            env_vars_sub = XML.SubElement(
+                env_vars,
+                'com.hpe.cloudfoundryjenkins.CloudFoundryPushPublisher_-'
+                'EnvironmentVariable')
+            helpers.convert_mapping_to_xml(
+                env_vars_sub, var, env_vars_mapping, fail_required=True)
+
+    if 'services-names' in data:
+        services_names = XML.SubElement(manifest, 'servicesNames')
+        service_name_mapping = [('name', 'name', '')]
+        for name in data['services-names']:
+            services_names_sub = XML.SubElement(
+                services_names,
+                'com.hpe.cloudfoundryjenkins.CloudFoundryPushPublisher_-'
+                'ServiceName')
+            helpers.convert_mapping_to_xml(services_names_sub,
+                                           name,
+                                           service_name_mapping,
+                                           fail_required=True)
+
+
 def cloverphp(registry, xml_parent, data):
     """yaml: cloverphp
     Capture code coverage reports from PHPUnit

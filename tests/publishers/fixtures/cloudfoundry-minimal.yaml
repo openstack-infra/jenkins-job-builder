@@ -1,0 +1,6 @@
+publishers:
+  - cloudfoundry:
+      target: https://api.stackato-rkw2.local
+      organization: AS
+      space: SimpleSpace
+      credentials-id: j89jk213

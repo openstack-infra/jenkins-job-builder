@@ -1,0 +1,39 @@
+publishers:
+  - cloudfoundry:
+      target: https://api.stackato-rkw2.local
+      organization: AS
+      space: SimpleSpace
+      credentials-id: 123
+      self-signed: true
+      reset-app: true
+      timeout: 240
+      create-services:
+        - name: foo-name
+          type: foo-type
+          plan: plan1
+          reset-service: true
+        - name: bar-name
+          type: bar-type
+          plan: plan2
+          reset-service: false
+      value: jenkinsConfig
+      manifest-file: manifest.yml
+      app-name: cloudfoundry
+      memory: 1024
+      host-name: cloudfoundry
+      instances: 5
+      manifest-timeout: 120
+      no-route: true
+      app-path: foo
+      build-pack: custom-buildpack
+      stack: custom-stack
+      command: start
+      domain: cloudfoundry.domain
+      environment-variables:
+        - key: key
+          value: value
+        - key: key2
+          value: value2
+      services-names:
+        - name: service-name
+        - name: service-name2
