@@ -3363,13 +3363,12 @@ def build_name_setter(parser, xml_parent, data):
     build_name_setter = XML.SubElement(
         xml_parent,
         'org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater')
-    XML.SubElement(build_name_setter, 'buildName').text = data.get(
-        'name', 'version.txt')
-    XML.SubElement(build_name_setter, 'macroTemplate').text = data.get(
-        'template', '#${BUILD_NUMBER}')
-    XML.SubElement(build_name_setter, 'fromFile').text = str(
-        data.get('file', False)).lower()
-    XML.SubElement(build_name_setter, 'fromMacro').text = str(
-        data.get('macro', False)).lower()
-    XML.SubElement(build_name_setter, 'macroFirst').text = str(
-        data.get('macro-first', False)).lower()
+    mapping = [
+        ('name', 'buildName', 'version.txt'),
+        ('template', 'macroTemplate', '#${BUILD_NUMBER}'),
+        ('file', 'fromFile', False),
+        ('macro', 'fromMacro', False),
+        ('macro-first', 'macroFirst', False),
+    ]
+    convert_mapping_to_xml(
+        build_name_setter, data, mapping, fail_required=True)
