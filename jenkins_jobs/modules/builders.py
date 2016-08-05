@@ -870,6 +870,79 @@ def inject(parser, xml_parent, data):
         info, 'scriptContent', data.get('script-content'))
 
 
+def kmap(parser, xml_parent, data):
+    """yaml: kmap
+    Publish mobile applications to your Keivox KMAP Private Mobile App Store.
+    Requires the Jenkins :jenkins-wiki:`Keivox KMAP Private Mobile App Store
+    Plugin <Keivox+KMAP+Private+Mobile+App+Store+Plugin>`.
+
+    :arg str username: KMAP's user email with permissions to upload/publish
+        applications to KMAP (required)
+    :arg str password:  Password for the KMAP user uploading/publishing
+        applications (required)
+    :arg str url: KMAP's url. This url must always end with "/kmap-client/".
+        For example: http://testing.keivox.com/kmap-client/ (required)
+    :arg str categories: Categories' names. If you want to add the application
+        to more than one category, write the categories between commas.
+        (required)
+    :arg str file-path: Path to the application's file (required)
+    :arg str app-name: KMAP's application name (required)
+    :arg str bundle: Bundle indentifier (default '')
+    :arg str version: Application's version (required)
+    :arg str description: Application's description (default '')
+    :arg str icon-path: Path to the application's icon (default '')
+    :arg bool publish-optional: Publish application after it has been uploaded
+        to KMAP (default false)
+
+        :publish-optional:
+            * **groups** ('str') -- groups' names to publish the application
+                (default '')
+            * **users** ('str') -- users' names to publish the application
+                (default '')
+            * **notify-users** ('bool') -- Send notifications to the users and
+                groups when publishing the application (default false)
+
+    Minimal Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/kmap-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/kmap-full.yaml
+       :language: yaml
+    """
+    kmap = XML.SubElement(
+        xml_parent, 'org.jenkinsci.plugins.KmapJenkinsBuilder')
+
+    kmap.set('plugin', 'kmap-jenkins')
+    publish = data.get('publish-optional', False)
+
+    mapping = [
+        ('username', 'username', None),
+        ('password', 'password', None),
+        ('url', 'kmapClient', None),
+        ('categories', 'categories', None),
+        ('file-path', 'filePath', None),
+        ('app-name', 'appName', None),
+        ('bundle', 'bundle', ''),
+        ('version', 'version', None),
+        ('description', 'description', ''),
+        ('icon-path', 'iconPath', ''),
+    ]
+    convert_mapping_to_xml(kmap, data, mapping, fail_required=True)
+
+    if publish is True:
+        publish_optional = XML.SubElement(kmap, 'publishOptional')
+        publish_mapping = [
+            ('groups', 'teams', ''),
+            ('users', 'users', ''),
+            ('notify-users', 'sendNotifications', False),
+        ]
+        convert_mapping_to_xml(
+            publish_optional, data, publish_mapping, fail_required=True)
+
+
 def artifact_resolver(parser, xml_parent, data):
     """yaml: artifact-resolver
     Allows one to resolve artifacts from a maven repository like nexus

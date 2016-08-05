@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jenkinsci.plugins.KmapJenkinsBuilder plugin="kmap-jenkins">
+      <username>user@user.com</username>
+      <password>password</password>
+      <kmapClient>http://foo.com/kmap-client/</kmapClient>
+      <categories>Productivity</categories>
+      <filePath>${WORKSPACE}/path/to/file.extension</filePath>
+      <appName>AppName</appName>
+      <bundle/>
+      <version>b${BUILD_NUMBER}_r${SVN_REVISION}</version>
+      <description/>
+      <iconPath/>
+    </org.jenkinsci.plugins.KmapJenkinsBuilder>
+  </builders>
+</project>

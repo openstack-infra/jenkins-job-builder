@@ -1,0 +1,16 @@
+builders:
+  - kmap:
+      username: user@user.com
+      password: password
+      url: http://foo.com/kmap-client/
+      categories: Productivity
+      file-path: ${WORKSPACE}/path/to/file.extension
+      app-name: AppName
+      bundle: foo.apk
+      version: b${BUILD_NUMBER}_r${SVN_REVISION}
+      description: description
+      icon-path: ${WORKSPACE}/target/application.png
+      publish-optional: true
+      groups: MobileUsers
+      users: user@user.com
+      notify-users: true
