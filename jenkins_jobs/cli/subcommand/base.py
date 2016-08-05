@@ -56,12 +56,12 @@ class BaseSubCommand(object):
             action='store_true',
             dest='recursive',
             default=False,
-            help='''look for yaml files recursively''')
+            help="look for yaml files recursively")
 
         parser.add_argument(
             '-x', '--exclude',
             dest='exclude',
             action='append',
             default=[],
-            help='''paths to exclude when using recursive search, uses standard
-            globbing.''')
+            help="paths to exclude when using recursive search, "
+            "uses standard globbing.")
