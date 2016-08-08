@@ -3311,26 +3311,18 @@ def docker_build_publish(parse, xml_parent, data):
                         'com.cloudbees.dockerpublish.DockerBuilder')
     db.set('plugin', 'docker-build-publish')
 
-    try:
-        XML.SubElement(db, 'repoName').text = str(data['repo-name'])
-    except KeyError:
-        raise MissingAttributeError('repo-name')
-
-    XML.SubElement(db, 'repoTag').text = str(data.get('repo-tag', ''))
-    XML.SubElement(db, 'noCache').text = str(
-        data.get('no-cache', False)).lower()
-    XML.SubElement(db, 'noForcePull').text = str(
-        data.get('no-force-pull', False)).lower()
-    XML.SubElement(db, 'skipBuild').text = str(
-        data.get('skip-build', False)).lower()
-    XML.SubElement(db, 'skipDecorate').text = str(
-        data.get('skip-decorate', False)).lower()
-    XML.SubElement(db, 'skipTagLatest').text = str(
-        data.get('skip-tag-latest', False)).lower()
-    XML.SubElement(db, 'skipPush').text = str(
-        data.get('skip-push', False)).lower()
-    XML.SubElement(db, 'dockerfilePath').text = str(
-        data.get('file-path', ''))
+    mapping = [
+        ('repo-name', 'repoName', None),
+        ('repo-tag', 'repoTag', ''),
+        ('no-cache', 'noCache', False),
+        ('no-force-pull', 'noForcePull', False),
+        ('skip-build', 'skipBuild', False),
+        ('skip-decorate', 'skipDecorate', False),
+        ('skip-tag-latest', 'skipTagLatest', False),
+        ('skip-push', 'skipPush', False),
+        ('file-path', 'dockerfilePath', ''),
+    ]
+    convert_mapping_to_xml(db, data, mapping, fail_required=True)
 
 
 def build_name_setter(parser, xml_parent, data):
