@@ -1,0 +1,5 @@
+builders:
+  - runscope:
+      test-trigger-url: "https://api.runscope.com/radar/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/trigger"
+      access-token: "123456"
+      timeout: 123

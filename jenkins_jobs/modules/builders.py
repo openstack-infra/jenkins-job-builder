@@ -3243,20 +3243,26 @@ def runscope(parser, xml_parent, data):
     :arg str access-token: OAuth Personal Access token. (required)
     :arg int timeout: Timeout for test duration in seconds. (default 60)
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/builders/fixtures/runscope.yaml
+    .. literalinclude:: /../../tests/builders/fixtures/runscope-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/builders/fixtures/runscope-full.yaml
        :language: yaml
     """
     runscope = XML.SubElement(xml_parent,
                               'com.runscope.jenkins.Runscope.RunscopeBuilder')
-    try:
-        XML.SubElement(runscope, 'triggerEndPoint').text = data[
-            "test-trigger-url"]
-        XML.SubElement(runscope, 'accessToken').text = data["access-token"]
-    except KeyError as e:
-        raise MissingAttributeError(e.args[0])
-    XML.SubElement(runscope, 'timeout').text = str(data.get('timeout', '60'))
+    runscope.set('plugin', 'runscope')
+
+    mapping = [
+        ('test-trigger-url', 'triggerEndPoint', None),
+        ('access-token', 'accessToken', None),
+        ('timeout', 'timeout', 60),
+    ]
+    convert_mapping_to_xml(runscope, data, mapping, fail_required=True)
 
 
 def description_setter(parser, xml_parent, data):

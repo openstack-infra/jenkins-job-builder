@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.runscope.jenkins.Runscope.RunscopeBuilder plugin="runscope">
+      <triggerEndPoint>https://api.runscope.com/radar/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/trigger</triggerEndPoint>
+      <accessToken>123456</accessToken>
+      <timeout>123</timeout>
+    </com.runscope.jenkins.Runscope.RunscopeBuilder>
+  </builders>
+</project>
