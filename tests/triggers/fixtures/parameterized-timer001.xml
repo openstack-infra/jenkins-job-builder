@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.parameterizedscheduler.ParameterizedTimerTrigger>
+      <spec/>
+      <parameterizedSpecification>@midnight % PARAM=value</parameterizedSpecification>
+    </org.jenkinsci.plugins.parameterizedscheduler.ParameterizedTimerTrigger>
+  </triggers>
+</project>

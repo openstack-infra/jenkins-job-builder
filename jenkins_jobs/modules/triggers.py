@@ -1700,6 +1700,36 @@ def rabbitmq(registry, xml_parent, data):
         raise MissingAttributeError(e.arg[0])
 
 
+def parameterized_timer(parser, xml_parent, data):
+    """yaml: parameterized-timer
+    Trigger builds with parameters at certain times.
+    Requires the Jenkins :jenkins-wiki:`Parameterized Scheduler Plugin
+    <Parameterized+Scheduler+Plugin>`.
+
+    :arg str cron: cron syntax of when to run and with which parameters
+        (required)
+
+    Example:
+
+    .. literalinclude::
+        /../../tests/triggers/fixtures/parameterized-timer001.yaml
+       :language: yaml
+    """
+
+    param_timer = XML.SubElement(
+        xml_parent,
+        'org.jenkinsci.plugins.parameterizedscheduler.'
+        'ParameterizedTimerTrigger')
+
+    XML.SubElement(param_timer, 'spec').text = ''
+
+    try:
+        XML.SubElement(param_timer, 'parameterizedSpecification').text = str(
+            data.get('cron'))
+    except KeyError as e:
+        raise MissingAttributeError(e)
+
+
 class Triggers(jenkins_jobs.modules.base.Base):
     sequence = 50
 

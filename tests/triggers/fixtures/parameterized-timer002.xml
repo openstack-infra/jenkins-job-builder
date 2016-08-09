@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.parameterizedscheduler.ParameterizedTimerTrigger>
+      <spec/>
+      <parameterizedSpecification>0 * * * * % param1=value1;param2=value2
+30 * * * * % param1=value3;param2=value4
+</parameterizedSpecification>
+    </org.jenkinsci.plugins.parameterizedscheduler.ParameterizedTimerTrigger>
+  </triggers>
+</project>
