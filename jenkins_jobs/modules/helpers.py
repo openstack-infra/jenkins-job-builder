@@ -343,57 +343,51 @@ def artifactory_optional_props(xml_parent, data, target):
             yaml_prop, '')
 
     common_bool_props = [
-        # xml property name, yaml property name, default value
-        ('deployArtifacts', 'deploy-artifacts', True),
-        ('discardOldBuilds', 'discard-old-builds', False),
-        ('discardBuildArtifacts', 'discard-build-artifacts', False),
-        ('deployBuildInfo', 'publish-build-info', False),
-        ('includeEnvVars', 'env-vars-include', False),
-        ('runChecks', 'run-checks', False),
-        ('includePublishArtifacts', 'include-publish-artifacts', False),
-        ('licenseAutoDiscovery', 'license-auto-discovery', True),
-        ('enableIssueTrackerIntegration', 'enable-issue-tracker-integration',
+        # yaml property name, xml property name, default value
+        ('deploy-artifacts', 'deployArtifacts', True),
+        ('discard-old-builds', 'discardOldBuilds', False),
+        ('discard-build-artifacts', 'discardBuildArtifacts', False),
+        ('publish-build-info', 'deployBuildInfo', False),
+        ('env-vars-include', 'includeEnvVars', False),
+        ('run-checks', 'runChecks', False),
+        ('include-publish-artifacts', 'includePublishArtifacts', False),
+        ('license-auto-discovery', 'licenseAutoDiscovery', True),
+        ('enable-issue-tracker-integration', 'enableIssueTrackerIntegration',
             False),
-        ('aggregateBuildIssues', 'aggregate-build-issues', False),
-        ('blackDuckRunChecks', 'black-duck-run-checks', False),
-        ('blackDuckIncludePublishedArtifacts',
-            'black-duck-include-published-artifacts', False),
-        ('autoCreateMissingComponentRequests',
-            'auto-create-missing-component-requests', True),
-        ('autoDiscardStaleComponentRequests',
-            'auto-discard-stale-component-requests', True),
-        ('filterExcludedArtifactsFromBuild',
-            'filter-excluded-artifacts-from-build', False)
+        ('aggregate-build-issues', 'aggregateBuildIssues', False),
+        ('black-duck-run-checks', 'blackDuckRunChecks', False),
+        ('black-duck-include-published-artifacts',
+            'blackDuckIncludePublishedArtifacts', False),
+        ('auto-create-missing-component-requests',
+            'autoCreateMissingComponentRequests', True),
+        ('auto-discard-stale-component-requests',
+            'autoDiscardStaleComponentRequests', True),
+        ('filter-excluded-artifacts-from-build',
+            'filterExcludedArtifactsFromBuild', False)
     ]
-
-    for (xml_prop, yaml_prop, default_value) in common_bool_props:
-        XML.SubElement(xml_parent, xml_prop).text = str(data.get(
-            yaml_prop, default_value)).lower()
+    convert_mapping_to_xml(
+        xml_parent, data, common_bool_props, fail_required=True)
 
     if 'wrappers' in target:
         wrapper_bool_props = [
-            ('enableResolveArtifacts', 'enable-resolve-artifacts', False),
-            ('disableLicenseAutoDiscovery',
-                'disable-license-auto-discovery', False),
-            ('recordAllDependencies',
-                'record-all-dependencies', False)
+            ('enable-resolve-artifacts', 'enableResolveArtifacts', False),
+            ('disable-license-auto-discovery',
+                'disableLicenseAutoDiscovery', False),
+            ('record-all-dependencies',
+                'recordAllDependencies', False)
         ]
-
-        for (xml_prop, yaml_prop, default_value) in wrapper_bool_props:
-            XML.SubElement(xml_parent, xml_prop).text = str(data.get(
-                yaml_prop, default_value)).lower()
+        convert_mapping_to_xml(
+            xml_parent, data, wrapper_bool_props, fail_required=True)
 
     if 'publishers' in target:
         publisher_bool_props = [
-            ('evenIfUnstable', 'even-if-unstable', False),
-            ('passIdentifiedDownstream', 'pass-identified-downstream', False),
-            ('allowPromotionOfNonStagedBuilds',
-                'allow-promotion-of-non-staged-builds', False)
+            ('even-if-unstable', 'evenIfUnstable', False),
+            ('pass-identified-downstream', 'passIdentifiedDownstream', False),
+            ('allow-promotion-of-non-staged-builds',
+                'allowPromotionOfNonStagedBuilds', False)
         ]
-
-        for (xml_prop, yaml_prop, default_value) in publisher_bool_props:
-            XML.SubElement(xml_parent, xml_prop).text = str(data.get(
-                yaml_prop, default_value)).lower()
+        convert_mapping_to_xml(
+            xml_parent, data, publisher_bool_props, fail_required=True)
 
 
 def artifactory_common_details(details, data):
