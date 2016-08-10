@@ -1089,11 +1089,10 @@ def jclouds(parser, xml_parent, data):
                   count: 2
                   stop-on-terminate: False
     """
-    buildWrapper = XML.SubElement(xml_parent,
-                                  'jenkins.plugins.jclouds.compute.'
-                                  'JCloudsBuildWrapper')
-    instances = XML.SubElement(buildWrapper, 'instancesToRun')
     if 'instances' in data:
+        buildWrapper = XML.SubElement(
+            xml_parent, 'jenkins.plugins.jclouds.compute.JCloudsBuildWrapper')
+        instances = XML.SubElement(buildWrapper, 'instancesToRun')
         for foo in data['instances']:
             for template, params in foo.items():
                 instance = XML.SubElement(instances,
