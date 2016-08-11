@@ -11,6 +11,7 @@
       <skipTagLatest>false</skipTagLatest>
       <skipPush>false</skipPush>
       <dockerfilePath>/tmp/</dockerfilePath>
+      <buildContext>/tmp/</buildContext>
     </com.cloudbees.dockerpublish.DockerBuilder>
   </builders>
 </project>

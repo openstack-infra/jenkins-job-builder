@@ -9,4 +9,5 @@ builders:
         skip-latest: false
         skip-tag: false
         file-path: '/tmp/'
+        build-context: '/tmp/'
 
