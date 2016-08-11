@@ -14,7 +14,7 @@
 
 
 """
-Reporters are like publishers but only applicable to Maven projets.
+Reporters are like publishers but only applicable to Maven projects.
 
 **Component**: reporters
   :Macro: reporter
