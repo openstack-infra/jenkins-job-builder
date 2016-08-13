@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.scm.listtagsparameter.ListSubversionTagsParameterDefinition>
+          <name>BRANCH_NAME</name>
+          <description>svn-tags configuration</description>
+          <defaultValue>default-value</defaultValue>
+          <tagsDir>/path/to/svn</tagsDir>
+          <credentialsId>svn-cred</credentialsId>
+          <tagsFilter>v[0-9]+</tagsFilter>
+          <maxTags>25</maxTags>
+          <reverseByDate>false</reverseByDate>
+          <reverseByName>true</reverseByName>
+          <uuid>1-1-1-1-1</uuid>
+        </hudson.scm.listtagsparameter.ListSubversionTagsParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+</project>

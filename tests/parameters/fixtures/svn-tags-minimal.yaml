@@ -1,0 +1,4 @@
+parameters:
+  - svn-tags:
+      name: BRANCH_NAME
+      url: '/path/to/svn'

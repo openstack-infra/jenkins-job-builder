@@ -479,10 +479,16 @@ def svn_tags_param(registry, xml_parent, data):
     <Parameterized+Trigger+Plugin>`.
 
     :arg str name: the name of the parameter
-    :arg str default: the default value of the parameter (optional)
-    :arg str description: a description of the parameter (optional)
     :arg str url: the url to list tags from
-    :arg str filter: the regular expression to filter tags
+    :arg str credentials-id: Credentials ID to use for authentication
+        (default '')
+    :arg str filter: the regular expression to filter tags (default '')
+    :arg str default: the default value of the parameter (default '')
+    :arg str description: a description of the parameter (default '')
+    :arg int max-tags: the number of tags to display (default '100')
+    :arg bool sort-newest-first: sort tags from newest to oldest (default true)
+    :arg bool sort-z-to-a: sort tags in reverse alphabetical order
+        (default false)
 
     Example::
 
@@ -499,10 +505,11 @@ def svn_tags_param(registry, xml_parent, data):
                       'ListSubversionTagsParameterDefinition')
     mapping = [
         ('url', 'tagsDir', None),
-        ('filter', 'tagsFilter', None),
-        ('', 'reverseByDate', "true"),
-        ('', 'reverseByName', "false"),
-        ('', 'maxTags', "100"),
+        ('credentials-id', 'credentialsId', ''),
+        ('filter', 'tagsFilter', ''),
+        ('max-tags', 'maxTags', '100'),
+        ('sort-newest-first', 'reverseByDate', True),
+        ('sort-z-to-a', 'reverseByName', False),
         ('', 'uuid', "1-1-1-1-1"),
     ]
     convert_mapping_to_xml(pdef, data, mapping, fail_required=True)
