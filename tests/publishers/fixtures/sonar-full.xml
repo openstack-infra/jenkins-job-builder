@@ -2,7 +2,9 @@
 <project>
   <publishers>
     <hudson.plugins.sonar.SonarPublisher plugin="sonar">
+      <installationName>MySonar</installationName>
       <jdk>MyJdk</jdk>
+      <mavenInstallationName>Maven3.3.3</mavenInstallationName>
       <branch>myBranch</branch>
       <language>java</language>
       <rootPom>mypom.xml</rootPom>

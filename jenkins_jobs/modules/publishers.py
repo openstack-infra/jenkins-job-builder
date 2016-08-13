@@ -2788,6 +2788,7 @@ def sonar(registry, xml_parent, data):
     <http://docs.sonarqube.org/display/SONAR/\
         Analyzing+with+SonarQube+Scanner+for+Jenkins>`_
 
+    :arg str installation-name: name of the Sonar instance to use (optional)
     :arg str jdk: JDK to use (inherited from the job if omitted). (optional)
     :arg str branch: branch onto which the analysis will be posted (default '')
     :arg str language: source code language (default '')
@@ -2796,6 +2797,8 @@ def sonar(registry, xml_parent, data):
         (default false)
     :arg str maven-opts: options given to maven (default '')
     :arg str additional-properties: sonar analysis parameters (default '')
+    :arg str maven-installation-name: the name of the Maven installation
+      to use (optional)
     :arg dict skip-global-triggers:
         :Triggers: * **skip-when-scm-change** (`bool`): skip analysis when
                      build triggered by scm (default false)
@@ -2831,9 +2834,14 @@ def sonar(registry, xml_parent, data):
 
     sonar = XML.SubElement(xml_parent, 'hudson.plugins.sonar.SonarPublisher')
     sonar.set('plugin', 'sonar')
-
+    if 'installation-name' in data:
+        XML.SubElement(sonar, 'installationName').text = data[
+            'installation-name']
     if 'jdk' in data:
         XML.SubElement(sonar, 'jdk').text = data['jdk']
+    if 'maven-installation-name' in data:
+        XML.SubElement(sonar, 'mavenInstallationName').text = data[
+            'maven-installation-name']
 
     mappings = [
         ('branch', 'branch', ''),
