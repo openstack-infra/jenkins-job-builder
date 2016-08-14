@@ -925,16 +925,13 @@ def doxygen(parser, xml_parent, data):
     """
     doxygen = XML.SubElement(xml_parent,
                              'hudson.plugins.doxygen.DoxygenBuilder')
-    try:
-        XML.SubElement(doxygen, 'doxyfilePath').text = str(data['doxyfile'])
-        XML.SubElement(doxygen, 'installationName').text = str(data['install'])
-    except KeyError as e:
-        raise MissingAttributeError(e.arg[0])
-
-    XML.SubElement(doxygen, 'continueOnBuildFailure').text = str(
-        data.get('ignore-failure', False)).lower()
-    XML.SubElement(doxygen, 'unstableIfWarnings').text = str(
-        data.get('unstable-warning', False)).lower()
+    mappings = [
+        ('doxyfile', 'doxyfilePath', None),
+        ('install', 'installationName', None),
+        ('ignore-failure', 'continueOnBuildFailure', False),
+        ('unstable-warning', 'unstableIfWarnings', False)
+    ]
+    convert_mapping_to_xml(doxygen, data, mappings, fail_required=True)
 
 
 def gradle(parser, xml_parent, data):
