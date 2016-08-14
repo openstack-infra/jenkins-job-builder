@@ -3,7 +3,7 @@ builders:
         value: manual
         application-name: jenkins-job-builder
         fail-on-clm-server-failure: true
-        stage: build
+        stage: release
         scan-targets: '**/*.jar'
         module-excludes: '**/my-module/target/**'
         advanced-options: 'test'
