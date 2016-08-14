@@ -188,10 +188,11 @@ def throttle(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Throttle Concurrent Builds Plugin
     <Throttle+Concurrent+Builds+Plugin>`.
 
+    :arg str option: throttle `project` (throttle the project alone)
+         or `category` (throttle the project as part of one or more categories)
     :arg int max-per-node: max concurrent builds per node (default 0)
     :arg int max-total: max concurrent builds (default 0)
     :arg bool enabled: whether throttling is enabled (default true)
-    :arg str option: throttle `project` or `category`
     :arg list categories: multiproject throttle categories
     :arg bool matrix-builds: throttle matrix master builds (default true)
     :arg bool matrix-configs: throttle matrix config builds (default false)
