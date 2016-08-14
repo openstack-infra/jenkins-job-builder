@@ -223,35 +223,34 @@ def hue_light(parser, xml_parent, data):
     :arg string unstable-build: Colour of unstable state (default 'yellow')
     :arg string bad-build: Colour of unsuccessful state (default 'red')
 
-    Example:
+    Full Example:
 
-    .. literalinclude::
-       /../../tests/publishers/fixtures/hue-light-minimal.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/hue-light-full.yaml
        :language: yaml
 
-    .. literalinclude::
-       /../../tests/publishers/fixtures/hue-light001.yaml
+    Minimal Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/hue-light-minimal.yaml
        :language: yaml
     """
 
     hue_light = XML.SubElement(
         xml_parent, 'org.jenkinsci.plugins.hue__light.LightNotifier')
     hue_light.set('plugin', 'hue-light')
-
-    if 'light-id' not in data:
-        raise MissingAttributeError('light-id')
     lightId = XML.SubElement(hue_light, 'lightId')
-    XML.SubElement(lightId, 'string').text = str(data.get(
-        'light-id', ''))
 
-    XML.SubElement(hue_light, 'preBuild').text = data.get(
-        'pre-build', 'blue')
-    XML.SubElement(hue_light, 'goodBuild').text = data.get(
-        'good-build', 'green')
-    XML.SubElement(hue_light, 'unstableBuild').text = data.get(
-        'unstable-build', 'yellow')
-    XML.SubElement(hue_light, 'badBuild').text = data.get(
-        'bad-build', 'red')
+    id_mapping = [('light-id', 'string', None)]
+    helpers.convert_mapping_to_xml(
+        lightId, data, id_mapping, fail_required=True)
+
+    build_mapping = [
+        ('pre-build', 'preBuild', 'blue'),
+        ('good-build', 'goodBuild', 'green'),
+        ('unstable-build', 'unstableBuild', 'yellow'),
+        ('bad-build', 'badBuild', 'red'),
+    ]
+    helpers.convert_mapping_to_xml(
+        hue_light, data, build_mapping, fail_required=True)
 
 
 def campfire(parser, xml_parent, data):
