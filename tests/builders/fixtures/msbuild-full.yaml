@@ -5,3 +5,4 @@ builders:
       extra-parameters: "/maxcpucount:4"
       pass-build-variables: False
       continue-on-build-failure: True
+      unstable-if-warnings: True

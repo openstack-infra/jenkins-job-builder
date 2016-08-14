@@ -1,0 +1,3 @@
+builders:
+  - msbuild:
+      solution-file: MySolution.sln

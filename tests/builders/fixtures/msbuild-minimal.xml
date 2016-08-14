@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.plugins.msbuild.MsBuildBuilder plugin="msbuild">
+      <msBuildName>(Default)</msBuildName>
+      <msBuildFile>MySolution.sln</msBuildFile>
+      <cmdLineArgs/>
+      <buildVariablesAsProperties>true</buildVariablesAsProperties>
+      <continueOnBuildFailure>false</continueOnBuildFailure>
+      <unstableIfWarnings>false</unstableIfWarnings>
+    </hudson.plugins.msbuild.MsBuildBuilder>
+  </builders>
+</project>
