@@ -162,22 +162,19 @@ def copyartifact(parser, xml_parent, data):
        :language: yaml
     """
     t = XML.SubElement(xml_parent, 'hudson.plugins.copyartifact.CopyArtifact')
-    # Warning: this only works with copy artifact version 1.26+,
-    # for copy artifact version 1.25- the 'projectName' element needs
-    # to be used instead of 'project'
-    try:
-        XML.SubElement(t, 'project').text = data["project"]
-    except KeyError:
-        raise MissingAttributeError('project')
-    XML.SubElement(t, 'filter').text = data.get("filter", "")
-    XML.SubElement(t, 'target').text = data.get("target", "")
-    flatten = data.get("flatten", False)
-    XML.SubElement(t, 'flatten').text = str(flatten).lower()
-    optional = data.get('optional', False)
-    XML.SubElement(t, 'optional').text = str(optional).lower()
-    XML.SubElement(t, 'doNotFingerprintArtifacts').text = str(
-        data.get('do-not-fingerprint', False)).lower()
-    XML.SubElement(t, 'parameters').text = data.get("parameter-filters", "")
+    mappings = [
+        # Warning: this only works with copy artifact version 1.26+,
+        # for copy artifact version 1.25- the 'projectName' element needs
+        # to be used instead of 'project'
+        ('project', 'project', None),
+        ('filter', 'filter', ''),
+        ('target', 'target', ''),
+        ('flatten', 'flatten', False),
+        ('optional', 'optional', False),
+        ('do-not-fingerprint', 'doNotFingerprintArtifacts', False),
+        ('parameter-filters', 'parameters', '')
+    ]
+    convert_mapping_to_xml(t, data, mappings, fail_required=True)
     copyartifact_build_selector(t, data)
 
 
