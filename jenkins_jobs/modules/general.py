@@ -97,6 +97,9 @@ Example:
       **Deprecated on jenkins >=1.637**: use the ``build-discarder``
       property instead
 
+    * **jdk**:
+      The name of the jdk to use
+
     * **raw**:
       If present, this section should contain a single **xml** entry. This XML
       will be inserted at the top-level of the :ref:`Job` definition.
