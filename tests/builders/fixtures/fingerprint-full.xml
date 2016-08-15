@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.plugins.createfingerprint.CreateFingerprint plugin="create-fingerprint">
+      <targets>module/dist/**/*.zip</targets>
+    </hudson.plugins.createfingerprint.CreateFingerprint>
+  </builders>
+</project>
