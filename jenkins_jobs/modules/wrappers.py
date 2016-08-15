@@ -2319,24 +2319,21 @@ def maven_release(parser, xml_parent, data):
     mvn_release = XML.SubElement(xml_parent,
                                  'org.jvnet.hudson.plugins.m2release.'
                                  'M2ReleaseBuildWrapper')
-    XML.SubElement(mvn_release, 'releaseGoals').text = str(
-        data.get('release-goals', ''))
-    XML.SubElement(mvn_release, 'dryRunGoals').text = str(
-        data.get('dry-run-goals', ''))
-    XML.SubElement(mvn_release, 'numberOfReleaseBuildsToKeep').text = str(
-        data.get('num-successful-builds', '1'))
-    XML.SubElement(mvn_release, 'selectCustomScmCommentPrefix').text = str(
-        data.get('select-custom-scm-comment-prefix', 'false')).lower()
-    XML.SubElement(mvn_release, 'selectAppendHudsonUsername').text = str(
-        data.get('select-append-jenkins-username', 'false')).lower()
-    XML.SubElement(mvn_release, 'selectScmCredentials').text = str(
-        data.get('select-scm-credentials', 'false')).lower()
-    XML.SubElement(mvn_release, 'releaseEnvVar').text = str(
-        data.get('release-env-var', ''))
-    XML.SubElement(mvn_release, 'scmUserEnvVar').text = str(
-        data.get('scm-user-env-var', ''))
-    XML.SubElement(mvn_release, 'scmPasswordEnvVar').text = str(
-        data.get('scm-password-env-var', ''))
+
+    mapping = [
+        ('release-goals', 'releaseGoals', ''),
+        ('dry-run-goals', 'dryRunGoals', ''),
+        ('num-successful-builds', 'numberOfReleaseBuildsToKeep', 1),
+        ('select-custom-scm-comment-prefix', 'selectCustomScmCommentPrefix',
+         False),
+        ('select-append-jenkins-username', 'selectAppendHudsonUsername',
+         False),
+        ('select-scm-credentials', 'selectScmCredentials', False),
+        ('release-env-var', 'releaseEnvVar', ''),
+        ('scm-user-env-var', 'scmUserEnvVar', ''),
+        ('scm-password-env-var', 'scmPasswordEnvVar', ''),
+    ]
+    convert_mapping_to_xml(mvn_release, data, mapping, fail_required=True)
 
 
 class Wrappers(jenkins_jobs.modules.base.Base):
