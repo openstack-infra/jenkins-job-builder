@@ -96,7 +96,7 @@ class UpdateSubCommand(base.BaseSubCommand):
             n_workers=options.n_workers)
         logger.info("Number of jobs updated: %d", num_updated_jobs)
 
-        keep_jobs = [job.name for job in jobs]
+        keep_jobs = [job.name for job in xml_jobs]
         if options.delete_old:
             n = builder.delete_old_managed(keep=keep_jobs)
             logger.info("Number of jobs deleted: %d", n)
