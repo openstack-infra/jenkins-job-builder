@@ -22,6 +22,7 @@
       <attachmentsPattern>*/foo*.log</attachmentsPattern>
       <presendScript/>
       <attachBuildLog>true</attachBuildLog>
+      <compressBuildLog>true</compressBuildLog>
       <saveOutput>false</saveOutput>
       <disabled>false</disabled>
       <replyTo>$DEFAULT_REPLYTO</replyTo>

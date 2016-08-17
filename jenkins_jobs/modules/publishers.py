@@ -1840,6 +1840,7 @@ def email_ext(parser, xml_parent, data):
         like ${BUILD_NUMBER}, but the real magic is using groovy or
         javascript to hook into the Jenkins API itself
     :arg bool attach-build-log: Include build log in the email (default false)
+    :arg bool compress-log: Compress build log in the email (default false)
     :arg str attachments: pattern of files to include as attachment (optional)
     :arg bool always: Send an email for every result (default false)
     :arg bool unstable: Send an email for an unstable result (default false)
@@ -1941,6 +1942,8 @@ def email_ext(parser, xml_parent, data):
         'presend-script', '')
     XML.SubElement(emailext, 'attachBuildLog').text = str(data.get(
         'attach-build-log', False)).lower()
+    XML.SubElement(emailext, 'compressBuildLog').text = str(data.get(
+        'compress-log', False)).lower()
     XML.SubElement(emailext, 'saveOutput').text = str(data.get(
         'save-output', False)).lower()
     XML.SubElement(emailext, 'disabled').text = str(data.get(
