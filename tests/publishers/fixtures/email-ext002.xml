@@ -21,7 +21,7 @@
       <defaultContent>The build has finished</defaultContent>
       <attachmentsPattern>*/foo*.log</attachmentsPattern>
       <presendScript/>
-      <attachBuildLog>false</attachBuildLog>
+      <attachBuildLog>true</attachBuildLog>
       <saveOutput>false</saveOutput>
       <disabled>false</disabled>
       <replyTo>$DEFAULT_REPLYTO</replyTo>
