@@ -21,6 +21,7 @@
       <defaultContent>The build has finished</defaultContent>
       <attachmentsPattern>*/foo*.log</attachmentsPattern>
       <presendScript/>
+      <postsendScript/>
       <attachBuildLog>true</attachBuildLog>
       <compressBuildLog>true</compressBuildLog>
       <saveOutput>false</saveOutput>

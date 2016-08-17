@@ -1913,6 +1913,8 @@ def email_ext(parser, xml_parent, data):
     :arg bool pre-build: Send an email before the build (default false)
     :arg str presend-script: A Groovy script executed prior sending the mail.
         (default '')
+    :arg str postsend-script: A Goovy script executed after sending the email.
+        (default '')
     :arg bool save-output: Save email content to workspace (default false)
     :arg str matrix-trigger: If using matrix projects, when to trigger
 
@@ -1990,6 +1992,8 @@ def email_ext(parser, xml_parent, data):
         'attachments', '')
     XML.SubElement(emailext, 'presendScript').text = data.get(
         'presend-script', '')
+    XML.SubElement(emailext, 'postsendScript').text = data.get(
+        'postsend-script', '')
     XML.SubElement(emailext, 'attachBuildLog').text = str(data.get(
         'attach-build-log', False)).lower()
     XML.SubElement(emailext, 'compressBuildLog').text = str(data.get(
