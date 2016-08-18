@@ -1706,10 +1706,10 @@ def maven_builder(parser, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Artifactory Plugin
     <Artifactory+Plugin>`.
 
-    :arg str name: Name of maven installation from the configuration
+    :arg str name: Name of maven installation from the configuration (required)
     :arg str pom: Location of pom.xml (default 'pom.xml')
-    :arg str goals: Goals to execute
-    :arg str maven-opts: Additional options for maven (optional)
+    :arg str goals: Goals to execute (required)
+    :arg str maven-opts: Additional options for maven (default '')
 
     Example:
 
@@ -1718,15 +1718,13 @@ def maven_builder(parser, xml_parent, data):
     """
     maven = XML.SubElement(xml_parent, 'org.jfrog.hudson.maven3.Maven3Builder')
 
-    try:
-        XML.SubElement(maven, 'mavenName').text = data['name']
-        XML.SubElement(maven, 'goals').text = data['goals']
-    except KeyError as e:
-        # exception will contain the missing key name
-        raise MissingAttributeError(e.arg[0])
-
-    XML.SubElement(maven, 'rootPom').text = data.get('pom', 'pom.xml')
-    XML.SubElement(maven, 'mavenOpts').text = data.get('maven-opts', '')
+    mapping = [
+        ('name', 'mavenName', None),
+        ('goals', 'goals', None),
+        ('pom', 'rootPom', 'pom.xml'),
+        ('maven-opts', 'mavenOpts', ''),
+    ]
+    convert_mapping_to_xml(maven, data, mapping, fail_required=True)
 
 
 def maven_target(parser, xml_parent, data):
