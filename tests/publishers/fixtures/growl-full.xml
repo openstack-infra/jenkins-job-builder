@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.growl.GrowlPublisher plugin="growl">
+      <IP>foo.ip.address</IP>
+      <onlyOnFailureOrRecovery>true</onlyOnFailureOrRecovery>
+    </hudson.plugins.growl.GrowlPublisher>
+  </publishers>
+</project>

@@ -1,0 +1,4 @@
+publishers:
+  - growl:
+      ip: foo.ip.address
+      notify-only-on-fail-or-recovery: true
