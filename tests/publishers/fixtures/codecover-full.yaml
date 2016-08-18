@@ -1,0 +1,11 @@
+publishers:
+  - codecover:
+      include: ./path/report.html
+      min-statement: 1
+      max-statement: 100
+      min-branch: 2
+      max-branch: 90
+      min-loop: 3
+      max-loop: 80
+      min-condition: 4
+      max-condition: 70
