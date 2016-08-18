@@ -70,10 +70,36 @@ class TestCaseTestHelpers(LoggingFixture, testtools.TestCase):
                           required_mappings,
                           fail_required=True)
 
-        # Test invalid user input
+        # Test invalid user input for list
         user_input_root = XML.Element('testUserInput')
         user_input_data = yaml.load("user-input-string: bye")
         valid_inputs = ['hello']
+        user_input_mappings = [('user-input-string', 'userInputString',
+                                'user-input', valid_inputs)]
+
+        self.assertRaises(InvalidAttributeError,
+                          convert_mapping_to_xml,
+                          user_input_root,
+                          user_input_data,
+                          user_input_mappings)
+
+        # Test invalid user input for dict
+        user_input_root = XML.Element('testUserInput')
+        user_input_data = yaml.load("user-input-string: later")
+        valid_inputs = {'hello': 'world'}
+        user_input_mappings = [('user-input-string', 'userInputString',
+                                'user-input', valid_inputs)]
+
+        self.assertRaises(InvalidAttributeError,
+                          convert_mapping_to_xml,
+                          user_input_root,
+                          user_input_data,
+                          user_input_mappings)
+
+        # Test invalid key for dict
+        user_input_root = XML.Element('testUserInput')
+        user_input_data = yaml.load("user-input-string: world")
+        valid_inputs = {'hello': 'world'}
         user_input_mappings = [('user-input-string', 'userInputString',
                                 'user-input', valid_inputs)]
 
