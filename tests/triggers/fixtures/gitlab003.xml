@@ -3,15 +3,21 @@
   <triggers class="vector">
     <com.dabsquared.gitlabjenkins.GitLabPushTrigger>
       <triggerOpenMergeRequestOnPush>true</triggerOpenMergeRequestOnPush>
+      <branchFilterType>All</branchFilterType>
       <spec/>
       <triggerOnPush>true</triggerOnPush>
       <triggerOnMergeRequest>true</triggerOnMergeRequest>
+      <triggerOnNoteRequest>true</triggerOnNoteRequest>
+      <noteRegex>Jenkins please retry a build</noteRegex>
       <ciSkip>true</ciSkip>
+      <skipWorkInProgressMergeRequest>true</skipWorkInProgressMergeRequest>
       <setBuildDescription>true</setBuildDescription>
       <addNoteOnMergeRequest>true</addNoteOnMergeRequest>
       <addVoteOnMergeRequest>true</addVoteOnMergeRequest>
+      <acceptMergeRequestOnSuccess>false</acceptMergeRequestOnSuccess>
       <addCiMessage>false</addCiMessage>
       <allowAllBranches>false</allowAllBranches>
+      <targetBranchRegex/>
       <includeBranchesSpec>master</includeBranchesSpec>
       <excludeBranchesSpec>baz, foo, fnord</excludeBranchesSpec>
     </com.dabsquared.gitlabjenkins.GitLabPushTrigger>
