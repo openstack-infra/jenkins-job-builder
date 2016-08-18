@@ -127,12 +127,15 @@ class General(jenkins_jobs.modules.base.Base):
             description = XML.SubElement(xml, 'description')
             description.text = desc_text
         XML.SubElement(xml, 'keepDependencies').text = 'false'
+
+        # Need to ensure we support the None parameter to allow disabled to
+        # remain the last setting if the user purposely adds and then removes
+        # the disabled parameter.
+        # See: http://lists.openstack.org/pipermail/openstack-infra/2016-March/003980.html  # noqa
         disabled = data.get('disabled', None)
         if disabled is not None:
-            if disabled:
-                XML.SubElement(xml, 'disabled').text = 'true'
-            else:
-                XML.SubElement(xml, 'disabled').text = 'false'
+            XML.SubElement(xml, 'disabled').text = str(disabled).lower()
+
         if 'display-name' in data:
             XML.SubElement(xml, 'displayName').text = data['display-name']
         if data.get('block-downstream'):
