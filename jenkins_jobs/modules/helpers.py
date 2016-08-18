@@ -95,15 +95,12 @@ def config_file_provider_builder(xml_parent, data):
     for file in files:
         xml_file = XML.SubElement(xml_files, 'org.jenkinsci.plugins.'
                                   'configfiles.buildwrapper.ManagedFile')
-        file_id = file.get('file-id')
-        if file_id is None:
-            raise JenkinsJobsException("file-id is required for each "
-                                       "managed configuration file")
-        XML.SubElement(xml_file, 'fileId').text = str(file_id)
-        XML.SubElement(xml_file, 'targetLocation').text = file.get(
-            'target', '')
-        XML.SubElement(xml_file, 'variable').text = file.get(
-            'variable', '')
+        mapping = [
+            ('file-id', 'fileId', None),
+            ('target', 'targetLocation', ''),
+            ('variable', 'variable', ''),
+        ]
+        convert_mapping_to_xml(xml_file, file, mapping, fail_required=True)
 
 
 def config_file_provider_settings(xml_parent, data):
