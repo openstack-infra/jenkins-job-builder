@@ -165,6 +165,7 @@
       <attachmentsPattern>*/foo*.log</attachmentsPattern>
       <presendScript>cancel=true</presendScript>
       <attachBuildLog>false</attachBuildLog>
+      <compressBuildLog>false</compressBuildLog>
       <saveOutput>true</saveOutput>
       <disabled>false</disabled>
       <replyTo>foo@example.com</replyTo>

@@ -33,6 +33,7 @@
       <attachmentsPattern/>
       <presendScript/>
       <attachBuildLog>false</attachBuildLog>
+      <compressBuildLog>false</compressBuildLog>
       <saveOutput>false</saveOutput>
       <disabled>false</disabled>
       <replyTo>$DEFAULT_REPLYTO</replyTo>
