@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <buildWrappers>
-    <se.diabol.jenkins.pipeline.PipelineVersionContributor>
+    <se.diabol.jenkins.pipeline.PipelineVersionContributor plugin="delivery-pipeline-plugin">
       <versionTemplate>1.0.0-${BUILD_NUMBER}</versionTemplate>
       <updateDisplayName>true</updateDisplayName>
     </se.diabol.jenkins.pipeline.PipelineVersionContributor>

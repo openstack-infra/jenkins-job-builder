@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <properties>
-    <se.diabol.jenkins.pipeline.PipelineProperty>
+    <se.diabol.jenkins.pipeline.PipelineProperty plugin="delivery-pipeline-plugin">
       <stageName>Stage</stageName>
       <taskName>Task</taskName>
       <descriptionTemplate>Task-Description</descriptionTemplate>

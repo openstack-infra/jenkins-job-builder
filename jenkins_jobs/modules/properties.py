@@ -39,6 +39,7 @@ from jenkins_jobs.errors import InvalidAttributeError
 from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.errors import MissingAttributeError
 import jenkins_jobs.modules.base
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 
 
 def builds_chain_fingerprinter(parser, xml_parent, data):
@@ -616,20 +617,28 @@ def delivery_pipeline(parser, xml_parent, data):
     :arg str description: task description template for this job
         (default '')
 
-    Example:
+    Minimal Example:
 
     .. literalinclude::
-        /../../tests/properties/fixtures/delivery-pipeline1.yaml
+       /../../tests/properties/fixtures/delivery-pipeline-minimal.yaml
        :language: yaml
 
+    Full Example:
+
+    .. literalinclude::
+       /../../tests/properties/fixtures/delivery-pipeline-full.yaml
+       :language: yaml
     """
-    pipeline = XML.SubElement(xml_parent,
-                              'se.diabol.jenkins.pipeline.'
-                              'PipelineProperty')
-    XML.SubElement(pipeline, 'stageName').text = data.get('stage', '')
-    XML.SubElement(pipeline, 'taskName').text = data.get('task', '')
-    XML.SubElement(pipeline, 'descriptionTemplate').text = str(
-        data.get('description', ''))
+    pipeline = XML.SubElement(
+        xml_parent, 'se.diabol.jenkins.pipeline.PipelineProperty')
+    pipeline.set('plugin', 'delivery-pipeline-plugin')
+
+    mapping = [
+        ('stage', 'stageName', ''),
+        ('task', 'taskName', ''),
+        ('description', 'descriptionTemplate', ''),
+    ]
+    convert_mapping_to_xml(pipeline, data, mapping, fail_required=True)
 
 
 def zeromq_event(parser, xml_parent, data):

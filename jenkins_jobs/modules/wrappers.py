@@ -1521,18 +1521,27 @@ def delivery_pipeline(parser, xml_parent, data):
     :arg bool set-display-name: Set the generated version as the display name
         for the build (default false)
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/wrappers/fixtures/delivery-pipeline1.yaml
+    .. literalinclude::
+       /../../tests/wrappers/fixtures/delivery-pipeline-minimal.yaml
+       :language: yaml
 
+    Full Example:
+
+    .. literalinclude::
+       /../../tests/wrappers/fixtures/delivery-pipeline-full.yaml
+       :language: yaml
     """
-    pvc = XML.SubElement(xml_parent,
-                         'se.diabol.jenkins.pipeline.'
-                         'PipelineVersionContributor')
-    XML.SubElement(pvc, 'versionTemplate').text = data.get(
-        'version-template', '')
-    XML.SubElement(pvc, 'updateDisplayName').text = str(data.get(
-        'set-display-name', False)).lower()
+    pvc = XML.SubElement(
+        xml_parent, 'se.diabol.jenkins.pipeline.PipelineVersionContributor')
+    pvc.set('plugin', 'delivery-pipeline-plugin')
+
+    mapping = [
+        ('version-template', 'versionTemplate', ''),
+        ('set-display-name', 'updateDisplayName', False),
+    ]
+    convert_mapping_to_xml(pvc, data, mapping, fail_required=True)
 
 
 def matrix_tie_parent(parser, xml_parent, data):
