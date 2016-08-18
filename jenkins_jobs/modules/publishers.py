@@ -901,22 +901,19 @@ def cobertura(parser, xml_parent, data):
     """
     cobertura = XML.SubElement(xml_parent,
                                'hudson.plugins.cobertura.CoberturaPublisher')
-    XML.SubElement(cobertura, 'coberturaReportFile').text = data.get(
-        'report-file', '**/coverage.xml')
-    XML.SubElement(cobertura, 'onlyStable').text = str(
-        data.get('only-stable', False)).lower()
-    XML.SubElement(cobertura, 'failUnhealthy').text = str(
-        data.get('fail-unhealthy', False)).lower()
-    XML.SubElement(cobertura, 'failUnstable').text = str(
-        data.get('fail-unstable', False)).lower()
-    XML.SubElement(cobertura, 'autoUpdateHealth').text = str(
-        data.get('health-auto-update', False)).lower()
-    XML.SubElement(cobertura, 'autoUpdateStability').text = str(
-        data.get('stability-auto-update', False)).lower()
-    XML.SubElement(cobertura, 'zoomCoverageChart').text = str(
-        data.get('zoom-coverage-chart', False)).lower()
-    XML.SubElement(cobertura, 'failNoReports').text = str(
-        data.get('fail-no-reports', False)).lower()
+    mapping = [
+        ('report-file', 'coberturaReportFile', '**/coverage.xml'),
+        ('only-stable', 'onlyStable', False),
+        ('fail-unhealthy', 'failUnhealthy', False),
+        ('fail-unstable', 'failUnstable', False),
+        ('health-auto-update', 'autoUpdateHealth', False),
+        ('stability-auto-update', 'autoUpdateStability', False),
+        ('zoom-coverage-chart', 'zoomCoverageChart', False),
+        ('fail-no-reports', 'failNoReports', False),
+    ]
+    helpers.convert_mapping_to_xml(
+        cobertura, data, mapping, fail_required=True)
+
     healthy = XML.SubElement(cobertura, 'healthyTarget')
     targets = XML.SubElement(healthy, 'targets', {
         'class': 'enum-map',
