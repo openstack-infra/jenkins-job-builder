@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <au.com.rayh.XCodeBuilder>
+      <cleanBeforeBuild>false</cleanBeforeBuild>
+      <cleanTestReports>false</cleanTestReports>
+      <generateArchive>false</generateArchive>
+      <configuration>Release</configuration>
+      <configurationBuildDir/>
+      <target/>
+      <sdk/>
+      <symRoot/>
+      <xcodeProjectPath/>
+      <xcodeProjectFile/>
+      <xcodebuildArguments/>
+      <xcodeSchema/>
+      <xcodeWorkspaceFile/>
+      <embeddedProfileFile/>
+      <codeSigningIdentity/>
+      <allowFailingBuildResults>false</allowFailingBuildResults>
+      <provideApplicationVersion>false</provideApplicationVersion>
+      <cfBundleVersionValue/>
+      <cfBundleShortVersionStringValue/>
+      <buildIpa>false</buildIpa>
+      <ipaName/>
+      <ipaOutputDirectory/>
+      <keychainName/>
+      <keychainPath/>
+      <keychainPwd/>
+      <unlockKeychain>false</unlockKeychain>
+    </au.com.rayh.XCodeBuilder>
+    <au.com.rayh.DeveloperProfileLoader>
+      <id>849b07cd-ac61-4588-89c8-b6606ee84946</id>
+    </au.com.rayh.DeveloperProfileLoader>
+    <au.com.rayh.XCodeBuilder>
+      <cleanBeforeBuild>true</cleanBeforeBuild>
+      <cleanTestReports>true</cleanTestReports>
+      <generateArchive>false</generateArchive>
+      <configuration>Distribution</configuration>
+      <configurationBuildDir/>
+      <target>TARGET</target>
+      <sdk>iphonesimulator</sdk>
+      <symRoot/>
+      <xcodeProjectPath/>
+      <xcodeProjectFile/>
+      <xcodebuildArguments>test ONLY_ACTIVE_ARCH=NO -destination 'platform=iOS Simulator,name=iPhone 6' -derivedDataPath .</xcodebuildArguments>
+      <xcodeSchema>UASDKInternal</xcodeSchema>
+      <xcodeWorkspaceFile>UA</xcodeWorkspaceFile>
+      <embeddedProfileFile>PROFILE</embeddedProfileFile>
+      <codeSigningIdentity>iPhone Distribution: MapMyFitness Inc.</codeSigningIdentity>
+      <allowFailingBuildResults>true</allowFailingBuildResults>
+      <provideApplicationVersion>true</provideApplicationVersion>
+      <cfBundleVersionValue>TECHNICAL</cfBundleVersionValue>
+      <cfBundleShortVersionStringValue>MARKETING</cfBundleShortVersionStringValue>
+      <buildIpa>true</buildIpa>
+      <ipaName>${VERSION}</ipaName>
+      <ipaOutputDirectory>/output</ipaOutputDirectory>
+      <keychainName/>
+      <keychainPath>/Users/jenkins/Library/Keychains/jenkins-uasdk-ios-pre_review</keychainPath>
+      <keychainPwd>testpass</keychainPwd>
+      <unlockKeychain>true</unlockKeychain>
+    </au.com.rayh.XCodeBuilder>
+  </builders>
+</project>
