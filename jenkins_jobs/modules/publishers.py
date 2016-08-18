@@ -1700,18 +1700,18 @@ def ssh(parser, xml_parent, data):
        :language: yaml
     """
     console_prefix = 'SSH: '
-    plugin_tag = 'jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin'
-    publisher_tag = 'jenkins.plugins.publish__over__ssh.BapSshPublisher'
-    transfer_tag = 'jenkins.plugins.publish__over__ssh.BapSshTransfer'
-    plugin_reference_tag = 'jenkins.plugins.publish_over_ssh.'    \
-        'BapSshPublisherPlugin'
-    base_publish_over(xml_parent,
-                      data,
-                      console_prefix,
-                      plugin_tag,
-                      publisher_tag,
-                      transfer_tag,
-                      plugin_reference_tag)
+    tag_prefix = 'jenkins.plugins.publish'
+    publisher_tag = '%s__over__ssh.BapSshPublisher' % tag_prefix
+    transfer_tag = '%s__over__ssh.BapSshTransfer' % tag_prefix
+    reference_tag = '%s_over_ssh.BapSshPublisherPlugin' % tag_prefix
+
+    if xml_parent.tag == 'publishers':
+        plugin_tag = '%s__over__ssh.BapSshPublisherPlugin' % tag_prefix
+    else:
+        plugin_tag = '%s__over__ssh.BapSshBuilderPlugin' % tag_prefix
+
+    base_publish_over(xml_parent, data, console_prefix, plugin_tag,
+                      publisher_tag, transfer_tag, reference_tag)
 
 
 def pipeline(parser, xml_parent, data):
@@ -2330,24 +2330,23 @@ def base_publish_over(xml_parent, data, console_prefix,
                       plugin_tag, publisher_tag,
                       transferset_tag, reference_plugin_tag):
     outer = XML.SubElement(xml_parent, plugin_tag)
+    # 'Publish over SSH' builder has an extra top delegate element
+    if xml_parent.tag == 'builders':
+        outer = XML.SubElement(outer, 'delegate')
+
     XML.SubElement(outer, 'consolePrefix').text = console_prefix
     delegate = XML.SubElement(outer, 'delegate')
     publishers = XML.SubElement(delegate, 'publishers')
+
     inner = XML.SubElement(publishers, publisher_tag)
     XML.SubElement(inner, 'configName').text = data['site']
     XML.SubElement(inner, 'verbose').text = 'true'
 
     transfers = XML.SubElement(inner, 'transfers')
     transfersset = XML.SubElement(transfers, transferset_tag)
+
     XML.SubElement(transfersset, 'remoteDirectory').text = data['target']
     XML.SubElement(transfersset, 'sourceFiles').text = data['source']
-    if 'command' in data:
-        XML.SubElement(transfersset, 'execCommand').text = data['command']
-    if 'timeout' in data:
-        XML.SubElement(transfersset, 'execTimeout').text = str(data['timeout'])
-    if 'use-pty' in data:
-        XML.SubElement(transfersset, 'usePty').text = \
-            str(data.get('use-pty', False)).lower()
     XML.SubElement(transfersset, 'excludes').text = data.get('excludes', '')
     XML.SubElement(transfersset, 'removePrefix').text = \
         data.get('remove-prefix', '')
@@ -2358,16 +2357,25 @@ def base_publish_over(xml_parent, data, console_prefix,
     XML.SubElement(transfersset, 'cleanRemote').text = \
         str(data.get('clean-remote', False)).lower()
 
+    if 'command' in data:
+        XML.SubElement(transfersset, 'execCommand').text = data['command']
+    if 'timeout' in data:
+        XML.SubElement(transfersset, 'execTimeout').text = str(data['timeout'])
+    if 'use-pty' in data:
+        XML.SubElement(transfersset, 'usePty').text = \
+            str(data.get('use-pty', False)).lower()
+
     XML.SubElement(inner, 'useWorkspaceInPromotion').text = 'false'
     XML.SubElement(inner, 'usePromotionTimestamp').text = 'false'
+
     XML.SubElement(delegate, 'continueOnError').text = 'false'
     XML.SubElement(delegate, 'failOnError').text = \
         str(data.get('fail-on-error', False)).lower()
     XML.SubElement(delegate, 'alwaysPublishFromMaster').text = \
         str(data.get('always-publish-from-master', False)).lower()
     XML.SubElement(delegate, 'hostConfigurationAccess',
-                   {'class': reference_plugin_tag,
-                    'reference': '../..'})
+                   {'class': reference_plugin_tag, 'reference': '../..'})
+
     return (outer, transfersset)
 
 
