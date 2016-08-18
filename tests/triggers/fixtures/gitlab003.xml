@@ -2,10 +2,10 @@
 <project>
   <triggers class="vector">
     <com.dabsquared.gitlabjenkins.GitLabPushTrigger>
+      <triggerOpenMergeRequestOnPush>true</triggerOpenMergeRequestOnPush>
       <spec/>
       <triggerOnPush>true</triggerOnPush>
       <triggerOnMergeRequest>true</triggerOnMergeRequest>
-      <triggerOpenMergeRequestOnPush>true</triggerOpenMergeRequestOnPush>
       <ciSkip>true</ciSkip>
       <setBuildDescription>true</setBuildDescription>
       <addNoteOnMergeRequest>true</addNoteOnMergeRequest>
