@@ -41,16 +41,14 @@ class DeleteSubCommand(base.BaseSubCommand):
         builder = JenkinsManager(jjb_config)
 
         fn = options.path
-
         registry = ModuleRegistry(jjb_config, builder.plugins_list)
-        for jobs_glob in options.name:
-            parser = YamlParser(jjb_config)
+        parser = YamlParser(jjb_config)
 
-            if fn:
-                parser.load_files(fn)
-                parser.expandYaml(registry, [jobs_glob])
-                jobs = [j['name'] for j in parser.jobs]
-            else:
-                jobs = [jobs_glob]
+        if fn:
+            parser.load_files(fn)
+            parser.expandYaml(registry, options.name)
+            jobs = [j['name'] for j in parser.jobs]
+        else:
+            jobs = options.name
 
-            builder.delete_jobs(jobs)
+        builder.delete_jobs(jobs)
