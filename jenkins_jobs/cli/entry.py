@@ -27,6 +27,7 @@ from jenkins_jobs.config import JJBConfig
 from jenkins_jobs import utils
 from jenkins_jobs import version
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
 
@@ -63,7 +64,6 @@ class JenkinsJobs(object):
         if not self.options.command:
             self.parser.error("Must specify a 'command' to be performed")
 
-        logger = logging.getLogger()
         if (self.options.log_level is not None):
             self.options.log_level = getattr(logging,
                                              self.options.log_level.upper(),
