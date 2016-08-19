@@ -101,9 +101,9 @@ class HipChat(jenkins_jobs.modules.base.Base):
            unless actually required.
         """
         jjb_config = self.registry.jjb_config
-        if(not self.authToken):
+        if not self.authToken:
             try:
-                self.authToken = jjb_config.get_module_config('hipchat',
+                self.authToken = jjb_config.get_plugin_config('hipchat',
                                                               'authtoken')
                 # Require that the authtoken is non-null
                 if self.authToken == '':
@@ -115,7 +115,7 @@ class HipChat(jenkins_jobs.modules.base.Base):
                              " containing authtoken:\n{0}".format(e))
                 sys.exit(1)
             self.jenkinsUrl = jjb_config.jenkins['url']
-            self.sendAs = jjb_config.get_module_config('hipchat', 'send-as')
+            self.sendAs = jjb_config.get_plugin_config('hipchat', 'send-as')
 
     def gen_xml(self, xml_parent, data):
         hipchat = data.get('hipchat')

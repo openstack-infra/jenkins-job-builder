@@ -250,7 +250,7 @@ def findbugs_settings(xml_parent, data):
 def get_value_from_yaml_or_config_file(key, section, data, jjb_config):
     result = data.get(key, '')
     if result == '':
-        result = jjb_config.get_module_config(section, key)
+        result = jjb_config.get_plugin_config(section, key)
     return result
 
 
