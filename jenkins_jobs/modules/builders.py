@@ -1748,9 +1748,12 @@ def maven_target(parser, xml_parent, data):
     :arg str settings: Path to use as user settings.xml
         It is possible to provide a ConfigFileProvider settings file, such as
         see CFP Example below. (optional)
+    :arg str settings-type: Type of settings file file|cfp. (default file)
     :arg str global-settings: Path to use as global settings.xml
         It is possible to provide a ConfigFileProvider settings file, such as
         see CFP Example below. (optional)
+    :arg str global-settings-type: Type of settings file file|cfp. (default
+        file)
 
     Example:
 
