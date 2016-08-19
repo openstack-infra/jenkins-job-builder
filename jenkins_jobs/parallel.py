@@ -13,7 +13,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Parallel execution helper functions and classes
+# Concurrent execution helper functions and classes
 
 from functools import wraps
 import logging
@@ -66,30 +66,30 @@ class Worker(threading.Thread):
             self.out_queue.put((task['ord'], res))
 
 
-def parallelize(func):
+def concurrent(func):
     @wraps(func)
-    def parallelized(*args, **kwargs):
+    def concurrentized(*args, **kwargs):
         """
-        This function will spawn workers and run the decorated function in
-        parallel on the workers. It will not ensure the thread safety of the
-        decorated function (the decorated function should be thread safe by
+        This function will spawn workers and run the decorated function
+        concurrently on the workers. It will not ensure the thread safety of
+        the decorated function (the decorated function should be thread safe by
         itself). It accepts two special parameters:
 
-        :arg list parallelize: list of the arguments to pass to each of the
+        :arg list concurrentize: list of the arguments to pass to each of the
         runs, the results of each run will be returned in the same order.
         :arg int n_workers: number of workers to use, by default and if '0'
         passed will autodetect the number of cores and use that, if '1'
         passed, it will not use any workers and just run as if were not
-        parallelized everything.
+        concurrentized everything.
 
         Example:
 
-        > @parallelize
+        > @concurrent
         > def sample(param1, param2, param3):
         >     return param1 + param2 + param3
         >
         > sample('param1', param2='val2',
-        >        parallelize=[
+        >        concurrent=[
         >            {'param3': 'val3'},
         >            {'param3': 'val4'},
         >            {'param3': 'val5'},
@@ -97,14 +97,14 @@ def parallelize(func):
         >
         ['param1val2val3', 'param1val2val4', 'param1val2val5']
 
-        This will run the function `parallelized_function` 3 times, in
-        parallel (depending on the number of detected cores) and return an
+        This will run the function `concurrentized_function` 3 times, in
+        concurrent (depending on the number of detected cores) and return an
         array with the results of the executions in the same order the
         parameters were passed.
         """
         n_workers = kwargs.pop('n_workers', 0)
-        p_kwargs = kwargs.pop('parallelize', [])
-        # if only one parameter is passed inside the parallelize dict, run the
+        p_kwargs = kwargs.pop('concurrent', [])
+        # if only one parameter is passed inside the concurrent dict, run the
         # original function as is, no need for pools
         if len(p_kwargs) == 1:
             kwargs.update(p_kwargs[0])
@@ -115,7 +115,7 @@ def parallelize(func):
         # If no number of workers passed or passed 0
         if not n_workers:
             n_workers = cpu_count()
-        logging.debug("Running parallel %d workers", n_workers)
+        logging.debug("Running concurrent %d workers", n_workers)
         worker_pool = []
         in_queue = queue.Queue()
         out_queue = queue.Queue()
@@ -146,6 +146,6 @@ def parallelize(func):
             worker.join()
         # Reorder the results
         results = [r[1] for r in sorted(results)]
-        logging.debug("Parallel task finished")
+        logging.debug("Concurrent task finished")
         return results
-    return parallelized
+    return concurrentized
