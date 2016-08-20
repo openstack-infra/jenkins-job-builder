@@ -73,7 +73,7 @@ def archive(registry, xml_parent, data):
     # backward compatibility
     latest_only = data.get('latest_only', False)
     if 'latest_only' in data:
-        logger.warn('latest_only is deprecated please use latest-only')
+        logger.warning('latest_only is deprecated please use latest-only')
     if 'latest-only' in data:
         latest_only = data['latest-only']
     if latest_only:
@@ -464,7 +464,7 @@ def trigger_parameterized_builds(registry, xml_parent, data):
         pass
 
     if orig_order:
-        logger.warn(
+        logger.warning(
             "Using deprecated order for parameter sets in "
             "triggered-parameterized-builds. This will be changed in a future "
             "release to inherit the order from the user defined yaml. To "
@@ -493,7 +493,7 @@ def trigger_parameterized_builds(registry, xml_parent, data):
                 properties.text = param_value
             elif param_type == 'git-revision' and param_value:
                 if 'combine-queued-commits' in project_def:
-                    logger.warn(
+                    logger.warning(
                         "'combine-queued-commit' has moved to reside under "
                         "'git-revision' configuration, please update your "
                         "configs as support for this will be removed."
@@ -808,7 +808,7 @@ def coverage(registry, xml_parent, data):
        :language: yaml
     """
     logger = logging.getLogger(__name__)
-    logger.warn("Coverage function is deprecated. Switch to cobertura.")
+    logger.warning("Coverage function is deprecated. Switch to cobertura.")
 
     cobertura = XML.SubElement(xml_parent,
                                'hudson.plugins.cobertura.CoberturaPublisher')
@@ -1301,8 +1301,8 @@ def xunit(registry, xml_parent, data):
     for configured_type in data['types']:
         type_name = next(iter(configured_type.keys()))
         if type_name not in implemented_types:
-            logger.warn("Requested xUnit type '%s' is not yet supported",
-                        type_name)
+            logger.warning("Requested xUnit type '%s' is not yet supported",
+                           type_name)
         else:
             # Append for generation
             supported_types.append(configured_type)
@@ -1329,7 +1329,7 @@ def xunit(registry, xml_parent, data):
     xmlthresholds = XML.SubElement(xunit, 'thresholds')
     for t in data.get('thresholds', []):
         if not ('failed' in t or 'skipped' in t):
-            logger.warn(
+            logger.warning(
                 "Unrecognized threshold, should be 'failed' or 'skipped'")
             continue
         elname = ("org.jenkinsci.plugins.xunit.threshold.%sThreshold" %
@@ -2268,8 +2268,8 @@ def groovy_postbuild(registry, xml_parent, data):
     logger = logging.getLogger("%s:groovy-postbuild" % __name__)
     # Backward compatibility with old format
     if isinstance(data, six.string_types):
-        logger.warn(
-            "You use deprecated configuration, please follow documentation "
+        logger.warning(
+            "You use depricated configuration, please follow documentation "
             "to change configuration. It is not going to be supported in "
             "future releases!"
         )
@@ -4318,12 +4318,12 @@ def doxygen(registry, xml_parent, data):
         if 'keep-all' in data:
             XML.SubElement(p, 'keepAll').text = str(
                 data.get('keep-all', False)).lower()
-            logger.warn("The value of 'keepall' will be ignored "
-                        "in preference to 'keep-all'.")
+            logger.warning("The value of 'keepall' will be ignored "
+                           "in preference to 'keep-all'.")
         else:
             XML.SubElement(p, 'keepAll').text = str(
                 data.get('keepall', False)).lower()
-            logger.warn("'keepall' is deprecated please use 'keep-all'")
+            logger.warning("'keepall' is deprecated please use 'keep-all'")
     else:
         XML.SubElement(p, 'keepAll').text = str(
             data.get('keep-all', False)).lower()
@@ -6222,7 +6222,7 @@ def slack(registry, xml_parent, data):
 
         for yaml_name, _, _ in mapping_20:
             if yaml_name in data:
-                logger.warn(
+                logger.warning(
                     "'%s' is invalid with plugin version < 2.0, ignored",
                     yaml_name,
                 )

@@ -264,10 +264,11 @@ def git(registry, xml_parent, data):
         submodule_cfgs = ['disable-submodules', 'recursive-submodules']
         if optname in submodule_cfgs:
             if optname in data:
-                logger.warn("'{0}' is deprecated, please convert to use the "
-                            "'submodule' section instead as support for this "
-                            "top level option will be removed in a future "
-                            "release.".format(optname))
+                logger.warning(
+                    "'{0}' is deprecated, please convert to use the "
+                    "'submodule' section instead as support for this "
+                    "top level option will be removed in a future "
+                    "release.".format(optname))
             if 'submodule' in data:
                 continue
 
@@ -312,9 +313,10 @@ def git(registry, xml_parent, data):
         if isinstance(data['clean'], bool):
             clean_after = data['clean']
             clean_before = False
-            logger.warn("'clean: bool' configuration format is deprecated, "
-                        "please use the extension style format to configure "
-                        "this option.")
+            logger.warning(
+                "'clean: bool' configuration format is deprecated, "
+                "please use the extension style format to configure "
+                "this option.")
         else:
             clean_after = data['clean'].get('after', False)
             clean_before = data['clean'].get('before', False)

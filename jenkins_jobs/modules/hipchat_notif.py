@@ -126,10 +126,10 @@ class HipChat(jenkins_jobs.modules.base.Base):
         # convert for compatibility before dispatch
         if 'room' in hipchat:
             if 'rooms' in hipchat:
-                logger.warn("Ignoring deprecated 'room' as 'rooms' also "
-                            "defined.")
+                logger.warning("Ignoring deprecated 'room' as 'rooms' also "
+                               "defined.")
             else:
-                logger.warn("'room' is deprecated, please use 'rooms'")
+                logger.warning("'room' is deprecated, please use 'rooms'")
                 hipchat['rooms'] = [hipchat['room']]
 
         plugin_info = self.registry.get_plugin_info("Jenkins HipChat Plugin")
@@ -140,7 +140,7 @@ class HipChat(jenkins_jobs.modules.base.Base):
             if publishers is None:
                 publishers = XML.SubElement(xml_parent, 'publishers')
 
-            logger.warn(
+            logger.warning(
                 "'hipchat' module supports the old plugin versions <1.9, "
                 "newer versions are supported via the 'publishers' module. "
                 "Please upgrade you job definition")
@@ -160,8 +160,8 @@ class HipChat(jenkins_jobs.modules.base.Base):
         # Handle backwards compatibility 'start-notify' but all add an element
         # of standardization with notify-*
         if hipchat.get('start-notify'):
-            logger.warn("'start-notify' is deprecated, please use "
-                        "'notify-start'")
+            logger.warning("'start-notify' is deprecated, please use "
+                           "'notify-start'")
         XML.SubElement(pdefhip, 'startNotification').text = str(
             hipchat.get('notify-start', hipchat.get('start-notify',
                                                     False))).lower()

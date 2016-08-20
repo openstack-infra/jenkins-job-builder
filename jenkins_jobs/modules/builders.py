@@ -2618,13 +2618,14 @@ def dsl(registry, xml_parent, data):
 
     if 'target' in data:
         if 'targets' not in data:
-            logger.warn("Converting from old format of 'target' to new "
-                        "name 'targets', please update your job definitions.")
+            logger.warning("Converting from old format of 'target' to new "
+                           "name 'targets', please update your job "
+                           "definitions.")
             data['targets'] = data['target']
         else:
-            logger.warn("Ignoring old argument 'target' in favour of new "
-                        "format argument 'targets', please remove old "
-                        "format.")
+            logger.warning("Ignoring old argument 'target' in favour of new "
+                           "format argument 'targets', please remove old "
+                           "format.")
 
     if data.get('script-text'):
         XML.SubElement(dsl, 'scriptText').text = data.get('script-text')
