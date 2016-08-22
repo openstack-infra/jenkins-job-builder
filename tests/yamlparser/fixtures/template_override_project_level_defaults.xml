@@ -32,6 +32,7 @@
       <defaultContent>$DEFAULT_CONTENT</defaultContent>
       <attachmentsPattern/>
       <presendScript/>
+      <postsendScript/>
       <attachBuildLog>false</attachBuildLog>
       <compressBuildLog>false</compressBuildLog>
       <saveOutput>false</saveOutput>
