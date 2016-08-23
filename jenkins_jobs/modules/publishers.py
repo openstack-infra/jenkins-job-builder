@@ -2471,9 +2471,6 @@ def logparser(registry, xml_parent, data):
     :arg bool fail-on-error: mark build failed on error (default false)
     :arg bool show-graphs: show parser trend graphs (default true)
 
-    Example:
-
-
     Minimal Example:
 
         .. literalinclude::
