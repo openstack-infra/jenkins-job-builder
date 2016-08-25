@@ -27,3 +27,4 @@ triggers:
       success-status: 'success status!'
       failure-status: 'failure status :('
       error-status: 'error status?!'
+      cancel-builds-on-update: true
