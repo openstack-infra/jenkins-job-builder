@@ -39,7 +39,7 @@ from jenkins_jobs.errors import InvalidAttributeError
 from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.errors import MissingAttributeError
 import jenkins_jobs.modules.base
-from jenkins_jobs.modules.helpers import convert_mapping_to_xml
+import jenkins_jobs.modules.helpers as helpers
 
 
 def builds_chain_fingerprinter(registry, xml_parent, data):
@@ -638,7 +638,7 @@ def delivery_pipeline(registry, xml_parent, data):
         ('task', 'taskName', ''),
         ('description', 'descriptionTemplate', ''),
     ]
-    convert_mapping_to_xml(pipeline, data, mapping, fail_required=True)
+    helpers.convert_mapping_to_xml(pipeline, data, mapping, fail_required=True)
 
 
 def zeromq_event(registry, xml_parent, data):
