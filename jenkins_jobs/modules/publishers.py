@@ -1864,6 +1864,8 @@ def base_email_ext(registry, xml_parent, data, ttype):
         XML.SubElement(email, 'sendToDevelopers').text = 'false'
         XML.SubElement(email, 'includeCulprits').text = 'false'
         XML.SubElement(email, 'sendToRecipientList').text = 'true'
+    if ttype == 'ScriptTrigger':
+        XML.SubElement(trigger, 'triggerScript').text = data['trigger-script']
 
 
 def email_ext(registry, xml_parent, data):
@@ -1911,6 +1913,8 @@ def email_ext(registry, xml_parent, data):
     :arg bool still-unstable: Send an email if the build is still unstable
         (default false)
     :arg bool pre-build: Send an email before the build (default false)
+    :arg str trigger-script: A Groovy script used to determine if an email
+        should be sent.
     :arg str presend-script: A Groovy script executed prior sending the mail.
         (default '')
     :arg str postsend-script: A Goovy script executed after sending the email.
@@ -1971,6 +1975,8 @@ def email_ext(registry, xml_parent, data):
         base_email_ext(registry, ctrigger, data, 'StillUnstableTrigger')
     if data.get('pre-build', False):
         base_email_ext(registry, ctrigger, data, 'PreBuildTrigger')
+    if data.get('trigger-script', False):
+        base_email_ext(registry, ctrigger, data, 'ScriptTrigger')
 
     content_type_mime = {
         'text': 'text/plain',

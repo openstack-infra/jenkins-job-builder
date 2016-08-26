@@ -1,0 +1,34 @@
+publishers:
+  - email-ext:
+      recipients: foo@example.com, bar@example.com
+      reply-to: foo@example.com
+      content-type: html
+      subject: Subject for Build ${BUILD_NUMBER}
+      body: The build has finished
+      attach-build-log: false
+      compress-log: false
+      attachments: "*/foo*.log"
+      always: true
+      unstable: true
+      first-failure: true
+      not-built: true
+      aborted: true
+      regression: true
+      failure: true
+      second-failure: true
+      improvement: true
+      still-failing: true
+      success: true
+      fixed: true
+      still-unstable: true
+      pre-build: true
+      trigger-script: "build.result.toString().equals('SUCCESS')"
+      matrix-trigger: only-configurations
+      presend-script: "cancel=true"
+      postsend-script: "cancel=true"
+      save-output: true
+      send-to:
+        - developers
+        - requester
+        - culprits
+        - recipients
