@@ -762,6 +762,27 @@ def maven_metadata_param(registry, xml_parent, data):
     XML.SubElement(pdef, 'password').text = data.get('repository-password', '')
 
 
+def hidden_param(parser, xml_parent, data):
+    """yaml: hidden
+    Allows you to use parameters hidden from the build with parameter page.
+    Requires the Jenkins :jenkins-wiki:`Hidden Parameter Plugin
+    <Hidden+Parameter+Plugin>`.
+
+    :arg str name: the name of the parameter
+    :arg str default: the default value of the parameter (optional)
+    :arg str description: a description of the parameter (optional)
+
+    Example:
+
+    .. literalinclude::
+       /../../tests/parameters/fixtures/hidden-param001.yaml
+       :language: yaml
+
+    """
+    base_param(parser, xml_parent, data, True,
+               'com.wangyin.parameter.WHideParameterDefinition')
+
+
 class Parameters(jenkins_jobs.modules.base.Base):
     sequence = 21
 

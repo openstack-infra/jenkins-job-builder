@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <com.wangyin.parameter.WHideParameterDefinition>
+          <name>FOO</name>
+          <description>A parameter named FOO, defaults to 'bar'</description>
+          <defaultValue>bar</defaultValue>
+        </com.wangyin.parameter.WHideParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+</project>

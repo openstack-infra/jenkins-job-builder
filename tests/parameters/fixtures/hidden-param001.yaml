@@ -1,0 +1,5 @@
+parameters:
+  - hidden:
+      name: FOO
+      default: bar
+      description: A parameter named FOO, defaults to 'bar'
