@@ -3555,7 +3555,9 @@ def docker_build_publish(parse, xml_parent, data):
     :arg bool skip-decorate: Do not decorate the build name. (default false)
     :arg bool skip-tag-latest: Do not tag this build as latest. (default false)
     :arg bool skip-push: Do not push. (default false)
-    :arg str file-path: Project root of Dockerfile. (default '')
+    :arg str file-path: Path of the Dockerfile. (default '')
+    :arg str build-context: Project root path for the build, defaults to the
+        workspace if not specified. (default '')
 
     Example:
 
@@ -3575,6 +3577,7 @@ def docker_build_publish(parse, xml_parent, data):
         ('skip-tag-latest', 'skipTagLatest', False),
         ('skip-push', 'skipPush', False),
         ('file-path', 'dockerfilePath', ''),
+        ('build-context', 'buildContext', ''),
     ]
     convert_mapping_to_xml(db, data, mapping, fail_required=True)
 
