@@ -54,6 +54,7 @@ org2</orgslist>
             </org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildResultMessage>
           </messages>
         </org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildStatus>
+        <org.jenkinsci.plugins.ghprb.extensions.build.GhprbCancelBuildsOnUpdate/>
       </extensions>
     </org.jenkinsci.plugins.ghprb.GhprbTrigger>
   </triggers>
