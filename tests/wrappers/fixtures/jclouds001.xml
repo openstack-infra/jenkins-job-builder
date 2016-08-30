@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <jenkins.plugins.jclouds.compute.JCloudsBuildWrapper>
+      <instancesToRun>
+        <jenkins.plugins.jclouds.compute.InstancesToRun>
+          <templateName>jenkins-dev-slave</templateName>
+          <cloudName>mycloud1</cloudName>
+          <count>1</count>
+          <suspendOrTerminate>true</suspendOrTerminate>
+        </jenkins.plugins.jclouds.compute.InstancesToRun>
+        <jenkins.plugins.jclouds.compute.InstancesToRun>
+          <templateName>jenkins-test-slave</templateName>
+          <cloudName>mycloud2</cloudName>
+          <count>2</count>
+          <suspendOrTerminate>false</suspendOrTerminate>
+        </jenkins.plugins.jclouds.compute.InstancesToRun>
+      </instancesToRun>
+    </jenkins.plugins.jclouds.compute.JCloudsBuildWrapper>
+    <jenkins.plugins.jclouds.compute.JCloudsOneOffSlave/>
+  </buildWrappers>
+</project>

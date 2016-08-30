@@ -1075,20 +1075,11 @@ def jclouds(registry, xml_parent, data):
     :arg bool stop-on-terminate: Whether or not to suspend instead of terminate
                                  the instance (default false).
 
-    Example::
+    Example:
 
-      wrappers:
-        - jclouds:
-            single-use: True
-            instances:
-              - jenkins-dev-slave:
-                  cloud-name: mycloud1
-                  count: 1
-                  stop-on-terminate: True
-              - jenkins-test-slave:
-                  cloud-name: mycloud2
-                  count: 2
-                  stop-on-terminate: False
+    .. literalinclude:: /../../tests/wrappers/fixtures/jclouds001.yaml
+       :language: yaml
+
     """
     if 'instances' in data:
         buildWrapper = XML.SubElement(
