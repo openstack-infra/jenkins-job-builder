@@ -122,13 +122,7 @@ class UpdateTests(CmdTestsBase):
         path = os.path.join(self.fixtures_path, 'cmd-002.yaml')
         args = ['--conf', self.default_config_file, 'update', path]
 
-        import_path = 'jenkins_jobs.cli.subcommand.update.Builder.update_job'
-        with mock.patch(import_path) as update_mock:
-            update_mock.return_value = ([], 0)
-            self.execute_jenkins_jobs_with_args(args)
-        # unless the timeout is set, should only call with 3 arguments
-        # (url, user, password)
-        self.assertEqual(len(jenkins_mock.call_args[0]), 3)
+        self.execute_jenkins_jobs_with_args(args)
 
     @mock.patch('jenkins_jobs.builder.jenkins.Jenkins')
     def test_update_timeout_set(self, jenkins_mock):
@@ -143,10 +137,11 @@ class UpdateTests(CmdTestsBase):
                                    'non-default-timeout.ini')
         args = ['--conf', config_file, 'update', path]
 
-        import_path = 'jenkins_jobs.cli.subcommand.update.Builder.update_job'
-        with mock.patch(import_path) as update_mock:
-            update_mock.return_value = ([], 0)
-            self.execute_jenkins_jobs_with_args(args)
-        # when timeout is set, the fourth argument to the Jenkins api init
-        # should be the value specified from the config
-        self.assertEqual(jenkins_mock.call_args[0][3], 0.2)
+        self.execute_jenkins_jobs_with_args(args)
+
+        # when timeout is set, the fourth argument to builder.Jenkins should be
+        # the value specified from the config
+        jenkins_mock.assert_called_with(mock.ANY,
+                                        mock.ANY,
+                                        mock.ANY,
+                                        0.2)

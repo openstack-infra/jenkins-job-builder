@@ -371,9 +371,3 @@ class Builder(object):
     def parallel_update_job(self, job):
         self.jenkins.update_job(job.name, job.output().decode('utf-8'))
         return (job.name, job.md5())
-
-    def update_job(self, input_fn, jobs_glob=None, output=None):
-        logging.warn('Current update_job function signature is deprecated and '
-                     'will change in future versions to the signature of the '
-                     'new parallel_update_job')
-        return self.update_jobs(input_fn, jobs_glob, output)
