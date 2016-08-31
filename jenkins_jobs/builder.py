@@ -252,7 +252,7 @@ class Builder(object):
                 if self.jenkins.is_managed(job['name']):
                     logger.info("Removing obsolete jenkins job {0}"
                                 .format(job['name']))
-                    self.delete_job([job['name']])
+                    self.jenkins.delete_job(job['name'])
                     deleted_jobs += 1
                 else:
                     logger.info("Not deleting unmanaged jenkins job %s",
@@ -261,7 +261,7 @@ class Builder(object):
                 logger.debug("Keeping job %s", job['name'])
         return deleted_jobs
 
-    def delete_job(self, jobs):
+    def delete_jobs(self, jobs):
         if jobs is not None:
             logger.info("Removing jenkins job(s): %s" % ", ".join(jobs))
         for job in jobs:
