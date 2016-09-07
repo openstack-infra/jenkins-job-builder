@@ -624,12 +624,12 @@ def clone_workspace(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Clone Workspace SCM Plugin
     <Clone+Workspace+SCM+Plugin>`.
 
-    :arg str workspace-glob: Files to include in cloned workspace
+    :arg str workspace-glob: Files to include in cloned workspace (default '')
     :arg str workspace-exclude-glob: Files to exclude from cloned workspace
     :arg str criteria: Criteria for build to be archived.  Can be 'any',
-        'not failed', or 'successful'. (default any )
+        'not failed', or 'successful'. (default 'any')
     :arg str archive-method: Choose the method to use for archiving the
-        workspace.  Can be 'tar' or 'zip'.  (default tar)
+        workspace.  Can be 'tar' or 'zip'.  (default 'tar')
     :arg bool override-default-excludes: Override default ant excludes.
         (default false)
 
@@ -648,12 +648,15 @@ def clone_workspace(registry, xml_parent, data):
 
     cloneworkspace = XML.SubElement(
         xml_parent,
-        'hudson.plugins.cloneworkspace.CloneWorkspacePublisher',
-        {'plugin': 'clone-workspace-scm'})
+        'hudson.plugins.cloneworkspace.CloneWorkspacePublisher')
+    cloneworkspace.set('plugin', 'clone-workspace-scm')
 
-    XML.SubElement(
-        cloneworkspace,
-        'workspaceGlob').text = data.get('workspace-glob', None)
+    mappings = [
+        ('workspace-glob', 'workspaceGlob', ''),
+        ('override-default-excludes', 'overrideDefaultExcludes', False),
+    ]
+    helpers.convert_mapping_to_xml(
+        cloneworkspace, data, mappings, fail_required=True)
 
     if 'workspace-exclude-glob' in data:
         XML.SubElement(
@@ -681,12 +684,6 @@ def clone_workspace(registry, xml_parent, data):
             + ', '.join(archive_list))
     else:
         XML.SubElement(cloneworkspace, 'archiveMethod').text = archive_method
-
-    override_default_excludes_str = str(
-        data.get('override-default-excludes', False)).lower()
-    override_default_excludes_elem = XML.SubElement(
-        cloneworkspace, 'overrideDefaultExcludes')
-    override_default_excludes_elem.text = override_default_excludes_str
 
 
 def cloverphp(registry, xml_parent, data):
