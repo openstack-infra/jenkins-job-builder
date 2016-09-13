@@ -1,0 +1,3 @@
+wrappers:
+  - sonar:
+      install-name: test-sonar-installation
