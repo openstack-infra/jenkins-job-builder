@@ -4,7 +4,6 @@
     <hudson.tasks.junit.JUnitResultArchiver plugin="junit">
       <testResults>nosetests-example.xml</testResults>
       <keepLongStdio>false</keepLongStdio>
-      <allowEmptyResults>true</allowEmptyResults>
       <healthScaleFactor>2.0</healthScaleFactor>
       <allowEmptyResults>true</allowEmptyResults>
       <testDataPublishers>
