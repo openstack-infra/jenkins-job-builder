@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <org.jenkinsci.plugins.cloverphp.CloverPHPPublisher>
+    <org.jenkinsci.plugins.cloverphp.CloverPHPPublisher plugin="cloverphp">
       <publishHtmlReport>true</publishHtmlReport>
       <reportDir>html</reportDir>
       <xmlLocation>build/clover.xml</xmlLocation>
