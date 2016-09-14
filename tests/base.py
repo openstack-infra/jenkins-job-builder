@@ -34,12 +34,15 @@ import testscenarios
 from yaml import safe_dump
 
 from jenkins_jobs.config import JJBConfig
+from jenkins_jobs.errors import InvalidAttributeError
 import jenkins_jobs.local_yaml as yaml
 from jenkins_jobs.modules import project_externaljob
 from jenkins_jobs.modules import project_flow
 from jenkins_jobs.modules import project_matrix
 from jenkins_jobs.modules import project_maven
 from jenkins_jobs.modules import project_multijob
+from jenkins_jobs.modules import view_list
+from jenkins_jobs.modules import view_pipeline
 from jenkins_jobs.parser import YamlParser
 from jenkins_jobs.registry import ModuleRegistry
 from jenkins_jobs.xml_config import XmlJob
@@ -175,6 +178,15 @@ class BaseScenariosTestCase(testscenarios.TestWithScenarios, BaseTestCase):
             elif (yaml_content['project-type'] == "externaljob"):
                 project = project_externaljob.ExternalJob(registry)
 
+        if 'view-type' in yaml_content:
+            if yaml_content['view-type'] == "list":
+                project = view_list.List(None)
+            elif yaml_content['view-type'] == "pipeline":
+                project = view_pipeline.Pipeline(None)
+            else:
+                raise InvalidAttributeError(
+                    'view-type', yaml_content['view-type'])
+
         if project:
             xml_project = project.root_xml(yaml_content)
         else:
@@ -206,7 +218,7 @@ class SingleJobTestCase(BaseScenariosTestCase):
 
         registry = ModuleRegistry(config)
         registry.set_parser_data(parser.data)
-        job_data_list = parser.expandYaml(registry)
+        job_data_list, view_data_list = parser.expandYaml(registry)
 
         # Generate the XML tree
         xml_generator = XmlJobGenerator(registry)

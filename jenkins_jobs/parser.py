@@ -75,6 +75,7 @@ class YamlParser(object):
     def __init__(self, jjb_config=None):
         self.data = {}
         self.jobs = []
+        self.views = []
 
         self.jjb_config = jjb_config
         self.keep_desc = jjb_config.yamlparser['keep_descriptions']
@@ -234,6 +235,12 @@ class YamlParser(object):
             job = self._applyDefaults(job)
             self._formatDescription(job)
             self.jobs.append(job)
+
+        for view in self.data.get('view', {}).values():
+            logger.debug("Expanding view '{0}'".format(view['name']))
+            self._formatDescription(view)
+            self.views.append(view)
+
         for project in self.data.get('project', {}).values():
             logger.debug("Expanding project '{0}'".format(project['name']))
             # use a set to check for duplicate job references in projects
@@ -310,7 +317,7 @@ class YamlParser(object):
                                   "specified".format(job['name']))
                 self.jobs.remove(job)
             seen.add(job['name'])
-        return self.jobs
+        return self.jobs, self.views
 
     def _expandYamlForTemplateJob(self, project, template, jobs_glob=None):
         dimensions = []

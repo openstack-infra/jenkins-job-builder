@@ -61,6 +61,8 @@ class JenkinsManager(object):
         self._plugins_list = jjb_config.builder['plugins_info']
         self._jobs = None
         self._job_list = None
+        self._views = None
+        self._view_list = None
         self._jjb_config = jjb_config
 
     @property
@@ -274,3 +276,144 @@ class JenkinsManager(object):
     def parallel_update_job(self, job):
         self.update_job(job.name, job.output().decode('utf-8'))
         return (job.name, job.md5())
+
+    ################
+    # View related #
+    ################
+
+    @property
+    def views(self):
+        if self._views is None:
+            # populate views
+            self._views = self.jenkins.get_views()
+        return self._views
+
+    @property
+    def view_list(self):
+        if self._view_list is None:
+            self._view_list = set(view['name'] for view in self.views)
+        return self._view_list
+
+    def get_views(self, cache=True):
+        if not cache:
+            self._views = None
+            self._view_list = None
+        return self.views
+
+    def is_view(self, view_name):
+        # first use cache
+        if view_name in self.view_list:
+            return True
+
+        # if not exists, use jenkins
+        return self.jenkins.view_exists(view_name)
+
+    def delete_view(self, view_name):
+        if self.is_view(view_name):
+            logger.info("Deleting jenkins view {}".format(view_name))
+            self.jenkins.delete_view(view_name)
+
+    def delete_views(self, views):
+        if views is not None:
+            logger.info("Removing jenkins view(s): %s" % ", ".join(views))
+        for view in views:
+            self.delete_view(view)
+            if self.cache.is_cached(view):
+                self.cache.set(view, '')
+        self.cache.save()
+
+    def delete_all_views(self):
+        views = self.get_views()
+        # Jenkins requires at least one view present. Don't remove the first
+        # view as it is likely the default view.
+        views.pop(0)
+        logger.info("Number of views to delete:  %d", len(views))
+        for view in views:
+            self.delete_view(view['name'])
+        # Need to clear the JJB cache after deletion
+        self.cache.clear()
+
+    def update_view(self, view_name, xml):
+        if self.is_view(view_name):
+            logger.info("Reconfiguring jenkins view {0}".format(view_name))
+            self.jenkins.reconfig_view(view_name, xml)
+        else:
+            logger.info("Creating jenkins view {0}".format(view_name))
+            self.jenkins.create_view(view_name, xml)
+
+    def update_views(self, xml_views, output=None, n_workers=None):
+        orig = time.time()
+
+        logger.info("Number of views generated:  %d", len(xml_views))
+        xml_views.sort(key=operator.attrgetter('name'))
+
+        if output:
+            # ensure only wrapped once
+            if hasattr(output, 'write'):
+                output = utils.wrap_stream(output)
+
+            for view in xml_views:
+                if hasattr(output, 'write'):
+                    # `output` is a file-like object
+                    logger.info("View name:  %s", view.name)
+                    logger.debug("Writing XML to '{0}'".format(output))
+                    try:
+                        output.write(view.output())
+                    except IOError as exc:
+                        if exc.errno == errno.EPIPE:
+                            # EPIPE could happen if piping output to something
+                            # that doesn't read the whole input (e.g.: the UNIX
+                            # `head` command)
+                            return
+                        raise
+                    continue
+
+                output_fn = os.path.join(output, view.name)
+                logger.debug("Writing XML to '{0}'".format(output_fn))
+                with io.open(output_fn, 'w', encoding='utf-8') as f:
+                    f.write(view.output().decode('utf-8'))
+            return xml_views, len(xml_views)
+
+        # Filter out the views that did not change
+        logging.debug('Filtering %d views for changed views',
+                      len(xml_views))
+        step = time.time()
+        views = [view for view in xml_views
+                 if self.changed(view)]
+        logging.debug("Filtered for changed views in %ss",
+                      (time.time() - step))
+
+        if not views:
+            return [], 0
+
+        # Update the views
+        logging.debug('Updating views')
+        step = time.time()
+        p_params = [{'view': view} for view in views]
+        results = self.parallel_update_view(
+            n_workers=n_workers,
+            concurrent=p_params)
+        logging.debug("Parsing results")
+        # generalize the result parsing, as a concurrent view always returns a
+        # list
+        if len(p_params) in (1, 0):
+            results = [results]
+        for result in results:
+            if isinstance(result, Exception):
+                raise result
+            else:
+                # update in-memory cache
+                v_name, v_md5 = result
+                self.cache.set(v_name, v_md5)
+        # write cache to disk
+        self.cache.save()
+        logging.debug("Updated %d views in %ss",
+                      len(views),
+                      time.time() - step)
+        logging.debug("Total run took %ss", (time.time() - orig))
+        return views, len(views)
+
+    @concurrent
+    def parallel_update_view(self, view):
+        self.update_view(view.name, view.output().decode('utf-8'))
+        return (view.name, view.md5())
