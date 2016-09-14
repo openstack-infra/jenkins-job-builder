@@ -1067,16 +1067,16 @@ def junit(registry, xml_parent, data):
     """yaml: junit
     Publish JUnit test results.
 
-    :arg str results: results filename
+    :arg str results: results filename (required)
     :arg bool keep-long-stdio: Retain long standard output/error in test
-      results (default true).
+        results (default true).
     :arg bool allow-empty-results: Do not fail builds if no junit reports
-       are found (default false)
+        are found (default false)
     :arg float health-scale-factor: Amplification factor to apply to test
-      failures when computing the test result contribution to the build health
-      score. (default 1.0)
+        failures when computing the test result contribution to the build
+        health score. (default 1.0)
     :arg bool allow-empty-results: Do not fail the build if the JUnit files are
-      missing (default false).
+        missing (default false).
     :arg bool test-stability: Add historical information about test
         results stability (default false).
         Requires the Jenkins :jenkins-wiki:`Test stability Plugin
@@ -1103,15 +1103,15 @@ def junit(registry, xml_parent, data):
     junitresult = XML.SubElement(xml_parent,
                                  'hudson.tasks.junit.JUnitResultArchiver')
     junitresult.set('plugin', 'junit')
-    XML.SubElement(junitresult, 'testResults').text = data['results']
-    XML.SubElement(junitresult, 'keepLongStdio').text = str(
-        data.get('keep-long-stdio', True)).lower()
-    XML.SubElement(junitresult, 'allowEmptyResults').text = str(
-        data.get('allow-empty-results', False)).lower()
-    XML.SubElement(junitresult, 'healthScaleFactor').text = str(
-        data.get('health-scale-factor', '1.0'))
-    XML.SubElement(junitresult, 'allowEmptyResults').text = str(
-        data.get('allow-empty-results', False)).lower()
+    mapping = [
+        ('results', 'testResults', None),
+        ('keep-long-stdio', 'keepLongStdio', True),
+        ('health-scale-factor', 'healthScaleFactor', '1.0'),
+        ('allow-empty-results', 'allowEmptyResults', False),
+    ]
+    helpers.convert_mapping_to_xml(
+        junitresult, data, mapping, fail_required=True)
+
     datapublisher = XML.SubElement(junitresult, 'testDataPublishers')
     if str(data.get('test-stability', False)).lower() == 'true':
         XML.SubElement(datapublisher,
