@@ -1198,23 +1198,33 @@ def cucumber_testresult(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`cucumber testresult
     <Cucumber+Test+Result+Plugin>`.
 
-    :arg str results: results filename (required)
+    :arg str results: Results filename (required)
+    :arg bool ignore-bad-steps: Ignore not existed step results (default false)
 
-    Example:
+    Minimal example:
 
     .. literalinclude::
-        /../../tests/publishers/fixtures/cucumber_testresult.yaml
-        :language: yaml
+       /../../tests/publishers/fixtures/cucumber-testresult-minimal.yaml
+       :language: yaml
 
+    Full Example:
+
+    .. literalinclude::
+       /../../tests/publishers/fixtures/cucumber-testresult-complete.yaml
+       :language: yaml
     """
     cucumber_result = XML.SubElement(xml_parent,
                                      'org.jenkinsci.plugins.cucumber.'
                                      'jsontestsupport.'
                                      'CucumberTestResultArchiver')
-    filepath = data.get('results', None)
-    if filepath is None:
-        raise MissingAttributeError('results')
-    XML.SubElement(cucumber_result, 'testResults').text = str(filepath)
+    cucumber_result.set('plugin', 'cucumber-testresult-plugin')
+
+    mappings = [
+        ('results', 'testResults', None),
+        ('ignore-bad-steps', 'ignoreBadSteps', False)
+    ]
+    helpers.convert_mapping_to_xml(
+        cucumber_result, data, mappings, fail_required=True)
 
 
 def xunit(registry, xml_parent, data):
