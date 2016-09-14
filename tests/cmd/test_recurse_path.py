@@ -25,11 +25,11 @@ def fake_os_walk(paths):
     return os_walk
 
 
-# Testing the utils module can sometimes result in the CacheStorage class
+# Testing the utils module can sometimes result in the JobCache class
 # attempting to create the cache directory multiple times as the tests
-# are run in parallel.  Stub out the CacheStorage to ensure that each
+# are run in parallel.  Stub out the JobCache to ensure that each
 # test can safely create the object without effect.
-@mock.patch('jenkins_jobs.builder.CacheStorage', mock.MagicMock)
+@mock.patch('jenkins_jobs.builder.JobCache', mock.MagicMock)
 class CmdRecursePath(testtools.TestCase):
 
     @mock.patch('jenkins_jobs.utils.os.walk')
