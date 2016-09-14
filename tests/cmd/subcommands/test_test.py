@@ -35,7 +35,8 @@ from tests.base import mock
 from tests.cmd.test_cmd import CmdTestsBase
 
 
-@mock.patch('jenkins_jobs.builder.Jenkins.get_plugins_info', mock.MagicMock)
+@mock.patch('jenkins_jobs.builder.JenkinsManager.get_plugins_info',
+            mock.MagicMock)
 class TestTests(CmdTestsBase):
 
     def test_non_existing_job(self):
@@ -183,7 +184,7 @@ class TestTests(CmdTestsBase):
 class TestJenkinsGetPluginInfoError(CmdTestsBase):
     """ This test class is used for testing the 'test' subcommand when we want
     to validate its behavior without mocking
-    jenkins_jobs.builder.Jenkins.get_plugins_info
+    jenkins_jobs.builder.JenkinsManager.get_plugins_info
     """
 
     @mock.patch('jenkins.Jenkins.get_plugins_info')
@@ -304,7 +305,8 @@ class MatchesDir(object):
         return None
 
 
-@mock.patch('jenkins_jobs.builder.Jenkins.get_plugins_info', mock.MagicMock)
+@mock.patch('jenkins_jobs.builder.JenkinsManager.get_plugins_info',
+            mock.MagicMock)
 class TestTestsMultiPath(CmdTestsBase):
 
     def setUp(self):

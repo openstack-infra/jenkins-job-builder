@@ -35,7 +35,7 @@ from jenkins_jobs.parallel import concurrent
 from jenkins_jobs import utils
 
 __all__ = [
-    "Jenkins"
+    "JenkinsManager"
 ]
 
 logger = logging.getLogger(__name__)
@@ -133,14 +133,26 @@ class CacheStorage(object):
                                    "exit: %s" % (self.cachefilename, e))
 
 
-class Jenkins(object):
-    def __init__(self, url, user, password, timeout=_DEFAULT_TIMEOUT):
+class JenkinsManager(object):
+
+    def __init__(self, jjb_config):
+        url = jjb_config.jenkins['url']
+        user = jjb_config.jenkins['user']
+        password = jjb_config.jenkins['password']
+        timeout = jjb_config.jenkins['timeout']
+
         if timeout != _DEFAULT_TIMEOUT:
             self.jenkins = jenkins.Jenkins(url, user, password, timeout)
         else:
             self.jenkins = jenkins.Jenkins(url, user, password)
+
+        self.cache = CacheStorage(jjb_config.jenkins['url'],
+                                  flush=jjb_config.builder['flush_cache'])
+
+        self._plugins_list = jjb_config.builder['plugins_info']
         self._jobs = None
         self._job_list = None
+        self._jjb_config = jjb_config
 
     @property
     def jobs(self):
@@ -181,13 +193,6 @@ class Jenkins(object):
             logger.info("Deleting jenkins job {0}".format(job_name))
             self.jenkins.delete_job(job_name)
 
-    def delete_all_jobs(self):
-        # execute a groovy script to delete all jobs is much faster than
-        # using the doDelete REST endpoint to delete one job at a time.
-        script = ('for(job in jenkins.model.Jenkins.theInstance.getAllItems())'
-                  '       { job.delete(); }')
-        self.jenkins.run_script(script)
-
     def get_plugins_info(self):
         """ Return a list of plugin_info dicts, one for each plugin on the
         Jenkins instance.
@@ -225,34 +230,21 @@ class Jenkins(object):
             pass
         return False
 
-
-class Builder(object):
-    def __init__(self, jjb_config):
-        self.jenkins = Jenkins(jjb_config.jenkins['url'],
-                               jjb_config.jenkins['user'],
-                               jjb_config.jenkins['password'],
-                               jjb_config.jenkins['timeout'])
-        self.cache = CacheStorage(jjb_config.jenkins['url'],
-                                  flush=jjb_config.builder['flush_cache'])
-        self._plugins_list = jjb_config.builder['plugins_info']
-
-        self.jjb_config = jjb_config
-
     @property
     def plugins_list(self):
         if self._plugins_list is None:
-            self._plugins_list = self.jenkins.get_plugins_info()
+            self._plugins_list = self.get_plugins_info()
         return self._plugins_list
 
     def delete_old_managed(self, keep=None):
-        jobs = self.jenkins.get_jobs()
+        jobs = self.get_jobs()
         deleted_jobs = 0
         for job in jobs:
             if job['name'] not in keep:
-                if self.jenkins.is_managed(job['name']):
+                if self.is_managed(job['name']):
                     logger.info("Removing obsolete jenkins job {0}"
                                 .format(job['name']))
-                    self.jenkins.delete_job(job['name'])
+                    self.delete_job(job['name'])
                     deleted_jobs += 1
                 else:
                     logger.info("Not deleting unmanaged jenkins job %s",
@@ -265,22 +257,24 @@ class Builder(object):
         if jobs is not None:
             logger.info("Removing jenkins job(s): %s" % ", ".join(jobs))
         for job in jobs:
-            self.jenkins.delete_job(job)
+            self.delete_job(job)
             if(self.cache.is_cached(job)):
                 self.cache.set(job, '')
         self.cache.save()
 
     def delete_all_jobs(self):
-        jobs = self.jenkins.get_jobs()
+        jobs = self.get_jobs()
         logger.info("Number of jobs to delete:  %d", len(jobs))
-        self.jenkins.delete_all_jobs()
+        script = ('for(job in jenkins.model.Jenkins.theInstance.getAllItems())'
+                  '       { job.delete(); }')
+        self.jenkins.run_script(script)
         # Need to clear the JJB cache after deletion
         self.cache.clear()
 
     def changed(self, job):
         md5 = job.md5()
 
-        changed = (self.jjb_config.builder['ignore_cache'] or
+        changed = (self._jjb_config.builder['ignore_cache'] or
                    self.cache.has_changed(job.name, md5))
         if not changed:
             logger.debug("'{0}' has not changed".format(job.name))
@@ -369,5 +363,5 @@ class Builder(object):
 
     @concurrent
     def parallel_update_job(self, job):
-        self.jenkins.update_job(job.name, job.output().decode('utf-8'))
+        self.update_job(job.name, job.output().decode('utf-8'))
         return (job.name, job.md5())

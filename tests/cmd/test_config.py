@@ -1,13 +1,16 @@
 import io
 import os
 
-from jenkins_jobs.cli import entry
 from mock import patch
 from tests.base import mock
 from tests.cmd.test_cmd import CmdTestsBase
 
+from jenkins_jobs.cli import entry
+from jenkins_jobs import builder
 
-@mock.patch('jenkins_jobs.builder.Jenkins.get_plugins_info', mock.MagicMock)
+
+@mock.patch('jenkins_jobs.builder.JenkinsManager.get_plugins_info',
+            mock.MagicMock)
 class TestConfigs(CmdTestsBase):
 
     global_conf = '/etc/jenkins_jobs/jenkins_jobs.ini'
@@ -107,3 +110,46 @@ class TestConfigs(CmdTestsBase):
         self.assertEqual(jjb_config.builder['flush_cache'], True)
         self.assertEqual(
             jjb_config.yamlparser['allow_empty_variables'], True)
+
+    @mock.patch('jenkins_jobs.cli.subcommand.update.JenkinsManager')
+    def test_update_timeout_not_set(self, jenkins_mock):
+        """Check that timeout is left unset
+
+        Test that the Jenkins object has the timeout set on it only when
+        provided via the config option.
+        """
+
+        path = os.path.join(self.fixtures_path, 'cmd-002.yaml')
+        args = ['--conf', self.default_config_file, 'update', path]
+
+        jenkins_mock.return_value.update_jobs.return_value = ([], 0)
+        self.execute_jenkins_jobs_with_args(args)
+
+        # validate that the JJBConfig used to initialize builder.Jenkins
+        # contains the expected timeout value.
+
+        jjb_config = jenkins_mock.call_args[0][0]
+        self.assertEquals(jjb_config.jenkins['timeout'],
+                          builder._DEFAULT_TIMEOUT)
+
+    @mock.patch('jenkins_jobs.cli.subcommand.update.JenkinsManager')
+    def test_update_timeout_set(self, jenkins_mock):
+        """Check that timeout is set correctly
+
+        Test that the Jenkins object has the timeout set on it only when
+        provided via the config option.
+        """
+
+        path = os.path.join(self.fixtures_path, 'cmd-002.yaml')
+        config_file = os.path.join(self.fixtures_path,
+                                   'non-default-timeout.ini')
+        args = ['--conf', config_file, 'update', path]
+
+        jenkins_mock.return_value.update_jobs.return_value = ([], 0)
+        self.execute_jenkins_jobs_with_args(args)
+
+        # validate that the JJBConfig used to initialize builder.Jenkins
+        # contains the expected timeout value.
+
+        jjb_config = jenkins_mock.call_args[0][0]
+        self.assertEquals(jjb_config.jenkins['timeout'], 0.2)
