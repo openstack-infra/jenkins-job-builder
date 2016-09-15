@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <xunit>
+    <xunit plugin="xunit">
       <types>
         <CTestType>
           <pattern>build/tests/reports/ctest.xml</pattern>
