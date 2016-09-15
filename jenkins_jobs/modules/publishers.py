@@ -1509,17 +1509,17 @@ def checkstyle(registry, xml_parent, data):
     The checkstyle component accepts a dictionary with the
     following values:
 
-    :arg str pattern: Report filename pattern (optional)
+    :arg str pattern: Report filename pattern (default '')
     :arg bool can-run-on-failed: Also runs for failed builds, instead of just
-      stable or unstable builds (default false)
+        stable or unstable builds (default false)
     :arg bool should-detect-modules: Determines if Ant or Maven modules should
-      be detected for all files that contain warnings (default false)
-    :arg int healthy: Sunny threshold (optional)
-    :arg int unhealthy: Stormy threshold (optional)
+        be detected for all files that contain warnings (default false)
+    :arg int healthy: Sunny threshold (default '')
+    :arg int unhealthy: Stormy threshold (default '')
     :arg str health-threshold: Threshold priority for health status
-      ('low', 'normal' or 'high', defaulted to 'low')
+        ('low', 'normal' or 'high') (default 'low')
     :arg dict thresholds: Mark build as failed or unstable if the number of
-      errors exceeds a threshold. (optional)
+        errors exceeds a threshold. (optional)
 
         :thresholds:
             * **unstable** (`dict`)
@@ -1541,19 +1541,19 @@ def checkstyle(registry, xml_parent, data):
                          * **new-high** (`int`)
                          * **new-normal** (`int`)
                          * **new-low** (`int`)
-    :arg str default-encoding: Encoding for parsing or showing files (optional)
+    :arg str default-encoding: Encoding for parsing or showing files
+        (default '')
     :arg bool do-not-resolve-relative-paths: (default false)
     :arg bool dont-compute-new: If set to false, computes new warnings based on
-      the reference build (default true)
+        the reference build (default true)
     :arg bool use-previous-build-as-reference: determines whether to always
         use the previous build as the reference build (default false)
     :arg bool use-stable-build-as-reference: The number of new warnings will be
-      calculated based on the last stable build, allowing reverts of unstable
-      builds where the number of warnings was decreased. (default false)
+        calculated based on the last stable build, allowing reverts of unstable
+        builds where the number of warnings was decreased. (default false)
     :arg bool use-delta-values: If set then the number of new warnings is
-      calculated by subtracting the total number of warnings of the current
-      build from the reference build.
-      (default false)
+        calculated by subtracting the total number of warnings of the current
+        build from the reference build. (default false)
 
     Example:
 
@@ -1574,9 +1574,10 @@ def checkstyle(registry, xml_parent, data):
                 data.setdefault(lookup[old_key], data[old_key])
                 del data[old_key]
 
-    xml_element = XML.SubElement(xml_parent,
-                                 'hudson.plugins.checkstyle.'
-                                 'CheckStylePublisher')
+    checkstyle = XML.SubElement(xml_parent,
+                                'hudson.plugins.checkstyle.'
+                                'CheckStylePublisher')
+    checkstyle.set('plugin', 'checkstyle')
 
     # Convert old style yaml to new style
     convert_settings({
@@ -1596,7 +1597,7 @@ def checkstyle(registry, xml_parent, data):
             'totalLow': 'total-low'
         }, threshold_data.get(threshold, {}))
 
-    helpers.build_trends_publisher('[CHECKSTYLE] ', xml_element, data)
+    helpers.build_trends_publisher('[CHECKSTYLE] ', checkstyle, data)
 
 
 def scp(registry, xml_parent, data):

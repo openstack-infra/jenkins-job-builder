@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <hudson.plugins.checkstyle.CheckStylePublisher>
+    <hudson.plugins.checkstyle.CheckStylePublisher plugin="checkstyle">
       <healthy>0</healthy>
       <unHealthy>100</unHealthy>
       <thresholdLimit>high</thresholdLimit>
