@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <org.jenkins.plugins.lockableresources.RequiredResourcesProperty>
+      <resourceNames>the-resource</resourceNames>
+      <resourceNamesVar/>
+      <resourceNumber>0</resourceNumber>
+      <labelName/>
+    </org.jenkins.plugins.lockableresources.RequiredResourcesProperty>
+  </properties>
+</project>

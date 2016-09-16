@@ -38,6 +38,7 @@ import xml.etree.ElementTree as XML
 from jenkins_jobs.errors import InvalidAttributeError
 from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.errors import MissingAttributeError
+from jenkins_jobs.errors import AttributeConflictError
 import jenkins_jobs.modules.base
 import jenkins_jobs.modules.helpers as helpers
 
@@ -803,6 +804,52 @@ def build_discarder(registry, xml_parent, data):
     adays.text = str(data.get('artifact-days-to-keep', -1))
     anum = XML.SubElement(strategy, 'artifactNumToKeep')
     anum.text = str(data.get('artifact-num-to-keep', -1))
+
+
+def lockable_resources(registry, xml_parent, data):
+    """yaml: lockable-resources
+    Requires the Jenkins :jenkins-wiki:`Lockable Resources Plugin
+    <Lockable+Resources+Plugin>`.
+
+    :arg str resources: List of required resources, space separated.
+        (required, mutual exclusive with label)
+    :arg str label: If you have created a pool of resources, i.e. a label,
+        you can take it into use here. The build will select the resource(s)
+        from the pool that includes all resources sharing the given label.
+        (required, mutual exclusive with resources)
+    :arg str var-name: Name for the Jenkins variable to store the reserved
+        resources in. Leave empty to disable. (default '')
+    :arg int number: Number of resources to request, empty value or 0 means
+        all. This is useful, if you have a pool of similar resources,
+        from which you want one or more to be reserved. (default 0)
+
+    Example:
+
+    .. literalinclude::
+        /../../tests/properties/fixtures/lockable_resources_minimal.yaml
+       :language: yaml
+
+    .. literalinclude::
+        /../../tests/properties/fixtures/lockable_resources_label.yaml
+       :language: yaml
+
+    .. literalinclude::
+        /../../tests/properties/fixtures/lockable_resources_full.yaml
+       :language: yaml
+    """
+    lockable_resources = XML.SubElement(
+        xml_parent,
+        'org.jenkins.plugins.lockableresources.RequiredResourcesProperty')
+    if data.get('resources') and data.get('label'):
+        raise AttributeConflictError('resources', ('label',))
+    mapping = [
+        ('resources', 'resourceNames', ''),
+        ('var-name', 'resourceNamesVar', ''),
+        ('number', 'resourceNumber', 0),
+        ('label', 'labelName', ''),
+    ]
+    helpers.convert_mapping_to_xml(
+        lockable_resources, data, mapping, fail_required=True)
 
 
 class Properties(jenkins_jobs.modules.base.Base):

@@ -1,0 +1,4 @@
+---
+properties:
+  - lockable-resources:
+      resources: "the-resource"
