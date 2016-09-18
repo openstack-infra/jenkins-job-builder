@@ -34,8 +34,8 @@ class DeleteSubCommand(base.BaseSubCommand):
         delete.add_argument(
             '-p', '--path',
             default=None,
-            help='''colon-separated list of paths to YAML files or
-            directories''')
+            help="colon-separated list of paths to YAML files "
+            "or directories")
 
     def execute(self, options, jjb_config):
         builder = JenkinsManager(jjb_config)

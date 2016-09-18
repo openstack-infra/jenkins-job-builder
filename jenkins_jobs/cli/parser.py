@@ -32,52 +32,51 @@ def create_parser():
     parser.add_argument(
         '--conf',
         dest='conf',
-        help='''configuration file''')
+        help="configuration file")
     parser.add_argument(
         '-l',
         '--log_level',
         dest='log_level',
         default='info',
-        help='''log level (default: %(default)s)''')
+        help="log level (default: %(default)s)")
     parser.add_argument(
         '--ignore-cache',
         action='store_true',
         dest='ignore_cache',
         default=None,
-        help='''ignore the cache and update the jobs anyhow (that will only
-        flush the specified jobs cache)''')
+        help="ignore the cache and update the jobs anyhow (that will "
+        "only flush the specified jobs cache)")
     parser.add_argument(
         '--flush-cache',
         action='store_true',
         dest='flush_cache',
         default=None,
-        help='''flush all the cache entries before updating''')
+        help="flush all the cache entries before updating")
     parser.add_argument(
         '--version',
         dest='version',
         action='version',
         version=__version__(),
-        help='''show version''')
+        help="show version")
     parser.add_argument(
         '--allow-empty-variables',
         action='store_true',
         dest='allow_empty_variables',
         default=None,
-        help='''Don\'t fail if any of the variables inside any string are
-        not defined, replace with empty string instead.''')
+        help="Don\'t fail if any of the variables inside any string are "
+        "not defined, replace with empty string instead.")
     parser.add_argument(
         '--user', '-u',
-        help='''The Jenkins user to use for authentication. This overrides
-        the user specified in the configuration file.''')
+        help="The Jenkins user to use for authentication. This overrides "
+        "the user specified in the configuration file.")
     parser.add_argument(
         '--password', '-p',
-        help='''Password or API token to use for authenticating towards
-        Jenkins. This overrides the password specified in the configuration
-        file.''')
+        help="Password or API token to use for authenticating towards Jenkins."
+        " This overrides the password specified in the configuration file.")
 
     subparser = parser.add_subparsers(
         dest='command',
-        help='''update, test or delete job''')
+        help="update, test or delete job")
 
     extension_manager = extension.ExtensionManager(
         namespace='jjb.cli.subcommands',

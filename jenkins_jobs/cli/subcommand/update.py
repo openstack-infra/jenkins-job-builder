@@ -35,8 +35,8 @@ class UpdateSubCommand(base.BaseSubCommand):
             'path',
             nargs='?',
             default=sys.stdin,
-            help='''colon-separated list of paths to YAML files or
-            directories''')
+            help="colon-separated list of paths to YAML files "
+            "or directories")
 
     def parse_arg_names(self, parser):
         parser.add_argument(
@@ -62,8 +62,8 @@ class UpdateSubCommand(base.BaseSubCommand):
             type=int,
             default=1,
             dest='n_workers',
-            help='''number of workers to use, 0 for autodetection and 1 for
-            just one worker.''')
+            help="number of workers to use, 0 for autodetection and 1 "
+            "for just one worker.")
 
     def _generate_xmljobs(self, options, jjb_config=None):
         builder = JenkinsManager(jjb_config)
