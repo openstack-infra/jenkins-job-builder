@@ -612,18 +612,18 @@ def repo(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Repo Plugin <Repo+Plugin>`.
 
     :arg str manifest-url: URL of the repo manifest (required)
-    :arg str manifest-branch: The branch of the manifest to use (default '')
+    :arg str manifest-branch: The branch of the manifest to use (optional)
     :arg str manifest-file: Initial manifest file to use when initialising
-        (default '')
+        (optional)
     :arg str manifest-group: Only retrieve those projects in the manifest
-        tagged with the provided group name (default '')
+        tagged with the provided group name (optional)
     :arg list(str) ignore-projects: a list of projects in which changes would
-        not be considered to trigger a build when pooling (default '')
+        not be considered to trigger a build when pooling (optional)
     :arg str destination-dir: Location relative to the workspace root to clone
-        under (default '')
-    :arg str repo-url: custom url to retrieve the repo application (default '')
+        under (optional)
+    :arg str repo-url: custom url to retrieve the repo application (optional)
     :arg str mirror-dir: Path to mirror directory to reference when
-        initialising (default '')
+        initialising (optional)
     :arg int jobs: Number of projects to fetch simultaneously (default 0)
     :arg int depth: Specify the depth in history to sync from the source. The
         default is to sync all of the history. Use 1 to just sync the most
@@ -643,7 +643,7 @@ def repo(registry, xml_parent, data):
     :arg bool show-all-changes: When this is checked --first-parent is no
         longer passed to git log when determining changesets (default false)
     :arg str local-manifest: Contents of .repo/local_manifest.xml, written
-        prior to calling sync (default '')
+        prior to calling sync (optional)
 
     Example:
 
@@ -656,12 +656,6 @@ def repo(registry, xml_parent, data):
     mapping = [
         # option, xml name, default value
         ('manifest-url', 'manifestRepositoryUrl', None),
-        ('manifest-branch', 'manifestBranch', ''),
-        ('manifest-file', 'manifestFile', ''),
-        ('manifest-group', 'manifestGroup', ''),
-        ('destination-dir', 'destinationDir', ''),
-        ('repo-url', 'repoUrl', ''),
-        ('mirror-dir', 'mirrorDir', ''),
         ('jobs', 'jobs', 0),
         ('depth', 'depth', 0),
         ('current-branch', 'currentBranch', True),
@@ -671,9 +665,20 @@ def repo(registry, xml_parent, data):
         ('no-tags', 'noTags', False),
         ('trace', 'trace', False),
         ('show-all-changes', 'showAllChanges', False),
-        ('local-manifest', 'localManifest', ''),
     ]
     convert_mapping_to_xml(scm, data, mapping, fail_required=True)
+
+    optional_mapping = [
+        # option, xml name, default value
+        ('manifest-branch', 'manifestBranch', None),
+        ('manifest-file', 'manifestFile', None),
+        ('manifest-group', 'manifestGroup', None),
+        ('destination-dir', 'destinationDir', None),
+        ('repo-url', 'repoUrl', None),
+        ('mirror-dir', 'mirrorDir', None),
+        ('local-manifest', 'localManifest', None),
+    ]
+    convert_mapping_to_xml(scm, data, optional_mapping, fail_required=False)
 
     # ignore-projects does not follow the same pattern of the other parameters,
     # so process it here:
