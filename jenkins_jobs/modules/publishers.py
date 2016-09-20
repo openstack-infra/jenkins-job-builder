@@ -1629,9 +1629,9 @@ def scp(registry, xml_parent, data):
 
         /home/jenkins/workspace/${JOB_NAME}
 
-    :arg str site: name of the scp site
-    :arg str target: destination directory
-    :arg str source: source path specifier
+    :arg str site: name of the scp site (required)
+    :arg str target: destination directory (required)
+    :arg str source: source path specifier (default '')
     :arg bool keep-hierarchy: keep the file hierarchy when uploading
       (default false)
     :arg bool copy-after-failure: copy files even if the job fails
@@ -1644,27 +1644,27 @@ def scp(registry, xml_parent, data):
     .. literalinclude:: /../../tests/publishers/fixtures/scp001.yaml
        :language: yaml
     """
-    site = data['site']
     scp = XML.SubElement(xml_parent,
                          'be.certipost.hudson.plugin.SCPRepositoryPublisher')
-    XML.SubElement(scp, 'siteName').text = site
+    scp.set('plugin', 'scp')
+
+    mappings = [
+        ('site', 'siteName', None),
+    ]
+    helpers.convert_mapping_to_xml(scp, data, mappings, fail_required=True)
+
     entries = XML.SubElement(scp, 'entries')
     for entry in data['files']:
         entry_e = XML.SubElement(entries, 'be.certipost.hudson.plugin.Entry')
-        XML.SubElement(entry_e, 'filePath').text = entry['target']
-        XML.SubElement(entry_e, 'sourceFile').text = entry.get('source', '')
-        if entry.get('keep-hierarchy', False):
-            XML.SubElement(entry_e, 'keepHierarchy').text = 'true'
-        else:
-            XML.SubElement(entry_e, 'keepHierarchy').text = 'false'
-        if entry.get('copy-console', False):
-            XML.SubElement(entry_e, 'copyConsoleLog').text = 'true'
-        else:
-            XML.SubElement(entry_e, 'copyConsoleLog').text = 'false'
-        if entry.get('copy-after-failure', False):
-            XML.SubElement(entry_e, 'copyAfterFailure').text = 'true'
-        else:
-            XML.SubElement(entry_e, 'copyAfterFailure').text = 'false'
+        mappings = [
+            ('target', 'filePath', None),
+            ('source', 'sourceFile', ''),
+            ('keep-hierarchy', 'keepHierarchy', False),
+            ('copy-console', 'copyConsoleLog', False),
+            ('copy-after-failure', 'copyAfterFailure', False),
+        ]
+        helpers.convert_mapping_to_xml(
+            entry_e, entry, mappings, fail_required=True)
 
 
 def ssh(registry, xml_parent, data):

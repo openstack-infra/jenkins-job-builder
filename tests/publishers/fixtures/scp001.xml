@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <be.certipost.hudson.plugin.SCPRepositoryPublisher>
+    <be.certipost.hudson.plugin.SCPRepositoryPublisher plugin="scp">
       <siteName>example.com</siteName>
       <entries>
         <be.certipost.hudson.plugin.Entry>
