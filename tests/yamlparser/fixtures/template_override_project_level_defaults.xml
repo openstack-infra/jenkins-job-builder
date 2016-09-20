@@ -57,7 +57,7 @@
   <scm class="hudson.scm.NullSCM"/>
   <builders/>
   <publishers>
-    <hudson.tasks.Mailer>
+    <hudson.tasks.Mailer plugin="mailer">
       <recipients>qa@example.com</recipients>
       <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
       <sendToIndividuals>false</sendToIndividuals>

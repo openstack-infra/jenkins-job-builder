@@ -1792,11 +1792,11 @@ def email(registry, xml_parent, data):
 
 
     :arg str recipients: Space separated list of recipient email addresses
-      (required)
+        (required)
     :arg bool notify-every-unstable-build: Send an email for every
-      unstable build (default true)
+        unstable build (default true)
     :arg bool send-to-individuals: Send an email to the individual
-      who broke the build (default false)
+        who broke the build (default false)
 
     Example:
 
@@ -1811,10 +1811,11 @@ def email(registry, xml_parent, data):
     # TODO: raise exception if this is applied to a maven job
     mailer = XML.SubElement(xml_parent,
                             'hudson.tasks.Mailer')
-    try:
-        XML.SubElement(mailer, 'recipients').text = data['recipients']
-    except KeyError as e:
-        raise MissingAttributeError(e)
+    mailer.set('plugin', 'mailer')
+    mapping = [
+        ('recipients', 'recipients', None)
+    ]
+    helpers.convert_mapping_to_xml(mailer, data, mapping, fail_required=True)
 
     # Note the logic reversal (included here to match the GUI
     if data.get('notify-every-unstable-build', True):
