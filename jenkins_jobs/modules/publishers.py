@@ -1070,13 +1070,11 @@ def junit(registry, xml_parent, data):
     :arg str results: results filename (required)
     :arg bool keep-long-stdio: Retain long standard output/error in test
         results (default true).
-    :arg bool allow-empty-results: Do not fail builds if no junit reports
-        are found (default false)
     :arg float health-scale-factor: Amplification factor to apply to test
         failures when computing the test result contribution to the build
         health score. (default 1.0)
-    :arg bool allow-empty-results: Do not fail the build if the JUnit files are
-        missing (default false).
+    :arg bool allow-empty-results: Do not fail the build on empty test results
+        (default false)
     :arg bool test-stability: Add historical information about test
         results stability (default false).
         Requires the Jenkins :jenkins-wiki:`Test stability Plugin
