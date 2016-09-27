@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.cppcheck.CppcheckPublisher plugin="cppcheck">
+      <cppcheckConfig>
+        <pattern>**/cppcheck.xml</pattern>
+        <ignoreBlankFiles>true</ignoreBlankFiles>
+        <allowNoReport>true</allowNoReport>
+        <configSeverityEvaluation>
+          <threshold>5</threshold>
+          <newThreshold>5</newThreshold>
+          <failureThreshold>7</failureThreshold>
+          <newFailureThreshold>3</newFailureThreshold>
+          <healthy>5</healthy>
+          <unHealthy>10</unHealthy>
+          <severityError>false</severityError>
+          <severityWarning>false</severityWarning>
+          <severityStyle>false</severityStyle>
+          <severityPerformance>false</severityPerformance>
+          <severityInformation>false</severityInformation>
+          <severityNoCategory>false</severityNoCategory>
+          <severityPortability>false</severityPortability>
+        </configSeverityEvaluation>
+        <configGraph>
+          <xSize>600</xSize>
+          <ySize>300</ySize>
+          <numBuildsInGraph>10</numBuildsInGraph>
+          <displayAllErrors>false</displayAllErrors>
+          <displayErrorSeverity>true</displayErrorSeverity>
+          <displayWarningSeverity>true</displayWarningSeverity>
+          <displayStyleSeverity>true</displayStyleSeverity>
+          <displayPerformanceSeverity>true</displayPerformanceSeverity>
+          <displayInformationSeverity>true</displayInformationSeverity>
+          <displayNoCategorySeverity>true</displayNoCategorySeverity>
+          <displayPortabilitySeverity>true</displayPortabilitySeverity>
+        </configGraph>
+      </cppcheckConfig>
+    </org.jenkinsci.plugins.cppcheck.CppcheckPublisher>
+  </publishers>
+</project>

@@ -2081,65 +2081,122 @@ def cppcheck(registry, xml_parent, data):
     Cppcheck result publisher
     Requires the Jenkins :jenkins-wiki:`Cppcheck Plugin <Cppcheck+Plugin>`.
 
-    :arg str pattern: file pattern for cppcheck xml report
+    :arg str pattern: File pattern for cppcheck xml report (required)
+    :arg bool ignoreblankfiles: Ignore blank files (default false)
+    :arg bool allow-no-report: Do not fail the build if the Cppcheck report
+        is not found (default false)
+    :arg dict thresholds:
+        :thresholds: Configure the build status and health. A build is
+            considered as unstable or failure if the new or total number
+            of issues exceeds the specified thresholds. The build health
+            is also determined by thresholds. If the actual number of issues
+            is between the provided thresholds, then the build health is
+            interpolated.
+        * **unstable** (`str`): Total number unstable threshold (default '')
+        * **new-unstable** (`str`): New number unstable threshold (default '')
+        * **failure** (`str`): Total number failure threshold (default '')
+        * **new-failure** (`str`): New number failure threshold (default '')
+        * **healthy** (`str`): Healthy threshold (default '')
+        * **unhealthy** (`str`): Unhealthy threshold (default '')
+    :arg dict severity:
+        :severity: Determines which severity of issues should be considered
+            when evaluating the build status and health, default all true
+        * **error** (`bool`): Severity error (default true)
+        * **warning** (`bool`): Severity warning (default true)
+        * **style** (`bool`): Severity style (default true)
+        * **performance** (`bool`): Severity performance (default true)
+        * **information** (`bool`): Severity information (default true)
+        * **nocategory** (`bool`): Severity nocategory (default true)
+        * **portability** (`bool`): Severity portability (default true)
+    :arg dict graph:
+        :graph: Graph configuration
+        * **xysize** (`array`): Chart width and height (default [500, 200])
+        * **num-builds-in-graph** (`int`): Builds number in graph (default 0)
+    :arg dict display
+        :display: which errors to display, default only sum
+        * **sum** (`bool`): Display sum of all issues (default true)
+        * **error** (`bool`): Display errors (default false)
+        * **warning** (`bool`): Display warnings (default false)
+        * **style** (`bool`): Display style (default false)
+        * **performance** (`bool`): Display performance (default false)
+        * **information** (`bool`): Display information (default false)
+        * **nocategory** (`bool`): Display no category (default false)
+        * **portability** (`bool`): Display portability (default false)
 
-    for more optional parameters see the example
+    Minimal Example:
 
-    Example:
+    .. literalinclude::
+        /../../tests/publishers/fixtures/cppcheck-minimal.yaml
+       :language: yaml
 
-    .. literalinclude::  /../../tests/publishers/fixtures/cppcheck001.yaml
+    Full Example:
+    .. literalinclude::
+        /../../tests/publishers/fixtures/cppcheck-complete.yaml
        :language: yaml
     """
+
     cppextbase = XML.SubElement(xml_parent,
                                 'org.jenkinsci.plugins.cppcheck.'
                                 'CppcheckPublisher')
+    cppextbase.set('plugin', 'cppcheck')
     cppext = XML.SubElement(cppextbase, 'cppcheckConfig')
-    XML.SubElement(cppext, 'pattern').text = data['pattern']
-    XML.SubElement(cppext, 'ignoreBlankFiles').text = \
-        str(data.get('ignoreblankfiles', False)).lower()
+    mappings = [
+        ('pattern', 'pattern', None),
+        ('ignoreblankfiles', 'ignoreBlankFiles', False),
+        ('allow-no-report', 'allowNoReport', False)
+    ]
+    helpers.convert_mapping_to_xml(cppext, data, mappings, fail_required=True)
 
     csev = XML.SubElement(cppext, 'configSeverityEvaluation')
     thrsh = data.get('thresholds', {})
-    XML.SubElement(csev, 'threshold').text = str(thrsh.get('unstable', ''))
-    XML.SubElement(csev, 'newThreshold').text = \
-        str(thrsh.get('new-unstable', ''))
-    XML.SubElement(csev, 'failureThreshold').text = \
-        str(thrsh.get('failure', ''))
-    XML.SubElement(csev, 'newFailureThreshold').text = \
-        str(thrsh.get('new-failure', ''))
-    XML.SubElement(csev, 'healthy').text = str(thrsh.get('healthy', ''))
-    XML.SubElement(csev, 'unHealthy').text = str(thrsh.get('unhealthy', ''))
+    thrsh_mappings = [
+        ('unstable', 'threshold', ''),
+        ('new-unstable', 'newThreshold', ''),
+        ('failure', 'failureThreshold', ''),
+        ('new-failure', 'newFailureThreshold', ''),
+        ('healthy', 'healthy', ''),
+        ('unhealthy', 'unHealthy', '')
+    ]
+    helpers.convert_mapping_to_xml(
+        csev, thrsh, thrsh_mappings, fail_required=True)
 
     sev = thrsh.get('severity', {})
-    XML.SubElement(csev, 'severityError').text = \
-        str(sev.get('error', True)).lower()
-    XML.SubElement(csev, 'severityWarning').text = \
-        str(sev.get('warning', True)).lower()
-    XML.SubElement(csev, 'severityStyle').text = \
-        str(sev.get('style', True)).lower()
-    XML.SubElement(csev, 'severityPerformance').text = \
-        str(sev.get('performance', True)).lower()
-    XML.SubElement(csev, 'severityInformation').text = \
-        str(sev.get('information', True)).lower()
+    sev_mappings = [
+        ('error', 'severityError', True),
+        ('warning', 'severityWarning', True),
+        ('style', 'severityStyle', True),
+        ('performance', 'severityPerformance', True),
+        ('information', 'severityInformation', True),
+        ('nocategory', 'severityNoCategory', True),
+        ('portability', 'severityPortability', True)
+    ]
+    helpers.convert_mapping_to_xml(
+        csev, sev, sev_mappings, fail_required=True)
 
     graph = data.get('graph', {})
     cgraph = XML.SubElement(cppext, 'configGraph')
     x, y = graph.get('xysize', [500, 200])
     XML.SubElement(cgraph, 'xSize').text = str(x)
     XML.SubElement(cgraph, 'ySize').text = str(y)
+    graph_mapping = [
+        ('num-builds-in-graph', 'numBuildsInGraph', 0)
+    ]
+    helpers.convert_mapping_to_xml(
+        cgraph, graph, graph_mapping, fail_required=True)
+
     gdisplay = graph.get('display', {})
-    XML.SubElement(cgraph, 'displayAllErrors').text = \
-        str(gdisplay.get('sum', True)).lower()
-    XML.SubElement(cgraph, 'displayErrorSeverity').text = \
-        str(gdisplay.get('error', False)).lower()
-    XML.SubElement(cgraph, 'displayWarningSeverity').text = \
-        str(gdisplay.get('warning', False)).lower()
-    XML.SubElement(cgraph, 'displayStyleSeverity').text = \
-        str(gdisplay.get('style', False)).lower()
-    XML.SubElement(cgraph, 'displayPerformanceSeverity').text = \
-        str(gdisplay.get('performance', False)).lower()
-    XML.SubElement(cgraph, 'displayInformationSeverity').text = \
-        str(gdisplay.get('information', False)).lower()
+    gdisplay_mappings = [
+        ('sum', 'displayAllErrors', True),
+        ('error', 'displayErrorSeverity', False),
+        ('warning', 'displayWarningSeverity', False),
+        ('style', 'displayStyleSeverity', False),
+        ('performance', 'displayPerformanceSeverity', False),
+        ('information', 'displayInformationSeverity', False),
+        ('nocategory', 'displayNoCategorySeverity', False),
+        ('portability', 'displayPortabilitySeverity', False)
+    ]
+    helpers.convert_mapping_to_xml(
+        cgraph, gdisplay, gdisplay_mappings, fail_required=True)
 
 
 def logparser(registry, xml_parent, data):

@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <org.jenkinsci.plugins.cppcheck.CppcheckPublisher>
+    <org.jenkinsci.plugins.cppcheck.CppcheckPublisher plugin="cppcheck">
       <cppcheckConfig>
         <pattern>**/cppcheck.xml</pattern>
         <ignoreBlankFiles>false</ignoreBlankFiles>
+        <allowNoReport>false</allowNoReport>
         <configSeverityEvaluation>
-          <threshold>5</threshold>
-          <newThreshold>5</newThreshold>
-          <failureThreshold>7</failureThreshold>
-          <newFailureThreshold>3</newFailureThreshold>
+          <threshold/>
+          <newThreshold/>
+          <failureThreshold/>
+          <newFailureThreshold/>
           <healthy/>
           <unHealthy/>
           <severityError>true</severityError>
           <severityWarning>true</severityWarning>
           <severityStyle>true</severityStyle>
           <severityPerformance>true</severityPerformance>
-          <severityInformation>false</severityInformation>
+          <severityInformation>true</severityInformation>
+          <severityNoCategory>true</severityNoCategory>
+          <severityPortability>true</severityPortability>
         </configSeverityEvaluation>
         <configGraph>
           <xSize>500</xSize>
           <ySize>200</ySize>
-          <displayAllErrors>false</displayAllErrors>
-          <displayErrorSeverity>true</displayErrorSeverity>
+          <numBuildsInGraph>0</numBuildsInGraph>
+          <displayAllErrors>true</displayAllErrors>
+          <displayErrorSeverity>false</displayErrorSeverity>
           <displayWarningSeverity>false</displayWarningSeverity>
           <displayStyleSeverity>false</displayStyleSeverity>
           <displayPerformanceSeverity>false</displayPerformanceSeverity>
           <displayInformationSeverity>false</displayInformationSeverity>
+          <displayNoCategorySeverity>false</displayNoCategorySeverity>
+          <displayPortabilitySeverity>false</displayPortabilitySeverity>
         </configGraph>
       </cppcheckConfig>
     </org.jenkinsci.plugins.cppcheck.CppcheckPublisher>
