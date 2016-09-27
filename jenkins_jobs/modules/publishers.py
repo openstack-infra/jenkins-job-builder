@@ -1849,14 +1849,14 @@ def base_email_ext(registry, xml_parent, data, ttype):
     XML.SubElement(email, 'subject').text = '$PROJECT_DEFAULT_SUBJECT'
     XML.SubElement(email, 'body').text = '$PROJECT_DEFAULT_CONTENT'
     if 'send-to' in data:
-        XML.SubElement(email, 'sendToDevelopers').text = \
-            str('developers' in data['send-to']).lower()
-        XML.SubElement(email, 'sendToRequester').text = \
-            str('requester' in data['send-to']).lower()
-        XML.SubElement(email, 'includeCulprits').text = \
-            str('culprits' in data['send-to']).lower()
-        XML.SubElement(email, 'sendToRecipientList').text = \
-            str('recipients' in data['send-to']).lower()
+        XML.SubElement(email, 'sendToDevelopers').text = str(
+            'developers' in data['send-to']).lower()
+        XML.SubElement(email, 'sendToRequester').text = str(
+            'requester' in data['send-to']).lower()
+        XML.SubElement(email, 'includeCulprits').text = str(
+            'culprits' in data['send-to']).lower()
+        XML.SubElement(email, 'sendToRecipientList').text = str(
+            'recipients' in data['send-to']).lower()
     else:
         XML.SubElement(email, 'sendToRequester').text = 'false'
         XML.SubElement(email, 'sendToDevelopers').text = 'false'
@@ -1876,20 +1876,24 @@ def email_ext(registry, xml_parent, data):
         be printed to the build log saying that the publisher is disabled.
         (default false)
     :arg str recipients: Comma separated list of recipient email addresses
+        (default '$DEFAULT_RECIPIENTS')
     :arg str reply-to: Comma separated list of email addresses that should be
-        in the Reply-To header for this project (default $DEFAULT_REPLYTO)
+        in the Reply-To header for this project (default '$DEFAULT_REPLYTO')
     :arg str content-type: The content type of the emails sent. If not set, the
         Jenkins plugin uses the value set on the main configuration page.
         Possible values: 'html', 'text', 'both-html-text' or 'default'
         (default 'default')
     :arg str subject: Subject for the email, can include variables like
         ${BUILD_NUMBER} or even groovy or javascript code
+        (default '$DEFAULT_SUBJECT')
     :arg str body: Content for the body of the email, can include variables
         like ${BUILD_NUMBER}, but the real magic is using groovy or
         javascript to hook into the Jenkins API itself
+        (default '$DEFAULT_CONTENT')
     :arg bool attach-build-log: Include build log in the email (default false)
     :arg bool compress-log: Compress build log in the email (default false)
-    :arg str attachments: pattern of files to include as attachment (optional)
+    :arg str attachments: pattern of files to include as attachment
+         (default '')
     :arg bool always: Send an email for every result (default false)
     :arg bool unstable: Send an email for an unstable result (default false)
     :arg bool first-failure: Send an email for just the first failure
@@ -1982,26 +1986,21 @@ def email_ext(registry, xml_parent, data):
                                    % ', '.join(content_type_mime.keys()))
     XML.SubElement(emailext, 'contentType').text = content_type_mime[ctype]
 
-    XML.SubElement(emailext, 'defaultSubject').text = data.get(
-        'subject', '$DEFAULT_SUBJECT')
-    XML.SubElement(emailext, 'defaultContent').text = data.get(
-        'body', '$DEFAULT_CONTENT')
-    XML.SubElement(emailext, 'attachmentsPattern').text = data.get(
-        'attachments', '')
-    XML.SubElement(emailext, 'presendScript').text = data.get(
-        'presend-script', '')
-    XML.SubElement(emailext, 'postsendScript').text = data.get(
-        'postsend-script', '')
-    XML.SubElement(emailext, 'attachBuildLog').text = str(data.get(
-        'attach-build-log', False)).lower()
-    XML.SubElement(emailext, 'compressBuildLog').text = str(data.get(
-        'compress-log', False)).lower()
-    XML.SubElement(emailext, 'saveOutput').text = str(data.get(
-        'save-output', False)).lower()
-    XML.SubElement(emailext, 'disabled').text = str(data.get(
-        'disable-publisher', False)).lower()
-    XML.SubElement(emailext, 'replyTo').text = data.get('reply-to',
-                                                        '$DEFAULT_REPLYTO')
+    mappings = [
+        ('subject', 'defaultSubject', '$DEFAULT_SUBJECT'),
+        ('body', 'defaultContent', '$DEFAULT_CONTENT'),
+        ('attachments', 'attachmentsPattern', ''),
+        ('presend-script', 'presendScript', ''),
+        ('postsend-script', 'postsendScript', ''),
+        ('attach-build-log', 'attachBuildLog', False),
+        ('compress-log', 'compressBuildLog', False),
+        ('save-output', 'saveOutput', False),
+        ('disable-publisher', 'disabled', False),
+        ('reply-to', 'replyTo', '$DEFAULT_REPLYTO'),
+    ]
+    helpers.convert_mapping_to_xml(
+        emailext, data, mappings, fail_required=True)
+
     matrix_dict = {'both': 'BOTH',
                    'only-configurations': 'ONLY_CONFIGURATIONS',
                    'only-parent': 'ONLY_PARENT'}
@@ -2012,8 +2011,8 @@ def email_ext(registry, xml_parent, data):
             raise JenkinsJobsException("matrix-trigger entered is not valid, "
                                        "must be one of: %s" %
                                        ", ".join(matrix_dict.keys()))
-        XML.SubElement(emailext, 'matrixTriggerMode').text = \
-            matrix_dict.get(matrix_trigger)
+        XML.SubElement(emailext, 'matrixTriggerMode').text = matrix_dict.get(
+            matrix_trigger)
 
 
 def fingerprint(registry, xml_parent, data):
