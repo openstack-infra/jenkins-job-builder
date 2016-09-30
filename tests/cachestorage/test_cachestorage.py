@@ -14,14 +14,13 @@
 # under the License.
 
 import os
-import testtools
 
 import jenkins_jobs
-from tests.base import LoggingFixture
+from tests import base
 from tests.base import mock
 
 
-class TestCaseJobCache(LoggingFixture, testtools.TestCase):
+class TestCaseJobCache(base.BaseTestCase):
 
     @mock.patch('jenkins_jobs.builder.JobCache.get_cache_dir',
                 lambda x: '/bad/file')

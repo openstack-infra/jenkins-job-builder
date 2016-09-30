@@ -15,20 +15,16 @@
 
 import os
 
-from testscenarios.testcase import TestWithScenarios
 from testtools import ExpectedException
-from testtools import TestCase
 
 from jenkins_jobs.errors import JenkinsJobsException
-from tests.base import get_scenarios
+from tests import base
 from tests.base import mock
-from tests.base import SingleJobTestCase
 
 
-class TestCaseModuleDuplicates(TestWithScenarios,
-                               SingleJobTestCase, TestCase):
+class TestCaseModuleDuplicates(base.SingleJobTestCase):
     fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
-    scenarios = get_scenarios(fixtures_path)
+    scenarios = base.get_scenarios(fixtures_path)
 
     @mock.patch('jenkins_jobs.builder.logger', autospec=True)
     def test_yaml_snippet(self, mock_logger):

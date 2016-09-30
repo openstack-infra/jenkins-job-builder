@@ -30,6 +30,7 @@ import fixtures
 from six.moves import StringIO
 import testtools
 from testtools.content import text_content
+import testscenarios
 from yaml import safe_dump
 
 from jenkins_jobs.config import JJBConfig
@@ -100,21 +101,16 @@ def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml',
     return scenarios
 
 
-class LoggingFixture(object):
-
-    def setUp(self):
-
-        super(LoggingFixture, self).setUp()
-        self.useFixture(fixtures.FakeLogger(level=logging.DEBUG))
-
-
-class BaseTestCase(LoggingFixture):
-    scenarios = []
-    fixtures_path = None
+class BaseTestCase(testtools.TestCase):
 
     # TestCase settings:
     maxDiff = None      # always dump text difference
     longMessage = True  # keep normal error message when providing our
+
+    def setUp(self):
+
+        super(BaseTestCase, self).setUp()
+        self.useFixture(fixtures.FakeLogger(level=logging.DEBUG))
 
     def _read_utf8_content(self):
         # if None assume empty file
@@ -136,6 +132,12 @@ class BaseTestCase(LoggingFixture):
         jjb_config.validate()
 
         return jjb_config
+
+
+class BaseScenariosTestCase(testscenarios.TestWithScenarios, BaseTestCase):
+
+    scenarios = []
+    fixtures_path = None
 
     def test_yaml_snippet(self):
         if not self.in_filename:
@@ -192,7 +194,8 @@ class BaseTestCase(LoggingFixture):
         )
 
 
-class SingleJobTestCase(BaseTestCase):
+class SingleJobTestCase(BaseScenariosTestCase):
+
     def test_yaml_snippet(self):
         config = self._get_config()
 
@@ -223,7 +226,7 @@ class SingleJobTestCase(BaseTestCase):
         )
 
 
-class JsonTestCase(BaseTestCase):
+class JsonTestCase(BaseScenariosTestCase):
 
     def test_yaml_snippet(self):
         expected_json = self._read_utf8_content()
@@ -240,7 +243,7 @@ class JsonTestCase(BaseTestCase):
         )
 
 
-class YamlTestCase(BaseTestCase):
+class YamlTestCase(BaseScenariosTestCase):
 
     def test_yaml_snippet(self):
         expected_yaml = self._read_utf8_content()

@@ -17,14 +17,9 @@
 
 import os
 
-from testscenarios.testcase import TestWithScenarios
-from testtools import TestCase
-
-from tests.base import get_scenarios
-from tests.base import SingleJobTestCase
+from tests import base
 
 
-class TestCaseModuleJsonParser(TestWithScenarios,
-                               SingleJobTestCase, TestCase):
+class TestCaseModuleJsonParser(base.SingleJobTestCase):
     fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
-    scenarios = get_scenarios(fixtures_path, in_ext='json', out_ext='xml')
+    scenarios = base.get_scenarios(fixtures_path, in_ext='json', out_ext='xml')

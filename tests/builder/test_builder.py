@@ -16,14 +16,12 @@
 
 from jenkins_jobs.config import JJBConfig
 import jenkins_jobs.builder
-from tests.base import LoggingFixture
+from tests import base
 from tests.base import mock
-
-from testtools import TestCase
 
 
 @mock.patch('jenkins_jobs.builder.JobCache', mock.MagicMock)
-class TestCaseTestBuilder(LoggingFixture, TestCase):
+class TestCaseTestBuilder(base.BaseTestCase):
     def setUp(self):
         super(TestCaseTestBuilder, self).setUp()
         self.jjb_config = JJBConfig()

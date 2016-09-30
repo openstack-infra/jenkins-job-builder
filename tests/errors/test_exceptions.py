@@ -1,8 +1,7 @@
 from testtools import ExpectedException
-from testtools import TestCase
 
 from jenkins_jobs import errors
-from tests.base import LoggingFixture
+from tests import base
 
 
 def dispatch(exc, *args):
@@ -22,7 +21,7 @@ def gen_xml(exc, *args):
     raise exc(*args)
 
 
-class TestInvalidAttributeError(LoggingFixture, TestCase):
+class TestInvalidAttributeError(base.BaseTestCase):
 
     def test_no_valid_values(self):
         # When given no valid values, InvalidAttributeError simply displays a
@@ -49,7 +48,7 @@ class TestInvalidAttributeError(LoggingFixture, TestCase):
                      valid_values)
 
 
-class TestMissingAttributeError(LoggingFixture, TestCase):
+class TestMissingAttributeError(base.BaseTestCase):
 
     def test_with_single_missing_attribute(self):
         # When passed a single missing attribute, display a message indicating
