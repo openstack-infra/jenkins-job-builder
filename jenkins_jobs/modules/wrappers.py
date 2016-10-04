@@ -975,7 +975,7 @@ def inject_passwords(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`EnvInject Plugin <EnvInject+Plugin>`.
 
     :arg bool global: inject global passwords to the job
-    :arg bool mask-password-params: mask passsword parameters
+    :arg bool mask-password-params: mask password parameters
     :arg list job-passwords: key value pair of job passwords
 
         :Parameter: * **name** (`str`) Name of password
