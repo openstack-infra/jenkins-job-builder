@@ -2018,10 +2018,11 @@ def email_ext(registry, xml_parent, data):
 
 def fingerprint(registry, xml_parent, data):
     """yaml: fingerprint
-    Fingerprint files to track them across builds
+    Fingerprint files to track them across builds. Requires the
+    Jenkins :jenkins-wiki:`Fingerprint Plugin <Fingerprint+Plugin>`.
 
     :arg str files: files to fingerprint, follows the @includes of Ant fileset
-        (default blank)
+        (default '')
     :arg bool record-artifacts: fingerprint all archived artifacts
         (default false)
 
@@ -2031,9 +2032,11 @@ def fingerprint(registry, xml_parent, data):
        :language: yaml
     """
     finger = XML.SubElement(xml_parent, 'hudson.tasks.Fingerprinter')
-    XML.SubElement(finger, 'targets').text = data.get('files', '')
-    XML.SubElement(finger, 'recordBuildArtifacts').text = str(data.get(
-        'record-artifacts', False)).lower()
+    mappings = [
+        ('files', 'targets', ''),
+        ('record-artifacts', 'recordBuildArtifacts', False)
+    ]
+    helpers.convert_mapping_to_xml(finger, data, mappings, fail_required=True)
 
 
 def aggregate_tests(registry, xml_parent, data):
