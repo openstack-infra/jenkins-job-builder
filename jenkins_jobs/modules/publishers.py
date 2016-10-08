@@ -2352,31 +2352,31 @@ def base_publish_over(xml_parent, data, console_prefix,
     XML.SubElement(transfersset, 'remoteDirectory').text = data['target']
     XML.SubElement(transfersset, 'sourceFiles').text = data['source']
     XML.SubElement(transfersset, 'excludes').text = data.get('excludes', '')
-    XML.SubElement(transfersset, 'removePrefix').text = \
-        data.get('remove-prefix', '')
-    XML.SubElement(transfersset, 'remoteDirectorySDF').text = \
-        str(data.get('target-is-date-format', False)).lower()
-    XML.SubElement(transfersset, 'flatten').text = \
-        str(data.get('flatten', False)).lower()
-    XML.SubElement(transfersset, 'cleanRemote').text = \
-        str(data.get('clean-remote', False)).lower()
+    XML.SubElement(transfersset, 'removePrefix').text = data.get(
+        'remove-prefix', '')
+    XML.SubElement(transfersset, 'remoteDirectorySDF').text = str(
+        data.get('target-is-date-format', False)).lower()
+    XML.SubElement(transfersset, 'flatten').text = str(
+        data.get('flatten', False)).lower()
+    XML.SubElement(transfersset, 'cleanRemote').text = str(
+        data.get('clean-remote', False)).lower()
 
     if 'command' in data:
         XML.SubElement(transfersset, 'execCommand').text = data['command']
     if 'timeout' in data:
         XML.SubElement(transfersset, 'execTimeout').text = str(data['timeout'])
     if 'use-pty' in data:
-        XML.SubElement(transfersset, 'usePty').text = \
-            str(data.get('use-pty', False)).lower()
+        XML.SubElement(transfersset, 'usePty').text = str(
+            data.get('use-pty', False)).lower()
 
     XML.SubElement(inner, 'useWorkspaceInPromotion').text = 'false'
     XML.SubElement(inner, 'usePromotionTimestamp').text = 'false'
 
     XML.SubElement(delegate, 'continueOnError').text = 'false'
-    XML.SubElement(delegate, 'failOnError').text = \
-        str(data.get('fail-on-error', False)).lower()
-    XML.SubElement(delegate, 'alwaysPublishFromMaster').text = \
-        str(data.get('always-publish-from-master', False)).lower()
+    XML.SubElement(delegate, 'failOnError').text = str(
+        data.get('fail-on-error', False)).lower()
+    XML.SubElement(delegate, 'alwaysPublishFromMaster').text = str(
+        data.get('always-publish-from-master', False)).lower()
     XML.SubElement(delegate, 'hostConfigurationAccess',
                    {'class': reference_plugin_tag, 'reference': '../..'})
 
