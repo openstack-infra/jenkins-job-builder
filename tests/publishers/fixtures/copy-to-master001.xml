@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <com.michelin.cio.hudson.plugins.copytoslave.CopyToMasterNotifier>
+    <com.michelin.cio.hudson.plugins.copytoslave.CopyToMasterNotifier plugin="copy-to-slave">
       <includes>file1,file2*.txt</includes>
       <excludes>file2bad.txt</excludes>
+      <runAfterResultFinalised>true</runAfterResultFinalised>
       <destinationFolder/>
     </com.michelin.cio.hudson.plugins.copytoslave.CopyToMasterNotifier>
   </publishers>
