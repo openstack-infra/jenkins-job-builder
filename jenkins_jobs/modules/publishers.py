@@ -2255,13 +2255,13 @@ def groovy_postbuild(registry, xml_parent, data):
     :arg str script: The groovy script to execute
     :arg list classpath: List of additional classpaths (>=1.6)
     :arg str on-failure: In case of script failure leave build as it is
-                         for "nothing" option, mark build as unstable
-                         for "unstable" and mark job as failure for "failed"
-                         (default is "nothing")
+        for "nothing" option, mark build as unstable
+        for "unstable" and mark job as failure for "failed"
+        (default 'nothing')
     :arg bool matrix-parent: Run script for matrix parent only (>=1.9)
-                             (default false)
+        (default false)
     :arg bool sandbox: Execute script inside of groovy sandbox (>=2.0)
-                       (default false)
+        (default false)
 
     Example:
 
