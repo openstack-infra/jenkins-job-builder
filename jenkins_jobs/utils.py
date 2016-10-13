@@ -19,6 +19,7 @@ import codecs
 import fnmatch
 import locale
 import os.path
+from six.moves import input
 
 
 def wrap_stream(stream, encoding='utf-8'):
