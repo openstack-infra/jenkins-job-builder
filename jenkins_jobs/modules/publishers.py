@@ -2177,8 +2177,10 @@ def copy_to_master(registry, xml_parent, data):
     :arg list includes: list of file patterns to copy
     :arg list excludes: list of file patterns to exclude
     :arg string destination: absolute path into which the files will be copied.
-                             If left blank they will be copied into the
-                             workspace of the current job
+        If left blank they will be copied into the workspace of the current job
+        (default '')
+    :arg bool run-after-result: If this is checked then copying files back to
+        master will not run until the build result is finalized.(default true)
 
     Example:
 
@@ -2186,14 +2188,17 @@ def copy_to_master(registry, xml_parent, data):
         /../../tests/publishers/fixtures/copy-to-master001.yaml
        :language: yaml
     """
-    p = 'com.michelin.cio.hudson.plugins.copytoslave.CopyToMasterNotifier'
-    cm = XML.SubElement(xml_parent, p)
+    cm = XML.SubElement(xml_parent, 'com.michelin.'
+                        'cio.hudson.plugins.copytoslave.CopyToMasterNotifier')
+    cm.set('plugin', 'copy-to-slave')
 
     XML.SubElement(cm, 'includes').text = ','.join(data.get('includes', ['']))
     XML.SubElement(cm, 'excludes').text = ','.join(data.get('excludes', ['']))
-
-    XML.SubElement(cm, 'destinationFolder').text = \
-        data.get('destination', '')
+    mappings = [
+        ('run-after-result', 'runAfterResultFinalised', True),
+        ('destination', 'destinationFolder', '')
+    ]
+    helpers.convert_mapping_to_xml(cm, data, mappings, fail_required=True)
 
     if data.get('destination', ''):
         XML.SubElement(cm, 'overrideDestinationFolder').text = 'true'

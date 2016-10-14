@@ -8,9 +8,10 @@
             <command>ls file*</command>
           </condition>
           <runner class="org.jenkins_ci.plugins.run_condition.BuildStepRunner$DontRun"/>
-          <publisher class="com.michelin.cio.hudson.plugins.copytoslave.CopyToMasterNotifier">
+          <publisher class="com.michelin.cio.hudson.plugins.copytoslave.CopyToMasterNotifier" plugin="copy-to-slave">
             <includes>file1,file2*.txt</includes>
             <excludes>file2bad.txt</excludes>
+            <runAfterResultFinalised>true</runAfterResultFinalised>
             <destinationFolder/>
           </publisher>
         </org.jenkins__ci.plugins.flexible__publish.ConditionalPublisher>
