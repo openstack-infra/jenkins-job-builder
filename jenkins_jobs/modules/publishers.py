@@ -2389,19 +2389,19 @@ def cifs(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Publish over CIFS Plugin
     <Publish+Over+CIFS+Plugin>`.
 
-    :arg str site: name of the cifs site/share
-    :arg str target: destination directory
+    :arg str site: name of the cifs site/share (required)
+    :arg str target: destination directory (required)
     :arg bool target-is-date-format: whether target is a date format. If true,
-      raw text should be quoted (default false)
+        raw text should be quoted (default false)
     :arg bool clean-remote: should the remote directory be deleted before
-      transferring files (default false)
-    :arg str source: source path specifier
-    :arg str excludes: excluded file pattern (optional)
+        transferring files (default false)
+    :arg str source: source path specifier (required)
+    :arg str excludes: excluded file pattern (default '')
     :arg str remove-prefix: prefix to remove from uploaded file paths
-      (optional)
+        (default '')
     :arg bool fail-on-error: fail the build if an error occurs (default false).
     :arg bool flatten: only create files on the server, don't create
-      directories (default false).
+        directories (default false).
 
     Example:
 
@@ -2413,8 +2413,8 @@ def cifs(registry, xml_parent, data):
     plugin_tag = 'jenkins.plugins.publish__over__cifs.CifsPublisherPlugin'
     publisher_tag = 'jenkins.plugins.publish__over__cifs.CifsPublisher'
     transfer_tag = 'jenkins.plugins.publish__over__cifs.CifsTransfer'
-    plugin_reference_tag = 'jenkins.plugins.publish_over_cifs.'    \
-        'CifsPublisherPlugin'
+    plugin_reference_tag = ('jenkins.plugins.publish_over_cifs.'
+                            'CifsPublisherPlugin')
     base_publish_over(xml_parent,
                       data,
                       console_prefix,
