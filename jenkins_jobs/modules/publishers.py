@@ -2447,25 +2447,27 @@ def sonar(registry, xml_parent, data):
         Analyzing+with+SonarQube+Scanner+for+Jenkins>`_
 
     :arg str jdk: JDK to use (inherited from the job if omitted). (optional)
-    :arg str branch: branch onto which the analysis will be posted (optional)
-    :arg str language: source code language (optional)
+    :arg str branch: branch onto which the analysis will be posted (default '')
+    :arg str language: source code language (default '')
     :arg str root-pom: Root POM (default 'pom.xml')
     :arg bool private-maven-repo: If true, use private Maven repository.
-      (default false)
-    :arg str maven-opts: options given to maven (optional)
-    :arg str additional-properties: sonar analysis parameters (optional)
+        (default false)
+    :arg str maven-opts: options given to maven (default '')
+    :arg str additional-properties: sonar analysis parameters (default '')
     :arg dict skip-global-triggers:
         :Triggers: * **skip-when-scm-change** (`bool`): skip analysis when
-                     build triggered by scm
+                     build triggered by scm (default false)
                    * **skip-when-upstream-build** (`bool`): skip analysis when
-                     build triggered by an upstream build
+                     build triggered by an upstream build (default false)
                    * **skip-when-envvar-defined** (`str`): skip analysis when
                      the specified environment variable is set to true
+                     (default '')
     :arg str settings: Path to use as user settings.xml. It is possible to
-      provide a ConfigFileProvider settings file, see Example below. (optional)
+        provide a ConfigFileProvider settings file, see Example below.
+        (optional)
     :arg str global-settings: Path to use as global settings.xml. It is
-      possible to provide a ConfigFileProvider settings file, see Example
-      below. (optional)
+        possible to provide a ConfigFileProvider settings file, see Example
+        below. (optional)
 
     Requires the Jenkins :jenkins-wiki:`Config File Provider Plugin
     <Config+File+Provider+Plugin>`
@@ -2474,31 +2476,43 @@ def sonar(registry, xml_parent, data):
     This publisher supports the post-build action exposed by the Jenkins
     Sonar Plugin, which is triggering a Sonar Analysis with Maven.
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/sonar001.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/sonar-minimal.yaml
+       :language: yaml
+
+    Full Example:
+    .. literalinclude:: /../../tests/publishers/fixtures/sonar-complete.yaml
        :language: yaml
     """
+
     sonar = XML.SubElement(xml_parent, 'hudson.plugins.sonar.SonarPublisher')
+    sonar.set('plugin', 'sonar')
+
     if 'jdk' in data:
         XML.SubElement(sonar, 'jdk').text = data['jdk']
-    XML.SubElement(sonar, 'branch').text = data.get('branch', '')
-    XML.SubElement(sonar, 'language').text = data.get('language', '')
-    XML.SubElement(sonar, 'rootPom').text = data.get('root-pom', 'pom.xml')
-    XML.SubElement(sonar, 'usePrivateRepository').text = str(
-        data.get('private-maven-repo', False)).lower()
-    XML.SubElement(sonar, 'mavenOpts').text = data.get('maven-opts', '')
-    XML.SubElement(sonar, 'jobAdditionalProperties').text = \
-        data.get('additional-properties', '')
+
+    mappings = [
+        ('branch', 'branch', ''),
+        ('language', 'language', ''),
+        ('root-pom', 'rootPom', 'pom.xml'),
+        ('private-maven-repo', 'usePrivateRepository', False),
+        ('maven-opts', 'mavenOpts', ''),
+        ('additional-properties', 'jobAdditionalProperties', '')
+    ]
+    helpers.convert_mapping_to_xml(sonar, data, mappings, fail_required=True)
+
     if 'skip-global-triggers' in data:
         data_triggers = data['skip-global-triggers']
         triggers = XML.SubElement(sonar, 'triggers')
-        XML.SubElement(triggers, 'skipScmCause').text =   \
-            str(data_triggers.get('skip-when-scm-change', False)).lower()
-        XML.SubElement(triggers, 'skipUpstreamCause').text =  \
-            str(data_triggers.get('skip-when-upstream-build', False)).lower()
-        XML.SubElement(triggers, 'envVar').text =  \
-            data_triggers.get('skip-when-envvar-defined', '')
+        triggers_mappings = [
+            ('skip-when-scm-change', 'skipScmCause', False),
+            ('skip-when-upstream-build', 'skipUpstreamCause', False),
+            ('skip-when-envvar-defined', 'envVar', '')
+        ]
+        helpers.convert_mapping_to_xml(
+            triggers, data_triggers, triggers_mappings, fail_required=True)
+
     helpers.config_file_provider_settings(sonar, data)
 
 

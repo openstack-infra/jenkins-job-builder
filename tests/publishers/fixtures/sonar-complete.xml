@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <hudson.plugins.sonar.SonarPublisher>
+    <hudson.plugins.sonar.SonarPublisher plugin="sonar">
       <jdk>MyJdk</jdk>
       <branch>myBranch</branch>
       <language>java</language>
