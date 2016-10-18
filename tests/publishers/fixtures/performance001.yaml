@@ -1,7 +1,0 @@
-publishers:
-  - performance:
-      failed-threshold: 85
-      unstable-threshold: -1
-      report:
-        - jmeter: "/special/file.jtl"
-        - junit: "/special/file.xml"

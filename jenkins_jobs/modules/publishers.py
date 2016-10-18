@@ -28,7 +28,6 @@ the build is complete.
 import logging
 import pkg_resources
 import random
-import sys
 import xml.etree.ElementTree as XML
 
 import six
@@ -2529,65 +2528,127 @@ def performance(registry, xml_parent, data):
     <Performance+Plugin>`.
 
     :arg int failed-threshold: Specify the error percentage threshold that
-                               set the build failed. A negative value means
-                               don't use this threshold (default 0)
+        set the build failed. A negative value means don't use this threshold
+        (default 0)
     :arg int unstable-threshold: Specify the error percentage threshold that
-                                 set the build unstable. A negative value means
-                                 don't use this threshold (default 0)
+        set the build unstable. A negative value means don't use this threshold
+        (default 0)
+    :arg str unstable-response-time-threshold: Average response time threshold
+        (default '')
+    :arg float failed-threshold-positive: Maximum failed percentage for build
+        comparison (default 0.0)
+    :arg float failed-threshold-negative: Minimum failed percentage for build
+        comparison (default 0.0)
+    :arg float unstable-threshold-positive: Maximum unstable percentage for
+        build comparison (default 0.0)
+    :arg float unstable-threshold-negative: Minimum unstable percentage for
+        build comparison (default 0.0)
+    :arg int nth-build-number: Build number for build comparison (default 0)
+    :arg bool mode-relative-thresholds: Relative threshold mode (default false)
+    :arg str config-type: Compare based on (default 'ART')
+
+        :config-type values:
+          * **ART** -- Average Response Time
+          * **MRT** -- Median Response Time
+          * **PRT** -- Percentile Response Time
+
+    :arg bool mode-of-threshold: Mode of threshold, true for relative threshold
+        and false for error threshold (default false)
+    :arg bool fail-build: Fail build when result files are not present
+        (default false)
+    :arg bool compare-build-previous: Compare with previous build
+        (default false)
+    :arg bool mode-performance-per-test-case: Performance Per Test Case Mode
+        (default true)
+    :arg bool mode-thoughput: Show Throughput Chart (default false)
+
     :arg dict report:
 
-       :(jmeter or junit): (`dict` or `str`): Specify a custom report file
+        :(jmeter or junit): (`dict` or `str`): Specify a custom report file
          (optional; jmeter default \**/*.jtl, junit default **/TEST-\*.xml)
 
-    Examples:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/performance001.yaml
+    .. literalinclude::
+       /../../tests/publishers/fixtures/performance-minimal.yaml
        :language: yaml
 
-    .. literalinclude:: /../../tests/publishers/fixtures/performance002.yaml
-       :language: yaml
+    Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/performance003.yaml
+    .. literalinclude::
+       /../../tests/publishers/fixtures/performance-complete.yaml
        :language: yaml
     """
-    logger = logging.getLogger(__name__)
-
     perf = XML.SubElement(xml_parent, 'hudson.plugins.performance.'
                                       'PerformancePublisher')
-    XML.SubElement(perf, 'errorFailedThreshold').text = str(data.get(
-        'failed-threshold', 0))
-    XML.SubElement(perf, 'errorUnstableThreshold').text = str(data.get(
-        'unstable-threshold', 0))
+    perf.set('plugin', 'performance')
+    types = ['ART', 'MRT', 'PRT']
+    mappings = [
+        ('failed-threshold', 'errorFailedThreshold', 0),
+        ('unstable-threshold', 'errorUnstableThreshold', 0),
+        ('unstable-response-time-threshold',
+         'errorUnstableResponseTimeThreshold',
+         ''),
+        ('failed-threshold-positive',
+         'relativeFailedThresholdPositive',
+         '0.0'),
+        ('failed-threshold-negative',
+         'relativeFailedThresholdNegative',
+         '0.0'),
+        ('unstable-threshold-positive',
+         'relativeUnstableThresholdPositive',
+         '0.0'),
+        ('unstable-threshold-negative',
+         'relativeUnstableThresholdNegative',
+         '0.0'),
+        ('nth-build-number', 'nthBuildNumber', 0),
+        ('mode-relative-thresholds', 'modeRelativeThresholds', False),
+        ('config-type', 'configType', 'ART', types),
+        ('mode-of-threshold', 'modeOfThreshold', False),
+        ('fail-build', 'failBuildIfNoResultFile', False),
+        ('compare-build-previous', 'compareBuildPrevious', False),
+        ('mode-performance-per-test-case', 'modePerformancePerTestCase', True),
+        ('mode-thoughput', 'modeThroughput', False)
+    ]
+    helpers.convert_mapping_to_xml(perf, data, mappings, fail_required=True)
+
     parsers = XML.SubElement(perf, 'parsers')
-    for item in data['report']:
-        if isinstance(item, dict):
-            item_name = next(iter(item.keys()))
-            item_values = item.get(item_name, None)
-            if item_name == 'jmeter':
-                jmhold = XML.SubElement(parsers, 'hudson.plugins.performance.'
-                                                 'JMeterParser')
-                XML.SubElement(jmhold, 'glob').text = str(item_values)
-            elif item_name == 'junit':
-                juhold = XML.SubElement(parsers, 'hudson.plugins.performance.'
-                                                 'JUnitParser')
-                XML.SubElement(juhold, 'glob').text = str(item_values)
-            else:
-                logger.fatal("You have not specified jmeter or junit, or "
-                             "you have incorrectly assigned the key value.")
-                sys.exit(1)
-        elif isinstance(item, str):
-            if item == 'jmeter':
-                jmhold = XML.SubElement(parsers, 'hudson.plugins.performance.'
-                                                 'JMeterParser')
-                XML.SubElement(jmhold, 'glob').text = '**/*.jtl'
-            elif item == 'junit':
-                juhold = XML.SubElement(parsers, 'hudson.plugins.performance.'
-                                                 'JUnitParser')
-                XML.SubElement(juhold, 'glob').text = '**/TEST-*.xml'
-            else:
-                logger.fatal("You have not specified jmeter or junit, or "
-                             "you have incorrectly assigned the key value.")
-                sys.exit(1)
+    if 'report' in data:
+        for item in data['report']:
+            if isinstance(item, dict):
+                item_name = next(iter(item.keys()))
+                item_values = item.get(item_name, None)
+                if item_name == 'jmeter':
+                    jmhold = XML.SubElement(parsers, 'hudson.plugins.'
+                                                     'performance.'
+                                                     'JMeterParser')
+                    XML.SubElement(jmhold, 'glob').text = str(item_values)
+                elif item_name == 'junit':
+                    juhold = XML.SubElement(parsers, 'hudson.plugins.'
+                                                     'performance.'
+                                                     'JUnitParser')
+                    XML.SubElement(juhold, 'glob').text = str(item_values)
+                else:
+                    raise JenkinsJobsException("You have not specified jmeter "
+                                               "or junit, or you have "
+                                               "incorrectly assigned the key "
+                                               "value.")
+            elif isinstance(item, str):
+                if item == 'jmeter':
+                    jmhold = XML.SubElement(parsers, 'hudson.plugins.'
+                                                     'performance.'
+                                                     'JMeterParser')
+                    XML.SubElement(jmhold, 'glob').text = '**/*.jtl'
+                elif item == 'junit':
+                    juhold = XML.SubElement(parsers, 'hudson.plugins.'
+                                                     'performance.'
+                                                     'JUnitParser')
+                    XML.SubElement(juhold, 'glob').text = '**/TEST-*.xml'
+                else:
+                    raise JenkinsJobsException("You have not specified jmeter "
+                                               "or junit, or you have "
+                                               "incorrectly assigned the key "
+                                               "value.")
 
 
 def join_trigger(registry, xml_parent, data):

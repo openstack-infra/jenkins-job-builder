@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.performance.PerformancePublisher plugin="performance">
+      <errorFailedThreshold>0</errorFailedThreshold>
+      <errorUnstableThreshold>0</errorUnstableThreshold>
+      <errorUnstableResponseTimeThreshold/>
+      <relativeFailedThresholdPositive>0.0</relativeFailedThresholdPositive>
+      <relativeFailedThresholdNegative>0.0</relativeFailedThresholdNegative>
+      <relativeUnstableThresholdPositive>0.0</relativeUnstableThresholdPositive>
+      <relativeUnstableThresholdNegative>0.0</relativeUnstableThresholdNegative>
+      <nthBuildNumber>0</nthBuildNumber>
+      <modeRelativeThresholds>false</modeRelativeThresholds>
+      <configType>ART</configType>
+      <modeOfThreshold>false</modeOfThreshold>
+      <failBuildIfNoResultFile>false</failBuildIfNoResultFile>
+      <compareBuildPrevious>false</compareBuildPrevious>
+      <modePerformancePerTestCase>true</modePerformancePerTestCase>
+      <modeThroughput>false</modeThroughput>
+      <parsers/>
+    </hudson.plugins.performance.PerformancePublisher>
+  </publishers>
+</project>

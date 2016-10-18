@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.performance.PerformancePublisher plugin="performance">
+      <errorFailedThreshold>85</errorFailedThreshold>
+      <errorUnstableThreshold>-1</errorUnstableThreshold>
+      <errorUnstableResponseTimeThreshold>JMeterResultsOrders.jtl:2000</errorUnstableResponseTimeThreshold>
+      <relativeFailedThresholdPositive>90.0</relativeFailedThresholdPositive>
+      <relativeFailedThresholdNegative>10.0</relativeFailedThresholdNegative>
+      <relativeUnstableThresholdPositive>80.0</relativeUnstableThresholdPositive>
+      <relativeUnstableThresholdNegative>20.0</relativeUnstableThresholdNegative>
+      <nthBuildNumber>10</nthBuildNumber>
+      <modeRelativeThresholds>true</modeRelativeThresholds>
+      <configType>PRT</configType>
+      <modeOfThreshold>true</modeOfThreshold>
+      <failBuildIfNoResultFile>true</failBuildIfNoResultFile>
+      <compareBuildPrevious>true</compareBuildPrevious>
+      <modePerformancePerTestCase>false</modePerformancePerTestCase>
+      <modeThroughput>true</modeThroughput>
+      <parsers>
+        <hudson.plugins.performance.JMeterParser>
+          <glob>/special/file.jtl</glob>
+        </hudson.plugins.performance.JMeterParser>
+        <hudson.plugins.performance.JUnitParser>
+          <glob>/special/file.xml</glob>
+        </hudson.plugins.performance.JUnitParser>
+        <hudson.plugins.performance.JMeterParser>
+          <glob>**/*.jtl</glob>
+        </hudson.plugins.performance.JMeterParser>
+        <hudson.plugins.performance.JUnitParser>
+          <glob>**/TEST-*.xml</glob>
+        </hudson.plugins.performance.JUnitParser>
+      </parsers>
+    </hudson.plugins.performance.PerformancePublisher>
+  </publishers>
+</project>
