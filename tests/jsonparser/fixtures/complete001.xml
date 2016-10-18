@@ -109,12 +109,14 @@ print(&quot;Doing something cool with python&quot;)
   <publishers/>
   <buildWrappers>
     <hudson.plugins.build__timeout.BuildTimeoutWrapper>
-      <timeoutMinutes>3</timeoutMinutes>
-      <failBuild>true</failBuild>
-      <writingDescription>false</writingDescription>
-      <timeoutPercentage>150</timeoutPercentage>
-      <timeoutMinutesElasticDefault>90</timeoutMinutesElasticDefault>
-      <timeoutType>elastic</timeoutType>
+      <strategy class="hudson.plugins.build_timeout.impl.ElasticTimeOutStrategy">
+        <timeoutPercentage>150</timeoutPercentage>
+        <numberOfBuilds>0</numberOfBuilds>
+        <timeoutMinutesElasticDefault>90</timeoutMinutesElasticDefault>
+      </strategy>
+      <operationList>
+        <hudson.plugins.build__timeout.operations.FailOperation/>
+      </operationList>
     </hudson.plugins.build__timeout.BuildTimeoutWrapper>
     <org.jenkinsci.plugins.preSCMbuildstep.PreSCMBuildStepsWrapper>
       <buildSteps>

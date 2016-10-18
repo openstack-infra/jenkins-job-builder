@@ -312,14 +312,19 @@ def timeout(registry, xml_parent, data):
     prefix = 'hudson.plugins.build__timeout.'
     twrapper = XML.SubElement(xml_parent, prefix + 'BuildTimeoutWrapper')
 
-    plugin_info = registry.get_plugin_info(
-        "Jenkins build timeout plugin")
-    version = pkg_resources.parse_version(plugin_info.get("version", "0"))
+    plugin_info = registry.get_plugin_info("Build Timeout")
+    if "version" not in plugin_info:
+        plugin_info = registry.get_plugin_info("Jenkins build timeout plugin")
+    version = plugin_info.get("version", None)
+    if version:
+        version = pkg_resources.parse_version(version)
 
     valid_strategies = ['absolute', 'no-activity', 'likely-stuck', 'elastic',
                         'deadline']
 
-    if version >= pkg_resources.parse_version("1.14"):
+    # NOTE(toabctl): if we don't know the version assume that we
+    # use a newer version of the plugin
+    if not version or version >= pkg_resources.parse_version("1.14"):
         strategy = data.get('type', 'absolute')
         if strategy not in valid_strategies:
             InvalidAttributeError('type', strategy, valid_strategies)
