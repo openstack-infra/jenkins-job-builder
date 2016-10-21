@@ -4445,8 +4445,9 @@ def testng(registry, xml_parent, data):
 
     reporter = XML.SubElement(xml_parent, 'hudson.plugins.testng.Publisher')
     reporter.set('plugin', 'testng-plugin')
-    valid_threshold_modes = ['number', 'percentage']
-    threshold_mode = data.get('threshold-mode', 'percentage')
+    threshold_modes = {
+        'number': 1,
+        'percentage': 2}
 
     mappings = [
         ('pattern', 'reportFilenamePattern', None),
@@ -4458,17 +4459,10 @@ def testng(registry, xml_parent, data):
         ('unstable-fails', 'unstableFails', 0),
         ('failed-skips', 'failedSkips', 100),
         ('failed-fails', 'failedFails', 100),
+        ('threshold-mode', 'thresholdMode', 'percentage', threshold_modes)
     ]
     helpers.convert_mapping_to_xml(
         reporter, data, mappings, fail_required=True)
-
-    if threshold_mode == 'number':
-        XML.SubElement(reporter, 'thresholdMode').text = str(1)
-    elif threshold_mode == 'percentage':
-        XML.SubElement(reporter, 'thresholdMode').text = str(2)
-    else:
-        raise InvalidAttributeError(
-            'threshold-mode', threshold_mode, valid_threshold_modes)
 
 
 def artifact_deployer(registry, xml_parent, data):
