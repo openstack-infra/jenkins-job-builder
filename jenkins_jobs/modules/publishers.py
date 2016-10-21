@@ -6108,20 +6108,16 @@ def hipchat(registry, xml_parent, data):
         XML.SubElement(hipchat, 'room').text = str(
             ",".join(data['rooms']))
 
-    XML.SubElement(hipchat, 'startNotification').text = str(
-        data.get('notify-start', False)).lower()
-    XML.SubElement(hipchat, 'notifySuccess').text = str(
-        data.get('notify-success', False)).lower()
-    XML.SubElement(hipchat, 'notifyAborted').text = str(
-        data.get('notify-aborted', False)).lower()
-    XML.SubElement(hipchat, 'notifyNotBuilt').text = str(
-        data.get('notify-not-built', False)).lower()
-    XML.SubElement(hipchat, 'notifyUnstable').text = str(
-        data.get('notify-unstable', False)).lower()
-    XML.SubElement(hipchat, 'notifyFailure').text = str(
-        data.get('notify-failure', False)).lower()
-    XML.SubElement(hipchat, 'notifyBackToNormal').text = str(
-        data.get('notify-back-to-normal', False)).lower()
+    mapping = [
+        ('notify-start', 'startNotification', False),
+        ('notify-success', 'notifySuccess', False),
+        ('notify-aborted', 'notifyAborted', False),
+        ('notify-not-built', 'notifyNotBuilt', False),
+        ('notify-unstable', 'notifyUnstable', False),
+        ('notify-failure', 'notifyFailure', False),
+        ('notify-back-to-normal', 'notifyBackToNormal', False),
+    ]
+    helpers.convert_mapping_to_xml(hipchat, data, mapping, fail_required=True)
 
     # optional settings, so only add XML in if set.
     if 'start-message' in data:
