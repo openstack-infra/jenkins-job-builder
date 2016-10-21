@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <sp.sd.nexusartifactuploader.NexusArtifactUploader>
+      <protocol>https</protocol>
+      <nexusUrl>nexus.org</nexusUrl>
+      <nexusUser/>
+      <nexusPassword/>
+      <groupId>com.example</groupId>
+      <artifactId>artifact</artifactId>
+      <version>1.0</version>
+      <packaging>pom</packaging>
+      <type>zip</type>
+      <classifier/>
+      <repository>my-hosted-repo</repository>
+      <file>/var/lib/jenkins/workspace/my_job/result.zip</file>
+      <credentialsId/>
+    </sp.sd.nexusartifactuploader.NexusArtifactUploader>
+  </builders>
+</project>
