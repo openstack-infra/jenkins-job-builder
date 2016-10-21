@@ -1,0 +1,16 @@
+builders:
+  - grails:
+      use-wrapper: true
+      name: grails-2.2.2
+      force-upgrade: true
+      non-interactive: true
+      targets: war ear
+      server-port: 8003
+      work-dir: ./grails-work
+      project-dir: ./project-work
+      base-dir: ./grails/project
+      properties: program.name=foo
+      plain-output: true
+      stack-trace: true
+      verbose: true
+      refresh-dependencies: true

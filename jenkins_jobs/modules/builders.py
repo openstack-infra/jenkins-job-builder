@@ -1998,21 +1998,21 @@ def grails(registry, xml_parent, data):
     Plugin <Grails+Plugin>`.
 
     :arg bool use-wrapper: Use a grails wrapper (default false)
-    :arg str name: Select a grails installation to use (optional)
+    :arg str name: Select a grails installation to use (default '(Default)')
     :arg bool force-upgrade: Run 'grails upgrade --non-interactive'
         first (default false)
     :arg bool non-interactive: append --non-interactive to all build targets
         (default false)
-    :arg str targets: Specify target(s) to run separated by spaces
+    :arg str targets: Specify target(s) to run separated by spaces (required)
     :arg str server-port: Specify a value for the server.port system
-        property (optional)
+        property (default '')
     :arg str work-dir: Specify a value for the grails.work.dir system
-        property (optional)
+        property (default '')
     :arg str project-dir: Specify a value for the grails.project.work.dir
-        system property (optional)
+        system property (default '')
     :arg str base-dir: Specify a path to the root of the Grails
-        project (optional)
-    :arg str properties: Additional system properties to set (optional)
+        project (default '')
+    :arg str properties: Additional system properties to set (default '')
     :arg bool plain-output: append --plain-output to all build targets
         (default false)
     :arg bool stack-trace: append --stack-trace to all build targets
@@ -2022,40 +2022,37 @@ def grails(registry, xml_parent, data):
     :arg bool refresh-dependencies: append --refresh-dependencies to all
         build targets (default false)
 
-    Example:
+    Full Example:
 
-    .. literalinclude:: ../../tests/builders/fixtures/grails.yaml
+    .. literalinclude:: ../../tests/builders/fixtures/grails-full.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/grails-minimal.yaml
        :language: yaml
     """
     grails = XML.SubElement(xml_parent, 'com.g2one.hudson.grails.'
                                         'GrailsBuilder')
-    XML.SubElement(grails, 'targets').text = data['targets']
-    XML.SubElement(grails, 'name').text = data.get(
-        'name', '(Default)')
-    XML.SubElement(grails, 'grailsWorkDir').text = data.get(
-        'work-dir', '')
-    XML.SubElement(grails, 'projectWorkDir').text = data.get(
-        'project-dir', '')
-    XML.SubElement(grails, 'projectBaseDir').text = data.get(
-        'base-dir', '')
-    XML.SubElement(grails, 'serverPort').text = data.get(
-        'server-port', '')
-    XML.SubElement(grails, 'properties').text = data.get(
-        'properties', '')
-    XML.SubElement(grails, 'forceUpgrade').text = str(
-        data.get('force-upgrade', False)).lower()
-    XML.SubElement(grails, 'nonInteractive').text = str(
-        data.get('non-interactive', False)).lower()
-    XML.SubElement(grails, 'useWrapper').text = str(
-        data.get('use-wrapper', False)).lower()
-    XML.SubElement(grails, 'plainOutput').text = str(
-        data.get('plain-output', False)).lower()
-    XML.SubElement(grails, 'stackTrace').text = str(
-        data.get('stack-trace', False)).lower()
-    XML.SubElement(grails, 'verbose').text = str(
-        data.get('verbose', False)).lower()
-    XML.SubElement(grails, 'refreshDependencies').text = str(
-        data.get('refresh-dependencies', False)).lower()
+    grails.set('plugin', 'grails')
+
+    mappings = [
+        ('targets', 'targets', None),
+        ('name', 'name', '(Default)'),
+        ('work-dir', 'grailsWorkDir', ''),
+        ('project-dir', 'projectWorkDir', ''),
+        ('base-dir', 'projectBaseDir', ''),
+        ('server-port', 'serverPort', ''),
+        ('properties', 'properties', ''),
+        ('force-upgrade', 'forceUpgrade', False),
+        ('non-interactive', 'nonInteractive', False),
+        ('use-wrapper', 'useWrapper', False),
+        ('plain-output', 'plainOutput', False),
+        ('stack-trace', 'stackTrace', False),
+        ('verbose', 'verbose', False),
+        ('refresh-dependencies', 'refreshDependencies', False),
+    ]
+    convert_mapping_to_xml(grails, data, mappings, fail_required=True)
 
 
 def sbt(registry, xml_parent, data):
