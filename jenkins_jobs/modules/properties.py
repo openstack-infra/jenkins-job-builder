@@ -126,19 +126,29 @@ def github(registry, xml_parent, data):
     Sets the GitHub URL for the project.
 
     :arg str url: the GitHub URL (required)
+    :arg str display-name: This value will be used as context name for commit
+        status if status builder or status publisher is defined for this
+        project. (>= 1.14.1) (default '')
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/properties/fixtures/github.yaml
+    .. literalinclude:: /../../tests/properties/fixtures/github-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/properties/fixtures/github-full.yaml
        :language: yaml
     """
-    github = XML.SubElement(xml_parent,
-                            'com.coravy.hudson.plugins.github.'
-                            'GithubProjectProperty')
-    try:
-        XML.SubElement(github, 'projectUrl').text = data['url']
-    except KeyError as e:
-        raise MissingAttributeError(e)
+    github = XML.SubElement(
+        xml_parent, 'com.coravy.hudson.plugins.github.GithubProjectProperty')
+    github.set('plugin', 'github')
+
+    mapping = [
+        ('url', 'projectUrl', None),
+        ('display-name', 'displayName', ''),
+    ]
+    helpers.convert_mapping_to_xml(github, data, mapping, fail_required=True)
 
 
 def gitlab(registry, xml_parent, data):
