@@ -1298,12 +1298,12 @@ def xunit(registry, xml_parent, data):
         ``gtest``, ``junit``, ``mstest``, ``nunit``, ``phpunit``, ``tusar``,
         ``unittest``, and ``valgrind``.
 
-            The 'custom' type is not supported.
+        The 'custom' type is not supported.
 
         :type (`dict`): each type can be configured using the following:
 
             * **pattern** (`str`): An Ant pattern to look for Junit result
-              files, relative to the workspace root.
+              files, relative to the workspace root (default '')
             * **requireupdate** (`bool`): fail the build whenever fresh tests
               results have not been found (default true).
             * **deleteoutput** (`bool`): delete temporary JUnit files
@@ -1321,6 +1321,7 @@ def xunit(registry, xml_parent, data):
     """
     logger = logging.getLogger(__name__)
     xunit = XML.SubElement(xml_parent, 'xunit')
+    xunit.set('plugin', 'xunit')
 
     # Map our internal types to the XML element names used by Jenkins plugin
     types_to_plugin_types = {
@@ -1364,17 +1365,17 @@ def xunit(registry, xml_parent, data):
         xmlframework = XML.SubElement(xmltypes,
                                       types_to_plugin_types[framework_name])
 
-        XML.SubElement(xmlframework, 'pattern').text = (
-            supported_type[framework_name].get('pattern', ''))
-        XML.SubElement(xmlframework, 'failIfNotNew').text = str(
-            supported_type[framework_name].get('requireupdate', True)).lower()
-        XML.SubElement(xmlframework, 'deleteOutputFiles').text = str(
-            supported_type[framework_name].get('deleteoutput', True)).lower()
-        XML.SubElement(xmlframework, 'skipNoTestFiles').text = str(
-            supported_type[framework_name].get('skip-if-no-test-files',
-                                               False)).lower()
-        XML.SubElement(xmlframework, 'stopProcessingIfError').text = str(
-            supported_type[framework_name].get('stoponerror', True)).lower()
+        mappings = [
+            ('pattern', 'pattern', ''),
+            ('requireupdate', 'failIfNotNew', True),
+            ('deleteoutput', 'deleteOutputFiles', True),
+            ('skip-if-no-test-files', 'skipNoTestFiles', False),
+            ('stoponerror', 'stopProcessingIfError', True),
+        ]
+        helpers.convert_mapping_to_xml(xmlframework,
+                                       supported_type[framework_name],
+                                       mappings,
+                                       fail_required=True)
 
     xmlthresholds = XML.SubElement(xunit, 'thresholds')
     for t in data.get('thresholds', []):
