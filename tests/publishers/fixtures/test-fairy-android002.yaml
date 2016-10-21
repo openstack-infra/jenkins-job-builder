@@ -6,6 +6,9 @@ publishers:
       keystorepath: /tmp/keystorefile
       notify-testers: false
       autoupdate: false
+      max-duration: 300m
+      screenshot-interval: 2
+      video-quality: low
       cpu: false
       memory: false
       logs: false

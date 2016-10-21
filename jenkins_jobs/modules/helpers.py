@@ -426,6 +426,9 @@ def append_git_revision_config(parent, config_def):
 
 def test_fairy_common(xml_element, data):
     xml_element.set('plugin', 'TestFairy')
+    valid_max_duration = ['10m', '60m', '300m', '1440m']
+    valid_interval = [1, 2, 5]
+    valid_video_quality = ['high', 'medium', 'low']
 
     mappings = [
         # General
@@ -435,13 +438,13 @@ def test_fairy_common(xml_element, data):
         ('notify-testers', 'notifyTesters', True),
         ('autoupdate', 'autoUpdate', True),
         # Session
-        ('max-duration', 'maxDuration', '10m'),
+        ('max-duration', 'maxDuration', '10m', valid_max_duration),
         ('record-on-background', 'recordOnBackground', False),
         ('data-only-wifi', 'dataOnlyWifi', False),
         # Video
         ('video-enabled', 'isVideoEnabled', True),
-        ('screenshot-interval', 'screenshotInterval', '1'),
-        ('video-quality', 'videoQuality', 'high'),
+        ('screenshot-interval', 'screenshotInterval', 1, valid_interval),
+        ('video-quality', 'videoQuality', 'high', valid_video_quality),
         # Metrics
         ('cpu', 'cpu', True),
         ('memory', 'memory', True),

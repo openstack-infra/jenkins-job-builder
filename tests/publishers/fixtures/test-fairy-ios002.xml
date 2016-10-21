@@ -7,12 +7,12 @@
       <testersGroups/>
       <notifyTesters>false</notifyTesters>
       <autoUpdate>false</autoUpdate>
-      <maxDuration>10m</maxDuration>
+      <maxDuration>1440m</maxDuration>
       <recordOnBackground>false</recordOnBackground>
       <dataOnlyWifi>false</dataOnlyWifi>
       <isVideoEnabled>true</isVideoEnabled>
-      <screenshotInterval>1</screenshotInterval>
-      <videoQuality>high</videoQuality>
+      <screenshotInterval>5</screenshotInterval>
+      <videoQuality>medium</videoQuality>
       <cpu>false</cpu>
       <memory>false</memory>
       <logs>false</logs>

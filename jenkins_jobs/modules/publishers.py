@@ -2988,14 +2988,29 @@ def test_fairy(registry, xml_parent, data):
     :arg bool notify-testers: Send email with changelogs to testers
         (default false)
     :arg bool autoupdate: Automatic update (default false)
-
     :arg str max-duration: Duration of the session (default 10m)
+
+        :max-duration values:
+            * **10m**
+            * **60m**
+            * **300m**
+            * **1440m**
     :arg bool record-on-background: Record on background (default false)
     :arg bool data-only-wifi: Record data only in wifi (default false)
     :arg bool video-enabled: Record video (default true)
-    :arg str screenshot-interval: Time interval between screenshots
+    :arg int screenshot-interval: Time interval between screenshots
         (default 1)
+
+        :screenshot-interval values:
+            * **1**
+            * **2**
+            * **5**
     :arg str video-quality: Video quality (default high)
+
+        :video-quality values:
+            * **high**
+            * **medium**
+            * **low**
     :arg bool cpu: Enable CPU metrics (default true)
     :arg bool memory: Enable memory metrics (default true)
     :arg bool logs: Enable logs metrics (default true)
