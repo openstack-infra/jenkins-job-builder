@@ -701,11 +701,6 @@ def slack(registry, xml_parent, data):
         /../../tests/properties/fixtures/slack001.yaml
         :language: yaml
     """
-    def _add_xml(elem, name, value):
-        if isinstance(value, bool):
-            value = str(value).lower()
-        XML.SubElement(elem, name).text = value
-
     logger = logging.getLogger(__name__)
 
     plugin_info = registry.get_plugin_info('Slack Notification Plugin')
@@ -742,8 +737,7 @@ def slack(registry, xml_parent, data):
         if not data.get('custom-message', ''):
             raise MissingAttributeError('custom-message')
 
-    for yaml_name, xml_name, default_value in mapping:
-        _add_xml(slack, xml_name, data.get(yaml_name, default_value))
+    helpers.convert_mapping_to_xml(slack, data, mapping, fail_required=True)
 
 
 def rebuild(registry, xml_parent, data):
