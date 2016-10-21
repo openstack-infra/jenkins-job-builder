@@ -1,0 +1,4 @@
+publishers:
+- cucumber-testresult:
+    results: nosetests.xml
+    ignore-bad-steps: true
