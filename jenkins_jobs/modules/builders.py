@@ -2077,16 +2077,14 @@ def sbt(registry, xml_parent, data):
     """
     sbt = XML.SubElement(xml_parent, 'org.jvnet.hudson.plugins.'
                                      'SbtPluginBuilder')
-    XML.SubElement(sbt, 'name').text = data.get(
-        'name', '')
-    XML.SubElement(sbt, 'jvmFlags').text = data.get(
-        'jvm-flags', '')
-    XML.SubElement(sbt, 'sbtFlags').text = data.get(
-        'sbt-flags', '-Dsbt.log.noformat=true')
-    XML.SubElement(sbt, 'actions').text = data.get(
-        'actions', '')
-    XML.SubElement(sbt, 'subdirPath').text = data.get(
-        'subdir-path', '')
+    mappings = [
+        ('name', 'name', ''),
+        ('jvm-flags', 'jvmFlags', ''),
+        ('sbt-flags', 'sbtFlags', '-Dsbt.log.noformat=true'),
+        ('actions', 'actions', ''),
+        ('subdir-path', 'subdirPath', ''),
+    ]
+    convert_mapping_to_xml(sbt, data, mappings, fail_required=True)
 
 
 def critical_block_start(registry, xml_parent, data):
