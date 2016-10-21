@@ -202,10 +202,8 @@ def jdepend(registry, xml_parent, data):
     jdepend = XML.SubElement(
         xml_parent,
         'hudson.plugins.jdepend.JDependRecorder')
-    filepath = data.get('file', None)
-    if filepath is None:
-        raise MissingAttributeError('file')
-    XML.SubElement(jdepend, 'configuredJDependFile').text = str(filepath)
+    mapping = [('file', 'configuredJDependFile', None)]
+    helpers.convert_mapping_to_xml(jdepend, data, mapping, fail_required=True)
 
 
 def hue_light(registry, xml_parent, data):
