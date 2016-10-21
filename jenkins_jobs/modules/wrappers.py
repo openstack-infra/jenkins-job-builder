@@ -1333,6 +1333,34 @@ def sauce_ondemand(registry, xml_parent, data):
     XML.SubElement(sauce, 'options').text = options
 
 
+def sonar(registry, xml_parent, data):
+    """yaml: sonar
+    Wrapper for SonarQube Plugin
+    Requires :jenkins-wiki:`SonarQube plugin <SonarQube+plugin>`
+
+    :arg str install-name: Release goals and options (default '')
+
+    Minimal Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/sonar-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/sonar-full.yaml
+       :language: yaml
+    """
+    sonar = XML.SubElement(
+        xml_parent, 'hudson.plugins.sonar.SonarBuildWrapper')
+    sonar.set('plugin', 'sonar')
+
+    if data.get('install-name'):
+        mapping = [
+            ('install-name', 'installationName', ''),
+        ]
+        convert_mapping_to_xml(sonar, data, mapping, fail_required=True)
+
+
 def pathignore(registry, xml_parent, data):
     """yaml: pathignore
     This plugin allows SCM-triggered jobs to ignore
