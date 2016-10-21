@@ -2,20 +2,35 @@ publishers:
   - cppcheck:
       pattern: "**/cppcheck.xml"
       # the rest is optional
+      ignoreblankfiles: true
+      allow-no-report: true
       # build status (new) error count thresholds
       thresholds:
         unstable: 5
         new-unstable: 5
         failure: 7
         new-failure: 3
+        healthy: 5
+        unhealthy: 10
         # severities which count towards the threshold, default all true
         severity:
-          error: true
-          warning: true
+          error: false
+          warning: false
+          style: false
+          performance: false
           information: false
+          nocategory: false
+          portability: false
       graph:
-        xysize: [500, 200]
+        xysize: [600, 300]
+        num-builds-in-graph: 10
         # which errors to display, default only sum
         display:
           sum: false
           error: true
+          warning: true
+          style: true
+          performance: true
+          information: true
+          nocategory: true
+          portability: true
