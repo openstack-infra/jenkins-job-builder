@@ -121,6 +121,36 @@ def promoted_build(registry, xml_parent, data):
             XML.SubElement(active_processes, 'string').text = str(n)
 
 
+def gitbucket(parser, xml_parent, data):
+    """yaml: gitbucket
+    Integrate GitBucket to Jenkins.
+    Requires the Jenkins :jenkins-wiki:`GitBucket Plugin <GitBucket+Plugin>`.
+
+    :arg str url: GitBucket URL to issue (required)
+    :arg bool link-enabled: Enable hyperlink to issue (default false)
+
+    Minimal Example:
+
+    .. literalinclude:: /../../tests/properties/fixtures/gitbucket-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/properties/fixtures/gitbucket-full.yaml
+       :language: yaml
+    """
+    gitbucket = XML.SubElement(
+        xml_parent, 'org.jenkinsci.plugins.gitbucket.GitBucketProjectProperty')
+    gitbucket.set('plugin', 'gitbucket')
+
+    mapping = [
+        ('url', 'url', None),
+        ('link-enabled', 'linkEnabled', False),
+    ]
+    helpers.convert_mapping_to_xml(
+        gitbucket, data, mapping, fail_required=True)
+
+
 def github(registry, xml_parent, data):
     """yaml: github
     Sets the GitHub URL for the project.

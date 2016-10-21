@@ -1,0 +1,4 @@
+properties:
+  - gitbucket:
+      url: https://foo.com
+      link-enabled: true
