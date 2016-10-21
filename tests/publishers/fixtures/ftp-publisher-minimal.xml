@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <com.zanox.hudson.plugins.FTPPublisher plugin="ftppublisher">
+      <entries/>
+      <siteName>foo</siteName>
+      <useTimestamps>false</useTimestamps>
+      <flatten>false</flatten>
+      <skip>false</skip>
+    </com.zanox.hudson.plugins.FTPPublisher>
+  </publishers>
+</project>

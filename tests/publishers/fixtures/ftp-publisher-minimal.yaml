@@ -1,0 +1,3 @@
+publishers:
+  - ftp-publisher:
+      site-name: foo

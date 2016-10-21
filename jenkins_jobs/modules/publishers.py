@@ -1063,6 +1063,62 @@ def ftp(registry, xml_parent, data):
     XML.SubElement(transfer_node, 'asciiMode').text = 'false'
 
 
+def ftp_publisher(registry, xml_parent, data):
+    """yaml: ftp-publisher
+    This plugin can be used to upload project artifacts and whole directories
+    to an ftp server.
+    Requires the Jenkins :jenkins-wiki:`FTP-Publisher Plugin
+    <FTP-Publisher+Plugin>`.
+
+    :arg list uploads: List of files to upload
+
+        :uploads:
+            * **file-path** ('str') -- Destination folder. It will be created
+                if doesn't exists. Created relative to ftp root directory.
+                (default '')
+            * **source-file** ('str') -- Source files which will be uploaded
+                (default '')
+    :arg str site-name: Name of FTP server to upload to (required)
+    :arg bool use-timestamps: Use timestamps in the FTP directory path (default
+        false)
+    :arg bool flatten-files: Flatten files on the FTP host (default false)
+    :arg bool skip-publishing: Skip publishing (default false)
+
+    Minimal Example:
+
+    .. literalinclude::
+       /../../tests/publishers/fixtures/ftp-publisher-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+       /../../tests/publishers/fixtures/ftp-publisher-full.yaml
+       :language: yaml
+    """
+    ftp = XML.SubElement(xml_parent, 'com.zanox.hudson.plugins.FTPPublisher')
+    ftp.set('plugin', 'ftppublisher')
+
+    entries = XML.SubElement(ftp, 'entries')
+    if 'uploads' in data:
+        upload_mapping = [
+            ('file-path', 'filePath', ''),
+            ('source-file', 'sourceFile', ''),
+        ]
+        for upload in data['uploads']:
+            entry = XML.SubElement(entries, 'com.zanox.hudson.plugins.Entry')
+            helpers.convert_mapping_to_xml(
+                entry, upload, upload_mapping, fail_required=True)
+
+    mapping = [
+        ('site-name', 'siteName', None),
+        ('use-timestamps', 'useTimestamps', False),
+        ('flatten-files', 'flatten', False),
+        ('skip-publishing', 'skip', False),
+    ]
+    helpers.convert_mapping_to_xml(ftp, data, mapping, fail_required=True)
+
+
 def junit(registry, xml_parent, data):
     """yaml: junit
     Publish JUnit test results.
