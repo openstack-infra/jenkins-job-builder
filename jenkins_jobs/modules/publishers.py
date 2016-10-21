@@ -3421,22 +3421,31 @@ def xml_summary(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Summary Display Plugin
     <Summary+Display+Plugin>`.
 
-    :arg str files: Files to parse (default '')
+    :arg str files: Files to parse (required)
     :arg bool shown-on-project-page: Display summary on project page
-        (default 'false')
+        (default false)
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/xml-summary001.yaml
+    .. literalinclude::
+       /../../tests/publishers/fixtures/xml-summary-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/xml-summary-full.yaml
        :language: yaml
     """
 
-    summary = XML.SubElement(xml_parent,
-                             'hudson.plugins.summary__report.'
-                             'ACIPluginPublisher')
-    XML.SubElement(summary, 'name').text = data['files']
-    XML.SubElement(summary, 'shownOnProjectPage').text = str(
-        data.get('shown-on-project-page', 'false'))
+    summary = XML.SubElement(
+        xml_parent, 'hudson.plugins.summary__report.ACIPluginPublisher')
+    summary.set('plugin', 'summary_report')
+
+    mapping = [
+        ('files', 'name', None),
+        ('shown-on-project-page', 'shownOnProjectPage', False),
+    ]
+    helpers.convert_mapping_to_xml(summary, data, mapping, fail_required=True)
 
 
 def robot(registry, xml_parent, data):
