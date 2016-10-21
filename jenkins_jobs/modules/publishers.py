@@ -5622,16 +5622,9 @@ def disable_failed_job(registry, xml_parent, data):
     valid_conditions = ['Only Failure',
                         'Failure and Unstable',
                         'Only Unstable']
-
-    try:
-        disable_condition = str(data['when-to-disable'])
-    except KeyError as e:
-        raise MissingAttributeError(e.args[0])
-
-    if disable_condition not in valid_conditions:
-        raise InvalidAttributeError('when-to-disable', disable_condition,
-                                    valid_conditions)
-    XML.SubElement(xml_element, 'whenDisable').text = disable_condition
+    mapping = [('when-to-disable', 'whenDisable', None, valid_conditions)]
+    helpers.convert_mapping_to_xml(
+        xml_element, data, mapping, fail_required=True)
 
     if 'no-of-failures' in data:
         XML.SubElement(xml_element, 'failureTimes').text = str(data.get(
