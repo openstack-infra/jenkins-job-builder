@@ -92,26 +92,29 @@ class UpdateTests(CmdTestsBase):
         * mock out a call to jenkins.Jenkins.job_exists() to always return
           True.
         """
-        jobs = ['old_job001', 'old_job002', 'unmanaged']
-        extra_jobs = [{'name': name} for name in jobs]
+        yaml_jobs = ['bar001', 'bar002', 'baz001', 'bam001']
+        extra_jobs = ['old_job001', 'old_job002', 'unmanaged']
 
         path = os.path.join(self.fixtures_path, 'cmd-002.yaml')
         args = ['--conf', self.default_config_file, 'update', '--delete-old',
                 path]
 
-        jenkins_get_jobs.return_value = extra_jobs
+        jenkins_get_jobs.return_value = [{'name': name}
+                                         for name in yaml_jobs + extra_jobs]
 
         with mock.patch('jenkins_jobs.builder.JenkinsManager.is_managed',
                         side_effect=(lambda name: name != 'unmanaged')):
             self.execute_jenkins_jobs_with_args(args)
 
         jenkins_reconfig_job.assert_has_calls(
-            [mock.call(job_name, mock.ANY)
-             for job_name in ['bar001', 'bar002', 'baz001', 'bam001']],
+            [mock.call(job_name, mock.ANY) for job_name in yaml_jobs],
             any_order=True
         )
-        jenkins_delete_job.assert_has_calls(
-            [mock.call(name) for name in jobs if name != 'unmanaged'])
+        calls = [mock.call(name) for name in extra_jobs if name != 'unmanaged']
+        jenkins_delete_job.assert_has_calls(calls)
+        # to ensure only the calls we expected were made, have to check
+        # there were no others, as no API call for assert_has_only_calls
+        self.assertEquals(jenkins_delete_job.call_count, len(calls))
 
     def test_update_timeout_not_set(self):
         """Validate update timeout behavior when timeout not explicitly configured.
