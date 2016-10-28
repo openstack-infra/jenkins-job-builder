@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.waytta.SaltAPIBuilder>
+      <servername>{{SALT_MASTER}}</servername>
+      <credentialsId>credentials ID</credentialsId>
+      <authtype>pam</authtype>
+      <target>{{HOSTS}}</target>
+      <targettype>list</targettype>
+      <clientInterface>runner</clientInterface>
+      <function>pkg.update</function>
+      <arguments/>
+      <kwarguments/>
+      <usePillar>true</usePillar>
+      <pillarkey>pkey</pillarkey>
+      <pillarvalue>pvalue</pillarvalue>
+      <blockbuild>true</blockbuild>
+      <jobPollTime>10</jobPollTime>
+      <batchSize>100%</batchSize>
+      <mods>runner_mods</mods>
+      <saveEnvVar>true</saveEnvVar>
+      <clientInterfaces>
+        <nullObject>false</nullObject>
+        <properties class="org.apache.commons.collections.map.ListOrderedMap" serialization="custom">
+          <org.apache.commons.collections.map.ListOrderedMap>
+            <default>
+              <insertOrder>
+                <string>mods</string>
+                <string>clientInterface</string>
+                <string>usePillar</string>
+              </insertOrder>
+            </default>
+            <map>
+              <entry>
+                <string>mods</string>
+                <string>runner_mods</string>
+              </entry>
+              <entry>
+                <string>clientInterface</string>
+                <string>runner</string>
+              </entry>
+              <entry>
+                <string>usePillar</string>
+                <net.sf.json.JSONObject>
+                  <nullObject>false</nullObject>
+                  <properties class="org.apache.commons.collections.map.ListOrderedMap" serialization="custom">
+                    <unserializable-parents/>
+                    <org.apache.commons.collections.map.ListOrderedMap>
+                      <default>
+                        <insertOrder>
+                          <string>pillarkey</string>
+                          <string>pillarvalue</string>
+                        </insertOrder>
+                      </default>
+                      <map>
+                        <entry>
+                          <string>pillarkey</string>
+                          <string>pkey</string>
+                        </entry>
+                        <entry>
+                          <string>pillarvalue</string>
+                          <string>pvalue</string>
+                        </entry>
+                      </map>
+                    </org.apache.commons.collections.map.ListOrderedMap>
+                  </properties>
+                </net.sf.json.JSONObject>
+              </entry>
+            </map>
+          </org.apache.commons.collections.map.ListOrderedMap>
+        </properties>
+      </clientInterfaces>
+    </com.waytta.SaltAPIBuilder>
+  </builders>
+</project>

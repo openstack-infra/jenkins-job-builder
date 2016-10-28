@@ -1,0 +1,15 @@
+builders:
+  - saltstack:
+      servername: '{{SALT_MASTER}}'
+      credentials: 'credentials ID'
+      clientinterface: runner
+      mods: runner_mods
+      setpillardata: true
+      pillarkey: pkey
+      pillarvalue: pvalue
+      wait: true
+      polltime: 10
+      target: '{{HOSTS}}'
+      targettype: list
+      function: pkg.update
+      saveoutput: true

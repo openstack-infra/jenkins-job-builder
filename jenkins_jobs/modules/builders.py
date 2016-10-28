@@ -43,6 +43,7 @@ from jenkins_jobs.errors import InvalidAttributeError
 from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.errors import MissingAttributeError
 import jenkins_jobs.modules.base
+import jenkins_jobs.modules.helpers as helpers
 from jenkins_jobs.modules.helpers import append_git_revision_config
 import pkg_resources
 from jenkins_jobs.modules.helpers import cloudformation_init
@@ -2156,6 +2157,159 @@ def publish_over_ssh(registry, xml_parent, data):
        :language: yaml
     """
     ssh(registry, xml_parent, data)
+
+
+def saltstack(parser, xml_parent, data):
+    """yaml: saltstack
+
+    Send a message to Salt API. Requires the :jenkins-wiki:`saltstack plugin
+    <saltstack-plugin>`.
+
+    :arg str servername: Salt master server name (required)
+    :arg str authtype: Authentication type ('pam' or 'ldap', default 'pam')
+    :arg str credentials: Credentials ID for which to authenticate to Salt
+        master (required)
+    :arg str target: Target minions (default '')
+    :arg str targettype: Target type ('glob', 'pcre', 'list', 'grain',
+        'pillar', 'nodegroup', 'range', or 'compound', default 'glob')
+    :arg str function: Function to execute (default '')
+    :arg str arguments: Salt function arguments (default '')
+    :arg str kwarguments: Salt keyword arguments (default '')
+    :arg bool saveoutput: Save Salt return data into environment variable
+        (default false)
+    :arg str clientinterface: Client interface type ('local', 'local-batch',
+        or 'runner', default 'local')
+    :arg bool wait: Wait for completion of command (default false)
+    :arg str polltime: Number of seconds to wait before polling job completion
+        status (default '')
+    :arg str batchsize: Salt batch size, absolute value or %-age (default 100%)
+    :arg str mods: Mods to runner (default '')
+    :arg bool setpillardata: Set Pillar data (default false)
+    :arg str pillarkey: Pillar key (default '')
+    :arg str pillarvalue: Pillar value (default '')
+
+    Minimal Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/saltstack-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/saltstack-full.yaml
+       :language: yaml
+    """
+    saltstack = XML.SubElement(xml_parent, 'com.waytta.SaltAPIBuilder')
+
+    supported_auth_types = ['pam', 'ldap']
+    supported_target_types = ['glob', 'pcre', 'list', 'grain', 'pillar',
+                              'nodegroup', 'range', 'compound']
+    supported_client_interfaces = ['local', 'local-batch', 'runner']
+
+    mapping = [
+        ('servername', 'servername', None),
+        ('credentials', 'credentialsId', None),
+        ('authtype', 'authtype', 'pam', supported_auth_types),
+        ('target', 'target', ''),
+        ('targettype', 'targettype', 'glob', supported_target_types),
+        ('clientinterface', 'clientInterface', 'local',
+            supported_client_interfaces),
+        ('function', 'function', ''),
+        ('arguments', 'arguments', ''),
+        ('kwarguments', 'kwarguments', ''),
+        ('setpillardata', 'usePillar', False),
+        ('pillarkey', 'pillarkey', ''),
+        ('pillarvalue', 'pillarvalue', ''),
+        ('wait', 'blockbuild', False),
+        ('polltime', 'jobPollTime', ''),
+        ('batchsize', 'batchSize', '100%'),
+        ('mods', 'mods', ''),
+        ('saveoutput', 'saveEnvVar', False)
+    ]
+
+    helpers.convert_mapping_to_xml(saltstack, data, mapping,
+                                   fail_required=True)
+
+    clientInterface = data.get('clientinterface', 'local')
+    blockbuild = str(data.get('wait', False)).lower()
+    jobPollTime = str(data.get('polltime', ''))
+    batchSize = data.get('batchsize', '100%')
+    mods = data.get('mods', '')
+    usePillar = str(data.get('setpillardata', False)).lower()
+
+    # Build the clientInterfaces structure, based on the
+    # clientinterface setting
+    clientInterfaces = XML.SubElement(saltstack, 'clientInterfaces')
+    XML.SubElement(clientInterfaces, 'nullObject').text = 'false'
+
+    ci_attrib = {
+        'class': 'org.apache.commons.collections.map.ListOrderedMap',
+        'serialization': 'custom'
+    }
+    properties = XML.SubElement(clientInterfaces, 'properties', ci_attrib)
+
+    lomElement = 'org.apache.commons.collections.map.ListOrderedMap'
+    listOrderedMap = XML.SubElement(properties, lomElement)
+
+    default = XML.SubElement(listOrderedMap, 'default')
+    ordered_map = XML.SubElement(listOrderedMap, 'map')
+
+    insertOrder = XML.SubElement(default, 'insertOrder')
+
+    ci_config = []
+    if clientInterface == 'local':
+        ci_config = [
+            ('blockbuild', blockbuild),
+            ('jobPollTime', jobPollTime),
+            ('clientInterface', clientInterface)
+        ]
+
+    elif clientInterface == 'local-batch':
+        ci_config = [
+            ('batchSize', batchSize),
+            ('clientInterface', clientInterface)
+        ]
+
+    elif clientInterface == 'runner':
+        ci_config = [
+            ('mods', mods),
+            ('clientInterface', clientInterface)
+        ]
+
+        if usePillar == 'true':
+            ci_config.append(('usePillar', usePillar))
+
+            pillar_cfg = [
+                ('pillarkey', data.get('pillarkey')),
+                ('pillarvalue', data.get('pillarvalue'))
+            ]
+
+    for emt, value in ci_config:
+        XML.SubElement(insertOrder, 'string').text = emt
+        entry = XML.SubElement(ordered_map, 'entry')
+        XML.SubElement(entry, 'string').text = emt
+
+        # Special handling when usePillar == true, requires additional
+        # structure in the builder XML
+        if emt != 'usePillar':
+            XML.SubElement(entry, 'string').text = value
+        else:
+            jsonobj = XML.SubElement(entry, 'net.sf.json.JSONObject')
+            XML.SubElement(jsonobj, 'nullObject').text = 'false'
+
+            pillarProps = XML.SubElement(jsonobj, 'properties', ci_attrib)
+            XML.SubElement(pillarProps, 'unserializable-parents')
+
+            pillarLom = XML.SubElement(pillarProps, lomElement)
+
+            pillarDefault = XML.SubElement(pillarLom, 'default')
+            pillarMap = XML.SubElement(pillarLom, 'map')
+            pillarInsertOrder = XML.SubElement(pillarDefault, 'insertOrder')
+
+            for pemt, value in pillar_cfg:
+                XML.SubElement(pillarInsertOrder, 'string').text = pemt
+                pillarEntry = XML.SubElement(pillarMap, 'entry')
+                XML.SubElement(pillarEntry, 'string').text = pemt
+                XML.SubElement(pillarEntry, 'string').text = value
 
 
 class Builders(jenkins_jobs.modules.base.Base):

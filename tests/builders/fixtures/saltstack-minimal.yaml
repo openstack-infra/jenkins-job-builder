@@ -1,0 +1,4 @@
+builders:
+  - saltstack:
+      servername: '{{SALT_MASTER}}'
+      credentials: 'credentials ID'
