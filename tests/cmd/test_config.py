@@ -123,6 +123,7 @@ class TestConfigs(CmdTestsBase):
         args = ['--conf', self.default_config_file, 'update', path]
 
         jenkins_mock.return_value.update_jobs.return_value = ([], 0)
+        jenkins_mock.return_value.update_views.return_value = ([], 0)
         self.execute_jenkins_jobs_with_args(args)
 
         # validate that the JJBConfig used to initialize builder.Jenkins
@@ -146,6 +147,7 @@ class TestConfigs(CmdTestsBase):
         args = ['--conf', config_file, 'update', path]
 
         jenkins_mock.return_value.update_jobs.return_value = ([], 0)
+        jenkins_mock.return_value.update_views.return_value = ([], 0)
         self.execute_jenkins_jobs_with_args(args)
 
         # validate that the JJBConfig used to initialize builder.Jenkins

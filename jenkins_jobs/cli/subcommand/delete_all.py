@@ -19,6 +19,7 @@ import sys
 
 from jenkins_jobs import utils
 from jenkins_jobs.builder import JenkinsManager
+from jenkins_jobs.errors import JenkinsJobsException
 import jenkins_jobs.cli.subcommand.base as base
 
 
@@ -35,14 +36,43 @@ class DeleteAllSubCommand(base.BaseSubCommand):
 
         self.parse_option_recursive_exclude(delete_all)
 
+        delete_all.add_argument(
+            '-j', '--jobs-only',
+            action='store_true', dest='del_jobs',
+            default=False,
+            help='delete only jobs'
+        )
+        delete_all.add_argument(
+            '-v', '--views-only',
+            action='store_true', dest='del_views',
+            default=False,
+            help='delete only views'
+        )
+
     def execute(self, options, jjb_config):
         builder = JenkinsManager(jjb_config)
 
+        reach = set()
+        if options.del_jobs and options.del_views:
+            raise JenkinsJobsException(
+                '"--views-only" and "--jobs-only" cannot be used together.')
+        elif options.del_jobs and not options.del_views:
+            reach.add('jobs')
+        elif options.del_views and not options.del_jobs:
+            reach.add('views')
+        else:
+            reach.update(('jobs', 'views'))
+
         if not utils.confirm(
-                'Sure you want to delete *ALL* jobs from Jenkins '
+                'Sure you want to delete *ALL* {} from Jenkins '
                 'server?\n(including those not managed by Jenkins '
-                'Job Builder)'):
+                'Job Builder)'.format(" AND ".join(reach))):
             sys.exit('Aborted')
 
-        logger.info("Deleting all jobs")
-        builder.delete_all_jobs()
+        if options.del_jobs:
+            logger.info("Deleting all jobs")
+            builder.delete_all_jobs()
+
+        if options.del_views:
+            logger.info("Deleting all views")
+            builder.delete_all_views()

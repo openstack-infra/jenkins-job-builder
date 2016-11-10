@@ -96,3 +96,35 @@ class XmlJobGenerator(object):
         for module in self.registry.modules:
             if hasattr(module, 'gen_xml'):
                 module.gen_xml(xml, data)
+
+
+class XmlViewGenerator(object):
+    """ This class is responsible for generating Jenkins Configuration XML from
+    a compatible intermediate representation of Jenkins Views.
+    """
+
+    def __init__(self, registry):
+        self.registry = registry
+
+    def generateXML(self, viewdict_list):
+        xml_views = []
+        for view in viewdict_list:
+            xml_views.append(self.__getXMLForView(view))
+        return xml_views
+
+    def __getXMLForView(self, data):
+        kind = data.get('view-type', 'list')
+
+        for ep in pkg_resources.iter_entry_points(
+                group='jenkins_jobs.views', name=kind):
+            Mod = ep.load()
+            mod = Mod(self.registry)
+            xml = mod.root_xml(data)
+            self.__gen_xml(xml, data)
+            view = XmlJob(xml, data['name'])
+            return view
+
+    def __gen_xml(self, xml, data):
+        for module in self.registry.modules:
+            if hasattr(module, 'gen_xml'):
+                module.gen_xml(xml, data)

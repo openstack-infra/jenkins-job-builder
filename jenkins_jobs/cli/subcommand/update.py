@@ -21,6 +21,7 @@ from jenkins_jobs.builder import JenkinsManager
 from jenkins_jobs.parser import YamlParser
 from jenkins_jobs.registry import ModuleRegistry
 from jenkins_jobs.xml_config import XmlJobGenerator
+from jenkins_jobs.xml_config import XmlViewGenerator
 from jenkins_jobs.errors import JenkinsJobsException
 import jenkins_jobs.cli.subcommand.base as base
 
@@ -75,21 +76,24 @@ class UpdateSubCommand(base.BaseSubCommand):
         # Generate XML
         parser = YamlParser(jjb_config)
         registry = ModuleRegistry(jjb_config, builder.plugins_list)
-        xml_generator = XmlJobGenerator(registry)
+        xml_job_generator = XmlJobGenerator(registry)
+        xml_view_generator = XmlViewGenerator(registry)
 
         parser.load_files(options.path)
         registry.set_parser_data(parser.data)
 
-        job_data_list = parser.expandYaml(registry, options.names)
+        job_data_list, view_data_list = parser.expandYaml(
+            registry, options.names)
 
-        xml_jobs = xml_generator.generateXML(job_data_list)
+        xml_jobs = xml_job_generator.generateXML(job_data_list)
+        xml_views = xml_view_generator.generateXML(view_data_list)
 
         jobs = parser.jobs
         step = time.time()
         logging.debug('%d XML files generated in %ss',
                       len(jobs), str(step - orig))
 
-        return builder, xml_jobs
+        return builder, xml_jobs, xml_views
 
     def execute(self, options, jjb_config):
 
@@ -97,11 +101,16 @@ class UpdateSubCommand(base.BaseSubCommand):
             raise JenkinsJobsException(
                 'Number of workers must be equal or greater than 0')
 
-        builder, xml_jobs = self._generate_xmljobs(options, jjb_config)
+        builder, xml_jobs, xml_views = self._generate_xmljobs(
+            options, jjb_config)
 
         jobs, num_updated_jobs = builder.update_jobs(
             xml_jobs, n_workers=options.n_workers)
         logger.info("Number of jobs updated: %d", num_updated_jobs)
+
+        views, num_updated_views = builder.update_views(
+            xml_views, n_workers=options.n_workers)
+        logger.info("Number of views updated: %d", num_updated_views)
 
         keep_jobs = [job.name for job in xml_jobs]
         if options.delete_old:

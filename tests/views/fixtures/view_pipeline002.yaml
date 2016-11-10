@@ -1,0 +1,3 @@
+name: testBPview
+view-type: pipeline
+first-job: job-one

@@ -1,0 +1,10 @@
+name: regex-example
+view-type: list
+columns:
+    - status
+    - weather
+    - job
+    - last-success
+    - last-failure
+    - last-duration
+regex: (?!test.*).*
