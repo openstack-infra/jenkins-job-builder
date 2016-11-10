@@ -17,9 +17,30 @@
 
 import os
 
+from jenkins_jobs import parser
+from jenkins_jobs import registry
+
 from tests import base
 
 
 class TestCaseModuleYamlInclude(base.SingleJobTestCase):
     fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
     scenarios = base.get_scenarios(fixtures_path)
+
+
+class TestYamlParserExceptions(base.BaseTestCase):
+    fixtures_path = os.path.join(os.path.dirname(__file__), 'exceptions')
+
+    def test_incorrect_template_dimensions(self):
+        self.conf_filename = None
+        config = self._get_config()
+
+        yp = parser.YamlParser(config)
+        yp.parse(os.path.join(self.fixtures_path,
+                              "incorrect_template_dimensions.yaml"))
+
+        reg = registry.ModuleRegistry(config)
+
+        e = self.assertRaises(Exception, yp.expandYaml, reg)
+        self.assertIn("'NoneType' object is not iterable", str(e))
+        self.assertIn("- branch: current\n  current: null", self.logger.output)

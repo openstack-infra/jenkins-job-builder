@@ -110,7 +110,7 @@ class BaseTestCase(testtools.TestCase):
     def setUp(self):
 
         super(BaseTestCase, self).setUp()
-        self.useFixture(fixtures.FakeLogger(level=logging.DEBUG))
+        self.logger = self.useFixture(fixtures.FakeLogger(level=logging.DEBUG))
 
     def _read_utf8_content(self):
         # if None assume empty file
