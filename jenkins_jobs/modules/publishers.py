@@ -3973,6 +3973,8 @@ def plot(registry, xml_parent, data):
 
     :arg str title: title for the graph (default '')
     :arg str yaxis: title of Y axis (default '')
+    :arg int width: the width of the plot in pixels (default 750)
+    :arg int height: the height of the plot in pixels (default 450)
     :arg str group: name of the group to which the plot belongs (required)
     :arg int num-builds: number of builds to plot across
         (default plot all builds)
@@ -4050,6 +4052,8 @@ def plot(registry, xml_parent, data):
         plugin = XML.SubElement(plots, 'hudson.plugins.plot.Plot')
         XML.SubElement(plugin, 'title').text = plot.get('title', '')
         XML.SubElement(plugin, 'yaxis').text = plot['yaxis']
+        XML.SubElement(plugin, 'width').text = str(plot.get('width', '750'))
+        XML.SubElement(plugin, 'height').text = str(plot.get('height', '450'))
         XML.SubElement(plugin, 'csvFileName').text = \
             plot.get('csv-file-name', '%s.csv' % random.randrange(2 << 32))
         topseries = XML.SubElement(plugin, 'series')

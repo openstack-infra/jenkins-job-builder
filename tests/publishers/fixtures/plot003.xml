@@ -6,6 +6,8 @@
         <hudson.plugins.plot.Plot>
           <title>Sample graph</title>
           <yaxis/>
+          <width>750</width>
+          <height>450</height>
           <csvFileName>persisted.csv</csvFileName>
           <series>
             <hudson.plugins.plot.XMLSeries>
