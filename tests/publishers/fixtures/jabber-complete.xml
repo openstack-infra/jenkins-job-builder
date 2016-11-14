@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.jabber.im.transport.JabberPublisher plugin="jabber">
+      <targets>
+        <hudson.plugins.im.GroupChatIMMessageTarget plugin="instant-messaging">
+          <name>foo-room@conference-2-fooserver.foo.com</name>
+          <notificationOnly>false</notificationOnly>
+        </hudson.plugins.im.GroupChatIMMessageTarget>
+        <hudson.plugins.im.DefaultIMMessageTarget plugin="instant-messaging">
+          <value>foo-user@conference-2-fooserver.foo.com</value>
+        </hudson.plugins.im.DefaultIMMessageTarget>
+      </targets>
+      <strategy>NEW_FAILURE_AND_FIXED</strategy>
+      <notifyOnBuildStart>true</notifyOnBuildStart>
+      <notifySuspects>true</notifySuspects>
+      <notifyCulprits>true</notifyCulprits>
+      <notifyFixers>true</notifyFixers>
+      <notifyUpstreamCommitters>true</notifyUpstreamCommitters>
+      <buildToChatNotifier class="hudson.plugins.im.build_notify.SummaryOnlyBuildToChatNotifier"/>
+      <matrixMultiplier>ONLY_CONFIGURATIONS</matrixMultiplier>
+    </hudson.plugins.jabber.im.transport.JabberPublisher>
+  </publishers>
+</project>

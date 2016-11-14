@@ -1,9 +1,13 @@
 publishers:
   - jabber:
       notify-on-build-start: true
+      notify-scm-committers: true
+      notify-scm-culprits: true
+      notify-upstream-committers: true
+      notify-scm-fixers: true
       group-targets:
         - "foo-room@conference-2-fooserver.foo.com"
       individual-targets:
         - "foo-user@conference-2-fooserver.foo.com"
-      strategy: all
-      message: summary-scm
+      strategy: new-failure-fixed
+      message: summary

@@ -2767,6 +2767,7 @@ def jabber(registry, xml_parent, data):
           * **all** -- Always
           * **failure** -- On any failure
           * **failure-fixed** -- On failure and fixes
+          * **new-failure-fixed** -- On new failure and fixes
           * **change** -- Only on state change
     :arg dict message: Channel notification message (default summary-scm)
 
@@ -2776,45 +2777,55 @@ def jabber(registry, xml_parent, data):
           * **summary-build** -- Summary and build parameters
           * **summary-scm-fail** -- Summary, SCM changes, and failed tests
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/jabber001.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/jabber-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/jabber-complete.yaml
        :language: yaml
     """
     j = XML.SubElement(xml_parent, 'hudson.plugins.jabber.im.transport.'
                        'JabberPublisher')
+    j.set('plugin', 'jabber')
+
     t = XML.SubElement(j, 'targets')
     if 'group-targets' in data:
         for group in data['group-targets']:
             gcimt = XML.SubElement(t, 'hudson.plugins.im.'
                                    'GroupChatIMMessageTarget')
+            gcimt.set('plugin', 'instant-messaging')
             XML.SubElement(gcimt, 'name').text = group
             XML.SubElement(gcimt, 'notificationOnly').text = 'false'
     if 'individual-targets' in data:
         for individual in data['individual-targets']:
             dimt = XML.SubElement(t, 'hudson.plugins.im.'
                                   'DefaultIMMessageTarget')
+            dimt.set('plugin', 'instant-messaging')
             XML.SubElement(dimt, 'value').text = individual
     strategy = data.get('strategy', 'all')
     strategydict = {'all': 'ALL',
                     'failure': 'ANY_FAILURE',
                     'failure-fixed': 'FAILURE_AND_FIXED',
+                    'new-failure-fixed': 'NEW_FAILURE_AND_FIXED',
                     'change': 'STATECHANGE_ONLY'}
     if strategy not in strategydict:
         raise JenkinsJobsException("Strategy entered is not valid, must be " +
                                    "one of: all, failure, failure-fixed, or "
                                    "change")
     XML.SubElement(j, 'strategy').text = strategydict[strategy]
-    XML.SubElement(j, 'notifyOnBuildStart').text = str(
-        data.get('notify-on-build-start', False)).lower()
-    XML.SubElement(j, 'notifySuspects').text = str(
-        data.get('notify-scm-committers', False)).lower()
-    XML.SubElement(j, 'notifyCulprits').text = str(
-        data.get('notify-scm-culprits', False)).lower()
-    XML.SubElement(j, 'notifyFixers').text = str(
-        data.get('notify-scm-fixers', False)).lower()
-    XML.SubElement(j, 'notifyUpstreamCommitters').text = str(
-        data.get('notify-upstream-committers', False)).lower()
+
+    mappings = [
+        ('notify-on-build-start', 'notifyOnBuildStart', False),
+        ('notify-scm-committers', 'notifySuspects', False),
+        ('notify-scm-culprits', 'notifyCulprits', False),
+        ('notify-scm-fixers', 'notifyFixers', False),
+        ('notify-upstream-committers', 'notifyUpstreamCommitters', False)
+    ]
+    helpers.convert_mapping_to_xml(j, data, mappings, fail_required=True)
+
     message = data.get('message', 'summary-scm')
     messagedict = {'summary-scm': 'DefaultBuildToChatNotifier',
                    'summary': 'SummaryOnlyBuildToChatNotifier',
