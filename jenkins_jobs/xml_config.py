@@ -74,10 +74,10 @@ class XmlJobGenerator(object):
     def generateXML(self, jobdict_list):
         xml_jobs = []
         for job in jobdict_list:
-            xml_jobs.append(self.__getXMLForJob(job))
+            xml_jobs.append(self._getXMLForJob(job))
         return xml_jobs
 
-    def __getXMLForJob(self, data):
+    def _getXMLForJob(self, data):
         kind = data.get('project-type', 'freestyle')
 
         for ep in pkg_resources.iter_entry_points(
@@ -85,14 +85,14 @@ class XmlJobGenerator(object):
             Mod = ep.load()
             mod = Mod(self.registry)
             xml = mod.root_xml(data)
-            self.__gen_xml(xml, data)
+            self._gen_xml(xml, data)
             job = XmlJob(xml, data['name'])
             return job
 
         raise errors.JenkinsJobsException("Unrecognized project type: '%s'"
                                           % kind)
 
-    def __gen_xml(self, xml, data):
+    def _gen_xml(self, xml, data):
         for module in self.registry.modules:
             if hasattr(module, 'gen_xml'):
                 module.gen_xml(xml, data)
@@ -109,10 +109,10 @@ class XmlViewGenerator(object):
     def generateXML(self, viewdict_list):
         xml_views = []
         for view in viewdict_list:
-            xml_views.append(self.__getXMLForView(view))
+            xml_views.append(self._getXMLForView(view))
         return xml_views
 
-    def __getXMLForView(self, data):
+    def _getXMLForView(self, data):
         kind = data.get('view-type', 'list')
 
         for ep in pkg_resources.iter_entry_points(
@@ -120,11 +120,11 @@ class XmlViewGenerator(object):
             Mod = ep.load()
             mod = Mod(self.registry)
             xml = mod.root_xml(data)
-            self.__gen_xml(xml, data)
+            self._gen_xml(xml, data)
             view = XmlJob(xml, data['name'])
             return view
 
-    def __gen_xml(self, xml, data):
+    def _gen_xml(self, xml, data):
         for module in self.registry.modules:
             if hasattr(module, 'gen_xml'):
                 module.gen_xml(xml, data)
