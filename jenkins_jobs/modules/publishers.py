@@ -2776,7 +2776,8 @@ def performance(registry, xml_parent, data):
 
 def join_trigger(registry, xml_parent, data):
     """yaml: join-trigger
-    Trigger a job after all the immediate downstream jobs have completed
+    Trigger a job after all the immediate downstream jobs have completed.
+    Requires the Jenkins :jenkins-wiki:`Join Plugin <Join+Plugin>`.
 
     :arg bool even-if-unstable: if true jobs will trigger even if some
         downstream jobs are marked as unstable (default false)
