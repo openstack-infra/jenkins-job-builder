@@ -1,0 +1,22 @@
+publishers:
+  - performance:
+      failed-threshold: 85
+      unstable-threshold: -1
+      unstable-response-time-threshold: "JMeterResultsOrders.jtl:2000"
+      failed-threshold-positive: 90.0
+      failed-threshold-negative: 10.0
+      unstable-threshold-positive: 80.0
+      unstable-threshold-negative: 20.0
+      nth-build-number: 10
+      mode-relative-thresholds: true
+      config-type: "PRT"
+      mode-of-threshold: true
+      fail-build: true
+      compare-build-previous: true
+      mode-performance-per-test-case: false
+      mode-thoughput: true
+      report:
+        - jmeter: "/special/file.jtl"
+        - junit: "/special/file.xml"
+        - jmeter
+        - junit
