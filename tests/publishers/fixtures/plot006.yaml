@@ -1,0 +1,19 @@
+publishers:
+  - plot:
+      - title: 'Sample graph'
+        yaxis: ''
+        width: 900
+        height: 1000
+        csv-file-name: 'persisted.csv'
+        group: 'bench'
+        numbuilds: '1'
+        style: 'line'
+        use-description: false
+        keep-records: true
+        series:
+            - file: 'data.csv'
+              label: ''
+              url: ''
+              format: 'csv'
+              display-table: false
+              inclusion-flag: 'off'

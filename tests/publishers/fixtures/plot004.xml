@@ -6,6 +6,8 @@
         <hudson.plugins.plot.Plot>
           <title>MyPlot</title>
           <yaxis>Y</yaxis>
+          <width>750</width>
+          <height>450</height>
           <csvFileName>myplot.csv</csvFileName>
           <series>
             <hudson.plugins.plot.PropertiesSeries>
@@ -33,6 +35,8 @@
         <hudson.plugins.plot.Plot>
           <title>MyPlot2</title>
           <yaxis>Y</yaxis>
+          <width>750</width>
+          <height>450</height>
           <csvFileName>myplot2.csv</csvFileName>
           <series>
             <hudson.plugins.plot.XMLSeries>

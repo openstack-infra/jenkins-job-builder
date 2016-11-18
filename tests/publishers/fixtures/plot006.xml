@@ -6,21 +6,24 @@
         <hudson.plugins.plot.Plot>
           <title>Sample graph</title>
           <yaxis/>
-          <width>750</width>
-          <height>450</height>
+          <width>900</width>
+          <height>1000</height>
           <csvFileName>persisted.csv</csvFileName>
           <series>
-            <hudson.plugins.plot.PropertiesSeries>
-              <file>data.properties</file>
-              <label/>
-              <fileType>properties</fileType>
-            </hudson.plugins.plot.PropertiesSeries>
+            <hudson.plugins.plot.CSVSeries>
+              <file>data.csv</file>
+              <inclusionFlag>OFF</inclusionFlag>
+              <exclusionValues/>
+              <url/>
+              <displayTableFlag>false</displayTableFlag>
+              <fileType>csv</fileType>
+            </hudson.plugins.plot.CSVSeries>
           </series>
           <group>bench</group>
           <useDescr>false</useDescr>
           <exclZero>false</exclZero>
           <logarithmic>false</logarithmic>
-          <keepRecords>false</keepRecords>
+          <keepRecords>true</keepRecords>
           <numBuilds/>
           <style>line</style>
         </hudson.plugins.plot.Plot>
