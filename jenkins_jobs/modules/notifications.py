@@ -56,13 +56,13 @@ def http_endpoint(registry, xml_parent, data):
                                       'com.tikal.hudson.plugins.notification.'
                                       'Endpoint')
     supported_formats = ['JSON', 'XML']
-    format = data.get('format', 'JSON').upper()
-    if format not in supported_formats:
+    fmt = data.get('format', 'JSON').upper()
+    if fmt not in supported_formats:
         raise JenkinsJobsException(
             "format must be one of %s" %
             ", ".join(supported_formats))
     else:
-        XML.SubElement(endpoint_element, 'format').text = format
+        XML.SubElement(endpoint_element, 'format').text = fmt
 
     XML.SubElement(endpoint_element, 'protocol').text = 'HTTP'
 

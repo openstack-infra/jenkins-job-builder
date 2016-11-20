@@ -109,7 +109,8 @@ class JenkinsManager(object):
         Jenkins instance.
         """
         try:
-            plugins_list = self.jenkins.get_plugins_info()
+            plugins_list = self.jenkins.get_plugins().values()
+
         except jenkins.JenkinsException as e:
             if re.search("Connection refused", str(e)):
                 logger.warning(

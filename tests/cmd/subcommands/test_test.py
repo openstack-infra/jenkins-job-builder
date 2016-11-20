@@ -203,9 +203,9 @@ class TestJenkinsGetPluginInfoError(CmdTestsBase):
     jenkins_jobs.builder.JenkinsManager.get_plugins_info
     """
 
-    @mock.patch('jenkins.Jenkins.get_plugins_info')
+    @mock.patch('jenkins.Jenkins.get_plugins')
     def test_console_output_jenkins_connection_failure_warning(
-            self, get_plugins_info_mock):
+            self, get_plugins_mock):
         """
         Run test mode and verify that failed Jenkins connection attempt
         exception does not bubble out of cmd.main. Ideally, we would also test
@@ -214,7 +214,7 @@ class TestJenkinsGetPluginInfoError(CmdTestsBase):
         suite.
         """
 
-        get_plugins_info_mock.side_effect = \
+        get_plugins_mock.side_effect = \
             jenkins.JenkinsException("Connection refused")
         with mock.patch('sys.stdout'):
             try:
@@ -226,9 +226,9 @@ class TestJenkinsGetPluginInfoError(CmdTestsBase):
             except:
                 pass  # only care about jenkins.JenkinsException for now
 
-    @mock.patch('jenkins.Jenkins.get_plugins_info')
+    @mock.patch('jenkins.Jenkins.get_plugins')
     def test_skip_plugin_retrieval_if_no_config_provided(
-            self, get_plugins_info_mock):
+            self, get_plugins_mock):
         """
         Verify that retrieval of information from Jenkins instance about its
         plugins will be skipped when run if no config file provided.
@@ -237,10 +237,10 @@ class TestJenkinsGetPluginInfoError(CmdTestsBase):
             args = ['--conf', self.default_config_file, 'test',
                     os.path.join(self.fixtures_path, 'cmd-001.yaml')]
             entry.JenkinsJobs(args)
-        self.assertFalse(get_plugins_info_mock.called)
+        self.assertFalse(get_plugins_mock.called)
 
     @mock.patch('jenkins.Jenkins.get_plugins_info')
-    def test_skip_plugin_retrieval_if_disabled(self, get_plugins_info_mock):
+    def test_skip_plugin_retrieval_if_disabled(self, get_plugins_mock):
         """
         Verify that retrieval of information from Jenkins instance about its
         plugins will be skipped when run if a config file provided and disables
@@ -253,7 +253,7 @@ class TestJenkinsGetPluginInfoError(CmdTestsBase):
                     'test',
                     os.path.join(self.fixtures_path, 'cmd-001.yaml')]
             entry.JenkinsJobs(args)
-        self.assertFalse(get_plugins_info_mock.called)
+        self.assertFalse(get_plugins_mock.called)
 
 
 class MatchesDirMissingFilesMismatch(object):

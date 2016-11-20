@@ -106,8 +106,8 @@ class JenkinsJobs(object):
                         key = 'CTRL+Z'
                     else:
                         key = 'CTRL+D'
-                    logger.warn("Reading configuration from STDIN. "
-                                "Press %s to end input.", key)
+                    logger.warning("Reading configuration from STDIN. "
+                                   "Press %s to end input.", key)
             else:
                 # take list of paths
                 self.options.path = self.options.path.split(os.pathsep)

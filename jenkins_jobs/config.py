@@ -113,8 +113,8 @@ class JJBConfig(object):
                 if config_file_required:
                     raise JJBConfigException(CONFIG_REQUIRED_MESSAGE)
                 else:
-                    logger.warn("Config file, {0}, not found. Using default "
-                                "config values.".format(conf))
+                    logger.warning("Config file, {0}, not found. Using "
+                                   "default config values.".format(conf))
 
         if config_fp is not None:
             if PY2:
@@ -172,10 +172,10 @@ class JJBConfig(object):
 
         # check the ignore_cache setting
         if config.has_option('jenkins', 'ignore_cache'):
-            logging.warn("ignore_cache option should be moved to the "
-                         "[job_builder] section in the config file, the "
-                         "one specified in the [jenkins] section will be "
-                         "ignored in the future")
+            logging.warning("ignore_cache option should be moved to the "
+                            "[job_builder] section in the config file, the "
+                            "one specified in the [jenkins] section will be "
+                            "ignored in the future")
             self.ignore_cache = config.getboolean('jenkins', 'ignore_cache')
         elif config.has_option('job_builder', 'ignore_cache'):
             self.ignore_cache = config.getboolean('job_builder',

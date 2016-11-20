@@ -154,12 +154,12 @@ class YamlParser(object):
                                                "named '{0}'. Missing indent?"
                                                .format(n))
                 # allow any entry to specify an id that can also be used
-                id = dfn.get('id', dfn['name'])
-                if id in group:
+                _id = dfn.get('id', dfn['name'])
+                if _id in group:
                     self._handle_dups(
                         "Duplicate entry found in '{0}: '{1}' already "
-                        "defined".format(fp.name, id))
-                group[id] = dfn
+                        "defined".format(fp.name, _id))
+                group[_id] = dfn
                 self.data[cls] = group
 
     def parse(self, fn):
