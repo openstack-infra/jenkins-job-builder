@@ -20,7 +20,7 @@
               <inclusionFlag>OFF</inclusionFlag>
               <exclusionValues/>
               <url>http://srv1</url>
-              <displayTableFlag>false</displayTableFlag>
+              <displayTableFlag>true</displayTableFlag>
               <fileType>csv</fileType>
             </hudson.plugins.plot.CSVSeries>
           </series>

@@ -4160,7 +4160,7 @@ def plot(registry, xml_parent, data):
                             exclude_string
                 XML.SubElement(subserie, 'url').text = serie.get('url', '')
                 XML.SubElement(subserie, 'displayTableFlag').text = \
-                    str(plot.get('display-table', False)).lower()
+                    str(serie.get('display-table', False)).lower()
             if format_data == 'xml':
                 XML.SubElement(subserie, 'url').text = serie.get('url', '')
                 XML.SubElement(subserie, 'xpathString').text = \
