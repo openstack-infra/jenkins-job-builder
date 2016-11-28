@@ -1,0 +1,21 @@
+name: 'demo-multibranch-multi-scm-full'
+description: 'Workflow demo'
+
+project-type: multibranch
+
+periodic-folder-trigger: 1d
+prune-dead-branches: True
+number-to-keep: '10'
+days-to-keep: '10'
+scm:
+    - bitbucket:
+        repo-owner: 'SANDBOX'
+        repo: 'test'
+        credentials-id: 'secret'
+    - git:
+        url: 'https://example.com/jonhndoe/keep-frontend.git'
+        credentials-id: 'secret'
+    - github:
+        repo: 'foo'
+        repo-owner: 'johndoe'
+        credentials-id: 'secret'

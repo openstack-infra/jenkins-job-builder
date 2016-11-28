@@ -1,0 +1,12 @@
+name: scm-github-full
+project-type: multibranch
+scm:
+    - github:
+        api-uri: http://example.org/github
+        repo: example-repo
+        repo-owner: example-owner
+        credentials-id: example-credential
+        branch-discovery: all
+        discover-pr-forks-strategy: both
+        discover-pr-forks-trust: everyone
+        discover-pr-origin: both

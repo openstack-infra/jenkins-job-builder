@@ -1,0 +1,6 @@
+name: 'demo-multibranch-github-min'
+project-type: multibranch
+scm:
+    - github:
+        repo: 'foo'
+        repo-owner: 'johndoe'

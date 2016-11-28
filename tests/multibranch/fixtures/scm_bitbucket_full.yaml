@@ -1,0 +1,7 @@
+name: 'demo-multibranch-bitbucket-min'
+project-type: multibranch
+scm:
+    - bitbucket:
+        credentials-id: 'secret'
+        repo-owner: 'SANDBOX'
+        repo: 'test'

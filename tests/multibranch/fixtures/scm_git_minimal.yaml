@@ -1,0 +1,5 @@
+name: 'demo-multibranch-git-min'
+project-type: multibranch
+scm:
+    - git:
+        url: 'https://example.com/jonhndoe/keep-frontend.git'

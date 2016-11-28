@@ -1,0 +1,7 @@
+name: 'demo-multibranch-defaults'
+project-type: multibranch-defaults
+scm:
+    - github:
+        repo: 'foo'
+        repo-owner: 'johndoe'
+        credentials-id: 'secret'

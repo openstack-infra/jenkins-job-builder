@@ -41,6 +41,7 @@ from jenkins_jobs.modules import project_externaljob
 from jenkins_jobs.modules import project_flow
 from jenkins_jobs.modules import project_matrix
 from jenkins_jobs.modules import project_maven
+from jenkins_jobs.modules import project_multibranch
 from jenkins_jobs.modules import project_multijob
 from jenkins_jobs.modules import view_list
 from jenkins_jobs.modules import view_pipeline
@@ -188,6 +189,10 @@ class BaseScenariosTestCase(testscenarios.TestWithScenarios, BaseTestCase):
                 project = project_flow.Flow(registry)
             elif (yaml_content['project-type'] == "multijob"):
                 project = project_multijob.MultiJob(registry)
+            elif (yaml_content['project-type'] == "multibranch"):
+                project = project_multibranch.WorkflowMultiBranch(registry)
+            elif (yaml_content['project-type'] == "multibranch-defaults"):
+                project = project_multibranch.WorkflowMultiBranchDefaults(registry)  # noqa
             elif (yaml_content['project-type'] == "externaljob"):
                 project = project_externaljob.ExternalJob(registry)
 
