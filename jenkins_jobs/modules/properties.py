@@ -241,6 +241,10 @@ def throttle(registry, xml_parent, data):
     :arg list categories: multiproject throttle categories
     :arg bool matrix-builds: throttle matrix master builds (default true)
     :arg bool matrix-configs: throttle matrix config builds (default false)
+    :arg str parameters-limit: prevent jobs with matching parameters from
+         running concurrently (default false)
+    :arg list parameters-check-list: Comma-separated list of parameters
+        to use when comparing jobs (optional)
 
     Example:
 
@@ -269,6 +273,7 @@ def throttle(registry, xml_parent, data):
     mapping = [
         ('', 'throttleOption', option),
         ('', 'configVersion', '1'),
+        ('parameters-limit', 'limitOneJobWithMatchingParams', False),
     ]
     helpers.convert_mapping_to_xml(throttle, data, mapping, fail_required=True)
 
@@ -279,6 +284,10 @@ def throttle(registry, xml_parent, data):
     ]
     helpers.convert_mapping_to_xml(
         matrixopt, data, mapping, fail_required=True)
+
+    params_to_use = data.get('parameters-check-list', [])
+    XML.SubElement(throttle, 'paramsToUseForLimit').text = ",".join(
+        params_to_use)
 
 
 def branch_api(registry, xml_parent, data):

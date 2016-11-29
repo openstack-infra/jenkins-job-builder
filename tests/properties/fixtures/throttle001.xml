@@ -11,10 +11,12 @@
       </categories>
       <throttleOption>category</throttleOption>
       <configVersion>1</configVersion>
+      <limitOneJobWithMatchingParams>false</limitOneJobWithMatchingParams>
       <matrixOptions>
         <throttleMatrixBuilds>false</throttleMatrixBuilds>
         <throttleMatrixConfigurations>true</throttleMatrixConfigurations>
       </matrixOptions>
+      <paramsToUseForLimit/>
     </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
   </properties>
 </project>
