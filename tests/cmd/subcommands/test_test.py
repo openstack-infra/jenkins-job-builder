@@ -74,6 +74,22 @@ class TestTests(CmdTestsBase):
                               'r', encoding='utf-8').read()
         self.assertEqual(console_out.getvalue().decode('utf-8'), xml_content)
 
+    def test_stream_input_output_no_encoding_exceed_recursion(self):
+        """
+        Test that we don't have issues processing large number of jobs and
+        outputting the result if the encoding is not set.
+        """
+        console_out = io.BytesIO()
+
+        input_file = os.path.join(self.fixtures_path,
+                                  'large-number-of-jobs-001.yaml')
+        with io.open(input_file, 'r') as f:
+            with mock.patch('sys.stdout', console_out):
+                console_out.encoding = None
+                with mock.patch('sys.stdin', f):
+                    args = ['test']
+                    self.execute_jenkins_jobs_with_args(args)
+
     def test_stream_input_output_utf8_encoding(self):
         """
         Run test mode simulating using pipes for input and output using
