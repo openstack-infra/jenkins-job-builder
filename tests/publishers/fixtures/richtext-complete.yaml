@@ -2,4 +2,7 @@ publishers:
     - rich-text-publisher:
         stable-text: the stable text
         unstable-text: the unstable text
+        failed-text: the failed text
+        unstable-as-stable: false
+        failed-as-stable: false
         parser-name: HTML

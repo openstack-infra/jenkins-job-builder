@@ -3349,38 +3349,45 @@ def rich_text_publisher(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Rich Text Publisher Plugin
     <Rich+Text+Publisher+Plugin>`.
 
-    :arg str stable-text: The stable text
+    :arg str stable-text: The stable text (required)
     :arg str unstable-text: The unstable text if different from stable
-      (default '')
+        (default '')
+    :arg bool unstable-as-stable: The same text block is used for stable and
+         unstable builds (default true)
     :arg str failed-text: The failed text if different from stable (default '')
-    :arg str parser-name: HTML, Confluence or WikiText
+    :arg bool failed-as-stable: The same text block is used for stable and
+         failed builds (default true)
+    :arg str parser-name: HTML, Confluence or WikiText (default 'WikiText')
 
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude::  /../../tests/publishers/fixtures/richtext001.yaml
+    .. literalinclude::  /../../tests/publishers/fixtures/richtext-minimal.yaml
        :language: yaml
 
+    Full Example:
+
+    .. literalinclude::
+       /../../tests/publishers/fixtures/richtext-complete.yaml
+       :language: yaml
     """
 
     parsers = ['HTML', 'Confluence', 'WikiText']
-    parser_name = data['parser-name']
-    if parser_name not in parsers:
-        raise JenkinsJobsException('parser-name must be one of: %s' %
-                                   ", ".join(parsers))
-
     reporter = XML.SubElement(
         xml_parent,
         'org.korosoft.jenkins.plugin.rtp.RichTextPublisher')
-    XML.SubElement(reporter, 'stableText').text = data['stable-text']
-    XML.SubElement(reporter, 'unstableText').text =\
-        data.get('unstable-text', '')
-    XML.SubElement(reporter, 'failedText').text = data.get('failed-text', '')
-    XML.SubElement(reporter, 'unstableAsStable').text =\
-        'False' if data.get('unstable-text', '') else 'True'
-    XML.SubElement(reporter, 'failedAsStable').text =\
-        'False' if data.get('failed-text', '') else 'True'
-    XML.SubElement(reporter, 'parserName').text = parser_name
+    reporter.set('plugin', 'rich-text-publisher-plugin')
+
+    mappings = [
+        ('stable-text', 'stableText', None),
+        ('unstable-text', 'unstableText', ''),
+        ('failed-text', 'failedText', ''),
+        ('unstable-as-stable', 'unstableAsStable', True),
+        ('failed-as-stable', 'failedAsStable', True),
+        ('parser-name', 'parserName', 'WikiText', parsers)
+    ]
+    helpers.convert_mapping_to_xml(
+        reporter, data, mappings, fail_required=True)
 
 
 def tap(registry, xml_parent, data):
