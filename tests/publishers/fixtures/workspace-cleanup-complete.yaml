@@ -1,0 +1,16 @@
+publishers:
+  - workspace-cleanup:
+      include:
+        - "*.zip"
+      exclude:
+        - "*.txt"
+      clean-if:
+        - success: false
+        - unstable: false
+        - failure: false
+        - aborted: false
+        - not-built: false
+      dirmatch: true
+      fail-build: false
+      clean-parent: true
+      external-deletion-command: 'command'
