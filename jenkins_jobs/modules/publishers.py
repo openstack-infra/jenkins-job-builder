@@ -3279,14 +3279,14 @@ def text_finder(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Text-finder Plugin
     <Text-finder+Plugin>`.
 
-    :arg str regexp: Specify a regular expression
-    :arg str fileset: Specify the path to search
+    :arg str regexp: Specify a regular expression (required)
+    :arg str fileset: Specify the path to search (optional)
     :arg bool also-check-console-output:
-              Search the console output (default false)
+        Search the console output (default false)
     :arg bool succeed-if-found:
-              Force a build to succeed if a string was found (default false)
+        Force a build to succeed if a string was found (default false)
     :arg bool unstable-if-found:
-              Set build unstable instead of failing the build (default false)
+        Set build unstable instead of failing the build (default false)
 
 
     Example:
@@ -3297,15 +3297,16 @@ def text_finder(registry, xml_parent, data):
 
     finder = XML.SubElement(xml_parent,
                             'hudson.plugins.textfinder.TextFinderPublisher')
+    finder.set('plugin', 'text-finder')
     if ('fileset' in data):
         XML.SubElement(finder, 'fileSet').text = data['fileset']
-    XML.SubElement(finder, 'regexp').text = data['regexp']
-    check_output = str(data.get('also-check-console-output', False)).lower()
-    XML.SubElement(finder, 'alsoCheckConsoleOutput').text = check_output
-    succeed_if_found = str(data.get('succeed-if-found', False)).lower()
-    XML.SubElement(finder, 'succeedIfFound').text = succeed_if_found
-    unstable_if_found = str(data.get('unstable-if-found', False)).lower()
-    XML.SubElement(finder, 'unstableIfFound').text = unstable_if_found
+    mappings = [
+        ('regexp', 'regexp', None),
+        ('also-check-console-output', 'alsoCheckConsoleOutput', False),
+        ('succeed-if-found', 'succeedIfFound', False),
+        ('unstable-if-found', 'unstableIfFound', False)
+    ]
+    helpers.convert_mapping_to_xml(finder, data, mappings, fail_required=True)
 
 
 def html_publisher(registry, xml_parent, data):
