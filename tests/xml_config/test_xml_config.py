@@ -34,7 +34,7 @@ class TestXmlJobGeneratorExceptions(base.BaseTestCase):
                               "invalid_project.yaml"))
 
         reg = registry.ModuleRegistry(config)
-        job_data = yp.expandYaml(reg)
+        job_data, _ = yp.expandYaml(reg)
 
         # Generate the XML tree
         xml_generator = xml_config.XmlJobGenerator(reg)
