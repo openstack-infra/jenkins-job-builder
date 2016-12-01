@@ -310,3 +310,18 @@ class JJBConfig(object):
                            " the " + section + " section, blank default" +
                            " value will be applied:\n{0}".format(e))
         return result
+
+    def get_plugin_config(self, plugin, key):
+        value = self.get_module_config('plugin "{}"'.format(plugin), key)
+
+        # Backwards compatibility for users who have not switched to the new
+        # plugin configuration format in their config. This code should be
+        # removed in future versions of JJB after 2.0.
+        if not value:
+            value = self.get_module_config(plugin, key)
+            logger.warning(
+                "Defining plugin configuration using [" + plugin + "] is"
+                " deprecated. The recommended way to define plugins now is by"
+                " configuring [plugin \"" + plugin + "\"]")
+
+        return value

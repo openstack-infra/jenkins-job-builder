@@ -14,9 +14,9 @@ query_plugins_info=False
 ##### This is deprecated, use job_builder section instead
 #ignore_cache=True
 
-[hipchat]
+[plugin "hipchat"]
 authtoken=dummy
 
-[stash]
+[plugin "stash"]
 username=user
 password=pass
