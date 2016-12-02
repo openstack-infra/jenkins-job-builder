@@ -21,9 +21,9 @@ from tests.base import mock
 
 
 @mock.patch('jenkins_jobs.builder.JobCache', mock.MagicMock)
-class TestCaseTestBuilder(base.BaseTestCase):
+class TestCaseTestJenkinsManager(base.BaseTestCase):
     def setUp(self):
-        super(TestCaseTestBuilder, self).setUp()
+        super(TestCaseTestJenkinsManager, self).setUp()
         self.jjb_config = JJBConfig()
         self.jjb_config.validate()
 
