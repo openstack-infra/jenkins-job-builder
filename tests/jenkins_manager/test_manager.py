@@ -39,3 +39,18 @@ class TestCaseTestJenkinsManager(base.BaseTestCase):
         self.jjb_config.builder['plugins_info'] = None
         self.builder = jenkins_jobs.builder.JenkinsManager(self.jjb_config)
         self.assertEqual(self.builder.plugins_list, ['p1', 'p2'])
+
+    def test_delete_managed(self):
+        self.jjb_config.builder['plugins_info'] = []
+        self.builder = jenkins_jobs.builder.JenkinsManager(self.jjb_config)
+
+        with mock.patch.multiple('jenkins_jobs.builder.JenkinsManager',
+                                 get_jobs=mock.DEFAULT,
+                                 is_managed=mock.DEFAULT,
+                                 delete_job=mock.DEFAULT) as patches:
+            patches['get_jobs'].return_value = [{'name': 'job1'},
+                                                {'name': 'job2'}]
+            patches['is_managed'].side_effect = [True, True]
+
+            self.builder.delete_old_managed()
+            self.assertEquals(patches['delete_job'].call_count, 2)

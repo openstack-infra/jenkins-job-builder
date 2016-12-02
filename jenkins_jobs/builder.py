@@ -150,6 +150,8 @@ class JenkinsManager(object):
     def delete_old_managed(self, keep=None):
         jobs = self.get_jobs()
         deleted_jobs = 0
+        if keep is None:
+            keep = []
         for job in jobs:
             if job['name'] not in keep:
                 if self.is_managed(job['name']):
