@@ -8,6 +8,7 @@ publishers:
       pass-threshold: 80.0
       unstable-threshold: 60.0
       only-critical: false
+      enable-cache: false
       other-files:
         - extra-file1.html
         - extra-file2.txt
