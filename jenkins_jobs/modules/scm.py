@@ -949,7 +949,7 @@ def tfs(registry, xml_parent, data):
         data.get('local-path', '.'))
     XML.SubElement(tfs, 'workspaceName').text = str(
         data.get('workspace', 'Hudson-${JOB_NAME}-${NODE_NAME}'))
-    # TODO: In the future, with would be nice to have a place that can pull
+    # TODO: In the future, it would be nice to have a place that can pull
     # passwords into JJB without having to commit them in plaintext. This
     # could also integrate nicely with global configuration options.
     XML.SubElement(tfs, 'userPassword')
