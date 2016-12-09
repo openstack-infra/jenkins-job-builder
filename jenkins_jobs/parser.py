@@ -24,7 +24,7 @@ import os
 
 from jenkins_jobs.constants import MAGIC_MANAGE_STRING
 from jenkins_jobs.errors import JenkinsJobsException
-from jenkins_jobs.formatter import deep_format
+from jenkins_jobs.formatter import deep_format, VerbatimString
 import jenkins_jobs.local_yaml as local_yaml
 from jenkins_jobs import utils
 
@@ -337,6 +337,7 @@ class YamlParser(object):
 
         for values in itertools.product(*dimensions):
             params = copy.deepcopy(project)
+            params['template-name'] = VerbatimString(template_name)
             params = self._applyDefaults(params, template)
 
             try:
@@ -378,7 +379,6 @@ class YamlParser(object):
                 if key not in params:
                     params[key] = template[key]
 
-            params['template-name'] = template_name
             try:
                 expanded = deep_format(
                     template, params,

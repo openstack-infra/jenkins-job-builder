@@ -401,6 +401,9 @@ You can define variables that will be realized in a `Job Template`.
 
 Would create jobs ``build-i386`` and ``build-amd64``.
 
+You can also reference a variable ``{template-name}`` in any value and it will
+be subtitued by the name of the current job template being processed.
+
 .. _variable_references:
 
 Variable References
