@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.waytta.SaltAPIBuilder>
+      <servername>{{SALT_MASTER}}</servername>
+      <credentialsId>credentials ID</credentialsId>
+      <authtype>pam</authtype>
+      <target/>
+      <targettype>glob</targettype>
+      <clientInterface>local</clientInterface>
+      <function/>
+      <arguments/>
+      <kwarguments/>
+      <usePillar>false</usePillar>
+      <pillarkey/>
+      <pillarvalue/>
+      <blockbuild>false</blockbuild>
+      <jobPollTime/>
+      <batchSize>100%</batchSize>
+      <mods/>
+      <saveEnvVar>false</saveEnvVar>
+      <clientInterfaces>
+        <nullObject>false</nullObject>
+        <properties class="org.apache.commons.collections.map.ListOrderedMap" serialization="custom">
+          <org.apache.commons.collections.map.ListOrderedMap>
+            <default>
+              <insertOrder>
+                <string>blockbuild</string>
+                <string>jobPollTime</string>
+                <string>clientInterface</string>
+              </insertOrder>
+            </default>
+            <map>
+              <entry>
+                <string>blockbuild</string>
+                <string>false</string>
+              </entry>
+              <entry>
+                <string>jobPollTime</string>
+                <string/>
+              </entry>
+              <entry>
+                <string>clientInterface</string>
+                <string>local</string>
+              </entry>
+            </map>
+          </org.apache.commons.collections.map.ListOrderedMap>
+        </properties>
+      </clientInterfaces>
+    </com.waytta.SaltAPIBuilder>
+  </builders>
+</project>
