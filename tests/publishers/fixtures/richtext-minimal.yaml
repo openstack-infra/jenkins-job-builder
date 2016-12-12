@@ -1,4 +1,3 @@
 publishers:
     - rich-text-publisher:
         stable-text: testing
-        parser-name: HTML
