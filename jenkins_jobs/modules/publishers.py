@@ -3732,7 +3732,7 @@ def warnings(registry, xml_parent, data):
 
         :workspace-file-scanners:
             * **file-pattern** (`str`) -- Fileset 'includes' setting that
-                specifies the files to scan for warnings
+                specifies the files to scan for warnings (required)
             * **scanner** (`str`) -- The parser to use to scan the files
                 provided in workspace-file-pattern (default '')
     :arg str files-to-include: Comma separated list of regular
@@ -3823,15 +3823,21 @@ def warnings(registry, xml_parent, data):
     :arg str default-encoding: Default encoding when parsing or showing files
         Leave empty to use default encoding of platform (default '')
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/warnings001.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/warnings-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/warnings-complete.yaml
        :language: yaml
     """
 
     warnings = XML.SubElement(xml_parent,
                               'hudson.plugins.warnings.'
                               'WarningsPublisher')
+    warnings.set('plugin', 'warnings')
     console = XML.SubElement(warnings, 'consoleParsers')
     for parser in data.get('console-log-parsers', []):
         console_parser = XML.SubElement(console,
@@ -3843,34 +3849,36 @@ def warnings(registry, xml_parent, data):
         workspace_pattern = XML.SubElement(workspace,
                                            'hudson.plugins.warnings.'
                                            'ParserConfiguration')
-        XML.SubElement(workspace_pattern, 'pattern').text = \
-            wfs['file-pattern']
-        XML.SubElement(workspace_pattern, 'parserName').text = \
-            wfs['scanner']
-    warnings_to_include = data.get('files-to-include', '')
-    XML.SubElement(warnings, 'includePattern').text = warnings_to_include
-    warnings_to_ignore = data.get('files-to-ignore', '')
-    XML.SubElement(warnings, 'excludePattern').text = warnings_to_ignore
-    run_always = str(data.get('run-always', False)).lower()
-    XML.SubElement(warnings, 'canRunOnFailed').text = run_always
-    detect_modules = str(data.get('detect-modules', False)).lower()
-    XML.SubElement(warnings, 'shouldDetectModules').text = detect_modules
-    # Note the logic reversal (included here to match the GUI)
-    XML.SubElement(warnings, 'doNotResolveRelativePaths').text = \
-        str(not data.get('resolve-relative-paths', False)).lower()
-    health_threshold_high = str(data.get('health-threshold-high', ''))
-    XML.SubElement(warnings, 'healthy').text = health_threshold_high
-    health_threshold_low = str(data.get('health-threshold-low', ''))
-    XML.SubElement(warnings, 'unHealthy').text = health_threshold_low
+        workspace_pattern_mappings = [
+            ('file-pattern', 'pattern', None),
+            ('scanner', 'parserName', '')
+        ]
+        helpers.convert_mapping_to_xml(workspace_pattern,
+                                       wfs,
+                                       workspace_pattern_mappings,
+                                       fail_required=True)
     prioritiesDict = {'priority-high': 'high',
                       'high-and-normal': 'normal',
                       'all-priorities': 'low'}
-    priority = data.get('health-priorities', 'all-priorities')
-    if priority not in prioritiesDict:
-        raise JenkinsJobsException("Health-Priority entered is not valid must "
-                                   "be one of: %s" %
-                                   ",".join(prioritiesDict.keys()))
-    XML.SubElement(warnings, 'thresholdLimit').text = prioritiesDict[priority]
+    warnings_mappings = [
+        ('files-to-include', 'includePattern', ''),
+        ('files-to-ignore', 'excludePattern', ''),
+        ('plugin-name', 'pluginName', '[WARNINGS]'),
+        ('run-always', 'canRunOnFailed', False),
+        ('detect-modules', 'shouldDetectModules', False),
+        ('health-threshold-high', 'healthy', ''),
+        ('health-threshold-low', 'unHealthy', ''),
+        ('health-priorities',
+         'thresholdLimit',
+         'all-priorities',
+         prioritiesDict),
+        ('default-encoding', 'defaultEncoding', '')
+    ]
+    helpers.convert_mapping_to_xml(
+        warnings, data, warnings_mappings, fail_required=True)
+    # Note the logic reversal (included here to match the GUI)
+    XML.SubElement(warnings, 'doNotResolveRelativePaths').text = str(
+        not data.get('resolve-relative-paths', False)).lower()
     td = XML.SubElement(warnings, 'thresholds')
     for base in ["total", "new"]:
         thresholds = data.get("%s-thresholds" % base, {})
@@ -3894,10 +3902,9 @@ def warnings(registry, xml_parent, data):
             use_stable_builds).lower()
     else:
         XML.SubElement(warnings, 'dontComputeNew').text = 'true'
-        XML.SubElement(warnings, 'useStableBuildAsReference').text = 'false'
         XML.SubElement(warnings, 'useDeltaValues').text = 'false'
-    encoding = data.get('default-encoding', '')
-    XML.SubElement(warnings, 'defaultEncoding').text = encoding
+        XML.SubElement(warnings, 'usePreviousBuildAsReference').text = 'false'
+        XML.SubElement(warnings, 'useStableBuildAsReference').text = 'false'
 
 
 def sloccount(registry, xml_parent, data):

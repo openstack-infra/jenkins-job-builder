@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.warnings.WarningsPublisher plugin="warnings">
+      <consoleParsers/>
+      <parserConfigurations/>
+      <includePattern/>
+      <excludePattern/>
+      <pluginName>[WARNINGS]</pluginName>
+      <canRunOnFailed>false</canRunOnFailed>
+      <shouldDetectModules>false</shouldDetectModules>
+      <healthy/>
+      <unHealthy/>
+      <thresholdLimit>low</thresholdLimit>
+      <defaultEncoding/>
+      <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
+      <thresholds>
+        <unstableTotalAll/>
+        <unstableTotalHigh/>
+        <unstableTotalNormal/>
+        <unstableTotalLow/>
+        <failedTotalAll/>
+        <failedTotalHigh/>
+        <failedTotalNormal/>
+        <failedTotalLow/>
+        <unstableNewAll/>
+        <unstableNewHigh/>
+        <unstableNewNormal/>
+        <unstableNewLow/>
+        <failedNewAll/>
+        <failedNewHigh/>
+        <failedNewNormal/>
+        <failedNewLow/>
+      </thresholds>
+      <dontComputeNew>true</dontComputeNew>
+      <useDeltaValues>false</useDeltaValues>
+      <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
+      <useStableBuildAsReference>false</useStableBuildAsReference>
+    </hudson.plugins.warnings.WarningsPublisher>
+  </publishers>
+</project>
