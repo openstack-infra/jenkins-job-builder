@@ -1,0 +1,7 @@
+publishers:
+  - sloccount:
+      report-files: sloccount.sc
+      charset: latin-1
+      builds-in-graph: 1
+      comment-is-code: true
+      ignore-build-failure: true

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <hudson.plugins.sloccount.SloccountPublisher>
+    <hudson.plugins.sloccount.SloccountPublisher plugin="sloccount">
       <pattern>sloccount.sc</pattern>
       <encoding>latin-1</encoding>
+      <numBuildsInGraph>1</numBuildsInGraph>
+      <commentIsCode>true</commentIsCode>
+      <ignoreBuildFailure>true</ignoreBuildFailure>
     </hudson.plugins.sloccount.SloccountPublisher>
   </publishers>
 </project>
