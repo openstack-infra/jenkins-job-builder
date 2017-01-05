@@ -2926,10 +2926,16 @@ def workspace_cleanup(registry, xml_parent, data):
     :arg str external-deletion-command: external deletion command to run
         against files and directories
 
-    Example:
+    Minimal Example:
 
     .. literalinclude::
-        /../../tests/publishers/fixtures/workspace-cleanup001.yaml
+        /../../tests/publishers/fixtures/workspace-cleanup-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/workspace-cleanup-complete.yaml
        :language: yaml
     """
 
@@ -2949,12 +2955,12 @@ def workspace_cleanup(registry, xml_parent, data):
         XML.SubElement(ptrn, 'pattern').text = exc
         XML.SubElement(ptrn, 'type').text = "EXCLUDE"
 
-    XML.SubElement(p, 'deleteDirs').text = \
-        str(data.get("dirmatch", False)).lower()
-    XML.SubElement(p, 'cleanupMatrixParent').text = \
-        str(data.get("clean-parent", False)).lower()
-    XML.SubElement(p, 'externalDelete').text = \
-        str(data.get('external-deletion-command', ''))
+    mappings = [
+        ('dirmatch', 'deleteDirs', False),
+        ('clean-parent', 'cleanupMatrixParent', False),
+        ('external-deletion-command', 'externalDelete', '')
+    ]
+    helpers.convert_mapping_to_xml(p, data, mappings, fail_required=True)
 
     mask = [('success', 'cleanWhenSuccess'),
             ('unstable', 'cleanWhenUnstable'),
