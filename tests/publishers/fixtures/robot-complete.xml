@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <hudson.plugins.robot.RobotPublisher>
+    <hudson.plugins.robot.RobotPublisher plugin="robot">
       <outputPath>reports/robot</outputPath>
       <logFileLink>report.html</logFileLink>
       <reportFileName>custom-report.html</reportFileName>
@@ -10,6 +10,7 @@
       <passThreshold>80.0</passThreshold>
       <unstableThreshold>60.0</unstableThreshold>
       <onlyCritical>false</onlyCritical>
+      <enableCache>false</enableCache>
       <otherFiles>
         <string>extra-file1.html</string>
         <string>extra-file2.txt</string>
