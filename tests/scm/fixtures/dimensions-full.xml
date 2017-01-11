@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <scm class="hudson.plugins.dimensionsscm.DimensionsSCM">
+    <project>myProduct:myProject</project>
+    <permissions>WRITABLE</permissions>
+    <eol>UNIX</eol>
+    <canJobUpdate>true</canJobUpdate>
+    <canJobDelete>true</canJobDelete>
+    <canJobForce>true</canJobForce>
+    <canJobRevert>true</canJobRevert>
+    <canJobExpand>true</canJobExpand>
+    <canJobNoMetadata>true</canJobNoMetadata>
+    <canJobNoTouch>true</canJobNoTouch>
+    <forceAsSlave>true</forceAsSlave>
+    <folders>
+      <string>src</string>
+      <string>test</string>
+    </folders>
+    <pathsToExclude>
+      <string>excluded_dir</string>
+      <string>excluded_other_dir</string>
+    </pathsToExclude>
+    <jobUserName>johnd</jobUserName>
+    <jobPasswd>passw0rd</jobPasswd>
+    <jobServer>my.dmscm.server:1234</jobServer>
+    <jobDatabase>myDatabase@myDsn</jobDatabase>
+    <jobTimeZone>Europe/Berlin</jobTimeZone>
+    <jobWebUrl>https://my.dmscm.weburl</jobWebUrl>
+  </scm>
+</project>
