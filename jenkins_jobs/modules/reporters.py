@@ -48,6 +48,8 @@ def email(registry, xml_parent, data):
       unstable build (default true)
     :arg bool send-to-individuals: Send an email to the individual
       who broke the build (default false)
+    :arg bool notify-for-each-module: Send an email for each module
+      (e.g. failed, unstable). (default true)
 
     Example::
 
@@ -57,7 +59,7 @@ def email(registry, xml_parent, data):
     """
 
     mailer = XML.SubElement(xml_parent,
-                            'hudson.maven.reporters.Mailer')
+                            'hudson.maven.reporters.MavenMailer')
     XML.SubElement(mailer, 'recipients').text = data['recipients']
 
     # Note the logic reversal (included here to match the GUI
@@ -67,8 +69,8 @@ def email(registry, xml_parent, data):
         XML.SubElement(mailer, 'dontNotifyEveryUnstableBuild').text = 'true'
     XML.SubElement(mailer, 'sendToIndividuals').text = str(
         data.get('send-to-individuals', False)).lower()
-    # TODO: figure out what this is:
-    XML.SubElement(mailer, 'perModuleEmail').text = 'true'
+    XML.SubElement(mailer, 'perModuleEmail').text = str(
+        data.get('notify-for-every-module', True)).lower()
 
 
 def findbugs(registry, xml_parent, data):
