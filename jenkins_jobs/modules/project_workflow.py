@@ -64,7 +64,7 @@ class Workflow(jenkins_jobs.modules.base.Base):
         try:
             XML.SubElement(xml_definition, 'script').text = data['dsl']
         except KeyError as e:
-            raise MissingAttributeError(e.arg[0])
+            raise MissingAttributeError(e.args[0])
 
         needs_workspace = data.get('sandbox', False)
         XML.SubElement(xml_definition, 'sandbox').text = str(
