@@ -25,8 +25,8 @@ class ModuleError(JenkinsJobsException):
                 data = frame.f_locals
                 module_name = "%s.%s" % (data['component_type'], data['name'])
                 break
-            # XML generation done directly by class using gen_xml
-            if co_name == 'gen_xml':
+            # XML generation done directly by class using gen_xml or root_xml
+            if co_name == 'gen_xml' or co_name == 'root_xml':
                 data = frame.f_locals['data']
                 module_name = next(iter(data.keys()))
                 break
