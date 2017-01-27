@@ -8,6 +8,7 @@
       <onlyIfSuccessful>false</onlyIfSuccessful>
       <fingerprint>true</fingerprint>
       <defaultExcludes>true</defaultExcludes>
+      <caseSensitive>false</caseSensitive>
     </hudson.tasks.ArtifactArchiver>
   </publishers>
 </project>

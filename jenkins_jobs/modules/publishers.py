@@ -55,6 +55,8 @@ def archive(registry, xml_parent, data):
     :arg bool fingerprint: fingerprint all archived artifacts (default false)
     :arg bool default-excludes: This option allows to enable or disable the
         default Ant exclusions. (default true)
+    :arg bool case-sensitive: Treat include and exclude patterns as case
+        sensitive. (default true)
 
     Example:
 
@@ -95,6 +97,10 @@ def archive(registry, xml_parent, data):
 
     default_excludes = XML.SubElement(archiver, 'defaultExcludes')
     default_excludes.text = str(data.get('default-excludes', True)).lower()
+
+    if 'case-sensitive' in data:
+        case_sensitive = XML.SubElement(archiver, 'caseSensitive')
+        case_sensitive.text = str(data.get('case-sensitive', True)).lower()
 
 
 def blame_upstream(registry, xml_parent, data):
