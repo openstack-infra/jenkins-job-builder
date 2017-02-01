@@ -300,6 +300,52 @@ def campfire(registry, xml_parent, data):
         XML.SubElement(room, 'campfire reference="../../campfire"')
 
 
+def mqtt(registry, xml_parent, data):
+    """yaml: mqtt
+    This plugin lets you send build notifications to a MQTT message queue.
+    Requires the :jenkins-wiki:`MQTT Notification Plugin
+    <MQTT+Notification+Plugin>`.
+
+    :arg str broker-url: the broker URL, as protocol://address:port (required)
+    :arg str credentials-id: credentials to use to connect to the broker
+    (optional)
+    :arg str topic: the message topic (default "jenkins/$PROJECT_URL")
+    :arg str message: the message itself (default "$BUILD_RESULT")
+    :arg str qos: one of AT_MOST_ONCE, AT_LEAST_ONCE, or EXACTLY_ONCE
+    (default AT_MOST_ONCE)
+    :arg bool retain-message: whether to resend message or not when a new
+    client connects (default false)
+
+    Minimal Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/mqtt-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/mqtt-full.yaml
+       :language: yaml
+    """
+
+    mqtt = XML.SubElement(xml_parent,
+                          'jenkins.plugins.mqttnotification.MqttNotifier')
+    mqtt.set('plugin', 'mqtt-notification-plugin')
+    mqtt_mapping = [
+        ('broker-url', 'brokerUrl', None), ]
+    helpers.convert_mapping_to_xml(mqtt, data, mqtt_mapping,
+                                   fail_required=True)
+    mqtt_mapping = [
+        ('credentials-id', 'credentialsId', None),
+        ('topic', 'topic', 'jenkins/$PROJECT_URL'),
+        ('message', 'message', '$BUILD_RESULT'),
+        ('qos', 'qos', 'AT_MOST_ONCE', {'AT_MOST_ONCE': '0',
+                                        'AT_LEAST_ONCE': '1',
+                                        'EXACTLY_ONCE': '2'}),
+        ('retain-message', 'retainMessage', False)
+    ]
+    helpers.convert_mapping_to_xml(mqtt, data, mqtt_mapping)
+
+
 def codecover(registry, xml_parent, data):
     """yaml: codecover
     This plugin allows you to capture code coverage report from CodeCover.

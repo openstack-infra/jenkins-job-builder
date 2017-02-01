@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <jenkins.plugins.mqttnotification.MqttNotifier plugin="mqtt-notification-plugin">
+      <brokerUrl>tcp://localhost:1883</brokerUrl>
+      <credentialsId>abcde</credentialsId>
+      <topic>hello</topic>
+      <message>world</message>
+      <qos>2</qos>
+      <retainMessage>true</retainMessage>
+    </jenkins.plugins.mqttnotification.MqttNotifier>
+  </publishers>
+</project>

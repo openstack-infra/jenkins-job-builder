@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <jenkins.plugins.mqttnotification.MqttNotifier plugin="mqtt-notification-plugin">
+      <brokerUrl>tcp://localhost:1883</brokerUrl>
+      <topic>jenkins/$PROJECT_URL</topic>
+      <message>$BUILD_RESULT</message>
+      <qos>0</qos>
+      <retainMessage>false</retainMessage>
+    </jenkins.plugins.mqttnotification.MqttNotifier>
+  </publishers>
+</project>
