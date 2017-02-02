@@ -11,6 +11,7 @@
         <hudson.plugins.claim.ClaimTestDataPublisher/>
         <hudson.plugins.measurement__plots.TestDataPublisher/>
         <com.google.jenkins.flakyTestHandler.plugin.JUnitFlakyTestDataPublisher/>
+        <hudson.plugins.junitattachments.AttachmentPublisher/>
       </testDataPublishers>
     </hudson.tasks.junit.JUnitResultArchiver>
   </publishers>
