@@ -1706,7 +1706,7 @@ def rabbitmq(registry, xml_parent, data):
         XML.SubElement(rabbitmq, 'remoteBuildToken').text = str(
             data.get('token'))
     except KeyError as e:
-        raise MissingAttributeError(e.arg[0])
+        raise MissingAttributeError(e.args[0])
 
 
 def parameterized_timer(parser, xml_parent, data):
