@@ -1140,6 +1140,10 @@ def junit(registry, xml_parent, data):
     :arg bool flaky-test-reports: Publish flaky test reports (default false).
         Requires the Jenkins :jenkins-wiki:`Flaky Test Handler Plugin
         <Flaky+Test+Handler+Plugin>`.
+    :arg bool junit-attachments: Publish test attachments (default false).
+        Requires the Jenkins :jenkins-wiki:`JUnit Attachments Plugin
+        <JUnit+Attachments+Plugin>`.
+
 
     Minimal example using defaults:
 
@@ -1178,6 +1182,9 @@ def junit(registry, xml_parent, data):
         XML.SubElement(datapublisher,
                        'com.google.jenkins.flakyTestHandler.plugin'
                        '.JUnitFlakyTestDataPublisher')
+    if str(data.get('junit-attachments', False)).lower() == 'true':
+        XML.SubElement(datapublisher,
+                       'hudson.plugins.junitattachments.AttachmentPublisher')
 
 
 def cucumber_reports(registry, xml_parent, data):

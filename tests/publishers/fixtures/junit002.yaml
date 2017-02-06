@@ -9,3 +9,4 @@ publishers:
     measurement-plots: true
     flaky-test-reports: true
     allow-empty-results: true
+    junit-attachments: true
