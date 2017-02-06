@@ -887,6 +887,65 @@ def slave_prerequisites(registry, xml_parent, data):
         prereqs, data, mappings, fail_required=True)
 
 
+def groovy_label(registry, xml_parent, data):
+    """yaml: groovy-label
+    This plugin allows to use Groovy script to restrict where this project
+    can be run.
+
+    Requires the Jenkins :jenkins-wiki:`Groovy Label Assignment Plugin
+    <Groovy+Label+Assignment+plugin>`.
+
+    Return value from Groovy script is treated as Label Expression.
+    It is treated as followings:
+
+    - A non-string value will be converted to a string using toString()
+    - When null or blank string is returned, node restriction does not take
+      effect (or is not overwritten).
+    - When exception occurred or Label Expression is not parsed correctly,
+      builds are canceled.
+
+    :arg str script: Groovy script (default '')
+    :arg bool sandbox: Use Groovy Sandbox. (default false)
+        If checked, run this Groovy script in a sandbox with limited abilities.
+        If unchecked, and you are not a Jenkins administrator, you will need to
+        wait for an administrator to approve the script
+    :arg list classpath: Additional classpath entries accessible from
+        the script, each of which should be an absolute local path or
+        URL to a JAR file, according to "The file URI Scheme" (optional)
+
+    Minimal Example:
+
+    .. literalinclude::
+        /../../tests/properties/fixtures/groovy-label-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        /../../tests/properties/fixtures/groovy-label-full.yaml
+       :language: yaml
+    """
+    sub_element = XML.SubElement(xml_parent,
+                                 'jp.ikedam.jenkins.plugins.'
+                                 'groovy__label__assignment.'
+                                 'GroovyLabelAssignmentProperty')
+    sub_element.set('plugin', 'groovy-label-assignment')
+    security = XML.SubElement(sub_element, 'secureGroovyScript')
+    security.set('plugin', 'script-security')
+    mapping = [
+        ('script', 'script', ''),
+        ('sandbox', 'sandbox', False),
+    ]
+
+    helpers.convert_mapping_to_xml(
+        security, data, mapping, fail_required=True)
+    if data and 'classpath' in data:
+        classpath = XML.SubElement(security, 'classpath')
+        for value in data['classpath']:
+            entry = XML.SubElement(classpath, 'entry')
+            XML.SubElement(entry, 'url').text = value
+
+
 class Properties(jenkins_jobs.modules.base.Base):
     sequence = 20
 

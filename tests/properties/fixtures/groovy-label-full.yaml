@@ -1,0 +1,9 @@
+properties:
+    - groovy-label:
+        script: "$LABEL_NAME"
+        sandbox: true
+        classpath:
+            - "file:/minimal/absolute/path/to/file.jar"
+            - "file:///traditional/absolute/path/to/file.jar"
+            - "http://example.org/path/to/file.jar"
+            - "https://example.org/path/to/file.jar"
