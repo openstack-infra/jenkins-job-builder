@@ -1,0 +1,41 @@
+- scm:
+    name: project-scm
+    scm:
+      - hg:
+         url: http://hg.example.org/project
+         clean: true
+
+- job-template:
+    name: '{name}-unit-tests'
+    project-type: pipeline
+    pipeline-scm:
+      scm:
+        - project-scm
+    sandbox: true
+    publishers:
+    - email:
+        recipients: '{mail-to}'
+
+- job-template:
+    name: '{name}-perf-tests'
+    project-type: pipeline
+    pipeline-scm:
+      scm:
+        - project-scm
+    sandbox: false
+    publishers:
+    - email:
+        recipients: '{mail-to}'
+
+- job-group:
+    name: '{name}-tests'
+    jobs:
+      - '{name}-unit-tests':
+          mail-to: dev@example.org
+      - '{name}-perf-tests':
+          mail-to: qa@example.org
+
+- project:
+    name: project-name
+    jobs:
+    - '{name}-tests'

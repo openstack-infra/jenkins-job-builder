@@ -1284,3 +1284,27 @@ class SCM(jenkins_jobs.modules.base.Base):
                     pass
 
             xml_parent.append(scms_parent)
+
+
+class PipelineSCM(jenkins_jobs.modules.base.Base):
+    sequence = 30
+
+    component_type = 'pipeline-scm'
+    component_list_type = 'pipeline-scm'
+
+    def gen_xml(self, xml_parent, data):
+        definition_parent = xml_parent.find('definition')
+        pipeline_dict = data.get(self.component_type, {})
+        scms = pipeline_dict.get('scm')
+        if scms:
+            scms_count = len(scms)
+            if scms_count == 0:
+                raise JenkinsJobsException("'scm' missing or empty")
+            elif scms_count == 1:
+                self.registry.dispatch('scm', definition_parent, scms[0])
+                XML.SubElement(definition_parent, 'scriptPath'
+                               ).text = pipeline_dict.get('script-path',
+                                                          'Jenkinsfile')
+            else:
+                raise JenkinsJobsException('Only one SCM can be specified '
+                                           'as pipeline-scm')

@@ -1,0 +1,11 @@
+- job:
+    name: test_job
+    project-type: pipeline
+    dsl: |
+      build job: "job1"
+      parallel [
+        2a: build job: "job2a",
+        2b: node "dummynode" {
+          sh "echo I'm alive!"
+        }
+      ]

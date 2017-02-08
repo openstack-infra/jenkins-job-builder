@@ -1,0 +1,11 @@
+- job:
+    name: test-job
+    project-type: pipeline
+    sandbox: true
+    pipeline-scm:
+      scm:
+        - hg:
+            url: http://hg.example.org/test_job
+            clean: true
+      script-path: Jenkinsfile.groovy
+
