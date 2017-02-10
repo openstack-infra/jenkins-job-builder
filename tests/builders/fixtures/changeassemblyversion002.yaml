@@ -1,3 +1,0 @@
-builders:
-  - change-assembly-version:
-        version: "9.9.9"
