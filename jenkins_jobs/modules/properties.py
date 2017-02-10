@@ -330,27 +330,23 @@ def inject(registry, xml_parent, data):
                             'EnvInjectJobProperty')
     info = XML.SubElement(inject, 'info')
 
-    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
-        info, 'propertiesFilePath', data.get('properties-file'))
-    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
-        info, 'propertiesContent', data.get('properties-content'))
-    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
-        info, 'scriptFilePath', data.get('script-file'))
-    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
-        info, 'scriptContent', data.get('script-content'))
-    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
-        info, 'groovyScriptContent', data.get('groovy-content'))
+    mapping = [
+        ('properties-file', 'propertiesFilePath', None),
+        ('properties-content', 'propertiesContent', None),
+        ('script-file', 'scriptFilePath', None),
+        ('script-content', 'scriptContent', None),
+        ('groovy-content', 'groovyScriptContent', None),
+        ('load-from-master', 'loadFilesFromMaster', False),
+    ]
+    helpers.convert_mapping_to_xml(info, data, mapping, fail_required=False)
 
-    XML.SubElement(info, 'loadFilesFromMaster').text = str(
-        data.get('load-from-master', False)).lower()
-    XML.SubElement(inject, 'on').text = str(
-        data.get('enabled', True)).lower()
-    XML.SubElement(inject, 'keepJenkinsSystemVariables').text = str(
-        data.get('keep-system-variables', True)).lower()
-    XML.SubElement(inject, 'keepBuildVariables').text = str(
-        data.get('keep-build-variables', True)).lower()
-    XML.SubElement(inject, 'overrideBuildParameters').text = str(
-        data.get('override-build-parameters', False)).lower()
+    mapping = [
+        ('enabled', 'on', True),
+        ('keep-system-variables', 'keepJenkinsSystemVariables', True),
+        ('keep-build-variables', 'keepBuildVariables', True),
+        ('override-build-parameters', 'overrideBuildParameters', False),
+    ]
+    helpers.convert_mapping_to_xml(inject, data, mapping, fail_required=True)
 
 
 def authenticated_build(registry, xml_parent, data):

@@ -918,10 +918,11 @@ def inject(registry, xml_parent, data):
     Add or override environment variables to the whole build process
     Requires the Jenkins :jenkins-wiki:`EnvInject Plugin <EnvInject+Plugin>`.
 
-    :arg str properties-file: path to the properties file (default '')
-    :arg str properties-content: key value pair of properties (default '')
-    :arg str script-file: path to the script file (default '')
-    :arg str script-content: contents of a script (default '')
+    :arg str properties-file: path to the properties file (optional)
+    :arg str properties-content: key value pair of properties (optional)
+    :arg str script-file: path to the script file (optional)
+    :arg str script-content: contents of a script (optional)
+    :arg bool load-from-master: load files from master (default false)
 
     Example::
 
@@ -934,15 +935,14 @@ def inject(registry, xml_parent, data):
     """
     eib = XML.SubElement(xml_parent, 'EnvInjectBuildWrapper')
     info = XML.SubElement(eib, 'info')
-    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
-        info, 'propertiesFilePath', data.get('properties-file'))
-    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
-        info, 'propertiesContent', data.get('properties-content'))
-    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
-        info, 'scriptFilePath', data.get('script-file'))
-    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
-        info, 'scriptContent', data.get('script-content'))
-    XML.SubElement(info, 'loadFilesFromMaster').text = 'false'
+    mapping = [
+        ('properties-file', 'propertiesFilePath', None),
+        ('properties-content', 'propertiesContent', None),
+        ('script-file', 'scriptFilePath', None),
+        ('script-content', 'scriptContent', None),
+        ('load-from-master', 'loadFilesFromMaster', False),
+    ]
+    convert_mapping_to_xml(info, data, mapping, fail_required=False)
 
 
 def inject_ownership_variables(registry, xml_parent, data):
@@ -1006,7 +1006,7 @@ def env_file(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Environment File Plugin
     <Envfile+Plugin>`.
 
-    :arg str properties-file: path to the properties file (default '')
+    :arg str properties-file: path to the properties file (optional)
 
     Example::
 
@@ -1016,8 +1016,10 @@ def env_file(registry, xml_parent, data):
     """
     eib = XML.SubElement(xml_parent,
                          'hudson.plugins.envfile.EnvFileBuildWrapper')
-    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
-        eib, 'filePath', data.get('properties-file'))
+    mapping = [
+        ('properties-file', 'filePath', None),
+    ]
+    convert_mapping_to_xml(eib, data, mapping, fail_required=False)
 
 
 def env_script(registry, xml_parent, data):

@@ -870,14 +870,13 @@ def inject(registry, xml_parent, data):
     """
     eib = XML.SubElement(xml_parent, 'EnvInjectBuilder')
     info = XML.SubElement(eib, 'info')
-    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
-        info, 'propertiesFilePath', data.get('properties-file'))
-    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
-        info, 'propertiesContent', data.get('properties-content'))
-    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
-        info, 'scriptFilePath', data.get('script-file'))
-    jenkins_jobs.modules.base.add_nonblank_xml_subelement(
-        info, 'scriptContent', data.get('script-content'))
+    mapping = [
+        ('properties-file', 'propertiesFilePath', None),
+        ('properties-content', 'propertiesContent', None),
+        ('script-file', 'scriptFilePath', None),
+        ('script-content', 'scriptContent', None),
+    ]
+    convert_mapping_to_xml(info, data, mapping, fail_required=False)
 
 
 def kmap(registry, xml_parent, data):
