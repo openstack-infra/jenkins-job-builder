@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <scm class="hudson.plugins.dimensionsscm.DimensionsSCM">
+    <project>myProduct:myProject</project>
+    <permissions>DEFAULT</permissions>
+    <eol>DEFAULT</eol>
+    <canJobUpdate>false</canJobUpdate>
+    <canJobDelete>false</canJobDelete>
+    <canJobForce>false</canJobForce>
+    <canJobRevert>false</canJobRevert>
+    <canJobExpand>false</canJobExpand>
+    <canJobNoMetadata>false</canJobNoMetadata>
+    <canJobNoTouch>false</canJobNoTouch>
+    <forceAsSlave>false</forceAsSlave>
+    <folders>
+      <string>/</string>
+    </folders>
+    <pathsToExclude/>
+  </scm>
+</project>

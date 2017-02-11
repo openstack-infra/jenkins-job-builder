@@ -1,0 +1,25 @@
+scm:
+  - dimensions:
+      project: myProduct:myProject
+      permissions: WRITABLE
+      eol: UNIX
+      folders:
+        - src
+        - test
+      exclude:
+        - excluded_dir
+        - excluded_other_dir
+      username: johnd
+      password: passw0rd
+      server: my.dmscm.server:1234
+      database: myDatabase@myDsn
+      update: true
+      clear-workspace: true
+      force-build: true
+      overwrite-modified: true
+      expand-vars: true
+      no-metadata: true
+      maintain-timestamp: true
+      slave-checkout: true
+      timezone: Europe/Berlin
+      web-url: https://my.dmscm.weburl
