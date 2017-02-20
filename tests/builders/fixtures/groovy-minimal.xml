@@ -2,8 +2,8 @@
 <project>
   <builders>
     <hudson.plugins.groovy.Groovy>
-      <scriptSource class="hudson.plugins.groovy.FileScriptSource">
-        <scriptFile>test.groovy</scriptFile>
+      <scriptSource class="hudson.plugins.groovy.StringScriptSource">
+        <command>println Hello</command>
       </scriptSource>
       <groovyName>(Default)</groovyName>
       <parameters/>

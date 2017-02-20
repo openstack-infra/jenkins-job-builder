@@ -1111,38 +1111,43 @@ def groovy(registry, xml_parent, data):
     :arg str command: Groovy command to run. (Alternative: you can chose a
         script file instead)
     :arg str version: Groovy version to use. (default '(Default)')
-    :arg str parameters: Parameters for the Groovy executable. (optional)
+    :arg str parameters: Parameters for the Groovy executable. (default '')
     :arg str script-parameters: These parameters will be passed to the script.
-        (optional)
+        (default '')
     :arg str properties: Instead of passing properties using the -D parameter
-        you can define them here. (optional)
+        you can define them here. (default '')
     :arg str java-opts: Direct access to JAVA_OPTS. Properties allows only
         -D properties, while sometimes also other properties like -XX need to
         be setup. It can be done here. This line is appended at the end of
-        JAVA_OPTS string. (optional)
+        JAVA_OPTS string. (default '')
     :arg str class-path: Specify script classpath here. Each line is one
-        class path item. (optional)
+        class path item. (default '')
 
-    Examples:
+    Minimal Example:
 
-    .. literalinclude:: ../../tests/builders/fixtures/groovy001.yaml
+    .. literalinclude:: ../../tests/builders/fixtures/groovy-minimal.yaml
        :language: yaml
-    .. literalinclude:: ../../tests/builders/fixtures/groovy002.yaml
+
+
+    Full Example:
+
+    .. literalinclude:: ../../tests/builders/fixtures/groovy-full.yaml
        :language: yaml
     """
 
     root_tag = 'hudson.plugins.groovy.Groovy'
     groovy = XML.SubElement(xml_parent, root_tag)
-
     groovy.append(_groovy_common_scriptSource(data))
-    XML.SubElement(groovy, 'groovyName').text = str(
-        data.get('version', "(Default)"))
-    XML.SubElement(groovy, 'parameters').text = str(data.get('parameters', ""))
-    XML.SubElement(groovy, 'scriptParameters').text = str(
-        data.get('script-parameters', ""))
-    XML.SubElement(groovy, 'properties').text = str(data.get('properties', ""))
-    XML.SubElement(groovy, 'javaOpts').text = str(data.get('java-opts', ""))
-    XML.SubElement(groovy, 'classPath').text = str(data.get('class-path', ""))
+
+    mappings = [
+        ('version', 'groovyName', '(Default)'),
+        ('parameters', 'parameters', ''),
+        ('script-parameters', 'scriptParameters', ''),
+        ('properties', 'properties', ''),
+        ('java-opts', 'javaOpts', ''),
+        ('class-path', 'classPath', '')
+    ]
+    convert_mapping_to_xml(groovy, data, mappings, fail_required=True)
 
 
 def system_groovy(registry, xml_parent, data):
