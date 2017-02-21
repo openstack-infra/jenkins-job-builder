@@ -3,7 +3,7 @@
   <triggers class="vector">
     <com.dabsquared.gitlabjenkins.GitLabPushTrigger>
       <triggerOpenMergeRequestOnPush>never</triggerOpenMergeRequestOnPush>
-      <branchFilterType>All</branchFilterType>
+      <branchFilterName/>
       <spec/>
       <triggerOnPush>true</triggerOnPush>
       <triggerOnMergeRequest>true</triggerOnMergeRequest>

@@ -1176,7 +1176,7 @@ def gitlab(registry, xml_parent, data):
              'triggerOpenMergeRequestOnPush', True)]
         convert_mapping_to_xml(gitlab, data, mapping, fail_required=True)
 
-    if plugin_ver == pkg_resources.parse_version('1.1.29'):
+    if plugin_ver < pkg_resources.parse_version('1.2.0'):
         if data.get('branch-filter-type', '') == 'All':
             data['branch-filter-type'] = ''
         valid_filters = ['', 'NameBasedFilter', 'RegexBasedFilter']
