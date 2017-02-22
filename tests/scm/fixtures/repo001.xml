@@ -2,12 +2,6 @@
 <project>
   <scm class="hudson.plugins.repo.RepoScm">
     <manifestRepositoryUrl>https://example.com/project/</manifestRepositoryUrl>
-    <manifestBranch>stable</manifestBranch>
-    <manifestFile>repo.xml</manifestFile>
-    <manifestGroup>drivers</manifestGroup>
-    <destinationDir>build</destinationDir>
-    <repoUrl>https://internal.net/projects/repo</repoUrl>
-    <mirrorDir>~/git/project/</mirrorDir>
     <jobs>3</jobs>
     <depth>0</depth>
     <currentBranch>false</currentBranch>
@@ -17,6 +11,12 @@
     <noTags>true</noTags>
     <trace>true</trace>
     <showAllChanges>true</showAllChanges>
+    <manifestBranch>stable</manifestBranch>
+    <manifestFile>repo.xml</manifestFile>
+    <manifestGroup>drivers</manifestGroup>
+    <destinationDir>build</destinationDir>
+    <repoUrl>https://internal.net/projects/repo</repoUrl>
+    <mirrorDir>~/git/project/</mirrorDir>
     <localManifest>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;manifest&gt;
   &lt;project path=&quot;external/project&quot; name=&quot;org/project&quot;

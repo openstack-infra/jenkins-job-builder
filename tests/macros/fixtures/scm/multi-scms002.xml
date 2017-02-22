@@ -12,12 +12,6 @@
     <scms>
       <hudson.plugins.repo.RepoScm>
         <manifestRepositoryUrl>https://example.com/project/</manifestRepositoryUrl>
-        <manifestBranch>stable</manifestBranch>
-        <manifestFile>repo.xml</manifestFile>
-        <manifestGroup>drivers</manifestGroup>
-        <destinationDir>build</destinationDir>
-        <repoUrl>https://internal.net/projects/repo</repoUrl>
-        <mirrorDir>~/git/project/</mirrorDir>
         <jobs>3</jobs>
         <depth>2</depth>
         <currentBranch>false</currentBranch>
@@ -27,7 +21,12 @@
         <noTags>false</noTags>
         <trace>false</trace>
         <showAllChanges>false</showAllChanges>
-        <localManifest/>
+        <manifestBranch>stable</manifestBranch>
+        <manifestFile>repo.xml</manifestFile>
+        <manifestGroup>drivers</manifestGroup>
+        <destinationDir>build</destinationDir>
+        <repoUrl>https://internal.net/projects/repo</repoUrl>
+        <mirrorDir>~/git/project/</mirrorDir>
         <ignoreProjects class="linked-hash-set">
           <string/>
         </ignoreProjects>
