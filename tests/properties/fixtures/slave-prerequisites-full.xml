@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <com.cloudbees.plugins.JobPrerequisites>
+      <script>@echo off
+if exist C:\Jenkins\workspace.lock exit /b 1
+</script>
+      <interpreter>windows batch command</interpreter>
+    </com.cloudbees.plugins.JobPrerequisites>
+  </properties>
+</project>

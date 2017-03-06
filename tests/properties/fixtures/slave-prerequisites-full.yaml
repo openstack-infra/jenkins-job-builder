@@ -1,0 +1,6 @@
+properties:
+  - slave-prerequisites:
+      interpreter: cmd
+      script: |
+        @echo off
+        if exist C:\Jenkins\workspace.lock exit /b 1

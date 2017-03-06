@@ -849,6 +849,44 @@ def build_discarder(registry, xml_parent, data):
         strategy, data, mappings, fail_required=True)
 
 
+def slave_prerequisites(registry, xml_parent, data):
+    """yaml: slave-prerequisites
+    This plugin allows to check prerequisites on slave before
+    a job can run a build on it
+
+    Requires the Jenkins :jenkins-wiki:`Slave Prerequisites Plugin
+    <Slave+Prerequisites+Plugin>`.
+
+    :arg str script: A script to be executed on slave node.
+        If returning non 0 status, the node will be vetoed from hosting
+        the build. (required)
+    :arg str interpreter: Command line interpreter to be used for executing
+        the prerequisite script - either `shell` for Unix shell or `cmd` for
+        Windows batch script. (default shell)
+
+    Example:
+
+    .. literalinclude::
+        /../../tests/properties/fixtures/slave-prerequisites-minimal.yaml
+       :language: yaml
+
+    .. literalinclude::
+        /../../tests/properties/fixtures/slave-prerequisites-full.yaml
+       :language: yaml
+    """
+    prereqs = XML.SubElement(xml_parent,
+                             'com.cloudbees.plugins.JobPrerequisites')
+
+    mappings = [
+        ('script', 'script', None),
+        ('interpreter', 'interpreter', 'shell', {
+            'cmd': 'windows batch command',
+            'shell': 'shell script'}),
+    ]
+    helpers.convert_mapping_to_xml(
+        prereqs, data, mappings, fail_required=True)
+
+
 class Properties(jenkins_jobs.modules.base.Base):
     sequence = 20
 
