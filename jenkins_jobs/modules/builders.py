@@ -3697,7 +3697,7 @@ def description_setter(registry, xml_parent, data):
 
 def docker_build_publish(parse, xml_parent, data):
     """yaml: docker-build-publish
-    Requires the Jenkins :jenkins-wiki`Docker build publish Plugin
+    Requires the Jenkins :jenkins-wiki:`Docker build publish Plugin
     <Docker+build+publish+Plugin>`.
 
     :arg str repo-name: Name of repository to push to.
