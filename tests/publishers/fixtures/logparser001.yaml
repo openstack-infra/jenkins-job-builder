@@ -1,5 +1,0 @@
-publishers:
-  - logparser:
-      parse-rules: "/path/to/parserules"
-      unstable-on-warning: true
-      fail-on-error: true

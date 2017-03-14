@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.logparser.LogParserPublisher plugin="log-parser">
+      <unstableOnWarning>false</unstableOnWarning>
+      <failBuildOnError>false</failBuildOnError>
+      <showGraphs>true</showGraphs>
+      <useProjectRule>true</useProjectRule>
+      <projectRulePath>project-log-parser-rules.txt</projectRulePath>
+    </hudson.plugins.logparser.LogParserPublisher>
+  </publishers>
+</project>
