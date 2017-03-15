@@ -365,10 +365,10 @@ class YamlIncludeRawEscape(YamlIncludeRaw):
     def from_yaml(cls, loader, node):
         data = YamlIncludeRaw.from_yaml(loader, node)
         if isinstance(data, LazyLoader):
-            logger.warn("Replacing %s tag with %s since lazy loading means "
-                        "file contents will not be deep formatted for "
-                        "variable substitution.", cls.yaml_tag,
-                        YamlIncludeRaw.yaml_tag)
+            logger.warning("Replacing %s tag with %s since lazy loading means "
+                           "file contents will not be deep formatted for "
+                           "variable substitution.", cls.yaml_tag,
+                           YamlIncludeRaw.yaml_tag)
             return data
         else:
             return loader.escape_callback(data)

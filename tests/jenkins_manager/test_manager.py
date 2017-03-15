@@ -20,28 +20,42 @@ from tests import base
 from tests.base import mock
 
 
+_plugins_info = {}
+_plugins_info['plugin1'] = {'longName': '',
+                            'shortName': '',
+                            'version': ''}
+
+
 @mock.patch('jenkins_jobs.builder.JobCache', mock.MagicMock)
 class TestCaseTestJenkinsManager(base.BaseTestCase):
+
     def setUp(self):
         super(TestCaseTestJenkinsManager, self).setUp()
         self.jjb_config = JJBConfig()
         self.jjb_config.validate()
 
     def test_plugins_list(self):
-        self.jjb_config.builder['plugins_info'] = ['plugin1', 'plugin2']
+        self.jjb_config.builder['plugins_info'] = _plugins_info
+
         self.builder = jenkins_jobs.builder.JenkinsManager(self.jjb_config)
-        self.assertEqual(self.builder.plugins_list, ['plugin1', 'plugin2'])
+        self.assertEqual(self.builder.plugins_list, _plugins_info)
 
     @mock.patch.object(jenkins_jobs.builder.jenkins.Jenkins,
-                       'get_plugins_info', return_value=['p1', 'p2'])
+                       'get_plugins',
+                       return_value=_plugins_info)
     def test_plugins_list_from_jenkins(self, jenkins_mock):
         # Trigger fetching the plugins from jenkins when accessing the property
-        self.jjb_config.builder['plugins_info'] = None
+        self.jjb_config.builder['plugins_info'] = {}
         self.builder = jenkins_jobs.builder.JenkinsManager(self.jjb_config)
-        self.assertEqual(self.builder.plugins_list, ['p1', 'p2'])
+        # See https://github.com/formiaczek/multi_key_dict/issues/17
+        # self.assertEqual(self.builder.plugins_list, k)
+        for key_tuple in self.builder.plugins_list.keys():
+            for key in key_tuple:
+                self.assertEqual(self.builder.plugins_list[key],
+                                 _plugins_info[key])
 
     def test_delete_managed(self):
-        self.jjb_config.builder['plugins_info'] = []
+        self.jjb_config.builder['plugins_info'] = {}
         self.builder = jenkins_jobs.builder.JenkinsManager(self.jjb_config)
 
         with mock.patch.multiple('jenkins_jobs.builder.JenkinsManager',

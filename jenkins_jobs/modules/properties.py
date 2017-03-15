@@ -747,7 +747,7 @@ def slack(registry, xml_parent, data):
     plugin_ver = pkg_resources.parse_version(plugin_info.get('version', "0"))
 
     if plugin_ver >= pkg_resources.parse_version("2.0"):
-        logger.warn(
+        logger.warning(
             "properties section is not used with plugin version >= 2.0",
         )
 
