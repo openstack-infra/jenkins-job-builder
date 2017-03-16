@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <hudson.plugins.textfinder.TextFinderPublisher>
+    <hudson.plugins.textfinder.TextFinderPublisher plugin="text-finder">
       <fileSet>file.txt</fileSet>
       <regexp>some string</regexp>
       <alsoCheckConsoleOutput>true</alsoCheckConsoleOutput>
