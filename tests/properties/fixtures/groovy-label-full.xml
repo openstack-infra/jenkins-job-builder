@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <jp.ikedam.jenkins.plugins.groovy__label__assignment.GroovyLabelAssignmentProperty plugin="groovy-label-assignment">
+      <secureGroovyScript plugin="script-security">
+        <script>$LABEL_NAME</script>
+        <sandbox>true</sandbox>
+        <classpath>
+          <entry>
+            <url>file:/minimal/absolute/path/to/file.jar</url>
+          </entry>
+          <entry>
+            <url>file:///traditional/absolute/path/to/file.jar</url>
+          </entry>
+          <entry>
+            <url>http://example.org/path/to/file.jar</url>
+          </entry>
+          <entry>
+            <url>https://example.org/path/to/file.jar</url>
+          </entry>
+        </classpath>
+      </secureGroovyScript>
+    </jp.ikedam.jenkins.plugins.groovy__label__assignment.GroovyLabelAssignmentProperty>
+  </properties>
+</project>
