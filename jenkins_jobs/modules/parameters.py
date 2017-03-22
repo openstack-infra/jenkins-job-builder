@@ -285,6 +285,61 @@ def choice_param(registry, xml_parent, data):
         XML.SubElement(a, 'string').text = choice
 
 
+def credentials_param(registry, xml_parent, data):
+    """yaml: credentials
+    A credentials selection parameter. Requires the Jenkins
+    :jenkins-wiki:`Credentials Plugin
+    <Credentials+Plugin>`.
+
+    :arg str name: the name of the parameter
+    :arg str type: credential type (optional, default 'any')
+
+        :Allowed Values: * **any** Any credential type (default)
+                    * **usernamepassword** Username with password
+                    * **sshkey** SSH Username with private key
+                    * **secretfile** Secret file
+                    * **secrettext** Secret text
+                    * **certificate** Certificate
+
+    :arg bool required: whether this parameter is required (optional, default
+        false)
+    :arg string default: default credentials ID (optional)
+    :arg str description: a description of the parameter (optional)
+
+    Example::
+
+    .. literalinclude:: \
+       /../../tests/parameters/fixtures/credentials-param001.yaml
+       :language: yaml
+
+    """
+    cred_impl_types = {
+        'any': 'com.cloudbees.plugins.credentials.common.StandardCredentials',
+        'usernamepassword': 'com.cloudbees.plugins.credentials.impl.' +
+                            'UsernamePasswordCredentialsImpl',
+        'sshkey': 'com.cloudbees.jenkins.plugins.sshcredentials.impl.' +
+                  'BasicSSHUserPrivateKey',
+        'secretfile': 'org.jenkinsci.plugins.plaincredentials.impl.' +
+                      'FileCredentialsImpl',
+        'secrettext': 'org.jenkinsci.plugins.plaincredentials.impl.' +
+                      'StringCredentialsImpl',
+        'certificate': 'com.cloudbees.plugins.credentials.impl.' +
+                       'CertificateCredentialsImpl'
+    }
+
+    cred_type = data.get('type', 'any').lower()
+    if cred_type not in cred_impl_types:
+        raise InvalidAttributeError('type', cred_type, cred_impl_types.keys())
+
+    pdef = base_param(registry, xml_parent, data, False,
+                      'com.cloudbees.plugins.credentials.' +
+                      'CredentialsParameterDefinition')
+    XML.SubElement(pdef, 'defaultValue').text = data.get('default', '')
+    XML.SubElement(pdef, 'credentialType').text = cred_impl_types[cred_type]
+    XML.SubElement(pdef, 'required').text = str(data.get('required',
+                                                         False)).lower()
+
+
 def run_param(registry, xml_parent, data):
     """yaml: run
     A run parameter.
