@@ -65,6 +65,15 @@ before being read in as string data. This allows job-templates to use this tag
 to include scripts from files without needing to escape braces in the original
 file.
 
+.. warning::
+
+    When used as a macro ``!include-raw-escape:`` should only be used if
+    parameters are passed into the escaped file and you would like to escape
+    those parameters. If the file does not have any jjb parameters passed into
+    it then ``!include-raw:`` should be used instead otherwise you will run
+    into an interesting issue where ``include-raw-escape:`` actually adds
+    additional curly braces around existing curly braces. For example
+    ${PROJECT} becomes ${{PROJECT}} which may break bash scripts.
 
 Examples:
 

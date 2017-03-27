@@ -25,7 +25,7 @@ job_builder section
 **include_path**
   (Optional) Can be set to a ':' delimited list of paths, which jenkins
   job builder will search for any files specified by the custom application
-  yaml tags 'include', 'include-raw' and 'include-raw-escaped'.
+  yaml tags 'include', 'include-raw' and 'include-raw-escape'.
 
 **recursive**
   (Optional) If set to True, jenkins job builder will search for job
