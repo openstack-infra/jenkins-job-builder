@@ -1,0 +1,18 @@
+triggers:
+  - stash-pull-request:
+      cron: "H 1 2 3 4"
+      stash-host: "https://stash-host.com"
+      credentials-id: default-stash-credentials
+      project: stash-project
+      repository: stash-repo
+      ci-skip-phrases: "test skip phrase"
+      ci-build-phrases: "test build phrase"
+      target-branches: "master"
+      ignore-ssl: true
+      check-destination-commit: true
+      check-mergable: true
+      merge-on-success: true
+      check-not-conflicted: false
+      only-build-on-comment: true
+      delete-previous-build-finish-comments: true
+      cancel-outdated-jobs: true
