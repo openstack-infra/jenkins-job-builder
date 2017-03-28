@@ -1092,7 +1092,8 @@ def hg(self, xml_parent, data):
     browser = data.get('browser', 'auto')
     browserdict = {
         'auto': '',
-        'bitbucket': 'BitBucket',
+        'bitbucket': 'BitBucket',  # deprecated
+        'bitbucketweb': 'BitBucket',
         'fisheye': 'FishEye',
         'googlecode': 'GoogleCode',
         'hgweb': 'HgWeb',
