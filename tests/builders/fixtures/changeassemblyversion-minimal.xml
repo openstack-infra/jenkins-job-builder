@@ -2,7 +2,7 @@
 <project>
   <builders>
     <org.jenkinsci.plugins.changeassemblyversion.ChangeAssemblyVersion>
-      <task>9.9.9</task>
+      <task>1.0.0</task>
       <assemblyFile>AssemblyInfo.cs</assemblyFile>
     </org.jenkinsci.plugins.changeassemblyversion.ChangeAssemblyVersion>
   </builders>

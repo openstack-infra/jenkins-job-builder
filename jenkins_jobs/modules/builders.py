@@ -189,19 +189,27 @@ def change_assembly_version(registry, xml_parent, data):
     :arg str version: Set the new version number for replace (default 1.0.0)
     :arg str assemblyFile: The file name to search (default AssemblyInfo.cs)
 
-    Example:
+    Minimal Example:
 
     .. literalinclude::
-        /../../tests/builders/fixtures/changeassemblyversion001.yaml
+        /../../tests/builders/fixtures/changeassemblyversion-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/changeassemblyversion-full.yaml
        :language: yaml
     """
 
     cav_builder_tag = ('org.jenkinsci.plugins.changeassemblyversion.'
                        'ChangeAssemblyVersion')
     cav = XML.SubElement(xml_parent, cav_builder_tag)
-    XML.SubElement(cav, 'task').text = data.get('version', '1.0.0')
-    XML.SubElement(cav, 'assemblyFile').text = str(
-        data.get('assembly-file', 'AssemblyInfo.cs'))
+    mappings = [
+        ('version', 'task', '1.0.0'),
+        ('assembly-file', 'assemblyFile', 'AssemblyInfo.cs'),
+    ]
+    convert_mapping_to_xml(cav, data, mappings, fail_required=True)
 
 
 def fingerprint(registry, xml_parent, data):
