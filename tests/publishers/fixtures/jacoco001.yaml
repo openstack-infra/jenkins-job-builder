@@ -3,7 +3,7 @@ publishers:
       exec-pattern: "**/**.exec"
       class-pattern: "**/classes"
       source-pattern: "**/src/main/java"
-      status-update: true
+      update-build-status: true
       targets:
         - branch:
             healthy: 10
