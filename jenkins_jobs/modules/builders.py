@@ -1052,7 +1052,7 @@ def gradle(registry, xml_parent, data):
     <Gradle+Plugin>`.
 
     :arg str tasks: List of tasks to execute
-    :arg str gradle-name: Use a custom gradle name (optional)
+    :arg str gradle-name: Use a custom gradle name (default '')
     :arg bool wrapper: use gradle wrapper (default false)
     :arg bool executable: make gradlew executable (default false)
     :arg list switches: Switches for gradle, can have multiples
@@ -1063,6 +1063,7 @@ def gradle(registry, xml_parent, data):
         root directory, specify the path (relative to the module
         root) here, such as ${workspace}/parent/ instead of just
         ${workspace}.
+    :arg str build-file: name of gradle build script (default 'build.gradle')
 
     Example:
 
@@ -1070,21 +1071,22 @@ def gradle(registry, xml_parent, data):
        :language: yaml
     """
     gradle = XML.SubElement(xml_parent, 'hudson.plugins.gradle.Gradle')
+
     XML.SubElement(gradle, 'description').text = ''
-    XML.SubElement(gradle, 'tasks').text = data['tasks']
-    XML.SubElement(gradle, 'buildFile').text = ''
-    XML.SubElement(gradle, 'rootBuildScriptDir').text = data.get(
-        'root-build-script-dir', '')
-    XML.SubElement(gradle, 'gradleName').text = data.get(
-        'gradle-name', '')
-    XML.SubElement(gradle, 'useWrapper').text = str(data.get(
-        'wrapper', False)).lower()
-    XML.SubElement(gradle, 'makeExecutable').text = str(data.get(
-        'executable', False)).lower()
-    switch_string = '\n'.join(data.get('switches', []))
-    XML.SubElement(gradle, 'switches').text = switch_string
-    XML.SubElement(gradle, 'fromRootBuildScriptDir').text = str(data.get(
-        'use-root-dir', False)).lower()
+
+    mappings = [
+        ('build-file', 'buildFile', 'build.gradle'),
+        ('tasks', 'tasks', None),
+        ('root-build-script-dir', 'rootBuildScriptDir', ''),
+        ('gradle-name', 'gradleName', ''),
+        ('wrapper', 'useWrapper', False),
+        ('executable', 'makeExecutable', False),
+        ('use-root-dir', 'fromRootBuildScriptDir', False),
+    ]
+    convert_mapping_to_xml(gradle, data, mappings, fail_required=True)
+
+    XML.SubElement(gradle, 'switches').text = '\n'.join(
+        data.get('switches', []))
 
 
 def _groovy_common_scriptSource(data):

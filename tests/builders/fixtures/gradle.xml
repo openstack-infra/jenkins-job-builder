@@ -3,18 +3,18 @@
   <builders>
     <hudson.plugins.gradle.Gradle>
       <description/>
+      <buildFile>build.gradle</buildFile>
       <tasks>init
 build
 tests
 </tasks>
-      <buildFile/>
       <rootBuildScriptDir>${workspace}/tests</rootBuildScriptDir>
       <gradleName>gradle-1.2</gradleName>
       <useWrapper>true</useWrapper>
       <makeExecutable>true</makeExecutable>
+      <fromRootBuildScriptDir>true</fromRootBuildScriptDir>
       <switches>-g /foo/bar/.gradle
 -PmavenUserName=foobar</switches>
-      <fromRootBuildScriptDir>true</fromRootBuildScriptDir>
     </hudson.plugins.gradle.Gradle>
   </builders>
 </project>
