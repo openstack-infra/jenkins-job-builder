@@ -65,6 +65,24 @@ class MissingAttributeError(ModuleError):
         super(MissingAttributeError, self).__init__(message)
 
 
+class AttributeConflictError(ModuleError):
+
+    def __init__(
+        self, attribute_name, attributes_in_conflict, module_name=None
+    ):
+        module = module_name or self.get_module_name()
+        message = (
+            "Attribute '{0}' can not be used together with {1} in {2}".format(
+                attribute_name,
+                ', '.join(
+                    "'{0}'".format(value) for value in attributes_in_conflict
+                ), module
+            )
+        )
+
+        super(AttributeConflictError, self).__init__(message)
+
+
 class YAMLFormatError(JenkinsJobsException):
     pass
 

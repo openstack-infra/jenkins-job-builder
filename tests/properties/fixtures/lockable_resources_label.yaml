@@ -1,0 +1,4 @@
+---
+properties:
+  - lockable-resources:
+      label: "pool-1"
