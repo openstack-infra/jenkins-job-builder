@@ -1402,33 +1402,34 @@ def pre_scm_buildstep(registry, xml_parent, data):
     Execute a Build Step before running the SCM
     Requires the Jenkins :jenkins-wiki:`pre-scm-buildstep <pre-scm-buildstep>`.
 
+    :arg string failOnError: Specifies if the job should fail on error
+        (plugin >= 0.3) (default false).
     :arg list buildsteps: List of build steps to execute
 
         :Buildstep: Any acceptable builder, as seen in the example
 
-    Example::
+    Example:
 
-      wrappers:
-        - pre-scm-buildstep:
-          - shell: |
-              #!/bin/bash
-              echo "Doing somethiung cool"
-          - shell: |
-              #!/bin/zsh
-              echo "Doing somethin cool with zsh"
-          - ant: "target1 target2"
-            ant-name: "Standard Ant"
-          - inject:
-               properties-file: example.prop
-               properties-content: EXAMPLE=foo-bar
+    .. literalinclude::
+       /../../tests/wrappers/fixtures/pre-scm-buildstep001.yaml
+       :language: yaml
     """
+    # Get plugin information to maintain backwards compatibility
+    info = registry.get_plugin_info('preSCMbuildstep')
+    version = pkg_resources.parse_version(info.get('version', "0"))
+
     bsp = XML.SubElement(xml_parent,
                          'org.jenkinsci.plugins.preSCMbuildstep.'
                          'PreSCMBuildStepsWrapper')
     bs = XML.SubElement(bsp, 'buildSteps')
-    for step in data:
+    stepList = data if type(data) is list else data.get('buildsteps')
+
+    for step in stepList:
         for edited_node in create_builders(registry, step):
             bs.append(edited_node)
+    if version >= pkg_resources.parse_version("0.3"):
+        XML.SubElement(bsp, 'failOnError').text = str(data.get(
+            'failOnError', False)).lower()
 
 
 def logstash(registry, xml_parent, data):

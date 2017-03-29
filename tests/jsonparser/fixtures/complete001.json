@@ -19,26 +19,28 @@
       "name": "pre-scm-shell-ant",
       "wrappers": [
         {
-          "pre-scm-buildstep": [
-            {
-              "shell": "#!/bin/bash\necho \"Doing somethiung cool\"\n"
-            },
-            {
-              "shell": "#!/bin/zsh\necho \"Doing somethin cool with zsh\"\n"
-            },
-            {
-              "ant": {
-                "targets": "target1 target2",
-                "ant-name": "Standard Ant"
+          "pre-scm-buildstep": {
+            "buildsteps": [
+              {
+                "shell": "#!/bin/bash\necho \"Doing somethiung cool\"\n"
+              },
+              {
+                "shell": "#!/bin/zsh\necho \"Doing somethin cool with zsh\"\n"
+              },
+              {
+                "ant": {
+                  "targets": "target1 target2",
+                  "ant-name": "Standard Ant"
+                }
+              },
+              {
+                "inject": {
+                  "properties-file": "example.prop",
+                  "properties-content": "EXAMPLE=foo-bar"
+                }
               }
-            },
-            {
-              "inject": {
-                "properties-file": "example.prop",
-                "properties-content": "EXAMPLE=foo-bar"
-              }
-            }
-          ]
+            ]
+           }
         }
       ]
     }

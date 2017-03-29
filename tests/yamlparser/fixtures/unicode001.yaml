@@ -2,9 +2,10 @@
     name: unicode-wrapper
     wrappers:
       - pre-scm-buildstep:
-          - shell: |
-              #!/bin/bash
-              echo "Unicode! ☃"
+          buildsteps:
+            - shell: |
+                #!/bin/bash
+                echo "Unicode! ☃"
 
 - job:
     name: test-unicode-wrapper
