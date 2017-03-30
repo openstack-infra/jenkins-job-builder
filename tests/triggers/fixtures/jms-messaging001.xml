@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <com.redhat.jenkins.plugins.ci.CIBuildTrigger>
+      <spec/>
+      <selector>topic = &quot;org.fedoraproject.prod.fedimg.image.upload&quot;</selector>
+      <providerName>fedmsg</providerName>
+      <checks>
+        <com.redhat.jenkins.plugins.ci.messaging.checks.MsgCheck>
+          <field>compose</field>
+          <expectedValue>.+compose_id.+Fedora-Atomic.+</expectedValue>
+        </com.redhat.jenkins.plugins.ci.messaging.checks.MsgCheck>
+        <com.redhat.jenkins.plugins.ci.messaging.checks.MsgCheck>
+          <field>image_name</field>
+          <expectedValue>.+Fedora-Atomic.+</expectedValue>
+        </com.redhat.jenkins.plugins.ci.messaging.checks.MsgCheck>
+      </checks>
+    </com.redhat.jenkins.plugins.ci.CIBuildTrigger>
+  </triggers>
+</project>

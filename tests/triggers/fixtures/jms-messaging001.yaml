@@ -1,0 +1,9 @@
+triggers:
+  - jms-messaging:
+      selector: topic = "org.fedoraproject.prod.fedimg.image.upload"
+      provider-name: fedmsg
+      checks:
+        - field: compose
+          expected-value: .+compose_id.+Fedora-Atomic.+
+        - field: image_name
+          expected-value: .+Fedora-Atomic.+
