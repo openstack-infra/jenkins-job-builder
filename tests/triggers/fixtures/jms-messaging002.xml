@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <com.redhat.jenkins.plugins.ci.CIBuildTrigger>
+      <spec/>
+      <selector>topic = &quot;org.fedoraproject.prod.fedimg.image.upload&quot;</selector>
+      <providerName>fedmsg</providerName>
+    </com.redhat.jenkins.plugins.ci.CIBuildTrigger>
+  </triggers>
+</project>

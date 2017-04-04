@@ -777,6 +777,70 @@ def pollurl(registry, xml_parent, data):
                                    'ContentEntry', *content_type[0:3])
 
 
+def jms_messaging(registry, xml_parent, data):
+    """yaml: jms-messaging
+    The JMS Messaging Plugin provides the following functionality:
+     - A build trigger to submit jenkins jobs upon receipt
+       of a matching message.
+     - A post-build action that may be used to submit a message to the topic
+       upon the completion of a job
+
+    JMS Messaging provider types supported:
+        - ActiveMQ
+        - FedMsg
+
+    Requires the Jenkins :jenkins-wiki:`JMS Messaging Plugin
+    Pipeline Plugin <JMS+Messaging+Plugin>`.
+
+    :arg str selector: The JSON or YAML formatted text that conforms to
+        the schema for defining the various OpenShift resources. (default '')
+        note: topic needs to be in double quotes
+        ex. topic = "org.fedoraproject.prod.fedimg.image.upload"
+    :arg str provider-name: Name of message provider setup in the
+        global config. (default '')
+    :arg list checks: List of checks to monitor. (default [])
+    :arg str field: Check the body of messages for a field. (default '')
+    :arg str expected-value: Expected value for the field. regex (default '')
+
+
+    Full Example:
+
+    .. literalinclude::
+        ../../tests/triggers/fixtures/jms-messaging001.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+        ../../tests/triggers/fixtures/jms-messaging002.yaml
+       :language: yaml
+    """
+    namespace = 'com.redhat.jenkins.plugins.ci.'
+    jmsm = XML.SubElement(xml_parent,
+                          namespace + 'CIBuildTrigger')
+
+    mapping = [
+        # option, xml name, default value
+        ("spec", 'spec', ''),
+        ("selector", 'selector', ''),
+        ("provider-name", 'providerName', ''),
+    ]
+    convert_mapping_to_xml(jmsm, data, mapping, fail_required=True)
+
+    checks = data.get('checks', [])
+    if len(checks) > 0:
+        msgchecks = XML.SubElement(jmsm, 'checks')
+        for check in checks:
+            msgcheck = XML.SubElement(msgchecks, namespace
+                                      + 'messaging.checks.MsgCheck')
+            if check['field'] is '':
+                raise JenkinsJobsException('At least one '
+                                           'field must be provided')
+            XML.SubElement(msgcheck, 'field').text = check['field']
+            XML.SubElement(msgcheck,
+                           'expectedValue').text = check['expected-value']
+
+
 def timed(registry, xml_parent, data):
     """yaml: timed
     Trigger builds at certain times.

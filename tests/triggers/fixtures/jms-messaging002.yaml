@@ -1,0 +1,5 @@
+triggers:
+  - jms-messaging:
+      selector: topic = "org.fedoraproject.prod.fedimg.image.upload"
+      provider-name: fedmsg
+
