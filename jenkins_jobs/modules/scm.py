@@ -181,6 +181,8 @@ def git(registry, xml_parent, data):
             * **tracking** (`bool`) - Retrieve the tip of the configured
               branch in .gitmodules (Uses '\-\-remote' option which requires
               git>=1.8.2)
+            * **parent-credentials** (`bool`) - Use credentials from default
+              remote of parent repository (default false).
             * **reference-repo** (`str`) - Path of the reference repo to use
               during clone (optional)
             * **timeout** (`int`) - Specify a timeout (in minutes) for
@@ -396,6 +398,8 @@ def git(registry, xml_parent, data):
             data['submodule'].get('recursive', False)).lower()
         XML.SubElement(ext, 'trackingSubmodules').text = str(
             data['submodule'].get('tracking', False)).lower()
+        XML.SubElement(ext, 'parentCredentials').text = str(
+            data['submodule'].get('parent-credentials', False)).lower()
         XML.SubElement(ext, 'reference').text = str(
             data['submodule'].get('reference-repo', ''))
         XML.SubElement(ext, 'timeout').text = str(
