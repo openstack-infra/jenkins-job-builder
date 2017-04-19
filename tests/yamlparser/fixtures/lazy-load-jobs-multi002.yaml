@@ -1,0 +1,13 @@
+- job-template:
+    name: "test-job-{job_name}"
+    builders:
+      - shell:
+          !include-raw: 'lazy-load-scripts/echo_vars_{job_name}.sh'
+
+- project:
+    name: 'test-project'
+    job_name:
+      - 1.1
+      - 1.2
+    jobs:
+      - "test-job-{job_name}"
