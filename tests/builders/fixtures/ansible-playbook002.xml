@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jenkinsci.plugins.ansible.AnsiblePlaybookBuilder>
+      <playbook>path/to/playbook.yml</playbook>
+      <inventory class="org.jenkinsci.plugins.ansible.InventoryContent">
+        <content>[all]
+machine01.example.com
+machine02.example.com
+</content>
+        <dynamic>false</dynamic>
+      </inventory>
+      <limit>masters</limit>
+      <tags>ose</tags>
+      <skippedTags>ovirt</skippedTags>
+      <startAtTask>Deploy application</startAtTask>
+      <credentialsId>0891c950-487b-4749-aa69-d87425e14459</credentialsId>
+      <sudo>true</sudo>
+      <sudoUser>cloud-user</sudoUser>
+      <forks>2</forks>
+      <unbufferedOutput>false</unbufferedOutput>
+      <colorizedOutput>true</colorizedOutput>
+      <hostKeyChecking>true</hostKeyChecking>
+      <additionalParameters>-vvv</additionalParameters>
+      <copyCredentialsInWorkspace>false</copyCredentialsInWorkspace>
+      <extraVars>
+        <org.jenkinsci.plugins.ansible.ExtraVar>
+          <key>complete_var</key>
+          <value>complete value</value>
+          <hidden>false</hidden>
+        </org.jenkinsci.plugins.ansible.ExtraVar>
+        <org.jenkinsci.plugins.ansible.ExtraVar>
+          <key>empty_var</key>
+          <value/>
+          <hidden>false</hidden>
+        </org.jenkinsci.plugins.ansible.ExtraVar>
+        <org.jenkinsci.plugins.ansible.ExtraVar>
+          <key>hidden_var</key>
+          <value>Do not appear in console</value>
+          <hidden>true</hidden>
+        </org.jenkinsci.plugins.ansible.ExtraVar>
+      </extraVars>
+    </org.jenkinsci.plugins.ansible.AnsiblePlaybookBuilder>
+  </builders>
+</project>
