@@ -263,7 +263,7 @@ def choice_param(registry, xml_parent, data):
     A single selection parameter.
 
     :arg str name: the name of the parameter
-    :arg list choices: the available choices
+    :arg list choices: the available choices, first one is the default one.
     :arg str description: a description of the parameter (optional)
 
     Example::
