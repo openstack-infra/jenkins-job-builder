@@ -19,7 +19,6 @@ import errno
 import hashlib
 import io
 import logging
-import operator
 import os
 from pprint import pformat
 import re
@@ -28,6 +27,7 @@ import xml.etree.ElementTree as XML
 
 import jenkins
 
+from jenkins_jobs.alphanum import AlphanumSort
 from jenkins_jobs.cache import JobCache
 from jenkins_jobs.constants import MAGIC_MANAGE_STRING
 from jenkins_jobs.parallel import concurrent
@@ -199,7 +199,7 @@ class JenkinsManager(object):
         orig = time.time()
 
         logger.info("Number of jobs generated:  %d", len(xml_jobs))
-        xml_jobs.sort(key=operator.attrgetter('name'))
+        xml_jobs.sort(key=AlphanumSort)
 
         if (output and not hasattr(output, 'write') and
                 not os.path.isdir(output)):
@@ -360,7 +360,7 @@ class JenkinsManager(object):
         orig = time.time()
 
         logger.info("Number of views generated:  %d", len(xml_views))
-        xml_views.sort(key=operator.attrgetter('name'))
+        xml_views.sort(key=AlphanumSort)
 
         if output:
             # ensure only wrapped once
