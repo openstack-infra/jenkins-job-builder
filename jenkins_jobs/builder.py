@@ -104,12 +104,22 @@ class JenkinsManager(object):
             self._job_list = set(job['fullname'] for job in self.jobs)
         return self._job_list
 
+    def _job_format(self, job_name):
+        # returns job name or url based on config option
+        if self._jjb_config.builder['print_job_urls']:
+            return self._jjb_config.jenkins['url'] + \
+                '/job/' + '/job/'.join(job_name.split('/'))
+        else:
+            return job_name
+
     def update_job(self, job_name, xml):
         if self.is_job(job_name):
-            logger.info("Reconfiguring jenkins job {0}".format(job_name))
+            logger.info("Reconfiguring jenkins job {0}".format(
+                self._job_format(job_name)))
             self.jenkins.reconfig_job(job_name, xml)
         else:
-            logger.info("Creating jenkins job {0}".format(job_name))
+            logger.info("Creating jenkins job {0}".format(
+                self._job_format(job_name)))
             self.jenkins.create_job(job_name, xml)
 
     def is_job(self, job_name):

@@ -52,6 +52,11 @@ job_builder section
   string, allowing you to use those strings without having to define all the
   keys it might be using.
 
+**print_job_urls**
+  (Optional) If set to True it will print full jobs urls while updating jobs,
+  so user can be sure which instance was updated. User may click the link to
+  go directly to that job. False by default.
+
 
 jenkins section
 ^^^^^^^^^^^^^^^
