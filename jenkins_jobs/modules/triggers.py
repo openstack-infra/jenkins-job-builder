@@ -1160,7 +1160,7 @@ def gitlab(registry, xml_parent, data):
     :arg bool ci-skip: Enable skipping builds of commits that contain
         [ci-skip] in the commit message (default true)
     :arg bool wip-skip: Enable skipping builds of WIP Merge Requests (>= 1.2.4)
-        (default false)
+        (default true)
     :arg bool set-build-description: Set build description to build cause
         (eg. Merge request or Git Push) (default true)
     :arg bool add-note-merge-request: Add note with build status on
