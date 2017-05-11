@@ -1,0 +1,20 @@
+publishers:
+  - jms-messaging:
+      override-topic: org.centos.stage.ci.pipeline.compose.complete
+      provider-name: fedmsg
+      msg-type: Custom
+      msg-props: |
+        topic=org.centos.prod.ci.pipeline.compose.complete
+        username=fedora-atomic
+      msg-content: |
+        {
+          "build_url": "${BUILD_URL}",
+          "compose_url": "<full-url-to-compose>",
+          "build_id": "${BUILD_ID}",
+          "ref": "fedora/rawhide/${basearch}/atomic-host",
+          "rev": "<sha of the commit from dist-git>",
+          "namespace": "rpms",
+          "repo": "php-simplepie",
+          "status": "<success/failure/aborted>",
+          "test_guidance": "<comma-separated-list-of-test-suites-to-run>"}
+        }

@@ -6652,6 +6652,50 @@ def phabricator(registry, xml_parent, data):
             data.get('comment-with-console-link-on-failure')).lower()
 
 
+def jms_messaging(registry, xml_parent, data):
+    """yaml: jms-messaging
+    The JMS Messaging Plugin provides the following functionality:
+     - A build trigger to submit jenkins jobs upon receipt
+       of a matching message.
+     - A builder that may be used to submit a message to the topic
+       upon the completion of a job
+     - A post-build action that may be used to submit a message to the topic
+       upon the completion of a job
+
+
+    JMS Messaging provider types supported:
+        - ActiveMQ
+        - FedMsg
+
+    Requires the Jenkins :jenkins-wiki:`JMS Messaging Plugin
+    Pipeline Plugin <JMS+Messaging+Plugin>`.
+
+    :arg str override-topic: If you need to override the default topic.
+        (default '')
+    :arg str provider-name: Name of message provider setup in the
+        global config. (default '')
+    :arg str msg-type: A message type
+        (default 'CodeQualityChecksDone')
+    :arg str msg-props: Message header to publish. (default '')
+    :arg str msg-content: Message body to publish. (default '')
+
+
+    Full Example:
+
+    .. literalinclude::
+        ../../tests/publishers/fixtures/jms-messaging-full.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+        ../../tests/publishers/fixtures/jms-messaging-minimal.yaml
+       :language: yaml
+    """
+    helpers.jms_messaging_common(xml_parent, 'com.redhat.jenkins.plugins.ci.'
+                                             'CIMessageNotifier', data)
+
+
 def openshift_build_canceller(registry, xml_parent, data):
     """yaml: openshift-build-canceller
     This action is intended to provide cleanup for a Jenkins job which failed

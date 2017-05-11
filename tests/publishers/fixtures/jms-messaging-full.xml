@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <com.redhat.jenkins.plugins.ci.CIMessageNotifier>
+      <overrides>
+        <topic>org.centos.stage.ci.pipeline.compose.complete</topic>
+      </overrides>
+      <providerName>fedmsg</providerName>
+      <messageType>Custom</messageType>
+      <messageProperties>topic=org.centos.prod.ci.pipeline.compose.complete
+username=fedora-atomic
+</messageProperties>
+      <messageContent>{
+  &quot;build_url&quot;: &quot;${BUILD_URL}&quot;,
+  &quot;compose_url&quot;: &quot;&lt;full-url-to-compose&gt;&quot;,
+  &quot;build_id&quot;: &quot;${BUILD_ID}&quot;,
+  &quot;ref&quot;: &quot;fedora/rawhide/${basearch}/atomic-host&quot;,
+  &quot;rev&quot;: &quot;&lt;sha of the commit from dist-git&gt;&quot;,
+  &quot;namespace&quot;: &quot;rpms&quot;,
+  &quot;repo&quot;: &quot;php-simplepie&quot;,
+  &quot;status&quot;: &quot;&lt;success/failure/aborted&gt;&quot;,
+  &quot;test_guidance&quot;: &quot;&lt;comma-separated-list-of-test-suites-to-run&gt;&quot;}
+}</messageContent>
+    </com.redhat.jenkins.plugins.ci.CIMessageNotifier>
+  </publishers>
+</project>
