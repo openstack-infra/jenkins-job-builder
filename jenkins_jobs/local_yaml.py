@@ -433,8 +433,10 @@ class LazyLoader(object):
         return "%s %s" % (self._cls.yaml_tag, self._node.value)
 
     def format(self, *args, **kwargs):
-        self._node.value = self._node.value.format(*args, **kwargs)
-        return self._cls.from_yaml(self._loader, self._node)
+        node = yaml.ScalarNode(
+            tag=self._node.tag,
+            value=self._node.value.format(*args, **kwargs))
+        return self._cls.from_yaml(self._loader, node)
 
 
 def load(stream, **kwargs):

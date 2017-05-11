@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>#!/bin/bash
+#
+# version 1.1 of the echo vars script
+
+MSG=&quot;hello world&quot;
+VERSION=&quot;1.1&quot;
+
+[[ -n &quot;${MSG}&quot; ]] &amp;&amp; {
+    # this next section is executed as one
+    echo &quot;${MSG}&quot;
+    echo &quot;version: ${VERSION}&quot;
+    exit 0
+}
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
+
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>#!/bin/bash
+#
+# version 1.2 of the echo vars script
+
+MSG=&quot;hello world&quot;
+VERSION=&quot;1.2&quot;
+
+[[ -n &quot;${MSG}&quot; ]] &amp;&amp; {
+    # this next section is executed as one
+    echo &quot;${MSG}&quot;
+    echo &quot;version: ${VERSION}&quot;
+    exit 0
+}
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
