@@ -4389,14 +4389,33 @@ def gitlab_notifier(registry, xml_parent, data):
     Set build status on GitLab commit.
     Requires the Jenkins :jenkins-wiki:`GitLab Plugin <GitLab+Plugin>`.
 
-    Example:
+    :arg str name: The name of the build in GitLab. With this you can
+        distinguish different Jenkins jobs for the same commit in GitLab.
+        (default 'jenkins')
+    :arg bool mark-unstable-as-success: (default false)
 
-    .. literalinclude:: /../../tests/publishers/fixtures/gitlab-notifier.yaml
+    Minimal Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/gitlab-notifier-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/gitlab-notifier-full.yaml
        :language: yaml
     """
-    XML.SubElement(
+    top = XML.SubElement(
         xml_parent,
         'com.dabsquared.gitlabjenkins.publisher.GitLabCommitStatusPublisher')
+    top.set('plugin', 'gitlab-plugin')
+
+    mappings = [
+        ('name', 'name', 'jenkins'),
+        ('mark-unstable-as-success', 'markUnstableAsSuccess', False),
+    ]
+    helpers.convert_mapping_to_xml(top, data, mappings, fail_required=True)
 
 
 def zulip(registry, xml_parent, data):
