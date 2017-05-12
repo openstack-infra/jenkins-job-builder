@@ -11,6 +11,7 @@ publishers:
           managed-artifacts: true
           s3-encryption: true
           flatten: true
+          dont-wait-for-concurrent-builds: true
       metadata-tags:
         - key: warbl ${garbl}
           value: herp derp weevils

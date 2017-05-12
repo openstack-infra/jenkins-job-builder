@@ -14,6 +14,7 @@
           <managedArtifacts>true</managedArtifacts>
           <useServerSideEncryption>true</useServerSideEncryption>
           <flatten>true</flatten>
+          <dontWaitForConcurrentBuildCompletion>true</dontWaitForConcurrentBuildCompletion>
         </hudson.plugins.s3.Entry>
       </entries>
       <userMetadata>
