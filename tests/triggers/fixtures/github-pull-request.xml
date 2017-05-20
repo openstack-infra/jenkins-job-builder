@@ -10,9 +10,14 @@ user2</adminlist>
 user4</whitelist>
       <orgslist>org1
 org2</orgslist>
+      <whiteListLabels>label1
+label2</whiteListLabels>
+      <blackListLabels>label3
+label4</blackListLabels>
       <cron>* * * * *</cron>
       <buildDescTemplate>build description</buildDescTemplate>
       <triggerPhrase>retest this please</triggerPhrase>
+      <skipBuildPhrase>no tests</skipBuildPhrase>
       <onlyTriggerPhrase>true</onlyTriggerPhrase>
       <useGitHubHooks>true</useGitHubHooks>
       <permitAll>false</permitAll>

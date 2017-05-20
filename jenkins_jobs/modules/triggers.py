@@ -902,6 +902,12 @@ def github_pull_request(registry, xml_parent, data):
         in the pull request will trigger a build (optional)
     :arg bool only-trigger-phrase: only commenting the trigger phrase
         in the pull request will trigger a build (default false)
+    :arg string skip-build-phrase: when filled, adding this phrase to
+        the pull request title or body will not trigger a build (optional)
+    :arg string black-list-labels: list of GitHub labels for which the build
+        should not be triggered (optional)
+    :arg string white-list-labels: list of GitHub labels for which the build
+        should only be triggered. (Leave blank for 'any') (optional)
     :arg bool github-hooks: use github hook (default false)
     :arg bool permit-all: build every pull request automatically
         without asking (default false)
@@ -941,6 +947,7 @@ def github_pull_request(registry, xml_parent, data):
     Example:
 
     .. literalinclude:: /../../tests/triggers/fixtures/github-pull-request.yaml
+
     """
     ghprb = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.ghprb.'
                            'GhprbTrigger')
@@ -953,6 +960,10 @@ def github_pull_request(registry, xml_parent, data):
     XML.SubElement(ghprb, 'whitelist').text = white_string
     org_string = "\n".join(data.get('org-list', []))
     XML.SubElement(ghprb, 'orgslist').text = org_string
+    white_list_labels_string = "\n".join(data.get('white-list-labels', []))
+    XML.SubElement(ghprb, 'whiteListLabels').text = white_list_labels_string
+    black_list_labels_string = "\n".join(data.get('black-list-labels', []))
+    XML.SubElement(ghprb, 'blackListLabels').text = black_list_labels_string
     XML.SubElement(ghprb, 'cron').text = data.get('cron', '')
 
     build_desc_template = data.get('build-desc-template', '')
@@ -962,6 +973,8 @@ def github_pull_request(registry, xml_parent, data):
 
     XML.SubElement(ghprb, 'triggerPhrase').text = \
         data.get('trigger-phrase', '')
+    XML.SubElement(ghprb, 'skipBuildPhrase').text = str(
+        data.get('skip-build-phrase', '')).lower()
     XML.SubElement(ghprb, 'onlyTriggerPhrase').text = str(
         data.get('only-trigger-phrase', False)).lower()
     XML.SubElement(ghprb, 'useGitHubHooks').text = str(
