@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <com.redhat.jenkins.plugins.ci.CIMessageNotifier>
+      <providerName>fedmsg</providerName>
+      <messageType>CodeQualityChecksDone</messageType>
+      <messageProperties>test</messageProperties>
+      <messageContent>test</messageContent>
+    </com.redhat.jenkins.plugins.ci.CIMessageNotifier>
+  </publishers>
+</project>

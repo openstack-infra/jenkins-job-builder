@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.redhat.jenkins.plugins.ci.CIMessageBuilder>
+      <providerName>fedmsg</providerName>
+      <messageType>CodeQualityChecksDone</messageType>
+      <messageProperties>test</messageProperties>
+      <messageContent>test</messageContent>
+    </com.redhat.jenkins.plugins.ci.CIMessageBuilder>
+  </builders>
+</project>

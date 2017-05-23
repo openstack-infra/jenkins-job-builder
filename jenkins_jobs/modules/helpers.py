@@ -522,3 +522,29 @@ def convert_mapping_to_xml(parent, data, mapping, fail_required=False):
             XML.SubElement(parent, xmlname).text = str(valid_dict[val])
         else:
             XML.SubElement(parent, xmlname).text = str(val)
+
+
+def jms_messaging_common(parent, subelement, data):
+    """JMS common helper function
+
+    Pass the XML parent and the specific subelement from the builder or the
+    publisher.
+
+    data is passed to mapper helper function to map yaml fields to XML fields
+    """
+    namespace = XML.SubElement(parent,
+                               subelement)
+
+    if 'override-topic' in data:
+        overrides = XML.SubElement(namespace, 'overrides')
+        XML.SubElement(overrides,
+                       'topic').text = str(data.get('override-topic', ''))
+
+    mapping = [
+        # option, xml name, default value
+        ("provider-name", 'providerName', ''),
+        ("msg-type", 'messageType', 'CodeQualityChecksDone'),
+        ("msg-props", 'messageProperties', ''),
+        ("msg-content", 'messageContent', ''),
+    ]
+    convert_mapping_to_xml(namespace, data, mapping, fail_required=True)
