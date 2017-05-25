@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jenkinsci.plugins.xunit.XUnitBuilder plugin="xunit">
+      <types>
+        <JUnitType>
+          <pattern>junit.xml</pattern>
+          <failIfNotNew>true</failIfNotNew>
+          <deleteOutputFiles>true</deleteOutputFiles>
+          <skipNoTestFiles>false</skipNoTestFiles>
+          <stopProcessingIfError>true</stopProcessingIfError>
+        </JUnitType>
+      </types>
+      <thresholds/>
+      <thresholdMode>1</thresholdMode>
+      <extraConfiguration>
+        <testTimeMargin>3000</testTimeMargin>
+      </extraConfiguration>
+    </org.jenkinsci.plugins.xunit.XUnitBuilder>
+  </builders>
+</project>

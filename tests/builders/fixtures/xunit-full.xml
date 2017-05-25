@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jenkinsci.plugins.xunit.XUnitBuilder plugin="xunit">
+      <types>
+        <PHPUnitJunitHudsonTestType>
+          <pattern>phpunit.log</pattern>
+          <failIfNotNew>true</failIfNotNew>
+          <deleteOutputFiles>true</deleteOutputFiles>
+          <skipNoTestFiles>false</skipNoTestFiles>
+          <stopProcessingIfError>true</stopProcessingIfError>
+        </PHPUnitJunitHudsonTestType>
+        <CppUnitJunitHudsonTestType>
+          <pattern>cppunit.log</pattern>
+          <failIfNotNew>false</failIfNotNew>
+          <deleteOutputFiles>false</deleteOutputFiles>
+          <skipNoTestFiles>true</skipNoTestFiles>
+          <stopProcessingIfError>false</stopProcessingIfError>
+        </CppUnitJunitHudsonTestType>
+        <GoogleTestType>
+          <pattern>gtest.log</pattern>
+          <failIfNotNew>true</failIfNotNew>
+          <deleteOutputFiles>true</deleteOutputFiles>
+          <skipNoTestFiles>false</skipNoTestFiles>
+          <stopProcessingIfError>true</stopProcessingIfError>
+        </GoogleTestType>
+      </types>
+      <thresholds>
+        <org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
+          <unstableThreshold>0</unstableThreshold>
+          <unstableNewThreshold>0</unstableNewThreshold>
+          <failureThreshold>0</failureThreshold>
+          <failureNewThreshold>0</failureNewThreshold>
+        </org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
+        <org.jenkinsci.plugins.xunit.threshold.SkippedThreshold>
+          <unstableThreshold>0</unstableThreshold>
+          <unstableNewThreshold>0</unstableNewThreshold>
+          <failureThreshold>0</failureThreshold>
+          <failureNewThreshold>0</failureNewThreshold>
+        </org.jenkinsci.plugins.xunit.threshold.SkippedThreshold>
+      </thresholds>
+      <thresholdMode>2</thresholdMode>
+      <extraConfiguration>
+        <testTimeMargin>5000</testTimeMargin>
+      </extraConfiguration>
+    </org.jenkinsci.plugins.xunit.XUnitBuilder>
+  </builders>
+</project>

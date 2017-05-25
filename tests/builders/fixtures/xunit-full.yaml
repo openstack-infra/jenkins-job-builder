@@ -1,0 +1,30 @@
+builders:
+  - xunit:
+      thresholdmode: 'percent'
+      thresholds:
+          - failed:
+                unstable: 0
+                unstablenew: 0
+                failure: 0
+                failurenew: 0
+          - skipped:
+                unstable: 0
+                unstablenew: 0
+                failure: 0
+                failurenew: 0
+      test-time-margin: 5000
+      types:
+          - phpunit:
+              pattern: "phpunit.log"
+              requireupdate: true
+              deleteoutput: true
+              skip-if-no-test-files: false
+              stoponerror: true
+          - cppunit:
+              pattern: "cppunit.log"
+              requireupdate: false
+              deleteoutput: false
+              skip-if-no-test-files: true
+              stoponerror: false
+          - gtest:
+              pattern: "gtest.log"

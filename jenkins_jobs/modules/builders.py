@@ -4170,3 +4170,147 @@ def nodejs(parser, xml_parent, data):
 
     convert_mapping_to_xml(nodejs, data, mapping, fail_required=True)
     convert_mapping_to_xml(nodejs, data, mapping_opt, fail_required=False)
+
+
+def xunit(registry, xml_parent, data):
+    """yaml: xunit
+    Process tests results. Requires the Jenkins :jenkins-wiki:`xUnit Plugin
+    <xUnit+Plugin>`.
+
+    :arg str thresholdmode: Whether thresholds represents an absolute number
+        of tests or a percentage. Either 'number' or 'percent'. (default
+        'number')
+    :arg list thresholds: Thresholds for both 'failed' and 'skipped' tests.
+
+        :threshold (`dict`): Threshold values to set, where missing, xUnit
+            should default to an internal value of 0. Each test threshold
+            should contain the following:
+
+            * **unstable** (`int`)
+            * **unstablenew** (`int`)
+            * **failure** (`int`)
+            * **failurenew** (`int`)
+
+    :arg int test-time-margin: Give the report time margin value in ms, before
+        to fail if not new unless the option **requireupdate** is set for the
+        configured framework. (default 3000)
+    :arg list types: Frameworks to configure, and options. Supports the
+        following: ``aunit``, ``boosttest``, ``checktype``, ``cpptest``,
+        ``cppunit``, ``ctest``, ``dotnettest``, ``embunit``, ``fpcunit``,
+        ``gtest``, ``junit``, ``mstest``, ``nunit``, ``phpunit``, ``tusar``,
+        ``unittest``, and ``valgrind``.
+
+        The 'custom' type is not supported.
+
+        :type (`dict`): each type can be configured using the following:
+
+            * **pattern** (`str`): An Ant pattern to look for Junit result
+              files, relative to the workspace root (default '')
+            * **requireupdate** (`bool`): fail the build whenever fresh tests
+              results have not been found (default true).
+            * **deleteoutput** (`bool`): delete temporary JUnit files
+              (default true).
+            * **skip-if-no-test-files** (`bool`): Skip parsing this xUnit type
+              report if there are no test reports files (default false).
+            * **stoponerror** (`bool`): Fail the build whenever an error occur
+              during a result file processing (default true).
+
+    Minimal Example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/xunit-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/xunit-full.yaml
+       :language: yaml
+
+    """
+    logger = logging.getLogger(__name__)
+    xunit = XML.SubElement(xml_parent,
+                           'org.jenkinsci.plugins.xunit.XUnitBuilder')
+    xunit.set('plugin', 'xunit')
+
+    # Map our internal types to the XML element names used by Jenkins plugin
+    types_to_plugin_types = {
+        'aunit': 'AUnitJunitHudsonTestType',
+        'boosttest': 'BoostTestJunitHudsonTestType',
+        'checktype': 'CheckType',
+        'cpptest': 'CppTestJunitHudsonTestType',
+        'cppunit': 'CppUnitJunitHudsonTestType',
+        'ctest': 'CTestType',
+        'dotnettest': 'XUnitDotNetTestType',  # since plugin v1.93
+        'embunit': 'EmbUnitType',  # since plugin v1.84
+        'fpcunit': 'FPCUnitJunitHudsonTestType',
+        'gtest': 'GoogleTestType',
+        'junit': 'JUnitType',
+        'mstest': 'MSTestJunitHudsonTestType',
+        'nunit': 'NUnitJunitHudsonTestType',
+        'phpunit': 'PHPUnitJunitHudsonTestType',
+        'tusar': 'TUSARJunitHudsonTestType',
+        'unittest': 'UnitTestJunitHudsonTestType',
+        'valgrind': 'ValgrindJunitHudsonTestType',
+        # FIXME should implement the 'custom' type
+    }
+    implemented_types = types_to_plugin_types.keys()  # shortcut
+
+    # Unit framework we are going to generate xml for
+    supported_types = []
+
+    for configured_type in data['types']:
+        type_name = next(iter(configured_type.keys()))
+        if type_name not in implemented_types:
+            logger.warning("Requested xUnit type '%s' is not yet supported",
+                           type_name)
+        else:
+            # Append for generation
+            supported_types.append(configured_type)
+
+    # Generate XML for each of the supported framework types
+    xmltypes = XML.SubElement(xunit, 'types')
+    mappings = [
+        ('pattern', 'pattern', ''),
+        ('requireupdate', 'failIfNotNew', True),
+        ('deleteoutput', 'deleteOutputFiles', True),
+        ('skip-if-no-test-files', 'skipNoTestFiles', False),
+        ('stoponerror', 'stopProcessingIfError', True),
+    ]
+    for supported_type in supported_types:
+        framework_name = next(iter(supported_type.keys()))
+        xmlframework = XML.SubElement(xmltypes,
+                                      types_to_plugin_types[framework_name])
+
+        helpers.convert_mapping_to_xml(xmlframework,
+                                       supported_type[framework_name],
+                                       mappings,
+                                       fail_required=True)
+
+    xmlthresholds = XML.SubElement(xunit, 'thresholds')
+    for t in data.get('thresholds', []):
+        if not ('failed' in t or 'skipped' in t):
+            logger.warning(
+                "Unrecognized threshold, should be 'failed' or 'skipped'")
+            continue
+        elname = ("org.jenkinsci.plugins.xunit.threshold.%sThreshold" %
+                  next(iter(t.keys())).title())
+        el = XML.SubElement(xmlthresholds, elname)
+        for threshold_name, threshold_value in next(iter(t.values())).items():
+            # Normalize and craft the element name for this threshold
+            elname = "%sThreshold" % threshold_name.lower().replace(
+                'new', 'New')
+            XML.SubElement(el, elname).text = str(threshold_value)
+
+    # Whether to use percent of exact number of tests.
+    # Thresholdmode is either:
+    # - 1 : absolute (number of tests), default.
+    # - 2 : relative (percentage of tests)
+    thresholdmode = '1'
+    if 'percent' == data.get('thresholdmode', 'number'):
+        thresholdmode = '2'
+    XML.SubElement(xunit, 'thresholdMode').text = thresholdmode
+
+    extra_config = XML.SubElement(xunit, 'extraConfiguration')
+    XML.SubElement(extra_config, 'testTimeMargin').text = str(
+        data.get('test-time-margin', '3000'))
