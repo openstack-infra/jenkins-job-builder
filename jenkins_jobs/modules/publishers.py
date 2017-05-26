@@ -4890,6 +4890,9 @@ def s3(registry, xml_parent, data):
         * **flatten** (`bool`) - Ignore the directory structure of the
           artifacts in the source project and copy all matching artifacts
           directly into the specified bucket. (default false)
+        * **dont-wait-for-concurrent-builds** (`bool`) - Don't wait
+          for completion of concurrent builds before publishing to S3
+          (default false)
     :arg list metadata-tags:
       :metadata-tags:
         * **key** Metadata key for files from this build. It will be
@@ -4923,7 +4926,9 @@ def s3(registry, xml_parent, data):
                     ('uploadFromSlave', 'upload-from-slave', False),
                     ('managedArtifacts', 'managed-artifacts', False),
                     ('useServerSideEncryption', 's3-encryption', False),
-                    ('flatten', 'flatten', False)]
+                    ('flatten', 'flatten', False),
+                    ('dontWaitForConcurrentBuildCompletion',
+                     'dont-wait-for-concurrent-builds', False)]
 
         for xml_key, yaml_key, default in settings:
             xml_config = XML.SubElement(fileset, xml_key)
