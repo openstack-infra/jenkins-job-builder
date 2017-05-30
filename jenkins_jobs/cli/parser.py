@@ -66,6 +66,11 @@ def create_parser():
         help="Don\'t fail if any of the variables inside any string are "
         "not defined, replace with empty string instead.")
     parser.add_argument(
+        '--server', '-s',
+        dest='section',
+        default='jenkins',
+        help="The Jenkins server ini section to use. Defaults to 'jenkins'")
+    parser.add_argument(
         '--user', '-u',
         help="The Jenkins user to use for authentication. This overrides "
         "the user specified in the configuration file.")
