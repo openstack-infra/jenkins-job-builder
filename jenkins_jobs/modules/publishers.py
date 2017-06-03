@@ -6256,28 +6256,19 @@ def testselector(registry, xml_parent, data):
 
     testselector = XML.SubElement(xml_parent, 'il.ac.technion.jenkins.plugins'
                                               'TestExecuter')
-    try:
-        name = str(data['name'])
-    except KeyError as e:
-        raise MissingAttributeError(e.args[0])
-    try:
-        propertiesfile = str(data['properties-file'])
-    except KeyError as e:
-        raise MissingAttributeError(e.args[0])
-    XML.SubElement(testselector, 'name').text = name
-    XML.SubElement(testselector, 'description').text = data.get(
-        'description', '')
-    XML.SubElement(testselector, 'propertiesFilePath').text = propertiesfile
-    XML.SubElement(testselector, 'enableField').text = data.get(
-        'enable-field', '')
-    XML.SubElement(testselector, 'groupBy').text = data.get(
-        'groupby', '')
-    XML.SubElement(testselector, 'fieldSeparator').text = data.get(
-        'field-separator', '')
-    XML.SubElement(testselector, 'showFields').text = data.get(
-        'show-fields', '')
-    XML.SubElement(testselector, 'multiplicityField').text = data.get(
-        'multiplicity-field', '')
+
+    mapping = [
+        ('name', 'name', None),
+        ('description', 'description', ''),
+        ('properties-file', 'propertiesFilePath', None),
+        ('enable-field', 'enableField', ''),
+        ('groupby', 'groupBy', ''),
+        ('field-separator', 'fieldSeparator', ''),
+        ('show-fields', 'showFields', ''),
+        ('multiplicity-field', 'multiplicityField', ''),
+    ]
+    helpers.convert_mapping_to_xml(
+        testselector, data, mapping, fail_required=True)
 
 
 def cloudformation(registry, xml_parent, data):
