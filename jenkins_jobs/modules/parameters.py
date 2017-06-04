@@ -39,6 +39,7 @@ from jenkins_jobs.errors import MissingAttributeError
 from jenkins_jobs.errors import InvalidAttributeError
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules.helpers import copyartifact_build_selector
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 
 
 def base_param(registry, xml_parent, data, do_default, ptype):
@@ -861,10 +862,13 @@ def random_string_param(registry, xml_parent, data):
                           'RandomStringParameterDefinition')
     if 'name' not in data:
         raise JenkinsJobsException('random-string must have a name parameter.')
-    XML.SubElement(pdef, 'name').text = data['name']
-    XML.SubElement(pdef, 'description').text = data.get('description', '')
-    XML.SubElement(pdef, 'failedValidationMessage').text = data.get(
-        'failed-validation-message', '')
+
+    mapping = [
+        ('name', 'name', None),
+        ('description', 'description', ''),
+        ('failed-validation-message', 'failedValidationMessage', ''),
+    ]
+    convert_mapping_to_xml(pdef, data, mapping, fail_required=True)
 
 
 class Parameters(jenkins_jobs.modules.base.Base):
