@@ -1,0 +1,8 @@
+- project:
+    name: missing_params_for_template
+    jobs:
+      - 'template-requiring-param-{os}'
+
+- job-template:
+    name: 'template-requiring-param-{os}'
+    disabled: true

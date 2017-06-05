@@ -40,6 +40,12 @@ def deep_format(obj, paramdict, allow_empty=False):
             desc = "%s parameter missing to format %s\nGiven:\n%s" % (
                 missing_key, obj, pformat(paramdict))
             raise JenkinsJobsException(desc)
+        except Exception:
+            logging.error("Problem formatting with args:\nallow_empty:"
+                          "%s\nobj: %s\nparamdict: %s" %
+                          (allow_empty, obj, paramdict))
+            raise
+
     elif isinstance(obj, list):
         ret = type(obj)()
         for item in obj:
@@ -55,6 +61,11 @@ def deep_format(obj, paramdict, allow_empty=False):
                 desc = "%s parameter missing to format %s\nGiven:\n%s" % (
                     missing_key, obj, pformat(paramdict))
                 raise JenkinsJobsException(desc)
+            except Exception:
+                logging.error("Problem formatting with args:\nallow_empty:"
+                              "%s\nobj: %s\nparamdict: %s" %
+                              (allow_empty, obj, paramdict))
+                raise
     else:
         ret = obj
     return ret

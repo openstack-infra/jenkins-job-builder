@@ -41,3 +41,20 @@ class TestXmlJobGeneratorExceptions(base.BaseTestCase):
         e = self.assertRaises(errors.JenkinsJobsException,
                               xml_generator.generateXML, job_data)
         self.assertIn("Unrecognized project type:", str(e))
+
+    def test_incorrect_template_params(self):
+        self.conf_filename = None
+        config = self._get_config()
+
+        yp = parser.YamlParser(config)
+        yp.parse(os.path.join(self.fixtures_path,
+                              "failure_formatting_component.yaml"))
+
+        reg = registry.ModuleRegistry(config)
+        reg.set_parser_data(yp.data)
+        job_data_list, view_data_list = yp.expandYaml(reg)
+
+        xml_generator = xml_config.XmlJobGenerator(reg)
+        self.assertRaises(Exception, xml_generator.generateXML, job_data_list)
+        self.assertIn("Failure formatting component", self.logger.output)
+        self.assertIn("Problem formatting with args", self.logger.output)

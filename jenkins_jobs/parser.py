@@ -364,7 +364,12 @@ class YamlParser(object):
                 raise
 
             params.update(expanded_values)
-            params = deep_format(params, params)
+            try:
+                params = deep_format(params, params)
+            except Exception:
+                logging.error(
+                    "Failure formatting params '%s' with itself", params)
+                raise
             if combination_matches(params, excludes):
                 logger.debug('Excluding combination %s', str(params))
                 continue
@@ -374,9 +379,15 @@ class YamlParser(object):
                     params[key] = template[key]
 
             params['template-name'] = template_name
-            expanded = deep_format(
-                template, params,
-                self.jjb_config.yamlparser['allow_empty_variables'])
+            try:
+                expanded = deep_format(
+                    template, params,
+                    self.jjb_config.yamlparser['allow_empty_variables'])
+            except Exception:
+                logging.error(
+                    "Failure formatting template '%s', containing '%s' with "
+                    "params '%s'", template_name, template, params)
+                raise
 
             job_name = expanded.get('name')
             if jobs_glob and not matches(job_name, jobs_glob):
