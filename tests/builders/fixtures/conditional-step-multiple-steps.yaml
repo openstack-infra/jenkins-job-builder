@@ -1,0 +1,7 @@
+builders:
+    - conditional-step:
+        condition-kind: always
+        steps:
+            - shell: 'first command'
+            - shell: 'second command'
+

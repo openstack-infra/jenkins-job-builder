@@ -1,0 +1,16 @@
+builders:
+      - conditional-step:
+          condition-kind: and
+          condition-operands:
+              - condition-kind: regex-match
+                regex: "*abc*"
+                label: "dabcddabc"
+              - condition-kind: time
+                earliest-hour: "2"
+                earliest-min: "0"
+                latest-hour: "23"
+                latest-min: "40"
+                use-build-time: true
+          steps:
+              - shell: "sl"
+              - shell: "ls"

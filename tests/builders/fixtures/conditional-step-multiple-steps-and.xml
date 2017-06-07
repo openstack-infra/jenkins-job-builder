@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jenkinsci.plugins.conditionalbuildstep.ConditionalBuilder>
+      <conditionalbuilders>
+        <hudson.tasks.Shell>
+          <command>sl</command>
+        </hudson.tasks.Shell>
+        <hudson.tasks.Shell>
+          <command>ls</command>
+        </hudson.tasks.Shell>
+      </conditionalbuilders>
+      <runCondition class="org.jenkins_ci.plugins.run_condition.logic.And">
+        <conditions>
+          <org.jenkins__ci.plugins.run__condition.logic.ConditionContainer>
+            <condition class="org.jenkins_ci.plugins.run_condition.core.ExpressionCondition">
+              <expression>*abc*</expression>
+              <label>dabcddabc</label>
+            </condition>
+          </org.jenkins__ci.plugins.run__condition.logic.ConditionContainer>
+          <org.jenkins__ci.plugins.run__condition.logic.ConditionContainer>
+            <condition class="org.jenkins_ci.plugins.run_condition.core.TimeCondition">
+              <earliestHours>2</earliestHours>
+              <earliestMinutes>0</earliestMinutes>
+              <latestHours>23</latestHours>
+              <latestMinutes>40</latestMinutes>
+              <useBuildTime>true</useBuildTime>
+            </condition>
+          </org.jenkins__ci.plugins.run__condition.logic.ConditionContainer>
+        </conditions>
+      </runCondition>
+      <runner class="org.jenkins_ci.plugins.run_condition.BuildStepRunner$Fail"/>
+    </org.jenkinsci.plugins.conditionalbuildstep.ConditionalBuilder>
+  </builders>
+</project>
