@@ -198,10 +198,10 @@ def gitlab(registry, xml_parent, data):
     gitlab = XML.SubElement(xml_parent,
                             'com.dabsquared.gitlabjenkins.connection.'
                             'GitLabConnectionProperty')
-    try:
-        XML.SubElement(gitlab, 'gitLabConnection').text = data['connection']
-    except KeyError as e:
-        raise MissingAttributeError(e)
+    mapping = [
+        ('connection', 'gitLabConnection', None)
+    ]
+    helpers.convert_mapping_to_xml(gitlab, data, mapping, fail_required=True)
 
 
 def least_load(registry, xml_parent, data):
