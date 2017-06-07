@@ -393,20 +393,22 @@ def artifactory_common_details(details, data):
 
 def artifactory_repository(xml_parent, data, target):
     if 'release' in target:
-        XML.SubElement(xml_parent, 'keyFromText').text = data.get(
-            'deploy-release-repo-key', '')
-        XML.SubElement(xml_parent, 'keyFromSelect').text = data.get(
-            'deploy-release-repo-key', '')
-        XML.SubElement(xml_parent, 'dynamicMode').text = str(
-            data.get('deploy-dynamic-mode', False)).lower()
+        release_mapping = [
+            ('deploy-release-repo-key', 'keyFromText', ''),
+            ('deploy-release-repo-key', 'keyFromSelect', ''),
+            ('deploy-dynamic-mode', 'dynamicMode', False),
+        ]
+        convert_mapping_to_xml(
+            xml_parent, data, release_mapping, fail_required=True)
 
     if 'snapshot' in target:
-        XML.SubElement(xml_parent, 'keyFromText').text = data.get(
-            'deploy-snapshot-repo-key', '')
-        XML.SubElement(xml_parent, 'keyFromSelect').text = data.get(
-            'deploy-snapshot-repo-key', '')
-        XML.SubElement(xml_parent, 'dynamicMode').text = str(
-            data.get('deploy-dynamic-mode', False)).lower()
+        snapshot_mapping = [
+            ('deploy-snapshot-repo-key', 'keyFromText', ''),
+            ('deploy-snapshot-repo-key', 'keyFromSelect', ''),
+            ('deploy-dynamic-mode', 'dynamicMode', False),
+        ]
+        convert_mapping_to_xml(
+            xml_parent, data, snapshot_mapping, fail_required=True)
 
 
 def append_git_revision_config(parent, config_def):
