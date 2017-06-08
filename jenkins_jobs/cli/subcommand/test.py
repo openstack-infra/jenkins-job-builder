@@ -33,6 +33,12 @@ class TestSubCommand(update.UpdateSubCommand):
         self.parse_arg_names(test)
 
         test.add_argument(
+            '--config-xml',
+            action='store_true',
+            dest='config_xml',
+            default=False,
+            help='use alternative output file layout using config.xml files')
+        test.add_argument(
             '-p',
             dest='plugins_info_path',
             default=None,
@@ -48,5 +54,7 @@ class TestSubCommand(update.UpdateSubCommand):
         builder, xml_jobs, xml_views = self._generate_xmljobs(
             options, jjb_config)
 
-        builder.update_jobs(xml_jobs, output=options.output_dir, n_workers=1)
-        builder.update_views(xml_views, output=options.output_dir, n_workers=1)
+        builder.update_jobs(xml_jobs, output=options.output_dir, n_workers=1,
+                            config_xml=options.config_xml)
+        builder.update_views(xml_views, output=options.output_dir, n_workers=1,
+                             config_xml=options.config_xml)

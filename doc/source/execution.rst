@@ -153,6 +153,14 @@ You can also pass JJB a directory containing multiple job definition files::
 which will write XML files to the output directory for all of the jobs
 defined in the defs directory.
 
+If you run::
+
+  jenkins-jobs test /path/to/defs -o /path/to/output --config-xml
+
+the output directory will contain config.xml files similar to the
+internal storage format of Jenkins.  This might allow you to more
+easily compare the output to an existing Jenkins installation.
+
 .. _updating-jobs:
 
 Updating Jobs
