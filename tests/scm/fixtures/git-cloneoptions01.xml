@@ -6,15 +6,12 @@
       <hudson.plugins.git.UserRemoteConfig>
         <name>origin</name>
         <refspec>+refs/heads/*:refs/remotes/origin/*</refspec>
-        <url>https://example.com/project.git</url>
+        <url>https://github.com/openstack-infra/jenkins-job-builder.git</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
         <name>master</name>
-      </hudson.plugins.git.BranchSpec>
-      <hudson.plugins.git.BranchSpec>
-        <name>stable</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <disableSubmodules>false</disableSubmodules>
@@ -27,24 +24,11 @@
     <gitConfigName/>
     <gitConfigEmail/>
     <extensions>
-      <hudson.plugins.git.extensions.impl.ChangelogToBranch>
-        <options>
-          <compareRemote>origin</compareRemote>
-          <compareTarget>master</compareTarget>
-        </options>
-      </hudson.plugins.git.extensions.impl.ChangelogToBranch>
       <hudson.plugins.git.extensions.impl.CloneOption>
         <shallow>false</shallow>
-        <noTags>false</noTags>
-        <timeout>20</timeout>
+        <noTags>true</noTags>
       </hudson.plugins.git.extensions.impl.CloneOption>
-      <hudson.plugins.git.extensions.impl.CheckoutOption>
-        <timeout>20</timeout>
-      </hudson.plugins.git.extensions.impl.CheckoutOption>
       <hudson.plugins.git.extensions.impl.WipeWorkspace/>
     </extensions>
-    <browser class="hudson.plugins.git.browser.GithubWeb">
-      <url>http://github.com/foo/example.git</url>
-    </browser>
   </scm>
 </project>
