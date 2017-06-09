@@ -387,8 +387,11 @@ def artifactory_optional_props(xml_parent, data, target):
 
 
 def artifactory_common_details(details, data):
-    XML.SubElement(details, 'artifactoryName').text = data.get('name', '')
-    XML.SubElement(details, 'artifactoryUrl').text = data.get('url', '')
+    mapping = [
+        ('name', 'artifactoryName', ''),
+        ('url', 'artifactoryUrl', ''),
+    ]
+    convert_mapping_to_xml(details, data, mapping, fail_required=True)
 
 
 def artifactory_repository(xml_parent, data, target):
