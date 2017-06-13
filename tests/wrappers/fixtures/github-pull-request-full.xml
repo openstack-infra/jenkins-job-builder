@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <org.jenkinsci.plugins.ghprb.upstream.GhprbUpstreamStatus>
+      <showMatrixStatus>true</showMatrixStatus>
+      <commitStatusContext>my-build</commitStatusContext>
+      <triggeredStatus>build was triggered</triggeredStatus>
+      <startedStatus>build was started</startedStatus>
+      <statusUrl>http://1.2.3.4</statusUrl>
+      <addTestResults>true</addTestResults>
+      <completedStatus>
+        <org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildResultMessage>
+          <message>build has succeeded</message>
+          <result>SUCCESS</result>
+        </org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildResultMessage>
+        <org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildResultMessage>
+          <message>build has failed</message>
+          <result>ERROR</result>
+        </org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildResultMessage>
+      </completedStatus>
+    </org.jenkinsci.plugins.ghprb.upstream.GhprbUpstreamStatus>
+  </buildWrappers>
+</project>
