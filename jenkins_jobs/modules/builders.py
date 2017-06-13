@@ -351,38 +351,24 @@ def trigger_remote(registry, xml_parent, data):
                               'org.jenkinsci.plugins.'
                               'ParameterizedRemoteTrigger.'
                               'RemoteBuildConfiguration')
-    XML.SubElement(triggerr,
-                   'remoteJenkinsName').text = data.get('remote-jenkins-name')
-    XML.SubElement(triggerr, 'token').text = data.get('token', '')
 
-    for attribute in ['job', 'remote-jenkins-name']:
-        if attribute not in data:
-            raise MissingAttributeError(attribute, "builders.trigger-remote")
-        if data[attribute] == '':
-            raise InvalidAttributeError(attribute,
-                                        data[attribute],
-                                        "builders.trigger-remote")
+    mappings = [
+        ('remote-jenkins-name', 'remoteJenkinsName', None),
+        ('token', 'token', ''),
+        ('job', 'job', None),
+        ('should-not-fail-build', 'shouldNotFailBuild', False),
+        ('poll-interval', 'pollInterval', 10),
+        ('connection-retry-limit', 'connectionRetryLimit', 5),
+        ('prevent-remote-build-queue', 'preventRemoteBuildQueue', False),
+        ('block', 'blockBuildUntilComplete', True),
+    ]
+    convert_mapping_to_xml(triggerr, data, mappings, fail_required=True)
 
-    XML.SubElement(triggerr, 'job').text = data.get('job')
-
-    XML.SubElement(triggerr, 'shouldNotFailBuild').text = str(
-        data.get('should-not-fail-build', False)).lower()
-
-    XML.SubElement(triggerr,
-                   'pollInterval').text = str(data.get('poll-interval', 10))
-    XML.SubElement(triggerr, 'connectionRetryLimit').text = str(
-        data.get('connection-retry-limit', 5))
-
-    XML.SubElement(triggerr, 'preventRemoteBuildQueue').text = str(
-        data.get('prevent-remote-build-queue', False)).lower()
-
-    XML.SubElement(triggerr, 'blockBuildUntilComplete').text = str(
-        data.get('block', True)).lower()
-
+    mappings = []
     if 'predefined-parameters' in data:
-        parameters = XML.SubElement(triggerr, 'parameters')
-        parameters.text = data.get('predefined-parameters', '')
-        params_list = parameters.text.split("\n")
+        parameters = data.get('predefined-parameters', '')
+        XML.SubElement(triggerr, 'parameters').text = parameters
+        params_list = parameters.split("\n")
 
         parameter_list = XML.SubElement(triggerr, 'parameterList')
         for param in params_list:
@@ -392,13 +378,14 @@ def trigger_remote(registry, xml_parent, data):
             tmp.text = param
 
     if 'property-file' in data and data['property-file'] != '':
-        XML.SubElement(triggerr, 'loadParamsFromFile').text = 'true'
-        XML.SubElement(triggerr,
-                       'parameterFile').text = data.get('property-file')
+        mappings.append(('', 'loadParamsFromFile', 'true'))
+        mappings.append(('property-file', 'parameterFile', None))
     else:
-        XML.SubElement(triggerr, 'loadParamsFromFile').text = 'false'
+        mappings.append(('', 'loadParamsFromFile', 'false'))
 
-    XML.SubElement(triggerr, 'overrideAuth').text = "false"
+    mappings.append(('', 'overrideAuth', 'false'))
+
+    convert_mapping_to_xml(triggerr, data, mappings, fail_required=True)
 
 
 def trigger_builds(registry, xml_parent, data):
