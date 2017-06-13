@@ -973,51 +973,61 @@ def artifact_resolver(registry, xml_parent, data):
 
     :arg bool fail-on-error: Whether to fail the build on error (default false)
     :arg bool repository-logging: Enable repository logging (default false)
-    :arg str target-directory: Where to resolve artifacts to
+    :arg str target-directory: Where to resolve artifacts to (required)
     :arg list artifacts: list of artifacts to resolve
 
         :Artifact:
-            * **group-id** (`str`) -- Group ID of the artifact
-            * **artifact-id** (`str`) -- Artifact ID of the artifact
-            * **version** (`str`) -- Version of the artifact
+            * **group-id** (`str`) -- Group ID of the artifact (required)
+            * **artifact-id** (`str`) -- Artifact ID of the artifact (required)
+            * **version** (`str`) -- Version of the artifact (required)
             * **classifier** (`str`) -- Classifier of the artifact (default '')
             * **extension** (`str`) -- Extension of the artifact
               (default 'jar')
             * **target-file-name** (`str`) -- What to name the artifact
               (default '')
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: ../../tests/builders/fixtures/artifact-resolver.yaml
+    .. literalinclude::
+        ../../tests/builders/fixtures/artifact-resolver-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/artifact-resolver-full.yaml
        :language: yaml
     """
-    ar = XML.SubElement(xml_parent,
-                        'org.jvnet.hudson.plugins.repositoryconnector.'
-                        'ArtifactResolver')
-    XML.SubElement(ar, 'targetDirectory').text = data['target-directory']
-    artifacttop = XML.SubElement(ar, 'artifacts')
+    ar = XML.SubElement(
+        xml_parent,
+        'org.jvnet.hudson.plugins.repositoryconnector.ArtifactResolver')
+    mapping = [
+        ('target-directory', 'targetDirectory', None),
+        ('fail-on-error', 'failOnError', False),
+        ('repository-logging', 'enableRepoLogging', False),
+        ('', 'snapshotUpdatePolicy', 'never'),
+        ('', 'releaseUpdatePolicy', 'never'),
+        ('', 'snapshotChecksumPolicy', 'warn'),
+        ('', 'releaseChecksumPolicy', 'warn'),
+    ]
+    convert_mapping_to_xml(ar, data, mapping, fail_required=True)
+
+    artifact_top = XML.SubElement(ar, 'artifacts')
     artifacts = data['artifacts']
+    artifacts_mapping = [
+        ('group-id', 'groupId', None),
+        ('artifact-id', 'artifactId', None),
+        ('version', 'version', None),
+        ('classifier', 'classifier', ''),
+        ('extension', 'extension', 'jar'),
+        ('target-file-name', 'targetFileName', ''),
+    ]
     for artifact in artifacts:
-        rcartifact = XML.SubElement(artifacttop,
-                                    'org.jvnet.hudson.plugins.'
-                                    'repositoryconnector.Artifact')
-        XML.SubElement(rcartifact, 'groupId').text = artifact['group-id']
-        XML.SubElement(rcartifact, 'artifactId').text = artifact['artifact-id']
-        XML.SubElement(rcartifact, 'classifier').text = artifact.get(
-            'classifier', '')
-        XML.SubElement(rcartifact, 'version').text = artifact['version']
-        XML.SubElement(rcartifact, 'extension').text = artifact.get(
-            'extension', 'jar')
-        XML.SubElement(rcartifact, 'targetFileName').text = artifact.get(
-            'target-file-name', '')
-    XML.SubElement(ar, 'failOnError').text = str(data.get(
-        'fail-on-error', False)).lower()
-    XML.SubElement(ar, 'enableRepoLogging').text = str(data.get(
-        'repository-logging', False)).lower()
-    XML.SubElement(ar, 'snapshotUpdatePolicy').text = 'never'
-    XML.SubElement(ar, 'releaseUpdatePolicy').text = 'never'
-    XML.SubElement(ar, 'snapshotChecksumPolicy').text = 'warn'
-    XML.SubElement(ar, 'releaseChecksumPolicy').text = 'warn'
+        rcartifact = XML.SubElement(
+            artifact_top,
+            'org.jvnet.hudson.plugins.repositoryconnector.Artifact')
+        convert_mapping_to_xml(
+            rcartifact, artifact, artifacts_mapping, fail_required=True)
 
 
 def doxygen(registry, xml_parent, data):
