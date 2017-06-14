@@ -1031,7 +1031,7 @@ def jacoco(registry, xml_parent, data):
 
     Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/jacoco-complete.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/jacoco-full.yaml
        :language: yaml
     """
 
@@ -1282,7 +1282,7 @@ def cucumber_reports(registry, xml_parent, data):
     Full example:
 
     .. literalinclude::
-       /../../tests/publishers/fixtures/cucumber-reports-complete.yaml
+       /../../tests/publishers/fixtures/cucumber-reports-full.yaml
        :language: yaml
 
     Minimal Example:
@@ -1331,7 +1331,7 @@ def cucumber_testresult(registry, xml_parent, data):
     Full Example:
 
     .. literalinclude::
-       /../../tests/publishers/fixtures/cucumber-testresult-complete.yaml
+       /../../tests/publishers/fixtures/cucumber-testresult-full.yaml
        :language: yaml
     """
     cucumber_result = XML.SubElement(xml_parent,
@@ -1937,7 +1937,7 @@ def email(registry, xml_parent, data):
        /../../tests/publishers/fixtures/email-minimal.yaml
        :language: yaml
 
-    .. literalinclude::  /../../tests/publishers/fixtures/email-complete.yaml
+    .. literalinclude::  /../../tests/publishers/fixtures/email-full.yaml
        :language: yaml
     """
 
@@ -2272,7 +2272,7 @@ def cppcheck(registry, xml_parent, data):
 
     Full Example:
     .. literalinclude::
-        /../../tests/publishers/fixtures/cppcheck-complete.yaml
+        /../../tests/publishers/fixtures/cppcheck-full.yaml
        :language: yaml
     """
 
@@ -2701,7 +2701,7 @@ def sonar(registry, xml_parent, data):
        :language: yaml
 
     Full Example:
-    .. literalinclude:: /../../tests/publishers/fixtures/sonar-complete.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/sonar-full.yaml
        :language: yaml
     """
 
@@ -2790,7 +2790,7 @@ def performance(registry, xml_parent, data):
     Full Example:
 
     .. literalinclude::
-       /../../tests/publishers/fixtures/performance-complete.yaml
+       /../../tests/publishers/fixtures/performance-full.yaml
        :language: yaml
     """
     perf = XML.SubElement(xml_parent, 'hudson.plugins.performance.'
@@ -2937,7 +2937,7 @@ def jabber(registry, xml_parent, data):
 
     Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/jabber-complete.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/jabber-full.yaml
        :language: yaml
     """
     j = XML.SubElement(xml_parent, 'hudson.plugins.jabber.im.transport.'
@@ -3026,7 +3026,7 @@ def workspace_cleanup(registry, xml_parent, data):
     Full Example:
 
     .. literalinclude::
-        /../../tests/publishers/fixtures/workspace-cleanup-complete.yaml
+        /../../tests/publishers/fixtures/workspace-cleanup-full.yaml
        :language: yaml
     """
 
@@ -3466,7 +3466,7 @@ def rich_text_publisher(registry, xml_parent, data):
     Full Example:
 
     .. literalinclude::
-       /../../tests/publishers/fixtures/richtext-complete.yaml
+       /../../tests/publishers/fixtures/richtext-full.yaml
        :language: yaml
     """
 
@@ -3798,7 +3798,7 @@ def robot(registry, xml_parent, data):
 
     Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/robot-complete.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/robot-full.yaml
        :language: yaml
     """
     parent = XML.SubElement(xml_parent, 'hudson.plugins.robot.RobotPublisher')
@@ -3933,7 +3933,7 @@ def warnings(registry, xml_parent, data):
 
     Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/warnings-complete.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/warnings-full.yaml
        :language: yaml
     """
 
@@ -4038,7 +4038,7 @@ def sloccount(registry, xml_parent, data):
     Full Example:
 
     .. literalinclude::
-       /../../tests/publishers/fixtures/sloccount-complete.yaml
+       /../../tests/publishers/fixtures/sloccount-full.yaml
        :language: yaml
     """
     top = XML.SubElement(xml_parent,

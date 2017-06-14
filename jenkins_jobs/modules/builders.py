@@ -817,7 +817,7 @@ def http_request(registry, xml_parent, data):
        :language: yaml
 
     .. literalinclude::
-       ../../tests/builders/fixtures/http-request-complete.yaml
+       ../../tests/builders/fixtures/http-request-full.yaml
        :language: yaml
     """
 
@@ -3141,7 +3141,7 @@ def sonatype_clm(registry, xml_parent, data):
     Full Example:
 
     .. literalinclude::
-        /../../tests/builders/fixtures/sonatype-clm-complete.yaml
+        /../../tests/builders/fixtures/sonatype-clm-full.yaml
        :language: yaml
     """
     clm = XML.SubElement(xml_parent,
