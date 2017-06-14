@@ -6846,6 +6846,24 @@ def github_pull_request_merge(registry, xml_parent, data):
     helpers.convert_mapping_to_xml(osb, data, mapping, fail_required=True)
 
 
+def chuck_norris(registry, xml_parent, data):
+    """yaml: chuck-norris
+    Displays a picture of Chuck Norris (instead of Jenkins the butler) and a
+    random Chuck Norris 'The Programmer' fact on each build page.
+    Requires the Jenkins :jenkins-wiki:`ChuckNorris Plugin
+    <ChuckNorris+Plugin>`.
+
+    Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/chuck-norris.yaml
+       :language: yaml
+    """
+
+    chuck = XML.SubElement(xml_parent,
+                           'hudson.plugins.chucknorris.CordellWalkerRecorder')
+    return XML.SubElement(chuck, "factGenerator")
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 
