@@ -1187,9 +1187,12 @@ def system_groovy(registry, xml_parent, data):
     root_tag = 'hudson.plugins.groovy.SystemGroovy'
     sysgroovy = XML.SubElement(xml_parent, root_tag)
     sysgroovy.append(_groovy_common_scriptSource(data))
-    XML.SubElement(sysgroovy, 'bindings').text = str(data.get('bindings', ""))
-    XML.SubElement(sysgroovy, 'classpath').text = str(
-        data.get('class-path', ""))
+
+    mapping = [
+        ('bindings', 'bindings', ''),
+        ('class-path', 'classpath', ''),
+    ]
+    convert_mapping_to_xml(sysgroovy, data, mapping, fail_required=True)
 
 
 def batch(registry, xml_parent, data):
