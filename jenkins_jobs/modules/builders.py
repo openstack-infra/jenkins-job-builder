@@ -3046,48 +3046,37 @@ def xcode(registry, xml_parent, data):
     if data.get('developer-profile'):
         profile = XML.SubElement(xml_parent, 'au.com.rayh.'
                                  'DeveloperProfileLoader')
-        XML.SubElement(profile, 'id').text = str(
-            data['developer-profile'])
+        mapping = [('developer-profile', 'id', None)]
+        convert_mapping_to_xml(profile, data, mapping, fail_required=False)
 
     xcode = XML.SubElement(xml_parent, 'au.com.rayh.XCodeBuilder')
 
-    XML.SubElement(xcode, 'cleanBeforeBuild').text = str(
-        data.get('clean-build', False)).lower()
-    XML.SubElement(xcode, 'cleanTestReports').text = str(
-        data.get('clean-test-reports', False)).lower()
-    XML.SubElement(xcode, 'generateArchive').text = str(
-        data.get('archive', False)).lower()
-
-    XML.SubElement(xcode, 'configuration').text = str(
-        data.get('configuration', 'Release'))
-    XML.SubElement(xcode, 'configurationBuildDir').text = str(
-        data.get('configuration-directory', ''))
-    XML.SubElement(xcode, 'target').text = str(data.get('target', ''))
-    XML.SubElement(xcode, 'sdk').text = str(data.get('sdk', ''))
-    XML.SubElement(xcode, 'symRoot').text = str(data.get('symroot', ''))
-
-    XML.SubElement(xcode, 'xcodeProjectPath').text = str(
-        data.get('project-path', ''))
-    XML.SubElement(xcode, 'xcodeProjectFile').text = str(
-        data.get('project-file', ''))
-    XML.SubElement(xcode, 'xcodebuildArguments').text = str(
-        data.get('build-arguments', ''))
-    XML.SubElement(xcode, 'xcodeSchema').text = str(data.get('schema', ''))
-    XML.SubElement(xcode, 'xcodeWorkspaceFile').text = str(
-        data.get('workspace', ''))
-    XML.SubElement(xcode, 'embeddedProfileFile').text = str(
-        data.get('profile', ''))
-
-    XML.SubElement(xcode, 'codeSigningIdentity').text = str(
-        data.get('codesign-id', ''))
-    XML.SubElement(xcode, 'allowFailingBuildResults').text = str(
-        data.get('allow-failing', False)).lower()
+    mappings = [
+        ('clean-build', 'cleanBeforeBuild', False),
+        ('clean-test-reports', 'cleanTestReports', False),
+        ('archive', 'generateArchive', False),
+        ('configuration', 'configuration', 'Release'),
+        ('configuration-directory', 'configurationBuildDir', ''),
+        ('target', 'target', ''),
+        ('sdk', 'sdk', ''),
+        ('symroot', 'symRoot', ''),
+        ('project-path', 'xcodeProjectPath', ''),
+        ('project-file', 'xcodeProjectFile', ''),
+        ('build-arguments', 'xcodebuildArguments', ''),
+        ('schema', 'xcodeSchema', ''),
+        ('workspace', 'xcodeWorkspaceFile', ''),
+        ('profile', 'embeddedProfileFile', ''),
+        ('codesign-id', 'codeSigningIdentity', ''),
+        ('allow-failing', 'allowFailingBuildResults', False),
+    ]
+    convert_mapping_to_xml(xcode, data, mappings, fail_required=True)
 
     version = XML.SubElement(xcode, 'provideApplicationVersion')
     version_technical = XML.SubElement(xcode,
                                        'cfBundleVersionValue')
     version_marketing = XML.SubElement(xcode,
                                        'cfBundleShortVersionStringValue')
+
     if data.get('version-technical') or data.get('version-marketing'):
         version.text = 'true'
         version_technical.text = data.get('version-technical', '')
@@ -3097,18 +3086,16 @@ def xcode(registry, xml_parent, data):
 
     XML.SubElement(xcode, 'buildIpa').text = str(
         bool(data.get('ipa-version')) or False).lower()
-    XML.SubElement(xcode, 'ipaName').text = data.get('ipa-version', '')
-    XML.SubElement(xcode, 'ipaOutputDirectory').text = str(
-        data.get('ipa-output', ''))
 
-    XML.SubElement(xcode, 'keychainName').text = str(
-        data.get('keychain-name', ''))
-    XML.SubElement(xcode, 'keychainPath').text = str(
-        data.get('keychain-path', ''))
-    XML.SubElement(xcode, 'keychainPwd').text = str(
-        data.get('keychain-password', ''))
-    XML.SubElement(xcode, 'unlockKeychain').text = str(
-        data.get('keychain-unlock', False)).lower()
+    mapping = [
+        ('ipa-version', 'ipaName', ''),
+        ('ipa-output', 'ipaOutputDirectory', ''),
+        ('keychain-name', 'keychainName', ''),
+        ('keychain-path', 'keychainPath', ''),
+        ('keychain-password', 'keychainPwd', ''),
+        ('keychain-unlock', 'unlockKeychain', False),
+    ]
+    convert_mapping_to_xml(xcode, data, mapping, fail_required=True)
 
 
 def sonatype_clm(registry, xml_parent, data):
