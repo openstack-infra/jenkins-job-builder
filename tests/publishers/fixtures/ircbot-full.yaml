@@ -1,0 +1,16 @@
+publishers:
+  - ircbot:
+      strategy: failure-and-fixed
+      notify-start: true
+      notify-committers: true
+      notify-culprits: true
+      notify-upstream: true
+      notify-fixers: true
+      message-type: summary
+      channels:
+          - name: '#jenkins-channel1'
+            password: secrete
+            notify-only: false
+          - name: '#jenkins-channel2'
+            notify-only: true
+      matrix-notifier: all

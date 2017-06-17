@@ -4070,21 +4070,16 @@ def ircbot(registry, xml_parent, data):
             * **new-failure-and-fixed** on new failure and fixes
             * **statechange-only** only on state change
     :arg bool notify-start: Whether to send notifications to channels when a
-                           build starts
-                           (default false)
+        build starts (default false)
     :arg bool notify-committers: Whether to send notifications to the users
-                                that are suspected of having broken this build
-                                (default false)
+        that are suspected of having broken this build (default false)
     :arg bool notify-culprits: Also send notifications to 'culprits' from
-                              previous unstable/failed builds
-                              (default false)
+        previous unstable/failed builds (default false)
     :arg bool notify-upstream: Whether to send notifications to upstream
-                              committers if no committers were found for a
-                              broken build
-                              (default false)
+        committers if no committers were found for a broken build
+        (default false)
     :arg bool notify-fixers: Whether to send notifications to the users that
-                            have fixed a broken build
-                            (default false)
+        have fixed a broken build (default false)
     :arg string message-type: Channel Notification Message.
 
         :message-type values:
@@ -4093,32 +4088,38 @@ def ircbot(registry, xml_parent, data):
             * **summary-params** for summary and build parameters
             * **summary-scm-fail** for summary, SCM changes, failures)
     :arg list channels: list channels definitions
-                        If empty, it takes channel from Jenkins configuration.
-                        (default empty)
-                        WARNING: the IRC plugin requires the channel to be
-                        configured in the system wide configuration or the jobs
-                        will fail to emit notifications to the channel
+        If empty, it takes channel from Jenkins configuration.
+        (default empty)
+        WARNING: the IRC plugin requires the channel to be configured in the
+        system wide configuration or the jobs will fail to emit notifications
+        to the channel
 
         :Channel: * **name** (`str`) Channel name
                   * **password** (`str`) Channel password (optional)
                   * **notify-only** (`bool`) Set to true if you want to
                     disallow bot commands (default false)
     :arg string matrix-notifier: notify for matrix projects
-                                 instant-messaging-plugin injects an additional
-                                 field in the configuration form whenever the
-                                 project is a multi-configuration project
+        instant-messaging-plugin injects an additional
+        field in the configuration form whenever the
+        project is a multi-configuration project
 
         :matrix-notifier values:
             * **all**
             * **only-configurations** (default)
             * **only-parent**
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/ircbot001.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/ircbot-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/ircbot-full.yaml
        :language: yaml
     """
     top = XML.SubElement(xml_parent, 'hudson.plugins.ircbot.IrcPublisher')
+    top.set('plugin', 'ircbot')
     message_dict = {'summary-scm': 'DefaultBuildToChatNotifier',
                     'summary': 'SummaryOnlyBuildToChatNotifier',
                     'summary-params': 'BuildParametersBuildToChatNotifier',
@@ -4130,45 +4131,39 @@ def ircbot(registry, xml_parent, data):
                                    ", ".join(message_dict.keys()))
     message = "hudson.plugins.im.build_notify." + message_dict.get(message)
     XML.SubElement(top, 'buildToChatNotifier', attrib={'class': message})
-    strategy_dict = {'all': 'ALL',
-                     'any-failure': 'ANY_FAILURE',
-                     'failure-and-fixed': 'FAILURE_AND_FIXED',
-                     'new-failure-and-fixed': 'NEW_FAILURE_AND_FIXED',
-                     'statechange-only': 'STATECHANGE_ONLY'}
-    strategy = data.get('strategy', 'all')
-    if strategy not in strategy_dict:
-        raise JenkinsJobsException("strategy entered is not valid, must be "
-                                   "one of: %s" %
-                                   ", ".join(strategy_dict.keys()))
-    XML.SubElement(top, 'strategy').text = strategy_dict.get(strategy)
     targets = XML.SubElement(top, 'targets')
     channels = data.get('channels', [])
     for channel in channels:
         sub = XML.SubElement(targets,
                              'hudson.plugins.im.GroupChatIMMessageTarget')
-        XML.SubElement(sub, 'name').text = channel.get('name')
-        XML.SubElement(sub, 'password').text = channel.get('password')
-        XML.SubElement(sub, 'notificationOnly').text = str(
-            channel.get('notify-only', False)).lower()
-    XML.SubElement(top, 'notifyOnBuildStart').text = str(
-        data.get('notify-start', False)).lower()
-    XML.SubElement(top, 'notifySuspects').text = str(
-        data.get('notify-committers', False)).lower()
-    XML.SubElement(top, 'notifyCulprits').text = str(
-        data.get('notify-culprits', False)).lower()
-    XML.SubElement(top, 'notifyFixers').text = str(
-        data.get('notify-fixers', False)).lower()
-    XML.SubElement(top, 'notifyUpstreamCommitters').text = str(
-        data.get('notify-upstream', False)).lower()
+        sub_mappings = [
+            ('name', 'name', ''),
+            ('password', 'password', ''),
+            ('notify-only', 'notificationOnly', False)
+        ]
+        helpers.convert_mapping_to_xml(
+            sub, channel, sub_mappings, fail_required=True)
+    strategy_dict = {'all': 'ALL',
+                     'any-failure': 'ANY_FAILURE',
+                     'failure-and-fixed': 'FAILURE_AND_FIXED',
+                     'new-failure-and-fixed': 'NEW_FAILURE_AND_FIXED',
+                     'statechange-only': 'STATECHANGE_ONLY'}
     matrix_dict = {'all': 'ALL',
                    'only-configurations': 'ONLY_CONFIGURATIONS',
                    'only-parent': 'ONLY_PARENT'}
-    matrix = data.get('matrix-notifier', 'only-configurations')
-    if matrix not in matrix_dict:
-        raise JenkinsJobsException("matrix-notifier entered is not valid, "
-                                   "must be one of: %s" %
-                                   ", ".join(matrix_dict.keys()))
-    XML.SubElement(top, 'matrixMultiplier').text = matrix_dict.get(matrix)
+    mappings = [
+        ('strategy', 'strategy', 'all', strategy_dict),
+        ('notify-start', 'notifyOnBuildStart', False),
+        ('notify-committers', 'notifySuspects', False),
+        ('notify-culprits', 'notifyCulprits', False),
+        ('notify-fixers', 'notifyFixers', False),
+        ('notify-upstream', 'notifyUpstreamCommitters', False),
+        ('matrix-notifier',
+         'matrixMultiplier',
+         'only-configurations',
+         matrix_dict)
+    ]
+    helpers.convert_mapping_to_xml(top, data, mappings, fail_required=True)
 
 
 def plot(registry, xml_parent, data):
