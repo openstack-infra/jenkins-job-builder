@@ -2935,11 +2935,12 @@ def ssh_builder(registry, xml_parent, data):
     """
     builder = XML.SubElement(
         xml_parent, 'org.jvnet.hudson.plugins.SSHBuilder')
-    try:
-        XML.SubElement(builder, 'siteName').text = str(data['ssh-user-ip'])
-        XML.SubElement(builder, 'command').text = str(data['command'])
-    except KeyError as e:
-        raise MissingAttributeError("'%s'" % e.args[0])
+
+    mapping = [
+        ('ssh-user-ip', 'siteName', None),
+        ('command', 'command', None),
+    ]
+    convert_mapping_to_xml(builder, data, mapping, fail_required=True)
 
 
 def sonar(registry, xml_parent, data):
