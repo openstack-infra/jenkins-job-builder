@@ -3751,10 +3751,11 @@ def description_setter(registry, xml_parent, data):
     descriptionsetter = XML.SubElement(
         xml_parent,
         'hudson.plugins.descriptionsetter.DescriptionSetterBuilder')
-    XML.SubElement(descriptionsetter, 'regexp').text = data.get('regexp', '')
+    mapping = [('regexp', 'regexp', '')]
     if 'description' in data:
-        XML.SubElement(descriptionsetter, 'description').text = data[
-            'description']
+        mapping.append(('description', 'description', None))
+    convert_mapping_to_xml(
+        descriptionsetter, data, mapping, fail_required=True)
 
 
 def docker_build_publish(parse, xml_parent, data):
