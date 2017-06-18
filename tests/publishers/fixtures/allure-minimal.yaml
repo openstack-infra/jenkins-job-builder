@@ -1,0 +1,4 @@
+publishers:
+  - allure:
+      results-paths:
+       - path: 'build/allure-results'

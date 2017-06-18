@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <ru.yandex.qatools.allure.jenkins.AllureReportPublisher plugin="allure-jenkins-plugin">
+      <config>
+        <results>
+          <ru.yandex.qatools.allure.jenkins.config.ResultsConfig>
+            <path>build/allure-results1</path>
+          </ru.yandex.qatools.allure.jenkins.config.ResultsConfig>
+          <ru.yandex.qatools.allure.jenkins.config.ResultsConfig>
+            <path>build/allure-results2</path>
+          </ru.yandex.qatools.allure.jenkins.config.ResultsConfig>
+        </results>
+        <properties>
+          <ru.yandex.qatools.allure.jenkins.config.PropertyConfig>
+            <key>allure.link.issue.pattern</key>
+            <value>http://test.tms/{}</value>
+          </ru.yandex.qatools.allure.jenkins.config.PropertyConfig>
+        </properties>
+        <jdk>openjdk1.8</jdk>
+        <commandline>allure2</commandline>
+        <reportBuildPolicy>UNSTABLE</reportBuildPolicy>
+        <includeProperties>true</includeProperties>
+      </config>
+    </ru.yandex.qatools.allure.jenkins.AllureReportPublisher>
+  </publishers>
+</project>
