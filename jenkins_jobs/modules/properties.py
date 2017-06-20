@@ -63,10 +63,12 @@ def builds_chain_fingerprinter(registry, xml_parent, data):
                                    'org.jenkinsci.plugins.'
                                    'buildschainfingerprinter.'
                                    'AutomaticFingerprintJobProperty')
-    XML.SubElement(fingerprinter, 'isPerBuildsChainEnabled').text = str(
-        data.get('per-builds-chain', False)).lower()
-    XML.SubElement(fingerprinter, 'isPerJobsChainEnabled').text = str(
-        data.get('per-job-chain', False)).lower()
+    mapping = [
+        ('per-builds-chain', 'isPerBuildsChainEnabled', False),
+        ('per-job-chain', 'isPerJobsChainEnabled', False),
+    ]
+    helpers.convert_mapping_to_xml(
+        fingerprinter, data, mapping, fail_required=True)
 
 
 def ownership(registry, xml_parent, data):
