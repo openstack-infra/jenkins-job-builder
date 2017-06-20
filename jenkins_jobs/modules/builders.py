@@ -3799,27 +3799,31 @@ def docker_build_publish(parse, xml_parent, data):
     ]
     convert_mapping_to_xml(db, data, mapping, fail_required=True)
 
+    mapping = []
     if 'server' in data:
         server = XML.SubElement(db, 'server')
         server.set('plugin', 'docker-commons')
         server_data = data['server']
         if 'credentials-id' in server_data:
-            XML.SubElement(server, 'credentialsId').text = str(
-                server_data['credentials-id'])
-        if 'uri' in server_data:
-            XML.SubElement(server, 'uri').text = str(
-                server_data['uri'])
+            mapping.append(('credentials-id', 'credentialsId', None))
 
+        if 'uri' in server_data:
+            mapping.append(('uri', 'uri', None))
+        convert_mapping_to_xml(
+            server, server_data, mapping, fail_required=True)
+
+    mappings = []
     if 'registry' in data:
         registry = XML.SubElement(db, 'registry')
         registry.set('plugin', 'docker-commons')
         registry_data = data['registry']
         if 'credentials-id' in registry_data:
-            XML.SubElement(registry, 'credentialsId').text = str(
-                registry_data['credentials-id'])
+            mappings.append(('credentials-id', 'credentialsId', None))
+
         if 'url' in registry_data:
-            XML.SubElement(registry, 'url').text = str(
-                registry_data['url'])
+            mappings.append(('url', 'url', None))
+        convert_mapping_to_xml(
+            registry, registry_data, mappings, fail_required=True)
 
 
 def build_name_setter(registry, xml_parent, data):
