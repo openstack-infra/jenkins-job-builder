@@ -2661,9 +2661,6 @@ def cmake(registry, xml_parent, data):
     XML.SubElement(cmake, 'generator').text = str(
         data.get('generator', "Unix Makefiles"))
 
-    XML.SubElement(cmake, 'preloadScript').text = str(
-        data.get('preload-script', ''))
-
     XML.SubElement(cmake, 'cleanBuild').text = str(
         data.get('clean-build-dir', False)).lower()
 
@@ -2673,6 +2670,10 @@ def cmake(registry, xml_parent, data):
     # Version 2.x breaks compatibility. So parse the input data differently
     # based on it:
     if version >= pkg_resources.parse_version("2.0"):
+        if data.get('preload-script'):
+            XML.SubElement(cmake, 'preloadScript').text = str(
+                data.get('preload-script', ''))
+
         XML.SubElement(cmake, 'workingDir').text = str(
             data.get('working-dir', ''))
 
@@ -2701,6 +2702,9 @@ def cmake(registry, xml_parent, data):
                 step_data.get('environment-variables', ''))
 
     else:
+        XML.SubElement(cmake, 'preloadScript').text = str(
+            data.get('preload-script', ''))
+
         build_dir = XML.SubElement(cmake, 'buildDir')
         build_dir.text = data.get('build-dir', '')
 

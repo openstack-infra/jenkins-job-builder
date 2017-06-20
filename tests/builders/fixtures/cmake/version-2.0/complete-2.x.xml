@@ -4,8 +4,8 @@
     <hudson.plugins.cmake.CmakeBuilder>
       <sourceDir>path/to/source</sourceDir>
       <generator>NMake Makefiles</generator>
-      <preloadScript>path/to/source/cmake.preload</preloadScript>
       <cleanBuild>true</cleanBuild>
+      <preloadScript>path/to/source/cmake.preload</preloadScript>
       <workingDir>path/to/build</workingDir>
       <buildType>CustomReleaseType</buildType>
       <installationName>CMake custom install</installationName>
