@@ -395,29 +395,22 @@ def extended_choice_param(registry, xml_parent, data):
     :arg str multi-select-delimiter: value between selections when the
         parameter is a multi-select (optiona, default ',')
 
-    Example:
+    Minimal Example:
 
     .. literalinclude:: \
-    /../../tests/parameters/fixtures/extended-choice-param001.yaml
+    /../../tests/parameters/fixtures/extended-choice-param-minimal.yaml
        :language: yaml
 
+    Full Example:
+    .. literalinclude:: \
+    /../../tests/parameters/fixtures/extended-choice-param-full.yaml
+       :language: yaml
     """
     pdef = base_param(registry, xml_parent, data, False,
                       'com.cwctravel.hudson.plugins.'
                       'extended__choice__parameter.'
                       'ExtendedChoiceParameterDefinition')
-    XML.SubElement(pdef, 'value').text = data.get('value', '')
-    XML.SubElement(pdef, 'visibleItemCount').text = str(data.get(
-        'visible-items', data.get('visible-item-count', 5)))
-    XML.SubElement(pdef, 'multiSelectDelimiter').text = data.get(
-        'multi-select-delimiter', ',')
-    XML.SubElement(pdef, 'quoteValue').text = str(data.get('quote-value',
-                                                  False)).lower()
-    XML.SubElement(pdef, 'defaultValue').text = data.get(
-        'default-value', '')
-    XML.SubElement(pdef, 'descriptionPropertyValue').text = data.get(
-        'value-description', '')
-    choice = data.get('type', 'single-select')
+
     choicedict = {'single-select': 'PT_SINGLE_SELECT',
                   'multi-select': 'PT_MULTI_SELECT',
                   'radio': 'PT_RADIO',
@@ -428,23 +421,22 @@ def extended_choice_param(registry, xml_parent, data):
                   'PT_RADIO': 'PT_RADIO',
                   'PT_CHECKBOX': 'PT_CHECKBOX',
                   'PT_TEXTBOX': 'PT_TEXTBOX'}
-
-    if choice in choicedict:
-        XML.SubElement(pdef, 'type').text = choicedict[choice]
-    else:
-        raise JenkinsJobsException("Type entered is not valid, must be one "
-                                   "of: single-select, multi-select, radio, "
-                                   "textbox or checkbox")
-    XML.SubElement(pdef, 'propertyFile').text = data.get('property-file', '')
-    XML.SubElement(pdef, 'propertyKey').text = data.get('property-key', '')
-    XML.SubElement(pdef, 'defaultPropertyFile').text = data.get(
-        'default-property-file', '')
-    XML.SubElement(pdef, 'defaultPropertyKey').text = data.get(
-        'default-property-key', '')
-    XML.SubElement(pdef, 'descriptionPropertyFile').text = data.get(
-        'description-property-file', '')
-    XML.SubElement(pdef, 'descriptionPropertyKey').text = data.get(
-        'description-property-key', '')
+    mapping = [
+        ('value', 'value', ''),
+        ('visible-items', 'visibleItemCount', 5),
+        ('multi-select-delimiter', 'multiSelectDelimiter', ','),
+        ('quote-value', 'quoteValue', False),
+        ('default-value', 'defaultValue', ''),
+        ('value-description', 'descriptionPropertyValue', ''),
+        ('type', 'type', 'single-select', choicedict),
+        ('property-file', 'propertyFile', ''),
+        ('property-key', 'propertyKey', ''),
+        ('default-property-file', 'defaultPropertyFile', ''),
+        ('default-property-key', 'defaultPropertyKey', ''),
+        ('description-property-file', 'descriptionPropertyFile', ''),
+        ('description-property-key', 'descriptionPropertyKey', ''),
+    ]
+    convert_mapping_to_xml(pdef, data, mapping, fail_required=True)
 
 
 def validating_string_param(registry, xml_parent, data):

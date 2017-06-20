@@ -4,5 +4,3 @@ parameters:
       description: "Available options"
       type: 'PT_CHECKBOX'
       value: OptionA,OptionB,OptionC
-      visible-item-count: "2"
-
