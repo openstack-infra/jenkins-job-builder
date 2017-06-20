@@ -2490,9 +2490,11 @@ def tox(registry, xml_parent, data):
     """
     pluginelement = 'jenkins.plugins.shiningpanda.builders.ToxBuilder'
     t = XML.SubElement(xml_parent, pluginelement)
-    XML.SubElement(t, 'toxIni').text = data.get('ini', 'tox.ini')
-    XML.SubElement(t, 'recreate').text = str(
-        data.get('recreate', False)).lower()
+    mappings = [
+        ('ini', 'toxIni', 'tox.ini'),
+        ('recreate', 'recreate', False),
+    ]
+    convert_mapping_to_xml(t, data, mappings, fail_required=True)
     pattern = data.get('toxenv-pattern')
     if pattern:
         XML.SubElement(t, 'toxenvPattern').text = pattern
