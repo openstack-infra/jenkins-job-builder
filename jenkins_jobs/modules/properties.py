@@ -463,11 +463,9 @@ def priority_sorter(registry, xml_parent, data):
     priority_sorter_tag = XML.SubElement(xml_parent,
                                          'hudson.queueSorter.'
                                          'PrioritySorterJobProperty')
-    try:
-        XML.SubElement(priority_sorter_tag, 'priority').text = str(
-            data['priority'])
-    except KeyError as e:
-        raise MissingAttributeError(e)
+    mapping = [('priority', 'priority', None)]
+    helpers.convert_mapping_to_xml(
+        priority_sorter_tag, data, mapping, fail_required=True)
 
 
 def build_blocker(registry, xml_parent, data):
