@@ -1,5 +1,0 @@
-publishers:
-  - ircbot:
-      channels:
-          - name: '#jenkins-channel'
-            notify-only: true

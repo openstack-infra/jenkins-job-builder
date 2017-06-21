@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <publishers>
-    <hudson.plugins.ircbot.IrcPublisher>
-      <buildToChatNotifier class="hudson.plugins.im.build_notify.DefaultBuildToChatNotifier"/>
-      <strategy>ALL</strategy>
+    <hudson.plugins.ircbot.IrcPublisher plugin="ircbot">
+      <buildToChatNotifier class="hudson.plugins.im.build_notify.SummaryOnlyBuildToChatNotifier"/>
       <targets>
         <hudson.plugins.im.GroupChatIMMessageTarget>
           <name>#jenkins-channel1</name>
@@ -16,12 +15,13 @@
           <notificationOnly>true</notificationOnly>
         </hudson.plugins.im.GroupChatIMMessageTarget>
       </targets>
-      <notifyOnBuildStart>false</notifyOnBuildStart>
-      <notifySuspects>false</notifySuspects>
-      <notifyCulprits>false</notifyCulprits>
-      <notifyFixers>false</notifyFixers>
-      <notifyUpstreamCommitters>false</notifyUpstreamCommitters>
-      <matrixMultiplier>ONLY_CONFIGURATIONS</matrixMultiplier>
+      <strategy>FAILURE_AND_FIXED</strategy>
+      <notifyOnBuildStart>true</notifyOnBuildStart>
+      <notifySuspects>true</notifySuspects>
+      <notifyCulprits>true</notifyCulprits>
+      <notifyFixers>true</notifyFixers>
+      <notifyUpstreamCommitters>true</notifyUpstreamCommitters>
+      <matrixMultiplier>ALL</matrixMultiplier>
     </hudson.plugins.ircbot.IrcPublisher>
   </publishers>
 </project>
