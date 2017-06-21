@@ -586,8 +586,12 @@ def batch_tasks(registry, xml_parent, data):
     for task in data:
         batch_task = XML.SubElement(tasks,
                                     'hudson.plugins.batch__task.BatchTask')
-        XML.SubElement(batch_task, 'name').text = task['name']
-        XML.SubElement(batch_task, 'script').text = task['script']
+        mapping = [
+            ('name', 'name', None),
+            ('script', 'script', None),
+        ]
+        helpers.convert_mapping_to_xml(
+            batch_task, task, mapping, fail_required=True)
 
 
 def heavy_job(registry, xml_parent, data):
