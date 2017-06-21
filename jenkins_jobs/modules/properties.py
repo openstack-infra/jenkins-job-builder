@@ -299,9 +299,12 @@ def sidebar(registry, xml_parent, data):
     else:
         links = sidebar.find('links')
     action = XML.SubElement(links, 'hudson.plugins.sidebar__link.LinkAction')
-    XML.SubElement(action, 'url').text = str(data.get('url', ''))
-    XML.SubElement(action, 'text').text = str(data.get('text', ''))
-    XML.SubElement(action, 'icon').text = str(data.get('icon', ''))
+    mapping = [
+        ('url', 'url', ''),
+        ('text', 'text', ''),
+        ('icon', 'icon', ''),
+    ]
+    helpers.convert_mapping_to_xml(action, data, mapping, fail_required=True)
 
 
 def inject(registry, xml_parent, data):
