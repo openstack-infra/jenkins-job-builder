@@ -609,8 +609,8 @@ def heavy_job(registry, xml_parent, data):
     heavyjob = XML.SubElement(xml_parent,
                               'hudson.plugins.'
                               'heavy__job.HeavyJobProperty')
-    XML.SubElement(heavyjob, 'weight').text = str(
-        data.get('weight', 1))
+    mapping = [('weight', 'weight', 1)]
+    helpers.convert_mapping_to_xml(heavyjob, data, mapping, fail_required=True)
 
 
 def slave_utilization(registry, xml_parent, data):
