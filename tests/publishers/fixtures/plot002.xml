@@ -9,13 +9,6 @@
           <width>750</width>
           <height>450</height>
           <csvFileName>persisted.csv</csvFileName>
-          <series>
-            <hudson.plugins.plot.PropertiesSeries>
-              <file>data.properties</file>
-              <label/>
-              <fileType>properties</fileType>
-            </hudson.plugins.plot.PropertiesSeries>
-          </series>
           <group>bench</group>
           <useDescr>false</useDescr>
           <exclZero>false</exclZero>
@@ -23,6 +16,13 @@
           <keepRecords>false</keepRecords>
           <numBuilds/>
           <style>line</style>
+          <series>
+            <hudson.plugins.plot.PropertiesSeries>
+              <file>data.properties</file>
+              <label/>
+              <fileType>properties</fileType>
+            </hudson.plugins.plot.PropertiesSeries>
+          </series>
         </hudson.plugins.plot.Plot>
       </plots>
     </hudson.plugins.plot.PlotPublisher>

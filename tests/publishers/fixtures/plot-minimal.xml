@@ -4,11 +4,11 @@
     <hudson.plugins.plot.PlotPublisher>
       <plots>
         <hudson.plugins.plot.Plot>
-          <title>Sample graph</title>
+          <title/>
           <yaxis/>
           <width>750</width>
           <height>450</height>
-          <csvFileName>persisted.csv</csvFileName>
+          <csvFileName/>
           <group>bench</group>
           <useDescr>false</useDescr>
           <exclZero>false</exclZero>
@@ -17,13 +17,14 @@
           <numBuilds/>
           <style>line</style>
           <series>
-            <hudson.plugins.plot.XMLSeries>
-              <file>data.xml</file>
+            <hudson.plugins.plot.CSVSeries>
+              <file>data.csv</file>
+              <inclusionFlag>OFF</inclusionFlag>
+              <exclusionValues/>
               <url/>
-              <xpathString>/data/set[1]/values/*</xpathString>
-              <nodeTypeString>NODE</nodeTypeString>
-              <fileType>xml</fileType>
-            </hudson.plugins.plot.XMLSeries>
+              <displayTableFlag>false</displayTableFlag>
+              <fileType>csv</fileType>
+            </hudson.plugins.plot.CSVSeries>
           </series>
         </hudson.plugins.plot.Plot>
       </plots>

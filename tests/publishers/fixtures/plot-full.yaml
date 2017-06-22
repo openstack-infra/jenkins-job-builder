@@ -1,0 +1,36 @@
+publishers:
+  - plot:
+    - title: MyPlot
+      yaxis: Y
+      width: 900
+      height: 1000
+      csv-file-name: myplot.csv
+      group: PlotGroup
+      num-builds: '1'
+      style: line
+      exclude-zero-yaxis: true
+      logarithmic-yaxis: true
+      use-description: true
+      keep-records: true
+      series:
+        - file: graph-me-second.properties
+          label: MyLabel
+          format: properties
+        - file: graph-me-first.csv
+          url: 'http://srv1'
+          inclusion-flag: 'include-by-string'
+          exclude: 'Column 1,Column 2,Column 3'
+          display-table: true
+          format: csv
+    - title: MyPlot2
+      yaxis: Y
+      csv-file-name: myplot2.csv
+      group: PlotGroup
+      style: bar
+      use-description: false
+      series:
+        - file: graph-me-third.xml
+          url: 'http://srv2'
+          format: xml
+          xpath-type: 'string'
+          xpath: '/*'
