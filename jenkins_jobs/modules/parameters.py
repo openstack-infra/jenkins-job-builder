@@ -396,6 +396,8 @@ def extended_choice_param(registry, xml_parent, data):
     :arg str multi-select-delimiter: value between selections when the
         parameter is a multi-select (optional, default ',')
     :arg str groovy-script: the groovy script contents (optional, default ',')
+    :arg str groovy-script-file: location of groovy script file to generate
+        parameters (optional, default '')
     :arg str classpath: the classpath for the groovy script
         (optional, default ',')
     :arg str default-groovy-script: the default groovy
@@ -450,6 +452,7 @@ def extended_choice_param(registry, xml_parent, data):
         ('description-property-file', 'descriptionPropertyFile', ''),
         ('description-property-key', 'descriptionPropertyKey', ''),
         ('groovy-script', 'groovyScript', ''),
+        ('groovy-script-file', 'groovyScriptFile', ''),
         ('classpath', 'groovyClasspath', ''),
         ('default-groovy-script', 'defaultGroovyScript', ''),
         ('default-groovy-classpath', 'defaultGroovyClasspath', ''),

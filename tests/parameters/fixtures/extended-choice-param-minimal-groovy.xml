@@ -20,6 +20,7 @@
           <descriptionPropertyFile/>
           <descriptionPropertyKey/>
           <groovyScript>return 'value1, value2, value3'</groovyScript>
+          <groovyScriptFile/>
           <groovyClasspath/>
           <defaultGroovyScript/>
           <defaultGroovyClasspath/>
