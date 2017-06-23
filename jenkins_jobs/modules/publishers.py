@@ -162,8 +162,9 @@ def jclouds(registry, xml_parent, data):
         raise JenkinsJobsException("blobstore requires '%s' to be set"
                                    % e.args[0])
 
-    XML.SubElement(deployer_entry, 'keepHierarchy').text = str(
-        data.get('hierarchy', False)).lower()
+    mapping = [('hierarchy', 'keepHierarchy', False)]
+    helpers.convert_mapping_to_xml(
+        deployer_entry, data, mapping, fail_required=True)
 
 
 def javadoc(registry, xml_parent, data):
