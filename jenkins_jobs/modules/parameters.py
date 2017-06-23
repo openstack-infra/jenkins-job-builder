@@ -706,15 +706,12 @@ def matrix_combinations_param(registry, xml_parent, data):
     element_name = 'hudson.plugins.matrix__configuration__parameter.' \
                    'MatrixCombinationsParameterDefinition'
     pdef = XML.SubElement(xml_parent, element_name)
-    if 'name' not in data:
-        raise JenkinsJobsException('matrix-combinations must have a name '
-                                   'parameter.')
-    XML.SubElement(pdef, 'name').text = data['name']
-    XML.SubElement(pdef, 'description').text = data.get('description', '')
-    combination_filter = data.get('filter')
-    if combination_filter:
-        XML.SubElement(pdef, 'defaultCombinationFilter').text = \
-            combination_filter
+
+    mapping = [
+        ('name', 'name', None),
+        ('description', 'description', ''),
+        ('filter', 'defaultCombinationFilter', '')]
+    convert_mapping_to_xml(pdef, data, mapping, fail_required=True)
 
     return pdef
 
