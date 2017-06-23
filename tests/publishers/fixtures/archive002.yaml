@@ -4,3 +4,4 @@ publishers:
       allow-empty: true
       only-if-success: true
       fingerprint: true
+      excludes: path

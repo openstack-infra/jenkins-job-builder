@@ -3,10 +3,12 @@
   <publishers>
     <hudson.tasks.ArtifactArchiver>
       <artifacts>*.tar.gz</artifacts>
-      <latestOnly>false</latestOnly>
       <allowEmptyArchive>true</allowEmptyArchive>
+      <onlyIfSuccessful>false</onlyIfSuccessful>
       <fingerprint>true</fingerprint>
       <defaultExcludes>false</defaultExcludes>
+      <caseSensitive>true</caseSensitive>
+      <latestOnly>false</latestOnly>
     </hudson.tasks.ArtifactArchiver>
   </publishers>
 </project>
