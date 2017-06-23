@@ -5,7 +5,7 @@
       <configVersion>2</configVersion>
       <pushMerge>true</pushMerge>
       <pushOnlyIfSuccess>false</pushOnlyIfSuccess>
-      <forcePush>false</forcePush>
+      <forcePush>true</forcePush>
       <tagsToPush>
         <hudson.plugins.git.GitPublisher_-TagToPush>
           <targetRepoName>tagremotename</targetRepoName>
