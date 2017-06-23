@@ -704,7 +704,9 @@ def zeromq_event(registry, xml_parent, data):
     zmq_event = XML.SubElement(xml_parent,
                                'org.jenkinsci.plugins.'
                                'ZMQEventPublisher.HudsonNotificationProperty')
-    XML.SubElement(zmq_event, 'enabled').text = 'true'
+    mapping = [('', 'enabled', True)]
+    helpers.convert_mapping_to_xml(
+        zmq_event, data, mapping, fail_required=True)
 
 
 def slack(registry, xml_parent, data):
