@@ -743,13 +743,11 @@ def copyartifact_build_selector_param(registry, xml_parent, data):
 
     t = XML.SubElement(xml_parent, 'hudson.plugins.copyartifact.'
                        'BuildSelectorParameter')
-    try:
-        name = data['name']
-    except KeyError:
-        raise MissingAttributeError('name')
-
-    XML.SubElement(t, 'name').text = name
-    XML.SubElement(t, 'description').text = data.get('description', '')
+    mapping = [
+        ('name', 'name', None),
+        ('description', 'description', ''),
+    ]
+    convert_mapping_to_xml(t, data, mapping, fail_required=True)
 
     copyartifact_build_selector(t, data, 'defaultSelector')
 
