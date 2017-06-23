@@ -501,12 +501,15 @@ def svn_tags_param(registry, xml_parent, data):
     pdef = base_param(registry, xml_parent, data, True,
                       'hudson.scm.listtagsparameter.'
                       'ListSubversionTagsParameterDefinition')
-    XML.SubElement(pdef, 'tagsDir').text = data['url']
-    XML.SubElement(pdef, 'tagsFilter').text = data.get('filter', None)
-    XML.SubElement(pdef, 'reverseByDate').text = "true"
-    XML.SubElement(pdef, 'reverseByName').text = "false"
-    XML.SubElement(pdef, 'maxTags').text = "100"
-    XML.SubElement(pdef, 'uuid').text = "1-1-1-1-1"
+    mapping = [
+        ('url', 'tagsDir', None),
+        ('filter', 'tagsFilter', None),
+        ('', 'reverseByDate', "true"),
+        ('', 'reverseByName', "false"),
+        ('', 'maxTags', "100"),
+        ('', 'uuid', "1-1-1-1-1"),
+    ]
+    convert_mapping_to_xml(pdef, data, mapping, fail_required=True)
 
 
 def dynamic_choice_param(registry, xml_parent, data):
