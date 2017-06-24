@@ -4372,10 +4372,16 @@ def build_publisher(registry, xml_parent, data):
     :arg int num-to-keep: number of jobs to keep in the published results
       (optional)
 
-    Example:
+    Minimal Example:
 
     .. literalinclude::
-        /../../tests/publishers/fixtures/build-publisher002.yaml
+        /../../tests/publishers/fixtures/build-publisher-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/build-publisher-full.yaml
        :language: yaml
     """
 
@@ -4383,21 +4389,24 @@ def build_publisher(registry, xml_parent, data):
         xml_parent,
         'hudson.plugins.build__publisher.BuildPublisher')
 
-    XML.SubElement(reporter, 'publishUnstableBuilds').text = \
-        str(data.get('publish-unstable-builds', True)).lower()
-    XML.SubElement(reporter, 'publishFailedBuilds').text = \
-        str(data.get('publish-failed-builds', True)).lower()
-
+    mappings = [
+        ('publish-unstable-builds', 'publishUnstableBuilds', True),
+        ('publish-failed-builds', 'publishFailedBuilds', True)
+    ]
+    helpers.convert_mapping_to_xml(
+        reporter, data, mappings, fail_required=True)
     if 'days-to-keep' in data or 'num-to-keep' in data:
         logrotator = XML.SubElement(reporter, 'logRotator')
-        XML.SubElement(logrotator, 'daysToKeep').text = \
-            str(data.get('days-to-keep', -1))
-        XML.SubElement(logrotator, 'numToKeep').text = \
-            str(data.get('num-to-keep', -1))
-        # hardcoded to -1 to emulate what the build publisher
-        # plugin seem to do.
-        XML.SubElement(logrotator, 'artifactDaysToKeep').text = "-1"
-        XML.SubElement(logrotator, 'artifactNumToKeep').text = "-1"
+        mappings = [
+            ('days-to-keep', 'daysToKeep', -1),
+            ('num-to-keep', 'numToKeep', -1),
+            # hardcoded to -1 to emulate what the build publisher
+            # plugin seem to do.
+            ('', 'artifactDaysToKeep', -1),
+            ('', 'artifactNumToKeep', -1)
+        ]
+        helpers.convert_mapping_to_xml(
+            logrotator, data, mappings, fail_required=True)
 
 
 def stash(registry, xml_parent, data):
