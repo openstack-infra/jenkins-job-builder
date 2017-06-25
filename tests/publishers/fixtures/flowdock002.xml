@@ -5,6 +5,12 @@
       <flowToken>abcdefghijklmnopqrstuvwxyzabcdef</flowToken>
       <notificationTags>jenkins,ci</notificationTags>
       <chatNotification>true</chatNotification>
+      <notifySuccess>true</notifySuccess>
+      <notifyFailure>true</notifyFailure>
+      <notifyFixed>true</notifyFixed>
+      <notifyUnstable>false</notifyUnstable>
+      <notifyAborted>false</notifyAborted>
+      <notifyNotBuilt>false</notifyNotBuilt>
       <notifyMap>
         <entry>
           <com.flowdock.jenkins.BuildResult>SUCCESS</com.flowdock.jenkins.BuildResult>
@@ -31,12 +37,6 @@
           <boolean>false</boolean>
         </entry>
       </notifyMap>
-      <notifySuccess>true</notifySuccess>
-      <notifyFailure>true</notifyFailure>
-      <notifyFixed>true</notifyFixed>
-      <notifyUnstable>false</notifyUnstable>
-      <notifyAborted>false</notifyAborted>
-      <notifyNotBuilt>false</notifyNotBuilt>
     </com.flowdock.jenkins.FlowdockNotifier>
   </publishers>
 </project>
