@@ -1373,13 +1373,19 @@ def _violations_add_entry(xml_parent, name, data):
     pattern = data.get('pattern', None)
 
     entry = XML.SubElement(xml_parent, 'entry')
-    XML.SubElement(entry, 'string').text = name
+    mapping = [('', 'string', name)]
+    helpers.convert_mapping_to_xml(entry, data, mapping, fail_required=True)
+
     tconfig = XML.SubElement(entry, 'hudson.plugins.violations.TypeConfig')
-    XML.SubElement(tconfig, 'type').text = name
-    XML.SubElement(tconfig, 'min').text = str(vmin)
-    XML.SubElement(tconfig, 'max').text = str(vmax)
-    XML.SubElement(tconfig, 'unstable').text = str(vunstable)
-    XML.SubElement(tconfig, 'usePattern').text = 'false'
+    mapping = [
+        ('', 'type', name),
+        ('', 'min', str(vmin)),
+        ('', 'max', str(vmax)),
+        ('', 'unstable', str(vunstable)),
+        ('', 'usePattern', 'false'),
+    ]
+    helpers.convert_mapping_to_xml(tconfig, data, mapping, fail_required=True)
+
     if pattern:
         XML.SubElement(tconfig, 'pattern').text = pattern
     else:
