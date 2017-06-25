@@ -5583,9 +5583,9 @@ def gatling(registry, xml_parent, data):
        :language: yaml
     """
     gatling = XML.SubElement(
-        xml_parent,
-        'io.gatling.jenkins.GatlingPublisher')
-    XML.SubElement(gatling, 'enabled').text = 'true'
+        xml_parent, 'io.gatling.jenkins.GatlingPublisher')
+    mapping = [('', 'enabled', 'true')]
+    helpers.convert_mapping_to_xml(gatling, data, mapping, fail_required=True)
 
 
 def logstash(registry, xml_parent, data):
