@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.stashNotifier.StashNotifier>
+      <stashServerBaseUrl/>
+      <stashUserName/>
+      <stashUserPassword/>
+      <ignoreUnverifiedSSLPeer>false</ignoreUnverifiedSSLPeer>
+      <commitSha1/>
+      <includeBuildNumberInKey>false</includeBuildNumberInKey>
+    </org.jenkinsci.plugins.stashNotifier.StashNotifier>
+  </publishers>
+</project>

@@ -4417,9 +4417,14 @@ def stash(registry, xml_parent, data):
     :arg bool   include-build-number: Include build number in key
                 (default false)
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/stash001.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/stash-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/stash-full.yaml
        :language: yaml
     """
     top = XML.SubElement(xml_parent,
@@ -4436,12 +4441,13 @@ def stash(registry, xml_parent, data):
         XML.SubElement(top, 'stashUserPassword'
                        ).text = helpers.get_value_from_yaml_or_config_file(
                            'password', 'stash', data, registry.jjb_config)
-
-    XML.SubElement(top, 'ignoreUnverifiedSSLPeer').text = str(
-        data.get('ignore-ssl', False)).lower()
-    XML.SubElement(top, 'commitSha1').text = data.get('commit-sha1', '')
-    XML.SubElement(top, 'includeBuildNumberInKey').text = str(
-        data.get('include-build-number', False)).lower()
+    mappings = [
+        ('ignore-ssl', 'ignoreUnverifiedSSLPeer', False),
+        ('commit-sha1', 'commitSha1', ''),
+        ('include-build-number', 'includeBuildNumberInKey', False)
+    ]
+    helpers.convert_mapping_to_xml(
+        top, data, mappings, fail_required=True)
 
 
 def dependency_check(registry, xml_parent, data):
