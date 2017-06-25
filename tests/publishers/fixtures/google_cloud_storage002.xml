@@ -8,8 +8,8 @@
           <bucketNameWithVars>gs://myBucket</bucketNameWithVars>
           <sharedPublicly>false</sharedPublicly>
           <forFailedJobs>false</forFailedJobs>
-          <module/>
           <bucketObjectTTL>7</bucketObjectTTL>
+          <module/>
         </com.google.jenkins.plugins.storage.ExpiringBucketLifecycleManager>
         <com.google.jenkins.plugins.storage.StdoutUpload>
           <bucketNameWithVars>gs://myBucket</bucketNameWithVars>
@@ -17,8 +17,8 @@
           <forFailedJobs>true</forFailedJobs>
           <showInline>true</showInline>
           <pathPrefix/>
-          <module/>
           <logName>console.log</logName>
+          <module/>
         </com.google.jenkins.plugins.storage.StdoutUpload>
         <com.google.jenkins.plugins.storage.ClassicUpload>
           <bucketNameWithVars>gs://myBucket</bucketNameWithVars>
@@ -26,8 +26,8 @@
           <forFailedJobs>true</forFailedJobs>
           <showInline>false</showInline>
           <pathPrefix/>
-          <module/>
           <sourceGlobWithVars>target/*.war</sourceGlobWithVars>
+          <module/>
         </com.google.jenkins.plugins.storage.ClassicUpload>
         <com.google.jenkins.plugins.storage.ClassicUpload>
           <bucketNameWithVars>gs://myBucket/artifacts/</bucketNameWithVars>
@@ -35,8 +35,8 @@
           <forFailedJobs>false</forFailedJobs>
           <showInline>false</showInline>
           <pathPrefix>path/to/</pathPrefix>
-          <module reference="../../com.google.jenkins.plugins.storage.ClassicUpload/module"/>
           <sourceGlobWithVars>**/build/*.iso</sourceGlobWithVars>
+          <module reference="../../com.google.jenkins.plugins.storage.ClassicUpload/module"/>
         </com.google.jenkins.plugins.storage.ClassicUpload>
       </uploads>
     </com.google.jenkins.plugins.storage.GoogleCloudStorageUploader>

@@ -8,8 +8,8 @@
           <bucketNameWithVars>gs://myBucket</bucketNameWithVars>
           <sharedPublicly>false</sharedPublicly>
           <forFailedJobs>false</forFailedJobs>
-          <module/>
           <bucketObjectTTL>7</bucketObjectTTL>
+          <module/>
         </com.google.jenkins.plugins.storage.ExpiringBucketLifecycleManager>
       </uploads>
     </com.google.jenkins.plugins.storage.GoogleCloudStorageUploader>
