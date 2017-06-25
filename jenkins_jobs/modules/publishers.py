@@ -2104,8 +2104,8 @@ def aggregate_flow_tests(registry, xml_parent, data):
     """
     agg_flow = XML.SubElement(xml_parent, 'org.zeroturnaround.jenkins.'
                               'flowbuildtestaggregator.FlowTestAggregator')
-    XML.SubElement(agg_flow, 'showTestResultTrend').text = str(
-        data.get('show-test-results-trend', True)).lower()
+    mapping = [('show-test-results-trend', 'showTestResultTrend', True)]
+    helpers.convert_mapping_to_xml(agg_flow, data, mapping, fail_required=True)
 
 
 def cppcheck(registry, xml_parent, data):
