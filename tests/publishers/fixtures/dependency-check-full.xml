@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.DependencyCheck.DependencyCheckPublisher>
+      <healthy>0</healthy>
+      <unHealthy>100</unHealthy>
+      <thresholdLimit>high</thresholdLimit>
+      <pluginName>[DEPENDENCYCHECK] </pluginName>
+      <defaultEncoding>utf-8</defaultEncoding>
+      <canRunOnFailed>true</canRunOnFailed>
+      <useStableBuildAsReference>true</useStableBuildAsReference>
+      <usePreviousBuildAsReference>true</usePreviousBuildAsReference>
+      <useDeltaValues>true</useDeltaValues>
+      <thresholds>
+        <unstableTotalAll>90</unstableTotalAll>
+        <unstableTotalHigh>80</unstableTotalHigh>
+        <unstableTotalNormal>70</unstableTotalNormal>
+        <unstableTotalLow>60</unstableTotalLow>
+        <unstableNewAll>50</unstableNewAll>
+        <unstableNewHigh>40</unstableNewHigh>
+        <unstableNewNormal>30</unstableNewNormal>
+        <unstableNewLow>20</unstableNewLow>
+        <failedTotalAll>91</failedTotalAll>
+        <failedTotalHigh>81</failedTotalHigh>
+        <failedTotalNormal>71</failedTotalNormal>
+        <failedTotalLow>61</failedTotalLow>
+        <failedNewAll>51</failedNewAll>
+        <failedNewHigh>41</failedNewHigh>
+        <failedNewNormal>31</failedNewNormal>
+        <failedNewLow>21</failedNewLow>
+      </thresholds>
+      <shouldDetectModules>true</shouldDetectModules>
+      <dontComputeNew>false</dontComputeNew>
+      <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
+      <pattern>**/dependency-check-report.xml</pattern>
+    </org.jenkinsci.plugins.DependencyCheck.DependencyCheckPublisher>
+  </publishers>
+</project>
