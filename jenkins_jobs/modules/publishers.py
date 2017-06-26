@@ -4255,9 +4255,14 @@ def git(registry, xml_parent, data):
                  (default false)
 
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/git001.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/git-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/git-full.yaml
        :language: yaml
     """
     mappings = [('push-merge', 'pushMerge', False),

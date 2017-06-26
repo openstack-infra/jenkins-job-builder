@@ -2,6 +2,7 @@ publishers:
   - git:
       push-merge: true
       push-only-if-success: false
+      force-push: true
       tags:
           - tag:
               remote: tagremotename
