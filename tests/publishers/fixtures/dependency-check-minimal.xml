@@ -8,7 +8,7 @@
       <pluginName>[DEPENDENCYCHECK] </pluginName>
       <defaultEncoding/>
       <canRunOnFailed>false</canRunOnFailed>
-      <useStableBuildAsReference>true</useStableBuildAsReference>
+      <useStableBuildAsReference>false</useStableBuildAsReference>
       <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
       <useDeltaValues>false</useDeltaValues>
       <thresholds>
@@ -24,7 +24,7 @@
       <shouldDetectModules>false</shouldDetectModules>
       <dontComputeNew>true</dontComputeNew>
       <doNotResolveRelativePaths>false</doNotResolveRelativePaths>
-      <pattern>**/dependency-check-report.xml</pattern>
+      <pattern/>
     </org.jenkinsci.plugins.DependencyCheck.DependencyCheckPublisher>
   </publishers>
 </project>
