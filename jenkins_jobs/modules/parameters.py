@@ -472,8 +472,11 @@ def validating_string_param(registry, xml_parent, data):
     pdef = base_param(registry, xml_parent, data, True,
                       'hudson.plugins.validating__string__parameter.'
                       'ValidatingStringParameterDefinition')
-    XML.SubElement(pdef, 'regex').text = data['regex']
-    XML.SubElement(pdef, 'failedValidationMessage').text = data['msg']
+    mapping = [
+        ('regex', 'regex', None),
+        ('msg', 'failedValidationMessage', None),
+    ]
+    convert_mapping_to_xml(pdef, data, mapping, fail_required=True)
 
 
 def svn_tags_param(registry, xml_parent, data):
