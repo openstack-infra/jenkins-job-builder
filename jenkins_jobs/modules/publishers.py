@@ -4550,35 +4550,40 @@ def description_setter(registry, xml_parent, data):
     <Description+Setter+Plugin>`.
 
     :arg str regexp: A RegEx which is used to scan the build log file
+        (default '')
     :arg str regexp-for-failed: A RegEx which is used for failed builds
-        (optional)
+        (default '')
     :arg str description: The description to set on the build (optional)
     :arg str description-for-failed: The description to set on
         the failed builds (optional)
     :arg bool set-for-matrix: Also set the description on
         a multi-configuration build (default false)
 
-    Example:
+    Minimal Example:
 
     .. literalinclude::
-        /../../tests/publishers/fixtures/description-setter001.yaml
+        /../../tests/publishers/fixtures/description-setter-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/description-setter-full.yaml
        :language: yaml
     """
 
     descriptionsetter = XML.SubElement(
         xml_parent,
         'hudson.plugins.descriptionsetter.DescriptionSetterPublisher')
-    XML.SubElement(descriptionsetter, 'regexp').text = data.get('regexp', '')
-    XML.SubElement(descriptionsetter, 'regexpForFailed').text = \
-        data.get('regexp-for-failed', '')
-    if 'description' in data:
-        XML.SubElement(descriptionsetter, 'description').text = \
-            data['description']
-    if 'description-for-failed' in data:
-        XML.SubElement(descriptionsetter, 'descriptionForFailed').text = \
-            data['description-for-failed']
-    for_matrix = str(data.get('set-for-matrix', False)).lower()
-    XML.SubElement(descriptionsetter, 'setForMatrix').text = for_matrix
+    mappings = [
+        ('regexp', 'regexp', ''),
+        ('regexp-for-failed', 'regexpForFailed', ''),
+        ('description', 'description', None),
+        ('description-for-failed', 'descriptionForFailed', None),
+        ('set-for-matrix', 'setForMatrix', False)
+    ]
+    helpers.convert_mapping_to_xml(
+        descriptionsetter, data, mappings, fail_required=False)
 
 
 def doxygen(registry, xml_parent, data):
