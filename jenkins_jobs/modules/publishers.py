@@ -6549,21 +6549,15 @@ def phabricator(registry, xml_parent, data):
 
     root = XML.SubElement(xml_parent,
                           'com.uber.jenkins.phabricator.PhabricatorNotifier')
-
-    if 'comment-on-success' in data:
-        XML.SubElement(root, 'commentOnSuccess').text = str(
-            data.get('comment-on-success')).lower()
-    if 'uberalls-enabled' in data:
-        XML.SubElement(root, 'uberallsEnabled').text = str(
-            data.get('uberalls-enabled')).lower()
-    if 'comment-file' in data:
-        XML.SubElement(root, 'commentFile').text = data.get('comment-file')
-    if 'comment-size' in data:
-        XML.SubElement(root, 'commentSize').text = str(
-            data.get('comment-size'))
-    if 'comment-with-console-link-on-failure' in data:
-        XML.SubElement(root, 'commentWithConsoleLinkOnFailure').text = str(
-            data.get('comment-with-console-link-on-failure')).lower()
+    mapping = [
+        ('comment-on-success', 'commentOnSuccess', None),
+        ('uberalls-enabled', 'uberallsEnabled', None),
+        ('comment-file', 'commentFile', None),
+        ('comment-size', 'commentSize', None),
+        ('comment-with-console-link-on-failure',
+            'commentWithConsoleLinkOnFailure', None),
+    ]
+    helpers.convert_mapping_to_xml(root, data, mapping, fail_required=False)
 
 
 def jms_messaging(registry, xml_parent, data):
