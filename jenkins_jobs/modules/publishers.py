@@ -5212,9 +5212,10 @@ def shining_panda(registry, xml_parent, data):
     shining_panda_plugin = XML.SubElement(
         xml_parent,
         'jenkins.plugins.shiningpanda.publishers.CoveragePublisher')
-    if 'html-reports-directory' in data:
-        XML.SubElement(shining_panda_plugin, 'htmlDir').text = str(
-            data['html-reports-directory'])
+
+    mapping = [('html-reports-directory', 'htmlDir', None)]
+    helpers.convert_mapping_to_xml(
+        shining_panda_plugin, data, mapping, fail_required=False)
 
 
 def downstream_ext(registry, xml_parent, data):
