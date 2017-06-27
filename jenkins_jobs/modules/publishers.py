@@ -6380,16 +6380,10 @@ def hipchat(registry, xml_parent, data):
         ('notify-unstable', 'notifyUnstable', False),
         ('notify-failure', 'notifyFailure', False),
         ('notify-back-to-normal', 'notifyBackToNormal', False),
+        ('start-message', 'startJobMessage', None),
+        ('complete-message', 'completeJobMessage', None),
     ]
-    helpers.convert_mapping_to_xml(hipchat, data, mapping, fail_required=True)
-
-    # optional settings, so only add XML in if set.
-    if 'start-message' in data:
-        XML.SubElement(hipchat, 'startJobMessage').text = str(
-            data['start-message'])
-    if 'complete-message' in data:
-        XML.SubElement(hipchat, 'completeJobMessage').text = str(
-            data['complete-message'])
+    helpers.convert_mapping_to_xml(hipchat, data, mapping, fail_required=False)
 
 
 def slack(registry, xml_parent, data):
