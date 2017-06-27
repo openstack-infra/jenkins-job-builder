@@ -357,7 +357,8 @@ def run_param(registry, xml_parent, data):
     """
     pdef = base_param(registry, xml_parent, data, False,
                       'hudson.model.RunParameterDefinition')
-    XML.SubElement(pdef, 'projectName').text = data['project-name']
+    mapping = [('project-name', 'projectName', None)]
+    convert_mapping_to_xml(pdef, data, mapping, fail_required=True)
 
 
 def extended_choice_param(registry, xml_parent, data):
