@@ -3122,10 +3122,11 @@ def artifactory(registry, xml_parent, data):
     details = XML.SubElement(artifactory, 'details')
     helpers.artifactory_common_details(details, data)
 
-    XML.SubElement(details, 'repositoryKey').text = data.get(
-        'release-repo-key', '')
-    XML.SubElement(details, 'snapshotsRepositoryKey').text = data.get(
-        'snapshot-repo-key', '')
+    mapping = [
+        ('release-repo-key', 'repositoryKey', ''),
+        ('snapshot-repo-key', 'snapshotsRepositoryKey', ''),
+    ]
+    helpers.convert_mapping_to_xml(details, data, mapping, fail_required=True)
 
     plugin = XML.SubElement(details, 'stagingPlugin')
     XML.SubElement(plugin, 'pluginName').text = 'None'
