@@ -7,6 +7,7 @@ scm:
       browser: githubweb
       browser-url: http://github.com/foo/example.git
       timeout: 20
+      do-not-fetch-tags: false
       changelog-against:
         remote: origin
         branch: master
