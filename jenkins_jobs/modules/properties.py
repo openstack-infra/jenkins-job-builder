@@ -249,14 +249,12 @@ def throttle(registry, xml_parent, data):
     throttle = XML.SubElement(xml_parent,
                               'hudson.plugins.throttleconcurrents.'
                               'ThrottleJobProperty')
-    XML.SubElement(throttle, 'maxConcurrentPerNode').text = str(
-        data.get('max-per-node', '0'))
-    XML.SubElement(throttle, 'maxConcurrentTotal').text = str(
-        data.get('max-total', '0'))
-    # TODO: What's "categories"?
-    # XML.SubElement(throttle, 'categories')
-    XML.SubElement(throttle, 'throttleEnabled').text = str(
-        data.get('enabled', True)).lower()
+    mapping = [
+        ('max-per-node', 'maxConcurrentPerNode', '0'),
+        ('max-total', 'maxConcurrentTotal', '0'),
+        ('enabled', 'throttleEnabled', True),
+    ]
+    helpers.convert_mapping_to_xml(throttle, data, mapping, fail_required=True)
     cat = data.get('categories', [])
     if cat:
         cn = XML.SubElement(throttle, 'categories')
@@ -267,15 +265,19 @@ def throttle(registry, xml_parent, data):
     option = data.get('option')
     if option not in options_list:
         raise InvalidAttributeError('option', option, options_list)
-
-    XML.SubElement(throttle, 'throttleOption').text = option
-    XML.SubElement(throttle, 'configVersion').text = '1'
+    mapping = [
+        ('', 'throttleOption', option),
+        ('', 'configVersion', '1'),
+    ]
+    helpers.convert_mapping_to_xml(throttle, data, mapping, fail_required=True)
 
     matrixopt = XML.SubElement(throttle, 'matrixOptions')
-    XML.SubElement(matrixopt, 'throttleMatrixBuilds').text = str(
-        data.get('matrix-builds', True)).lower()
-    XML.SubElement(matrixopt, 'throttleMatrixConfigurations').text = str(
-        data.get('matrix-configs', False)).lower()
+    mapping = [
+        ('matrix-builds', 'throttleMatrixBuilds', True),
+        ('matrix-configs', 'throttleMatrixConfigurations', False)
+    ]
+    helpers.convert_mapping_to_xml(
+        matrixopt, data, mapping, fail_required=True)
 
 
 def sidebar(registry, xml_parent, data):
