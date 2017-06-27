@@ -283,30 +283,28 @@ def ant(registry, xml_parent, data):
     """
     ant = XML.SubElement(xml_parent, 'hudson.tasks.Ant')
 
+    mappings = []
     if type(data) is str:
         # Support for short form: -ant: "target"
         data = {'targets': data}
     for setting, value in sorted(data.items()):
         if setting == 'targets':
-            targets = XML.SubElement(ant, 'targets')
-            targets.text = value
+            mappings.append(('', 'targets', value))
         if setting == 'buildfile':
-            buildfile = XML.SubElement(ant, 'buildFile')
-            buildfile.text = value
+            mappings.append(('', 'buildFile', value))
         if setting == 'properties':
-            properties = data['properties']
+            properties = value
             prop_string = ''
             for prop, val in properties.items():
                 prop_string += "%s=%s\n" % (prop, val)
-            prop_element = XML.SubElement(ant, 'properties')
-            prop_element.text = prop_string
+            mappings.append(('', 'properties', prop_string))
         if setting == 'java-opts':
-            javaopts = data['java-opts']
-            jopt_string = ' '.join(javaopts)
-            jopt_element = XML.SubElement(ant, 'antOpts')
-            jopt_element.text = jopt_string
+            jopt_string = ' '.join(value)
+            mappings.append(('', 'antOpts', jopt_string))
 
-    XML.SubElement(ant, 'antName').text = data.get('ant-name', 'default')
+    mappings.append(('ant-name', 'antName', 'default'))
+
+    convert_mapping_to_xml(ant, data, mappings, fail_required=True)
 
 
 def trigger_remote(registry, xml_parent, data):
