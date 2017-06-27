@@ -795,14 +795,15 @@ def maven_metadata_param(registry, xml_parent, data):
     pdef = base_param(registry, xml_parent, data, False,
                       'eu.markov.jenkins.plugin.mvnmeta.'
                       'MavenMetadataParameterDefinition')
-    XML.SubElement(pdef, 'repoBaseUrl').text = data.get('repository-base-url',
-                                                        '')
-    XML.SubElement(pdef, 'groupId').text = data.get('artifact-group-id', '')
-    XML.SubElement(pdef, 'artifactId').text = data.get('artifact-id', '')
-    XML.SubElement(pdef, 'packaging').text = data.get('packaging', '')
-    XML.SubElement(pdef, 'defaultValue').text = data.get('default-value', '')
-    XML.SubElement(pdef, 'versionFilter').text = data.get('versions-filter',
-                                                          '')
+    mapping = [
+        ('repository-base-url', 'repoBaseUrl', ''),
+        ('artifact-group-id', 'groupId', ''),
+        ('artifact-id', 'artifactId', ''),
+        ('packaging', 'packaging', ''),
+        ('default-value', 'defaultValue', ''),
+        ('versions-filter', 'versionFilter', ''),
+    ]
+    convert_mapping_to_xml(pdef, data, mapping, fail_required=True)
 
     sort_order = data.get('sorting-order', 'descending').lower()
     sort_dict = {'descending': 'DESC',
@@ -812,10 +813,12 @@ def maven_metadata_param(registry, xml_parent, data):
         raise InvalidAttributeError(sort_order, sort_order, sort_dict.keys())
 
     XML.SubElement(pdef, 'sortOrder').text = sort_dict[sort_order]
-    XML.SubElement(pdef, 'maxVersions').text = str(data.get(
-        'maximum-versions-to-display', 10))
-    XML.SubElement(pdef, 'username').text = data.get('repository-username', '')
-    XML.SubElement(pdef, 'password').text = data.get('repository-password', '')
+    mapping = [
+        ('maximum-versions-to-display', 'maxVersions', 10),
+        ('repository-username', 'username', ''),
+        ('repository-password', 'password', ''),
+    ]
+    convert_mapping_to_xml(pdef, data, mapping, fail_required=True)
 
 
 def hidden_param(parser, xml_parent, data):
