@@ -21,8 +21,11 @@ import logging
 import os
 import re
 import tempfile
+
+import fasteners
 import yaml
 
+from jenkins_jobs import errors
 
 logger = logging.getLogger(__name__)
 
@@ -43,12 +46,31 @@ class JobCache(object):
         host_vary = re.sub('[^A-Za-z0-9\-\~]', '_', jenkins_url)
         self.cachefilename = os.path.join(
             cache_dir, 'cache-host-jobs-' + host_vary + '.yml')
+
+        # generate named lockfile if none exists, and lock it
+        self._locked = self._lock()
+        if not self._locked:
+            raise errors.JenkinsJobsException(
+                "Unable to lock cache for '%s'" % jenkins_url)
+
         if flush or not os.path.isfile(self.cachefilename):
             self.data = {}
         else:
             with io.open(self.cachefilename, 'r', encoding='utf-8') as yfile:
                 self.data = yaml.load(yfile)
         logger.debug("Using cache: '{0}'".format(self.cachefilename))
+
+    def _lock(self):
+        self._fastener = fasteners.InterProcessLock("%s.lock" %
+                                                    self.cachefilename)
+
+        return self._fastener.acquire(delay=1, max_delay=2, timeout=60)
+
+    def _unlock(self):
+        if getattr(self, '_locked', False):
+            if getattr(self, '_fastener', None) is not None:
+                self._fastener.release()
+            self._locked = None
 
     @staticmethod
     def get_cache_dir():
@@ -115,3 +137,4 @@ class JobCache(object):
             except Exception as e:
                 self._logger.error("Failed to write to cache file '%s' on "
                                    "exit: %s" % (self.cachefilename, e))
+        self._unlock()

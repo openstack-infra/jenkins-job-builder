@@ -6,3 +6,4 @@ PyYAML>=3.10.0 # MIT
 pbr>=1.8 # Apache-2.0
 stevedore>=1.17.1 # Apache-2.0
 python-jenkins>=0.4.8
+fasteners
