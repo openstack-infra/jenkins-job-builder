@@ -219,9 +219,9 @@ def least_load(registry, xml_parent, data):
     least = XML.SubElement(xml_parent,
                            'org.bstick12.jenkinsci.plugins.leastload.'
                            'LeastLoadDisabledProperty')
-
-    XML.SubElement(least, 'leastLoadDisabled').text = str(
-        data.get('disabled', True)).lower()
+    mapping = [
+        ('disabled', 'leastLoadDisabled', True)]
+    helpers.convert_mapping_to_xml(least, data, mapping, fail_required=True)
 
 
 def throttle(registry, xml_parent, data):
