@@ -24,6 +24,7 @@ Wrappers can alter the way the build is run as well as the build output.
 
 import logging
 import pkg_resources
+import sys
 import xml.etree.ElementTree as XML
 
 from jenkins_jobs.errors import InvalidAttributeError
@@ -2124,7 +2125,9 @@ def artifactory_generic(registry, xml_parent, data):
 
     # Get plugin information to maintain backwards compatibility
     info = registry.get_plugin_info('artifactory')
-    version = pkg_resources.parse_version(info.get('version', '0'))
+    # Note: Assume latest version of plugin is preferred config format
+    version = pkg_resources.parse_version(
+        info.get('version', str(sys.maxsize)))
 
     if version >= pkg_resources.parse_version('2.3.0'):
         deployReleaseRepo = XML.SubElement(details, 'deployReleaseRepository')
