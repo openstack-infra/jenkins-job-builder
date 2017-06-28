@@ -2080,6 +2080,7 @@ def aggregate_tests(registry, xml_parent, data):
     Aggregate downstream test results
 
     :arg bool include-failed-builds: whether to include failed builds
+        (default false)
 
     Example:
 
@@ -2089,8 +2090,8 @@ def aggregate_tests(registry, xml_parent, data):
     """
     agg = XML.SubElement(xml_parent,
                          'hudson.tasks.test.AggregatedTestResultPublisher')
-    XML.SubElement(agg, 'includeFailedBuilds').text = str(data.get(
-        'include-failed-builds', False)).lower()
+    mapping = [('include-failed-builds', 'includeFailedBuilds', False)]
+    helpers.convert_mapping_to_xml(agg, data, mapping, fail_required=True)
 
 
 def aggregate_flow_tests(registry, xml_parent, data):
