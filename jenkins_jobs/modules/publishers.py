@@ -27,6 +27,7 @@ the build is complete.
 
 import logging
 import pkg_resources
+import sys
 import xml.etree.ElementTree as XML
 
 import six
@@ -2444,7 +2445,9 @@ def groovy_postbuild(registry, xml_parent, data):
         }
     # There are incompatible changes, we need to know version
     info = registry.get_plugin_info('groovy-postbuild')
-    version = pkg_resources.parse_version(info.get('version', "0"))
+    # Note: Assume latest version of plugin is preferred config format
+    version = pkg_resources.parse_version(
+        info.get('version', str(sys.maxsize)))
     # Version specific predicates
     matrix_parent_support = version >= pkg_resources.parse_version("1.9")
     security_plugin_support = version >= pkg_resources.parse_version("2.0")
