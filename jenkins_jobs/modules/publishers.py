@@ -27,6 +27,7 @@ the build is complete.
 
 import logging
 import pkg_resources
+import sys
 import xml.etree.ElementTree as XML
 
 import six
@@ -6480,7 +6481,9 @@ def slack(registry, xml_parent, data):
     logger = logging.getLogger(__name__)
 
     plugin_info = registry.get_plugin_info('Slack Notification Plugin')
-    plugin_ver = pkg_resources.parse_version(plugin_info.get('version', "0"))
+    # Note: Assume latest version of plugin is preferred config format
+    plugin_ver = pkg_resources.parse_version(
+        plugin_info.get('version', str(sys.maxsize)))
 
     mapping = (
         ('team-domain', 'teamDomain', ''),
