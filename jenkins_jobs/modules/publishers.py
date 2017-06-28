@@ -4601,24 +4601,32 @@ def doxygen(registry, xml_parent, data):
 
     Requires the Jenkins :jenkins-wiki:`Doxygen Plugin <Doxygen+Plugin>`.
 
-    :arg str doxyfile: The doxyfile path
+    :arg str doxyfile: The doxyfile path (required)
     :arg str slave: The node or label to pull the doxygen HTML files from
+        (default '')
     :arg bool keep-all: Retain doxygen generation for each successful build
         (default false)
     :arg str folder: Folder where you run doxygen (default '')
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/doxygen001.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/doxygen-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/doxygen-full.yaml
        :language: yaml
     """
 
     logger = logging.getLogger(__name__)
     p = XML.SubElement(xml_parent, 'hudson.plugins.doxygen.DoxygenArchiver')
-    if not data.get('doxyfile'):
-        raise JenkinsJobsException('The path to a doxyfile must be specified.')
-    XML.SubElement(p, 'doxyfilePath').text = str(data.get('doxyfile'))
-    XML.SubElement(p, 'runOnChild').text = str(data.get('slave', ''))
+    mappings = [
+        ('doxyfile', 'doxyfilePath', None),
+        ('slave', 'runOnChild', ''),
+        ('folder', 'folderWhereYouRunDoxygen', '')
+    ]
+    helpers.convert_mapping_to_xml(p, data, mappings, fail_required=True)
     # backward compatibility
     if 'keepall' in data:
         if 'keep-all' in data:
@@ -4633,8 +4641,6 @@ def doxygen(registry, xml_parent, data):
     else:
         XML.SubElement(p, 'keepAll').text = str(
             data.get('keep-all', False)).lower()
-    XML.SubElement(p, 'folderWhereYouRunDoxygen').text = str(
-        data.get('folder', ''))
 
 
 def sitemonitor(registry, xml_parent, data):
