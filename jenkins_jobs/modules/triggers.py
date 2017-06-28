@@ -32,6 +32,7 @@ Example::
 import logging
 import pkg_resources
 import re
+import sys
 import xml.etree.ElementTree as XML
 
 import six
@@ -1238,8 +1239,12 @@ def gitlab(registry, xml_parent, data):
     gitlab = XML.SubElement(
         xml_parent, 'com.dabsquared.gitlabjenkins.GitLabPushTrigger'
     )
+
     plugin_info = registry.get_plugin_info('GitLab Plugin')
-    plugin_ver = pkg_resources.parse_version(plugin_info.get('version', "0"))
+    # Note: Assume latest version of plugin is preferred config format
+    plugin_ver = pkg_resources.parse_version(
+        plugin_info.get('version', str(sys.maxsize)))
+
     valid_merge_request = ['never', 'source', 'both']
 
     if plugin_ver >= pkg_resources.parse_version("1.1.26"):
