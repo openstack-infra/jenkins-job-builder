@@ -1265,15 +1265,13 @@ def url(registry, xml_parent, data):
     scm = XML.SubElement(xml_parent, 'scm', {'class':
                          'hudson.plugins.URLSCM.URLSCM'})
     urls = XML.SubElement(scm, 'urls')
-    try:
-        for data_url in data['url-list']:
-            url_tuple = XML.SubElement(
-                urls, 'hudson.plugins.URLSCM.URLSCM_-URLTuple')
-            XML.SubElement(url_tuple, 'urlString').text = data_url
-    except KeyError as e:
-        raise MissingAttributeError(e.args[0])
-    XML.SubElement(scm, 'clearWorkspace').text = str(
-        data.get('clear-workspace', False)).lower()
+    for data_url in data['url-list']:
+        url_tuple = XML.SubElement(
+            urls, 'hudson.plugins.URLSCM.URLSCM_-URLTuple')
+        mapping = [('', 'urlString', data_url)]
+        convert_mapping_to_xml(url_tuple, data, mapping, fail_required=True)
+    mapping = [('clear-workspace', 'clearWorkspace', False)]
+    convert_mapping_to_xml(scm, data, mapping, fail_required=True)
 
 
 def dimensions(registry, xml_parent, data):
