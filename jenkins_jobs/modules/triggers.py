@@ -1765,14 +1765,10 @@ def rabbitmq(registry, xml_parent, data):
         xml_parent,
         'org.jenkinsci.plugins.rabbitmqbuildtrigger.'
         'RemoteBuildTrigger')
-
-    XML.SubElement(rabbitmq, 'spec').text = ''
-
-    try:
-        XML.SubElement(rabbitmq, 'remoteBuildToken').text = str(
-            data.get('token'))
-    except KeyError as e:
-        raise MissingAttributeError(e.args[0])
+    mapping = [
+        ('', 'spec', ''),
+        ('token', 'remoteBuildToken', None)]
+    convert_mapping_to_xml(rabbitmq, data, mapping, fail_required=True)
 
 
 def parameterized_timer(parser, xml_parent, data):
