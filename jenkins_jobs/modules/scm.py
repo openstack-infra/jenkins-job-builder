@@ -972,24 +972,22 @@ def tfs(registry, xml_parent, data):
     tfs = XML.SubElement(xml_parent, 'scm',
                          {'class': 'hudson.plugins.tfs.'
                                    'TeamFoundationServerScm'})
-    XML.SubElement(tfs, 'serverUrl').text = str(
-        data.get('server-url', ''))
-    XML.SubElement(tfs, 'projectPath').text = str(
-        data.get('project-path', ''))
-    XML.SubElement(tfs, 'localPath').text = str(
-        data.get('local-path', '.'))
-    XML.SubElement(tfs, 'workspaceName').text = str(
-        data.get('workspace', 'Hudson-${JOB_NAME}-${NODE_NAME}'))
-    # TODO: In the future, it would be nice to have a place that can pull
-    # passwords into JJB without having to commit them in plaintext. This
-    # could also integrate nicely with global configuration options.
-    XML.SubElement(tfs, 'userPassword')
-    XML.SubElement(tfs, 'userName').text = str(
-        data.get('login', ''))
-    XML.SubElement(tfs, 'useUpdate').text = str(
-        data.get('use-update', True))
+    mapping = [
+        ('server-url', 'serverUrl', ''),
+        ('project-path', 'projectPath', ''),
+        ('local-path', 'localPath', '.'),
+        ('workspace', 'workspaceName', 'Hudson-${JOB_NAME}-${NODE_NAME}'),
+        # TODO: In the future, it would be nice to have a place that can pull
+        # passwords into JJB without having to commit them in plaintext. This
+        # could also integrate nicely with global configuration options.
+        ('', 'userPassword', ''),
+        ('login', 'userName', ''),
+        ('use-update', 'useUpdate', True),
+    ]
+    convert_mapping_to_xml(tfs, data, mapping, fail_required=True)
+
     store = data.get('web-access', None)
-    if 'web-access' in data and isinstance(store, list):
+    if isinstance(store, list):
         web = XML.SubElement(tfs, 'repositoryBrowser',
                              {'class': 'hudson.plugins.tfs.browsers.'
                                        'TeamSystemWebAccessBrowser'})

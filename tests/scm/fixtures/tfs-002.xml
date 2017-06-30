@@ -7,7 +7,7 @@
     <workspaceName>Hudson-${JOB_NAME}</workspaceName>
     <userPassword/>
     <userName>jane@mydomain</userName>
-    <useUpdate>False</useUpdate>
+    <useUpdate>false</useUpdate>
     <repositoryBrowser class="hudson.plugins.tfs.browsers.TeamSystemWebAccessBrowser"/>
   </scm>
 </project>

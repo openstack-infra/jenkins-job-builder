@@ -7,7 +7,7 @@
     <workspaceName>Hudson-${JOB_NAME}</workspaceName>
     <userPassword/>
     <userName>mydomain\\jane</userName>
-    <useUpdate>False</useUpdate>
+    <useUpdate>false</useUpdate>
     <repositoryBrowser class="hudson.plugins.tfs.browsers.TeamSystemWebAccessBrowser">
       <url>http://TFSMachine:8080</url>
     </repositoryBrowser>

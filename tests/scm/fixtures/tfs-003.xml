@@ -7,6 +7,6 @@
     <workspaceName>Hudson-${JOB_NAME}</workspaceName>
     <userPassword/>
     <userName>mydomain\\jane</userName>
-    <useUpdate>False</useUpdate>
+    <useUpdate>false</useUpdate>
   </scm>
 </project>
