@@ -1686,13 +1686,11 @@ def script(registry, xml_parent, data):
         ('script-file-path', 'scriptFilePath', ''),
         ('cron', 'spec', ''),
         ('enable-concurrent', 'enableConcurrentBuild', False),
-        ('exit-code', 'exitCode', 0)
+        ('exit-code', 'exitCode', 0),
+        ('', 'labelRestriction', bool(label)),
+        ('', 'triggerLabel', label),
     ]
-    convert_mapping_to_xml(st, data, mappings, fail_required=True)
-
-    XML.SubElement(st, 'labelRestriction').text = str(bool(label)).lower()
-    if label:
-        XML.SubElement(st, 'triggerLabel').text = label
+    convert_mapping_to_xml(st, data, mappings, fail_required=False)
 
 
 def groovy_script(registry, xml_parent, data):
