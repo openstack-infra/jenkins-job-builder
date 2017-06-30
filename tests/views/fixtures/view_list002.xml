@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <hudson.model.ListView>
   <name>regex-example</name>
+  <description>description</description>
   <filterExecutors>false</filterExecutors>
   <filterQueue>false</filterQueue>
   <properties class="hudson.model.View$PropertyList"/>
