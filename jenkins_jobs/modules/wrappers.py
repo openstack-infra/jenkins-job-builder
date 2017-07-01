@@ -1575,14 +1575,15 @@ def matrix_tie_parent(registry, xml_parent, data):
     You can use the top level ``node`` parameter to control where the parent
     job is tied in Jenkins 1.532 and higher.
 
-    :arg str node: Name of the node.
+    :arg str node: Name of the node (required)
 
     Example:
 
     .. literalinclude:: /../../tests/wrappers/fixtures/matrix-tie-parent.yaml
     """
     mtp = XML.SubElement(xml_parent, 'matrixtieparent.BuildWrapperMtp')
-    XML.SubElement(mtp, 'labelName').text = data['node']
+    mapping = [('node', 'labelName', None)]
+    convert_mapping_to_xml(mtp, data, mapping, fail_required=True)
 
 
 def exclusion(registry, xml_parent, data):
