@@ -2037,15 +2037,12 @@ def artifactory_maven(registry, xml_parent, data):
     artifactory_common_details(details, data)
 
     if 'repo-key' in data:
-        XML.SubElement(
-            details, 'downloadRepositoryKey').text = data['repo-key']
+        mapping = [('repo-key', 'downloadRepositoryKey', None)]
     else:
-        XML.SubElement(
-            details, 'downloadSnapshotRepositoryKey').text = data.get(
-                'snapshot-repo-key', '')
-        XML.SubElement(
-            details, 'downloadReleaseRepositoryKey').text = data.get(
-                'release-repo-key', '')
+        mapping = [
+            ('snapshot-repo-key', 'downloadSnapshotRepositoryKey', ''),
+            ('release-repo-key', 'downloadReleaseRepositoryKey', '')]
+    convert_mapping_to_xml(details, data, mapping, fail_required=True)
 
 
 def artifactory_generic(registry, xml_parent, data):
