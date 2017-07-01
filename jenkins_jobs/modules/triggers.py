@@ -835,12 +835,11 @@ def jms_messaging(registry, xml_parent, data):
         for check in checks:
             msgcheck = XML.SubElement(msgchecks, namespace
                                       + 'messaging.checks.MsgCheck')
-            if check['field'] is '':
-                raise JenkinsJobsException('At least one '
-                                           'field must be provided')
-            XML.SubElement(msgcheck, 'field').text = check['field']
-            XML.SubElement(msgcheck,
-                           'expectedValue').text = check['expected-value']
+            mapping = [
+                ('field', 'field', ''),
+                ('expected-value', 'expectedValue', '')]
+            convert_mapping_to_xml(
+                msgcheck, check, mapping, fail_required=True)
 
 
 def timed(registry, xml_parent, data):
