@@ -1892,8 +1892,8 @@ def job_log_logger(registry, xml_parent, data):
     top = XML.SubElement(xml_parent,
                          'org.jenkins.ci.plugins.jobloglogger.'
                          'JobLogLoggerBuildWrapper')
-    XML.SubElement(top, 'suppressEmpty').text = str(
-        data.get('suppress-empty', True)).lower()
+    mapping = [('suppress-empty', 'suppressEmpty', True)]
+    convert_mapping_to_xml(top, data, mapping, fail_required=True)
 
 
 def xvfb(registry, xml_parent, data):
