@@ -1828,7 +1828,7 @@ def nodejs_installator(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`NodeJS Plugin
     <NodeJS+Plugin>`.
 
-    :arg str name: nodejs installation name
+    :arg str name: nodejs installation name (required)
 
     Example:
 
@@ -1838,11 +1838,8 @@ def nodejs_installator(registry, xml_parent, data):
     npm_node = XML.SubElement(xml_parent,
                               'jenkins.plugins.nodejs.tools.'
                               'NpmPackagesBuildWrapper')
-
-    try:
-        XML.SubElement(npm_node, 'nodeJSInstallationName').text = data['name']
-    except KeyError as e:
-        raise MissingAttributeError(e.args[0])
+    mapping = [('name', 'nodeJSInstallationName', None)]
+    convert_mapping_to_xml(npm_node, data, mapping, fail_required=True)
 
 
 def xvnc(registry, xml_parent, data):
