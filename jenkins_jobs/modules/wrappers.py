@@ -2003,39 +2003,36 @@ def android_emulator(registry, xml_parent, data):
     if data.get('avd'):
         XML.SubElement(root, 'avdName').text = str(data['avd'])
 
-    if data.get('os'):
-        XML.SubElement(root, 'osVersion').text = str(data['os'])
-        XML.SubElement(root, 'screenDensity').text = str(
-            data.get('screen-density', 'mdpi'))
-        XML.SubElement(root, 'screenResolution').text = str(
-            data.get('screen-resolution', 'WVGA'))
-        XML.SubElement(root, 'deviceLocale').text = str(
-            data.get('locale', 'en_US'))
-        XML.SubElement(root, 'targetAbi').text = str(
-            data.get('target-abi', ''))
-        XML.SubElement(root, 'sdCardSize').text = str(data.get('sd-card', ''))
+    else:
+        mapping = [
+            ('os', 'osVersion', None),
+            ('screen-density', 'screenDensity', 'mdpi'),
+            ('screen-resolution', 'screenResolution', 'WVGA'),
+            ('locale', 'deviceLocale', 'en_US'),
+            ('target-abi', 'targetAbi', ''),
+            ('sd-card', 'sdCardSize', '')
+        ]
+        convert_mapping_to_xml(root, data, mapping, fail_required=True)
 
     hardware = XML.SubElement(root, 'hardwareProperties')
     for prop_name, prop_val in data.get('hardware-properties', {}).items():
         prop_node = XML.SubElement(hardware,
                                    'hudson.plugins.android__emulator'
                                    '.AndroidEmulator_-HardwareProperty')
-        XML.SubElement(prop_node, 'key').text = str(prop_name)
-        XML.SubElement(prop_node, 'value').text = str(prop_val)
-
-    XML.SubElement(root, 'wipeData').text = str(
-        data.get('wipe', False)).lower()
-    XML.SubElement(root, 'showWindow').text = str(
-        data.get('show-window', False)).lower()
-    XML.SubElement(root, 'useSnapshots').text = str(
-        data.get('snapshot', False)).lower()
-    XML.SubElement(root, 'deleteAfterBuild').text = str(
-        data.get('delete', False)).lower()
-    XML.SubElement(root, 'startupDelay').text = str(
-        data.get('startup-delay', 0))
-    XML.SubElement(root, 'commandLineOptions').text = str(
-        data.get('commandline-options', ''))
-    XML.SubElement(root, 'executable').text = str(data.get('exe', ''))
+        mapping = [
+            ('', 'key', prop_name),
+            ('', 'value', prop_val)]
+        convert_mapping_to_xml(prop_node, data, mapping, fail_required=True)
+    mapping = [
+        ('wipe', 'wipeData', False),
+        ('show-window', 'showWindow', False),
+        ('snapshot', 'useSnapshots', False),
+        ('delete', 'deleteAfterBuild', False),
+        ('startup-delay', 'startupDelay', 0),
+        ('commandline-options', 'commandLineOptions', ''),
+        ('exe', 'executable', ''),
+    ]
+    convert_mapping_to_xml(root, data, mapping, fail_required=True)
 
 
 def artifactory_maven(registry, xml_parent, data):
