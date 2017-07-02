@@ -984,17 +984,21 @@ def inject_passwords(registry, xml_parent, data):
 
     """
     eib = XML.SubElement(xml_parent, 'EnvInjectPasswordWrapper')
-    XML.SubElement(eib, 'injectGlobalPasswords').text = \
-        str(data.get('global', False)).lower()
-    XML.SubElement(eib, 'maskPasswordParameters').text = \
-        str(data.get('mask-password-params', False)).lower()
+    mapping = [
+        ('global', 'injectGlobalPasswords', False),
+        ('mask-password-params', 'maskPasswordParameters', False)]
+    convert_mapping_to_xml(eib, data, mapping, fail_required=True)
+
     entries = XML.SubElement(eib, 'passwordEntries')
     passwords = data.get('job-passwords', [])
     if passwords:
         for password in passwords:
             entry = XML.SubElement(entries, 'EnvInjectPasswordEntry')
-            XML.SubElement(entry, 'name').text = password['name']
-            XML.SubElement(entry, 'value').text = password['password']
+            mapping = [
+                ('name', 'name', None),
+                ('password', 'value', None)]
+            convert_mapping_to_xml(entry, password,
+                mapping, fail_required=True)
 
 
 def env_file(registry, xml_parent, data):
