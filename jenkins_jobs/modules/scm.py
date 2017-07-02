@@ -1012,19 +1012,14 @@ def workspace(registry, xml_parent, data):
 
     workspace = XML.SubElement(xml_parent, 'scm', {'class': 'hudson.plugins.'
                                'cloneworkspace.CloneWorkspaceSCM'})
-    XML.SubElement(workspace, 'parentJobName').text = str(
-        data.get('parent-job', ''))
-
     criteria_list = ['Any', 'Not Failed', 'Successful']
 
     criteria = data.get('criteria', 'Any').title()
 
-    if 'criteria' in data and criteria not in criteria_list:
-        raise JenkinsJobsException(
-            'clone-workspace criteria must be one of: '
-            + ', '.join(criteria_list))
-    else:
-        XML.SubElement(workspace, 'criteria').text = criteria
+    mapping = [
+        ('parent-job', 'parentJobName', ''),
+        ('', 'criteria', criteria, criteria_list)]
+    convert_mapping_to_xml(workspace, data, mapping, fail_required=True)
 
 
 def hg(self, xml_parent, data):
