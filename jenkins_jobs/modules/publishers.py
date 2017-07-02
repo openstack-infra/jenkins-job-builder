@@ -1447,11 +1447,13 @@ def violations(registry, xml_parent, data):
                  'simian',
                  'stylecop']:
         _violations_add_entry(configs, name, data.get(name, {}))
-
-    XML.SubElement(config, 'limit').text = '100'
-    XML.SubElement(config, 'sourcePathPattern')
-    XML.SubElement(config, 'fauxProjectPath')
-    XML.SubElement(config, 'encoding').text = 'default'
+    mapping = [
+        ('', 'limit', '100'),
+        ('', 'sourcePathPattern', ''),
+        ('', 'fauxProjectPath', ''),
+        ('', 'encoding', 'default'),
+    ]
+    helpers.convert_mapping_to_xml(config, data, mapping, fail_required=True)
 
 
 def findbugs(registry, xml_parent, data):
