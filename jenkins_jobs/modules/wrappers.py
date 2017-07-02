@@ -459,11 +459,8 @@ def ansicolor(registry, xml_parent, data):
     cwrapper = XML.SubElement(
         xml_parent,
         'hudson.plugins.ansicolor.AnsiColorBuildWrapper')
-
-    # Optional colormap
-    colormap = data.get('colormap')
-    if colormap:
-        XML.SubElement(cwrapper, 'colorMapName').text = colormap
+    mapping = [('colormap', 'colorMapName', None)]
+    convert_mapping_to_xml(cwrapper, data, mapping, fail_required=False)
 
 
 def build_keeper(registry, xml_parent, data):
