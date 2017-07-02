@@ -963,10 +963,10 @@ def inject_ownership_variables(registry, xml_parent, data):
     """
     ownership = XML.SubElement(xml_parent, 'com.synopsys.arc.jenkins.plugins.'
                                'ownership.wrappers.OwnershipBuildWrapper')
-    XML.SubElement(ownership, 'injectNodeOwnership').text = \
-        str(data.get('node-variables', False)).lower()
-    XML.SubElement(ownership, 'injectJobOwnership').text = \
-        str(data.get('job-variables', False)).lower()
+    mapping = [
+        ('node-variables', 'injectNodeOwnership', False),
+        ('job-variables', 'injectJobOwnership', False)]
+    convert_mapping_to_xml(ownership, data, mapping, fail_required=True)
 
 
 def inject_passwords(registry, xml_parent, data):
