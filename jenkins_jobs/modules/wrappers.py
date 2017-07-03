@@ -1195,20 +1195,19 @@ def release(registry, xml_parent, data):
                              'hudson.plugins.release.ReleaseWrapper')
     # For 'keep-forever', the sense of the XML flag is the opposite of
     # the YAML flag.
-    no_keep_forever = 'false'
-    if str(data.get('keep-forever', True)).lower() == 'false':
-        no_keep_forever = 'true'
-    XML.SubElement(relwrap, 'doNotKeepLog').text = no_keep_forever
-    XML.SubElement(relwrap, 'overrideBuildParameters').text = str(
-        data.get('override-build-parameters', False)).lower()
-    XML.SubElement(relwrap, 'releaseVersionTemplate').text = data.get(
-        'version-template', '')
+    mapping = [
+        ('do-not-keep-log',
+         'doNotKeepLog',
+         not data.get('keep-forever', True)),
+        ('override-build-parameters', 'overrideBuildParameters', False),
+        ('version-template', 'releaseVersionTemplate', '')]
+    convert_mapping_to_xml(relwrap, data, mapping, fail_required=True)
+
     parameters = data.get('parameters', [])
     if parameters:
         pdef = XML.SubElement(relwrap, 'parameterDefinitions')
         for param in parameters:
             registry.dispatch('parameter', pdef, param)
-
     builder_steps = {
         'pre-build': 'preBuildSteps',
         'post-build': 'postBuildSteps',
