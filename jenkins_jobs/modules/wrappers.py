@@ -1430,8 +1430,8 @@ def pre_scm_buildstep(registry, xml_parent, data):
         for edited_node in create_builders(registry, step):
             bs.append(edited_node)
     if version >= pkg_resources.parse_version("0.3"):
-        XML.SubElement(bsp, 'failOnError').text = str(data.get(
-            'failOnError', False)).lower()
+        mapping = [('failOnError', 'failOnError', False)]
+        convert_mapping_to_xml(bsp, data, mapping, fail_required=True)
 
 
 def logstash(registry, xml_parent, data):
