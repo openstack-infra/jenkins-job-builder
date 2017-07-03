@@ -821,24 +821,25 @@ def svn(registry, xml_parent, data):
     if 'viewvc-url' in data:
         browser = XML.SubElement(
             scm, 'browser', {'class': 'hudson.scm.browsers.ViewSVN'})
-        XML.SubElement(browser, 'url').text = data['viewvc-url']
+        mapping = [('viewvc-url', 'url', None)]
+        convert_mapping_to_xml(browser, data, mapping, fail_required=True)
     locations = XML.SubElement(scm, 'locations')
 
     def populate_repo_xml(parent, data):
         module = XML.SubElement(parent,
                                 'hudson.scm.SubversionSCM_-ModuleLocation')
-        XML.SubElement(module, 'remote').text = data['url']
-        XML.SubElement(module, 'local').text = data.get('basedir', '.')
-        if 'credentials-id' in data:
-            XML.SubElement(module, 'credentialsId').text = data[
-                'credentials-id']
+        mapping = [
+            ('url', 'remote', None),
+            ('basedir', 'local', '.')]
+        convert_mapping_to_xml(module, data, mapping, fail_required=True)
+
         repo_depths = ['infinity', 'empty', 'files', 'immediates', 'unknown']
-        repo_depth = data.get('repo-depth', 'infinity')
-        if repo_depth not in repo_depths:
-            raise InvalidAttributeError('repo_depth', repo_depth, repo_depths)
-        XML.SubElement(module, 'depthOption').text = repo_depth
-        XML.SubElement(module, 'ignoreExternalsOption').text = str(
-            data.get('ignore-externals', False)).lower()
+        mapping_optional = [
+            ('credentials-id', 'credentialsId', None),
+            ('repo-depth', 'depthOption', 'infinity', repo_depths),
+            ('ignore-externals', 'ignoreExternalsOption', False)]
+        convert_mapping_to_xml(module, data,
+            mapping_optional, fail_required=False)
 
     if 'repos' in data:
         repos = data['repos']
