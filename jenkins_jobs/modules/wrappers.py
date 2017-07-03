@@ -1463,34 +1463,22 @@ def logstash(registry, xml_parent, data):
                               'LogstashBuildWrapper')
     logstash.set('plugin', 'logstash@0.8.0')
 
-    redis_bool = XML.SubElement(logstash, 'useRedis')
-    redis_bool.text = str(data.get('use-redis', True)).lower()
+    mapping = [('use-redis', 'useRedis', True)]
+    convert_mapping_to_xml(logstash, data, mapping, fail_required=True)
 
     if data.get('use-redis'):
         redis_config = data.get('redis', {})
         redis_sub_element = XML.SubElement(logstash, 'redis')
 
-        host_sub_element = XML.SubElement(redis_sub_element, 'host')
-        host_sub_element.text = str(
-            redis_config.get('host', 'localhost'))
-
-        port_sub_element = XML.SubElement(redis_sub_element, 'port')
-        port_sub_element.text = str(redis_config.get('port', '6379'))
-
-        database_numb_sub_element = XML.SubElement(redis_sub_element, 'numb')
-        database_numb_sub_element.text = \
-            str(redis_config.get('database-number', '0'))
-
-        database_pass_sub_element = XML.SubElement(redis_sub_element, 'pass')
-        database_pass_sub_element.text = \
-            str(redis_config.get('database-password', ''))
-
-        data_type_sub_element = XML.SubElement(redis_sub_element, 'dataType')
-        data_type_sub_element.text = \
-            str(redis_config.get('data-type', 'list'))
-
-        key_sub_element = XML.SubElement(redis_sub_element, 'key')
-        key_sub_element.text = str(redis_config.get('key', 'logstash'))
+        mapping = [
+            ('host', 'host', 'localhost'),
+            ('port', 'port', '6379'),
+            ('database-number', 'numb', '0'),
+            ('database-password', 'pass', ''),
+            ('data-type', 'dataType', 'list'),
+            ('key', 'key', 'logstash')]
+        convert_mapping_to_xml(redis_sub_element,
+            redis_config, mapping, fail_required=True)
 
 
 def mongo_db(registry, xml_parent, data):
