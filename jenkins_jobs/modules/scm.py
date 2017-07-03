@@ -1238,10 +1238,13 @@ def bzr(registry, xml_parent, data):
         'browser',
         {'class': 'hudson.plugins.bazaar.browsers.{0}'.format(
             browser_name_to_class[browser])})
-    XML.SubElement(browser_element, 'url').text = data['browser-url']
+    mapping = [('browser-url', 'url', None)]
+    convert_mapping_to_xml(browser_element, data, mapping, fail_required=True)
+
     if browser == 'opengrok':
-        XML.SubElement(browser_element, 'rootModule').text = (
-            data['opengrok-root-module'])
+        mapping = [('opengrok-root-module', 'rootModule', None)]
+        convert_mapping_to_xml(browser_element,
+            data, mapping, fail_required=True)
 
 
 def url(registry, xml_parent, data):
