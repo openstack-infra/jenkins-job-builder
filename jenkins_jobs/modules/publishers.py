@@ -4646,10 +4646,16 @@ def sitemonitor(registry, xml_parent, data):
 
     :arg list sites: List of URLs to check
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/sitemonitor001.yaml
-       :language: yaml
+    .. literalinclude::
+        /../../tests/publishers/fixtures/sitemonitor-minimal.yaml
+        :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/sitemonitor-full.yaml
+        :language: yaml
     """
     mon = XML.SubElement(xml_parent,
                          'hudson.plugins.sitemonitor.SiteMonitorRecorder')
