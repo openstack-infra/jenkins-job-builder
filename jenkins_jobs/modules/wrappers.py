@@ -1294,45 +1294,51 @@ def sauce_ondemand(registry, xml_parent, data):
     """
     sauce = XML.SubElement(xml_parent, 'hudson.plugins.sauce__ondemand.'
                            'SauceOnDemandBuildWrapper')
-    XML.SubElement(sauce, 'enableSauceConnect').text = str(data.get(
-        'enable-sauce-connect', False)).lower()
-    host = data.get('sauce-host', '')
-    XML.SubElement(sauce, 'seleniumHost').text = host
-    port = data.get('sauce-port', '')
-    XML.SubElement(sauce, 'seleniumPort').text = port
+    mapping = [
+        ('enable-sauce-connect', 'enableSauceConnect', False),
+        ('sauce-host', 'seleniumHost', ''),
+        ('sauce-port', 'seleniumPort', '')
+        ('launch-sauce-connect-on-slave', 'launchSauceConnectOnSlave', False),
+        ('https-protocol', 'httpsProtocol', ''),
+        ('sauce-connect-options', 'options', '')]
+    convert_mapping_to_xml(sauce, data, mapping, fail_required=True)
+
     # Optional override global authentication
     username = data.get('override-username')
     key = data.get('override-api-access-key')
     if username and key:
         cred = XML.SubElement(sauce, 'credentials')
-        XML.SubElement(cred, 'username').text = username
-        XML.SubElement(cred, 'apiKey').text = key
+        mapping = [
+            ('override-username', 'username', None),
+            ('override-api-access-key', 'apiKey', None)]
+        convert_mapping_to_xml(cred, data, mapping, fail_required=True)
     atype = data.get('type', 'selenium')
     info = XML.SubElement(sauce, 'seleniumInformation')
+
     if atype == 'selenium':
-        url = data.get('starting-url', '')
-        XML.SubElement(info, 'startingURL').text = url
+        selenium_mapping = [('starting-url', 'seleniumBrowsers', ''),
+            ('', 'isWebDriver', False)]
+        convert_mapping_to_xml(
+            info, data, selenium_mapping, fail_required=True)
+
         browsers = XML.SubElement(info, 'seleniumBrowsers')
         for platform in data['platforms']:
-            XML.SubElement(browsers, 'string').text = platform
-        XML.SubElement(info, 'isWebDriver').text = 'false'
+            mapping = [('', 'string', platform)]
+            convert_mapping_to_xml(browsers, data, mapping, fail_required=True)
         XML.SubElement(sauce, 'seleniumBrowsers',
                        {'reference': '../seleniumInformation/'
                         'seleniumBrowsers'})
     if atype == 'webdriver':
         browsers = XML.SubElement(info, 'webDriverBrowsers')
         for platform in data['platforms']:
-            XML.SubElement(browsers, 'string').text = platform
-        XML.SubElement(info, 'isWebDriver').text = 'true'
+            mapping = [('', 'string', platform)]
+            convert_mapping_to_xml(browsers, data, mapping, fail_required=True)
+        webdriver_mapping = [('', 'isWebDriver', True)]
+        convert_mapping_to_xml(
+            info, data, webdriver_mapping, fail_required=True)
         XML.SubElement(sauce, 'webDriverBrowsers',
                        {'reference': '../seleniumInformation/'
                         'webDriverBrowsers'})
-    XML.SubElement(sauce, 'launchSauceConnectOnSlave').text = str(data.get(
-        'launch-sauce-connect-on-slave', False)).lower()
-    protocol = data.get('https-protocol', '')
-    XML.SubElement(sauce, 'httpsProtocol').text = protocol
-    options = data.get('sauce-connect-options', '')
-    XML.SubElement(sauce, 'options').text = options
 
 
 def sonar(registry, xml_parent, data):
