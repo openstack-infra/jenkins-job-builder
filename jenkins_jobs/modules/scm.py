@@ -41,7 +41,6 @@ import xml.etree.ElementTree as XML
 
 from jenkins_jobs.errors import InvalidAttributeError
 from jenkins_jobs.errors import JenkinsJobsException
-from jenkins_jobs.errors import MissingAttributeError
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 
@@ -556,21 +555,21 @@ def cvs(registry, xml_parent, data):
     """
     prefix = 'hudson.scm.'
     valid_loc_types = {'HEAD': 'Head', 'TAG': 'Tag', 'BRANCH': 'Branch'}
+
     cvs = XML.SubElement(xml_parent, 'scm', {'class': prefix + 'CVSSCM'})
     repos = data.get('repos')
-    if not repos:
-        raise JenkinsJobsException("'repos' empty or missing")
     repos_tag = XML.SubElement(cvs, 'repositories')
     for repo in repos:
         repo_tag = XML.SubElement(repos_tag, prefix + 'CvsRepository')
-        try:
-            XML.SubElement(repo_tag, 'cvsRoot').text = repo['root']
-        except KeyError:
-            raise MissingAttributeError('root')
+
+        compression_level = repo.get('compression-level', '-1')
+        repo_mapping = [('root', 'cvsRoot', None),
+            ('', 'compressionLevel', int(compression_level), range(-1, 10))]
+        convert_mapping_to_xml(repo_tag,
+            repo, repo_mapping, fail_required=True)
+
         items_tag = XML.SubElement(repo_tag, 'repositoryItems')
         locations = repo.get('locations')
-        if not locations:
-            raise JenkinsJobsException("'locations' empty or missing")
         for location in locations:
             item_tag = XML.SubElement(items_tag, prefix + 'CvsRepositoryItem')
             loc_type = location.get('type', 'HEAD')
@@ -580,36 +579,34 @@ def cvs(registry, xml_parent, data):
                          'Location').format(prefix, valid_loc_types[loc_type])
             loc_tag = XML.SubElement(item_tag, 'location',
                                      {'class': loc_class})
-            XML.SubElement(loc_tag, 'locationType').text = loc_type
-            if loc_type == 'TAG' or loc_type == 'BRANCH':
-                XML.SubElement(loc_tag, 'locationName').text = location.get(
-                    'name', '')
-                XML.SubElement(loc_tag, 'useHeadIfNotFound').text = str(
-                    location.get('use-head', False)).lower()
+            mapping = [('type', 'locationType', 'HEAD')]
+            convert_mapping_to_xml(
+                loc_tag, location, mapping, fail_required=True)
+
+            if loc_type != 'HEAD':
+                mapping = [
+                    ('name', 'locationName', ''),
+                    ('use-head', 'useHeadIfNotFound', False)]
+                convert_mapping_to_xml(
+                    loc_tag, location, mapping, fail_required=True)
+
             modules = location.get('modules')
-            if not modules:
-                raise JenkinsJobsException("'modules' empty or missing")
             modules_tag = XML.SubElement(item_tag, 'modules')
             for module in modules:
                 module_tag = XML.SubElement(modules_tag, prefix + 'CvsModule')
-                try:
-                    XML.SubElement(module_tag, 'remoteName'
-                                   ).text = module['remote']
-                except KeyError:
-                    raise MissingAttributeError('remote')
-                XML.SubElement(module_tag, 'localName').text = module.get(
-                    'local-name', '')
+                mapping = [
+                    ('remote', 'remoteName', None),
+                    ('local-name', 'localName', '')]
+                convert_mapping_to_xml(
+                    module_tag, module, mapping, fail_required=True)
+
         excluded = repo.get('excluded-regions', [])
         excluded_tag = XML.SubElement(repo_tag, 'excludedRegions')
         for pattern in excluded:
             pattern_tag = XML.SubElement(excluded_tag,
                                          prefix + 'ExcludedRegion')
             XML.SubElement(pattern_tag, 'pattern').text = pattern
-        compression_level = repo.get('compression-level', '-1')
-        if int(compression_level) not in range(-1, 10):
-            raise InvalidAttributeError('compression-level',
-                                        compression_level, range(-1, 10))
-        XML.SubElement(repo_tag, 'compressionLevel').text = compression_level
+
     mappings = [
         ('use-update', 'canUseUpdate', True),
         ('prune-empty', 'pruneEmptyDirectories', True),
