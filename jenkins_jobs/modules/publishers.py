@@ -1002,7 +1002,9 @@ def ftp(registry, xml_parent, data):
                                            publisher_tag,
                                            transfer_tag,
                                            plugin_reference_tag)
-    XML.SubElement(transfer_node, 'asciiMode').text = 'false'
+    mapping = [('', 'asciiMode', 'false')]
+    helpers.convert_mapping_to_xml(
+        transfer_node, data, mapping, fail_required=True)
 
 
 def ftp_publisher(registry, xml_parent, data):
