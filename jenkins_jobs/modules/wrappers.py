@@ -898,19 +898,14 @@ def copy_to_slave(registry, xml_parent, data):
 
     XML.SubElement(cs, 'includes').text = ','.join(data.get('includes', ['']))
     XML.SubElement(cs, 'excludes').text = ','.join(data.get('excludes', ['']))
-    XML.SubElement(cs, 'flatten').text = \
-        str(data.get('flatten', False)).lower()
-    XML.SubElement(cs, 'includeAntExcludes').text = \
-        str(data.get('include-ant-excludes', False)).lower()
 
-    rel = str(data.get('relative-to', 'userContent'))
-    opt = ('home', 'somewhereElse', 'userContent', 'workspace')
-    if rel not in opt:
-        raise ValueError('relative-to must be one of %r' % opt)
-    XML.SubElement(cs, 'relativeTo').text = rel
-
-    # seems to always be false, can't find it in source code
-    XML.SubElement(cs, 'hudsonHomeRelative').text = 'false'
+    locations = ['home', 'somewhereElse', 'userContent', 'workspace']
+    mapping = [
+        ('flatten', 'flatten', False),
+        ('include-ant-excludes', 'includeAntExcludes', False),
+        ('relative-to', 'relativeTo', 'userContent', locations),
+        ('', 'hudsonHomeRelative', False)]
+    convert_mapping_to_xml(cs, data, mapping, fail_required=True)
 
 
 def inject(registry, xml_parent, data):
