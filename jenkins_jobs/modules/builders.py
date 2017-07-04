@@ -1491,23 +1491,18 @@ def conditional_step(registry, xml_parent, data):
             ctag.set('class', core_prefix + 'NeverRun')
         elif kind == "boolean-expression":
             ctag.set('class', core_prefix + 'BooleanCondition')
-            try:
-                XML.SubElement(ctag, "token").text = (
-                    cdata['condition-expression'])
-            except KeyError:
-                raise MissingAttributeError('condition-expression')
+            mapping = [('condition-expression', 'token', None)]
+            convert_mapping_to_xml(ctag, cdata, mapping, fail_required=True)
         elif kind == "build-cause":
             ctag.set('class', core_prefix + 'CauseCondition')
             cause_list = ('USER_CAUSE', 'SCM_CAUSE', 'TIMER_CAUSE',
                           'CLI_CAUSE', 'REMOTE_CAUSE', 'UPSTREAM_CAUSE',
                           'FS_CAUSE', 'URL_CAUSE', 'IVY_CAUSE',
                           'SCRIPT_CAUSE', 'BUILDRESULT_CAUSE')
-            cause_name = cdata.get('cause', 'USER_CAUSE')
-            if cause_name not in cause_list:
-                raise InvalidAttributeError('cause', cause_name, cause_list)
-            XML.SubElement(ctag, "buildCause").text = cause_name
-            XML.SubElement(ctag, "exclusiveCause").text = str(cdata.get(
-                'exclusive-cause', False)).lower()
+            mapping = [
+                ('cause', 'buildCause', 'USER_CAUSE', cause_list),
+                ('exclusive-cause', "exclusiveCause", False)]
+            convert_mapping_to_xml(ctag, cdata, mapping, fail_required=True)
         elif kind == "day-of-week":
             ctag.set('class', core_prefix + 'DayCondition')
             day_selector_class_prefix = core_prefix + 'DayCondition$'
@@ -1530,29 +1525,28 @@ def conditional_step(registry, xml_parent, data):
                 days = ['SUN', 'MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT']
                 for day_no, day in enumerate(days, 1):
                     day_tag = XML.SubElement(days_tag, day_tag_text)
-                    XML.SubElement(day_tag, "day").text = str(day_no)
-                    XML.SubElement(day_tag, "selected").text = str(
-                        inp_days.get(day, False)).lower()
-            XML.SubElement(ctag, "useBuildTime").text = str(cdata.get(
-                'use-build-time', False)).lower()
+                    mapping = [
+                        ('', 'day', day_no),
+                        (day, "selected", False),
+                    ]
+                    convert_mapping_to_xml(day_tag,
+                        inp_days, mapping, fail_required=True)
+            mapping = [('use-build-time', "useBuildTime", False)]
+            convert_mapping_to_xml(ctag, cdata, mapping, fail_required=True)
         elif kind == "execution-node":
             ctag.set('class', core_prefix + 'NodeCondition')
             allowed_nodes_tag = XML.SubElement(ctag, "allowedNodes")
-            try:
-                nodes_list = cdata['nodes']
-            except KeyError:
-                raise MissingAttributeError('nodes')
-            for node in nodes_list:
-                node_tag = XML.SubElement(allowed_nodes_tag, "string")
-                node_tag.text = node
+            for node in cdata['nodes']:
+                mapping = [('', "string", node)]
+                convert_mapping_to_xml(allowed_nodes_tag,
+                    cdata, mapping, fail_required=True)
         elif kind == "strings-match":
             ctag.set('class', core_prefix + 'StringsMatchCondition')
-            XML.SubElement(ctag, "arg1").text = cdata.get(
-                'condition-string1', '')
-            XML.SubElement(ctag, "arg2").text = cdata.get(
-                'condition-string2', '')
-            XML.SubElement(ctag, "ignoreCase").text = str(cdata.get(
-                'condition-case-insensitive', False)).lower()
+            mapping = [
+                ('condition-string1', "arg1", ''),
+                ('condition-string2', "arg2", ''),
+                ('condition-case-insensitive', "ignoreCase", False)]
+            convert_mapping_to_xml(ctag, cdata, mapping, fail_required=True)
         elif kind == "current-status":
             ctag.set('class', core_prefix + 'StatusCondition')
             wr = XML.SubElement(ctag, 'worstResult')
@@ -1561,43 +1555,44 @@ def conditional_step(registry, xml_parent, data):
                 raise InvalidAttributeError('condition-worst', wr_name,
                                             hudson_model.THRESHOLDS.keys())
             wr_threshold = hudson_model.THRESHOLDS[wr_name]
-            XML.SubElement(wr, "name").text = wr_threshold['name']
-            XML.SubElement(wr, "ordinal").text = wr_threshold['ordinal']
-            XML.SubElement(wr, "color").text = wr_threshold['color']
-            XML.SubElement(wr, "completeBuild").text = str(
-                wr_threshold['complete']).lower()
-
+            mapping = [
+                ('name', 'name', None),
+                ('ordinal', 'ordinal', None),
+                ('color', 'color', 'color'),
+                ('complete', 'completeBuild', None)]
+            convert_mapping_to_xml(wr,
+                wr_threshold, mapping, fail_required=True)
             br = XML.SubElement(ctag, 'bestResult')
             br_name = cdata.get('condition-best', 'SUCCESS')
             if br_name not in hudson_model.THRESHOLDS:
                 raise InvalidAttributeError('condition-best', br_name,
                                             hudson_model.THRESHOLDS.keys())
             br_threshold = hudson_model.THRESHOLDS[br_name]
-            XML.SubElement(br, "name").text = br_threshold['name']
-            XML.SubElement(br, "ordinal").text = br_threshold['ordinal']
-            XML.SubElement(br, "color").text = br_threshold['color']
-            XML.SubElement(br, "completeBuild").text = str(
-                wr_threshold['complete']).lower()
+            mapping = [
+                ('name', 'name', None),
+                ('ordinal', 'ordinal', None),
+                ('color', 'color', 'color'),
+                ('complete', 'completeBuild', None)]
+            convert_mapping_to_xml(br,
+                br_threshold, mapping, fail_required=True)
         elif kind == "shell":
             ctag.set('class',
                      'org.jenkins_ci.plugins.run_condition.contributed.'
                      'ShellCondition')
-            XML.SubElement(ctag, "command").text = cdata.get(
-                'condition-command', '')
+            mapping = [('condition-command', 'command', '')]
+            convert_mapping_to_xml(ctag, cdata, mapping, fail_required=True)
         elif kind == "windows-shell":
             ctag.set('class',
                      'org.jenkins_ci.plugins.run_condition.contributed.'
                      'BatchFileCondition')
-            XML.SubElement(ctag, "command").text = cdata.get(
-                'condition-command', '')
+            mapping = [('condition-command', 'command', '')]
+            convert_mapping_to_xml(ctag, cdata, mapping, fail_required=True)
         elif kind == "file-exists" or kind == "files-match":
             if kind == "file-exists":
                 ctag.set('class', core_prefix + 'FileExistsCondition')
-                try:
-                    XML.SubElement(ctag, "file").text = (
-                        cdata['condition-filename'])
-                except KeyError:
-                    raise MissingAttributeError('condition-filename')
+                mapping = [('condition-filename', 'file', None)]
+                convert_mapping_to_xml(ctag, cdata, mapping,
+                    fail_required=True)
             else:
                 ctag.set('class', core_prefix + 'FilesMatchCondition')
                 XML.SubElement(ctag, "includes").text = ",".join(cdata.get(
@@ -1619,11 +1614,10 @@ def conditional_step(registry, xml_parent, data):
                                                 basedir_classes[basedir])
         elif kind == "num-comp":
             ctag.set('class', core_prefix + 'NumericalComparisonCondition')
-            try:
-                XML.SubElement(ctag, "lhs").text = cdata['lhs']
-                XML.SubElement(ctag, "rhs").text = cdata['rhs']
-            except KeyError as e:
-                raise MissingAttributeError(e.args[0])
+            mapping = [
+                ('lhs', 'lhs', None),
+                ('rhs', 'rhs', None)]
+            convert_mapping_to_xml(ctag, cdata, mapping, fail_required=True)
             comp_class_prefix = core_prefix + 'NumericalComparisonCondition$'
             comp_classes = {
                 'less-than': comp_class_prefix + 'LessThan',
@@ -1641,20 +1635,20 @@ def conditional_step(registry, xml_parent, data):
                                                    comp_classes[comp])
         elif kind == "regex-match":
             ctag.set('class', core_prefix + 'ExpressionCondition')
-            XML.SubElement(ctag, "expression").text = cdata.get('regex', '')
-            XML.SubElement(ctag, "label").text = cdata.get('label', '')
+            mapping = [
+                ('regex', 'expression', ''),
+                ('label', 'label', '')]
+            convert_mapping_to_xml(ctag, cdata, mapping, fail_required=True)
         elif kind == "time":
             ctag.set('class', core_prefix + 'TimeCondition')
-            XML.SubElement(ctag, "earliestHours").text = cdata.get(
-                'earliest-hour', '09')
-            XML.SubElement(ctag, "earliestMinutes").text = cdata.get(
-                'earliest-min', '00')
-            XML.SubElement(ctag, "latestHours").text = cdata.get(
-                'latest-hour', '17')
-            XML.SubElement(ctag, "latestMinutes").text = cdata.get(
-                'latest-min', '30')
-            XML.SubElement(ctag, "useBuildTime").text = str(cdata.get(
-                'use-build-time', False)).lower()
+            mapping = [
+                ('earliest-hour', 'earliestHours', '09'),
+                ('earliest-min', 'earliestMinutes', '00'),
+                ('latest-hour', 'latestHours', '17'),
+                ('latest-min', 'latestMinutes', '30'),
+                ('use-build-time', 'useBuildTime', False)
+            ]
+            convert_mapping_to_xml(ctag, cdata, mapping, fail_required=True)
         elif kind == "not":
             ctag.set('class', logic_prefix + 'Not')
             try:
