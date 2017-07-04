@@ -2426,36 +2426,28 @@ def shining_panda(registry, xml_parent, data):
                        (pluginelementpart, buildenvdict[buildenv]))
 
     if buildenv in ('python', 'virtualenv'):
-        XML.SubElement(t, 'pythonName').text = data.get("python-version",
-                                                        "System-CPython-2.7")
+        python_mapping = [
+            ('python-version', 'pythonName', 'System-CPython-2.7')]
+        convert_mapping_to_xml(t, data, python_mapping, fail_required=True)
 
-    if buildenv in ('custom'):
-        try:
-            homevalue = data["home"]
-        except KeyError:
-            raise JenkinsJobsException("'home' argument is required for the"
-                                       " 'custom' environment")
-        XML.SubElement(t, 'home').text = homevalue
-
-    if buildenv in ('virtualenv'):
-        XML.SubElement(t, 'home').text = data.get("name", "")
-        clear = data.get("clear", False)
-        XML.SubElement(t, 'clear').text = str(clear).lower()
-        use_distribute = data.get('use-distribute', False)
-        XML.SubElement(t, 'useDistribute').text = str(use_distribute).lower()
-        system_site_packages = data.get('system-site-packages', False)
-        XML.SubElement(t, 'systemSitePackages').text = str(
-            system_site_packages).lower()
+    if buildenv in 'custom':
+        custom_mapping = [('home', 'home', None)]
+        convert_mapping_to_xml(t, data, custom_mapping, fail_required=True)
+    if buildenv in 'virtualenv':
+        virtualenv_mapping = [
+            ('name', 'home', ''),
+            ('clear', 'clear', False),
+            ('use-distribute', 'useDistribute', False),
+            ('system-site-packages', 'systemSitePackages', False)]
+        convert_mapping_to_xml(t, data, virtualenv_mapping, fail_required=True)
 
     # Common arguments
-    nature = data.get('nature', 'shell')
-    naturetuple = ('shell', 'xshell', 'python')
-    if nature not in naturetuple:
-        raise InvalidAttributeError('nature', nature, naturetuple)
-    XML.SubElement(t, 'nature').text = nature
-    XML.SubElement(t, 'command').text = data.get("command", "")
-    ignore_exit_code = data.get('ignore-exit-code', False)
-    XML.SubElement(t, 'ignoreExitCode').text = str(ignore_exit_code).lower()
+    naturelist = ['shell', 'xshell', 'python']
+    mapping = [
+        ('nature', 'nature', 'shell', naturelist),
+        ('command', 'command', ""),
+        ('ignore-exit-code', 'ignoreExitCode', False)]
+    convert_mapping_to_xml(t, data, mapping, fail_required=True)
 
 
 def tox(registry, xml_parent, data):
