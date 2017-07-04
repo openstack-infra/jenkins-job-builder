@@ -1144,23 +1144,17 @@ def openstack(registry, xml_parent, data):
             instances_to_run = XML.SubElement(
                 instances_wrapper, tag_prefix + 'InstancesToRun')
 
-            try:
-                cloud_name = instance['cloud-name']
-                template_name = instance['template-name']
-            except KeyError as exception:
-                raise MissingAttributeError(exception.args[0])
-
-            XML.SubElement(instances_to_run, 'cloudName').text = cloud_name
+            instance_mapping = [('cloud-name', 'cloudName', None),
+                ('count', 'count', 1)]
 
             if instance.get('manual-template', False):
-                XML.SubElement(instances_to_run,
-                               'manualTemplateName').text = template_name
+                instance_mapping.append(('template-name',
+                    'manualTemplateName', None))
             else:
-                XML.SubElement(instances_to_run,
-                               'templateName').text = template_name
-
-            XML.SubElement(instances_to_run, 'count').text = str(
-                instance.get('count', 1))
+                instance_mapping.append(('template-name',
+                    'templateName', None))
+            convert_mapping_to_xml(instances_to_run,
+                instance, instance_mapping, fail_required=True)
 
     if data.get('single-use', False):
         XML.SubElement(xml_parent, tag_prefix + 'JCloudsOneOffSlave')
