@@ -1847,15 +1847,13 @@ def multijob(registry, xml_parent, data):
     """
     builder = XML.SubElement(xml_parent, 'com.tikal.jenkins.plugins.multijob.'
                                          'MultiJobBuilder')
-    XML.SubElement(builder, 'phaseName').text = data['name']
-
-    condition = data.get('condition', 'SUCCESSFUL')
     conditions_available = ('SUCCESSFUL', 'UNSTABLE', 'COMPLETED', 'FAILURE',
                             'ALWAYS')
-    if condition not in conditions_available:
-        raise JenkinsJobsException('Multijob condition must be one of: %s.'
-                                   % ', '.join(conditions_available))
-    XML.SubElement(builder, 'continuationCondition').text = condition
+    mapping = [
+        ('name', 'phaseName', None),
+        ('condition', 'continuationCondition',
+            'SUCCESSFUL', conditions_available)]
+    convert_mapping_to_xml(builder, data, mapping, fail_required=True)
 
     phaseJobs = XML.SubElement(builder, 'phaseJobs')
 
@@ -1864,24 +1862,24 @@ def multijob(registry, xml_parent, data):
     for project in data.get('projects', []):
         phaseJob = XML.SubElement(phaseJobs, 'com.tikal.jenkins.plugins.'
                                              'multijob.PhaseJobsConfig')
-
-        XML.SubElement(phaseJob, 'jobName').text = project['name']
-
-        # Pass through the current build params
-        currParams = str(project.get('current-parameters', False)).lower()
-        XML.SubElement(phaseJob, 'currParams').text = currParams
-
+        mapping = [
+            ('name', 'jobName', None),
+            # Pass through the current build params
+            ('current-parameters', 'currParams', False)]
+        convert_mapping_to_xml(phaseJob, project, mapping, fail_required=True)
         # Pass through other params
         configs = XML.SubElement(phaseJob, 'configs')
 
         nodeLabelName = project.get('node-label-name')
         nodeLabel = project.get('node-label')
-        if (nodeLabelName and nodeLabel):
+        if nodeLabelName and nodeLabel:
             node = XML.SubElement(
                 configs, 'org.jvnet.jenkins.plugins.nodelabelparameter.'
                          'parameterizedtrigger.NodeLabelBuildParameter')
-            XML.SubElement(node, 'name').text = nodeLabelName
-            XML.SubElement(node, 'nodeLabel').text = nodeLabel
+            mapping = [
+                ('', 'name', nodeLabelName),
+                ('', 'nodeLabel', nodeLabel)]
+            convert_mapping_to_xml(node, project, mapping, fail_required=True)
 
         # Node parameter
         if project.get('node-parameters', False):
@@ -1893,8 +1891,8 @@ def multijob(registry, xml_parent, data):
             param = XML.SubElement(configs,
                                    'hudson.plugins.git.'
                                    'GitRevisionBuildParameters')
-            combine = XML.SubElement(param, 'combineQueuedCommits')
-            combine.text = 'false'
+            mapping = [('', 'combineQueuedCommits', False)]
+            convert_mapping_to_xml(param, project, mapping, fail_required=True)
 
         # Properties File
         properties_file = project.get('property-file', False)
@@ -1902,12 +1900,10 @@ def multijob(registry, xml_parent, data):
             param = XML.SubElement(configs,
                                    'hudson.plugins.parameterizedtrigger.'
                                    'FileBuildParameters')
-
-            propertiesFile = XML.SubElement(param, 'propertiesFile')
-            propertiesFile.text = properties_file
-
-            failOnMissing = XML.SubElement(param, 'failTriggerOnMissing')
-            failOnMissing.text = 'true'
+            mapping = [
+                ('', 'propertiesFile', properties_file),
+                ('', 'failTriggerOnMissing', True)]
+            convert_mapping_to_xml(param, project, mapping, fail_required=True)
 
         # Predefined Parameters
         predefined_parameters = project.get('predefined-parameters', False)
@@ -1915,24 +1911,24 @@ def multijob(registry, xml_parent, data):
             param = XML.SubElement(configs,
                                    'hudson.plugins.parameterizedtrigger.'
                                    'PredefinedBuildParameters')
-            properties = XML.SubElement(param, 'properties')
-            properties.text = predefined_parameters
+            mapping = [('', 'properties', predefined_parameters)]
+            convert_mapping_to_xml(param, project, mapping, fail_required=True)
 
         # Abort all other job
-        abortAllJob = str(project.get('abort-all-job', False)).lower()
-        XML.SubElement(phaseJob, 'abortAllJob').text = abortAllJob
+        mapping = [('abort-all-job', 'abortAllJob', False)]
+        convert_mapping_to_xml(phaseJob,
+            project, mapping, fail_required=True)
 
         # Retry job
         retry = project.get('retry', False)
         if retry:
-            try:
-                rules_path = str(retry['strategy-path'])
-                XML.SubElement(phaseJob, 'parsingRulesPath').text = rules_path
-            except KeyError:
-                raise MissingAttributeError('strategy-path')
             max_retry = retry.get('max-retry', 0)
-            XML.SubElement(phaseJob, 'maxRetries').text = str(int(max_retry))
-            XML.SubElement(phaseJob, 'enableRetryStrategy').text = 'true'
+            mapping = [
+                ('strategy-path', 'parsingRulesPath', None),
+                ('', 'maxRetries', int(max_retry)),
+                ('', 'enableRetryStrategy', True)]
+            convert_mapping_to_xml(phaseJob,
+                retry, mapping, fail_required=True)
         else:
             XML.SubElement(phaseJob, 'enableRetryStrategy').text = 'false'
 
@@ -1941,33 +1937,27 @@ def multijob(registry, xml_parent, data):
             subset = XML.SubElement(
                 configs, 'hudson.plugins.parameterizedtrigger.'
                          'matrix.MatrixSubsetBuildParameters')
-            XML.SubElement(
-                subset, 'filter').text = project['restrict-matrix-project']
+            mapping = [('restrict-matrix-project', 'filter', None)]
+            convert_mapping_to_xml(subset,
+                project, mapping, fail_required=True)
 
         # Enable Condition
         enable_condition = project.get('enable-condition')
         if enable_condition is not None:
-            XML.SubElement(
-                phaseJob,
-                'enableCondition'
-            ).text = 'true'
-            XML.SubElement(
-                phaseJob,
-                'condition'
-            ).text = enable_condition
+            mapping = [
+                ('', 'enableCondition', True),
+                ('', 'condition', enable_condition)]
+            convert_mapping_to_xml(phaseJob,
+                project, mapping, fail_required=True)
 
         # Kill phase on job status
         kill_status = project.get('kill-phase-on')
         if kill_status is not None:
             kill_status = kill_status.upper()
-            if kill_status not in kill_status_list:
-                raise JenkinsJobsException(
-                    'multijob kill-phase-on must be one of: %s'
-                    + ','.join(kill_status_list))
-            XML.SubElement(
-                phaseJob,
-                'killPhaseOnJobResultCondition'
-            ).text = kill_status
+            mapping = [('', 'killPhaseOnJobResultCondition',
+                kill_status, kill_status_list)]
+            convert_mapping_to_xml(phaseJob,
+                project, mapping, fail_required=True)
 
 
 def config_file_provider(registry, xml_parent, data):
