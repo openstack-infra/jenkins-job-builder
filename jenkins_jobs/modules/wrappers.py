@@ -327,34 +327,37 @@ def timeout(registry, xml_parent, data):
                 twrapper, 'strategy',
                 {'class': "hudson.plugins.build_timeout."
                           "impl.AbsoluteTimeOutStrategy"})
-            XML.SubElement(strategy_element, 'timeoutMinutes'
-                           ).text = str(data.get('timeout', 3))
+            mapping = [('timeout', 'timeoutMinutes', 3)]
+            convert_mapping_to_xml(strategy_element,
+                data, mapping, fail_required=True)
         elif strategy == "no-activity":
             strategy_element = XML.SubElement(
                 twrapper, 'strategy',
                 {'class': "hudson.plugins.build_timeout."
                           "impl.NoActivityTimeOutStrategy"})
             timeout_sec = int(data.get('timeout', 3)) * MIN_TO_SEC
-            XML.SubElement(strategy_element,
-                           'timeoutSecondsString').text = str(timeout_sec)
+            mapping = [('', 'timeoutSecondsString', timeout_sec)]
+            convert_mapping_to_xml(strategy_element,
+                data, mapping, fail_required=True)
         elif strategy == "likely-stuck":
             strategy_element = XML.SubElement(
                 twrapper, 'strategy',
                 {'class': "hudson.plugins.build_timeout."
                           "impl.LikelyStuckTimeOutStrategy"})
-            XML.SubElement(strategy_element,
-                           'timeoutMinutes').text = str(data.get('timeout', 3))
+            mapping = [('timeout', 'timeoutMinutes', 3)]
+            convert_mapping_to_xml(strategy_element,
+                data, mapping, fail_required=True)
         elif strategy == "elastic":
             strategy_element = XML.SubElement(
                 twrapper, 'strategy',
                 {'class': "hudson.plugins.build_timeout."
                           "impl.ElasticTimeOutStrategy"})
-            XML.SubElement(strategy_element, 'timeoutPercentage'
-                           ).text = str(data.get('elastic-percentage', 0))
-            XML.SubElement(strategy_element, 'numberOfBuilds'
-                           ).text = str(data.get('elastic-number-builds', 0))
-            XML.SubElement(strategy_element, 'timeoutMinutesElasticDefault'
-                           ).text = str(data.get('elastic-default-timeout', 3))
+            mapping = [
+                ('elastic-percentage', 'timeoutPercentage', 0),
+                ('elastic-number-builds', 'numberOfBuilds', 0),
+                ('elastic-default-timeout', 'timeoutMinutesElasticDefault', 3)]
+            convert_mapping_to_xml(strategy_element,
+                data, mapping, fail_required=True)
 
         elif strategy == "deadline":
             strategy_element = XML.SubElement(
@@ -362,11 +365,12 @@ def timeout(registry, xml_parent, data):
                 {'class': "hudson.plugins.build_timeout."
                           "impl.DeadlineTimeOutStrategy"})
             deadline_time = str(data.get('deadline-time', '0:00:00'))
-            XML.SubElement(strategy_element,
-                           'deadlineTime').text = str(deadline_time)
             deadline_tolerance = int(data.get('deadline-tolerance', 1))
-            XML.SubElement(strategy_element, 'deadlineToleranceInMinutes'
-                           ).text = str(deadline_tolerance)
+            mapping = [
+                ('', 'deadlineTime', deadline_time),
+                ('', 'deadlineToleranceInMinutes', deadline_tolerance)]
+            convert_mapping_to_xml(strategy_element,
+                data, mapping, fail_required=True)
 
         actions = []
 
@@ -398,26 +402,19 @@ def timeout(registry, xml_parent, data):
             else:
                 raise JenkinsJobsException("Unsupported BuiltTimeoutWrapper "
                                            "plugin action: {0}".format(action))
-        timeout_env_var = data.get('timeout-var')
-        if timeout_env_var:
-            XML.SubElement(twrapper,
-                           'timeoutEnvVar').text = str(timeout_env_var)
+        mapping = [('timeout-var', 'timeoutEnvVar', None)]
+        convert_mapping_to_xml(twrapper,
+            data, mapping, fail_required=False)
     else:
-        XML.SubElement(twrapper,
-                       'timeoutMinutes').text = str(data.get('timeout', 3))
-        timeout_env_var = data.get('timeout-var')
-        if timeout_env_var:
-            XML.SubElement(twrapper,
-                           'timeoutEnvVar').text = str(timeout_env_var)
-        XML.SubElement(twrapper, 'failBuild'
-                       ).text = str(data.get('fail', 'false')).lower()
-        XML.SubElement(twrapper, 'writingDescription'
-                       ).text = str(data.get('write-description', 'false')
-                                    ).lower()
-        XML.SubElement(twrapper, 'timeoutPercentage'
-                       ).text = str(data.get('elastic-percentage', 0))
-        XML.SubElement(twrapper, 'timeoutMinutesElasticDefault'
-                       ).text = str(data.get('elastic-default-timeout', 3))
+        mapping = [
+            ('timeout', 'timeoutMinutes', 3),
+            ('timeout-var', 'timeoutEnvVar', None),
+            ('fail', 'failBuild', 'false'),
+            ('write-description', 'writingDescription', 'false'),
+            ('elastic-percentage', 'timeoutPercentage', 0),
+            ('elastic-default-timeout', 'timeoutMinutesElasticDefault', 3)]
+        convert_mapping_to_xml(twrapper,
+                data, mapping, fail_required=False)
 
         tout_type = str(data.get('type', 'absolute')).lower()
         if tout_type == 'likely-stuck':
