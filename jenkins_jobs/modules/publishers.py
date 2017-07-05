@@ -40,6 +40,73 @@ from jenkins_jobs.modules import hudson_model
 import jenkins_jobs.modules.helpers as helpers
 
 
+def allure(registry, xml_parent, data):
+    """yaml: allure
+
+    Publish Allure report for the build. Requires the Jenkins
+    :jenkins-wiki:`Allure Plugin <Allure+Plugin>`.
+
+    :arg str jdk: String identifier for a JDK installation in Jenkins
+    :arg str commandline: String identifier for a Allure-commandline tool
+    installation
+    :arg str report-build-policy: String identifier for a report build
+     policy enum. Possible values: 'ALWAYS', 'UNSTABLE', 'UNSUCCESSFUL'.
+      (By default is 'ALWAYS')
+    :arg bool include-properties: Flag to include specified properties
+    :arg list results-paths: List of results directories
+    :arg list properties: List of key:value property pairs
+
+    Minimal Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/allure-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/allure-full.yaml
+       :language: yaml
+
+    """
+    publisher_class = 'ru.yandex.qatools.allure.jenkins.AllureReportPublisher'
+    property_class = 'ru.yandex.qatools.allure.jenkins.config.PropertyConfig'
+    results_class = 'ru.yandex.qatools.allure.jenkins.config.ResultsConfig'
+
+    allure_publisher = XML.SubElement(xml_parent, publisher_class)
+    allure_publisher.set('plugin', 'allure-jenkins-plugin')
+    config = XML.SubElement(allure_publisher, 'config')
+
+    results = XML.SubElement(config, 'results')
+    if 'results-paths' in data:
+        for results_path in data['results-paths']:
+            entry = XML.SubElement(results, results_class)
+            path = XML.SubElement(entry, 'path')
+            path.text = results_path['path']
+
+    properties = XML.SubElement(config, 'properties')
+    if 'properties' in data:
+        property_mapping = [
+            ('key', 'key', None),
+            ('value', 'value', None)
+        ]
+        for prop in data['properties']:
+            entry = XML.SubElement(properties, property_class)
+            helpers.convert_mapping_to_xml(entry, prop, property_mapping,
+                                           fail_required=True)
+    else:
+        properties.set('class', 'empty-list')
+
+    mapping = [
+        ('jdk', 'jdk', ''),
+        ('commandline', 'commandline', ''),
+        ('report-build-policy', 'reportBuildPolicy', 'ALWAYS',
+            ['ALWAYS', 'UNSTABLE', 'UNSUCCESSFUL']),
+        ('include-properties', 'includeProperties', False)
+    ]
+
+    helpers.convert_mapping_to_xml(config, data, mapping,
+                                   fail_required=True)
+
+
 def archive(registry, xml_parent, data):
     """yaml: archive
     Archive build artifacts

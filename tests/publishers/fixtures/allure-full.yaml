@@ -1,0 +1,13 @@
+publishers:
+  - allure:
+      results-paths:
+       - path: 'build/allure-results1'
+       - path: 'build/allure-results2'
+      properties:
+       - key: 'allure.link.issue.pattern'
+         value: 'http://test.tms/{}'
+      jdk: openjdk1.8
+      commandline: allure2
+      report-build-policy: UNSTABLE
+      include-properties: true
+
