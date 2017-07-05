@@ -1606,10 +1606,10 @@ def exclusion(registry, xml_parent, data):
     ids = XML.SubElement(exl, 'ids')
     resources = data.get('resources', [])
     for resource in resources:
-        dit = \
-            XML.SubElement(ids,
+        dit = XML.SubElement(ids,
                            'org.jvnet.hudson.plugins.exclusion.DefaultIdType')
-        XML.SubElement(dit, 'name').text = str(resource).upper()
+        mapping = [('', 'name', resource.upper())]
+        convert_mapping_to_xml(dit, data, mapping, fail_required=True)
 
 
 def ssh_agent_credentials(registry, xml_parent, data):
