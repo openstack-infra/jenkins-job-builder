@@ -1790,14 +1790,10 @@ def parameterized_timer(parser, xml_parent, data):
         xml_parent,
         'org.jenkinsci.plugins.parameterizedscheduler.'
         'ParameterizedTimerTrigger')
-
-    XML.SubElement(param_timer, 'spec').text = ''
-
-    try:
-        XML.SubElement(param_timer, 'parameterizedSpecification').text = str(
-            data.get('cron'))
-    except KeyError as e:
-        raise MissingAttributeError(e)
+    mapping = [
+        ('', 'spec', ''),
+        ('cron', 'parameterizedSpecification', None)]
+    convert_mapping_to_xml(param_timer, data, mapping, fail_required=True)
 
 
 class Triggers(jenkins_jobs.modules.base.Base):
