@@ -644,13 +644,16 @@ def slave_utilization(registry, xml_parent, data):
     """
     utilization = XML.SubElement(
         xml_parent, 'com.suryagaddipati.jenkins.SlaveUtilizationProperty')
+
     percent = int(data.get('slave-percentage', 0))
-    XML.SubElement(utilization, 'needsExclusiveAccessToNode'
-                   ).text = 'true' if percent else 'false'
-    XML.SubElement(utilization, 'slaveUtilizationPercentage'
-                   ).text = str(percent)
-    XML.SubElement(utilization, 'singleInstancePerSlave').text = str(
-        data.get('single-instance-per-slave', False)).lower()
+    exclusive_node_access = True if percent else False
+
+    mapping = [
+        ('', 'needsExclusiveAccessToNode', exclusive_node_access),
+        ('', 'slaveUtilizationPercentage', percent),
+        ('single-instance-per-slave', 'singleInstancePerSlave', False)]
+    helpers.convert_mapping_to_xml(
+        utilization, data, mapping, fail_required=True)
 
 
 def delivery_pipeline(registry, xml_parent, data):
