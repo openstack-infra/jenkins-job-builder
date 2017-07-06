@@ -1041,21 +1041,17 @@ def env_script(registry, xml_parent, data):
 
     """
     el = XML.SubElement(xml_parent, 'com.lookout.jenkins.EnvironmentScript')
-    XML.SubElement(el, 'script').text = data.get('script-content', '')
 
     valid_script_types = {
         'unix-script': 'unixScript',
         'power-shell': 'powerShell',
         'batch-script': 'batchScript',
     }
-    script_type = data.get('script-type', 'unix-script')
-    if script_type not in valid_script_types:
-        raise InvalidAttributeError('script-type', script_type,
-                                    valid_script_types)
-    XML.SubElement(el, 'scriptType').text = valid_script_types[script_type]
-
-    only_on_parent = str(data.get('only-run-on-parent', False)).lower()
-    XML.SubElement(el, 'onlyRunOnParent').text = only_on_parent
+    mapping = [
+        ('script-content', 'script', ''),
+        ('script-type', 'scriptType', 'unix-script', valid_script_types),
+        ('only-run-on-parent', 'onlyRunOnParent', False)]
+    convert_mapping_to_xml(el, data, mapping, fail_required=True)
 
 
 def jclouds(registry, xml_parent, data):
