@@ -2512,11 +2512,8 @@ def managed_script(registry, xml_parent, data):
         raise InvalidAttributeError('type', step_type, ['script', 'batch'])
     ms = XML.SubElement(xml_parent,
                         'org.jenkinsci.plugins.managedscripts.' + step)
-    try:
-        script_id = data['script-id']
-    except KeyError:
-        raise MissingAttributeError('script-id')
-    XML.SubElement(ms, script_tag).text = script_id
+    mapping = [('script-id', script_tag, None)]
+    convert_mapping_to_xml(ms, data, mapping, fail_required=True)
     args = XML.SubElement(ms, 'buildStepArgs')
     for arg in data.get('args', []):
         XML.SubElement(args, 'string').text = arg
