@@ -110,27 +110,30 @@ def docker_custom_build_env(registry, xml_parent, data):
     image_type = data['image-type']
     if image_type == 'dockerfile':
         selectorobj.set('class', core_prefix + 'DockerfileImageSelector')
-        XML.SubElement(selectorobj, 'contextPath').text = data.get(
-            'context-path', '.')
-        XML.SubElement(selectorobj, 'dockerfile').text = data.get(
-            'dockerfile', 'Dockerfile')
+        dockerfile_mapping = [
+            ('context-path', 'contextPath', '.'),
+            ('dockerfile', 'dockerfile', 'Dockerfile')]
+        convert_mapping_to_xml(selectorobj, data,
+            dockerfile_mapping, fail_required=True)
+
     elif image_type == 'pull':
         selectorobj.set('class', core_prefix + 'PullDockerImageSelector')
-        XML.SubElement(selectorobj, 'image').text = data.get(
-            'image', '')
+        pull_mapping = [('image', 'image', '')]
+        convert_mapping_to_xml(selectorobj, data,
+            pull_mapping, fail_required=True)
 
     XML.SubElement(entry_xml, 'dockerInstallation').text = data.get(
         'docker-tool', 'Default')
 
     host = XML.SubElement(entry_xml, 'dockerHost')
     host.set('plugin', 'docker-commons')
-    if data.get('host'):
-        XML.SubElement(host, 'uri').text = data['host']
-    if data.get('credentials-id'):
-        XML.SubElement(host, 'credentialsId').text = data['credentials-id']
+    mapping_optional = [
+        ('host', 'uri', None),
+        ('credentials-id', 'credentialsId', None)]
+    convert_mapping_to_xml(host, data, mapping_optional, fail_required=False)
+
     XML.SubElement(entry_xml, 'dockerRegistryCredentials').text = data.get(
         'registry-credentials-id', '')
-
     volumesobj = XML.SubElement(entry_xml, 'volumes')
     volumes = data.get('volumes', [])
     if not volumes:
@@ -143,16 +146,14 @@ def docker_custom_build_env(registry, xml_parent, data):
                 'host-path', '')
             XML.SubElement(volumeobj, 'path').text = volume['volume'].get(
                 'path', '')
-
-    XML.SubElement(entry_xml, 'forcePull').text = str(data.get(
-        'force-pull', False)).lower()
-    XML.SubElement(entry_xml, 'privileged').text = str(data.get(
-        'privileged', False)).lower()
-    XML.SubElement(entry_xml, 'verbose').text = str(data.get(
-        'verbose', False)).lower()
-    XML.SubElement(entry_xml, 'group').text = data.get('group', '')
-    XML.SubElement(entry_xml, 'command').text = data.get('command', '/bin/cat')
-    XML.SubElement(entry_xml, 'net').text = data.get('net', 'bridge')
+    mapping = [
+        ('force-pull', 'forcePull', False),
+        ('privileged', 'privileged', False),
+        ('verbose', 'verbose', False),
+        ('group', 'group', ''),
+        ('command', 'command', '/bin/cat'),
+        ('net', 'net', 'bridge')]
+    convert_mapping_to_xml(entry_xml, data, mapping, fail_required=True)
 
 
 def ci_skip(registry, xml_parent, data):
