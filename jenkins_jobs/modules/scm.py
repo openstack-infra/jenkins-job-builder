@@ -724,44 +724,38 @@ def store(registry, xml_parent, data):
 
     .. literalinclude:: /../../tests/scm/fixtures/store001.yaml
     """
+
     namespace = 'org.jenkinsci.plugins.visualworks_store'
     scm = XML.SubElement(xml_parent, 'scm',
                          {'class': '{0}.StoreSCM'.format(namespace)})
-    if 'script' in data:
-        XML.SubElement(scm, 'scriptName').text = data['script']
-    else:
-        raise JenkinsJobsException("Must specify a script name")
-    if 'repository' in data:
-        XML.SubElement(scm, 'repositoryName').text = data['repository']
-    else:
-        raise JenkinsJobsException("Must specify a repository name")
+    mapping = [
+        ('script', 'scriptName', None),
+        ('repository', 'repositoryName', None)]
+    convert_mapping_to_xml(scm, data, mapping, fail_required=True)
+
     pundle_specs = data.get('pundles', [])
     if not pundle_specs:
         raise JenkinsJobsException("At least one pundle must be specified")
-    valid_pundle_types = ['package', 'bundle']
+    valid_pundle_types = ['PACKAGE', 'BUNDLE']
     pundles = XML.SubElement(scm, 'pundles')
+
     for pundle_spec in pundle_specs:
         pundle = XML.SubElement(pundles, '{0}.PundleSpec'.format(namespace))
         pundle_type = next(iter(pundle_spec))
         pundle_name = pundle_spec[pundle_type]
-        if pundle_type not in valid_pundle_types:
-            raise JenkinsJobsException(
-                'pundle type must be must be one of: '
-                + ', '.join(valid_pundle_types))
-        else:
-            XML.SubElement(pundle, 'name').text = pundle_name
-            XML.SubElement(pundle, 'pundleType').text = pundle_type.upper()
-    if 'version-regex' in data:
-        XML.SubElement(scm, 'versionRegex').text = data['version-regex']
-    if 'minimum-blessing' in data:
-        XML.SubElement(scm, 'minimumBlessingLevel').text = \
-            data['minimum-blessing']
-    if 'parcel-builder-file' in data:
-        XML.SubElement(scm, 'generateParcelBuilderInputFile').text = 'true'
-        XML.SubElement(scm, 'parcelBuilderInputFilename').text = \
-            data['parcel-builder-file']
-    else:
-        XML.SubElement(scm, 'generateParcelBuilderInputFile').text = 'false'
+        mapping = [
+            ('', 'name', pundle_name),
+            ('', 'pundleType', pundle_type.upper(), valid_pundle_types)]
+        convert_mapping_to_xml(pundle, data, mapping, fail_required=True)
+
+    generate_parcel = True if 'parcel-builder-file' else False
+    mapping_optional = [
+        ('version-regex', 'versionRegex', None),
+        ('minimum-blessing', 'minimumBlessingLevel', None),
+        ('', 'generateParcelBuilderInputFile', generate_parcel),
+        ('parcel-builder-file', 'parcelBuilderInputFilename', None)]
+    convert_mapping_to_xml(scm,
+        data, mapping_optional, fail_required=False)
 
 
 def svn(registry, xml_parent, data):
