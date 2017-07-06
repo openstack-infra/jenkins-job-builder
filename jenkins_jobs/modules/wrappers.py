@@ -610,27 +610,28 @@ def workspace_cleanup(registry, xml_parent, data):
     p = XML.SubElement(xml_parent,
                        'hudson.plugins.ws__cleanup.PreBuildCleanup')
     p.set("plugin", "ws-cleanup")
+
     if "include" in data or "exclude" in data:
         patterns = XML.SubElement(p, 'patterns')
 
+    ptrn = XML.SubElement(patterns, 'hudson.plugins.ws__cleanup.Pattern')
     for inc in data.get("include", []):
-        ptrn = XML.SubElement(patterns, 'hudson.plugins.ws__cleanup.Pattern')
-        XML.SubElement(ptrn, 'pattern').text = inc
-        XML.SubElement(ptrn, 'type').text = "INCLUDE"
+        mapping = [
+            ('', 'pattern', inc),
+            ('', 'type', "INCLUDE")]
+        convert_mapping_to_xml(ptrn, data, mapping, fail_required=True)
 
     for exc in data.get("exclude", []):
-        ptrn = XML.SubElement(patterns, 'hudson.plugins.ws__cleanup.Pattern')
-        XML.SubElement(ptrn, 'pattern').text = exc
-        XML.SubElement(ptrn, 'type').text = "EXCLUDE"
+        mapping = [
+            ('', 'pattern', exc),
+            ('', 'type', "EXCLUDE")]
+        convert_mapping_to_xml(ptrn, data, mapping, fail_required=True)
 
-    deldirs = XML.SubElement(p, 'deleteDirs')
-    deldirs.text = str(data.get("dirmatch", False)).lower()
-
-    XML.SubElement(p, 'cleanupParameter').text = str(
-        data.get('check-parameter', ''))
-
-    XML.SubElement(p, 'externalDelete').text = str(
-        data.get('external-deletion-command', ''))
+    mapping = [
+        ("dirmatch", 'deleteDirs', False),
+        ('check-parameter', 'cleanupParameter', ''),
+        ('external-deletion-command', 'externalDelete', '')]
+    convert_mapping_to_xml(p, data, mapping, fail_required=True)
 
 
 def m2_repository_cleanup(registry, xml_parent, data):
