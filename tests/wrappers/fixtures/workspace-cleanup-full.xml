@@ -4,11 +4,15 @@
     <hudson.plugins.ws__cleanup.PreBuildCleanup plugin="ws-cleanup">
       <patterns>
         <hudson.plugins.ws__cleanup.Pattern>
+          <pattern>_generated.py</pattern>
+          <type>INCLUDE</type>
+        </hudson.plugins.ws__cleanup.Pattern>
+        <hudson.plugins.ws__cleanup.Pattern>
           <pattern>*.py</pattern>
           <type>EXCLUDE</type>
         </hudson.plugins.ws__cleanup.Pattern>
       </patterns>
-      <deleteDirs>false</deleteDirs>
+      <deleteDirs>true</deleteDirs>
       <cleanupParameter>DO_WS_CLEANUP</cleanupParameter>
       <externalDelete>shred -u %s</externalDelete>
     </hudson.plugins.ws__cleanup.PreBuildCleanup>

@@ -601,10 +601,16 @@ def workspace_cleanup(registry, xml_parent, data):
     :arg str external-deletion-command: external deletion command to run
         against files and directories
 
-    Example:
+    Full Example:
 
     .. literalinclude::
-        /../../tests/wrappers/fixtures/workspace-cleanup001.yaml
+        /../../tests/wrappers/fixtures/workspace-cleanup-full.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+        /../../tests/wrappers/fixtures/workspace-cleanup-min.yaml
        :language: yaml
     """
 
@@ -615,14 +621,15 @@ def workspace_cleanup(registry, xml_parent, data):
     if "include" in data or "exclude" in data:
         patterns = XML.SubElement(p, 'patterns')
 
-    ptrn = XML.SubElement(patterns, 'hudson.plugins.ws__cleanup.Pattern')
     for inc in data.get("include", []):
+        ptrn = XML.SubElement(patterns, 'hudson.plugins.ws__cleanup.Pattern')
         mapping = [
             ('', 'pattern', inc),
             ('', 'type', "INCLUDE")]
         convert_mapping_to_xml(ptrn, data, mapping, fail_required=True)
 
     for exc in data.get("exclude", []):
+        ptrn = XML.SubElement(patterns, 'hudson.plugins.ws__cleanup.Pattern')
         mapping = [
             ('', 'pattern', exc),
             ('', 'type', "EXCLUDE")]
