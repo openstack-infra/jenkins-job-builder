@@ -540,11 +540,11 @@ def trigger_project(tconfigs, project_def, param_order=None):
         elif param_type == 'property-file':
             params = XML.SubElement(tconfigs,
                                     pt_prefix + 'FileBuildParameters')
-            properties = XML.SubElement(params, 'propertiesFile')
-            properties.text = project_def['property-file']
-            failOnMissing = XML.SubElement(params, 'failTriggerOnMissing')
-            failOnMissing.text = str(project_def.get('fail-on-missing',
-                                                     False)).lower()
+            property_file_mapping = [
+                ('property-file', 'propertiesFile', None),
+                ('fail-on-missing', 'failTriggerOnMissing', False)]
+            convert_mapping_to_xml(params, project_def,
+                property_file_mapping, fail_required=True)
             if 'file-encoding' in project_def:
                 XML.SubElement(params, 'encoding'
                                ).text = project_def['file-encoding']
@@ -552,13 +552,13 @@ def trigger_project(tconfigs, project_def, param_order=None):
                 # TODO: These parameters only affect execution in
                 # publishers of matrix projects; we should warn if they are
                 # used in other contexts.
-                XML.SubElement(params, "useMatrixChild").text = (
-                    str(project_def['use-matrix-child-files']).lower())
-                XML.SubElement(params, "combinationFilter").text = (
-                    project_def.get('matrix-child-combination-filter', ''))
-                XML.SubElement(params, "onlyExactRuns").text = (
-                    str(project_def.get('only-exact-matrix-child-runs',
-                                        False)).lower())
+                use_matrix_child_files_mapping = [
+                    ('use-matrix-child-files', "useMatrixChild", None),
+                    ('matrix-child-combination-filter',
+                        "combinationFilter", ''),
+                    ('only-exact-matrix-child-runs', "onlyExactRuns", False)]
+                convert_mapping_to_xml(params, project_def,
+                    use_matrix_child_files_mapping, fail_required=True)
         elif param_type == 'current-parameters' and param_value:
             XML.SubElement(tconfigs, pt_prefix + 'CurrentBuildParameters')
         elif param_type == 'node-parameters' and param_value:
@@ -595,9 +595,11 @@ def trigger_project(tconfigs, project_def, param_order=None):
             params_list = param_value
             for name, value in params_list.items():
                 param_tag = XML.SubElement(config_tag, param_tag_text)
-                XML.SubElement(param_tag, 'name').text = name
-                XML.SubElement(param_tag, 'value').text = str(
-                    value or False).lower()
+                mapping = [
+                    ('', 'name', name),
+                    ('', 'value', value or False)]
+                convert_mapping_to_xml(param_tag, project_def,
+                    mapping, fail_required=True)
 
 
 def convert_mapping_to_xml(parent, data, mapping, fail_required=False):
