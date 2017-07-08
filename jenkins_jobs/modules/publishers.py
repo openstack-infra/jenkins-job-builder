@@ -3558,12 +3558,12 @@ def post_tasks(registry, xml_parent, data):
                 match.get('log-text', False) or '')
             XML.SubElement(lt_xml, 'operator').text = str(
                 match.get('operator', 'AND')).upper()
-        XML.SubElement(task_xml, 'EscalateStatus').text = str(
-            task.get('escalate-status', False)).lower()
-        XML.SubElement(task_xml, 'RunIfJobSuccessful').text = str(
-            task.get('run-if-job-successful', False)).lower()
-        XML.SubElement(task_xml, 'script').text = str(
-            task.get('script', ''))
+        mapping = [
+            ('escalate-status', 'EscalateStatus', False),
+            ('run-if-job-successful', 'RunIfJobSuccessful', False),
+            ('script', 'script', '')]
+        helpers.convert_mapping_to_xml(task_xml,
+            task, mapping, fail_required=True)
 
 
 def postbuildscript(registry, xml_parent, data):
