@@ -5339,29 +5339,24 @@ def downstream_ext(registry, xml_parent, data):
 
     criteria = data.get('criteria', 'success').upper()
 
+    wr_threshold = hudson_model.THRESHOLDS[
+        criteria]
     if criteria not in hudson_model.THRESHOLDS:
         raise JenkinsJobsException("criteria must be one of %s" %
                                    ", ".join(hudson_model.THRESHOLDS.keys()))
+    mapping = [('name', 'name', None),
+        ('ordinal', 'ordinal', None),
+        ('color', 'color', None),
+        ('complete', 'completeBuild', None)]
+    helpers.convert_mapping_to_xml(th,
+        wr_threshold, mapping, fail_required=True)
 
-    wr_threshold = hudson_model.THRESHOLDS[
-        criteria]
-    XML.SubElement(th, "name").text = wr_threshold['name']
-    XML.SubElement(th, "ordinal").text = wr_threshold['ordinal']
-    XML.SubElement(th, "color").text = wr_threshold['color']
-    XML.SubElement(th, "completeBuild").text = str(
-        wr_threshold['complete']).lower()
-
-    condition = data.get('condition', 'equal-or-over')
-    if condition not in conditions:
-        raise JenkinsJobsException('condition must be one of: %s' %
-                                   ", ".join(conditions))
-
-    XML.SubElement(p, 'thresholdStrategy').text = conditions[
-        condition]
-    XML.SubElement(p, 'onlyIfSCMChanges').text = str(
-        data.get('only-on-scm-change', False)).lower()
-    XML.SubElement(p, 'onlyIfLocalSCMChanges').text = str(
-        data.get('only-on-local-scm-change', False)).lower()
+    condition_mapping = [('condition',
+        'thresholdStrategy', 'equal-or-over', conditions),
+        ('only-on-scm-change', 'onlyIfSCMChanges', False),
+        ('only-on-local-scm-change', 'onlyIfLocalSCMChanges', False)]
+    helpers.convert_mapping_to_xml(p, data,
+        condition_mapping, fail_required=True)
 
 
 def rundeck(registry, xml_parent, data):
