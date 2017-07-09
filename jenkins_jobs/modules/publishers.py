@@ -5911,9 +5911,11 @@ def disable_failed_job(registry, xml_parent, data):
         xml_element, data, mapping, fail_required=True)
 
     if 'no-of-failures' in data:
-        XML.SubElement(xml_element, 'failureTimes').text = str(data.get(
-            'no-of-failures'))
-        XML.SubElement(xml_element, 'optionalBrockChecked').text = 'true'
+        mapping = [
+            ('no-of-failures', 'failureTimes', None),
+            ('', 'optionalBrockChecked', True)]
+        helpers.convert_mapping_to_xml(xml_element,
+           data, mapping, fail_required=True)
     else:
         XML.SubElement(xml_element, 'optionalBrockChecked').text = 'false'
 
