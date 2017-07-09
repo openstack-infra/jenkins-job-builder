@@ -166,24 +166,23 @@ def build_gerrit_triggers(xml_parent, data):
                 pc = XML.SubElement(
                     trigger_on_events,
                     '%s.%s' % (tag_namespace, 'PluginPatchsetCreatedEvent'))
-                XML.SubElement(pc, 'excludeDrafts').text = str(
-                    pce.get('exclude-drafts', False)).lower()
-                XML.SubElement(pc, 'excludeTrivialRebase').text = str(
-                    pce.get('exclude-trivial-rebase', False)).lower()
-                XML.SubElement(pc, 'excludeNoCodeChange').text = str(
-                    pce.get('exclude-no-code-change', False)).lower()
+                mapping = [
+                    ('exclude-drafts', 'excludeDrafts', False),
+                    ('exclude-trivial-rebase', 'excludeTrivialRebase', False),
+                    ('exclude-no-code-change', 'excludeNoCodeChange', False)]
+                convert_mapping_to_xml(pc, pce, mapping, fail_required=True)
 
             if 'comment-added-event' in event.keys():
                 comment_added_event = event['comment-added-event']
                 cadded = XML.SubElement(
                     trigger_on_events,
                     '%s.%s' % (tag_namespace, 'PluginCommentAddedEvent'))
-                XML.SubElement(cadded, 'verdictCategory').text = \
-                    comment_added_event['approval-category']
-                XML.SubElement(
-                    cadded,
-                    'commentAddedTriggerApprovalValue').text = \
-                    str(comment_added_event['approval-value'])
+                mapping = [
+                    ('approval-category', 'verdictCategory', None),
+                    ('approval-value',
+                        'commentAddedTriggerApprovalValue', None)]
+                convert_mapping_to_xml(cadded,
+                    comment_added_event, mapping, fail_required=True)
 
             if 'comment-added-contains-event' in event.keys():
                 comment_added_event = event['comment-added-contains-event']
