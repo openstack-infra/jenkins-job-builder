@@ -1335,9 +1335,11 @@ def build_result(registry, xml_parent, data):
     """
     brt = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.'
                          'buildresulttrigger.BuildResultTrigger')
-    XML.SubElement(brt, 'spec').text = data.get('cron', '')
-    XML.SubElement(brt, 'combinedJobs').text = str(
-        data.get('combine', False)).lower()
+    mapping = [
+        ('cron', 'spec', ''),
+        ('combine', 'combinedJobs', False),
+    ]
+    convert_mapping_to_xml(brt, data, mapping, fail_required=True)
     jobs_info = XML.SubElement(brt, 'jobsInfo')
     result_dict = {'success': 'SUCCESS',
                    'unstable': 'UNSTABLE',
@@ -1348,23 +1350,17 @@ def build_result(registry, xml_parent, data):
         brti = XML.SubElement(jobs_info, 'org.jenkinsci.plugins.'
                               'buildresulttrigger.model.'
                               'BuildResultTriggerInfo')
-        if not group.get('jobs', []):
-            raise jenkins_jobs.errors.\
-                JenkinsJobsException('Jobs is missing and a required'
-                                     ' element')
         jobs_string = ",".join(group['jobs'])
-        XML.SubElement(brti, 'jobNames').text = jobs_string
+        mapping = [('', 'jobNames', jobs_string, group)]
+        convert_mapping_to_xml(brti, group, mapping, fail_required=True)
         checked_results = XML.SubElement(brti, 'checkedResults')
         for result in group.get('results', ['success']):
-            if result not in result_dict:
-                raise jenkins_jobs.errors.\
-                    JenkinsJobsException('Result entered is not valid,'
-                                         ' must be one of: '
-                                         + ', '.join(result_dict.keys()))
             model_checked = XML.SubElement(checked_results, 'org.jenkinsci.'
                                            'plugins.buildresulttrigger.model.'
                                            'CheckedResult')
-            XML.SubElement(model_checked, 'checked').text = result_dict[result]
+            mapping = [('', 'checked', result, result_dict)]
+            convert_mapping_to_xml(
+                model_checked, result_dict, mapping, fail_required=True)
 
 
 def reverse(registry, xml_parent, data):
