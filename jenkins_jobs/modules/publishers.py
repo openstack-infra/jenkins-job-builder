@@ -5043,21 +5043,26 @@ def valgrind(registry, xml_parent, data):
     for threshold in ['unstable', 'failed']:
         dthreshold = dthresholds.get(threshold, {})
         threshold = threshold.replace('failed', 'fail')
-        XML.SubElement(p, '%sThresholdInvalidReadWrite' % threshold).text \
-            = str(dthreshold.get('invalid-read-write', ''))
-        XML.SubElement(p, '%sThresholdDefinitelyLost' % threshold).text \
-            = str(dthreshold.get('definitely-lost', ''))
-        XML.SubElement(p, '%sThresholdTotal' % threshold).text \
-            = str(dthreshold.get('total', ''))
 
-    XML.SubElement(p, 'failBuildOnMissingReports').text = str(
-        data.get('fail-no-reports', False)).lower()
-    XML.SubElement(p, 'failBuildOnInvalidReports').text = str(
-        data.get('fail-invalid-reports', False)).lower()
-    XML.SubElement(p, 'publishResultsForAbortedBuilds').text = str(
-        data.get('publish-if-aborted', False)).lower()
-    XML.SubElement(p, 'publishResultsForFailedBuilds').text = str(
-        data.get('publish-if-failed', False)).lower()
+        ThresholdInvalidReadWrite = '%sThresholdInvalidReadWrite' % threshold
+        ThresholdDefinitelyLost = '%sThresholdDefinitelyLost' % threshold
+        ThresholdTotal = '%sThresholdTotal' % threshold
+
+        threshold_mapping = [
+            ('invalid-read-write', ThresholdInvalidReadWrite, ''),
+            ('definitely-lost', ThresholdDefinitelyLost, ''),
+            ('total', ThresholdTotal, ''),
+        ]
+        helpers.convert_mapping_to_xml(
+            p, dthreshold, threshold_mapping, fail_required=True)
+
+    mapping = [
+        ('fail-no-reports', 'failBuildOnMissingReports', False),
+        ('fail-invalid-reports', 'failBuildOnInvalidReports', False),
+        ('publish-if-aborted', 'publishResultsForAbortedBuilds', False),
+        ('publish-if-failed', 'publishResultsForFailedBuilds', False),
+    ]
+    helpers.convert_mapping_to_xml(p, data, mapping, fail_required=True)
 
 
 def pmd(registry, xml_parent, data):
