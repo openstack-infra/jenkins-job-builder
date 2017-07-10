@@ -813,7 +813,8 @@ def build_name(registry, xml_parent, data):
     bsetter = XML.SubElement(xml_parent,
                              'org.jenkinsci.plugins.buildnamesetter.'
                              'BuildNameSetter')
-    XML.SubElement(bsetter, 'template').text = data['name']
+    mapping = [('name', 'template', None)]
+    convert_mapping_to_xml(bsetter, data, mapping, fail_required=True)
 
 
 def port_allocator(registry, xml_parent, data):
