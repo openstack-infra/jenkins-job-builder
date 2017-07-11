@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <com.nirima.jenkins.plugins.docker.DockerJobProperty>
+      <tagOnCompletion>false</tagOnCompletion>
+      <additionalTag/>
+      <pushOnSuccess>false</pushOnSuccess>
+      <cleanImages>true</cleanImages>
+    </com.nirima.jenkins.plugins.docker.DockerJobProperty>
+  </properties>
+</project>
