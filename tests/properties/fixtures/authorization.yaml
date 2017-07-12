@@ -17,6 +17,7 @@ properties:
             - job-workspace
             - ownership-jobs
             - run-delete
+            - run-replay
             - run-update
             - scm-tag
         anonymous:

@@ -406,6 +406,7 @@ def authorization(registry, xml_parent, data):
             * **job-workspace**
             * **ownership-jobs**
             * **run-delete**
+            * **run-replay**
             * **run-update**
             * **scm-tag**
 
@@ -436,6 +437,7 @@ def authorization(registry, xml_parent, data):
         'job-workspace': 'hudson.model.Item.Workspace',
         'ownership-jobs': ''.join((ownership, 'Jobs')),
         'run-delete': 'hudson.model.Run.Delete',
+        'run-replay': 'hudson.model.Run.Replay',
         'run-update': 'hudson.model.Run.Update',
         'scm-tag': 'hudson.scm.SCM.Tag',
     }
