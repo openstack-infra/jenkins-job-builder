@@ -2,6 +2,7 @@ builders:
   - multijob:
       name: PhaseOne
       condition: SUCCESSFUL
+      execution-type: PARALLEL
       projects:
         - name: PhaseOneJobA
           current-parameters: true
@@ -15,6 +16,7 @@ builders:
   - multijob:
       name: PhaseTwo
       condition: UNSTABLE
+      execution-type: SEQUENTIALLY
       projects:
         - name: PhaseTwoJobA
           current-parameters: true
@@ -34,6 +36,7 @@ builders:
           kill-phase-on: FAILURE
   - multijob:
       name: PhaseFour
+      execution-type: PARALLEL
       projects:
         - name: PhaseFourJobA
           retry:

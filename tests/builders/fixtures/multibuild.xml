@@ -4,6 +4,7 @@
     <com.tikal.jenkins.plugins.multijob.MultiJobBuilder>
       <phaseName>PhaseOne</phaseName>
       <continuationCondition>SUCCESSFUL</continuationCondition>
+      <executionType>PARALLEL</executionType>
       <phaseJobs>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
           <jobName>PhaseOneJobA</jobName>
@@ -37,6 +38,7 @@
     <com.tikal.jenkins.plugins.multijob.MultiJobBuilder>
       <phaseName>PhaseTwo</phaseName>
       <continuationCondition>UNSTABLE</continuationCondition>
+      <executionType>SEQUENTIALLY</executionType>
       <phaseJobs>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
           <jobName>PhaseTwoJobA</jobName>
@@ -69,6 +71,7 @@
     <com.tikal.jenkins.plugins.multijob.MultiJobBuilder>
       <phaseName>PhaseThree</phaseName>
       <continuationCondition>ALWAYS</continuationCondition>
+      <executionType>PARALLEL</executionType>
       <phaseJobs>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
           <jobName>PhaseThreeJobA</jobName>
@@ -83,6 +86,7 @@
     <com.tikal.jenkins.plugins.multijob.MultiJobBuilder>
       <phaseName>PhaseFour</phaseName>
       <continuationCondition>SUCCESSFUL</continuationCondition>
+      <executionType>PARALLEL</executionType>
       <phaseJobs>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
           <jobName>PhaseFourJobA</jobName>
