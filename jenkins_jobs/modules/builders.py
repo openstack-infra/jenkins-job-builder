@@ -3043,11 +3043,16 @@ def xcode(registry, xml_parent, data):
     :arg str version-marketing: The value to use for
         CFBundleShortVersionString. Leave blank to use project's
         marketing number. (default '')
+    :arg str ipa-export-method: The export method of the .app to generate the
+        .ipa file.  Should be one in 'development', 'ad-hoc', 'enterprise',
+        or 'app-store'. (default '')
     :arg str ipa-version: A pattern for the ipa file name. You may use
         ${VERSION} and ${BUILD_DATE} (yyyy.MM.dd) in this string.
         (default '')
     :arg str ipa-output: The output directory for the .ipa file,
         relative to the build directory. (default '')
+    :arg development-team-id: The ID of the Apple development team to use to
+        sign the IPA (default '')
     :arg str keychain-name: The globally configured keychain to unlock for
         this build. (default '')
     :arg str keychain-path: The path of the keychain to use to sign the IPA.
@@ -3107,9 +3112,13 @@ def xcode(registry, xml_parent, data):
     XML.SubElement(xcode, 'buildIpa').text = str(
         bool(data.get('ipa-version')) or False).lower()
 
+    valid_ipa_export_methods = ['', 'ad-hoc', 'app-store', 'development']
     mapping = [
+        ('ipa-export-method', 'ipaExportMethod', '',
+            valid_ipa_export_methods),
         ('ipa-version', 'ipaName', ''),
         ('ipa-output', 'ipaOutputDirectory', ''),
+        ('development-team-id', 'developmentTeamID', ''),
         ('keychain-name', 'keychainName', ''),
         ('keychain-path', 'keychainPath', ''),
         ('keychain-password', 'keychainPwd', ''),

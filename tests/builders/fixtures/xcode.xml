@@ -22,8 +22,10 @@
       <cfBundleVersionValue/>
       <cfBundleShortVersionStringValue/>
       <buildIpa>false</buildIpa>
+      <ipaExportMethod/>
       <ipaName/>
       <ipaOutputDirectory/>
+      <developmentTeamID/>
       <keychainName/>
       <keychainPath/>
       <keychainPwd/>
@@ -53,8 +55,10 @@
       <cfBundleVersionValue>TECHNICAL</cfBundleVersionValue>
       <cfBundleShortVersionStringValue>MARKETING</cfBundleShortVersionStringValue>
       <buildIpa>true</buildIpa>
+      <ipaExportMethod>ad-hoc</ipaExportMethod>
       <ipaName>${VERSION}</ipaName>
       <ipaOutputDirectory>/output</ipaOutputDirectory>
+      <developmentTeamID>foo</developmentTeamID>
       <keychainName/>
       <keychainPath>/Users/jenkins/Library/Keychains/jenkins-uasdk-ios-pre_review</keychainPath>
       <keychainPwd>testpass</keychainPwd>

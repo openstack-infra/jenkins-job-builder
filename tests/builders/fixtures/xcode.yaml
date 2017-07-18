@@ -15,8 +15,10 @@ builders:
       allow-failing: true
       version-technical: "TECHNICAL"
       version-marketing: "MARKETING"
+      ipa-export-method: ad-hoc
       ipa-version: "${VERSION}"
       ipa-output: "/output"
+      development-team-id: foo
       keychain-path: "/Users/jenkins/Library/Keychains/jenkins-uasdk-ios-pre_review"
       keychain-password: "testpass"
       keychain-unlock: true
