@@ -6472,9 +6472,13 @@ def slack(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Slack Plugin <Slack+Plugin>`
 
     When using Slack Plugin version < 2.0, Slack Plugin itself requires a
-    publisher aswell as properties please note that you have to create those
+    publisher as well as properties please note that you have to create those
     too.  When using Slack Plugin version >= 2.0, you should only configure the
     publisher.
+
+    For backward compatibility, the publisher needs to query version of the
+    Slack Plugin. Hence the ``query_plugins_info`` parameter shouldn't be set
+    to ``False`` in the ``jenkins`` section of the configuration file.
 
     :arg str team-domain: Your team's domain at slack. (default '')
     :arg str auth-token: The integration token to be used when sending
@@ -6510,6 +6514,13 @@ def slack(registry, xml_parent, data):
         notification (>=2.0). (default false)
     :arg str custom-message: Custom message to be included (>=2.0).
         (default '')
+    :arg str auth-token-credential-id: The ID for the integration token from
+        the Credentials plugin to be used to send notifications to Slack.
+        (>=2.1) (default '')
+    :arg bool bot-user: This option indicates the token belongs to a bot user
+        in Slack. (>=2.2) (default False)
+    :arg str base-url: Your Slack compatible Base URL. ``bot-user`` is not
+        supported with Base URL. (>=2.2) (default '')
 
     Example (version < 2.0):
 
@@ -6559,6 +6570,9 @@ def slack(registry, xml_parent, data):
         ('commit-info-choice', 'commitInfoChoice', 'NONE'),
         ('include-custom-message', 'includeCustomMessage', False),
         ('custom-message', 'customMessage', ''),
+        ('auth-token-credential-id', 'authTokenCredentialId', ''),
+        ('bot-user', 'botUser', False),
+        ('base-url', 'baseUrl', ''),
     )
 
     commit_info_choices = ['NONE', 'AUTHORS', 'AUTHORS_AND_TITLES']
@@ -6589,17 +6603,20 @@ def slack(registry, xml_parent, data):
         value = data.get(yaml_name, default_value)
 
         # 'commit-info-choice' is enumerated type
-        if yaml_name == 'commit-info-choice':
-            if value not in commit_info_choices:
-                raise InvalidAttributeError(
-                    yaml_name, value, commit_info_choices,
-                )
+        if (
+                yaml_name == 'commit-info-choice' and
+                value not in commit_info_choices):
+            raise InvalidAttributeError(
+                yaml_name, value, commit_info_choices,
+            )
 
         # Ensure that custom-message is set when include-custom-message is set
         # to true.
-        if yaml_name == 'include-custom-message' and data is False:
-            if not data.get('custom-message', ''):
-                raise MissingAttributeError('custom-message')
+        if (
+                yaml_name == 'include-custom-message' and
+                data is False and
+                not data.get('custom-message', '')):
+            raise MissingAttributeError('custom-message')
 
         _add_xml(slack, xml_name, value)
 

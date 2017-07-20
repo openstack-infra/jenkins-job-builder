@@ -18,6 +18,9 @@
       <commitInfoChoice>AUTHORS_AND_TITLES</commitInfoChoice>
       <includeCustomMessage>true</includeCustomMessage>
       <customMessage>A custom message.</customMessage>
+      <authTokenCredentialId>yourauthtoken</authTokenCredentialId>
+      <botUser>true</botUser>
+      <baseUrl>https://hooks.slack.com/services/</baseUrl>
     </jenkins.plugins.slack.SlackNotifier>
   </publishers>
 </project>

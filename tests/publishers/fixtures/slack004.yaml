@@ -16,3 +16,6 @@ publishers:
       commit-info-choice: 'AUTHORS_AND_TITLES'
       include-custom-message: True
       custom-message: 'A custom message.'
+      auth-token-credential-id: yourauthtoken
+      bot-user: True
+      base-url: https://hooks.slack.com/services/
