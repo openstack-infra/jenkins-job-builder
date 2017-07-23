@@ -101,6 +101,7 @@ def config_file_provider_builder(xml_parent, data):
             ('file-id', 'fileId', None),
             ('target', 'targetLocation', ''),
             ('variable', 'variable', ''),
+            ('replace-tokens', 'replaceTokens', False),
         ]
         convert_mapping_to_xml(xml_file, file, mapping, fail_required=True)
 

@@ -7,6 +7,7 @@
           <fileId>org.jenkinsci.plugins.configfiles.custom.CustomConfig1234</fileId>
           <targetLocation/>
           <variable/>
+          <replaceTokens>false</replaceTokens>
         </org.jenkinsci.plugins.configfiles.buildwrapper.ManagedFile>
       </managedFiles>
     </org.jenkinsci.plugins.configfiles.buildwrapper.ConfigFileBuildWrapper>

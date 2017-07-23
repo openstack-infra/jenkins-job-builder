@@ -4,3 +4,4 @@ wrappers:
         - file-id: org.jenkinsci.plugins.configfiles.custom.CustomConfig1409250932722
           target: tmp/bar.txt
           variable: varname
+          replace-tokens: true

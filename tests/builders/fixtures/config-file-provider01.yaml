@@ -4,3 +4,4 @@ builders:
             - file-id: org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig0123456789012
               target: target
               variable: variable
+              replace-tokens: true
