@@ -3,9 +3,9 @@
   <publishers>
     <hudson.plugins.doxygen.DoxygenArchiver>
       <doxyfilePath>Doxyfile</doxyfilePath>
-      <runOnChild>doxygen-slave</runOnChild>
+      <runOnChild/>
+      <folderWhereYouRunDoxygen/>
       <keepAll>false</keepAll>
-      <folderWhereYouRunDoxygen>build</folderWhereYouRunDoxygen>
     </hudson.plugins.doxygen.DoxygenArchiver>
   </publishers>
 </project>
