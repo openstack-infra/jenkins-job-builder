@@ -254,10 +254,12 @@ def javadoc(registry, xml_parent, data):
     """
 
     root = XML.SubElement(xml_parent, 'hudson.tasks.JavadocArchiver')
-    if 'directory' in data:
-        XML.SubElement(root, 'javadocDir').text = data.get('directory', '')
-    XML.SubElement(root, 'keepAll').text = str(data.get(
-        'keep-all-successful', False)).lower()
+
+    mapping = [
+        ('directory', 'javadocDir', None),
+        ('keep-all-successful', 'keepAll', False),
+    ]
+    helpers.convert_mapping_to_xml(root, data, mapping, fail_required=False)
 
 
 def jdepend(registry, xml_parent, data):
