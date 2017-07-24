@@ -26,8 +26,8 @@ Jenkins notification plugin.
 
 import xml.etree.ElementTree as XML
 
-from jenkins_jobs.errors import JenkinsJobsException
 import jenkins_jobs.modules.base
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 
 
 def http_endpoint(registry, xml_parent, data):
@@ -56,29 +56,17 @@ def http_endpoint(registry, xml_parent, data):
                                       'com.tikal.hudson.plugins.notification.'
                                       'Endpoint')
     supported_formats = ['JSON', 'XML']
-    fmt = data.get('format', 'JSON').upper()
-    if fmt not in supported_formats:
-        raise JenkinsJobsException(
-            "format must be one of %s" %
-            ", ".join(supported_formats))
-    else:
-        XML.SubElement(endpoint_element, 'format').text = fmt
-
-    XML.SubElement(endpoint_element, 'protocol').text = 'HTTP'
-
     supported_events = ['started', 'completed', 'finalized', 'all']
+    fmt = data.get('format', 'JSON').upper()
     event = data.get('event', 'all').lower()
-    if event not in supported_events:
-        raise JenkinsJobsException(
-            "event must be one of %s" %
-            ", ".join(supported_events))
-    else:
-        XML.SubElement(endpoint_element, 'event').text = event
-
-    XML.SubElement(endpoint_element, 'timeout').text = str(data.get('timeout',
-                                                           30000))
-    XML.SubElement(endpoint_element, 'url').text = data['url']
-    XML.SubElement(endpoint_element, 'loglines').text = str(data.get('log', 0))
+    mapping = [
+        ('', 'format', fmt, supported_formats),
+        ('', 'protocol', 'HTTP'),
+        ('', 'event', event, supported_events),
+        ('timeout', 'timeout', 30000),
+        ('url', 'url', None),
+        ('log', 'loglines', 0)]
+    convert_mapping_to_xml(endpoint_element, data, mapping, fail_required=True)
 
 
 class Notifications(jenkins_jobs.modules.base.Base):
