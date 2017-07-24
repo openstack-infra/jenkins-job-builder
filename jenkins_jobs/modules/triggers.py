@@ -1727,6 +1727,7 @@ def groovy_script(registry, xml_parent, data):
     )
     gst.set('plugin', 'scripttrigger')
 
+    label = data.get('label')
     mappings = [
         ('system-script', 'groovySystemScript', False),
         ('script', 'groovyExpression', ''),
@@ -1734,13 +1735,10 @@ def groovy_script(registry, xml_parent, data):
         ('property-file-path', 'propertiesFilePath', ''),
         ('enable-concurrent', 'enableConcurrentBuild', False),
         ('cron', 'spec', ''),
+        ('', 'labelRestriction', bool(label)),
+        ('', 'triggerLabel', label),
     ]
-    convert_mapping_to_xml(gst, data, mappings, fail_required=True)
-
-    label = data.get('label')
-    XML.SubElement(gst, 'labelRestriction').text = str(bool(label)).lower()
-    if label:
-        XML.SubElement(gst, 'triggerLabel').text = label
+    convert_mapping_to_xml(gst, data, mappings, fail_required=False)
 
 
 def rabbitmq(registry, xml_parent, data):
