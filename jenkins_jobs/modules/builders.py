@@ -1778,12 +1778,12 @@ def maven_target(registry, xml_parent, data):
     XML.SubElement(maven, 'targets').text = data['goals']
     prop_string = '\n'.join(data.get('properties', []))
     XML.SubElement(maven, 'properties').text = prop_string
-    if 'maven-version' in data:
-        XML.SubElement(maven, 'mavenName').text = str(data['maven-version'])
-    if 'pom' in data:
-        XML.SubElement(maven, 'pom').text = str(data['pom'])
-    use_private = str(data.get('private-repository', False)).lower()
-    XML.SubElement(maven, 'usePrivateRepository').text = use_private
+
+    mapping = [
+        ('maven-version', 'mavenName', None),
+        ('pom', 'pom', None),
+        ('private-repository', 'usePrivateRepository', False)]
+    convert_mapping_to_xml(maven, data, mapping, fail_required=False)
     if 'java-opts' in data:
         javaoptions = ' '.join(data.get('java-opts', []))
         XML.SubElement(maven, 'jvmOptions').text = javaoptions
