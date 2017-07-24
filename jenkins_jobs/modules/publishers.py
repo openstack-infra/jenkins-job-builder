@@ -6481,6 +6481,8 @@ def slack(registry, xml_parent, data):
     :arg str team-domain: Your team's domain at slack. (default '')
     :arg str auth-token: The integration token to be used when sending
         notifications. (default '')
+    :arg str auth-token-id: Allows credentials to be stored in Jenkins.
+        (default '')
     :arg str build-server-url: Specify the URL for your server installation.
         (default '/')
     :arg str room: A comma seperated list of rooms / channels to post the
@@ -6497,7 +6499,7 @@ def slack(registry, xml_parent, data):
         (>=2.0). (default false)
     :arg bool notify-failure: Send notification when job fails for the first
         time (previous build was a success) (>=2.0).  (default false)
-    :arg bool notifiy-back-to-normal: Send notification when job is succeeding
+    :arg bool notify-back-to-normal: Send notification when job is succeeding
         again after being unstable or failed (>=2.0). (default false)
     :arg bool notify-repeated-failure: Send notification when job fails
         successively (previous build was also a failure) (>=2.0).
@@ -6545,6 +6547,7 @@ def slack(registry, xml_parent, data):
     mapping = (
         ('team-domain', 'teamDomain', ''),
         ('auth-token', 'authToken', ''),
+        ('auth-token-id', 'authTokenCredentialId', ''),
         ('build-server-url', 'buildServerUrl', '/'),
         ('room', 'room', ''),
     )

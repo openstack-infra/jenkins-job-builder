@@ -4,6 +4,7 @@
     <jenkins.plugins.slack.SlackNotifier>
       <teamDomain/>
       <authToken/>
+      <authTokenCredentialId/>
       <buildServerUrl>/</buildServerUrl>
       <room/>
       <startNotification>false</startNotification>

@@ -2,6 +2,7 @@ publishers:
   - slack:
       team-domain: 'teamname'
       auth-token: 'yourauthtoken'
+      auth-token-id: 'yourauthtokenid'
       build-server-url: 'http://localhost:8081'
       room: '#builds'
       notify-start: True
