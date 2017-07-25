@@ -734,7 +734,7 @@ def slack(registry, xml_parent, data):
         (default false)
     :arg bool notify-failure: Send notification when job fails.
         (default false)
-    :arg bool notifiy-back-to-normal: Send notification when job is
+    :arg bool notify-back-to-normal: Send notification when job is
         succeeding again after being unstable or failed. (default false)
     :arg bool 'notify-repeated-failure': Send notification when job is
         still failing after last failure. (default false)
