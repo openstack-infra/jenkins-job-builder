@@ -9,9 +9,16 @@ triggers:
       org-list:
         - org1
         - org2
+      white-list-labels:
+        - label1
+        - label2
+      black-list-labels:
+        - label3
+        - label4
       cron: '* * * * *'
       build-desc-template: "build description"
       trigger-phrase: 'retest this please'
+      skip-build-phrase: 'no tests'
       only-trigger-phrase: true
       github-hooks: true
       permit-all: false
