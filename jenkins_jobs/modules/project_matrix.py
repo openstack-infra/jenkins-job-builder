@@ -42,17 +42,35 @@ On a matrix project, this will tie *only* the parent job.  To restrict axes
 jobs, you can define a single value ``slave`` axis.
 
 :Job Parameters:
-    * **execution-strategy** (optional):
+
+    .. note::
+
+       You can only pick one of the strategies.
+
+    * **execution-strategy** (optional, built in Jenkins):
         * **combination-filter** (`str`): axes selection filter
         * **sequential** (`bool`): run builds sequentially (default false)
         * **touchstone** (optional):
             * **expr** (`str`) -- selection filter for the touchstone build
             * **result** (`str`) -- required result of the job: \
             stable (default) or unstable
+
+    * **yaml-strategy** (optional, requires
+      :jenkins-wiki:`Yaml Axis Plugin <Yaml+Axis+Plugin>`):
+
+        * **exclude-key** (`str`) -- top key containing exclusion rules
+        * Either one of:
+        * **filename** (`str`) -- Yaml file containing exclusions
+        * **text** (`str`) -- Inlined Yaml. Should be literal
+          ``text: | exclude:...``
+
     * **axes** (`list`):
         * **axis**:
-            * **type** (`str`) -- axis type, must be either
-              'label-expression', 'user-defined', 'slave' or 'jdk'.
+            * **type** (`str`) -- axis type, must be either type defined by
+              :jenkins-wiki:`Matrix Project Plugin <Matrix+Project+Plugin>`
+              (``label-expression``, ``user-defined``, ``slave`` or ``jdk``) or
+              a type defined by a plugin (see top of this document for a list
+              of supported plugins).
             * **name** (`str`) -- name of the axis
             * **values** (`list`) -- values of the axis
 
@@ -69,9 +87,17 @@ Example:
   .. literalinclude::  /../../tests/yamlparser/fixtures/project-matrix001.yaml
     :language: yaml
 
-Example for yaml axis:
+Examples for yaml axis:
 
   .. literalinclude::  /../../tests/general/fixtures/matrix-axis-yaml.yaml
+    :language: yaml
+
+  .. literalinclude::
+     /../../tests/general/fixtures/matrix-axis-yaml-strategy-file.yaml
+    :language: yaml
+
+  .. literalinclude::
+     /../../tests/general/fixtures/matrix-axis-yaml-strategy-inlined.yaml
     :language: yaml
 """
 
@@ -96,32 +122,76 @@ class Matrix(jenkins_jobs.modules.base.Base):
         'yaml': 'org.jenkinsci.plugins.yamlaxis.YamlAxis',
     }
 
+    supported_strategies = {
+        # Jenkins built-in, default
+        'execution-strategy':
+            'hudson.matrix.DefaultMatrixExecutionStrategyImpl',
+        'yaml-strategy':
+            'org.jenkinsci.plugins.yamlaxis.YamlMatrixExecutionStrategy',
+    }
+
     def root_xml(self, data):
         root = XML.Element('matrix-project')
 
-        ex_r = XML.SubElement(root, 'executionStrategy',
-                              {'class': 'hudson.matrix.'
-                               'DefaultMatrixExecutionStrategyImpl'})
-        ex_d = data.get('execution-strategy', {})
-        XML.SubElement(root, 'combinationFilter').text = \
-            str(ex_d.get('combination-filter', '')).rstrip()
-        XML.SubElement(ex_r, 'runSequentially').text = \
-            str(ex_d.get('sequential', False)).lower()
-        if 'touchstone' in ex_d:
-            XML.SubElement(ex_r, 'touchStoneCombinationFilter').text = \
-                str(ex_d['touchstone'].get('expr', ''))
-            t_r = XML.SubElement(ex_r, 'touchStoneResultCondition')
-            n = ex_d['touchstone'].get('result', 'stable').upper()
-            if n not in ('STABLE', 'UNSTABLE'):
-                raise ValueError('Required result must be stable or unstable')
+        # Default to 'execution-strategy'
+        strategies = ([s for s in data.keys() if s.endswith('-strategy')]
+                      or ['execution-strategy'])
 
-            XML.SubElement(t_r, 'name').text = n
-            if n == "STABLE":
-                XML.SubElement(t_r, 'ordinal').text = '0'
-                XML.SubElement(t_r, 'color').text = 'BLUE'
-            else:
-                XML.SubElement(t_r, 'ordinal').text = '1'
-                XML.SubElement(t_r, 'color').text = 'YELLOW'
+        # Job can not have multiple strategies
+        if len(strategies) > 1:
+            raise ValueError(
+                'matrix-project does not support multiple strategies. '
+                'Given %s: %s' % (len(strategies), ', '.join(strategies)))
+        strategy = strategies[0]
+
+        if strategy not in self.supported_strategies:
+            raise ValueError(
+                'Given strategy %s. Only %s strategies are supported'
+                % (strategy, self.supported_strategies.keys()))
+
+        ex_r = XML.SubElement(
+            root, 'executionStrategy',
+            {'class': self.supported_strategies[strategy]})
+
+        ex_d = data.get(strategy, {})
+
+        if strategy == 'execution-strategy':
+            XML.SubElement(root, 'combinationFilter').text = \
+                str(ex_d.get('combination-filter', '')).rstrip()
+            XML.SubElement(ex_r, 'runSequentially').text = \
+                str(ex_d.get('sequential', False)).lower()
+            if 'touchstone' in ex_d:
+                XML.SubElement(ex_r, 'touchStoneCombinationFilter').text = \
+                    str(ex_d['touchstone'].get('expr', ''))
+                t_r = XML.SubElement(ex_r, 'touchStoneResultCondition')
+                n = ex_d['touchstone'].get('result', 'stable').upper()
+                if n not in ('STABLE', 'UNSTABLE'):
+                    raise ValueError('Required result must be stable '
+                                     'or unstable')
+
+                XML.SubElement(t_r, 'name').text = n
+                if n == "STABLE":
+                    XML.SubElement(t_r, 'ordinal').text = '0'
+                    XML.SubElement(t_r, 'color').text = 'BLUE'
+                else:
+                    XML.SubElement(t_r, 'ordinal').text = '1'
+                    XML.SubElement(t_r, 'color').text = 'YELLOW'
+        elif strategy == 'yaml-strategy':
+            filename = str(ex_d.get('filename', ''))
+            text = str(ex_d.get('text', ''))
+            exclude_key = str(ex_d.get('exclude-key', ''))
+
+            if bool(filename) == bool(text):  # xor with str
+                raise ValueError('yaml-strategy must be given '
+                                 'either "filename" or "text"')
+
+            yamlType = (filename and 'file') or (text and 'text')
+            XML.SubElement(ex_r, 'yamlType').text = yamlType
+
+            XML.SubElement(ex_r, 'yamlFile').text = filename
+            XML.SubElement(ex_r, 'yamlText').text = text
+
+            XML.SubElement(ex_r, 'excludeKey').text = exclude_key
 
         ax_root = XML.SubElement(root, 'axes')
         for axis_ in data.get('axes', []):
