@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <com.nirima.jenkins.plugins.docker.DockerJobProperty>
+      <tagOnCompletion>true</tagOnCompletion>
+      <additionalTag>my-hands-are-typing-words</additionalTag>
+      <pushOnSuccess>true</pushOnSuccess>
+      <cleanImages>false</cleanImages>
+    </com.nirima.jenkins.plugins.docker.DockerJobProperty>
+  </properties>
+</project>

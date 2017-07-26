@@ -1,0 +1,6 @@
+properties:
+  - docker-container:
+      commit-on-success: true
+      additional-tag: my-hands-are-typing-words
+      push-on-success: true
+      clean-local-images: false
