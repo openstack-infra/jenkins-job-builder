@@ -1021,7 +1021,7 @@ def hg(self, xml_parent, data):
     Specifies the mercurial SCM repository for this job.
     Requires the Jenkins :jenkins-wiki:`Mercurial Plugin <Mercurial+Plugin>`.
 
-    :arg str url: URL of the hg repository
+    :arg str url: URL of the hg repository (required)
     :arg str credentials-id: ID of credentials to use to connect (optional)
     :arg str revision-type: revision type to use (default 'branch')
     :arg str revision: the branch or tag name you would like to track
@@ -1055,43 +1055,11 @@ def hg(self, xml_parent, data):
 
     .. literalinclude:: ../../tests/scm/fixtures/hg02.yaml
     """
-    scm = XML.SubElement(xml_parent, 'scm', {'class':
-                         'hudson.plugins.mercurial.MercurialSCM'})
-    if 'url' in data:
-        XML.SubElement(scm, 'source').text = data['url']
-    else:
-        raise JenkinsJobsException("A top level url must exist")
-
-    if 'credentials-id' in data:
-        XML.SubElement(scm, 'credentialsId').text = data['credentials-id']
 
     revision_type_dict = {
         'branch': 'BRANCH',
         'tag': 'TAG',
     }
-    try:
-        revision_type = revision_type_dict[data.get('revision-type', 'branch')]
-    except KeyError:
-        raise JenkinsJobsException('Invalid revision-type %r' %
-                                   data.get('revision-type'))
-    XML.SubElement(scm, 'revisionType').text = revision_type
-
-    XML.SubElement(scm, 'revision').text = data.get('revision', 'default')
-
-    if 'subdir' in data:
-        XML.SubElement(scm, 'subdir').text = data['subdir']
-
-    xc = XML.SubElement(scm, 'clean')
-    xc.text = str(data.get('clean', False)).lower()
-
-    modules = data.get('modules', '')
-    if isinstance(modules, list):
-        modules = " ".join(modules)
-    XML.SubElement(scm, 'modules').text = modules
-
-    xd = XML.SubElement(scm, 'disableChangeLog')
-    xd.text = str(data.get('disable-changelog', False)).lower()
-
     browser = data.get('browser', 'auto')
     browserdict = {
         'auto': '',
@@ -1105,18 +1073,32 @@ def hg(self, xml_parent, data):
         'rhodecode-pre-1.2.0': 'RhodeCodeLegacy'
     }
 
-    if browser not in browserdict:
-        raise JenkinsJobsException("Browser entered is not valid must be one "
-                                   "of: %s" % ", ".join(browserdict.keys()))
+    scm = XML.SubElement(xml_parent, 'scm', {'class':
+                         'hudson.plugins.mercurial.MercurialSCM'})
+    mapping = [('url', 'source', None)]
+    convert_mapping_to_xml(scm, data, mapping, fail_required=True)
+
+    mapping_optional = [
+        ('credentials-id', 'credentialsId', None),
+        ('revision-type', 'revisionType', 'branch', revision_type_dict),
+        ('revision', 'revision', 'default'),
+        ('subdir', 'subdir', None),
+        ('clean', 'clean', False)]
+    convert_mapping_to_xml(scm, data, mapping_optional, fail_required=False)
+
+    modules = data.get('modules', '')
+    if isinstance(modules, list):
+        modules = " ".join(modules)
+    XML.SubElement(scm, 'modules').text = modules
+    XML.SubElement(scm, 'disableChangeLog').text = str(data.get(
+        'disable-changelog', False)).lower()
+
     if browser != 'auto':
         bc = XML.SubElement(scm, 'browser',
                             {'class': 'hudson.plugins.mercurial.browser.' +
                                       browserdict[browser]})
-        if 'browser-url' in data:
-            XML.SubElement(bc, 'url').text = data['browser-url']
-        else:
-            raise JenkinsJobsException("A browser-url must be specified along "
-                                       "with browser.")
+        mapping = [('browser-url', 'url', None, browserdict[browser])]
+        convert_mapping_to_xml(bc, data, mapping, fail_required=True)
 
 
 def openshift_img_streams(registry, xml_parent, data):
