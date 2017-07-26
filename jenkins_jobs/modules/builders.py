@@ -1802,6 +1802,10 @@ def multijob(registry, xml_parent, data):
     :arg str condition: when to trigger the other job.
         Can be: 'SUCCESSFUL', 'UNSTABLE', 'COMPLETED', 'FAILURE', 'ALWAYS'.
         (default 'SUCCESSFUL')
+    :arg str execution-type: Define how to run jobs in a phase:
+        sequentially or parallel.
+        Can be: 'PARALLEL', 'SEQUENTIALLY'
+        (default 'PARALLEL')
 
     :arg list projects: list of projects to include in the MultiJob phase
 
@@ -1849,10 +1853,13 @@ def multijob(registry, xml_parent, data):
                                          'MultiJobBuilder')
     conditions_available = ('SUCCESSFUL', 'UNSTABLE', 'COMPLETED', 'FAILURE',
                             'ALWAYS')
+    job_execution_type_available = ('PARALLEL', 'SEQUENTIALLY')
     mapping = [
         ('name', 'phaseName', None),
         ('condition', 'continuationCondition',
-            'SUCCESSFUL', conditions_available)]
+            'SUCCESSFUL', conditions_available),
+        ('execution-type', 'executionType',
+            'PARALLEL', job_execution_type_available)]
     convert_mapping_to_xml(builder, data, mapping, fail_required=True)
 
     phaseJobs = XML.SubElement(builder, 'phaseJobs')
