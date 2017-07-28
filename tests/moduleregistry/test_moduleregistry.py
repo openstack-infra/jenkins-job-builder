@@ -24,6 +24,10 @@ class ModuleRegistryPluginInfoTestsWithScenarios(
         ('s11', dict(v1='1.0.preview', op='__lt__', v2='1.0')),
         ('s12', dict(v1='1.1-SNAPSHOT', op='__gt__', v2='1.0')),
         ('s13', dict(v1='1.0a-SNAPSHOT', op='__lt__', v2='1.0a')),
+        ('s14', dict(v1='1.4.6-SNAPSHOT (private-0986edd9-example)',
+                     op='__lt__', v2='1.4.6')),
+        ('s15', dict(v1='1.4.6-SNAPSHOT (private-0986edd9-example)',
+                     op='__gt__', v2='1.4.5')),
     ]
 
     def setUp(self):

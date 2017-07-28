@@ -64,7 +64,7 @@ class ModuleRegistry(object):
             mapped to its plugin info dictionary.
             """
             version = plugin_info.get('version', '0')
-            plugin_info['version'] = re.sub(r'(.*)-(?:SNAPSHOT|BETA)',
+            plugin_info['version'] = re.sub(r'(.*)-(?:SNAPSHOT|BETA).*',
                                             r'\g<1>.preview', version)
 
             aliases = []
