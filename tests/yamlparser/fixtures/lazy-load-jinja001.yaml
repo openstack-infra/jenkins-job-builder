@@ -1,0 +1,16 @@
+- builder:
+    name: test-builder
+    builders:
+        - shell:
+            !include-jinja2: jinja{include-number}.yaml.inc
+
+- job:
+    name: test-job
+    builders:
+        - test-builder:
+            var: "test variable"
+            test_list:
+                - a
+                - b
+                - c
+            include-number: "01"
