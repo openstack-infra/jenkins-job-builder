@@ -251,5 +251,5 @@ texinfo_documents = [
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
 
-extlinks = {'jenkins-wiki': ('https://wiki.jenkins-ci.org/display/JENKINS/%s',
+extlinks = {'jenkins-wiki': ('https://wiki.jenkins.io/display/JENKINS/%s',
                              None)}
