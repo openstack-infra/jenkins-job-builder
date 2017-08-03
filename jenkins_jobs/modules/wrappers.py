@@ -1797,17 +1797,16 @@ def custom_tools(registry, xml_parent, data):
     tool_node = base + '.CustomToolInstallWrapper_-SelectedTool'
     for tool in tools:
         tool_wrapper = XML.SubElement(wrapper_tools, tool_node)
-        XML.SubElement(tool_wrapper, 'name').text = str(tool)
+        mapping = [('', 'name', tool)]
+        convert_mapping_to_xml(tool_wrapper, data, mapping, fail_required=True)
 
     opts = XML.SubElement(wrapper,
                           'multiconfigOptions')
-    skip_install = str(data.get('skip-master-install', 'false'))
-    XML.SubElement(opts,
-                   'skipMasterInstallation').text = skip_install
+    mapping = [('skip-master-install', 'skipMasterInstallation', False)]
+    convert_mapping_to_xml(opts, data, mapping, fail_required=True)
 
-    convert_home = str(data.get('convert-homes-to-upper', 'false'))
-    XML.SubElement(wrapper,
-                   'convertHomesToUppercase').text = convert_home
+    mapping = [('convert-homes-to-upper', 'convertHomesToUppercase', False)]
+    convert_mapping_to_xml(wrapper, data, mapping, fail_required=True)
 
 
 def nodejs_installator(registry, xml_parent, data):

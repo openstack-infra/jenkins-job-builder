@@ -8,9 +8,9 @@
         </com.cloudbees.jenkins.plugins.customtools.CustomToolInstallWrapper_-SelectedTool>
       </selectedTools>
       <multiconfigOptions>
-        <skipMasterInstallation>True</skipMasterInstallation>
+        <skipMasterInstallation>true</skipMasterInstallation>
       </multiconfigOptions>
-      <convertHomesToUppercase>True</convertHomesToUppercase>
+      <convertHomesToUppercase>true</convertHomesToUppercase>
     </com.cloudbees.jenkins.plugins.customtools.CustomToolInstallWrapper>
   </buildWrappers>
 </project>
