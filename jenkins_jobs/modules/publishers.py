@@ -5989,20 +5989,18 @@ def google_cloud_storage(registry, xml_parent, data):
     """
 
     def expiring_elements(properties, upload_element, types):
-        """Handle expiring elements upload action
-        """
+        # Handle expiring elements upload action
 
         xml_element = XML.SubElement(upload_element, 'com.google.'
                                      'jenkins.plugins.storage.'
                                      'ExpiringBucketLifecycleManager')
-
-        if 'bucket-name' not in properties:
-            raise MissingAttributeError('bucket-name')
-        XML.SubElement(xml_element, 'bucketNameWithVars').text = str(
-            properties['bucket-name'])
-
-        XML.SubElement(xml_element, 'sharedPublicly').text = 'false'
-        XML.SubElement(xml_element, 'forFailedJobs').text = 'false'
+        mapping = [
+            ('bucket-name', 'bucketNameWithVars', None),
+            ('', 'sharedPublicly', False),
+            ('', 'forFailedJobs', False),
+            ('days-to-retain', 'bucketObjectTTL', None)]
+        helpers.convert_mapping_to_xml(
+            xml_element, properties, mapping, fail_required=True)
 
         if types.count('expiring-elements') > 1:
             XML.SubElement(xml_element, 'module',
@@ -6011,34 +6009,20 @@ def google_cloud_storage(registry, xml_parent, data):
         else:
             XML.SubElement(xml_element, 'module')
 
-        if 'days-to-retain' not in properties:
-            raise MissingAttributeError('days-to-retain')
-        XML.SubElement(xml_element, 'bucketObjectTTL').text = str(
-            properties['days-to-retain'])
-
     def build_log(properties, upload_element, types):
-        """Handle build log upload action
-        """
+        # Handle build log upload action
 
         xml_element = XML.SubElement(upload_element, 'com.google.jenkins.'
                                      'plugins.storage.StdoutUpload')
-
-        if 'storage-location' not in properties:
-            raise MissingAttributeError('storage-location')
-        XML.SubElement(xml_element, 'bucketNameWithVars').text = str(
-            properties['storage-location'])
-
-        XML.SubElement(xml_element, 'sharedPublicly').text = str(
-            properties.get('share-publicly', False)).lower()
-
-        XML.SubElement(xml_element, 'forFailedJobs').text = str(
-            properties.get('upload-for-failed-jobs', False)).lower()
-
-        XML.SubElement(xml_element, 'showInline').text = str(
-            properties.get('show-inline', True)).lower()
-
-        XML.SubElement(xml_element, 'pathPrefix').text = str(
-            properties.get('strip-prefix', ''))
+        mapping = [
+            ('storage-location', 'bucketNameWithVars', None),
+            ('share-publicly', 'sharedPublicly', False),
+            ('upload-for-failed-jobs', 'forFailedJobs', False),
+            ('show-inline', 'showInline', True),
+            ('strip-prefix', 'pathPrefix', ''),
+            ('log-name', 'logName', None)]
+        helpers.convert_mapping_to_xml(
+            xml_element, properties, mapping, fail_required=True)
 
         if types.count('build-log') > 1:
             XML.SubElement(xml_element, 'module',
@@ -6047,34 +6031,20 @@ def google_cloud_storage(registry, xml_parent, data):
         else:
             XML.SubElement(xml_element, 'module')
 
-        if 'log-name' not in properties:
-            raise MissingAttributeError('log-name')
-        XML.SubElement(xml_element, 'logName').text = str(
-            properties['log-name'])
-
     def classic(properties, upload_element, types):
-        """Handle classic upload action
-        """
+        # Handle classic upload action
 
         xml_element = XML.SubElement(upload_element, 'com.google.jenkins.'
                                      'plugins.storage.ClassicUpload')
-
-        if 'storage-location' not in properties:
-            raise MissingAttributeError('storage-location')
-        XML.SubElement(xml_element, 'bucketNameWithVars').text = str(
-            properties['storage-location'])
-
-        XML.SubElement(xml_element, 'sharedPublicly').text = str(
-            properties.get('share-publicly', False)).lower()
-
-        XML.SubElement(xml_element, 'forFailedJobs').text = str(
-            properties.get('upload-for-failed-jobs', False)).lower()
-
-        XML.SubElement(xml_element, 'showInline').text = str(
-            properties.get('show-inline', False)).lower()
-
-        XML.SubElement(xml_element, 'pathPrefix').text = str(
-            properties.get('strip-prefix', ''))
+        mapping = [
+            ('storage-location', 'bucketNameWithVars', None),
+            ('share-publicly', 'sharedPublicly', False),
+            ('upload-for-failed-jobs', 'forFailedJobs', False),
+            ('show-inline', 'showInline', False),
+            ('strip-prefix', 'pathPrefix', ''),
+            ('file-pattern', 'sourceGlobWithVars', None)]
+        helpers.convert_mapping_to_xml(
+            xml_element, properties, mapping, fail_required=True)
 
         if types.count('classic') > 1:
             XML.SubElement(xml_element, 'module',
@@ -6083,26 +6053,17 @@ def google_cloud_storage(registry, xml_parent, data):
         else:
             XML.SubElement(xml_element, 'module')
 
-        if 'file-pattern' not in properties:
-            raise MissingAttributeError('file-pattern')
-        XML.SubElement(xml_element, 'sourceGlobWithVars').text = str(
-            properties['file-pattern'])
-
     uploader = XML.SubElement(xml_parent,
                               'com.google.jenkins.plugins.storage.'
                               'GoogleCloudStorageUploader',
                               {'plugin': 'google-storage-plugin'})
 
-    try:
-        credentials_id = str(data['credentials-id'])
-    except KeyError as e:
-        raise MissingAttributeError(e.args[0])
-    XML.SubElement(uploader, 'credentialsId').text = credentials_id
+    mapping = [('credentials-id', 'credentialsId', None)]
+    helpers.convert_mapping_to_xml(uploader, data, mapping, fail_required=True)
 
     valid_upload_types = ['expiring-elements',
                           'build-log',
                           'classic']
-
     types = []
 
     upload_element = XML.SubElement(uploader, 'uploads')
