@@ -539,19 +539,20 @@ def trigger_builds(registry, xml_parent, data):
             params = XML.SubElement(tconfigs,
                                     'hudson.plugins.parameterizedtrigger.'
                                     'FileBuildParameters')
-            propertiesFile = XML.SubElement(params, 'propertiesFile')
-            propertiesFile.text = project_def['property-file']
-            failTriggerOnMissing = XML.SubElement(params,
-                                                  'failTriggerOnMissing')
-            failTriggerOnMissing.text = str(project_def.get(
-                'property-file-fail-on-missing', True)).lower()
+            mapping = [
+                ('property-file', 'propertiesFile', None),
+                ('property-file-fail-on-missing',
+                    'failTriggerOnMissing', True)]
+            convert_mapping_to_xml(params,
+                project_def, mapping, fail_required=True)
 
         if 'predefined-parameters' in project_def:
             params = XML.SubElement(tconfigs,
                                     'hudson.plugins.parameterizedtrigger.'
                                     'PredefinedBuildParameters')
-            properties = XML.SubElement(params, 'properties')
-            properties.text = project_def['predefined-parameters']
+            mapping = [('predefined-parameters', 'properties', None)]
+            convert_mapping_to_xml(params,
+                project_def, mapping, fail_required=True)
 
         if 'bool-parameters' in project_def:
             params = XML.SubElement(tconfigs,
@@ -562,23 +563,29 @@ def trigger_builds(registry, xml_parent, data):
                 param = XML.SubElement(configs,
                                        'hudson.plugins.parameterizedtrigger.'
                                        'BooleanParameterConfig')
-                XML.SubElement(param, 'name').text = str(bool_param['name'])
-                XML.SubElement(param, 'value').text = str(
-                    bool_param.get('value', False)).lower()
+                mapping = [
+                    ('name', 'name', None),
+                    ('value', 'value', False)]
+                convert_mapping_to_xml(param,
+                    bool_param, mapping, fail_required=True)
 
         if 'node-label-name' in project_def and 'node-label' in project_def:
             node = XML.SubElement(tconfigs, 'org.jvnet.jenkins.plugins.'
                                   'nodelabelparameter.parameterizedtrigger.'
                                   'NodeLabelBuildParameter')
-            XML.SubElement(node, 'name').text = project_def['node-label-name']
-            XML.SubElement(node, 'nodeLabel').text = project_def['node-label']
+            mapping = [
+                ('node-label-name', 'name', None),
+                ('node-label', 'nodeLabel', None)]
+            convert_mapping_to_xml(node,
+                project_def, mapping, fail_required=True)
 
         if 'restrict-matrix-project' in project_def:
             params = XML.SubElement(tconfigs,
                                     'hudson.plugins.parameterizedtrigger.'
                                     'matrix.MatrixSubsetBuildParameters')
-            XML.SubElement(params, 'filter').text = project_def[
-                'restrict-matrix-project']
+            mapping = [('restrict-matrix-project', 'filter', None)]
+            convert_mapping_to_xml(params,
+                project_def, mapping, fail_required=True)
 
         if(len(list(tconfigs)) == 0):
             tconfigs.set('class', 'java.util.Collections$EmptyList')
@@ -609,60 +616,47 @@ def trigger_builds(registry, xml_parent, data):
                         fconfigs,
                         'hudson.plugins.parameterizedtrigger.'
                         'BinaryFileParameterFactory')
-                    parameterName = XML.SubElement(params, 'parameterName')
-                    parameterName.text = factory['parameter-name']
+                    mapping = [('parameter-name', 'parameterName', None)]
+                    convert_mapping_to_xml(params,
+                        factory, mapping, fail_required=True)
+
                 if (factory['factory'] == 'filebuild' or
                         factory['factory'] == 'binaryfile'):
-                    filePattern = XML.SubElement(params, 'filePattern')
-                    filePattern.text = factory['file-pattern']
-                    noFilesFoundAction = XML.SubElement(
-                        params,
-                        'noFilesFoundAction')
-                    noFilesFoundActionValue = str(factory.get(
-                        'no-files-found-action', 'SKIP'))
-                    if noFilesFoundActionValue not in supported_actions:
-                        raise InvalidAttributeError('no-files-found-action',
-                                                    noFilesFoundActionValue,
-                                                    supported_actions)
-                    noFilesFoundAction.text = noFilesFoundActionValue
+                    mapping = [
+                        ('file-pattern', 'filePattern', None),
+                        ('no-files-found-action',
+                            'noFilesFoundAction', 'SKIP', supported_actions)]
+                    convert_mapping_to_xml(params,
+                        factory, mapping, fail_required=True)
+
                 if factory['factory'] == 'counterbuild':
                     params = XML.SubElement(
                         fconfigs,
                         'hudson.plugins.parameterizedtrigger.'
                         'CounterBuildParameterFactory')
-                    fromProperty = XML.SubElement(params, 'from')
-                    fromProperty.text = str(factory['from'])
-                    toProperty = XML.SubElement(params, 'to')
-                    toProperty.text = str(factory['to'])
-                    stepProperty = XML.SubElement(params, 'step')
-                    stepProperty.text = str(factory['step'])
-                    paramExpr = XML.SubElement(params, 'paramExpr')
-                    paramExpr.text = str(factory.get(
-                        'parameters', ''))
-                    validationFail = XML.SubElement(params, 'validationFail')
-                    validationFailValue = str(factory.get(
-                        'validation-fail', 'FAIL'))
-                    if validationFailValue not in supported_actions:
-                        raise InvalidAttributeError('validation-fail',
-                                                    validationFailValue,
-                                                    supported_actions)
-                    validationFail.text = validationFailValue
+                    mapping = [('from', 'from', None),
+                               ('to', 'to', None),
+                               ('step', 'step', None),
+                               ('parameters', 'paramExpr', ''),
+                               ('validation-fail',
+                                   'validationFail',
+                                   'FAIL', supported_actions)]
+                    convert_mapping_to_xml(params,
+                        factory, mapping, fail_required=True)
+
                 if factory['factory'] == 'allnodesforlabel':
                     params = XML.SubElement(
                         fconfigs,
                         'org.jvnet.jenkins.plugins.nodelabelparameter.'
                         'parameterizedtrigger.'
                         'AllNodesForLabelBuildParameterFactory')
-                    nameProperty = XML.SubElement(params, 'name')
-                    nameProperty.text = str(factory.get(
-                        'name', ''))
-                    nodeLabel = XML.SubElement(params, 'nodeLabel')
-                    nodeLabel.text = str(factory['node-label'])
-                    ignoreOfflineNodes = XML.SubElement(
-                        params,
-                        'ignoreOfflineNodes')
-                    ignoreOfflineNodes.text = str(factory.get(
-                        'ignore-offline-nodes', True)).lower()
+                    mapping = [('name', 'name', ''),
+                               ('node-label', 'nodeLabel', None),
+                               ('ignore-offline-nodes',
+                                   'ignoreOfflineNodes', True)]
+                    convert_mapping_to_xml(params,
+                        factory, mapping, fail_required=True)
+
                 if factory['factory'] == 'allonlinenodes':
                     params = XML.SubElement(
                         fconfigs,
@@ -676,14 +670,11 @@ def trigger_builds(registry, xml_parent, data):
         else:
             projects.text = project_def['project']
 
-        condition = XML.SubElement(tconfig, 'condition')
-        condition.text = 'ALWAYS'
-        trigger_with_no_params = XML.SubElement(tconfig,
-                                                'triggerWithNoParameters')
-        trigger_with_no_params.text = 'false'
-        build_all_nodes_with_label = XML.SubElement(tconfig,
-                                                    'buildAllNodesWithLabel')
-        build_all_nodes_with_label.text = 'false'
+        mapping = [('', 'condition', 'ALWAYS'),
+                   ('', 'triggerWithNoParameters', False),
+                   ('', 'buildAllNodesWithLabel', False)]
+        convert_mapping_to_xml(tconfig, {}, mapping, fail_required=True)
+
         block = project_def.get('block', False)
         if block:
             block = XML.SubElement(tconfig, 'block')
@@ -711,13 +702,13 @@ def trigger_builds(registry, xml_parent, data):
                                                 tvalue,
                                                 supported_threshold_values)
                 th = XML.SubElement(block, txmltag)
-                XML.SubElement(th, 'name').text = hudson_model.THRESHOLDS[
-                    tvalue.upper()]['name']
-                XML.SubElement(th, 'ordinal').text = hudson_model.THRESHOLDS[
-                    tvalue.upper()]['ordinal']
-                XML.SubElement(th, 'color').text = hudson_model.THRESHOLDS[
-                    tvalue.upper()]['color']
-                XML.SubElement(th, 'completeBuild').text = "true"
+                mapping = [('name', 'name', None),
+                           ('ordinal', 'ordinal', None),
+                           ('color', 'color', None),
+                           ('', 'completeBuild', True)]
+                convert_mapping_to_xml(th,
+                hudson_model.THRESHOLDS[tvalue.upper()],
+                mapping, fail_required=True)
 
     # If configs is empty, remove the entire tbuilder tree.
     if(len(configs) == 0):
