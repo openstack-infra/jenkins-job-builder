@@ -15,6 +15,8 @@
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
+
 """
 The view list module handles creating Jenkins List views.
 
@@ -24,7 +26,7 @@ to the :ref:`View-list` definition.
 :View Parameters:
     * **name** (`str`): The name of the view.
     * **view-type** (`str`): The type of view.
-    * **description** (`str`): A description of the view. (optional)
+    * **description** (`str`): A description of the view. (default '')
     * **filter-executors** (`bool`): Show only executors that can
       execute the included views. (default false)
     * **filter-queue** (`bool`): Show only included jobs in builder
@@ -55,18 +57,13 @@ class List(jenkins_jobs.modules.base.Base):
 
     def root_xml(self, data):
         root = XML.Element('hudson.model.ListView')
-        XML.SubElement(root, 'name').text = data['name']
-        desc_text = data.get('description', None)
-        if desc_text is not None:
-            XML.SubElement(root, 'description').text = desc_text
 
-        filterExecutors = data.get('filter-executors', False)
-        FE_element = XML.SubElement(root, 'filterExecutors')
-        FE_element.text = 'true' if filterExecutors else 'false'
-
-        filterQueue = data.get('filter-queue', False)
-        FQ_element = XML.SubElement(root, 'filterQueue')
-        FQ_element.text = 'true' if filterQueue else 'false'
+        mapping = [
+            ('name', 'name', None),
+            ('description', 'description', ''),
+            ('filter-executors', 'filterExecutors', False),
+            ('filter-queue', 'filterQueue', False)]
+        convert_mapping_to_xml(root, data, mapping, fail_required=True)
 
         XML.SubElement(root, 'properties',
                        {'class': 'hudson.model.View$PropertyList'})
@@ -82,21 +79,14 @@ class List(jenkins_jobs.modules.base.Base):
 
         c_xml = XML.SubElement(root, 'columns')
         columns = data.get('columns', [])
+
         for column in columns:
             if column in COLUMN_DICT:
                 XML.SubElement(c_xml, COLUMN_DICT[column])
-
-        regex = data.get('regex', None)
-        if regex is not None:
-            XML.SubElement(root, 'includeRegex').text = regex
-
-        recurse = data.get('recurse', False)
-        R_element = XML.SubElement(root, 'recurse')
-        R_element.text = 'true' if recurse else 'false'
-
-        statusfilter = data.get('status-filter', None)
-        if statusfilter is not None:
-            SF_element = XML.SubElement(root, 'statusFilter')
-            SF_element.text = 'true' if statusfilter else 'false'
+        mapping = [
+            ('regex', 'includeRegex', None),
+            ('recurse', 'recurse', False),
+            ('status-filter', 'statusFilter', None)]
+        convert_mapping_to_xml(root, data, mapping, fail_required=False)
 
         return root
