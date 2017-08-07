@@ -230,8 +230,14 @@ class JenkinsManager(object):
             logger.debug("'{0}' has not changed".format(job.name))
         return changed
 
+    def exists(self, job):
+        exists = self.jenkins.job_exists(job.name)
+        if not exists:
+            logger.debug("'{0}' does not currently exist".format(job.name))
+        return exists
+
     def update_jobs(self, xml_jobs, output=None, n_workers=None,
-                    config_xml=False):
+                    existing_only=None, config_xml=False):
         orig = time.time()
 
         logger.info("Number of jobs generated:  %d", len(xml_jobs))
@@ -282,6 +288,16 @@ class JenkinsManager(object):
                 if self.changed(job)]
         logging.debug("Filtered for changed jobs in %ss",
                       (time.time() - step))
+
+        if existing_only:
+            # Filter out the jobs not already in the cache
+            logging.debug('Filtering %d jobs for existing jobs',
+                          len(jobs))
+            step = time.time()
+            jobs = [job for job in jobs
+                    if self.exists(job)]
+            logging.debug("Filtered for existing jobs in %ss",
+                          (time.time() - step))
 
         if not jobs:
             return [], 0
@@ -383,7 +399,7 @@ class JenkinsManager(object):
             self.jenkins.create_view(view_name, xml)
 
     def update_views(self, xml_views, output=None, n_workers=None,
-                     config_xml=False):
+                     existing_only=None, config_xml=False):
         orig = time.time()
 
         logger.info("Number of views generated:  %d", len(xml_views))
@@ -425,6 +441,16 @@ class JenkinsManager(object):
                  if self.changed(view)]
         logging.debug("Filtered for changed views in %ss",
                       (time.time() - step))
+
+        if existing_only:
+            # Filter out the jobs not already in the cache
+            logging.debug('Filtering %d views for existing jobs',
+                          len(views))
+            step = time.time()
+            views = [view for view in views
+                    if self.exists(view)]
+            logging.debug("Filtered for existing views in %ss",
+                          (time.time() - step))
 
         if not views:
             return [], 0

@@ -84,6 +84,13 @@ class UpdateSubCommand(base.BaseSubCommand):
             default=False,
             help='update only views'
         )
+        update.add_argument(
+            '--existing-only',
+            action='store_true',
+            default=False,
+            dest='existing_only',
+            help='update existing jobs only'
+        )
 
     def _generate_xmljobs(self, options, jjb_config=None):
         builder = JenkinsManager(jjb_config)
@@ -129,18 +136,22 @@ class UpdateSubCommand(base.BaseSubCommand):
 
         if options.add_jobs:
             jobs, num_updated_jobs = builder.update_jobs(
-                xml_jobs, n_workers=options.n_workers)
+                xml_jobs, n_workers=options.n_workers,
+                existing_only=options.existing_only)
             logger.info("Number of jobs updated: %d", num_updated_jobs)
         elif options.add_views:
             views, num_updated_views = builder.update_views(
-                xml_views, n_workers=options.n_workers)
+                xml_views, n_workers=options.n_workers,
+                existing_only=options.existing_only)
             logger.info("Number of views updated: %d", num_updated_views)
         else:
             jobs, num_updated_jobs = builder.update_jobs(
-                xml_jobs, n_workers=options.n_workers)
+                xml_jobs, n_workers=options.n_workers,
+                existing_only=options.existing_only)
             logger.info("Number of jobs updated: %d", num_updated_jobs)
             views, num_updated_views = builder.update_views(
-                xml_views, n_workers=options.n_workers)
+                xml_views, n_workers=options.n_workers,
+                existing_only=options.existing_only)
             logger.info("Number of views updated: %d", num_updated_views)
 
         keep_jobs = [job.name for job in xml_jobs]
