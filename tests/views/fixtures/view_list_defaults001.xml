@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hudson.model.ListView>
+  <name>list-view-name01</name>
+  <description>Sample description</description>
+  <filterExecutors>true</filterExecutors>
+  <filterQueue>true</filterQueue>
+  <properties class="hudson.model.View$PropertyList"/>
+  <jobNames>
+    <comparator class="hudson.util.CaseInsensitiveComparator"/>
+    <string>job-name-1</string>
+    <string>job-name-2</string>
+    <string>job-name-3</string>
+  </jobNames>
+  <jobFilters/>
+  <columns>
+    <hudson.views.StatusColumn/>
+    <hudson.views.WeatherColumn/>
+    <hudson.views.JobColumn/>
+    <hudson.views.LastSuccessColumn/>
+    <hudson.views.LastFailureColumn/>
+    <hudson.views.LastDurationColumn/>
+    <hudson.views.BuildButtonColumn/>
+  </columns>
+  <recurse>true</recurse>
+  <statusFilter>false</statusFilter>
+</hudson.model.ListView>
