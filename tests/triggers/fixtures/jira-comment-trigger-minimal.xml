@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <com.ceilfors.jenkins.plugins.jiratrigger.JiraCommentTrigger plugin="jira-trigger">
+      <jqlFilter/>
+      <commentPattern>(?i)build this please</commentPattern>
+      <parameterMappings/>
+    </com.ceilfors.jenkins.plugins.jiratrigger.JiraCommentTrigger>
+  </triggers>
+</project>
