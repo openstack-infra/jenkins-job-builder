@@ -21,6 +21,7 @@ import re
 from string import Formatter
 
 from jenkins_jobs.errors import JenkinsJobsException
+from jenkins_jobs.local_yaml import CustomLoader
 
 logger = logging.getLogger(__name__)
 
@@ -68,6 +69,10 @@ def deep_format(obj, paramdict, allow_empty=False):
                 raise
     else:
         ret = obj
+    if isinstance(ret, CustomLoader):
+        # If we have a CustomLoader here, we've lazily-loaded a template;
+        # attempt to format it.
+        ret = deep_format(ret, paramdict, allow_empty=allow_empty)
     return ret
 
 

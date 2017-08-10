@@ -1,0 +1,11 @@
+- job-template:
+    name: 'test-job-{num}'
+    builders:
+        - shell:
+            !include-jinja2: jinja02.yaml.inc
+
+- project:
+    name: test-job-template-1
+    num: 1
+    jobs:
+      - 'test-job-{num}'
