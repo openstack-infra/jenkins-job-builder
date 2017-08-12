@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <com.ceilfors.jenkins.plugins.jiratrigger.JiraChangelogTrigger plugin="jira-trigger">
+      <jqlFilter/>
+      <changelogMatchers/>
+      <parameterMappings/>
+    </com.ceilfors.jenkins.plugins.jiratrigger.JiraChangelogTrigger>
+  </triggers>
+</project>

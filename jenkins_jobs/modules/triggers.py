@@ -1875,6 +1875,106 @@ def parameterized_timer(parser, xml_parent, data):
     convert_mapping_to_xml(param_timer, data, mapping, fail_required=True)
 
 
+def jira_changelog(registry, xml_parent, data):
+    """yaml: jira-changelog
+    Sets up a trigger that listens to JIRA issue changes
+    Requires the Jenkins :jenkins-wiki:`JIRA Trigger Plugin
+    <JIRA+Trigger+Plugin>`.
+
+    :arg str jql-filter: Must match updated issues to trigger a build.
+        (default '')
+    :arg list changelog-matchers:
+
+        :Custom Field Matcher:
+            * **custom-field-name** (`str`) -- The custom field
+                name that has been changed during the issue update.
+                (default '')
+            * **compare-new-value** (`bool`) -- Compare the
+                new value of the updated field. (default false)
+            * **new-value** (`str`) -- The new value of the updated field.
+                (default '')
+            * **compare-old-value** (`bool`) -- Compare the
+                old value of the updated field. (default false)
+            * **old-value** (`str`) -- The value
+                before the field is updated. (default '')
+
+        :JIRA Field Matcher:
+            * **jira-field-ID** (`str`) -- The JIRA Field ID that
+                has been changed during the issue update. (default '')
+            * **compare-new-value** (`bool`) -- Compare the new value
+                of the updated field. (default false)
+            * **new-value** (`str`) -- The new value of the updated field.
+                (default '')
+            * **compare-old-value** (`bool`) -- Compare the old value
+                of the updated field. (default false)
+            * **old-value** (`str`) -- The value before
+                the field is updated. (default '')
+
+    :arg list parameter-mapping:
+
+        :Issue Attribute Path:
+            * **jenkins-parameter** (`str`) -- Jenkins parameter name
+                (default '')
+            * **issue-attribute-path** (`str`) -- Attribute path (default '')
+
+    Minimal Example:
+
+    .. literalinclude::
+        /../../tests/triggers/fixtures/jira-changelog-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        /../../tests/triggers/fixtures/jira-changelog-full.yaml
+       :language: yaml
+    """
+    jcht = XML.SubElement(xml_parent, 'com.ceilfors.jenkins.plugins.'
+                          'jiratrigger.JiraChangelogTrigger')
+    jcht.set('plugin', 'jira-trigger')
+
+    mapping = [('jql-filter', 'jqlFilter', '')]
+    convert_mapping_to_xml(jcht, data, mapping, fail_required=True)
+
+    changelog = XML.SubElement(jcht, 'changelogMatchers')
+    mappings = [
+        ('field', 'field', ''),
+        ('new-value', 'newValue', ''),
+        ('old-value', 'oldValue', ''),
+        ('compare-new-value', 'comparingNewValue', False),
+        ('compare-old-value', 'comparingOldValue', False),
+    ]
+    for matcher in data.get('changelog-matchers', []):
+
+        fieldtype = matcher.get('field-type')
+        if fieldtype == 'CUSTOM':
+            parent_tag = XML.SubElement(changelog, 'com.ceilfors.jenkins.'
+                                        'plugins.jiratrigger.changelog.'
+                                        'CustomFieldChangelogMatcher')
+            XML.SubElement(parent_tag, 'fieldType').text = 'CUSTOM'
+
+        elif fieldtype == 'JIRA':
+            parent_tag = XML.SubElement(changelog, 'com.ceilfors.jenkins.'
+                                        'plugins.jiratrigger.changelog.'
+                                        'JiraFieldChangelogMatcher')
+            XML.SubElement(parent_tag, 'fieldType').text = 'JIRA'
+
+        convert_mapping_to_xml(parent_tag, matcher,
+            mappings, fail_required=True)
+
+    param = XML.SubElement(jcht, 'parameterMappings')
+    parameter_mappings = [
+        ('jenkins-parameter', 'jenkinsParameter', ''),
+        ('issue-attribute-path', 'issueAttributePath', ''),
+    ]
+    for parameter in data.get('parameter-mapping', []):
+        parent = XML.SubElement(param, 'com.ceilfors.jenkins.plugins.'
+                                'jiratrigger.parameter.'
+                                'IssueAttributePathParameterMapping')
+        convert_mapping_to_xml(
+            parent, parameter, parameter_mappings, fail_required=True)
+
+
 def jira_comment_trigger(registry, xml_parent, data):
     """yaml: jira-comment-trigger
     Trigger builds when a comment is added to JIRA.

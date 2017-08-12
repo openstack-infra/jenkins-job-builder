@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <com.ceilfors.jenkins.plugins.jiratrigger.JiraChangelogTrigger plugin="jira-trigger">
+      <jqlFilter>filter</jqlFilter>
+      <changelogMatchers>
+        <com.ceilfors.jenkins.plugins.jiratrigger.changelog.CustomFieldChangelogMatcher>
+          <fieldType>CUSTOM</fieldType>
+          <field>name</field>
+          <newValue>val1</newValue>
+          <oldValue>val2</oldValue>
+          <comparingNewValue>true</comparingNewValue>
+          <comparingOldValue>true</comparingOldValue>
+        </com.ceilfors.jenkins.plugins.jiratrigger.changelog.CustomFieldChangelogMatcher>
+        <com.ceilfors.jenkins.plugins.jiratrigger.changelog.JiraFieldChangelogMatcher>
+          <fieldType>JIRA</fieldType>
+          <field>versions</field>
+          <newValue>val3</newValue>
+          <oldValue>val4</oldValue>
+          <comparingNewValue>true</comparingNewValue>
+          <comparingOldValue>true</comparingOldValue>
+        </com.ceilfors.jenkins.plugins.jiratrigger.changelog.JiraFieldChangelogMatcher>
+      </changelogMatchers>
+      <parameterMappings>
+        <com.ceilfors.jenkins.plugins.jiratrigger.parameter.IssueAttributePathParameterMapping>
+          <jenkinsParameter>param</jenkinsParameter>
+          <issueAttributePath>path</issueAttributePath>
+        </com.ceilfors.jenkins.plugins.jiratrigger.parameter.IssueAttributePathParameterMapping>
+      </parameterMappings>
+    </com.ceilfors.jenkins.plugins.jiratrigger.JiraChangelogTrigger>
+  </triggers>
+</project>

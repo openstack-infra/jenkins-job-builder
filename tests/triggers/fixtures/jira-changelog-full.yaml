@@ -1,0 +1,19 @@
+triggers:
+  - jira-changelog:
+      jql-filter: filter
+      changelog-matchers:
+          - field-type: 'CUSTOM'
+            field: name
+            new-value: val1
+            old-value: val2
+            compare-new-value: true
+            compare-old-value: true
+          - field-type: 'JIRA'
+            field: versions
+            new-value: val3
+            old-value: val4
+            compare-new-value: true
+            compare-old-value: true
+      parameter-mapping:
+          - jenkins-parameter: param
+            issue-attribute-path: path
