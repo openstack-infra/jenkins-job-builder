@@ -1,4 +1,5 @@
 wrappers:
   - version-number:
       variable-name: relVersion
+      prefix-variable: relVersion
       format-string: ${BUILD_DATE_FORMATTED, "yy.M"}.${BUILDS_THIS_MONTH_Z}

@@ -2358,6 +2358,8 @@ def version_number(parser, xml_parent, data):
         number to (required)
     :arg str format-string: Format string used to generate version number
         (required)
+    :arg str prefix-variable: Variable that contains version number prefix
+        (optional)
     :arg bool skip-failed-builds: If the build fails, DO NOT increment any
         auto-incrementing component of the version number (default: false)
     :arg bool display-name: Use the version number for the build display
@@ -2387,6 +2389,7 @@ def version_number(parser, xml_parent, data):
         # option, xml name, default value
         ("variable-name", 'environmentVariableName', None),
         ("format-string", 'versionNumberString', None),
+        ("prefix-variable", 'environmentPrefixVariable', ''),
         ("skip-failed-builds", 'skipFailedBuilds', False),
         ("display-name", 'useAsBuildDisplayName', False),
         ("start-date", 'projectStartDate', '1970-1-1 00:00:00.0 UTC'),
