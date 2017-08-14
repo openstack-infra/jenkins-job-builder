@@ -324,7 +324,7 @@ class J2String(BaseYAMLObject):
 
     @classmethod
     def from_yaml(cls, loader, node):
-        return Jinja2Loader(node.value)
+        return Jinja2Loader(node.value, loader.search_path)
 
 
 class YamlInclude(BaseYAMLObject):
@@ -423,7 +423,7 @@ class YamlIncludeJinja2(YamlIncludeRaw):
         contents = cls._open_file(loader, node)
         if isinstance(contents, LazyLoader):
             return contents
-        return Jinja2Loader(contents)
+        return Jinja2Loader(contents, loader.search_path)
 
 
 class DeprecatedTag(BaseYAMLObject):
@@ -456,9 +456,12 @@ class CustomLoader(object):
 
 class Jinja2Loader(CustomLoader):
     """A loader for Jinja2-templated files."""
-    def __init__(self, contents):
+
+    def __init__(self, contents, search_path):
         self._template = jinja2.Template(contents)
         self._template.environment.undefined = jinja2.StrictUndefined
+        self._template.environment.loader = jinja2.FileSystemLoader(
+            search_path)
 
     def format(self, **kwargs):
         return self._template.render(kwargs)

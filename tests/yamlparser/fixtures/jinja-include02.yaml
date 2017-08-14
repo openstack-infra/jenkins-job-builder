@@ -1,0 +1,14 @@
+- builder:
+    name: test-builder
+    builders:
+        - shell: !j2: "{% include 'jinja01.yaml.inc' %}"
+
+- job:
+    name: test-job
+    builders:
+        - test-builder:
+            var: "test variable"
+            test_list:
+                - a
+                - b
+                - c
