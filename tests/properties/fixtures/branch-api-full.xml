@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <jenkins.branch.RateLimitBranchProperty_-JobPropertyImpl plugin="branch-api">
+      <durationName>Day</durationName>
+      <count>5</count>
+    </jenkins.branch.RateLimitBranchProperty_-JobPropertyImpl>
+  </properties>
+</project>

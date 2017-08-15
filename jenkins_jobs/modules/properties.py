@@ -280,6 +280,47 @@ def throttle(registry, xml_parent, data):
         matrixopt, data, mapping, fail_required=True)
 
 
+def branch_api(registry, xml_parent, data):
+    """yaml: branch-api
+    Enforces a minimum time between builds based on the desired maximum rate.
+    Requires the Jenkins :jenkins-wiki:`Branch API Plugin
+    <Branch+API+Plugin>`.
+
+    :arg int number-of-builds: The maximum number of builds allowed within
+        the specified time period. (default 1)
+    :arg str time-period: The time period within which the maximum number
+        of builds will be enforced. (default 'Hour')
+
+        :valid values:
+        * **Hour**
+        * **Day**
+        * **Week**
+        * **Month**
+        * **Year**
+
+    Minimal Example:
+
+    .. literalinclude::
+       /../../tests/properties/fixtures/branch-api-minimal.yaml
+       :language: yaml
+
+    Full example:
+
+    .. literalinclude:: /../../tests/properties/fixtures/branch-api-full.yaml
+       :language: yaml
+    """
+    branch = XML.SubElement(xml_parent, 'jenkins.branch.'
+                            'RateLimitBranchProperty_-JobPropertyImpl')
+    branch.set('plugin', 'branch-api')
+
+    valid_time_periods = ['Hour', 'Day', 'Week', 'Month', 'Year']
+
+    mapping = [
+        ('time-period', 'durationName', 'Hour', valid_time_periods),
+        ('number-of-builds', 'count', 1)]
+    helpers.convert_mapping_to_xml(branch, data, mapping, fail_required=True)
+
+
 def sidebar(registry, xml_parent, data):
     """yaml: sidebar
     Allows you to add links in the sidebar.
