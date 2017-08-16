@@ -794,6 +794,10 @@ def svn(registry, xml_parent, data):
         and exclusion patterns for displaying changelog entries as it does for
         polling for changes (default false)
     :arg list repos: list of repositories to checkout (optional)
+    :arg list additional-credentials: list of additional credentials (optional)
+        :Additional-Credentials:
+            * **realm** (`str`) --  realm to use
+            * **credentials-id** (`str`) -- optional ID of credentials to use
     :arg str viewvc-url: URL of the svn web interface (optional)
 
         :Repo:
@@ -845,6 +849,23 @@ def svn(registry, xml_parent, data):
         populate_repo_xml(locations, data)
     else:
         raise JenkinsJobsException("A top level url or repos list must exist")
+
+    def populate_additional_credential_xml(parent, data):
+        module = XML.SubElement(parent,
+                            'hudson.scm.SubversionSCM_-AdditionalCredentials')
+        XML.SubElement(module, 'realm').text = data['realm']
+        if 'credentials-id' in data:
+            XML.SubElement(module, 'credentialsId').text = data[
+                'credentials-id']
+
+    if 'additional-credentials' in data:
+        additional_credentials = XML.SubElement(scm, 'additionalCredentials')
+        additional_credentials_data = data['additional-credentials']
+
+        for additional_credential in additional_credentials_data:
+            populate_additional_credential_xml(additional_credentials,
+                                               additional_credential)
+
     updater = data.get('workspaceupdater', 'wipeworkspace')
     if updater == 'wipeworkspace':
         updaterclass = 'CheckoutUpdater'
