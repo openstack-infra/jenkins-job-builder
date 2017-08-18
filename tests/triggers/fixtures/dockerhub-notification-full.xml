@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.registry.notification.DockerHubTrigger plugin="dockerhub-notification">
+      <options class="vector">
+        <org.jenkinsci.plugins.registry.notification.opt.impl.TriggerForAllUsedInJob/>
+        <org.jenkinsci.plugins.registry.notification.opt.impl.TriggerOnSpecifiedImageNames>
+          <repoNames>
+            <string>repo1</string>
+            <string>repo2</string>
+          </repoNames>
+        </org.jenkinsci.plugins.registry.notification.opt.impl.TriggerOnSpecifiedImageNames>
+      </options>
+    </org.jenkinsci.plugins.registry.notification.DockerHubTrigger>
+  </triggers>
+</project>
