@@ -47,10 +47,6 @@ allow_empty_variables=False
 [jenkins]
 url=http://localhost:8080/
 query_plugins_info=True
-
-[hipchat]
-authtoken=dummy
-send-as=Jenkins
 """
 
 CONFIG_REQUIRED_MESSAGE = ("A valid configuration file is required. "
@@ -140,9 +136,9 @@ class JJBConfig(object):
         self.jenkins = defaultdict(None)
         self.builder = defaultdict(None)
         self.yamlparser = defaultdict(None)
-        self.hipchat = defaultdict(None)
 
         self._setup()
+        self._handle_deprecated_hipchat_config()
 
     def _init_defaults(self):
         """ Initialize default configuration values using DEFAULT_CONF
@@ -169,6 +165,37 @@ class JJBConfig(object):
                 "\n{0} is not valid.".format(config_filename))
 
         return config_fp
+
+    def _handle_deprecated_hipchat_config(self):
+        config = self.config_parser
+
+        if config.has_section('hipchat'):
+            if config.has_section('plugin "hipchat"'):
+                logger.warning(
+                    "Both [hipchat] and [plugin \"hipchat\"] sections "
+                    "defined, legacy [hipchat] section will be ignored."
+                )
+            else:
+                logger.warning(
+                    "[hipchat] section is deprecated and should be moved to a "
+                    "[plugins \"hipchat\"] section instead as the [hipchat] "
+                    "section will be ignored in the future."
+                )
+                config.add_section('plugin "hipchat"')
+                for option in config.options("hipchat"):
+                    config.set('plugin "hipchat"', option,
+                               config.get("hipchat", option))
+
+                config.remove_section("hipchat")
+
+        # remove need to reference jenkins section when using hipchat plugin
+        # moving to backports configparser would allow use of extended
+        # interpolation to remove the need for plugins to need information
+        # directly from the jenkins section within code and allow variables
+        # in the config file to refer instead.
+        if (config.has_section('plugin "hipchat"') and
+                not config.has_option('plugin "hipchat"', 'url')):
+            config.set('plugin "hipchat"', "url", config.get('jenkins', 'url'))
 
     def _setup(self):
         config = self.config_parser

@@ -115,7 +115,7 @@ class HipChat(jenkins_jobs.modules.base.Base):
                 logger.fatal("The configuration file needs a hipchat section" +
                              " containing authtoken:\n{0}".format(e))
                 sys.exit(1)
-            self.jenkinsUrl = jjb_config.jenkins['url']
+            self.jenkinsUrl = jjb_config.get_plugin_config('hipchat', 'url')
             self.sendAs = jjb_config.get_plugin_config('hipchat', 'send-as')
 
     def gen_xml(self, xml_parent, data):
