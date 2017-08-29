@@ -18,6 +18,9 @@
       <commitInfoChoice>NONE</commitInfoChoice>
       <includeCustomMessage>false</includeCustomMessage>
       <customMessage/>
+      <authTokenCredentialId/>
+      <botUser>false</botUser>
+      <baseUrl/>
     </jenkins.plugins.slack.SlackNotifier>
   </publishers>
 </project>
