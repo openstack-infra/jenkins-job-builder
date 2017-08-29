@@ -5,8 +5,8 @@
       <instancesToRun>
         <jenkins.plugins.openstack.compute.InstancesToRun>
           <cloudName>mycloud1</cloudName>
-          <templateName>jenkins-dev-slave</templateName>
           <count>1</count>
+          <templateName>jenkins-dev-slave</templateName>
         </jenkins.plugins.openstack.compute.InstancesToRun>
       </instancesToRun>
     </jenkins.plugins.openstack.compute.JCloudsBuildWrapper>
