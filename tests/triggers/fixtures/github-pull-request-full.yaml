@@ -27,6 +27,9 @@ triggers:
       white-list-target-branches:
         - master
         - testing
+      black-list-target-branches:
+        - master
+        - testing
       auth-id: '123-456-789'
       status-context: "status context"
       triggered-status: "triggered status message"
