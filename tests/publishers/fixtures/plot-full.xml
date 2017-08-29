@@ -6,15 +6,15 @@
         <hudson.plugins.plot.Plot>
           <title>MyPlot</title>
           <yaxis>Y</yaxis>
-          <width>750</width>
-          <height>450</height>
+          <width>900</width>
+          <height>1000</height>
           <csvFileName>myplot.csv</csvFileName>
           <group>PlotGroup</group>
-          <useDescr>false</useDescr>
+          <useDescr>true</useDescr>
           <exclZero>true</exclZero>
           <logarithmic>true</logarithmic>
-          <keepRecords>false</keepRecords>
-          <numBuilds/>
+          <keepRecords>true</keepRecords>
+          <numBuilds>1</numBuilds>
           <style>line</style>
           <series>
             <hudson.plugins.plot.PropertiesSeries>
@@ -24,10 +24,15 @@
             </hudson.plugins.plot.PropertiesSeries>
             <hudson.plugins.plot.CSVSeries>
               <file>graph-me-first.csv</file>
-              <inclusionFlag>OFF</inclusionFlag>
-              <exclusionValues/>
+              <inclusionFlag>INCLUDE_BY_STRING</inclusionFlag>
+              <exclusionValues>Column 1,Column 2,Column 3</exclusionValues>
               <url>http://srv1</url>
               <displayTableFlag>true</displayTableFlag>
+              <strExclusionSet>
+                <string>Column 1</string>
+                <string>Column 2</string>
+                <string>Column 3</string>
+              </strExclusionSet>
               <fileType>csv</fileType>
             </hudson.plugins.plot.CSVSeries>
           </series>
@@ -44,13 +49,13 @@
           <logarithmic>false</logarithmic>
           <keepRecords>false</keepRecords>
           <numBuilds/>
-          <style>line</style>
+          <style>bar</style>
           <series>
             <hudson.plugins.plot.XMLSeries>
               <file>graph-me-third.xml</file>
               <url>http://srv2</url>
               <xpathString>/*</xpathString>
-              <nodeTypeString>NODE</nodeTypeString>
+              <nodeTypeString>STRING</nodeTypeString>
               <fileType>xml</fileType>
             </hudson.plugins.plot.XMLSeries>
           </series>

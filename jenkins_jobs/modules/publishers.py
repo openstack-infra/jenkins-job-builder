@@ -27,7 +27,6 @@ the build is complete.
 
 import logging
 import pkg_resources
-import random
 import xml.etree.ElementTree as XML
 
 import six
@@ -4174,12 +4173,14 @@ def plot(registry, xml_parent, data):
                 Xpath which selects the values that should be plotted.
 
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/plot004.yaml
+    .. literalinclude:: /../../tests/publishers/fixtures/plot-minimal.yaml
        :language: yaml
 
-    .. literalinclude:: /../../tests/publishers/fixtures/plot005.yaml
+    Full Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/plot-full.yaml
        :language: yaml
     """
     top = XML.SubElement(xml_parent, 'hudson.plugins.plot.PlotPublisher')
@@ -4194,14 +4195,43 @@ def plot(registry, xml_parent, data):
                       'exclude-by-string': 'EXCLUDE_BY_STRING',
                       'include-by-column': 'INCLUDE_BY_COLUMN',
                       'exclude-by-column': 'EXCLUDE_BY_COLUMN'}
+
+    style_list = ['area', 'bar', 'bar3d', 'line', 'line3d', 'stackedArea',
+                  'stackedbar', 'stackedbar3d', 'waterfall']
+
+    plot_mappings = [
+        ('title', 'title', ''),
+        ('yaxis', 'yaxis', ''),
+        ('width', 'width', '750'),
+        ('height', 'height', '450'),
+        ('csv-file-name', 'csvFileName', ''),
+        ('group', 'group', None),
+        ('use-description', 'useDescr', False),
+        ('exclude-zero-yaxis', 'exclZero', False),
+        ('logarithmic-yaxis', 'logarithmic', False),
+        ('keep-records', 'keepRecords', False),
+        ('num-builds', 'numBuilds', ''),
+        ('style', 'style', 'line', style_list),
+    ]
+
+    plot_csv_mappings = [
+        ('inclusion-flag', 'inclusionFlag', 'off', inclusion_dict),
+        ('exclude', 'exclusionValues', ''),
+        ('url', 'url', ''),
+        ('display-table', 'displayTableFlag', False)
+    ]
+
+    plot_xml_mappings = [
+        ('url', 'url', ''),
+        ('xpath', 'xpathString', ''),
+        ('xpath-type', 'nodeTypeString', 'node', xpath_dict)
+    ]
+
     for plot in data:
         plugin = XML.SubElement(plots, 'hudson.plugins.plot.Plot')
-        XML.SubElement(plugin, 'title').text = plot.get('title', '')
-        XML.SubElement(plugin, 'yaxis').text = plot['yaxis']
-        XML.SubElement(plugin, 'width').text = str(plot.get('width', '750'))
-        XML.SubElement(plugin, 'height').text = str(plot.get('height', '450'))
-        XML.SubElement(plugin, 'csvFileName').text = \
-            plot.get('csv-file-name', '%s.csv' % random.randrange(2 << 32))
+        helpers.convert_mapping_to_xml(
+            plugin, plot, plot_mappings, fail_required=True)
+
         topseries = XML.SubElement(plugin, 'series')
         series = plot['series']
         for serie in series:
@@ -4215,55 +4245,18 @@ def plot(registry, xml_parent, data):
             if format_data == 'properties':
                 XML.SubElement(subserie, 'label').text = serie.get('label', '')
             if format_data == 'csv':
-                inclusion_flag = serie.get('inclusion-flag', 'off')
-                if inclusion_flag not in inclusion_dict:
-                    raise JenkinsJobsException("Inclusion flag result entered "
-                                               "is not valid, must be one of: "
-                                               "%s"
-                                               % ", ".join(inclusion_dict))
-                XML.SubElement(subserie, 'inclusionFlag').text = \
-                    inclusion_dict.get(inclusion_flag)
-                XML.SubElement(subserie, 'exclusionValues').text = \
-                    serie.get('exclude', '')
+                helpers.convert_mapping_to_xml(
+                    subserie, serie, plot_csv_mappings, fail_required=True)
                 if serie.get('exclude', ''):
                     exclude_strings = serie.get('exclude', '').split(',')
                     exclusionset = XML.SubElement(subserie, 'strExclusionSet')
                     for exclude_string in exclude_strings:
                         XML.SubElement(exclusionset, 'string').text = \
                             exclude_string
-                XML.SubElement(subserie, 'url').text = serie.get('url', '')
-                XML.SubElement(subserie, 'displayTableFlag').text = \
-                    str(serie.get('display-table', False)).lower()
             if format_data == 'xml':
-                XML.SubElement(subserie, 'url').text = serie.get('url', '')
-                XML.SubElement(subserie, 'xpathString').text = \
-                    serie.get('xpath')
-                xpathtype = serie.get('xpath-type', 'node')
-                if xpathtype not in xpath_dict:
-                    raise JenkinsJobsException("XPath result entered is not "
-                                               "valid, must be one of: %s" %
-                                               ", ".join(xpath_dict))
-                XML.SubElement(subserie, 'nodeTypeString').text = \
-                    xpath_dict.get(xpathtype)
+                helpers.convert_mapping_to_xml(
+                    subserie, serie, plot_xml_mappings, fail_required=True)
             XML.SubElement(subserie, 'fileType').text = serie.get('format')
-
-        mappings = [
-            ('group', 'group', None),
-            ('use-description', 'useDescr', False),
-            ('exclude-zero-yaxis', 'exclZero', False),
-            ('logarithmic-yaxis', 'logarithmic', False),
-            ('keep-records', 'keepRecords', False),
-            ('num-builds', 'numBuilds', '')]
-        helpers.convert_mapping_to_xml(
-            plugin, plot, mappings, fail_required=True)
-
-        style_list = ['area', 'bar', 'bar3d', 'line', 'line3d', 'stackedArea',
-                      'stackedbar', 'stackedbar3d', 'waterfall']
-        style = plot.get('style', 'line')
-        if style not in style_list:
-            raise JenkinsJobsException("style entered is not valid, must be "
-                                       "one of: %s" % ", ".join(style_list))
-        XML.SubElement(plugin, 'style').text = style
 
 
 def git(registry, xml_parent, data):
