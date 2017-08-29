@@ -1,0 +1,3 @@
+- view:
+    name: invalid-view-type
+    view-type: invalid
