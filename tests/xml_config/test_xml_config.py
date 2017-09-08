@@ -52,9 +52,6 @@ class TestXmlJobGeneratorExceptions(base.BaseTestCase):
 
         reg = registry.ModuleRegistry(config)
         reg.set_parser_data(yp.data)
-        job_data_list, view_data_list = yp.expandYaml(reg)
 
-        xml_generator = xml_config.XmlJobGenerator(reg)
-        self.assertRaises(Exception, xml_generator.generateXML, job_data_list)
-        self.assertIn("Failure formatting component", self.logger.output)
+        self.assertRaises(errors.JenkinsJobsException, yp.expandYaml, reg)
         self.assertIn("Problem formatting with args", self.logger.output)
