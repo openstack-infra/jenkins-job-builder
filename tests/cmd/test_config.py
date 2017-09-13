@@ -130,8 +130,8 @@ class TestConfigs(CmdTestsBase):
         # contains the expected timeout value.
 
         jjb_config = jenkins_mock.call_args[0][0]
-        self.assertEquals(jjb_config.jenkins['timeout'],
-                          builder._DEFAULT_TIMEOUT)
+        self.assertEqual(jjb_config.jenkins['timeout'],
+                         builder._DEFAULT_TIMEOUT)
 
     @mock.patch('jenkins_jobs.cli.subcommand.update.JenkinsManager')
     def test_update_timeout_set(self, jenkins_mock):
@@ -154,4 +154,4 @@ class TestConfigs(CmdTestsBase):
         # contains the expected timeout value.
 
         jjb_config = jenkins_mock.call_args[0][0]
-        self.assertEquals(jjb_config.jenkins['timeout'], 0.2)
+        self.assertEqual(jjb_config.jenkins['timeout'], 0.2)
