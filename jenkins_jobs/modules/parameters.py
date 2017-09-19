@@ -868,6 +868,112 @@ def random_string_param(registry, xml_parent, data):
     convert_mapping_to_xml(pdef, data, mapping, fail_required=True)
 
 
+def git_parameter_param(registry, xml_parent, data):
+    """yaml: git-parameter
+    This parameter allows to select a git tag, branch or revision number as
+    parameter in Parametrized builds.
+    Requires the Jenkins :jenkins-wiki:`Git Parameter Plugin
+    <Git+Parameter+Plugin>`.
+
+    :arg str name: Name of the parameter
+    :arg str description: Description of the parameter (default '')
+    :arg str type: The type of the list of parameters (default 'PT_TAG')
+
+        :Allowed Values: * **PT_TAG** list of all commit tags in repository -
+                        returns Tag Name
+                    * **PT_BRANCH** list of all branches in repository -
+                        returns Branch Name
+                    * **PT_BRANCH_TAG** list of all commit tags and all
+                        branches in repository - returns Tag Name or Branch
+                        Name
+                    * **PT_REVISION** list of all revision sha1 in repository
+                        followed by its author and date - returns Tag SHA1
+                    * **PT_PULL_REQUEST**
+
+    :arg str branch: Name of branch to look in. Used only if listing
+        revisions.  (default '')
+    :arg str branchFilter: Regex used to filter displayed branches. If blank,
+        the filter will default to ".*". Remote branches will be listed with
+        the remote name first. E.g., "origin/master"  (default '.*')
+    :arg str tagFilter: Regex used to filter displayed branches. If blank, the
+        filter will default to ".*". Remote branches will be listed with the
+        remote name first. E.g., "origin/master"  (default '*')
+    :arg str sortMode: Mode of sorting.  (default 'NONE')
+
+        :Allowed Values: * **NONE**
+                    * **DESCENDING**
+                    * **ASCENDING**
+                    * **ASCENDING SMART**
+                    * **DESCENDING SMART**
+
+    :arg str defaultValue: This value is returned when list is empty. (default
+        '')
+    :arg str selectedValue: Which value is selected, after loaded parameters.
+        If you choose 'default', but default value is not present on the list,
+        nothing is selected. (default 'NONE')
+
+        :Allowed Values: * **NONE**
+                    * **TOP**
+                    * **DEFAULT**
+
+    :arg str useRepository: If in the task is defined multiple repositories
+        parameter specifies which the repository is taken into account. If the
+        parameter is not defined, is taken first defined repository. The
+        parameter is a regular expression which is compared with a URL
+        repository. (default '')
+    :arg bool quickFilterEnabled: When this option is enabled will show a text
+        field. Parameter is filtered on the fly. (default false)
+
+    Minimal Example:
+
+    .. literalinclude::
+       /../../tests/parameters/fixtures/git-parameter-param-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+       /../../tests/parameters/fixtures/git-parameter-param-full.yaml
+       :language: yaml
+    """
+    pdef = XML.SubElement(xml_parent,
+                          'net.uaznia.lukanus.hudson.plugins.gitparameter.'
+                          'GitParameterDefinition')
+
+    valid_types = [
+        'PT_TAG',
+        'PT_BRANCH',
+        'PT_BRANCH_TAG',
+        'PT_REVISION',
+        'PT_PULL_REQUEST',
+    ]
+
+    valid_sort_modes = [
+        'NONE',
+        'ASCENDING',
+        'ASCENDING SMART',
+        'DESCENDING',
+        'DESCENDING SMART',
+    ]
+
+    valid_selected_values = ['NONE', 'TOP', 'DEFAULT']
+
+    mapping = [
+        ('name', 'name', None),
+        ('description', 'description', ''),
+        ('type', 'type', 'PT_TAG', valid_types),
+        ('branch', 'branch', ''),
+        ('tagFilter', 'tagFilter', '*'),
+        ('branchFilter', 'branchFilter', '.*'),
+        ('sortMode', 'sortMode', 'NONE', valid_sort_modes),
+        ('defaultValue', 'defaultValue', ''),
+        ('selectedValue', 'selectedValue', 'NONE', valid_selected_values),
+        ('useRepository', 'useRepository', ''),
+        ('quickFilterEnabled', 'quickFilterEnabled', False),
+    ]
+    convert_mapping_to_xml(pdef, data, mapping, fail_required=True)
+
+
 class Parameters(jenkins_jobs.modules.base.Base):
     sequence = 21
 

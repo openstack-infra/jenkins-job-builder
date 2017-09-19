@@ -1,0 +1,13 @@
+parameters:
+  - git-parameter:
+      name: Foo
+      description: Lorem ipsum dolor sit amet.
+      type: PT_BRANCH_TAG
+      branch: baz
+      tagFilter: bam
+      branchFilter: boo
+      sortMode: ASCENDING
+      defaultValue: bor
+      selectedValue: TOP
+      useRepository: buh
+      quickFilterEnabled: true

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <net.uaznia.lukanus.hudson.plugins.gitparameter.GitParameterDefinition>
+          <name>Foo</name>
+          <description>Lorem ipsum dolor sit amet.</description>
+          <type>PT_BRANCH_TAG</type>
+          <branch>baz</branch>
+          <tagFilter>bam</tagFilter>
+          <branchFilter>boo</branchFilter>
+          <sortMode>ASCENDING</sortMode>
+          <defaultValue>bor</defaultValue>
+          <selectedValue>TOP</selectedValue>
+          <useRepository>buh</useRepository>
+          <quickFilterEnabled>true</quickFilterEnabled>
+        </net.uaznia.lukanus.hudson.plugins.gitparameter.GitParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+</project>
