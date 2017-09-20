@@ -27,6 +27,7 @@ the build is complete.
 
 import logging
 import pkg_resources
+import sys
 import xml.etree.ElementTree as XML
 
 import six
@@ -5590,10 +5591,11 @@ def conditional_publisher(registry, xml_parent, data):
 
             action_parent = cond_publisher
 
-            plugin_info = \
-                registry.get_plugin_info("Flexible Publish Plugin")
-            version = pkg_resources.parse_version(plugin_info.get('version',
-                                                                  '0'))
+            plugin_info = registry.get_plugin_info("Flexible Publish Plugin")
+            # Note: Assume latest version of plugin is preferred config format
+            version = pkg_resources.parse_version(
+                plugin_info.get('version', str(sys.maxsize)))
+
             # XML tag changed from publisher to publisherList in v0.13
             # check the plugin version to determine further operations
             use_publisher_list = version >= pkg_resources.parse_version("0.13")
