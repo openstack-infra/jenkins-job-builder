@@ -8,6 +8,13 @@ YAML file, or a directory.  If you choose a directory, all of
 the .yaml/.yml or .json files in that directory will be read, and all the
 jobs they define will be created or updated.
 
+.. note::
+
+    Jenkins Job Builder 2.x plugins are designed to default to generating the
+    xml format for the latest supported version of JJB. This is a change in
+    behaviour from 1.x and below which defaulted to the oldest supported plugin
+    version.
+
 Definitions
 -----------
 
