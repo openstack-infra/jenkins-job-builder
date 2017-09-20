@@ -1,6 +1,7 @@
 builders:
   - sonar:
       sonar-name: Sonar
+      scanner-name: scanner-3.x
       task: views
       project: sonar-project.properties
       properties: sonar.views.list=myview1,myview2

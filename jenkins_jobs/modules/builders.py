@@ -2979,6 +2979,7 @@ def sonar(registry, xml_parent, data):
         AnalyzingwiththeSonarQubeScanner>`_
 
     :arg str sonar-name: Name of the Sonar installation.
+    :arg str sonar-scanner: Name of the Sonar Scanner.
     :arg str task: Task to run. (default '')
     :arg str project: Path to Sonar project properties file. (default '')
     :arg str properties: Sonar configuration properties. (default '')
@@ -2997,6 +2998,7 @@ def sonar(registry, xml_parent, data):
     sonar.set('plugin', 'sonar')
     XML.SubElement(sonar, 'installationName').text = data['sonar-name']
     mappings = [
+        ('scanner-name', 'sonarScannerName', ''),
         ('task', 'task', ''),
         ('project', 'project', ''),
         ('properties', 'properties', ''),
