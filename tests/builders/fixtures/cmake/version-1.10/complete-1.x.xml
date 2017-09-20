@@ -8,13 +8,13 @@
       <preloadScript>path/to/source/cmake.preload</preloadScript>
       <buildDir>path/to/build</buildDir>
       <installDir>path/to/install</installDir>
-      <buildType>Debug</buildType>
-      <otherBuildType>CustomReleaseType</otherBuildType>
       <makeCommand>/usr/bin/make</makeCommand>
       <installCommand>make new-install</installCommand>
       <cmakeArgs>-DCMAKE_FIND_ROOT_PATH=&quot;path/to/something/else&quot;</cmakeArgs>
       <projectCmakePath>/usr/bin/cmake</projectCmakePath>
       <cleanInstallDir>true</cleanInstallDir>
+      <buildType>Debug</buildType>
+      <otherBuildType>CustomReleaseType</otherBuildType>
       <builderImpl/>
     </hudson.plugins.cmake.CmakeBuilder>
   </builders>

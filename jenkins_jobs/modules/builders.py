@@ -37,6 +37,7 @@ Example::
 """
 
 import logging
+import sys
 import xml.etree.ElementTree as XML
 
 from jenkins_jobs.errors import is_sequence
@@ -2614,67 +2615,57 @@ def cmake(registry, xml_parent, data):
     """
 
     BUILD_TYPES = ['Debug', 'Release', 'RelWithDebInfo', 'MinSizeRel']
-
     cmake = XML.SubElement(xml_parent, 'hudson.plugins.cmake.CmakeBuilder')
 
-    source_dir = XML.SubElement(cmake, 'sourceDir')
-    try:
-        source_dir.text = data['source-dir']
-    except KeyError:
-        raise MissingAttributeError('source-dir')
+    mapping = [
+        ('source-dir', 'sourceDir', None),  # Required parameter
+        ('generator', 'generator', "Unix Makefiles"),
+        ('clean-build-dir', 'cleanBuild', False),
+    ]
+    helpers.convert_mapping_to_xml(cmake, data, mapping, fail_required=True)
 
-    XML.SubElement(cmake, 'generator').text = str(
-        data.get('generator', "Unix Makefiles"))
+    info = registry.get_plugin_info("CMake plugin")
+    # Note: Assume latest version of plugin is preferred config format
+    version = pkg_resources.parse_version(
+        info.get("version", str(sys.maxsize)))
 
-    XML.SubElement(cmake, 'cleanBuild').text = str(
-        data.get('clean-build-dir', False)).lower()
-
-    plugin_info = registry.get_plugin_info("CMake plugin")
-    version = pkg_resources.parse_version(plugin_info.get("version", "1.0"))
-
-    # Version 2.x breaks compatibility. So parse the input data differently
-    # based on it:
     if version >= pkg_resources.parse_version("2.0"):
-        if data.get('preload-script'):
-            XML.SubElement(cmake, 'preloadScript').text = str(
-                data.get('preload-script', ''))
-
-        XML.SubElement(cmake, 'workingDir').text = str(
-            data.get('working-dir', ''))
-
-        XML.SubElement(cmake, 'buildType').text = str(
-            data.get('build-type', 'Debug'))
-
-        XML.SubElement(cmake, 'installationName').text = str(
-            data.get('installation-name', 'InSearchPath'))
-
-        XML.SubElement(cmake, 'toolArgs').text = str(
-            data.get('other-arguments', ''))
+        mapping_20 = [
+            ('preload-script', 'preloadScript', None),  # Optional parameter
+            ('working-dir', 'workingDir', ''),
+            ('build-type', 'buildType', 'Debug'),
+            ('installation-name', 'installationName', 'InSearchPath'),
+            ('other-arguments', 'toolArgs', ''),
+        ]
+        helpers.convert_mapping_to_xml(
+            cmake, data, mapping_20, fail_required=False)
 
         tool_steps = XML.SubElement(cmake, 'toolSteps')
 
         for step_data in data.get('build-tool-invocations', []):
-            tagname = 'hudson.plugins.cmake.BuildToolStep'
-            step = XML.SubElement(tool_steps, tagname)
-
-            XML.SubElement(step, 'withCmake').text = str(
-                step_data.get('use-cmake', False)).lower()
-
-            XML.SubElement(step, 'args').text = str(
-                step_data.get('arguments', ''))
-
-            XML.SubElement(step, 'vars').text = str(
-                step_data.get('environment-variables', ''))
+            step = XML.SubElement(
+                tool_steps, 'hudson.plugins.cmake.BuildToolStep')
+            step_mapping = [
+                ('use-cmake', 'withCmake', False),
+                ('arguments', 'args', ''),
+                ('environment-variables', 'vars', ''),
+            ]
+            helpers.convert_mapping_to_xml(
+                step, step_data, step_mapping, fail_required=True)
 
     else:
-        XML.SubElement(cmake, 'preloadScript').text = str(
-            data.get('preload-script', ''))
-
-        build_dir = XML.SubElement(cmake, 'buildDir')
-        build_dir.text = data.get('build-dir', '')
-
-        install_dir = XML.SubElement(cmake, 'installDir')
-        install_dir.text = data.get('install-dir', '')
+        mapping_10 = [
+            ('preload-script', 'preloadScript', ''),
+            ('build-dir', 'buildDir', ''),
+            ('install-dir', 'installDir', ''),
+            ('make-command', 'makeCommand', 'make'),
+            ('install-command', 'installCommand', 'make install'),
+            ('other-arguments', 'cmakeArgs', ''),
+            ('custom-cmake-path', 'projectCmakePath', ''),
+            ('clean-install-dir', 'cleanInstallDir', False),
+        ]
+        helpers.convert_mapping_to_xml(
+            cmake, data, mapping_10, fail_required=True)
 
         # The options buildType and otherBuildType work together on the CMake
         # plugin:
@@ -2688,30 +2679,13 @@ def cmake(registry, xml_parent, data):
         # option, so this was done to simplify it for the JJB user.
         build_type = XML.SubElement(cmake, 'buildType')
         build_type.text = data.get('build-type', BUILD_TYPES[0])
-
         other_build_type = XML.SubElement(cmake, 'otherBuildType')
 
-        if(build_type.text not in BUILD_TYPES):
+        if build_type.text not in BUILD_TYPES:
             other_build_type.text = build_type.text
             build_type.text = BUILD_TYPES[0]
         else:
             other_build_type.text = ''
-
-        make_command = XML.SubElement(cmake, 'makeCommand')
-        make_command.text = data.get('make-command', 'make')
-
-        install_command = XML.SubElement(cmake, 'installCommand')
-        install_command.text = data.get('install-command', 'make install')
-
-        other_cmake_args = XML.SubElement(cmake, 'cmakeArgs')
-        other_cmake_args.text = data.get('other-arguments', '')
-
-        custom_cmake_path = XML.SubElement(cmake, 'projectCmakePath')
-        custom_cmake_path.text = data.get('custom-cmake-path', '')
-
-        clean_install_dir = XML.SubElement(cmake, 'cleanInstallDir')
-        clean_install_dir.text = str(data.get('clean-install-dir',
-                                              False)).lower()
 
         # The plugin generates this tag, but there doesn't seem to be anything
         # that can be configurable by it. Let's keep it to maintain
