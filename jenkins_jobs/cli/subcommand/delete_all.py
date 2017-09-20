@@ -69,10 +69,10 @@ class DeleteAllSubCommand(base.BaseSubCommand):
                 'Job Builder)'.format(" AND ".join(reach))):
             sys.exit('Aborted')
 
-        if options.del_jobs:
+        if 'jobs' in reach:
             logger.info("Deleting all jobs")
             builder.delete_all_jobs()
 
-        if options.del_views:
+        if 'views' in reach:
             logger.info("Deleting all views")
             builder.delete_all_views()
