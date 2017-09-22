@@ -325,33 +325,36 @@ class JJBConfig(object):
                        'allow_empty_variables',
                        str(self.yamlparser['allow_empty_variables']))
 
-    def get_module_config(self, section, key):
+    def get_module_config(self, section, key, default=None):
         """ Given a section name and a key value, return the value assigned to
         the key in the JJB .ini file if it exists, otherwise emit a warning
         indicating that the value is not set. Default value returned if no
         value is set in the file will be a blank string.
         """
-        result = ''
+        result = default
         try:
             result = self.config_parser.get(
                 section, key
             )
         except (configparser.NoSectionError, configparser.NoOptionError,
                 JenkinsJobsException) as e:
-            logger.warning("You didn't set a " + key +
-                           " neither in the yaml job definition nor in" +
-                           " the " + section + " section, blank default" +
-                           " value will be applied:\n{0}".format(e))
+            # use of default ignores missing sections/options
+            if result is None:
+                logger.warning(
+                    "You didn't set a %s neither in the yaml job definition "
+                    "nor in the %s section, blank default value will be "
+                    "applied:\n%s", key, section, e)
         return result
 
-    def get_plugin_config(self, plugin, key):
-        value = self.get_module_config('plugin "{}"'.format(plugin), key)
+    def get_plugin_config(self, plugin, key, default=None):
+        value = self.get_module_config('plugin "{}"'.format(plugin), key,
+                                       default)
 
         # Backwards compatibility for users who have not switched to the new
         # plugin configuration format in their config. This code should be
         # removed in future versions of JJB after 2.0.
-        if not value:
-            value = self.get_module_config(plugin, key)
+        if value is default:
+            value = self.get_module_config(plugin, key, default)
             logger.warning(
                 "Defining plugin configuration using [" + plugin + "] is"
                 " deprecated. The recommended way to define plugins now is by"

@@ -14,7 +14,6 @@
 
 import logging
 
-import six
 import xml.etree.ElementTree as XML
 
 from jenkins_jobs.errors import InvalidAttributeError
@@ -251,10 +250,7 @@ def findbugs_settings(xml_parent, data):
 
 
 def get_value_from_yaml_or_config_file(key, section, data, jjb_config):
-    result = data.get(key, '')
-    if result == '':
-        result = jjb_config.get_plugin_config(section, key)
-    return result
+    return jjb_config.get_plugin_config(section, key, data.get(key, ''))
 
 
 def cloudformation_region_dict():
@@ -469,39 +465,31 @@ def test_fairy_common(xml_element, data):
     convert_mapping_to_xml(xml_element, data, mappings, fail_required=True)
 
 
-def trigger_get_parameter_order(registry):
+def trigger_get_parameter_order(registry, plugin):
     logger = logging.getLogger("%s:trigger_get_parameter_order" % __name__)
-    # original order
-    param_order = [
-        'predefined-parameters',
-        'git-revision',
-        'property-file',
-        'current-parameters',
-        'node-parameters',
-        'svn-revision',
-        'restrict-matrix-project',
-        'node-label-name',
-        'node-label',
-        'boolean-parameters',
-    ]
 
-    try:
-        if registry.jjb_config.config_parser.getboolean(
-                '__future__', 'param_order_from_yaml'):
-            param_order = None
-    except six.moves.configparser.NoSectionError:
-        pass
-
-    if param_order:
+    if str(registry.jjb_config.get_plugin_config(
+            plugin, 'param_order_from_yaml', True)).lower() == 'false':
         logger.warning(
-            "Using deprecated order for parameter sets in "
-            "triggered-parameterized-builds. This will be changed in a future "
-            "release to inherit the order from the user defined yaml. To "
-            "enable this behaviour immediately, set the config option "
-            "'__future__.param_order_from_yaml' to 'true' and change the "
-            "input job configuration to use the desired order")
+            "Using deprecated order for parameter sets in %s. It is "
+            "recommended that you update your job definition instead of "
+            "enabling use of the old hardcoded order", plugin)
 
-    return param_order
+        # deprecated order
+        return [
+            'predefined-parameters',
+            'git-revision',
+            'property-file',
+            'current-parameters',
+            'node-parameters',
+            'svn-revision',
+            'restrict-matrix-project',
+            'node-label-name',
+            'node-label',
+            'boolean-parameters',
+        ]
+
+    return None
 
 
 def trigger_project(tconfigs, project_def, param_order=None):

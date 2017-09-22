@@ -532,7 +532,8 @@ def trigger_parameterized_builds(registry, xml_parent, data):
     tbuilder = XML.SubElement(xml_parent, pt_prefix + 'BuildTrigger')
     configs = XML.SubElement(tbuilder, 'configs')
 
-    param_order = helpers.trigger_get_parameter_order(registry)
+    param_order = helpers.trigger_get_parameter_order(
+        registry, 'trigger-parameterized-builds')
 
     for project_def in data:
         tconfig = XML.SubElement(configs, pt_prefix + 'BuildTriggerConfig')
@@ -1839,7 +1840,7 @@ def pipeline(registry, xml_parent, data):
     See 'samples/pipeline.yaml' for an example pipeline implementation.
     """
     logger = logging.getLogger("%s:pipeline" % __name__)
-    param_order = helpers.trigger_get_parameter_order(registry)
+    param_order = helpers.trigger_get_parameter_order(registry, 'pipeline')
 
     if 'project' in data:
         logger.warning(
