@@ -50,6 +50,8 @@ in the :ref:`Job` definition.
     * **resolve-dependencies** (`bool`): Resolve Dependencies during Pom
       parsing (default false).
     * **run-headless** (`bool`): Run headless (default false).
+    * **disable-downstream** (`bool`): Disable triggering of downstream
+      projects (default false).
     * **process-plugins** (`bool`): Process Plugins during Pom parsing
       (default false).
     * **custom-workspace** (`str`): Path to the custom workspace. If no path is
@@ -164,6 +166,8 @@ class Maven(jenkins_jobs.modules.base.Base):
         XML.SubElement(xml_parent, 'mavenValidationLevel').text = '-1'
         XML.SubElement(xml_parent, 'runHeadless').text = str(
             data['maven'].get('run-headless', False)).lower()
+        XML.SubElement(xml_parent, 'disableTriggerDownstreamProjects').text = \
+            str(data['maven'].get('disable-downstream', False)).lower()
         if 'custom-workspace' in data['maven']:
             XML.SubElement(xml_parent, 'customWorkspace').text = str(
                 data['maven'].get('custom-workspace'))

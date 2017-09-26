@@ -14,4 +14,5 @@ maven:
   resolve-dependencies: true
   process-plugins: true
   run-headless: true
+  disable-downstream: true
   custom-workspace: path/to/some/repository
