@@ -114,7 +114,7 @@ class UpdateTests(CmdTestsBase):
         jenkins_delete_job.assert_has_calls(calls)
         # to ensure only the calls we expected were made, have to check
         # there were no others, as no API call for assert_has_only_calls
-        self.assertEquals(jenkins_delete_job.call_count, len(calls))
+        self.assertEqual(jenkins_delete_job.call_count, len(calls))
 
     def test_update_timeout_not_set(self):
         """Validate update timeout behavior when timeout not explicitly configured.

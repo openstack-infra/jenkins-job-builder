@@ -67,7 +67,7 @@ class TestCaseTestJenkinsManager(base.BaseTestCase):
             patches['is_managed'].side_effect = [True, True]
 
             self.builder.delete_old_managed()
-            self.assertEquals(patches['delete_job'].call_count, 2)
+            self.assertEqual(patches['delete_job'].call_count, 2)
 
     def _get_plugins_info_error_test(self, error_string):
         builder = jenkins_jobs.builder.JenkinsManager(self.jjb_config)
