@@ -59,6 +59,13 @@ class UpdateSubCommand(base.BaseSubCommand):
             default=False,
             help='delete obsolete jobs')
         update.add_argument(
+            '-p', '--plugin-info',
+            dest='plugins_info_path',
+            default=None,
+            help='path to plugin info YAML file. Can be used to provide '
+            'previously retrieved plugins info when connecting credentials '
+            'don\'t have permissions to query.')
+        update.add_argument(
             '--workers',
             type=int,
             default=1,
