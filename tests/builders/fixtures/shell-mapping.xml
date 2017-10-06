@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>make test</command>
+      <unstableReturn>0</unstableReturn>
+    </hudson.tasks.Shell>
+  </builders>
+</project>

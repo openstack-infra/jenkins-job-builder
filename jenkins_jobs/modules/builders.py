@@ -40,6 +40,8 @@ import logging
 import sys
 import xml.etree.ElementTree as XML
 
+import six
+
 from jenkins_jobs.errors import is_sequence
 from jenkins_jobs.errors import InvalidAttributeError
 from jenkins_jobs.errors import JenkinsJobsException
@@ -65,16 +67,36 @@ def shell(registry, xml_parent, data):
     """yaml: shell
     Execute a shell command.
 
+    There are two ways of configuring the builder, with a plain string to
+    execute:
+
     :arg str parameter: the shell command to execute
+
+    Or with a mapping that allows other parameters to be passed:
+
+    :arg str command: the shell command to execute
+    :arg int unstable-return:
+        the shell exit code to interpret as an unstable build result
 
     Example:
 
     .. literalinclude:: /../../tests/builders/fixtures/shell.yaml
        :language: yaml
 
+    .. literalinclude::
+        /../../tests/builders/fixtures/shell-unstable-return.yaml
+       :language: yaml
     """
     shell = XML.SubElement(xml_parent, 'hudson.tasks.Shell')
-    XML.SubElement(shell, 'command').text = data
+    if isinstance(data, six.string_types):
+        XML.SubElement(shell, 'command').text = data
+    else:
+        mappings = [
+            ('command', 'command', None),
+            ('unstable-return', 'unstableReturn', 0),
+
+        ]
+        convert_mapping_to_xml(shell, data, mappings, fail_required=True)
 
 
 def python(registry, xml_parent, data):
