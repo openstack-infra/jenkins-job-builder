@@ -50,6 +50,8 @@ COLUMN_DICT = {
     'build-button': 'hudson.views.BuildButtonColumn',
     'last-stable': 'hudson.views.LastStableColumn',
 }
+DEFAULT_COLUMNS = ['status', 'weather', 'job', 'last-success', 'last-failure',
+                   'last-duration', 'build-button']
 
 
 class List(jenkins_jobs.modules.base.Base):
@@ -78,7 +80,7 @@ class List(jenkins_jobs.modules.base.Base):
         XML.SubElement(root, 'jobFilters')
 
         c_xml = XML.SubElement(root, 'columns')
-        columns = data.get('columns', [])
+        columns = data.get('columns', DEFAULT_COLUMNS)
 
         for column in columns:
             if column in COLUMN_DICT:
