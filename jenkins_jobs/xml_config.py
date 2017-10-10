@@ -123,6 +123,12 @@ class XmlViewGenerator(object):
             self._gen_xml(xml, data)
             view = XmlJob(xml, data['name'])
             return view
+        names = [
+            ep.name for ep in pkg_resources.iter_entry_points(
+                group='jenkins_jobs.views')]
+        raise errors.JenkinsJobsException(
+            'Unrecognized view type: {} (supported types are: {})'.format(
+                kind, ', '.join(names)))
 
     def _gen_xml(self, xml, data):
         for module in self.registry.modules:
