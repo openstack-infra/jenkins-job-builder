@@ -1225,6 +1225,10 @@ def gitlab(registry, xml_parent, data):
     :arg bool trigger-push: Build on Push Events (default true)
     :arg bool trigger-merge-request: Build on Merge Request Events (default
         true)
+    :arg bool trigger-accepted-merge-request: Build on Accepted Merge Request
+        Events (>= 1.4.6) (default false)
+    :arg bool trigger-closed-merge-request: Build on Closed Merge Request
+        Events (>= 1.4.6) (default false)
     :arg str trigger-open-merge-request-push: Rebuild open Merge Requests
         on Push Events.
 
@@ -1343,6 +1347,9 @@ def gitlab(registry, xml_parent, data):
     mapping = [
         ('trigger-push', 'triggerOnPush', True),
         ('trigger-merge-request', 'triggerOnMergeRequest', True),
+        ('trigger-accepted-merge-request', 'triggerOnAcceptedMergeRequest',
+         False),
+        ('trigger-closed-merge-request', 'triggerOnClosedMergeRequest', False),
         ('trigger-note', 'triggerOnNoteRequest', True),
         ('note-regex', 'noteRegex', 'Jenkins please retry a build'),
         ('ci-skip', 'ciSkip', True),

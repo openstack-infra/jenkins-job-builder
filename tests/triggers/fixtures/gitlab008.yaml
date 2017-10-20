@@ -1,0 +1,11 @@
+triggers:
+  - gitlab:
+      trigger-push: false
+      trigger-merge-request: false
+      trigger-open-merge-request-push: both
+      ci-skip: false
+      set-build-description: false
+      add-note-merge-request: false
+      add-vote-merge-request: false
+      add-ci-message: true
+      branch-filter-type: All
