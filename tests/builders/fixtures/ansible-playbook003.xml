@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jenkinsci.plugins.ansible.AnsiblePlaybookBuilder>
+      <playbook>path/to/playbook.yml</playbook>
+      <inventory class="org.jenkinsci.plugins.ansible.InventoryDoNotSpecify"/>
+      <limit/>
+      <tags/>
+      <skippedTags/>
+      <startAtTask/>
+      <credentialsId/>
+      <sudo>false</sudo>
+      <forks>5</forks>
+      <unbufferedOutput>true</unbufferedOutput>
+      <colorizedOutput>false</colorizedOutput>
+      <hostKeyChecking>false</hostKeyChecking>
+      <additionalParameters/>
+      <copyCredentialsInWorkspace>false</copyCredentialsInWorkspace>
+    </org.jenkinsci.plugins.ansible.AnsiblePlaybookBuilder>
+  </builders>
+</project>
