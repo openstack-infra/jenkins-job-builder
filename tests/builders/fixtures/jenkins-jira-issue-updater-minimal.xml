@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <info.bluefloyd.jenkins.IssueUpdatesBuilder plugin="jenkins-jira-issue-updater">
+      <restAPIUrl/>
+      <userName>Username</userName>
+      <password>Password</password>
+      <jql>jql</jql>
+      <workflowActionName/>
+      <comment/>
+      <customFieldId/>
+      <customFieldValue/>
+      <failIfJqlFails>false</failIfJqlFails>
+      <failIfNoIssuesReturned>false</failIfNoIssuesReturned>
+      <failIfNoJiraConnection>false</failIfNoJiraConnection>
+    </info.bluefloyd.jenkins.IssueUpdatesBuilder>
+  </builders>
+</project>

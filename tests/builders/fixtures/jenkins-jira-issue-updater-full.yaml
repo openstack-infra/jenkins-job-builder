@@ -1,0 +1,13 @@
+builders:
+  - jenkins-jira-issue-updater:
+      base-url: url
+      username: your-username
+      password: your-password
+      jql: project-key
+      workflow: workflow-name
+      comment: comment
+      custom-Id: ID
+      custom-value: value
+      fail-if-error: true
+      fail-if-no-match: true
+      fail-if-no-connection: true

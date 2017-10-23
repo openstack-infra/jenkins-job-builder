@@ -1,0 +1,5 @@
+builders:
+  - jenkins-jira-issue-updater:
+      username: 'Username'
+      password: 'Password'
+      jql: 'jql'

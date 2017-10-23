@@ -1751,6 +1751,61 @@ def maven_builder(registry, xml_parent, data):
     convert_mapping_to_xml(maven, data, mapping, fail_required=True)
 
 
+def jira_issue_updater(registry, xml_parent, data):
+    """yaml: jenkins-jira-issue-updater
+    Updates issues in Atlassian JIRA as part of a Jenkins job.
+
+    Requires the Jenkins :jenkins-wiki:`Jira Issue Updater Plugin
+    <Jira+Issue+Updater+Plugin>`.
+
+    :arg str base-url: The base url of the rest API. (default '')
+    :arg str username: The Jira username (required)
+    :arg str password: The Jira password (required)
+    :arg str jql: The JQL used to select the issues to update. (required)
+    :arg str workflow: The Name of the workflow action to be executed.
+        (default '')
+    :arg str comment: The Jira comment to be added. (default '')
+    :arg str custom-Id: The Jira custom field to be edited. (default '')
+    :arg str custom-value: Jira custom field value. (default '')
+    :arg bool fail-if-error: Fail this build if JQL returns error.
+        ((default false)
+    :arg bool fail-if-no-match: Fail this build if no issues are matched.
+        (default false)
+    :arg bool fail-if-no-connection: Fail this build if can't connect to Jira.
+        (default false)
+
+    Minimal Example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/jenkins-jira-issue-updater-minimal.yaml
+        :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/jenkins-jira-issue-updater-full.yaml
+        :language: yaml
+    """
+    issue_updater = XML.SubElement(xml_parent, 'info.bluefloyd.jenkins.'
+                                               'IssueUpdatesBuilder')
+    issue_updater.set('plugin', 'jenkins-jira-issue-updater')
+
+    mapping = [
+        ('base-url', 'restAPIUrl', ''),
+        ('username', 'userName', None),
+        ('password', 'password', None),
+        ('jql', 'jql', None),
+        ('workflow', 'workflowActionName', ''),
+        ('comment', 'comment', ''),
+        ('custom-Id', 'customFieldId', ''),
+        ('custom-value', 'customFieldValue', ''),
+        ('fail-if-error', 'failIfJqlFails', False),
+        ('fail-if-no-match', 'failIfNoIssuesReturned', False),
+        ('fail-if-no-connection', 'failIfNoJiraConnection', False)
+    ]
+    convert_mapping_to_xml(issue_updater, data, mapping, fail_required=True)
+
+
 def maven_target(registry, xml_parent, data):
     """yaml: maven-target
     Execute top-level Maven targets.
