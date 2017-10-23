@@ -279,29 +279,28 @@ def cloudformation_stack(xml_parent, stack, xml_tag, stacks, region_dict):
     step = XML.SubElement(
         stacks, 'com.syncapse.jenkinsci.plugins.'
                 'awscloudformationwrapper.' + xml_tag)
-    try:
-        XML.SubElement(step, 'stackName').text = stack['name']
-        XML.SubElement(step, 'awsAccessKey').text = stack['access-key']
-        XML.SubElement(step, 'awsSecretKey').text = stack['secret-key']
-        region = stack['region']
-    except KeyError as e:
-        raise MissingAttributeError(e.args[0])
-    if region not in region_dict:
-        raise InvalidAttributeError('region', region, region_dict.keys())
-    XML.SubElement(step, 'awsRegion').text = region_dict.get(region)
+
     if xml_tag == 'SimpleStackBean':
-        prefix = str(stack.get('prefix', False)).lower()
-        XML.SubElement(step, 'isPrefixSelected').text = prefix
+        mapping = [('prefix', 'isPrefixSelected', False)]
     else:
-        XML.SubElement(step, 'description').text = stack.get('description', '')
-        XML.SubElement(step, 'parameters').text = ','.join(
-            stack.get('parameters', []))
-        XML.SubElement(step, 'timeout').text = str(stack.get('timeout', '0'))
-        XML.SubElement(step, 'sleep').text = str(stack.get('sleep', '0'))
-        try:
-            XML.SubElement(step, 'cloudFormationRecipe').text = stack['recipe']
-        except KeyError as e:
-            raise MissingAttributeError(e.args[0])
+        parameters_value = ','.join(stack.get('parameters', []))
+        mapping = [
+            ('description', 'description', ''),
+            ('', 'parameters', parameters_value),
+            ('timeout', 'timeout', '0'),
+            ('sleep', 'sleep', '0'),
+            ('recipe', 'cloudFormationRecipe', None)]
+
+    cloudformation_stack_mapping = [
+        ('name', 'stackName', None),
+        ('access-key', 'awsAccessKey', None),
+        ('secret-key', 'awsSecretKey', None),
+        ('region', 'awsRegion', None, region_dict)]
+    for map in mapping:
+        cloudformation_stack_mapping.append(map)
+
+    convert_mapping_to_xml(step, stack,
+        cloudformation_stack_mapping, fail_required=True)
 
 
 def include_exclude_patterns(xml_parent, data, yaml_prefix,
