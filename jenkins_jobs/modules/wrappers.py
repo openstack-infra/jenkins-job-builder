@@ -490,49 +490,42 @@ def build_keeper(registry, xml_parent, data):
     .. literalinclude:: /../../tests/wrappers/fixtures/build-keeper0002.yaml
 
     """
-
     root = XML.SubElement(xml_parent,
                           'org.jenkins__ci.plugins.build__keeper.BuildKeeper')
 
     valid_policies = ('by-day', 'keep-since', 'build-number',
                       'keep-first-failed')
     policy = data.get('policy')
-    build_period = str(data.get('build-period', 0))
-    dont_keep_failed = str(data.get('dont-keep-failed', False)).lower()
+
+    mapping = [
+        ('build-period', 'buildPeriod', 0),
+        ('dont-keep-failed', 'dontKeepFailed', False)]
 
     if policy == 'by-day':
         policy_element = XML.SubElement(root,
                                         'policy',
                                         {'class': 'org.jenkins_ci.plugins.'
                                          'build_keeper.ByDayPolicy'})
-        XML.SubElement(policy_element, 'buildPeriod').text = build_period
-        XML.SubElement(policy_element,
-                       'dontKeepFailed').text = dont_keep_failed
     elif policy == 'keep-since':
         policy_element = XML.SubElement(root,
                                         'policy',
                                         {'class': 'org.jenkins_ci.plugins.'
                                          'build_keeper.KeepSincePolicy'})
-        XML.SubElement(policy_element, 'buildPeriod').text = build_period
-        XML.SubElement(policy_element,
-                       'dontKeepFailed').text = dont_keep_failed
     elif policy == 'build-number':
         policy_element = XML.SubElement(root,
                                         'policy',
                                         {'class': 'org.jenkins_ci.plugins.'
                                          'build_keeper.BuildNumberPolicy'})
-        XML.SubElement(policy_element, 'buildPeriod').text = build_period
-        XML.SubElement(policy_element,
-                       'dontKeepFailed').text = dont_keep_failed
     elif policy == 'keep-first-failed':
         policy_element = XML.SubElement(root,
                                         'policy',
                                         {'class': 'org.jenkins_ci.plugins.'
                                          'build_keeper.KeepFirstFailedPolicy'})
-        XML.SubElement(policy_element, 'numberOfFails').text = str(
-            data.get('number-of-fails', 0))
+        mapping = [('number-of-fails', 'numberOfFails', 0)]
     else:
         InvalidAttributeError('policy', policy, valid_policies)
+
+    convert_mapping_to_xml(policy_element, data, mapping, fail_required=True)
 
 
 def live_screenshot(registry, xml_parent, data):
