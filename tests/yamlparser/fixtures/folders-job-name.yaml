@@ -1,0 +1,5 @@
+- job:
+    name: python-jobs/tox-py27
+    builders:
+      - shell: |
+          tox -e py27

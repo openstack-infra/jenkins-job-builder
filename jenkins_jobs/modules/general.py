@@ -56,6 +56,12 @@ Example:
       Path for a custom workspace. Defaults to Jenkins default
       configuration.
 
+    * **folder**:
+      The folder attribute provides an alternative to using '<path>/<name>' as
+      the job name to specify which Jenkins folder to upload the job to.
+      Requires the `CloudBees Folders Plugin.
+      <https://wiki.jenkins-ci.org/display/JENKINS/CloudBees+Folders+Plugin>`_
+
     * **child-workspace**:
       Path for a child custom workspace. Defaults to Jenkins default
       configuration. This parameter is only valid for matrix type jobs.
@@ -103,7 +109,6 @@ Example:
     * **raw**:
       If present, this section should contain a single **xml** entry. This XML
       will be inserted at the top-level of the :ref:`Job` definition.
-
 """
 
 import logging

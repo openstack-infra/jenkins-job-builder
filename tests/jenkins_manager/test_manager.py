@@ -62,8 +62,8 @@ class TestCaseTestJenkinsManager(base.BaseTestCase):
                                  get_jobs=mock.DEFAULT,
                                  is_managed=mock.DEFAULT,
                                  delete_job=mock.DEFAULT) as patches:
-            patches['get_jobs'].return_value = [{'name': 'job1'},
-                                                {'name': 'job2'}]
+            patches['get_jobs'].return_value = [{'fullname': 'job1'},
+                                                {'fullname': 'job2'}]
             patches['is_managed'].side_effect = [True, True]
 
             self.builder.delete_old_managed()

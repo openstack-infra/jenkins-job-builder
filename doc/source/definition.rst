@@ -329,6 +329,35 @@ always use ``{{`` to achieve a literal ``{``.  A generic builder will need
 to consider the correct quoting based on its use of parameters.
 
 
+.. _folders:
+
+Folders
+^^^^^^^
+
+Jenkins supports organising jobs, views, and slaves using a folder hierarchy.
+This allows for easier separation of access as well credentials and resources
+which can be assigned to only be available for a specific folder.
+
+JJB has two methods of supporting uploading jobs to a specific folder:
+
+* Name the job to contain the desired folder ``<folder>/my-job-name``
+* Use the ``folder`` attribute on a job definition, via a template, or through
+  `Defaults`_.
+
+Supporting both an attributed and use of it directly in job names allows for
+teams to have all jobs using their defaults automatically use a top-level
+folder, while still allowing for them to additionally nest jobs for their
+own preferences.
+
+Job Name Example:
+
+.. literalinclude:: /../../tests/yamlparser/fixtures/folders-job-name.yaml
+
+Folder Attribute Example:
+
+.. literalinclude:: /../../tests/yamlparser/fixtures/folders-attribute.yaml
+
+
 .. _ids:
 
 Item ID's
