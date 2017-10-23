@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <au.com.centrumsystems.hudson.plugin.buildpipeline.BuildPipelineView plugin="build-pipeline-plugin">
-  <name>testBPview</name>
   <description>This is a description</description>
   <filterExecutors>false</filterExecutors>
   <filterQueue>false</filterQueue>
@@ -8,6 +7,7 @@
   <gridBuilder class="au.com.centrumsystems.hudson.plugin.buildpipeline.DownstreamProjectGridBuilder">
     <firstJob>job-one</firstJob>
   </gridBuilder>
+  <name>testBPview</name>
   <noOfDisplayedBuilds>5</noOfDisplayedBuilds>
   <buildViewTitle>Title</buildViewTitle>
   <consoleOutputLinkStyle>New Window</consoleOutputLinkStyle>

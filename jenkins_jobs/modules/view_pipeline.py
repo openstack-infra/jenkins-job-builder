@@ -15,6 +15,8 @@
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
+
 """
 The view pipeline module handles creating Jenkins Build Pipeline views.
 To create a list view specify ``list`` in the ``view-type`` attribute
@@ -72,18 +74,13 @@ class Pipeline(jenkins_jobs.modules.base.Base):
         root = XML.Element('au.com.centrumsystems.hudson.'
                            'plugin.buildpipeline.BuildPipelineView',
                            {'plugin': 'build-pipeline-plugin'})
-        XML.SubElement(root, 'name').text = data['name']
-        desc_text = data.get('description', None)
-        if desc_text is not None:
-            XML.SubElement(root, 'description').text = desc_text
 
-        filterExecutors = data.get('filter-executors', False)
-        FE_element = XML.SubElement(root, 'filterExecutors')
-        FE_element.text = 'true' if filterExecutors else 'false'
-
-        filterQueue = data.get('filter-queue', False)
-        FQ_element = XML.SubElement(root, 'filterQueue')
-        FQ_element.text = 'true' if filterQueue else 'false'
+        mapping_optional = [
+            ('description', 'description', None),
+            ('filter-executors', 'filterExecutors', False),
+            ('filter-queue', 'filterQueue', False)]
+        convert_mapping_to_xml(root, data,
+            mapping_optional, fail_required=False)
 
         XML.SubElement(root, 'properties',
                        {'class': 'hudson.model.View$PropertyList'})
@@ -95,51 +92,21 @@ class Pipeline(jenkins_jobs.modules.base.Base):
         jobname = data.get('first-job', '')
         XML.SubElement(gridBuilder, 'firstJob').text = jobname
 
-        builds = str(data.get('no-of-displayed-builds', 1))
-        XML.SubElement(root, 'noOfDisplayedBuilds').text = builds
-
-        title = data.get('title', None)
-        BVT_element = XML.SubElement(root, 'buildViewTitle')
-        if title is not None:
-            BVT_element.text = title
-
-        linkStyle = data.get('link-style', 'Lightbox')
-        LS_element = XML.SubElement(root, 'consoleOutputLinkStyle')
-        if linkStyle in linktypes:
-            LS_element.text = linkStyle
-        else:
-            LS_element.text = 'Lightbox'
-
-        cssUrl = data.get('css-Url', None)
-        CU_element = XML.SubElement(root, 'cssUrl')
-        if cssUrl is not None:
-            CU_element.text = cssUrl
-
-        latest_job_only = data.get('latest-job-only', False)
-        OLJ_element = XML.SubElement(root, 'triggerOnlyLatestJob')
-        OLJ_element.text = 'true' if latest_job_only else 'false'
-
-        manual_trigger = data.get('manual-trigger', False)
-        AMT_element = XML.SubElement(root, 'alwaysAllowManualTrigger')
-        AMT_element.text = 'true' if manual_trigger else 'false'
-
-        show_parameters = data.get('show-parameters', False)
-        PP_element = XML.SubElement(root, 'showPipelineParameters')
-        PP_element.text = 'true' if show_parameters else 'false'
-
-        parameters_in_headers = data.get('parameters-in-headers', False)
-        PIH_element = XML.SubElement(root, 'showPipelineParametersInHeaders')
-        PIH_element.text = 'true' if parameters_in_headers else 'false'
-
-        start_with_parameters = data.get('start-with-parameters', False)
-        SWP_element = XML.SubElement(root, 'startsWithParameters')
-        SWP_element.text = 'true' if start_with_parameters else 'false'
-
-        refresh_frequency = str(data.get('refresh-frequency', 3))
-        XML.SubElement(root, 'refreshFrequency').text = refresh_frequency
-
-        headers = data.get('definition-header', False)
-        DH_element = XML.SubElement(root, 'showPipelineDefinitionHeader')
-        DH_element.text = 'true' if headers else 'false'
+        mapping = [
+            ('name', 'name', None),
+            ('no-of-displayed-builds', 'noOfDisplayedBuilds', 1),
+            ('title', 'buildViewTitle', ''),
+            ('link-style', 'consoleOutputLinkStyle', 'Lightbox', linktypes),
+            ('css-Url', 'cssUrl', ''),
+            ('latest-job-only', 'triggerOnlyLatestJob', False),
+            ('manual-trigger', 'alwaysAllowManualTrigger', False),
+            ('show-parameters', 'showPipelineParameters', False),
+            ('parameters-in-headers',
+                'showPipelineParametersInHeaders', False),
+            ('start-with-parameters', 'startsWithParameters', False),
+            ('refresh-frequency', 'refreshFrequency', 3),
+            ('definition-header', 'showPipelineDefinitionHeader', False)
+        ]
+        convert_mapping_to_xml(root, data, mapping, fail_required=True)
 
         return root

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <au.com.centrumsystems.hudson.plugin.buildpipeline.BuildPipelineView plugin="build-pipeline-plugin">
-  <name>testBPview</name>
   <filterExecutors>false</filterExecutors>
   <filterQueue>false</filterQueue>
   <properties class="hudson.model.View$PropertyList"/>
   <gridBuilder class="au.com.centrumsystems.hudson.plugin.buildpipeline.DownstreamProjectGridBuilder">
     <firstJob>job-one</firstJob>
   </gridBuilder>
+  <name>testBPview</name>
   <noOfDisplayedBuilds>1</noOfDisplayedBuilds>
   <buildViewTitle/>
   <consoleOutputLinkStyle>Lightbox</consoleOutputLinkStyle>
