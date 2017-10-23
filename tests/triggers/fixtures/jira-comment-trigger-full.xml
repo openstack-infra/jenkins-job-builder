@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <com.ceilfors.jenkins.plugins.jiratrigger.JiraCommentTrigger plugin="jira-trigger">
+      <jqlFilter>filter</jqlFilter>
+      <commentPattern>comment</commentPattern>
+      <parameterMappings>
+        <com.ceilfors.jenkins.plugins.jiratrigger.parameter.IssueAttributePathParameterMapping>
+          <jenkinsParameter>param1</jenkinsParameter>
+          <issueAttributePath>path/to/attribute</issueAttributePath>
+        </com.ceilfors.jenkins.plugins.jiratrigger.parameter.IssueAttributePathParameterMapping>
+      </parameterMappings>
+    </com.ceilfors.jenkins.plugins.jiratrigger.JiraCommentTrigger>
+  </triggers>
+</project>

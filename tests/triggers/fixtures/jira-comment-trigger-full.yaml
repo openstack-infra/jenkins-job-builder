@@ -1,0 +1,7 @@
+triggers:
+  - jira-comment-trigger:
+      jql-filter: filter
+      comment-pattern: comment
+      parameter-mapping:
+        - jenkins-parameter: param1
+          issue-attribute-path: 'path/to/attribute'
