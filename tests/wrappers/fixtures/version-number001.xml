@@ -4,6 +4,7 @@
     <org.jvnet.hudson.tools.versionnumber.VersionNumberBuilder>
       <environmentVariableName>relVersion</environmentVariableName>
       <versionNumberString>${BUILD_DATE_FORMATTED, &quot;yy.M&quot;}.${BUILDS_THIS_MONTH_Z}</versionNumberString>
+      <environmentPrefixVariable>relVersion</environmentPrefixVariable>
       <skipFailedBuilds>false</skipFailedBuilds>
       <useAsBuildDisplayName>false</useAsBuildDisplayName>
       <projectStartDate>1970-1-1 00:00:00.0 UTC</projectStartDate>
