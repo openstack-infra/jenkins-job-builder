@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <jenkins.plugins.nodejs.NodeJSCommandInterpreter>
+      <command>console.log('Some output');</command>
+      <nodeJSInstallationName>NodeJS_8.1</nodeJSInstallationName>
+      <configId>e3757442-7c21-4a65-a1ff-6c70f5c6df34</configId>
+    </jenkins.plugins.nodejs.NodeJSCommandInterpreter>
+  </builders>
+</project>
