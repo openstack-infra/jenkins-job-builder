@@ -4,6 +4,7 @@
     <jenkins.plugins.slack.SlackNotifier>
       <teamDomain>teamname</teamDomain>
       <authToken>yourauthtoken</authToken>
+      <authTokenCredentialId>yourauthtokenid</authTokenCredentialId>
       <buildServerUrl>http://localhost:8081</buildServerUrl>
       <room>#builds</room>
     </jenkins.plugins.slack.SlackNotifier>
