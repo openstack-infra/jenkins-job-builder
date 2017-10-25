@@ -25,7 +25,6 @@ import os
 from jenkins_jobs.constants import MAGIC_MANAGE_STRING
 from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.formatter import deep_format
-from jenkins_jobs.registry import MacroRegistry
 import jenkins_jobs.local_yaml as local_yaml
 from jenkins_jobs import utils
 
@@ -81,8 +80,6 @@ class YamlParser(object):
         self.jjb_config = jjb_config
         self.keep_desc = jjb_config.yamlparser['keep_descriptions']
         self.path = jjb_config.yamlparser['include_path']
-
-        self._macro_registry = MacroRegistry()
 
     def load_files(self, fn):
 
@@ -221,11 +218,6 @@ class YamlParser(object):
             job["description"] = description + \
                 self._get_managed_string().lstrip()
 
-    def _register_macros(self):
-        for component_type in self._macro_registry.component_types:
-            for macro in self.data.get(component_type, {}).values():
-                self._macro_registry.register(component_type, macro)
-
     def _getfullname(self, data):
         if 'folder' in data:
             return "%s/%s" % (data['folder'], data['name'])
@@ -241,13 +233,10 @@ class YamlParser(object):
                     if module.handle_data(self.data):
                         changed = True
 
-        self._register_macros()
-        for default in self.data.get('defaults', {}).values():
-            self._macro_registry.expand_macros(default)
         for job in self.data.get('job', {}).values():
-            self._macro_registry.expand_macros(job)
             job = self._applyDefaults(job)
             job['name'] = self._getfullname(job)
+
             if jobs_glob and not matches(job['name'], jobs_glob):
                 logger.debug("Ignoring job {0}".format(job['name']))
                 continue
@@ -410,7 +399,6 @@ class YamlParser(object):
                 raise
             expanded['name'] = self._getfullname(expanded)
 
-            self._macro_registry.expand_macros(expanded, params)
             job_name = expanded.get('name')
             if jobs_glob and not matches(job_name, jobs_glob):
                 continue
