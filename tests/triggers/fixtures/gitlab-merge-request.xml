@@ -5,6 +5,13 @@
       <spec>* * * * *</spec>
       <__cron>* * * * *</__cron>
       <__projectPath>test/project</__projectPath>
+      <__useHttpUrl>false</__useHttpUrl>
+      <__assigneeFilter>jenkinsbot</__assigneeFilter>
+      <__tagFilter>fix</__tagFilter>
+      <__triggerComment>rebuild</__triggerComment>
+      <__publishBuildProgressMessages>true</__publishBuildProgressMessages>
+      <__autoCloseFailed>false</__autoCloseFailed>
+      <__autoMergePassed>false</__autoMergePassed>
     </org.jenkinsci.plugins.gitlab.GitlabBuildTrigger>
   </triggers>
 </project>

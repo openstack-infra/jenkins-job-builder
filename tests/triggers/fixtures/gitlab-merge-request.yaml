@@ -2,3 +2,10 @@ triggers:
   - gitlab-merge-request:
       cron: '* * * * *'
       project-path: 'test/project'
+      use-http-url: false
+      assignee-filter: 'jenkinsbot'
+      tag-filter: 'fix'
+      trigger-comment: 'rebuild'
+      publish-build-progress-messages: true
+      auto-close-failed: false
+      auto-merge-passed: false
