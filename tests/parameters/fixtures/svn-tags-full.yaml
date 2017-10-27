@@ -1,0 +1,11 @@
+parameters:
+  - svn-tags:
+      name: BRANCH_NAME
+      url: '/path/to/svn'
+      credentials-id: svn-cred
+      filter: 'v[0-9]+'
+      default: default-value
+      description: svn-tags configuration
+      max-tags: 25
+      sort-newest-first: False
+      sort-z-to-a: True
