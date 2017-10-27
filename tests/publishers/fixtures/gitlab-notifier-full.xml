@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <com.dabsquared.gitlabjenkins.publisher.GitLabCommitStatusPublisher plugin="gitlab-plugin">
+      <name>foobar-jenkins</name>
+      <markUnstableAsSuccess>true</markUnstableAsSuccess>
+    </com.dabsquared.gitlabjenkins.publisher.GitLabCommitStatusPublisher>
+  </publishers>
+</project>

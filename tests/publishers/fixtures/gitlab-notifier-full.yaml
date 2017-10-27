@@ -1,0 +1,4 @@
+publishers:
+  - gitlab-notifier:
+      name: foobar-jenkins
+      mark-unstable-as-success: true
