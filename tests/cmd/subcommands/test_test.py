@@ -363,8 +363,8 @@ class TestTestsMultiPath(CmdTestsBase):
     def check_dirs_match(self, expected_dir):
         try:
             self.assertThat(self.output_dir, MatchesDir(expected_dir))
-        except testtools.matchers.MismatchError as e:
-            raise e
+        except testtools.matchers.MismatchError:
+            raise
         else:
             shutil.rmtree(self.output_dir)
 
