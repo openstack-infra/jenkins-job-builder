@@ -1,0 +1,5 @@
+builders:
+  - nodejs:
+      name: "NodeJS_8.1"
+      script: "console.log('Some output');"
+      config-id: "e3757442-7c21-4a65-a1ff-6c70f5c6df34"

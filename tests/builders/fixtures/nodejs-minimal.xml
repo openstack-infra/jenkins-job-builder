@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <jenkins.plugins.nodejs.NodeJSCommandInterpreter>
+      <command>console.log('Some output');</command>
+    </jenkins.plugins.nodejs.NodeJSCommandInterpreter>
+  </builders>
+</project>
