@@ -4103,11 +4103,17 @@ def nodejs(parser, xml_parent, data):
         last field (a 32-digit hexadecimal code) of the path of URL visible
         after you clicked the file under Jenkins Managed Files.
 
-    Example:
+    Minimal Example:
 
     .. literalinclude::
-            /../../tests/builders/fixtures/nodejs-executor001.yaml
+        ../../tests/builders/fixtures/nodejs-minimal.yaml
+       :language: yaml
 
+    Full Example:
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/nodejs-full.yaml
+       :language: yaml
     """
     nodejs = XML.SubElement(xml_parent,
                             'jenkins.plugins.nodejs.NodeJSCommandInterpreter')
