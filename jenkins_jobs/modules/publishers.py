@@ -4761,6 +4761,73 @@ def gitlab_notifier(registry, xml_parent, data):
     helpers.convert_mapping_to_xml(top, data, mappings, fail_required=True)
 
 
+def gitlab_vote(registry, xml_parent, data):
+    """yaml: gitlab-vote
+    Set vote for build status on GitLab merge request.
+    Requires the Jenkins :jenkins-wiki:`GitLab Plugin <GitLab+Plugin>`.
+
+    Example:
+
+    .. literalinclude::
+        ../../tests/publishers/fixtures/gitlab-vote.yaml
+        :language: yaml
+    """
+    XML.SubElement(
+        xml_parent,
+        'com.dabsquared.gitlabjenkins.publisher.GitLabVotePublisher')
+
+
+def gitlab_message(registry, xml_parent, data):
+    """yaml: gitlab-message
+    Add note with build status on GitLab merge request.
+    Requires the Jenkins :jenkins-wiki:`GitLab Plugin <GitLab+Plugin>`.
+
+    :arg bool failure-only: make a comment only on failure (default false)
+    :arg bool success-note: make a comment on GitLab Merge Request
+        if build succeeds (default false)
+    :arg bool failure-note: make a comment on GitLab Merge Request
+        if build failed (default false)
+    :arg bool abort-note: make a comment on GitLab Merge Request
+        if build aborted (default false)
+    :arg bool unstable-note: make a comment on GitLab Merge Request
+        if build unstable (default false)
+
+    :arg str success-note-text: text of comment on success build (default '')
+    :arg str failure-note-text: text of comment on failed build (default '')
+    :arg str abort-note-text: text of comment on aborted build (default '')
+    :arg str unstable-note-text: text of comment on unstable build (default '')
+
+    Minimal Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/gitlab-message-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/gitlab-message-full.yaml
+       :language: yaml
+    """
+    gitlab = XML.SubElement(
+        xml_parent,
+        'com.dabsquared.gitlabjenkins.publisher.GitLabMessagePublisher'
+    )
+    gitlab.set('plugin', 'gitlab-plugin')
+
+    mapping = [('failure-only', 'onlyForFailure', False),
+               ('success-note', 'replaceSuccessNote', False),
+               ('failure-note', 'replaceFailureNote', False),
+               ('abort-note', 'replaceAbortNote', False),
+               ('unstable-note', 'replaceUnstableNote', False),
+               ('success-note-text', 'successNoteText', ''),
+               ('failure-note-text', 'failureNoteText', ''),
+               ('abort-note-text', 'abortNoteText', ''),
+               ('unstable-note-text', 'unstableNoteText', '')]
+
+    helpers.convert_mapping_to_xml(gitlab, data, mapping, fail_required=True)
+
+
 def zulip(registry, xml_parent, data):
     """yaml: zulip
     Set build status on zulip.

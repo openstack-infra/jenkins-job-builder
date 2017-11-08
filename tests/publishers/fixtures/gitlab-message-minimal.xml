@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <com.dabsquared.gitlabjenkins.publisher.GitLabMessagePublisher plugin="gitlab-plugin">
+      <onlyForFailure>false</onlyForFailure>
+      <replaceSuccessNote>false</replaceSuccessNote>
+      <replaceFailureNote>false</replaceFailureNote>
+      <replaceAbortNote>false</replaceAbortNote>
+      <replaceUnstableNote>false</replaceUnstableNote>
+      <successNoteText/>
+      <failureNoteText/>
+      <abortNoteText/>
+      <unstableNoteText/>
+    </com.dabsquared.gitlabjenkins.publisher.GitLabMessagePublisher>
+  </publishers>
+</project>
