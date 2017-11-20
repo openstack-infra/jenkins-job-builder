@@ -3070,6 +3070,10 @@ def xcode(registry, xml_parent, data):
         (default '')
     :arg str keychain-unlock: Unlocks the keychain during use.
         (default false)
+    :arg str bundle-id: The bundle identifier (App ID) for this provisioning
+        profile (default '')
+    :arg str provisioning-profile-uuid: The UUID of the provisioning profile
+        associated to this bundle identifier. (default '')
 
     Example:
 
@@ -3134,6 +3138,22 @@ def xcode(registry, xml_parent, data):
         ('keychain-unlock', 'unlockKeychain', False),
     ]
     convert_mapping_to_xml(xcode, data, mapping, fail_required=True)
+
+    has_provisioning_profiles = bool(data.get('provisioning-profiles'))
+    XML.SubElement(xcode, 'manualSigning').text = str(
+        has_provisioning_profiles or False).lower()
+    if has_provisioning_profiles:
+        provisioning_profiles_xml = XML.SubElement(
+            xcode, 'provisioningProfiles')
+        mapping = [
+            ('bundle-id', 'provisioningProfileAppId', ''),
+            ('provisioning-profile-uuid', 'provisioningProfileUUID', '')
+        ]
+        for provisioning_profile in data.get('provisioning-profiles'):
+            provisioning_profile_xml = XML.SubElement(
+                provisioning_profiles_xml, 'au.com.rayh.ProvisioningProfile')
+            convert_mapping_to_xml(provisioning_profile_xml,
+                provisioning_profile, mapping, fail_required=True)
 
 
 def sonatype_clm(registry, xml_parent, data):

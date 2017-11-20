@@ -22,3 +22,8 @@ builders:
       keychain-path: "/Users/jenkins/Library/Keychains/jenkins-uasdk-ios-pre_review"
       keychain-password: "testpass"
       keychain-unlock: true
+      provisioning-profiles:
+        - bundle-id: foo
+          provisioning-profile-uuid: bar
+        - bundle-id: foo2
+          provisioning-profile-uuid: bar2
