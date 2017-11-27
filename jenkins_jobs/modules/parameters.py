@@ -910,8 +910,8 @@ def git_parameter_param(registry, xml_parent, data):
         :Allowed Values: * **NONE**
                     * **DESCENDING**
                     * **ASCENDING**
-                    * **ASCENDING SMART**
-                    * **DESCENDING SMART**
+                    * **ASCENDING_SMART**
+                    * **DESCENDING_SMART**
 
     :arg str defaultValue: This value is returned when list is empty. (default
         '')
@@ -958,9 +958,9 @@ def git_parameter_param(registry, xml_parent, data):
     valid_sort_modes = [
         'NONE',
         'ASCENDING',
-        'ASCENDING SMART',
+        'ASCENDING_SMART',
         'DESCENDING',
-        'DESCENDING SMART',
+        'DESCENDING_SMART',
     ]
 
     valid_selected_values = ['NONE', 'TOP', 'DEFAULT']
