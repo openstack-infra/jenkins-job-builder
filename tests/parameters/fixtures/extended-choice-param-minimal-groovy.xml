@@ -6,7 +6,7 @@
         <com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
           <name>OPTIONS</name>
           <description>Available options</description>
-          <value>OptionA,OptionB,OptionC</value>
+          <value/>
           <visibleItemCount>5</visibleItemCount>
           <multiSelectDelimiter>,</multiSelectDelimiter>
           <quoteValue>false</quoteValue>
@@ -19,7 +19,7 @@
           <defaultPropertyKey/>
           <descriptionPropertyFile/>
           <descriptionPropertyKey/>
-          <groovyScript/>
+          <groovyScript>return 'value1, value2, value3'</groovyScript>
           <groovyClasspath/>
         </com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
       </parameterDefinitions>

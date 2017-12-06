@@ -394,7 +394,11 @@ def extended_choice_param(registry, xml_parent, data):
     :arg str description-property-key: key for the value description
         property file (optional, default '')
     :arg str multi-select-delimiter: value between selections when the
-        parameter is a multi-select (optiona, default ',')
+        parameter is a multi-select (optional, default ',')
+    :arg str groovy-script: the groovy script contents (optional, default ',')
+    :arg str classpath: the classpath for the groovy script
+        (optional, default ',')
+
 
     Minimal Example:
 
@@ -436,6 +440,8 @@ def extended_choice_param(registry, xml_parent, data):
         ('default-property-key', 'defaultPropertyKey', ''),
         ('description-property-file', 'descriptionPropertyFile', ''),
         ('description-property-key', 'descriptionPropertyKey', ''),
+        ('groovy-script', 'groovyScript', ''),
+        ('classpath', 'groovyClasspath', ''),
     ]
     convert_mapping_to_xml(pdef, data, mapping, fail_required=True)
 

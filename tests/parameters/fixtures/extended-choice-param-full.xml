@@ -19,6 +19,8 @@
           <defaultPropertyKey>fookey</defaultPropertyKey>
           <descriptionPropertyFile/>
           <descriptionPropertyKey/>
+          <groovyScript/>
+          <groovyClasspath/>
         </com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
