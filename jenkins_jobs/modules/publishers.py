@@ -1983,6 +1983,8 @@ def email_ext(registry, xml_parent, data):
     :arg bool unstable: Send an email for an unstable result (default false)
     :arg bool first-failure: Send an email for just the first failure
         (default false)
+    :arg bool first-unstable: Send an email for just the first unstable build
+        (default false)
     :arg bool not-built: Send an email if not built (default false)
     :arg bool aborted: Send an email if the build is aborted (default false)
     :arg bool regression: Send an email if there is a regression
@@ -1995,6 +1997,9 @@ def email_ext(registry, xml_parent, data):
         (default false)
     :arg bool success: Send an email for a successful build (default false)
     :arg bool fixed: Send an email if the build is fixed (default false)
+    :arg bool fixed-unhealthy: Send an email if the build status
+        changes from "Failure" or "Unstable" to "Success". Intermediate
+        "Aborted" builds are ignored. (default false)
     :arg bool still-unstable: Send an email if the build is still unstable
         (default false)
     :arg bool pre-build: Send an email before the build (default false)
@@ -2038,6 +2043,8 @@ def email_ext(registry, xml_parent, data):
         base_email_ext(registry, ctrigger, data, 'UnstableTrigger')
     if data.get('first-failure', False):
         base_email_ext(registry, ctrigger, data, 'FirstFailureTrigger')
+    if data.get('first-unstable', False):
+        base_email_ext(registry, ctrigger, data, 'FirstUnstableTrigger')
     if data.get('not-built', False):
         base_email_ext(registry, ctrigger, data, 'NotBuiltTrigger')
     if data.get('aborted', False):
@@ -2056,6 +2063,8 @@ def email_ext(registry, xml_parent, data):
         base_email_ext(registry, ctrigger, data, 'SuccessTrigger')
     if data.get('fixed', False):
         base_email_ext(registry, ctrigger, data, 'FixedTrigger')
+    if data.get('fixed-unhealthy', False):
+        base_email_ext(registry, ctrigger, data, 'FixedUnhealthyTrigger')
     if data.get('still-unstable', False):
         base_email_ext(registry, ctrigger, data, 'StillUnstableTrigger')
     if data.get('pre-build', False):

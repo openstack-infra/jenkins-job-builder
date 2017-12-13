@@ -11,6 +11,7 @@ publishers:
       always: true
       unstable: true
       first-failure: true
+      first-unstable: true
       not-built: true
       aborted: true
       regression: true
@@ -20,6 +21,7 @@ publishers:
       still-failing: true
       success: true
       fixed: true
+      fixed-unhealthy: true
       still-unstable: true
       pre-build: true
       matrix-trigger: only-configurations
