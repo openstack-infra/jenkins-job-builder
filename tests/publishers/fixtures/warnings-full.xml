@@ -22,6 +22,10 @@
       </parserConfigurations>
       <includePattern>[a-zA-Z]\.java,[a-zA-Z]\.cpp</includePattern>
       <excludePattern>[a-zA-Z]\.html,[a-zA-Z]\.js</excludePattern>
+      <messagesPattern>^Test results:.*
+No sources found skipping Kotlin compile</messagesPattern>
+      <categoriesPattern>WARN.*
+ERROR</categoriesPattern>
       <pluginName>[WARNINGS]</pluginName>
       <canRunOnFailed>true</canRunOnFailed>
       <shouldDetectModules>true</shouldDetectModules>

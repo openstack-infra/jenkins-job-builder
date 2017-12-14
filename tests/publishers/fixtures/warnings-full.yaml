@@ -10,6 +10,12 @@ publishers:
           scanner: FxCop
       files-to-include: '[a-zA-Z]\.java,[a-zA-Z]\.cpp'
       files-to-ignore: '[a-zA-Z]\.html,[a-zA-Z]\.js'
+      messages-to-ignore: |-
+        ^Test results:.*
+        No sources found skipping Kotlin compile
+      categories-to-ignore: |-
+        WARN.*
+        ERROR
       run-always: true
       detect-modules: true
       resolve-relative-paths: true
