@@ -356,6 +356,8 @@ def trigger_remote(registry, xml_parent, data):
         block (default 10)
     :arg str connection-retry-limit: number of connection attempts to remote
         Jenkins server before giving up. (default 5)
+    :arg bool enhanced-logging: if this option is enabled,
+        the console output of the remote job is also logged. (default false)
     :arg str predefined-parameters: predefined parameters to send to the remote
         job when triggering it (optional)
     :arg str property-file: file in workspace of current job containing
@@ -380,6 +382,7 @@ def trigger_remote(registry, xml_parent, data):
         ('should-not-fail-build', 'shouldNotFailBuild', False),
         ('poll-interval', 'pollInterval', 10),
         ('connection-retry-limit', 'connectionRetryLimit', 5),
+        ('enhanced-logging', 'enhancedLogging', False),
         ('prevent-remote-build-queue', 'preventRemoteBuildQueue', False),
         ('block', 'blockBuildUntilComplete', True),
     ]

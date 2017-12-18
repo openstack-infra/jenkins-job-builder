@@ -8,6 +8,7 @@ builders:
       poll-interval: 5
       connection-retry-limit: 5
       block: true
+      enhanced-logging: True
       property-file: '.props'
       predefined-parameters: |
         FOO="bar"

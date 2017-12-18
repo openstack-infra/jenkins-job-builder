@@ -8,6 +8,7 @@
       <shouldNotFailBuild>false</shouldNotFailBuild>
       <pollInterval>10</pollInterval>
       <connectionRetryLimit>5</connectionRetryLimit>
+      <enhancedLogging>false</enhancedLogging>
       <preventRemoteBuildQueue>false</preventRemoteBuildQueue>
       <blockBuildUntilComplete>true</blockBuildUntilComplete>
       <loadParamsFromFile>false</loadParamsFromFile>
