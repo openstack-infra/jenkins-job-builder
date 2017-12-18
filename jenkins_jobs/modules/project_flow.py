@@ -52,6 +52,7 @@ Job example runninng a DSL file from the workspace:
 import xml.etree.ElementTree as XML
 
 import jenkins_jobs.modules.base
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 
 
 class Flow(jenkins_jobs.modules.base.Base):
@@ -59,15 +60,13 @@ class Flow(jenkins_jobs.modules.base.Base):
 
     def root_xml(self, data):
         xml_parent = XML.Element('com.cloudbees.plugins.flow.BuildFlow')
-        if 'dsl' in data:
-            XML.SubElement(xml_parent, 'dsl').text = data['dsl']
-        else:
-            XML.SubElement(xml_parent, 'dsl').text = ''
 
         needs_workspace = data.get('needs-workspace', False)
-        XML.SubElement(xml_parent, 'buildNeedsWorkspace').text = str(
-            needs_workspace).lower()
-
+        mapping = [
+            ('dsl', 'dsl', ''),
+            ('needs-workspace', 'buildNeedsWorkspace', False),
+        ]
+        convert_mapping_to_xml(xml_parent, data, mapping, fail_required=True)
         if needs_workspace and 'dsl-file' in data:
             XML.SubElement(xml_parent, 'dslFile').text = data['dsl-file']
 
