@@ -8,6 +8,7 @@
       <shouldNotFailBuild>false</shouldNotFailBuild>
       <pollInterval>5</pollInterval>
       <connectionRetryLimit>5</connectionRetryLimit>
+      <enhancedLogging>true</enhancedLogging>
       <preventRemoteBuildQueue>true</preventRemoteBuildQueue>
       <blockBuildUntilComplete>true</blockBuildUntilComplete>
       <parameters>FOO=&quot;bar&quot;
