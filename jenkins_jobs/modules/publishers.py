@@ -2437,7 +2437,7 @@ def groovy_postbuild(registry, xml_parent, data):
     # Backward compatibility with old format
     if isinstance(data, six.string_types):
         logger.warning(
-            "You use depricated configuration, please follow documentation "
+            "You use deprecated configuration, please follow documentation "
             "to change configuration. It is not going to be supported in "
             "future releases!"
         )
