@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <stashpullrequestbuilder.stashpullrequestbuilder.StashBuildTrigger plugin="stash-pullrequest-builder">
+      <spec>H 1 2 3 4</spec>
+      <cron>H 1 2 3 4</cron>
+      <stashHost>https://stash-host.com</stashHost>
+      <credentialsId>default-stash-credentials</credentialsId>
+      <projectCode>stash-project</projectCode>
+      <repositoryName>stash-repo</repositoryName>
+      <ciSkipPhrases>test skip phrase</ciSkipPhrases>
+      <ciBuildPhrases>test build phrase</ciBuildPhrases>
+      <targetBranchesToBuild>master</targetBranchesToBuild>
+      <ignoreSsl>true</ignoreSsl>
+      <checkDestinationCommit>true</checkDestinationCommit>
+      <checkMergeable>true</checkMergeable>
+      <mergeOnSuccess>true</mergeOnSuccess>
+      <checkNotConflicted>false</checkNotConflicted>
+      <onlyBuildOnComment>true</onlyBuildOnComment>
+      <deletePreviousBuildFinishComments>true</deletePreviousBuildFinishComments>
+      <cancelOutdatedJobsEnabled>true</cancelOutdatedJobsEnabled>
+    </stashpullrequestbuilder.stashpullrequestbuilder.StashBuildTrigger>
+  </triggers>
+</project>

@@ -1,0 +1,7 @@
+triggers:
+  - stash-pull-request:
+      cron: "* * * * *"
+      stash-host: "https://stash-host.com"
+      credentials-id: default-stash-credentials
+      project: stash-project
+      repository: stash-repo

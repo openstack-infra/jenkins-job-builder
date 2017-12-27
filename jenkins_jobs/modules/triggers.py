@@ -1924,6 +1924,77 @@ def jira_comment_trigger(registry, xml_parent, data):
             parent, parameter, parameter_mappings, fail_required=True)
 
 
+def stash_pull_request(registry, xml_parent, data):
+    """yaml: stash-pull-request
+    Trigger builds via Stash/Bitbucket Server Pull Requests.
+    Requires the Jenkins :jenkins-wiki:`Stash Pull Request Builder Plugin
+      <Stash+pullrequest+builder+plugin>`.
+
+      :arg str cron: cron syntax of when to run (required)
+      :arg str stash-host: The HTTP or HTTPS URL of the Stash host (NOT ssh).
+          e.g.: https://example.com (required)
+      :arg str credentials-id: Jenkins credential set to use. (required)
+      :arg str project: Abbreviated project code. e.g.: PRJ or ~user (required)
+      :arg str repository: Stash Repository Name.  e.g.:  Repo (required)
+      :arg str ci-skip-phrases: CI Skip Phrases. (default 'NO TEST')
+      :arg str ci-build-phrases: CI Build Phrases. (default 'test this please')
+      :arg str target-branches: Target branches to filter. (default '')
+      :arg bool ignore-ssl: Ignore SSL certificates for Stash host.
+          (default false)
+      :arg bool check-destination-commit: Rebuild if destination branch
+          changes. (default false)
+      :arg bool check-mergable: Build only if PR is mergeable. (default false)
+      :arg bool merge-on-success: Merge PR if build is successful.
+          (default false)
+      :arg bool check-not-conflicted: Build only if Stash reports no conflicts.
+          (default false)
+      :arg bool only-build-on-comment: Only build when asked (with test
+          phrase). (default false)
+      :arg bool delete-previous-build-finish-comments: Keep PR comment only for
+          most recent Build. (default false)
+      :arg bool cancel-outdated-jobs: Cancel outdated jobs. (default false)
+
+      Minimal Example:
+
+      .. literalinclude::
+          /../../tests/triggers/fixtures/stash-pull-request-minimal.yaml
+         :language: yaml
+
+      Full Example:
+
+      .. literalinclude::
+          /../../tests/triggers/fixtures/stash-pull-request-full.yaml
+         :language: yaml
+    """
+
+    pr_trigger = XML.SubElement(
+        xml_parent,
+        'stashpullrequestbuilder.stashpullrequestbuilder.StashBuildTrigger')
+    pr_trigger.set('plugin', 'stash-pullrequest-builder')
+
+    mappings = [
+        ('cron', 'spec', None),  # Spec needs to be set to the same as cron
+        ('cron', 'cron', None),
+        ('stash-host', 'stashHost', None),
+        ('credentials-id', 'credentialsId', None),
+        ('project', 'projectCode', None),
+        ('repository', 'repositoryName', None),
+        ('ci-skip-phrases', 'ciSkipPhrases', 'NO TEST'),
+        ('ci-build-phrases', 'ciBuildPhrases', 'test this please'),
+        ('target-branches', 'targetBranchesToBuild', ''),
+        ('ignore-ssl', 'ignoreSsl', False),
+        ('check-destination-commit', 'checkDestinationCommit', False),
+        ('check-mergable', 'checkMergeable', False),
+        ('merge-on-success', 'mergeOnSuccess', False),
+        ('check-not-conflicted', 'checkNotConflicted', True),
+        ('only-build-on-comment', 'onlyBuildOnComment', False),
+        ('delete-previous-build-finish-comments',
+            'deletePreviousBuildFinishComments', False),
+        ('cancel-outdated-jobs', 'cancelOutdatedJobsEnabled', False),
+    ]
+    convert_mapping_to_xml(pr_trigger, data, mappings, fail_required=True)
+
+
 class Triggers(jenkins_jobs.modules.base.Base):
     sequence = 50
 
