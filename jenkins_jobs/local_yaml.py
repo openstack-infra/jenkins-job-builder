@@ -345,7 +345,7 @@ class YamlInclude(BaseYAMLObject):
         for dirname in search_path:
             candidate = os.path.expanduser(os.path.join(dirname, filename))
             if os.path.isfile(candidate):
-                logger.info("Including file '{0}' from path '{1}'"
+                logger.debug("Including file '{0}' from path '{1}'"
                             .format(filename, dirname))
                 return candidate
         return filename
