@@ -3793,6 +3793,14 @@ def warnings(registry, xml_parent, data):
     :arg str files-to-ignore: Comma separated list of regular expressions
         that specifies the files to exclude from the report (based on their
         absolute filename). (default '')
+    :arg str messages-to-ignore: Newline separated list of regular
+        expressions that specifies the warning messages to exclude form the
+        report (based on the warning messages). By default all warning
+        messages are included
+    :arg str categories-to-ignore: Newline separated list of regular
+        expressions that specifies the warning messages to exclude form the
+        report (based on the warning categories). By default all warning
+        categories are included
     :arg bool run-always: By default, this plug-in runs only for stable or
         unstable builds, but not for failed builds.  Set to true if the
         plug-in should run even for failed builds.  (default false)
@@ -3914,6 +3922,8 @@ def warnings(registry, xml_parent, data):
     warnings_mappings = [
         ('files-to-include', 'includePattern', ''),
         ('files-to-ignore', 'excludePattern', ''),
+        ('messages-to-ignore', 'messagesPattern', ''),
+        ('categories-to-ignore', 'categoriesPattern', ''),
         ('plugin-name', 'pluginName', '[WARNINGS]'),
         ('run-always', 'canRunOnFailed', False),
         ('detect-modules', 'shouldDetectModules', False),

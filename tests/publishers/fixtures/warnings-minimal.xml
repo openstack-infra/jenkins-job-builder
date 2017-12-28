@@ -6,6 +6,8 @@
       <parserConfigurations/>
       <includePattern/>
       <excludePattern/>
+      <messagesPattern/>
+      <categoriesPattern/>
       <pluginName>[WARNINGS]</pluginName>
       <canRunOnFailed>false</canRunOnFailed>
       <shouldDetectModules>false</shouldDetectModules>
