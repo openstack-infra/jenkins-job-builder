@@ -1,0 +1,57 @@
+publishers:
+    - postbuildscript:
+        mark-unstable-if-failed: true
+        generic-script:
+            - file-path: '/fakepath/generic'
+              role: MASTER
+              build-on:
+                  - SUCCESS
+                  - UNSTABLE
+            - file-path: '/fakepath/generic-two'
+              role: SLAVE
+              build-on:
+                  - NOT_BUILT
+                  - ABORTED
+                  - FAILURE
+        groovy-script:
+            - file-path: '/fakepath/groovy'
+              role: MASTER
+              build-on:
+                  - SUCCESS
+                  - UNSTABLE
+            - file-path: '/fakepath/groovy-too'
+              role: SLAVE
+              build-on:
+                  - NOT_BUILT
+                  - ABORTED
+                  - FAILURE
+        groovy:
+            - role: MASTER
+              build-on:
+                  - SUCCESS
+                  - UNSTABLE
+              content: 'println "Hello world!"'
+            - role: SLAVE
+              build-on:
+                  - NOT_BUILT
+                  - ABORTED
+                  - FAILURE
+              content: |
+                  println "Hello world!"
+                  println "Multi-line script"
+
+        builders:
+            - role: MASTER
+              build-on:
+                  - SUCCESS
+                  - UNSTABLE
+              build-steps:
+                  - shell: 'echo "Hello world!"'
+            - role: SLAVE
+              build-on:
+                  - NOT_BUILT
+                  - ABORTED
+                  - FAILURE
+              build-steps:
+                  - shell: 'echo "Hello world!"'
+                  - shell: 'echo "Goodbye world!"'

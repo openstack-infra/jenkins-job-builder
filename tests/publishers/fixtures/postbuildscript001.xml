@@ -2,6 +2,7 @@
 <project>
   <publishers>
     <org.jenkinsci.plugins.postbuildscript.PostBuildScript>
+      <markBuildUnstable>true</markBuildUnstable>
       <genericScriptFileList>
         <org.jenkinsci.plugins.postbuildscript.GenericScript>
           <filePath>/tmp/one.sh</filePath>
@@ -28,7 +29,6 @@
       </groovyScriptContentList>
       <scriptOnlyIfSuccess>false</scriptOnlyIfSuccess>
       <scriptOnlyIfFailure>true</scriptOnlyIfFailure>
-      <markBuildUnstable>true</markBuildUnstable>
     </org.jenkinsci.plugins.postbuildscript.PostBuildScript>
   </publishers>
 </project>

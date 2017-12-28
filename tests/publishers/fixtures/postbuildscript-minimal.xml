@@ -2,9 +2,12 @@
 <project>
   <publishers>
     <org.jenkinsci.plugins.postbuildscript.PostBuildScript>
-      <markBuildUnstable>false</markBuildUnstable>
-      <scriptOnlyIfSuccess>true</scriptOnlyIfSuccess>
-      <scriptOnlyIfFailure>false</scriptOnlyIfFailure>
+      <config>
+        <markBuildUnstable>false</markBuildUnstable>
+        <scriptFiles/>
+        <groovyScripts/>
+        <buildSteps/>
+      </config>
     </org.jenkinsci.plugins.postbuildscript.PostBuildScript>
   </publishers>
 </project>

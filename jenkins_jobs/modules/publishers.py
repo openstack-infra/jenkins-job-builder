@@ -3572,30 +3572,81 @@ def postbuildscript(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Post Build Script plugin
     <PostBuildScript+Plugin>`.
 
-    :arg list generic-script: Paths to Batch/Shell scripts
+    :arg list generic-script: Series of Batch/Shell scripts to to run
+
+        :generic-script: * **file-path** (`str`) - Path to Batch/Shell scripts
+                         * **role** (`str`) - Execute scripts on. One of
+                           MASTER / SLAVE / BOTH. (default 'BOTH')
+                         * **build-on** (`list`) - Build statuses which trigger
+                           the scripts. Valid options:
+                           SUCCESS / UNSTABLE / FAILURE / NOT_BUILT / ABORTED
+                           (default 'SUCCESS')
+
     :arg list groovy-script: Paths to Groovy scripts
+
+        :groovy-script: * **file-path** (`str`) - Path to Groovy scripts
+                        * **role** (`str`) - Execute scripts on. One of
+                          MASTER / SLAVE / BOTH. (default 'BOTH')
+                        * **build-on** (`list`) - Build statuses which trigger
+                          the scripts. Valid options:
+                          SUCCESS / UNSTABLE / FAILURE / NOT_BUILT / ABORTED
+                          (default 'SUCCESS')
+
     :arg list groovy: Inline Groovy
-    :arg list builders: Any supported builders, see :doc:`builders`.
+
+        :groovy: * **content** (`str`) - Inline Groovy script.
+                 * **role** (`str`) - Execute scripts on. One of
+                   MASTER / SLAVE / BOTH. (default 'BOTH')
+                 * **build-on** (`list`) - Build statuses which trigger
+                   the scripts. Valid options:
+                   SUCCESS / UNSTABLE / FAILURE / NOT_BUILT / ABORTED
+                   (default 'SUCCESS')
+
+    :arg list builders: Execute any number of supported Jenkins builders.
+
+        :builders: * **build-steps** (`str`) - Any supported builders,
+                     see :doc:`builders`.
+                   * **role** (`str`) - Execute scripts on. One of
+                     MASTER / SLAVE / BOTH. (default 'BOTH')
+                   * **build-on** (`list`) - Build statuses which trigger
+                     the scripts. Valid options:
+                     SUCCESS / UNSTABLE / FAILURE / NOT_BUILT / ABORTED
+                     (default 'SUCCESS')
+
+    :arg bool mark-unstable-if-failed: Build will be marked unstable
+        if job will be successfully completed but publishing script will return
+        non zero exit code (default false)
+
+    Deprecated Options for versions < 2.0 of plugin:
+
     :arg bool onsuccess: Deprecated, replaced with script-only-if-succeeded
     :arg bool script-only-if-succeeded: Scripts and builders are run only if
-                                        the build succeeded (default true)
+        the build succeeded (default true)
     :arg bool onfailure: Deprecated, replaced with script-only-if-failed
     :arg bool script-only-if-failed: Scripts and builders are run only if the
-                                     build failed (default false)
-    :arg bool mark-unstable-if-failed: Build will be marked unstable
-                                       if job will be successfully completed
-                                       but publishing script will return
-                                       non zero exit code (default false)
+        build failed (default false)
+
     :arg str execute-on: For matrix projects, scripts can be run after each
-                         axis is built (`axes`), after all axis of the matrix
-                         are built (`matrix`) or after each axis AND the matrix
-                         are built (`both`).
+        axis is built (`axes`), after all axis of the matrix are built
+        (`matrix`) or after each axis AND the matrix are built (`both`).
 
     The `script-only-if-succeeded` and `bool script-only-if-failed` options are
     confusing. If you want the post build to always run regardless of the build
     status, you should set them both to `false`.
 
-    Example:
+    Minimal Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/postbuildscript-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/postbuildscript-full.yaml
+       :language: yaml
+
+    Example(s) versions < 2.0:
 
     .. literalinclude::
         /../../tests/publishers/fixtures/postbuildscript001.yaml
@@ -3618,82 +3669,172 @@ def postbuildscript(registry, xml_parent, data):
         xml_parent,
         'org.jenkinsci.plugins.postbuildscript.PostBuildScript')
 
-    # Shell/Groovy in a file
-    script_types = {
-        'generic-script': 'GenericScript',
-        'groovy-script': 'GroovyScriptFile',
-    }
+    info = registry.get_plugin_info('Jenkins PostBuildScript Plugin')
+    # Note: Assume latest version of plugin is preferred config format
+    version = pkg_resources.parse_version(
+        info.get('version', str(sys.maxsize)))
+    if version >= pkg_resources.parse_version('2.0'):
+        pbs_xml = XML.SubElement(pbs_xml, 'config')
 
-    # Assuming yaml preserves order of input data make sure
-    # corresponding XML steps are generated in the same order
-    build_scripts = [(k, v) for k, v in data.items()
-                     if k in script_types or k in ['groovy', 'builders']]
+    mapping = [
+        ('mark-unstable-if-failed', 'markBuildUnstable', False),
+    ]
+    helpers.convert_mapping_to_xml(pbs_xml, data, mapping, fail_required=True)
 
-    for step, script_data in build_scripts:
-        if step in script_types:
-            scripts_xml = XML.SubElement(pbs_xml, step[:-len('-script')] +
-                                         'ScriptFileList')
-            for shell_script in script_data:
-                script_xml = XML.SubElement(
-                    scripts_xml,
-                    'org.jenkinsci.plugins.postbuildscript.'
-                    + script_types[step])
-                file_path_xml = XML.SubElement(script_xml, 'filePath')
-                file_path_xml.text = shell_script
+    if version >= pkg_resources.parse_version("2.0"):
 
-        # Inlined Groovy
-        if step == 'groovy':
-            groovy_inline_xml = XML.SubElement(pbs_xml,
-                                               'groovyScriptContentList')
-            for groovy in script_data:
-                groovy_xml = XML.SubElement(
-                    groovy_inline_xml,
-                    'org.jenkinsci.plugins.postbuildscript.GroovyScriptContent'
-                )
-                groovy_content = XML.SubElement(groovy_xml, 'content')
-                groovy_content.text = groovy
+        ################
+        # Script Files #
+        ################
 
-        # Inject builders
-        if step == 'builders':
-            build_steps_xml = XML.SubElement(pbs_xml, 'buildSteps')
-            for builder in script_data:
+        script_mapping = [
+            ('role', 'role', 'BOTH'),
+            ('file-path', 'filePath', False),
+        ]
+        sf_path = 'org.jenkinsci.plugins.postbuildscript.model.ScriptFile'
+        sf_xml = XML.SubElement(pbs_xml, 'scriptFiles')
+
+        for gs_data in data.get('generic-script', []):
+            x = XML.SubElement(sf_xml, sf_path)
+            results_xml = XML.SubElement(x, 'results')
+
+            for result in gs_data.get('build-on', ['SUCCESS']):
+                XML.SubElement(results_xml, 'string').text = result
+
+            helpers.convert_mapping_to_xml(
+                x, gs_data, script_mapping, fail_required=True)
+            XML.SubElement(x, 'scriptType').text = 'GENERIC'
+
+        for gs_data in data.get('groovy-script', []):
+            x = XML.SubElement(sf_xml, sf_path)
+            results_xml = XML.SubElement(x, 'results')
+
+            for result in gs_data.get('build-on', ['SUCCESS']):
+                XML.SubElement(results_xml, 'string').text = result
+
+            helpers.convert_mapping_to_xml(
+                x, gs_data, script_mapping, fail_required=True)
+            XML.SubElement(x, 'scriptType').text = 'GROOVY'
+
+        #################
+        # Inline Groovy #
+        #################
+
+        groovy_mapping = [
+            ('role', 'role', 'BOTH'),
+            ('content', 'content', False),
+        ]
+        gs_path = 'org.jenkinsci.plugins.postbuildscript.model.Script'
+        gs_xml = XML.SubElement(pbs_xml, 'groovyScripts')
+        for gs_data in data.get('groovy', []):
+            x = XML.SubElement(gs_xml, gs_path)
+            results_xml = XML.SubElement(x, 'results')
+
+            for result in gs_data.get('build-on', ['SUCCESS']):
+                XML.SubElement(results_xml, 'string').text = result
+
+            helpers.convert_mapping_to_xml(
+                x, gs_data, groovy_mapping, fail_required=True)
+
+        ############
+        # Builders #
+        ############
+
+        builder_mapping = [
+            ('role', 'role', 'BOTH'),
+        ]
+        bs_path = 'org.jenkinsci.plugins.postbuildscript.model.PostBuildStep'
+        bs_xml = XML.SubElement(pbs_xml, 'buildSteps')
+        for bs_data in data.get('builders', []):
+            x = XML.SubElement(bs_xml, bs_path)
+            results_xml = XML.SubElement(x, 'results')
+
+            for result in bs_data.get('build-on', ['SUCCESS']):
+                XML.SubElement(results_xml, 'string').text = result
+
+            helpers.convert_mapping_to_xml(
+                x, bs_data, builder_mapping, fail_required=True)
+
+            build_steps_xml = XML.SubElement(x, 'buildSteps')
+            for builder in bs_data.get('build-steps'):
                 registry.dispatch('builder', build_steps_xml, builder)
 
-    # When to run the build? Note the plugin let one specify both options
-    # although they are antinomic
-    # onsuccess and onfailure parameters are deprecated, this is to keep
-    # backwards compatability
-    success_xml = XML.SubElement(pbs_xml, 'scriptOnlyIfSuccess')
-    if 'script-only-if-succeeded' in data:
-        success_xml.text = str(data.get('script-only-if-succeeded',
-                                        True)).lower()
-    else:
-        success_xml.text = str(data.get('onsuccess', True)).lower()
+    else:  # Options below are all deprecated in version < 2.0 of plugin
 
-    failure_xml = XML.SubElement(pbs_xml, 'scriptOnlyIfFailure')
-    if 'script-only-if-failed' in data:
-        failure_xml.text = str(data.get('script-only-if-failed',
-                                        False)).lower()
-    else:
-        failure_xml.text = str(data.get('onfailure', False)).lower()
+        # Shell/Groovy in a file
+        script_types = {
+            'generic-script': 'GenericScript',
+            'groovy-script': 'GroovyScriptFile',
+        }
 
-    # Mark build unstable if publisher script return non zero exit code
-    XML.SubElement(pbs_xml, 'markBuildUnstable').text = str(
-        data.get('mark-unstable-if-failed', False)).lower()
-    # TODO: we may want to avoid setting "execute-on" on non-matrix jobs,
-    # either by skipping this part or by raising an error to let the user know
-    # an attempt was made to set execute-on on a non-matrix job. There are
-    # currently no easy ways to check for this though.
-    if 'execute-on' in data:
-        valid_values = ('matrix', 'axes', 'both')
-        execute_on = data['execute-on'].lower()
-        if execute_on not in valid_values:
-            raise JenkinsJobsException(
-                'execute-on must be one of %s, got %s' %
-                valid_values, execute_on
-            )
-        execute_on_xml = XML.SubElement(pbs_xml, 'executeOn')
-        execute_on_xml.text = execute_on.upper()
+        # Assuming yaml preserves order of input data make sure
+        # corresponding XML steps are generated in the same order
+        build_scripts = [(k, v) for k, v in data.items()
+                         if k in script_types or k in ['groovy', 'builders']]
+
+        for step, script_data in build_scripts:
+            if step in script_types:
+                scripts_xml = XML.SubElement(
+                    pbs_xml, step[:-len('-script')] + 'ScriptFileList')
+                for shell_script in script_data:
+                    script_xml = XML.SubElement(
+                        scripts_xml,
+                        'org.jenkinsci.plugins.postbuildscript.'
+                        + script_types[step])
+                    file_path_xml = XML.SubElement(script_xml, 'filePath')
+                    file_path_xml.text = shell_script
+
+            # Inlined Groovy
+            if step == 'groovy':
+                groovy_inline_xml = XML.SubElement(
+                    pbs_xml, 'groovyScriptContentList')
+                for groovy in script_data:
+                    groovy_xml = XML.SubElement(
+                        groovy_inline_xml,
+                        'org.jenkinsci.plugins.postbuildscript.'
+                        'GroovyScriptContent'
+                    )
+                    groovy_content = XML.SubElement(groovy_xml, 'content')
+                    groovy_content.text = groovy
+
+            # Inject builders
+            if step == 'builders':
+                build_steps_xml = XML.SubElement(pbs_xml, 'buildSteps')
+                for builder in script_data:
+                    registry.dispatch('builder', build_steps_xml, builder)
+
+        # When to run the build? Note the plugin let one specify both options
+        # although they are antinomic
+        # onsuccess and onfailure parameters are deprecated, this is to keep
+        # backwards compatability
+        success_xml = XML.SubElement(pbs_xml, 'scriptOnlyIfSuccess')
+        if 'script-only-if-succeeded' in data:
+            success_xml.text = str(
+                data.get('script-only-if-succeeded', True)).lower()
+        else:
+            success_xml.text = str(data.get('onsuccess', True)).lower()
+
+        failure_xml = XML.SubElement(pbs_xml, 'scriptOnlyIfFailure')
+        if 'script-only-if-failed' in data:
+            failure_xml.text = str(
+                data.get('script-only-if-failed', False)).lower()
+        else:
+            failure_xml.text = str(data.get('onfailure', False)).lower()
+
+        # TODO: we may want to avoid setting "execute-on" on non-matrix jobs,
+        # either by skipping this part or by raising an error to let the user
+        # know an attempt was made to set execute-on on a non-matrix job.
+        # There are currently no easy ways to check for this though.
+        if 'execute-on' in data:
+            valid_values = ('matrix', 'axes', 'both')
+            execute_on = data['execute-on'].lower()
+            if execute_on not in valid_values:
+                raise JenkinsJobsException(
+                    'execute-on must be one of %s, got %s' %
+                    valid_values, execute_on
+                )
+            execute_on_xml = XML.SubElement(pbs_xml, 'executeOn')
+            execute_on_xml.text = execute_on.upper()
 
 
 def xml_summary(registry, xml_parent, data):

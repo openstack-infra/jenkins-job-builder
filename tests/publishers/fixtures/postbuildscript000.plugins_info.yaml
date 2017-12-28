@@ -1,0 +1,3 @@
+- longName: 'Jenkins PostBuildScript Plugin'
+  shortName: 'postbuildscript'
+  version: "1.0"

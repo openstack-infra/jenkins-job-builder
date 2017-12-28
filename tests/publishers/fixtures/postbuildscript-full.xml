@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkinsci.plugins.postbuildscript.PostBuildScript>
+      <config>
+        <markBuildUnstable>true</markBuildUnstable>
+        <scriptFiles>
+          <org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+            <results>
+              <string>SUCCESS</string>
+              <string>UNSTABLE</string>
+            </results>
+            <role>MASTER</role>
+            <filePath>/fakepath/generic</filePath>
+            <scriptType>GENERIC</scriptType>
+          </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+          <org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+            <results>
+              <string>NOT_BUILT</string>
+              <string>ABORTED</string>
+              <string>FAILURE</string>
+            </results>
+            <role>SLAVE</role>
+            <filePath>/fakepath/generic-two</filePath>
+            <scriptType>GENERIC</scriptType>
+          </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+          <org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+            <results>
+              <string>SUCCESS</string>
+              <string>UNSTABLE</string>
+            </results>
+            <role>MASTER</role>
+            <filePath>/fakepath/groovy</filePath>
+            <scriptType>GROOVY</scriptType>
+          </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+          <org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+            <results>
+              <string>NOT_BUILT</string>
+              <string>ABORTED</string>
+              <string>FAILURE</string>
+            </results>
+            <role>SLAVE</role>
+            <filePath>/fakepath/groovy-too</filePath>
+            <scriptType>GROOVY</scriptType>
+          </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+        </scriptFiles>
+        <groovyScripts>
+          <org.jenkinsci.plugins.postbuildscript.model.Script>
+            <results>
+              <string>SUCCESS</string>
+              <string>UNSTABLE</string>
+            </results>
+            <role>MASTER</role>
+            <content>println &quot;Hello world!&quot;</content>
+          </org.jenkinsci.plugins.postbuildscript.model.Script>
+          <org.jenkinsci.plugins.postbuildscript.model.Script>
+            <results>
+              <string>NOT_BUILT</string>
+              <string>ABORTED</string>
+              <string>FAILURE</string>
+            </results>
+            <role>SLAVE</role>
+            <content>println &quot;Hello world!&quot;
+println &quot;Multi-line script&quot;
+</content>
+          </org.jenkinsci.plugins.postbuildscript.model.Script>
+        </groovyScripts>
+        <buildSteps>
+          <org.jenkinsci.plugins.postbuildscript.model.PostBuildStep>
+            <results>
+              <string>SUCCESS</string>
+              <string>UNSTABLE</string>
+            </results>
+            <role>MASTER</role>
+            <buildSteps>
+              <hudson.tasks.Shell>
+                <command>echo &quot;Hello world!&quot;</command>
+              </hudson.tasks.Shell>
+            </buildSteps>
+          </org.jenkinsci.plugins.postbuildscript.model.PostBuildStep>
+          <org.jenkinsci.plugins.postbuildscript.model.PostBuildStep>
+            <results>
+              <string>NOT_BUILT</string>
+              <string>ABORTED</string>
+              <string>FAILURE</string>
+            </results>
+            <role>SLAVE</role>
+            <buildSteps>
+              <hudson.tasks.Shell>
+                <command>echo &quot;Hello world!&quot;</command>
+              </hudson.tasks.Shell>
+              <hudson.tasks.Shell>
+                <command>echo &quot;Goodbye world!&quot;</command>
+              </hudson.tasks.Shell>
+            </buildSteps>
+          </org.jenkinsci.plugins.postbuildscript.model.PostBuildStep>
+        </buildSteps>
+      </config>
+    </org.jenkinsci.plugins.postbuildscript.PostBuildScript>
+  </publishers>
+</project>

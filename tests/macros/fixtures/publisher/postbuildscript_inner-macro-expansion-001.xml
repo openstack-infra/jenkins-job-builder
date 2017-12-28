@@ -12,6 +12,7 @@
   <builders/>
   <publishers>
     <org.jenkinsci.plugins.postbuildscript.PostBuildScript>
+      <markBuildUnstable>false</markBuildUnstable>
       <buildSteps>
         <hudson.tasks.Shell>
           <command>fine</command>
@@ -22,7 +23,6 @@
       </buildSteps>
       <scriptOnlyIfSuccess>true</scriptOnlyIfSuccess>
       <scriptOnlyIfFailure>false</scriptOnlyIfFailure>
-      <markBuildUnstable>false</markBuildUnstable>
     </org.jenkinsci.plugins.postbuildscript.PostBuildScript>
   </publishers>
   <buildWrappers/>
