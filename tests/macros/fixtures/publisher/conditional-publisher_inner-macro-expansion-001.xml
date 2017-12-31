@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <builders/>
+  <publishers>
+    <org.jenkins__ci.plugins.flexible__publish.FlexiblePublisher>
+      <publishers>
+        <org.jenkins__ci.plugins.flexible__publish.ConditionalPublisher>
+          <condition class="org.jenkins_ci.plugins.run_condition.core.FileExistsCondition">
+            <file>filename</file>
+            <baseDir class="org.jenkins_ci.plugins.run_condition.common.BaseDirectory$Workspace"/>
+          </condition>
+          <runner class="org.jenkins_ci.plugins.run_condition.BuildStepRunner$Fail"/>
+          <publisherList>
+            <hudson.plugins.build__publisher.BuildPublisher>
+              <publishUnstableBuilds>true</publishUnstableBuilds>
+              <publishFailedBuilds>true</publishFailedBuilds>
+            </hudson.plugins.build__publisher.BuildPublisher>
+            <hudson.plugins.chucknorris.CordellWalkerRecorder>
+              <factGenerator/>
+            </hudson.plugins.chucknorris.CordellWalkerRecorder>
+          </publisherList>
+        </org.jenkins__ci.plugins.flexible__publish.ConditionalPublisher>
+      </publishers>
+    </org.jenkins__ci.plugins.flexible__publish.FlexiblePublisher>
+  </publishers>
+  <buildWrappers/>
+</project>

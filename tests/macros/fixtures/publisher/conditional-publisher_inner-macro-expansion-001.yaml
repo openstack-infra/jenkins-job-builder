@@ -1,0 +1,19 @@
+- publisher:
+    name: Macro
+    publishers:
+        - chuck-norris
+
+- job:
+    name: Job
+    publishers:
+        - conditional-publisher:
+            - condition-kind: file-exists
+              condition-filename: 'filename'
+              action:
+                  - build-publisher
+                  - Macro
+
+- project:
+    name: meow
+    jobs:
+      - Job

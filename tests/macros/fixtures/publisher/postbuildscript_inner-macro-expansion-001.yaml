@@ -1,0 +1,17 @@
+- builder:
+    name: Macro
+    builders:
+        - shell: ""
+
+- job:
+    name: Job
+    publishers:
+        - postbuildscript:
+            builders:
+                - shell: "fine"
+                - Macro
+
+- project:
+    name: meow
+    jobs:
+      - Job
