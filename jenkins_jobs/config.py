@@ -46,7 +46,7 @@ allow_empty_variables=False
 # if you have multiple jenkins servers.
 [jenkins]
 url=http://localhost:8080/
-query_plugins_info=True
+query_plugins_info=False
 """
 
 CONFIG_REQUIRED_MESSAGE = ("A valid configuration file is required. "
