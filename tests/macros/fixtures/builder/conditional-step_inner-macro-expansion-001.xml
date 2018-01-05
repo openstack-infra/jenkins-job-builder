@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <builders>
+    <org.jenkinsci.plugins.conditionalbuildstep.ConditionalBuilder>
+      <conditionalbuilders>
+        <hudson.tasks.Shell>
+          <command>fine</command>
+        </hudson.tasks.Shell>
+        <hudson.tasks.Shell>
+          <command/>
+        </hudson.tasks.Shell>
+      </conditionalbuilders>
+      <runCondition class="org.jenkins_ci.plugins.run_condition.core.FileExistsCondition">
+        <file>filename</file>
+        <baseDir class="org.jenkins_ci.plugins.run_condition.common.BaseDirectory$Workspace"/>
+      </runCondition>
+      <runner class="org.jenkins_ci.plugins.run_condition.BuildStepRunner$Fail"/>
+    </org.jenkinsci.plugins.conditionalbuildstep.ConditionalBuilder>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

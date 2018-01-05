@@ -1,0 +1,19 @@
+- builder:
+    name: Macro
+    builders:
+        - shell: ""
+
+- job:
+    name: Job
+    builders:
+        - conditional-step:
+            condition-kind: file-exists
+            condition-filename: 'filename'
+            steps:
+                - shell: "fine"
+                - Macro
+
+- project:
+    name: meow
+    jobs:
+      - Job

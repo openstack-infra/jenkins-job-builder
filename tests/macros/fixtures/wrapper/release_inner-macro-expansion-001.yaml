@@ -1,0 +1,34 @@
+- builder:
+    name: builder-macro-1
+    builders:
+        - shell: ""
+
+- parameter:
+    name: parameter-macro-1
+    parameters:
+      - string:
+          name: RELEASE_BRANCH
+          default: ''
+          description: Git branch to release from.
+
+- job:
+    name: Job
+    wrappers:
+      - release:
+          keep-forever: false
+          parameters:
+              - parameter-macro-1
+              - bool:
+                  name: FOO
+                  default: false
+                  description: "A parameter named FOO, defaults to 'false'."
+          post-success:
+              - builder-macro-1
+              - shell: |
+                  #!/bin/bash
+                  copy_build_artefacts.sh
+
+- project:
+    name: meow
+    jobs:
+      - Job
