@@ -143,7 +143,6 @@ Examples:
         .. literalinclude:: /../../tests/yamlparser/fixtures/jinja01.yaml.inc
 """
 
-import copy
 import functools
 import io
 import logging
@@ -290,32 +289,6 @@ class LocalLoader(OrderedConstructor, LocalAnchorLoader):
 
     def _escape(self, data):
         return re.sub(r'({|})', r'\1\1', data)
-
-    def __deepcopy__(self, memo):
-        """
-        Make a deep copy of a LocalLoader excluding the uncopyable self.stream.
-
-        This is achieved by performing a shallow copy of self, setting the
-        stream attribute to None and then performing a deep copy of the shallow
-        copy.
-
-        (As this method will be called again on that deep copy, we also set a
-        sentinel attribute on the shallow copy to ensure that we don't recurse
-        infinitely.)
-        """
-        assert self.done, 'Unsafe to copy an in-progress loader'
-        if getattr(self, '_copy', False):
-            # This is a shallow copy for an in-progress deep copy, remove the
-            # _copy marker and return self
-            del self._copy
-            return self
-        # Make a shallow copy
-        shallow = copy.copy(self)
-        shallow.stream = None
-        shallow._copy = True
-        deep = copy.deepcopy(shallow, memo)
-        memo[id(self)] = deep
-        return deep
 
 
 class LocalDumper(OrderedRepresenter, yaml.Dumper):
@@ -467,12 +440,11 @@ class CustomLoader(object):
 class Jinja2Loader(CustomLoader):
     """A loader for Jinja2-templated files."""
     def __init__(self, contents):
-        self._contents = contents
+        self._template = jinja2.Template(contents)
+        self._template.environment.undefined = jinja2.StrictUndefined
 
     def format(self, **kwargs):
-        _template = jinja2.Template(self._contents)
-        _template.environment.undefined = jinja2.StrictUndefined
-        return _template.render(kwargs)
+        return self._template.render(kwargs)
 
 
 class CustomLoaderCollection(object):
