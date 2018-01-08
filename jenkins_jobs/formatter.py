@@ -81,19 +81,25 @@ class CustomFormatter(Formatter):
     Custom formatter to allow non-existing key references when formatting a
     string
     """
-    _expr = '{({{)*(?:obj:)?(?P<key>\w+)(?:\|(?P<default>[\w\s]*))?}(}})*'
+    _expr = """
+        (?<!{){({{)*                # non-pair opening {
+        (?:obj:)?                   # obj:
+        (?P<key>\w+)                # key
+        (?:\|(?P<default>[\w\s]*))? # default fallback
+        }(}})*(?!})                 # non-pair closing }
+    """
 
     def __init__(self, allow_empty=False):
         super(CustomFormatter, self).__init__()
         self.allow_empty = allow_empty
 
     def vformat(self, format_string, args, kwargs):
-        matcher = re.compile(self._expr)
+        matcher = re.compile(self._expr, re.VERBOSE)
 
         # special case of returning the object if the entire string
         # matches a single parameter
         try:
-            result = re.match('^%s$' % self._expr, format_string)
+            result = re.match('^%s$' % self._expr, format_string, re.VERBOSE)
         except TypeError:
             return format_string.format(**kwargs)
         if result is not None:

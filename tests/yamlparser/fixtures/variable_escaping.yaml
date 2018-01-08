@@ -1,0 +1,17 @@
+- project:
+    name: test_template_variable_escaping
+    jobs:
+        - 'template_variable_escaping':
+            defined_var: 'Hello'
+
+- job-template:
+    name: 'template_variable_escaping'
+    builders:
+      - shell: |
+          echo "{{var}}"
+          echo "{{defined_var|def}}"
+          echo "{{undefined_var|def}}"
+          echo "{{undefined_var|defined_var}}"
+
+
+
