@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.tasks.TasksPublisher plugin="tasks">
+      <pattern>**/*.java,**/*.c</pattern>
+      <excludePattern>specific/file.java</excludePattern>
+      <high>FIXME,XXX</high>
+      <normal>TODO</normal>
+      <low>NICETOHAVE</low>
+      <dontComputeNew>true</dontComputeNew>
+      <pluginName>[TASKS] </pluginName>
+      <doNotResolveRelativePaths>false</doNotResolveRelativePaths>
+      <ignoreCase>false</ignoreCase>
+      <asRegexp>false</asRegexp>
+      <canRunOnFailed>false</canRunOnFailed>
+      <shouldDetectModules>false</shouldDetectModules>
+      <healthy>100</healthy>
+      <unHealthy>0</unHealthy>
+      <thresholdLimit>low</thresholdLimit>
+      <useDeltaValues>false</useDeltaValues>
+      <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
+      <useStableBuildAsReference>false</useStableBuildAsReference>
+      <defaultEncoding>UTF-8</defaultEncoding>
+      <thresholds plugin="analysis-core">
+        <unstableTotalAll>0</unstableTotalAll>
+        <unstableTotalHigh>0</unstableTotalHigh>
+        <unstableTotalNormal>0</unstableTotalNormal>
+        <unstableTotalLow>0</unstableTotalLow>
+        <unstableNewAll>0</unstableNewAll>
+        <unstableNewHigh>0</unstableNewHigh>
+        <unstableNewNormal>0</unstableNewNormal>
+        <unstableNewLow>0</unstableNewLow>
+        <failedTotalAll>0</failedTotalAll>
+        <failedTotalHigh>0</failedTotalHigh>
+        <failedTotalNormal>0</failedTotalNormal>
+        <failedTotalLow>0</failedTotalLow>
+        <failedNewAll>0</failedNewAll>
+        <failedNewHigh>0</failedNewHigh>
+        <failedNewNormal>0</failedNewNormal>
+        <failedNewLow>0</failedNewLow>
+      </thresholds>
+    </hudson.plugins.tasks.TasksPublisher>
+  </publishers>
+</project>
