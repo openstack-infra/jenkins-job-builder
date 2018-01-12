@@ -111,6 +111,7 @@ class JenkinsJobs(object):
                         key = 'CTRL+D'
                     logger.warning("Reading configuration from STDIN. "
                                    "Press %s to end input.", key)
+                self.options.path = [self.options.path]
             else:
                 # take list of paths
                 self.options.path = self.options.path.split(os.pathsep)
