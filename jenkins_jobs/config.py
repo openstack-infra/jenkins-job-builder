@@ -51,6 +51,7 @@ query_plugins_info=False
 
 CONFIG_REQUIRED_MESSAGE = ("A valid configuration file is required. "
                            "No configuration file passed.")
+_NOTSET = object()
 
 
 class JJBConfig(object):
@@ -354,10 +355,13 @@ class JJBConfig(object):
         # plugin configuration format in their config. This code should be
         # removed in future versions of JJB after 2.0.
         if value is default:
-            value = self.get_module_config(plugin, key, default)
-            logger.warning(
-                "Defining plugin configuration using [" + plugin + "] is"
-                " deprecated. The recommended way to define plugins now is by"
-                " configuring [plugin \"" + plugin + "\"]")
+            old_value = self.get_module_config(plugin, key, _NOTSET)
+            # only log warning if detected a plugin config setting.
+            if old_value is not _NOTSET:
+                value = old_value
+                logger.warning(
+                    "Defining plugin configuration using [" + plugin + "] is "
+                    "deprecated. The recommended way to define plugins now is "
+                    "by configuring [plugin \"" + plugin + "\"]")
 
         return value

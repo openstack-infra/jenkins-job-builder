@@ -77,6 +77,33 @@ class TestConfigs(CmdTestsBase):
         jenkins_jobs = entry.JenkinsJobs(args)
         self.assertRaises(IOError, jenkins_jobs.execute)
 
+    def test_config_old_plugin_format_warning(self):
+        """
+        Run test mode and check that old plugin settings result
+        in a warning, while ensuring that missing sections do not
+        trigger the same warning if a default value is provided.
+        """
+        args = ['--conf',
+                os.path.join(self.fixtures_path, 'plugin_warning.ini'),
+                'test', 'foo']
+        jenkins_jobs = entry.JenkinsJobs(args)
+        jenkins_jobs.jjb_config.get_plugin_config(
+            'old_plugin', 'setting', True)
+        jenkins_jobs.jjb_config.get_plugin_config(
+            'old_plugin_no_conf', 'setting', True)
+        jenkins_jobs.jjb_config.get_plugin_config(
+            'new_plugin', 'setting')
+        self.assertIn(
+            'Defining plugin configuration using [old_plugin] is deprecated',
+            self.logger.output)
+        self.assertNotIn(
+            'Defining plugin configuration using [old_plugin_no_conf] is '
+            'deprecated',
+            self.logger.output)
+        self.assertNotIn(
+            'Defining plugin configuration using [new_plugin] is deprecated',
+            self.logger.output)
+
     def test_config_options_not_replaced_by_cli_defaults(self):
         """
         Run test mode and check config settings from conf file retained
