@@ -125,14 +125,7 @@ class JJBConfig(object):
 
         self.config_parser = config_parser
 
-        self.ignore_cache = False
-        self.flush_cache = False
-        self.user = None
-        self.password = None
-        self.section = config_section
-        self.plugins_info = None
-        self.timeout = builder._DEFAULT_TIMEOUT
-        self.allow_empty_variables = None
+        self._section = config_section
 
         self.jenkins = defaultdict(None)
         self.builder = defaultdict(None)
@@ -204,19 +197,22 @@ class JJBConfig(object):
         logger.debug("Config: {0}".format(config))
 
         # check the ignore_cache setting
-        if config.has_option(self.section, 'ignore_cache'):
+        ignore_cache = False
+        if config.has_option(self._section, 'ignore_cache'):
             logging.warning("ignore_cache option should be moved to the "
                             "[job_builder] section in the config file, the "
                             "one specified in the [jenkins] section will be "
                             "ignored in the future")
-            self.ignore_cache = config.getboolean(self.section, 'ignore_cache')
+            ignore_cache = config.getboolean(self._section, 'ignore_cache')
         elif config.has_option('job_builder', 'ignore_cache'):
-            self.ignore_cache = config.getboolean('job_builder',
-                                                  'ignore_cache')
+            ignore_cache = config.getboolean('job_builder', 'ignore_cache')
+        self.builder['ignore_cache'] = ignore_cache
 
         # check the flush_cache setting
+        flush_cache = False
         if config.has_option('job_builder', 'flush_cache'):
-            self.flush_cache = config.getboolean('job_builder', 'flush_cache')
+            flush_cache = config.getboolean('job_builder', 'flush_cache')
+        self.builder['flush_cache'] = flush_cache
 
         # Jenkins supports access as an anonymous user, which can be used to
         # ensure read-only behaviour when querying the version of plugins
@@ -227,15 +223,18 @@ class JJBConfig(object):
         # catching 'TypeError' is a workaround for python 2.6 interpolation
         # error
         # https://bugs.launchpad.net/openstack-ci/+bug/1259631
-        try:
-            self.user = config.get(self.section, 'user')
-        except (TypeError, configparser.NoOptionError):
-            pass
 
         try:
-            self.password = config.get(self.section, 'password')
+            user = config.get(self._section, 'user')
         except (TypeError, configparser.NoOptionError):
-            pass
+            user = None
+        self.jenkins['user'] = user
+
+        try:
+            password = config.get(self._section, 'password')
+        except (TypeError, configparser.NoOptionError):
+            password = None
+        self.jenkins['password'] = password
 
         # None -- no timeout, blocking mode; same as setblocking(True)
         # 0.0 -- non-blocking mode; same as setblocking(False) <--- default
@@ -245,29 +244,23 @@ class JJBConfig(object):
         # "timeout=jenkins_jobs.builder._DEFAULT_TIMEOUT" or not set timeout at
         # all.
         try:
-            self.timeout = config.getfloat(self.section, 'timeout')
+            timeout = config.getfloat(self._section, 'timeout')
         except (ValueError):
             raise JenkinsJobsException("Jenkins timeout config is invalid")
         except (TypeError, configparser.NoOptionError):
-            pass
+            timeout = builder._DEFAULT_TIMEOUT
+        self.jenkins['timeout'] = timeout
 
-        if (config.has_option(self.section, 'query_plugins_info') and
-           not config.getboolean(self.section, "query_plugins_info")):
+        if (config.has_option(self._section, 'query_plugins_info') and
+           not config.getboolean(self._section, "query_plugins_info")):
                 logger.debug("Skipping plugin info retrieval")
-                self.plugins_info = []
+                self.builder['plugins_info'] = []
 
         self.recursive = config.getboolean('job_builder', 'recursive')
         self.excludes = config.get('job_builder', 'exclude').split(os.pathsep)
 
         # The way we want to do things moving forward:
-        self.jenkins['url'] = config.get(self.section, 'url')
-        self.jenkins['user'] = self.user
-        self.jenkins['password'] = self.password
-        self.jenkins['timeout'] = self.timeout
-
-        self.builder['ignore_cache'] = self.ignore_cache
-        self.builder['flush_cache'] = self.flush_cache
-        self.builder['plugins_info'] = self.plugins_info
+        self.jenkins['url'] = config.get(self._section, 'url')
 
         # keep descriptions ? (used by yamlparser)
         keep_desc = False
@@ -294,14 +287,11 @@ class JJBConfig(object):
 
         # allow empty variables?
         self.yamlparser['allow_empty_variables'] = (
-            self.allow_empty_variables or
             config and config.has_section('job_builder') and
             config.has_option('job_builder', 'allow_empty_variables') and
             config.getboolean('job_builder', 'allow_empty_variables'))
 
     def validate(self):
-        config = self.config_parser
-
         # Inform the user as to what is likely to happen, as they may specify
         # a real jenkins instance in test mode to get the plugin info to check
         # the XML generated.
@@ -319,12 +309,6 @@ class JJBConfig(object):
         if (self.builder['plugins_info'] is not None and
                 not isinstance(self.builder['plugins_info'], list)):
             raise JenkinsJobsException("plugins_info must contain a list!")
-
-        # Temporary until yamlparser is refactored to query config object
-        if self.yamlparser['allow_empty_variables'] is not None:
-            config.set('job_builder',
-                       'allow_empty_variables',
-                       str(self.yamlparser['allow_empty_variables']))
 
     def get_module_config(self, section, key, default=None):
         """ Given a section name and a key value, return the value assigned to
