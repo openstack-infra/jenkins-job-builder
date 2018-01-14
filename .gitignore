@@ -16,7 +16,8 @@ etc/jenkins_jobs.ini
 dist/*
 doc/build/*
 jenkins_jobs/versioninfo
-.coverage
+.coverage*
 cover/
 jenkins-job-builder
 testr_subunit_log
+__pycache__

@@ -199,10 +199,10 @@ class JJBConfig(object):
         # check the ignore_cache setting
         ignore_cache = False
         if config.has_option(self._section, 'ignore_cache'):
-            logging.warning("ignore_cache option should be moved to the "
-                            "[job_builder] section in the config file, the "
-                            "one specified in the [jenkins] section will be "
-                            "ignored in the future")
+            logger.warning("ignore_cache option should be moved to the "
+                           "[job_builder] section in the config file, the "
+                           "one specified in the [jenkins] section will be "
+                           "ignored in the future")
             ignore_cache = config.getboolean(self._section, 'ignore_cache')
         elif config.has_option('job_builder', 'ignore_cache'):
             ignore_cache = config.getboolean('job_builder', 'ignore_cache')
