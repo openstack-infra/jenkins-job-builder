@@ -1,0 +1,17 @@
+- defaults:
+    name: global
+    project-type: freestyle
+    description: desc
+
+- project:
+    name: hipchat1
+    jobs:
+        - 'hipchat1-tpl'
+
+- job-template:
+    name: 'hipchat1-tpl'
+    scm: []
+    hipchat:
+        enabled: true
+        rooms: [room1]
+        notify-start: true
