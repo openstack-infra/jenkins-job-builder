@@ -246,7 +246,15 @@ class SingleJobTestCase(BaseScenariosTestCase):
         parser = YamlParser(config)
         parser.parse(self.in_filename)
 
-        registry = ModuleRegistry(config)
+        plugins_info = None
+        if self.plugins_info_filename:
+            plugins_info = self._read_yaml_content(self.plugins_info_filename)
+            self.addDetail("plugins-info-filename",
+                           text_content(self.plugins_info_filename))
+            self.addDetail("plugins-info",
+                           text_content(str(plugins_info)))
+
+        registry = ModuleRegistry(config, plugins_info)
         registry.set_parser_data(parser.data)
         job_data_list, view_data_list = parser.expandYaml(registry)
 
