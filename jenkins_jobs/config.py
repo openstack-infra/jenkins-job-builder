@@ -251,10 +251,12 @@ class JJBConfig(object):
             timeout = builder._DEFAULT_TIMEOUT
         self.jenkins['timeout'] = timeout
 
+        plugins_info = None
         if (config.has_option(self._section, 'query_plugins_info') and
            not config.getboolean(self._section, "query_plugins_info")):
                 logger.debug("Skipping plugin info retrieval")
-                self.builder['plugins_info'] = []
+                plugins_info = []
+        self.builder['plugins_info'] = plugins_info
 
         self.recursive = config.getboolean('job_builder', 'recursive')
         self.excludes = config.get('job_builder', 'exclude').split(os.pathsep)
