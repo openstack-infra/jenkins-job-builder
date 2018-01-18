@@ -518,6 +518,7 @@ The bulk of the job definitions come from the following modules.
    :glob:
 
    project_*
+   view_*
    builders
    hipchat
    metadata
