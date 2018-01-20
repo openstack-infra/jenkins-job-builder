@@ -100,8 +100,11 @@ def get_scenarios(fixtures_path, in_ext='yaml', out_ext='xml',
         conf_candidate = re.sub(r'\.yaml$|\.json$', '.conf', input_filename)
         conf_filename = files.get(os.path.basename(conf_candidate), None)
 
-        if conf_filename is not None:
+        if conf_filename:
             conf_filename = conf_filename[0]
+        else:
+            # for testing purposes we want to avoid using user config files
+            conf_filename = os.devnull
 
         scenarios.append((input_filename, {
             'in_filename': input_filename,
