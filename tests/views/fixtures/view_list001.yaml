@@ -16,5 +16,13 @@ columns:
     - last-duration
     - build-button
     - last-stable
+    - robot-list
+    - find-bugs
+    - jacoco
+    - git-branch
+    - schedule-build
+    - priority-sorter
+    - build-filter
+    - desc
 recurse: true
 status-filter: false

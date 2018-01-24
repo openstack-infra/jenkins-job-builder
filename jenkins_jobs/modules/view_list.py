@@ -60,6 +60,15 @@ COLUMN_DICT = {
     'last-duration': 'hudson.views.LastDurationColumn',
     'build-button': 'hudson.views.BuildButtonColumn',
     'last-stable': 'hudson.views.LastStableColumn',
+    'robot-list': 'hudson.plugins.robot.view.RobotListViewColum',
+    'find-bugs': 'hudson.plugins.findbugs.FindBugsColumn',
+    'jacoco': 'hudson.plugins.jacococoveragecolumn.JaCoCoColumn',
+    'git-branch': 'hudson.plugins.git.GitBranchSpecifierColumn',
+    'schedule-build':
+        'org.jenkinsci.plugins.schedulebuild.ScheduleBuildButtonColumn',
+    'priority-sorter': 'jenkins.advancedqueue.PrioritySorterJobColumn',
+    'build-filter': 'hudson.views.BuildFilterColumn',
+    'desc': 'jenkins.branch.DescriptionColumn',
 }
 DEFAULT_COLUMNS = ['status', 'weather', 'job', 'last-success', 'last-failure',
                    'last-duration', 'build-button']
