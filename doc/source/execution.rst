@@ -190,6 +190,13 @@ use::
 
   jenkins-jobs update --workers 0 /path/to/defs
 
+To update only views or only jobs, simply add the argument
+--views-only or --jobs-only after the command::
+
+  jenkins-jobs update --views-only Foo-view
+  jenkins-jobs update --jobs-only Foo-job
+
+
 Passing Multiple Paths
 ^^^^^^^^^^^^^^^^^^^^^^
 It is possible to pass multiple paths to JJB using colons as a path separator on
