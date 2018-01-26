@@ -12,11 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import xml.etree.ElementTree as XML
-import jenkins_jobs.modules.base
-
-from jenkins_jobs.modules.helpers import convert_mapping_to_xml
-
 """
 The view list module handles creating Jenkins List views.
 
@@ -38,7 +33,23 @@ to the :ref:`View-list` definition.
     * **recurse** (`bool`): Recurse in subfolders.(default false)
     * **status-filter** (`bool`): Filter job list by enabled/disabled
       status. (optional)
+
+Example:
+
+    .. literalinclude::
+        /../../tests/views/fixtures/view_list001.yaml
+
+Example:
+
+    .. literalinclude::
+        /../../tests/views/fixtures/view_list002.yaml
 """
+
+import xml.etree.ElementTree as XML
+import jenkins_jobs.modules.base
+
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
+
 
 COLUMN_DICT = {
     'status': 'hudson.views.StatusColumn',

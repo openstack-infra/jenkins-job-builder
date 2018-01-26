@@ -12,11 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import xml.etree.ElementTree as XML
-import jenkins_jobs.modules.base
-
-from jenkins_jobs.modules.helpers import convert_mapping_to_xml
-
 """
 The view pipeline module handles creating Jenkins Build Pipeline views.
 To create a list view specify ``list`` in the ``view-type`` attribute
@@ -57,13 +52,18 @@ Requires the Jenkins
 Example:
 
     .. literalinclude::
-        /../../tests/views/fixtures/pipeline_view001.yaml
+        /../../tests/views/fixtures/view_pipeline001.yaml
 
 Example:
 
     .. literalinclude::
-        /../../tests/views/fixtures/pipeline_view002.yaml
+        /../../tests/views/fixtures/view_pipeline002.yaml
 """
+
+import xml.etree.ElementTree as XML
+import jenkins_jobs.modules.base
+
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 
 
 class Pipeline(jenkins_jobs.modules.base.Base):
