@@ -1928,7 +1928,7 @@ def stash_pull_request(registry, xml_parent, data):
     """yaml: stash-pull-request
     Trigger builds via Stash/Bitbucket Server Pull Requests.
     Requires the Jenkins :jenkins-wiki:`Stash Pull Request Builder Plugin
-      <Stash+pullrequest+builder+plugin>`.
+    <Stash+pullrequest+builder+plugin>`.
 
       :arg str cron: cron syntax of when to run (required)
       :arg str stash-host: The HTTP or HTTPS URL of the Stash host (NOT ssh).

@@ -3779,10 +3779,12 @@ def docker_build_publish(parse, xml_parent, data):
     :arg str repo-name: Name of repository to push to.
     :arg str repo-tag: Tag for image. (default '')
     :arg dict server: The docker daemon (optional)
+
         * **uri** (str): Define the docker server to use. (optional)
         * **credentials-id** (str): ID of credentials to use to connect
           (optional)
     :arg dict registry: Registry to push to
+
         * **url** (str) repository url to use (optional)
         * **credentials-id** (str): ID of credentials to use to connect
           (optional)
@@ -3922,7 +3924,7 @@ def nexus_artifact_uploader(registry, xml_parent, data):
     File Example:
 
     .. literalinclude::
-        /../../tests/builders/fixtures/nexus-artifact-uploader.yaml
+        /../../tests/builders/fixtures/nexus_artifact_uploader001.yaml
        :language: yaml
     """
     nexus_artifact_uploader = XML.SubElement(

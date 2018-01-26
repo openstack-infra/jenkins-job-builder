@@ -1,7 +1,7 @@
-.. view_pipeline:
+.. _view_pipeline:
 
 Pipeline View
 =============
 
 .. automodule:: view_pipeline
-   :members:
+  :members:

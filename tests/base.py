@@ -52,7 +52,7 @@ from jenkins_jobs.xml_config import XmlJobGenerator
 # This dance deals with the fact that we want unittest.mock if
 # we're on Python 3.4 and later, and non-stdlib mock otherwise.
 try:
-    from unittest import mock
+    from unittest import mock  # noqa
 except ImportError:
     import mock  # noqa
 

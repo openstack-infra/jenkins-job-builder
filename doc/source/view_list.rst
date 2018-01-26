@@ -1,7 +1,7 @@
-.. view_list:
+.. _view_list:
 
 List View
 =========
 
 .. automodule:: view_list
-   :members:
+  :members:

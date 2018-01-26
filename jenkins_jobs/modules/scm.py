@@ -793,8 +793,10 @@ def svn(registry, xml_parent, data):
     :arg list repos: list of repositories to checkout (optional)
     :arg list additional-credentials: list of additional credentials (optional)
         :Additional-Credentials:
+
             * **realm** (`str`) --  realm to use
             * **credentials-id** (`str`) -- optional ID of credentials to use
+
     :arg str viewvc-url: URL of the svn web interface (optional)
 
         :Repo:

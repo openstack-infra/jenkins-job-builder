@@ -54,8 +54,9 @@ class Base(object):
         return ``True``, otherwise, it must return ``False``.
 
         :arg dict job_data: the intermediate representation of job data
-        loaded from JJB Yaml files without variables interpolation or other
-        yaml expansions.
+            loaded from JJB Yaml files without variables interpolation or other
+            yaml expansions.
+
         :rtype: boolean
         """
 
