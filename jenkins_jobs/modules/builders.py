@@ -1101,12 +1101,12 @@ def _groovy_common_scriptSource(data):
         raise JenkinsJobsException("Use just one of 'command' or 'file'")
 
     if 'command' in data:
-        command = XML.SubElement(scriptSource, 'command')
-        command.text = str(data['command'])
+        mapping = [('command', 'command', None)]
+        convert_mapping_to_xml(scriptSource, data, mapping, fail_required=True)
         scriptSource.set('class', 'hudson.plugins.groovy.StringScriptSource')
     elif 'file' in data:
-        scriptFile = XML.SubElement(scriptSource, 'scriptFile')
-        scriptFile.text = str(data['file'])
+        mapping = [('file', 'scriptFile', None)]
+        convert_mapping_to_xml(scriptSource, data, mapping, fail_required=True)
         scriptSource.set('class', 'hudson.plugins.groovy.FileScriptSource')
     else:
         raise JenkinsJobsException("A groovy command or file is required")
