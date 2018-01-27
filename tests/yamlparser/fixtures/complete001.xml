@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <actions/>
-  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <description>JJB template: complete001_{version}
+&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
   <keepDependencies>false</keepDependencies>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>

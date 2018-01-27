@@ -1,3 +1,8 @@
+- defaults:
+    name: global
+    description: |
+        JJB template: {template-name}
+
 - wrapper:
     name: timeout-wrapper
     wrappers:
@@ -85,10 +90,11 @@
     version:
         - 1.2
     jobs:
-        - 'complete001_{version}'
+        - 'complete001'
 
 - job-template:
     name: 'complete001_{version}'
+    id: 'complete001'
     scm:
       - gerrit-scm:
          project_pattern: openstack-infra/jenkins-job-builder
