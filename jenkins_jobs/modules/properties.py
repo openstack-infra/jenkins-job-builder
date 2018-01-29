@@ -291,23 +291,19 @@ def branch_api(registry, xml_parent, data):
     :arg str time-period: The time period within which the maximum number
         of builds will be enforced. (default 'Hour')
 
-        :valid values:
-        * **Hour**
-        * **Day**
-        * **Week**
-        * **Month**
-        * **Year**
+        :valid values: **Hour**, **Day**, **Week**, **Month**, **Year**
 
     Minimal Example:
 
-    .. literalinclude::
-       /../../tests/properties/fixtures/branch-api-minimal.yaml
-       :language: yaml
+        .. literalinclude::
+           /../../tests/properties/fixtures/branch-api-minimal.yaml
+           :language: yaml
 
     Full example:
 
-    .. literalinclude:: /../../tests/properties/fixtures/branch-api-full.yaml
-       :language: yaml
+        .. literalinclude::
+           /../../tests/properties/fixtures/branch-api-full.yaml
+           :language: yaml
     """
     branch = XML.SubElement(xml_parent, 'jenkins.branch.'
                             'RateLimitBranchProperty_-JobPropertyImpl')

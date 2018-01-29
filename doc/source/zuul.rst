@@ -4,4 +4,4 @@ Zuul
 ====
 
 .. automodule:: zuul
-   :members:
+  :members:

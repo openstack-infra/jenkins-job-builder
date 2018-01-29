@@ -48,23 +48,24 @@ def allure(registry, xml_parent, data):
 
     :arg str jdk: String identifier for a JDK installation in Jenkins
     :arg str commandline: String identifier for a Allure-commandline tool
-    installation
+        installation
     :arg str report-build-policy: String identifier for a report build
-     policy enum. Possible values: 'ALWAYS', 'UNSTABLE', 'UNSUCCESSFUL'.
-      (By default is 'ALWAYS')
+        policy enum. Possible values: 'ALWAYS', 'UNSTABLE', 'UNSUCCESSFUL'.
+        (By default is 'ALWAYS')
     :arg bool include-properties: Flag to include specified properties
     :arg list results-paths: List of results directories
     :arg list properties: List of key:value property pairs
 
     Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/allure-minimal.yaml
-       :language: yaml
+        .. literalinclude::
+           /../../tests/publishers/fixtures/allure-minimal.yaml
+           :language: yaml
 
     Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/allure-full.yaml
-       :language: yaml
+        .. literalinclude:: /../../tests/publishers/fixtures/allure-full.yaml
+           :language: yaml
 
     """
     publisher_class = 'ru.yandex.qatools.allure.jenkins.AllureReportPublisher'
@@ -127,8 +128,8 @@ def archive(registry, xml_parent, data):
 
     Example:
 
-    .. literalinclude::  /../../tests/publishers/fixtures/archive001.yaml
-       :language: yaml
+        .. literalinclude::  /../../tests/publishers/fixtures/archive001.yaml
+           :language: yaml
     """
     archiver = XML.SubElement(xml_parent, 'hudson.tasks.ArtifactArchiver')
     mapping = [
@@ -153,8 +154,8 @@ def blame_upstream(registry, xml_parent, data):
 
     Example:
 
-    .. literalinclude::  /../../tests/publishers/fixtures/blame001.yaml
-       :language: yaml
+        .. literalinclude::  /../../tests/publishers/fixtures/blame001.yaml
+           :language: yaml
     """
 
     XML.SubElement(xml_parent,
@@ -178,7 +179,7 @@ def jclouds(registry, xml_parent, data):
 
     Example:
 
-    .. literalinclude::  /../../tests/publishers/fixtures/jclouds001.yaml
+        .. literalinclude::  /../../tests/publishers/fixtures/jclouds001.yaml
 
     """
 
@@ -224,8 +225,8 @@ def javadoc(registry, xml_parent, data):
 
     Example:
 
-    .. literalinclude::  /../../tests/publishers/fixtures/javadoc001.yaml
-       :language: yaml
+        .. literalinclude::  /../../tests/publishers/fixtures/javadoc001.yaml
+           :language: yaml
     """
 
     root = XML.SubElement(xml_parent, 'hudson.tasks.JavadocArchiver')
@@ -246,8 +247,8 @@ def jdepend(registry, xml_parent, data):
 
     Example:
 
-    .. literalinclude::  /../../tests/publishers/fixtures/jdepend001.yaml
-       :language: yaml
+        .. literalinclude::  /../../tests/publishers/fixtures/jdepend001.yaml
+           :language: yaml
     """
     jdepend = XML.SubElement(
         xml_parent,
@@ -273,13 +274,15 @@ def hue_light(registry, xml_parent, data):
 
     Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/hue-light-full.yaml
-       :language: yaml
+        .. literalinclude::
+           /../../tests/publishers/fixtures/hue-light-full.yaml
+           :language: yaml
 
     Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/hue-light-minimal.yaml
-       :language: yaml
+        .. literalinclude::
+           /../../tests/publishers/fixtures/hue-light-minimal.yaml
+           :language: yaml
     """
 
     hue_light = XML.SubElement(
@@ -317,8 +320,8 @@ def campfire(registry, xml_parent, data):
 
     Example:
 
-    .. literalinclude::  /../../tests/publishers/fixtures/campfire001.yaml
-       :language: yaml
+        .. literalinclude::  /../../tests/publishers/fixtures/campfire001.yaml
+           :language: yaml
     """
 
     root = XML.SubElement(xml_parent,
@@ -350,23 +353,23 @@ def mqtt(registry, xml_parent, data):
 
     :arg str broker-url: the broker URL, as protocol://address:port (required)
     :arg str credentials-id: credentials to use to connect to the broker
-    (optional)
+        (optional)
     :arg str topic: the message topic (default "jenkins/$PROJECT_URL")
     :arg str message: the message itself (default "$BUILD_RESULT")
     :arg str qos: one of AT_MOST_ONCE, AT_LEAST_ONCE, or EXACTLY_ONCE
-    (default AT_MOST_ONCE)
+        (default AT_MOST_ONCE)
     :arg bool retain-message: whether to resend message or not when a new
-    client connects (default false)
+        client connects (default false)
 
     Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/mqtt-minimal.yaml
-       :language: yaml
+        .. literalinclude:: /../../tests/publishers/fixtures/mqtt-minimal.yaml
+           :language: yaml
 
     Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/mqtt-full.yaml
-       :language: yaml
+        .. literalinclude:: /../../tests/publishers/fixtures/mqtt-full.yaml
+           :language: yaml
     """
 
     mqtt = XML.SubElement(xml_parent,
@@ -407,13 +410,15 @@ def codecover(registry, xml_parent, data):
 
     Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/codecover-minimal.yaml
-       :language: yaml
+        .. literalinclude::
+           /../../tests/publishers/fixtures/codecover-minimal.yaml
+           :language: yaml
 
     Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/codecover-full.yaml
-       :language: yaml
+        .. literalinclude::
+           /../../tests/publishers/fixtures/codecover-full.yaml
+           :language: yaml
     """
 
     codecover = XML.SubElement(
@@ -447,8 +452,9 @@ def emotional_jenkins(registry, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/emotional-jenkins.yaml
-       :language: yaml
+        .. literalinclude::
+           /../../tests/publishers/fixtures/emotional-jenkins.yaml
+           :language: yaml
     """
     XML.SubElement(xml_parent,
                    'org.jenkinsci.plugins.emotional__jenkins.'
@@ -521,12 +527,12 @@ def trigger_parameterized_builds(registry, xml_parent, data):
 
     Example:
 
-    .. literalinclude::
-        /../../tests/publishers/fixtures/trigger_parameterized_builds001.yaml
-       :language: yaml
-    .. literalinclude::
-        /../../tests/publishers/fixtures/trigger_parameterized_builds003.yaml
-       :language: yaml
+        .. literalinclude::
+            /../../tests/publishers/fixtures/trigger_parameterized_builds001.yaml
+           :language: yaml
+        .. literalinclude::
+            /../../tests/publishers/fixtures/trigger_parameterized_builds003.yaml
+           :language: yaml
     """
     pt_prefix = 'hudson.plugins.parameterizedtrigger.'
     tbuilder = XML.SubElement(xml_parent, pt_prefix + 'BuildTrigger')
@@ -931,11 +937,11 @@ def jacoco(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`JaCoCo Plugin <JaCoCo+Plugin>`.
 
     :arg str exec-pattern: This is a file name pattern that can be used to
-        locate the jacoco report files (default '**/**.exec')
+        locate the jacoco report files (default ``**/**.exec``)
     :arg str class-pattern: This is a file name pattern that can be used
-        to locate class files (default '**/classes')
+        to locate class files (default ``**/classes``)
     :arg str source-pattern: This is a file name pattern that can be used
-        to locate source files (default '**/src/main/java')
+        to locate source files (default ``**/src/main/java``)
     :arg bool update-build-status: Update the build according to the results
         (default false)
     :arg str inclusion-pattern: This is a file name pattern that can be used
@@ -2178,15 +2184,18 @@ def cppcheck(registry, xml_parent, data):
             is also determined by thresholds. If the actual number of issues
             is between the provided thresholds, then the build health is
             interpolated.
+
         * **unstable** (`str`): Total number unstable threshold (default '')
         * **new-unstable** (`str`): New number unstable threshold (default '')
         * **failure** (`str`): Total number failure threshold (default '')
         * **new-failure** (`str`): New number failure threshold (default '')
         * **healthy** (`str`): Healthy threshold (default '')
         * **unhealthy** (`str`): Unhealthy threshold (default '')
+
     :arg dict severity:
         :severity: Determines which severity of issues should be considered
             when evaluating the build status and health, default all true
+
         * **error** (`bool`): Severity error (default true)
         * **warning** (`bool`): Severity warning (default true)
         * **style** (`bool`): Severity style (default true)
@@ -2194,12 +2203,16 @@ def cppcheck(registry, xml_parent, data):
         * **information** (`bool`): Severity information (default true)
         * **nocategory** (`bool`): Severity nocategory (default true)
         * **portability** (`bool`): Severity portability (default true)
+
     :arg dict graph:
         :graph: Graph configuration
+
         * **xysize** (`array`): Chart width and height (default [500, 200])
         * **num-builds-in-graph** (`int`): Builds number in graph (default 0)
+
     :arg dict display
         :display: which errors to display, default only sum
+
         * **sum** (`bool`): Display sum of all issues (default true)
         * **error** (`bool`): Display errors (default false)
         * **warning** (`bool`): Display warnings (default false)
@@ -2211,14 +2224,15 @@ def cppcheck(registry, xml_parent, data):
 
     Minimal Example:
 
-    .. literalinclude::
-        /../../tests/publishers/fixtures/cppcheck-minimal.yaml
-       :language: yaml
+        .. literalinclude::
+            /../../tests/publishers/fixtures/cppcheck-minimal.yaml
+           :language: yaml
 
     Full Example:
-    .. literalinclude::
-        /../../tests/publishers/fixtures/cppcheck-full.yaml
-       :language: yaml
+
+        .. literalinclude::
+            /../../tests/publishers/fixtures/cppcheck-full.yaml
+           :language: yaml
     """
 
     cppextbase = XML.SubElement(xml_parent,
@@ -2302,13 +2316,15 @@ def logparser(registry, xml_parent, data):
 
     Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/logparser-minimal.yaml
-       :language: yaml
+        .. literalinclude::
+           /../../tests/publishers/fixtures/logparser-minimal.yaml
+           :language: yaml
 
     Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/logparser-full.yaml
-       :language: yaml
+        .. literalinclude::
+           /../../tests/publishers/fixtures/logparser-full.yaml
+           :language: yaml
     """
 
     clog = XML.SubElement(xml_parent,
@@ -2370,8 +2386,8 @@ def jira(registry, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/jira001.yaml
-       :language: yaml
+        .. literalinclude:: /../../tests/publishers/fixtures/jira001.yaml
+           :language: yaml
     """
     XML.SubElement(xml_parent, 'hudson.plugins.jira.JiraIssueUpdater')
 
@@ -2387,13 +2403,13 @@ def growl(registry, xml_parent, data):
 
     Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/growl-minimal.yaml
-       :language: yaml
+        .. literalinclude:: /../../tests/publishers/fixtures/growl-minimal.yaml
+           :language: yaml
 
     Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/growl-full.yaml
-       :language: yaml
+        .. literalinclude:: /../../tests/publishers/fixtures/growl-full.yaml
+           :language: yaml
     """
     growl = XML.SubElement(xml_parent, 'hudson.plugins.growl.GrowlPublisher')
     growl.set('plugin', 'growl')
@@ -2429,9 +2445,9 @@ def groovy_postbuild(registry, xml_parent, data):
 
     Example:
 
-    .. literalinclude::
-        /../../tests/publishers/fixtures/groovy-postbuild001.yaml
-       :language: yaml
+        .. literalinclude::
+            /../../tests/publishers/fixtures/groovy-postbuild001.yaml
+           :language: yaml
     """
     logger = logging.getLogger("%s:groovy-postbuild" % __name__)
     # Backward compatibility with old format
@@ -2571,8 +2587,8 @@ def cifs(registry, xml_parent, data):
 
     Example:
 
-    .. literalinclude::  /../../tests/publishers/fixtures/cifs001.yaml
-       :language: yaml
+        .. literalinclude::  /../../tests/publishers/fixtures/cifs001.yaml
+           :language: yaml
 
     """
     console_prefix = 'CIFS: '
@@ -2599,8 +2615,8 @@ def cigame(registry, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/cigame.yaml
-       :language: yaml
+        .. literalinclude:: /../../tests/publishers/fixtures/cigame.yaml
+           :language: yaml
     """
     XML.SubElement(xml_parent, 'hudson.plugins.cigame.GamePublisher')
 
@@ -2644,12 +2660,13 @@ def sonar(registry, xml_parent, data):
 
     Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/sonar-minimal.yaml
-       :language: yaml
+        .. literalinclude:: /../../tests/publishers/fixtures/sonar-minimal.yaml
+           :language: yaml
 
     Full Example:
-    .. literalinclude:: /../../tests/publishers/fixtures/sonar-full.yaml
-       :language: yaml
+
+        .. literalinclude:: /../../tests/publishers/fixtures/sonar-full.yaml
+           :language: yaml
     """
 
     sonar = XML.SubElement(xml_parent, 'hudson.plugins.sonar.SonarPublisher')
@@ -2730,15 +2747,15 @@ def performance(registry, xml_parent, data):
 
     Minimal Example:
 
-    .. literalinclude::
-       /../../tests/publishers/fixtures/performance-minimal.yaml
-       :language: yaml
+        .. literalinclude::
+           /../../tests/publishers/fixtures/performance-minimal.yaml
+           :language: yaml
 
     Full Example:
 
-    .. literalinclude::
-       /../../tests/publishers/fixtures/performance-full.yaml
-       :language: yaml
+        .. literalinclude::
+           /../../tests/publishers/fixtures/performance-full.yaml
+           :language: yaml
     """
     perf = XML.SubElement(xml_parent, 'hudson.plugins.performance.'
                                       'PerformancePublisher')
@@ -2825,8 +2842,9 @@ def join_trigger(registry, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/join-trigger001.yaml
-       :language: yaml
+        .. literalinclude::
+           /../../tests/publishers/fixtures/join-trigger001.yaml
+           :language: yaml
     """
     jointrigger = XML.SubElement(xml_parent, 'join.JoinTrigger')
 
@@ -2879,13 +2897,14 @@ def jabber(registry, xml_parent, data):
 
     Minimal Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/jabber-minimal.yaml
-       :language: yaml
+        .. literalinclude::
+           /../../tests/publishers/fixtures/jabber-minimal.yaml
+           :language: yaml
 
     Full Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/jabber-full.yaml
-       :language: yaml
+        .. literalinclude:: /../../tests/publishers/fixtures/jabber-full.yaml
+           :language: yaml
     """
     j = XML.SubElement(xml_parent, 'hudson.plugins.jabber.im.transport.'
                        'JabberPublisher')
@@ -6662,15 +6681,15 @@ def jms_messaging(registry, xml_parent, data):
 
     Full Example:
 
-    .. literalinclude::
-        ../../tests/publishers/fixtures/jms-messaging-full.yaml
-       :language: yaml
+        .. literalinclude::
+            ../../tests/publishers/fixtures/jms-messaging-full.yaml
+           :language: yaml
 
     Minimal Example:
 
-    .. literalinclude::
-        ../../tests/publishers/fixtures/jms-messaging-minimal.yaml
-       :language: yaml
+        .. literalinclude::
+            ../../tests/publishers/fixtures/jms-messaging-minimal.yaml
+           :language: yaml
     """
     helpers.jms_messaging_common(xml_parent, 'com.redhat.jenkins.plugins.ci.'
                                              'CIMessageNotifier', data)
@@ -6702,15 +6721,15 @@ def openshift_build_canceller(registry, xml_parent, data):
 
     Full Example:
 
-    .. literalinclude::
-        ../../tests/publishers/fixtures/openshift-build-canceller001.yaml
-       :language: yaml
+        .. literalinclude::
+            ../../tests/publishers/fixtures/openshift-build-canceller001.yaml
+           :language: yaml
 
     Minimal Example:
 
-    .. literalinclude::
-        ../../tests/publishers/fixtures/openshift-build-canceller002.yaml
-       :language: yaml
+        .. literalinclude::
+            ../../tests/publishers/fixtures/openshift-build-canceller002.yaml
+           :language: yaml
     """
 
     osb = XML.SubElement(xml_parent,
@@ -6750,15 +6769,15 @@ def openshift_deploy_canceller(registry, xml_parent, data):
 
     Full Example:
 
-    .. literalinclude::
-        ../../tests/publishers/fixtures/openshift-deploy-canceller001.yaml
-       :language: yaml
+        .. literalinclude::
+            ../../tests/publishers/fixtures/openshift-deploy-canceller001.yaml
+           :language: yaml
 
     Minimal Example:
 
-    .. literalinclude::
-        ../../tests/publishers/fixtures/openshift-deploy-canceller002.yaml
-       :language: yaml
+        .. literalinclude::
+            ../../tests/publishers/fixtures/openshift-deploy-canceller002.yaml
+           :language: yaml
     """
 
     osb = XML.SubElement(xml_parent,
@@ -6796,15 +6815,15 @@ def github_pull_request_merge(registry, xml_parent, data):
 
     Full Example:
 
-    .. literalinclude::
-        ../../tests/publishers/fixtures/github-pull-request-merge001.yaml
-       :language: yaml
+        .. literalinclude::
+            ../../tests/publishers/fixtures/github-pull-request-merge001.yaml
+           :language: yaml
 
     Minimal Example:
 
-    .. literalinclude::
-        ../../tests/publishers/fixtures/github-pull-request-merge002.yaml
-       :language: yaml
+        .. literalinclude::
+            ../../tests/publishers/fixtures/github-pull-request-merge002.yaml
+           :language: yaml
     """
 
     osb = XML.SubElement(xml_parent,
@@ -6830,8 +6849,8 @@ def chuck_norris(registry, xml_parent, data):
 
     Example:
 
-    .. literalinclude:: /../../tests/publishers/fixtures/chuck-norris.yaml
-       :language: yaml
+        .. literalinclude:: /../../tests/publishers/fixtures/chuck-norris.yaml
+           :language: yaml
     """
 
     chuck = XML.SubElement(xml_parent,

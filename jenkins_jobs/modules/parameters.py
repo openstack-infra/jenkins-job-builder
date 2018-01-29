@@ -309,9 +309,9 @@ def credentials_param(registry, xml_parent, data):
 
     Example::
 
-    .. literalinclude:: \
-       /../../tests/parameters/fixtures/credentials-param001.yaml
-       :language: yaml
+        .. literalinclude::
+            /../../tests/parameters/fixtures/credentials-param001.yaml
+           :language: yaml
 
     """
     cred_impl_types = {
@@ -398,14 +398,15 @@ def extended_choice_param(registry, xml_parent, data):
 
     Minimal Example:
 
-    .. literalinclude:: \
-    /../../tests/parameters/fixtures/extended-choice-param-minimal.yaml
-       :language: yaml
+        .. literalinclude:: \
+        /../../tests/parameters/fixtures/extended-choice-param-minimal.yaml
+           :language: yaml
 
     Full Example:
-    .. literalinclude:: \
-    /../../tests/parameters/fixtures/extended-choice-param-full.yaml
-       :language: yaml
+
+        .. literalinclude:: \
+        /../../tests/parameters/fixtures/extended-choice-param-full.yaml
+           :language: yaml
     """
     pdef = base_param(registry, xml_parent, data, False,
                       'com.cwctravel.hudson.plugins.'

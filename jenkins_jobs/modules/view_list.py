@@ -16,7 +16,7 @@
 The view list module handles creating Jenkins List views.
 
 To create a list view specify ``list`` in the ``view-type`` attribute
-to the :ref:`View-list` definition.
+to the :ref:`view_list` definition.
 
 :View Parameters:
     * **name** (`str`): The name of the view.

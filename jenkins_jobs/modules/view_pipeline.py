@@ -15,7 +15,7 @@
 """
 The view pipeline module handles creating Jenkins Build Pipeline views.
 To create a list view specify ``list`` in the ``view-type`` attribute
-to the :ref:`View-pipeline` definition.
+to the :ref:`view_pipeline` definition.
 Requires the Jenkins
 :jenkins-wiki:`Build Pipeline Plugin <build+pipeline+plugin>`.
 
