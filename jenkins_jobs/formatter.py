@@ -33,9 +33,7 @@ def deep_format(obj, paramdict, allow_empty=False):
     # limitations on the values in paramdict - the post-format result must
     # still be valid YAML (so substituting-in a string containing quotes, for
     # example, is problematic).
-    if getattr(obj, 'verbatim', False) is True:
-        ret = obj
-    elif hasattr(obj, 'format'):
+    if hasattr(obj, 'format'):
         try:
             ret = CustomFormatter(allow_empty).format(obj, **paramdict)
         except KeyError as exc:
@@ -131,10 +129,3 @@ class CustomFormatter(Formatter):
                 )
                 return ''
             raise
-
-
-class VerbatimString(str):
-    """
-    String which is not expanded by `deep_format`.
-    """
-    verbatim = True

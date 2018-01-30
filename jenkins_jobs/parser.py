@@ -20,11 +20,12 @@ import fnmatch
 import io
 import itertools
 import logging
+import re
 import os
 
 from jenkins_jobs.constants import MAGIC_MANAGE_STRING
 from jenkins_jobs.errors import JenkinsJobsException
-from jenkins_jobs.formatter import deep_format, VerbatimString
+from jenkins_jobs.formatter import deep_format
 import jenkins_jobs.local_yaml as local_yaml
 from jenkins_jobs import utils
 
@@ -346,8 +347,8 @@ class YamlParser(object):
 
         for values in itertools.product(*dimensions):
             params = copy.deepcopy(project)
-            params['template-name'] = VerbatimString(template_name)
             params = self._applyDefaults(params, template)
+            params['template-name'] = re.sub(r'({|})', r'\1\1', template_name)
 
             try:
                 expanded_values = {}
