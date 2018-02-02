@@ -13,6 +13,8 @@ org2</orgslist>
       <whiteListLabels/>
       <blackListLabels/>
       <cron>* * * * *</cron>
+      <excludedRegions/>
+      <includedRegions/>
       <triggerPhrase>retest this please</triggerPhrase>
       <skipBuildPhrase/>
       <onlyTriggerPhrase>true</onlyTriggerPhrase>
