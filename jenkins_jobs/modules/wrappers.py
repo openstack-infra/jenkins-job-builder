@@ -29,7 +29,6 @@ import xml.etree.ElementTree as XML
 
 from jenkins_jobs.errors import InvalidAttributeError
 from jenkins_jobs.errors import JenkinsJobsException
-from jenkins_jobs.errors import MissingAttributeError
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules.builders import create_builders
 from jenkins_jobs.modules.helpers import artifactory_common_details
@@ -1728,10 +1727,6 @@ def credentials_binding(registry, xml_parent, data):
             'com.cloudbees.jenkins.plugins.awscredentials'
             '.AmazonWebServicesCredentialsBinding'
     }
-    if not data:
-        raise JenkinsJobsException('At least one binding-type must be '
-                                   'specified for the credentials-binding '
-                                   'element')
     for binding in data:
         for binding_type, params in binding.items():
             if binding_type not in binding_types.keys():
@@ -1741,26 +1736,24 @@ def credentials_binding(registry, xml_parent, data):
             binding_xml = XML.SubElement(bindings_xml,
                                          binding_types[binding_type])
             if binding_type == 'username-password-separated':
-                try:
-                    XML.SubElement(binding_xml, 'usernameVariable'
-                                   ).text = params['username']
-                    XML.SubElement(binding_xml, 'passwordVariable'
-                                   ).text = params['password']
-                except KeyError as e:
-                    raise MissingAttributeError(e.args[0])
+                mapping = [
+                    ('username', 'usernameVariable', None),
+                    ('password', 'passwordVariable', None)]
+                convert_mapping_to_xml(
+                    binding_xml, params, mapping, fail_required=True)
             elif binding_type == 'amazon-web-services':
-                try:
-                    XML.SubElement(binding_xml, 'accessKeyVariable'
-                                   ).text = params['access-key']
-                    XML.SubElement(binding_xml, 'secretKeyVariable'
-                                   ).text = params['secret-key']
-                except KeyError as e:
-                    raise MissingAttributeError(e.args[0])
+                mapping = [
+                    ('access-key', 'accessKeyVariable', None),
+                    ('secret-key', 'secretKeyVariable', None)]
+                convert_mapping_to_xml(
+                    binding_xml, params, mapping, fail_required=True)
             else:
-                variable_xml = XML.SubElement(binding_xml, 'variable')
-                variable_xml.text = params.get('variable')
-            credential_xml = XML.SubElement(binding_xml, 'credentialsId')
-            credential_xml.text = params.get('credential-id')
+                mapping = [('variable', 'variable', None)]
+                convert_mapping_to_xml(
+                    binding_xml, params, mapping, fail_required=False)
+            mapping = [('credential-id', 'credentialsId', None)]
+            convert_mapping_to_xml(binding_xml,
+                params, mapping, fail_required=False)
 
 
 def custom_tools(registry, xml_parent, data):
