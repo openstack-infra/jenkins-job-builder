@@ -575,6 +575,8 @@ def gerrit(registry, xml_parent, data):
         data.get('dynamic-trigger-enabled', False))
     XML.SubElement(gtrig, 'triggerConfigURL').text = str(
         data.get('dynamic-trigger-url', ''))
+    XML.SubElement(gtrig, 'triggerInformationAction').text = str(
+        data.get('trigger-information-action', ''))
     XML.SubElement(gtrig, 'allowTriggeringUnreviewedPatches').text = str(
         data.get('trigger-for-unreviewed-patches', False)).lower()
     build_gerrit_triggers(gtrig, data)
