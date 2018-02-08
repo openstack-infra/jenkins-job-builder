@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <org.jenkinsci.plugins.ghprb.upstream.GhprbUpstreamStatus>
+      <showMatrixStatus>false</showMatrixStatus>
+      <commitStatusContext/>
+      <triggeredStatus/>
+      <startedStatus/>
+      <statusUrl/>
+      <addTestResults>false</addTestResults>
+    </org.jenkinsci.plugins.ghprb.upstream.GhprbUpstreamStatus>
+  </buildWrappers>
+</project>

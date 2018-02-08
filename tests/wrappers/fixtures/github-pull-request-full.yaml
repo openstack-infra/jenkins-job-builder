@@ -1,0 +1,13 @@
+wrappers:
+  - github-pull-request:
+      show-matrix-status: true
+      status-context: "my-build"
+      triggered-status: "build was triggered"
+      started-status: "build was started"
+      status-url: "http://1.2.3.4"
+      status-add-test-results: true
+      statuses:
+        - message: "build has succeeded"
+          result: SUCCESS
+        - message: "build has failed"
+          result: ERROR
