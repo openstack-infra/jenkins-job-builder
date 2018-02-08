@@ -165,7 +165,7 @@ class BaseScenariosTestCase(testscenarios.TestWithScenarios, BaseTestCase):
         yaml_content = self._read_yaml_content(self.in_filename)
 
         plugins_info = None
-        if self.plugins_info_filename is not None:
+        if self.plugins_info_filename:
             plugins_info = self._read_yaml_content(self.plugins_info_filename)
             self.addDetail("plugins-info-filename",
                            text_content(self.plugins_info_filename))
