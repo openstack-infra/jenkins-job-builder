@@ -145,7 +145,8 @@ class HipChat(jenkins_jobs.modules.base.Base):
                 "'hipchat' module supports the old plugin versions <1.9, "
                 "newer versions are supported via the 'publishers' module. "
                 "Please upgrade you job definition")
-            return self.registry.dispatch('publisher', publishers, data)
+            component = {'hipchat': hipchat}
+            return self.registry.dispatch('publisher', publishers, component)
         else:
             properties = xml_parent.find('properties')
             if properties is None:
