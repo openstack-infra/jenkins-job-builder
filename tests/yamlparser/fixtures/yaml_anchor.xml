@@ -13,12 +13,12 @@
   <publishers/>
   <buildWrappers>
     <hudson.plugins.build__timeout.BuildTimeoutWrapper>
-      <timeoutMinutes>180</timeoutMinutes>
-      <failBuild>true</failBuild>
-      <writingDescription>false</writingDescription>
-      <timeoutPercentage>0</timeoutPercentage>
-      <timeoutMinutesElasticDefault>3</timeoutMinutesElasticDefault>
-      <timeoutType>absolute</timeoutType>
+      <strategy class="hudson.plugins.build_timeout.impl.AbsoluteTimeOutStrategy">
+        <timeoutMinutes>180</timeoutMinutes>
+      </strategy>
+      <operationList>
+        <hudson.plugins.build__timeout.operations.FailOperation/>
+      </operationList>
     </hudson.plugins.build__timeout.BuildTimeoutWrapper>
     <hudson.plugins.timestamper.TimestamperBuildWrapper/>
   </buildWrappers>
