@@ -5848,14 +5848,14 @@ def naginator(registry, xml_parent, data):
         as failures (default false)
     :arg bool rerun-matrix-part: Rerun build only for failed parts on the
         matrix (>=1.12) (default false)
-    :arg int fixed-delay: Fixed delay before retrying build (cannot be used
-        with progressive-delay-increment or progressive-delay-maximum.
+    :arg int fixed-delay: Fixed delay in seconds before retrying build (cannot
+        be used with progressive-delay-increment or progressive-delay-maximum.
         This is the default delay type.  (default 0)
-    :arg int progressive-delay-increment: Progressive delay before retrying
-        build increment (cannot be used when fixed-delay is being used)
-        (default 0)
-    :arg int progressive-delay-maximum: Progressive delay before retrying
-        maximum delay (cannot be used when fixed-delay is being used)
+    :arg int progressive-delay-increment: Progressive delay in seconds before
+        retrying build increment (cannot be used when fixed-delay is being
+        used) (default 0)
+    :arg int progressive-delay-maximum: Progressive delay in seconds before
+        retrying maximum delay (cannot be used when fixed-delay is being used)
         (default 0)
     :arg int max-failed-builds: Maximum number of successive failed builds
         (default 0)
