@@ -1,0 +1,15 @@
+name: list-view-name01
+view-type: list
+description: 'Sample description'
+filter-executors: true
+filter-queue: true
+job-filters:
+  build-duration:
+    match-type: includeMatched
+    build-duration-type: Latest
+    amount-type: Hours
+    amount: 5.0
+    less-then: true
+    build-duration-minutes: 50.0
+recurse: true
+status-filter: false

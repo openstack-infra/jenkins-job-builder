@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hudson.model.ListView>
+  <name>list-view-name01</name>
+  <description>Sample description</description>
+  <filterExecutors>true</filterExecutors>
+  <filterQueue>true</filterQueue>
+  <properties class="hudson.model.View$PropertyList"/>
+  <jobNames>
+    <comparator class="hudson.util.CaseInsensitiveComparator"/>
+  </jobNames>
+  <jobFilters>
+    <hudson.views.BuildDurationFilter plugin="view-job-filters">
+      <includeExcludeTypeString>includeMatched</includeExcludeTypeString>
+      <buildCountTypeString>Latest</buildCountTypeString>
+      <amountTypeString>Hours</amountTypeString>
+      <amount>5.0</amount>
+      <lessThan>true</lessThan>
+      <buildDurationMinutes>50.0</buildDurationMinutes>
+    </hudson.views.BuildDurationFilter>
+  </jobFilters>
+  <columns>
+    <hudson.views.StatusColumn/>
+    <hudson.views.WeatherColumn/>
+    <hudson.views.JobColumn/>
+    <hudson.views.LastSuccessColumn/>
+    <hudson.views.LastFailureColumn/>
+    <hudson.views.LastDurationColumn/>
+    <hudson.views.BuildButtonColumn/>
+  </columns>
+  <recurse>true</recurse>
+  <statusFilter>false</statusFilter>
+</hudson.model.ListView>
