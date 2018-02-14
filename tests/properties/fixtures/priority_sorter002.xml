@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <jenkins.advancedqueue.priority.strategy.PriorityJobProperty>
+      <useJobPriority>true</useJobPriority>
+      <priority>3</priority>
+    </jenkins.advancedqueue.priority.strategy.PriorityJobProperty>
+  </properties>
+</project>

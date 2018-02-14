@@ -497,17 +497,33 @@ def priority_sorter(registry, xml_parent, data):
     <Priority+Sorter+Plugin>`.
 
     :arg int priority: Priority of the job.  Higher value means higher
-        priority, with 100 as the standard priority. (required)
+        priority, with 3 as the default priority. (required)
 
     Example:
 
-    .. literalinclude:: /../../tests/properties/fixtures/priority_sorter.yaml
+    .. literalinclude::
+        /../../tests/properties/fixtures/priority_sorter002.yaml
        :language: yaml
     """
-    priority_sorter_tag = XML.SubElement(xml_parent,
-                                         'hudson.queueSorter.'
-                                         'PrioritySorterJobProperty')
-    mapping = [('priority', 'priority', None)]
+    plugin_info = registry.get_plugin_info('Priority Sorter Plugin')
+    version = pkg_resources.parse_version(plugin_info.get('version', '0'))
+
+    if version >= pkg_resources.parse_version("2.0"):
+        priority_sorter_tag = XML.SubElement(xml_parent,
+                                             'jenkins.advancedqueue.priority.'
+                                             'strategy.PriorityJobProperty')
+
+        mapping = [
+            ('use', 'useJobPriority', True),
+            ('priority', 'priority', None)
+        ]
+    else:
+        priority_sorter_tag = XML.SubElement(xml_parent,
+                                             'hudson.queueSorter.'
+                                             'PrioritySorterJobProperty')
+
+        mapping = [('priority', 'priority', None)]
+
     helpers.convert_mapping_to_xml(
         priority_sorter_tag, data, mapping, fail_required=True)
 
