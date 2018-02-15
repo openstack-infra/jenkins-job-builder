@@ -1054,7 +1054,7 @@ def env_script(registry, xml_parent, data):
     mapping = [
         ('script-content', 'script', ''),
         ('script-type', 'scriptType', 'unix-script', valid_script_types),
-        ('only-run-on-parent', 'onlyRunOnParent', False)]
+        ('only-run-on-parent', 'runOnlyOnParent', False)]
     convert_mapping_to_xml(el, data, mapping, fail_required=True)
 
 

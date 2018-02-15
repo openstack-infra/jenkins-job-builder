@@ -4,7 +4,7 @@
     <com.lookout.jenkins.EnvironmentScript>
       <script>echo foo=bar</script>
       <scriptType>unixScript</scriptType>
-      <onlyRunOnParent>true</onlyRunOnParent>
+      <runOnlyOnParent>true</runOnlyOnParent>
     </com.lookout.jenkins.EnvironmentScript>
   </buildWrappers>
 </project>
