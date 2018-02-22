@@ -6999,6 +6999,213 @@ def chuck_norris(registry, xml_parent, data):
     return XML.SubElement(chuck, "factGenerator")
 
 
+def tasks(registry, xml_parent, data):
+    """yaml: tasks
+
+    Scans the workspace files for open tasks and generates a trend report.
+    Requires the Jenkins
+    :jenkins-wiki:`Task Scanner Plugin <Task+Scanner+Plugin>`.
+
+    :arg list files-to-scan: Fileset includes setting that specifies the
+        workspace files to scan for tasks, such as ``**/*.java``. Basedir of
+        the fileset is the workspace root. (default '``**/*.java``')
+    :arg list files-to-exclude: Fileset excludes setting that specifies the
+        workspace files to exclude scanning for tasks, such as library source
+        files. Basedir of the fileset is the workspace root. (default '')
+    :arg list tasks-tags-high: Tags identifiers for high priority that should
+        be looked for in the workspace files. Only alphanumerical characters
+        are allowed as tags as these strings are pasted into a regular
+        expression. (default '')
+    :arg list tasks-tags-normal: Tags identifiers for normal priority that
+        should be looked for in the workspace files. Only alphanumerical
+        characters are allowed as tags as these strings are pasted into a
+        regular expression. (default '')
+    :arg list tasks-tags-low: Tags identifiers for low priority that should be
+        looked for in the workspace files. Only alphanumerical characters are
+        allowed as tags as these strings are pasted into a regular expression.
+        (default '')
+    :arg bool ignore-case: Ignore the case of the the tag identifiers. (default
+        false)
+    :arg bool regular-expression: Treat the tag identifiers as regular
+        expression. Note that the regular expression must contain two capturing
+        groups, the first one is interpreted as tag name, the second one as
+        message. An example of such a regular expression would be
+        ``^.*(TODO(?:[0-9]*))(.*)$``. (default false)
+    :arg bool run-always: By default, this plug-in runs only for stable or
+        unstable builds, but not for failed builds. If this plug-in should run
+        even for failed builds then activate this check box. (default false)
+    :arg bool detect-module: Determines if Ant or Maven modules should be
+        detected for all files that contain warnings. Activating this option
+        may increase your build time since the detector scans the whole
+        workspace for ``build.xml`` or ``pom.xml`` files in order to assign the
+        correct module names. (default false)
+    :arg int health-thresholds-100: Configure the upper thresholds for the
+        build health. If left empty then no health report is created. If the
+        actual number of warnings is between the provided thresholds then the
+        build health is interpolated. (default '')
+    :arg str health-thresholds-0: Configure the lower thresholds for the build
+        health. If left empty then no health report is created. If the actual
+        number of warnings is between the provided thresholds then the build
+        health is interpolated. (default '')
+    :arg str health-priorities: Determines which warning priorities should be
+        considered when evaluating the build health. Can be ``high`` (only
+        priority high), ``normal`` (priorities high and normal) or ``low`` (all
+        priorities). (default 'low')
+    :arg dict status-thresholds: Configure the build status and health. If the
+        number of total or new warnings is greater than one of these thresholds
+        then a build is considered as unstable or failed, respectively. I.e., a
+        value of 0 means that the build status is changed if there is at least
+        one warning found. Leave this field empty if the state of the build
+        should not depend on the number of warnings. Note that for new
+        warnings, you need to enable the next option
+        (``compute-new-warnings``).
+
+        :status-thresholds:
+
+            * **unstable-total-all** (`str`): Total number for all priorities,
+              unstable threshold (default '')
+            * **unstable-total-high** (`str`): Total number for high priority,
+              unstable threshold (default '')
+            * **unstable-total-normal** (`str`): Total number for normal
+              priority, unstable threshold (default '')
+            * **unstable-total-low** (`str`): Total number for low priority,
+              unstable threshold (default '')
+            * **failed-total-all** (`str`): Total number for all priorities,
+              failure threshold (default '')
+            * **failed-total-high** (`str`): Total number for high priority,
+              failure threshold (default '')
+            * **failed-total-normal** (`str`): Total number for normal
+              priority, failure threshold (default '')
+            * **failed-total-low** (`str`): Total number for low priority,
+              failure threshold (default '')
+            * **unstable-new-all** (`str`): New number for all priorities,
+              unstable threshold (default '')
+            * **unstable-new-high** (`str`): New number for high priority,
+              unstable threshold (default '')
+            * **unstable-new-normal** (`str`): New number for normal priority,
+              unstable threshold (default '')
+            * **unstable-new-low** (`str`): New number for low priority,
+              unstable threshold (default '')
+            * **failed-new-all** (`str`): New number for all priorities,
+              failure threshold (default '')
+            * **failed-new-high** (`str`): New number for high priority,
+              failure threshold (default '')
+            * **failed-new-normal** (`str`): New number for normal priority,
+              failure threshold (default '')
+            * **failed-new-low** (`str`): New number for low priority, failure
+              threshold (default '')
+
+    :arg bool compute-new-warnings: Compute new warnings (based on the last
+        successful build unless another reference build is chosen below).
+        (default false)
+    :arg bool use-delta: If set the number of new warnings is computed by
+        subtracting the total number of warnings of the reference build from
+        the total number of warnings of the current build. This may lead to
+        wrong results if you have both fixed and new warnings in a build. If
+        unset the number of new warnings is computed by a more sophisticated
+        algorithm: instead of using totals an asymmetric set difference of the
+        warnings in the current build and the warnings in the reference build
+        is used. This will find all new warnings even if the number of total
+        warnings has decreased. Note that sometimes false positives will be
+        reported due to minor changes in a warning (e.g. refactoring of
+        variables or method names). It is recommended to uncheck this option in
+        order to get the most accurate results for new warnings. Depends on
+        ``compute-new-warnings`` option. (default false)
+    :arg bool use-prev-build-as-ref: If set the number of new warnings will
+        always be computed based on the previous build, even if that build is
+        unstable (due to a violated warning threshold). Otherwise the last
+        build that did not violate any given threshold will be used as
+        reference. It is recommended to uncheck this option if the plug-in
+        should ensure that all new warnings will be finally fixed in subsequent
+        builds. Depends on ``compute-new-warnings`` option. (default false)
+    :arg bool only-use-stable-as-ref: Use the last stable build as the
+        reference to compute the number of new warnings against. This allows to
+        ignore interim unstable builds for which the number of warnings
+        decreased. Note that the last stable build is evaluated only by
+        inspecting the unit test failures. The static analysis results are not
+        considered. Depends on ``compute-new-warnings`` option. (default false)
+    :arg str default-encoding: Default encoding when parsing or showing files.
+        Leave this field empty to use the default encoding of the platform.
+        (default '')
+
+    Minimal Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/tasks-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/publishers/fixtures/tasks-full.yaml
+       :language: yaml
+    """
+
+    root = XML.SubElement(xml_parent,
+                          'hudson.plugins.tasks.TasksPublisher')
+    root.set('plugin', 'tasks')
+
+    if 'files-to-scan' in data:
+        XML.SubElement(root, 'pattern').text = str(
+            ",".join(data['files-to-scan']))
+
+    if 'files-to-exclude' in data:
+        XML.SubElement(root, 'excludePattern').text = str(
+            ",".join(data['files-to-exclude']))
+
+    for prio in ['high', 'normal', 'low']:
+        if 'tasks-tags-' + prio in data:
+            XML.SubElement(root, prio).text = str(
+                ",".join(data['tasks-tags-' + prio]))
+
+    # on the UI, we can see compute-new-warnings but we need the opposite (XML)
+    if 'compute-new-warnings' in data and data['compute-new-warnings']:
+        XML.SubElement(root, 'dontComputeNew').text = "false"
+    else:
+        XML.SubElement(root, 'dontComputeNew').text = "true"
+
+    # Two parameters we cannot modify from the UI
+    XML.SubElement(root, 'pluginName').text = "[TASKS] "
+    XML.SubElement(root, 'doNotResolveRelativePaths').text = "false"
+
+    mappings = [
+        ('ignore-case', 'ignoreCase', False),
+        ('regular-expression', 'asRegexp', False),
+        ('run-always', 'canRunOnFailed', False),
+        ('detect-module', 'shouldDetectModules', False),
+        ('health-thresholds-100', 'healthy', ''),
+        ('health-thresholds-0', 'unHealthy', ''),
+        ('health-priorities', 'thresholdLimit', 'low'),
+        ('use-delta', 'useDeltaValues', False),
+        ('use-prev-build-as-ref', 'usePreviousBuildAsReference', False),
+        ('only-use-stable-as-ref', 'useStableBuildAsReference', False),
+        ('default-encoding', 'defaultEncoding', '')
+    ]
+    helpers.convert_mapping_to_xml(root, data, mappings, fail_required=True)
+
+    thrsh_xml = XML.SubElement(root, 'thresholds')
+    thrsh_xml.set('plugin', 'analysis-core')
+    thrsh_data = data.get('status-thresholds', {})
+    thrsh_mappings = [
+        ('unstable-total-all', 'unstableTotalAll', ''),
+        ('unstable-total-high', 'unstableTotalHigh', ''),
+        ('unstable-total-normal', 'unstableTotalNormal', ''),
+        ('unstable-total-low', 'unstableTotalLow', ''),
+        ('unstable-new-all', 'unstableNewAll', ''),
+        ('unstable-new-high', 'unstableNewHigh', ''),
+        ('unstable-new-normal', 'unstableNewNormal', ''),
+        ('unstable-new-low', 'unstableNewLow', ''),
+        ('failed-total-all', 'failedTotalAll', ''),
+        ('failed-total-high', 'failedTotalHigh', ''),
+        ('failed-total-normal', 'failedTotalNormal', ''),
+        ('failed-total-low', 'failedTotalLow', ''),
+        ('failed-new-all', 'failedNewAll', ''),
+        ('failed-new-high', 'failedNewHigh', ''),
+        ('failed-new-normal', 'failedNewNormal', ''),
+        ('failed-new-low', 'failedNewLow', '')
+    ]
+    helpers.convert_mapping_to_xml(
+        thrsh_xml, thrsh_data, thrsh_mappings, fail_required=True)
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <hudson.plugins.tasks.TasksPublisher plugin="tasks">
+      <dontComputeNew>true</dontComputeNew>
+      <pluginName>[TASKS] </pluginName>
+      <doNotResolveRelativePaths>false</doNotResolveRelativePaths>
+      <ignoreCase>false</ignoreCase>
+      <asRegexp>false</asRegexp>
+      <canRunOnFailed>false</canRunOnFailed>
+      <shouldDetectModules>false</shouldDetectModules>
+      <healthy/>
+      <unHealthy/>
+      <thresholdLimit>low</thresholdLimit>
+      <useDeltaValues>false</useDeltaValues>
+      <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
+      <useStableBuildAsReference>false</useStableBuildAsReference>
+      <defaultEncoding/>
+      <thresholds plugin="analysis-core">
+        <unstableTotalAll/>
+        <unstableTotalHigh/>
+        <unstableTotalNormal/>
+        <unstableTotalLow/>
+        <unstableNewAll/>
+        <unstableNewHigh/>
+        <unstableNewNormal/>
+        <unstableNewLow/>
+        <failedTotalAll/>
+        <failedTotalHigh/>
+        <failedTotalNormal/>
+        <failedTotalLow/>
+        <failedNewAll/>
+        <failedNewHigh/>
+        <failedNewNormal/>
+        <failedNewLow/>
+      </thresholds>
+    </hudson.plugins.tasks.TasksPublisher>
+  </publishers>
+</project>

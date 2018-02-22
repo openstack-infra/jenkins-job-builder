@@ -1,0 +1,43 @@
+publishers:
+  - tasks:
+      files-to-scan:
+        - "**/*.java"
+        - "**/*.c"
+      files-to-exclude:
+        - "specific/file.java"
+      tasks-tags-high:
+        - "FIXME"
+        - "XXX"
+      tasks-tags-normal:
+        - "TODO"
+      tasks-tags-low:
+        - "NICETOHAVE"
+      ignore-case: false
+      regular-expression: false
+      run-always: false
+      detect-module: false
+      health-thresholds-100: 100
+      health-thresholds-0: 0
+      health-priorities: 'low'
+      status-thresholds:
+        unstable-total-all: 0
+        unstable-total-high: 0
+        unstable-total-normal: 0
+        unstable-total-low: 0
+        failed-total-all: 0
+        failed-total-high: 0
+        failed-total-normal: 0
+        failed-total-low: 0
+        unstable-new-all: 0
+        unstable-new-high: 0
+        unstable-new-normal: 0
+        unstable-new-low: 0
+        failed-new-all: 0
+        failed-new-high: 0
+        failed-new-normal: 0
+        failed-new-low: 0
+      compute-new-warnings: false
+      use-delta: false
+      use-prev-build-as-ref: false
+      only-use-stable-as-ref: false
+      default-encoding: "UTF-8"
