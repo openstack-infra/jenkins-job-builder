@@ -23,6 +23,7 @@ import types
 
 from jenkins_jobs.errors import JenkinsJobsException
 from jenkins_jobs.formatter import deep_format
+from jenkins_jobs.local_yaml import Jinja2Loader
 
 __all__ = [
     "ModuleRegistry"
@@ -160,9 +161,10 @@ class ModuleRegistry(object):
         if isinstance(component, dict):
             # The component is a singleton dictionary of name: dict(args)
             name, component_data = next(iter(component.items()))
-            if template_data:
+            if template_data or isinstance(component_data, Jinja2Loader):
                 # Template data contains values that should be interpolated
-                # into the component definition
+                # into the component definition.  To handle Jinja2 templates
+                # that don't contain any variables, we also deep format those.
                 try:
                     component_data = deep_format(
                         component_data, template_data,

@@ -1,0 +1,5 @@
+- job:
+    name: test-job
+    builders:
+        - shell:
+            !include-jinja2: jinja03.yaml.inc
