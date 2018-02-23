@@ -141,6 +141,15 @@ Examples:
     contents of jinja01.yaml.inc:
 
         .. literalinclude:: /../../tests/yamlparser/fixtures/jinja01.yaml.inc
+
+
+The tag ``!j2:`` takes a string and treats it as a Jinja2 template.  It will be
+rendered (with the variables in that context) and included in the calling YAML
+construct.
+
+Examples:
+
+    .. literalinclude:: /../../tests/yamlparser/fixtures/jinja-string01.yaml
 """
 
 import functools
@@ -308,6 +317,14 @@ class LocalDumper(OrderedRepresenter, yaml.Dumper):
 class BaseYAMLObject(YAMLObject):
     yaml_loader = LocalLoader
     yaml_dumper = LocalDumper
+
+
+class J2String(BaseYAMLObject):
+    yaml_tag = u'!j2:'
+
+    @classmethod
+    def from_yaml(cls, loader, node):
+        return Jinja2Loader(node.value)
 
 
 class YamlInclude(BaseYAMLObject):

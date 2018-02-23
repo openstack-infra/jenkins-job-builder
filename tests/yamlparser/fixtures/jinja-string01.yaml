@@ -1,0 +1,19 @@
+- builder:
+    name: test-builder
+    builders:
+        - shell:
+            !j2: |
+                {{ var }}
+                {% for item in test_list -%}
+                {{ item }}
+                {% endfor %}
+
+- job:
+    name: test-job
+    builders:
+        - test-builder:
+            var: "test variable"
+            test_list:
+                - a
+                - b
+                - c
