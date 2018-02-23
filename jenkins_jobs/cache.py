@@ -88,7 +88,7 @@ class JobCache(object):
                 # same time and that the other instance created the directory
                 # after we made the check, in which case there is no error
                 if ose.errno != errno.EEXIST:
-                    raise ose
+                    raise
         return path
 
     def set(self, job, md5):

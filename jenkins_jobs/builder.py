@@ -156,7 +156,7 @@ class JenkinsManager(object):
                                  'version': '',
                                  'longName': ''}]
             else:
-                raise e
+                raise
         logger.debug("Jenkins Plugin Info {0}".format(pformat(plugins_list)))
 
         return plugins_list
