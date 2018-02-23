@@ -21,6 +21,14 @@
     <hudson.views.LastDurationColumn/>
     <hudson.views.BuildButtonColumn/>
     <hudson.views.LastStableColumn/>
+    <hudson.plugins.robot.view.RobotListViewColum/>
+    <hudson.plugins.findbugs.FindBugsColumn/>
+    <hudson.plugins.jacococoveragecolumn.JaCoCoColumn/>
+    <hudson.plugins.git.GitBranchSpecifierColumn/>
+    <org.jenkinsci.plugins.schedulebuild.ScheduleBuildButtonColumn/>
+    <jenkins.advancedqueue.PrioritySorterJobColumn/>
+    <hudson.views.BuildFilterColumn/>
+    <jenkins.branch.DescriptionColumn/>
   </columns>
   <recurse>true</recurse>
   <statusFilter>false</statusFilter>
