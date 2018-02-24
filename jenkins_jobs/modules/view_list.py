@@ -27,11 +27,29 @@ to the :ref:`view_list` definition.
     * **filter-queue** (`bool`): Show only included jobs in builder
       queue. (default false)
     * **job-name** (`list`): List of jobs to be included.
-    * **job-filters** (`dict`): Job filters to be included.
+    * **job-filters** (`dict`): Job filters to be included. Requires
+      :jenkins-wiki:`View Job Filters <View+Job+Filters>`
+
+        * **most-recent** (`dict`)
             :most-recent: * **max-to-include** (`int`): Maximum number of jobs
                             to include. (default 0)
-                          * **check-start-time** (`bool`): Check job start time
-                            (default false)
+                          * **check-start-time** (`bool`): Check job start
+                            time. (default false)
+
+        * **build-duration** (`dict`)
+            :build-duration: * **match-type** ('str'): Jobs that match a filter
+                               to include. (default includeMatched)
+                             * **build-duration-type** ('str'): Duration of the
+                               build. (default Latest)
+                             * **amount-type**: ('str'): Duration in hours,
+                               days or builds. (default Hours)
+                             * **amount**: ('int'): How far back to check.
+                               (default 0)
+                             * **less-than**: ('bool'): Check build duration
+                               less than or more than. (default True)
+                             * **build-duration-minutes**: ('int'): Build
+                               duration minutes. (default 0)
+
     * **columns** (`list`): List of columns to be shown in view.
     * **regex** (`str`): . Regular expression for selecting jobs
       (optional)
@@ -106,19 +124,35 @@ class List(jenkins_jobs.modules.base.Base):
         job_filter_xml = XML.SubElement(root, 'jobFilters')
         jobfilters = data.get('job-filters', [])
 
-        mapping = [
-            ('max-to-include', 'maxToInclude', '0'),
-            ('check-start-time', 'checkStartTime', False),
-        ]
-
         for jobfilter in jobfilters:
-            if 'most-recent' in jobfilter:
+            if jobfilter == 'most-recent':
                 mr_xml = XML.SubElement(job_filter_xml,
-                                       'hudson.views.MostRecentJobsFilter')
+                                        'hudson.views.MostRecentJobsFilter')
                 mr_xml.set('plugin', 'view-job-filters')
-                mr_data = jobfilter.get('most-recent')
+                mr_data = jobfilters.get('most-recent')
+                mapping = [
+                    ('max-to-include', 'maxToInclude', '0'),
+                    ('check-start-time', 'checkStartTime', False),
+                ]
                 convert_mapping_to_xml(mr_xml, mr_data, mapping,
-                                      fail_required=True)
+                                       fail_required=True)
+
+            if jobfilter == 'build-duration':
+                bd_xml = XML.SubElement(job_filter_xml,
+                                        'hudson.views.BuildDurationFilter')
+                bd_xml.set('plugin', 'view-job-filters')
+                bd_data = jobfilters.get('build-duration')
+                mapping = [
+                    ('match-type', 'includeExcludeTypeString',
+                        'includeMatched'),
+                    ('build-duration-type', 'buildCountTypeString', 'Latest'),
+                    ('amount-type', 'amountTypeString', 'Hours'),
+                    ('amount', 'amount', '0'),
+                    ('less-than', 'lessThan', True),
+                    ('build-duration-minutes', 'buildDurationMinutes', '0'),
+                ]
+                convert_mapping_to_xml(bd_xml, bd_data, mapping,
+                                       fail_required=True)
 
         c_xml = XML.SubElement(root, 'columns')
         columns = data.get('columns', DEFAULT_COLUMNS)

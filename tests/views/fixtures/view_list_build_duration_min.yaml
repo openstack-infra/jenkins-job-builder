@@ -4,8 +4,7 @@ description: 'Sample description'
 filter-executors: true
 filter-queue: true
 job-filters:
-  most-recent:
-    max-to-include: 25
-    check-start-time: true
+  build-duration:
+    build-duration-type: Latest
 recurse: true
 status-filter: false
