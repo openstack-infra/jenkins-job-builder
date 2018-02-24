@@ -1,0 +1,4 @@
+- job:
+    name: test-job
+    builders:
+        - shell: !j2: "{% for x in [1, 2, 3] %}{{ x }}{% endfor %}"
