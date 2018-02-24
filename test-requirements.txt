@@ -10,5 +10,6 @@ sphinx>=1.5.0,<1.7.0
 testscenarios>=0.4 # Apache-2.0/BSD
 testtools>=1.4.0 # MIT
 testrepository>=0.0.18 # Apache-2.0/BSD
+tox>=2.9.1 # MIT
 mock>=2.0 # BSD
 sphinxcontrib-programoutput
