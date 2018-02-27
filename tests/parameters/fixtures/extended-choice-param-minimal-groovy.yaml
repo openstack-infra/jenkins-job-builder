@@ -1,0 +1,7 @@
+parameters:
+  - extended-choice:
+      name: OPTIONS
+      description: "Available options"
+      type: 'PT_CHECKBOX'
+      groovy-script: "return 'value1, value2, value3'"
+      classpath: ''
