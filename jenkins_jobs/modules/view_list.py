@@ -50,6 +50,18 @@ to the :ref:`view_list` definition.
                              * **build-duration-minutes**: ('int'): Build
                                duration minutes. (default 0)
 
+        * **build-trend** (`dict`)
+            :build-trend: * **match-type** ('str'): Jobs that match a filter
+                               to include. (default includeMatched)
+                             * **build-trend-type** ('str'): Duration of the
+                               build. (default Latest)
+                             * **amount-type**: ('str'): Duration in hours,
+                               days or builds. (default Hours)
+                             * **amount**: ('int'): How far back to check.
+                               (default 0)
+                             * **status**: ('str'): Job status.
+                               (default Completed)
+
     * **columns** (`list`): List of columns to be shown in view.
     * **regex** (`str`): . Regular expression for selecting jobs
       (optional)
@@ -152,6 +164,22 @@ class List(jenkins_jobs.modules.base.Base):
                     ('build-duration-minutes', 'buildDurationMinutes', '0'),
                 ]
                 convert_mapping_to_xml(bd_xml, bd_data, mapping,
+                                       fail_required=True)
+
+            if jobfilter == 'build-trend':
+                bt_xml = XML.SubElement(job_filter_xml,
+                                        'hudson.views.BuildTrendFilter')
+                bt_xml.set('plugin', 'view-job-filters')
+                bt_data = jobfilters.get('build-trend')
+                mapping = [
+                    ('match-type', 'includeExcludeTypeString',
+                        'includeMatched'),
+                    ('build-trend-type', 'buildCountTypeString', 'Latest'),
+                    ('amount-type', 'amountTypeString', 'Hours'),
+                    ('amount', 'amount', '0'),
+                    ('status', 'statusTypeString', 'Completed'),
+                ]
+                convert_mapping_to_xml(bt_xml, bt_data, mapping,
                                        fail_required=True)
 
         c_xml = XML.SubElement(root, 'columns')
