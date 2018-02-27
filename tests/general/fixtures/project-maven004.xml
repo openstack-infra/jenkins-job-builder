@@ -12,6 +12,7 @@
   <processPlugins>false</processPlugins>
   <mavenValidationLevel>-1</mavenValidationLevel>
   <runHeadless>false</runHeadless>
+  <disableTriggerDownstreamProjects>false</disableTriggerDownstreamProjects>
   <settings class="org.jenkinsci.plugins.configfiles.maven.job.MvnSettingsProvider">
     <settingsConfigId>test-settings</settingsConfigId>
   </settings>

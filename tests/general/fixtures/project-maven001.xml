@@ -17,6 +17,7 @@
   <processPlugins>true</processPlugins>
   <mavenValidationLevel>-1</mavenValidationLevel>
   <runHeadless>true</runHeadless>
+  <disableTriggerDownstreamProjects>true</disableTriggerDownstreamProjects>
   <customWorkspace>path/to/some/repository</customWorkspace>
   <settings class="jenkins.mvn.FilePathSettingsProvider">
     <path>test</path>
