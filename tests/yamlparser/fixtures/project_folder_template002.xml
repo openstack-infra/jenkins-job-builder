@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.cloudbees.hudson.plugins.folder.Folder plugin="cloudbees-folder">
-  <actions/>
   <icon class="com.cloudbees.hudson.plugins.folder.icons.StockFolderIcon"/>
   <views/>
   <viewsTabBar class="hudson.views.DefaultViewsTabBar"/>

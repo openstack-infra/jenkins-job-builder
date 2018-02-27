@@ -44,7 +44,6 @@ class Folder(jenkins_jobs.modules.base.Base):
     def root_xml(self, data):
         xml_parent = XML.Element('com.cloudbees.hudson.plugins.folder.Folder',
                                  plugin="cloudbees-folder")
-        XML.SubElement(xml_parent, 'actions')
         attributes = {"class": "com.cloudbees.hudson.plugins.folder."
                                "icons.StockFolderIcon"}
         XML.SubElement(xml_parent, 'icon', attrib=attributes)
