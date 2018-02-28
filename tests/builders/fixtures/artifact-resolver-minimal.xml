@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jvnet.hudson.plugins.repositoryconnector.ArtifactResolver>
+      <targetDirectory>foo</targetDirectory>
+      <failOnError>false</failOnError>
+      <enableRepoLogging>false</enableRepoLogging>
+      <snapshotUpdatePolicy>never</snapshotUpdatePolicy>
+      <releaseUpdatePolicy>never</releaseUpdatePolicy>
+      <snapshotChecksumPolicy>warn</snapshotChecksumPolicy>
+      <releaseChecksumPolicy>warn</releaseChecksumPolicy>
+      <artifacts>
+        <org.jvnet.hudson.plugins.repositoryconnector.Artifact>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+          <version>1.1</version>
+          <classifier/>
+          <extension>jar</extension>
+          <targetFileName/>
+        </org.jvnet.hudson.plugins.repositoryconnector.Artifact>
+      </artifacts>
+    </org.jvnet.hudson.plugins.repositoryconnector.ArtifactResolver>
+  </builders>
+</project>
