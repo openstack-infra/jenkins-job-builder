@@ -679,23 +679,27 @@ def dynamic_scriptler_param_common(registry, xml_parent, data, ptype):
     pdef = base_param(registry, xml_parent, data, False,
                       'com.seitenbau.jenkins.plugins.dynamicparameter.'
                       'scriptler.' + ptype)
-    XML.SubElement(pdef, '__remote').text = str(
-        data.get('remote', False)).lower()
-    XML.SubElement(pdef, '__scriptlerScriptId').text = data.get(
-        'script-id', None)
     parametersXML = XML.SubElement(pdef, '__parameters')
     parameters = data.get('parameters', [])
     if parameters:
+        mapping = [
+            ('name', 'name', None),
+            ('value', 'value', None),
+        ]
         for parameter in parameters:
             parameterXML = XML.SubElement(parametersXML,
                                           'com.seitenbau.jenkins.plugins.'
                                           'dynamicparameter.scriptler.'
                                           'ScriptlerParameterDefinition_'
                                           '-ScriptParameter')
-            XML.SubElement(parameterXML, 'name').text = parameter['name']
-            XML.SubElement(parameterXML, 'value').text = parameter['value']
-    XML.SubElement(pdef, 'readonlyInputField').text = str(data.get(
-        'read-only', False)).lower()
+            convert_mapping_to_xml(
+                parameterXML, parameter, mapping, fail_required=True)
+    mapping = [
+        ('script-id', '__scriptlerScriptId', None),
+        ('remote', '__remote', False),
+        ('read-only', 'readonlyInputField', False),
+    ]
+    convert_mapping_to_xml(pdef, data, mapping, fail_required=True)
 
 
 def matrix_combinations_param(registry, xml_parent, data):
