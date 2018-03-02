@@ -1,0 +1,10 @@
+name: list-view-name01
+view-type: list
+description: 'Sample description'
+filter-executors: true
+filter-queue: true
+job-filters:
+  fallback:
+    fallback-type: REMOVE_ALL_IF_ALL_INCLUDED
+recurse: true
+status-filter: false
