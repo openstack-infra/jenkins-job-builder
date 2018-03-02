@@ -62,6 +62,20 @@ to the :ref:`view_list` definition.
                              * **status**: ('str'): Job status.
                                (default Completed)
 
+        * **job-status** (`dict`)
+            :job-status: * **match-type** ('str'): Jobs that match a filter
+                               to include. (default includeMatched)
+                             * **unstable** ('bool'): Jobs with status
+                               unstable. (default False)
+                             * **failed** ('bool'): Jobs with status
+                               failed. (default False)
+                             * **aborted** ('bool'): Jobs with status
+                               aborted. (default False)
+                             * **disabled** ('bool'): Jobs with status
+                               disabled. (default False)
+                             * **stable** ('bool'): Jobs with status
+                               stable. (default False)
+
     * **columns** (`list`): List of columns to be shown in view.
     * **regex** (`str`): . Regular expression for selecting jobs
       (optional)
@@ -180,6 +194,23 @@ class List(jenkins_jobs.modules.base.Base):
                     ('status', 'statusTypeString', 'Completed'),
                 ]
                 convert_mapping_to_xml(bt_xml, bt_data, mapping,
+                                       fail_required=True)
+
+            if jobfilter == 'job-status':
+                js_xml = XML.SubElement(job_filter_xml,
+                                        'hudson.views.JobStatusFilter')
+                js_xml.set('plugin', 'view-job-filters')
+                js_data = jobfilters.get('job-status')
+                mapping = [
+                    ('match-type', 'includeExcludeTypeString',
+                        'includeMatched'),
+                    ('unstable', 'unstable', False),
+                    ('failed', 'failed', False),
+                    ('aborted', 'aborted', False),
+                    ('disabled', 'disabled', False),
+                    ('stable', 'stable', False),
+                ]
+                convert_mapping_to_xml(js_xml, js_data, mapping,
                                        fail_required=True)
 
         c_xml = XML.SubElement(root, 'columns')
