@@ -172,6 +172,8 @@ def git(registry, xml_parent, data):
         * **depth** (`int`) - Set shallow clone depth (default 1)
         * **do-not-fetch-tags** (`bool`) - Perform a clone without tags
             (default false)
+        * **honor-refspec** (`bool`) - Perform initial clone using the refspec
+            defined for the repository (default false)
         * **sparse-checkout** (`dict`)
             * **paths** (`list`) - List of paths to sparse checkout. (optional)
         * **submodule** (`dict`)
@@ -443,7 +445,8 @@ def git_extensions(xml_parent, data):
     clone_options = (
         "shallow-clone",
         "timeout",
-        "do-not-fetch-tags"
+        "do-not-fetch-tags",
+        "honor-refspec",
     )
     if any(key in data for key in clone_options):
         ext_name = impl_prefix + 'CloneOption'
@@ -465,6 +468,9 @@ def git_extensions(xml_parent, data):
                 data.get('do-not-fetch-tags', False)).lower()
         if 'timeout' in data:
             XML.SubElement(ext, 'timeout').text = str(data['timeout'])
+        if 'honor-refspec' in data:
+            XML.SubElement(ext, 'honorRefspec').text = str(
+                data.get('honor-refspec', False)).lower()
     if not trait and 'sparse-checkout' in data:
         ext_name = impl_prefix + 'SparseCheckoutPaths'
         ext = XML.SubElement(xml_parent, ext_name)
