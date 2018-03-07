@@ -58,7 +58,9 @@ class TestTests(CmdTestsBase):
                 os.path.join(self.fixtures_path,
                              'cmd-001.yaml'),
                 'foo-job']
-        self.execute_jenkins_jobs_with_args(args)
+        console_out = io.BytesIO()
+        with mock.patch('sys.stdout', console_out):
+            self.execute_jenkins_jobs_with_args(args)
 
     def test_console_output(self):
         """
