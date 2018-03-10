@@ -37,6 +37,9 @@ Plugins required:
         * **bitbucket** (`dict`): Refer to
           :func:`~bitbucket_scm <bitbucket_scm>` for documentation.
 
+        * **gerrit** (`dict`): Refer to
+          :func:`~gerrit_scm <gerrit_scm>` for documentation.
+
         * **git** (`dict`): Refer to
           :func:`~git_scm <git_scm>` for documentation.
 
@@ -66,6 +69,7 @@ import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
 import jenkins_jobs.modules.helpers as helpers
 import uuid
+import six
 
 from jenkins_jobs.errors import InvalidAttributeError
 
@@ -231,6 +235,7 @@ class WorkflowMultiBranch(jenkins_jobs.modules.base.Base):
 
         valid_scm = [
             'bitbucket',
+            'gerrit',
             'git',
             'github',
         ]
@@ -241,6 +246,9 @@ class WorkflowMultiBranch(jenkins_jobs.modules.base.Base):
 
                 if scm == 'bitbucket':
                     bitbucket_scm(bs, scm_data[scm])
+
+                elif scm == 'gerrit':
+                    gerrit_scm(bs, scm_data[scm])
 
                 elif scm == 'git':
                     git_scm(bs, scm_data[scm])
@@ -317,6 +325,81 @@ def bitbucket_scm(xml_parent, data):
         source, data, mapping_optional, fail_required=False)
 
     XML.SubElement(source, 'traits')
+
+
+def gerrit_scm(xml_parent, data):
+    """Configure Gerrit SCM
+
+    Requires the :jenkins-wiki:`Gerrit Code Review Plugin
+    <Gerrit+Code+Review+Plugin>`.
+
+    :arg str url: The git url. (required)
+    :arg str credentials-id: The credential to use to connect to the GIT URL.
+    :arg bool ignore-on-push-notifications: If a job should not trigger upon
+        push notifications. (default false)
+    :arg list(str) refspecs: Which refspecs to look for.
+        (default ``['+refs/changes/*:refs/remotes/@{remote}/*',
+        '+refs/heads/*:refs/remotes/@{remote}/*']``)
+    :arg str includes: Comma-separated list of branches to be included.
+        (default '*')
+    :arg str excludes: Comma-separated list of branches to be excluded.
+        (default '')
+
+    Minimal Example:
+
+    .. literalinclude::
+       /../../tests/multibranch/fixtures/scm_gerrit_minimal.yaml
+
+    Full Example:
+
+    .. literalinclude::
+       /../../tests/multibranch/fixtures/scm_gerrit_full.yaml
+    """
+    source = XML.SubElement(xml_parent, 'source', {
+        'class': 'jenkins.plugins.gerrit.GerritSCMSource',
+        'plugin': 'gerrit',
+    })
+    source_mapping = [
+        ('', 'id', str(uuid.uuid4())),
+        ('url', 'remote', None),
+        ('credentials-id', 'credentialsId', ''),
+        ('includes', 'includes', '*'),
+        ('excludes', 'excludes', ''),
+        ('ignore-on-push-notifications', 'ignoreOnPushNotifications', True),
+    ]
+    helpers.convert_mapping_to_xml(
+        source, data, source_mapping, fail_required=True)
+
+    source_mapping_optional = [
+        ('api-uri', 'apiUri', None),
+    ]
+    helpers.convert_mapping_to_xml(
+        source, data, source_mapping_optional, fail_required=False)
+
+    # Traits
+    traits = XML.SubElement(source, 'traits')
+    XML.SubElement(traits,
+        'jenkins.plugins.gerrit.traits.ChangeDiscoveryTrait')
+
+    # Refspec Trait
+    refspec_trait = XML.SubElement(
+        traits, 'jenkins.plugins.git.traits.RefSpecsSCMSourceTrait', {
+            'plugin': 'git',
+        }
+    )
+    templates = XML.SubElement(refspec_trait, 'templates')
+    refspecs = data.get('refspecs', [
+        '+refs/changes/*:refs/remotes/@{remote}/*',
+        '+refs/heads/*:refs/remotes/@{remote}/*',
+    ])
+    # convert single string to list
+    if isinstance(refspecs, six.string_types):
+        refspecs = [refspecs]
+    for x in refspecs:
+        e = XML.SubElement(
+            templates, ('jenkins.plugins.git.traits'
+            '.RefSpecsSCMSourceTrait_-RefSpecTemplate'))
+        XML.SubElement(e, 'value').text = x
 
 
 def git_scm(xml_parent, data):

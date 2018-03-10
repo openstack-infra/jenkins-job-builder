@@ -1,0 +1,5 @@
+name: 'demo-multibranch-gerrit-min'
+project-type: multibranch
+scm:
+    - gerrit:
+        url: 'https://review.gerrithub.io/johndoe/foo'
