@@ -174,6 +174,19 @@ to the :ref:`view_list` definition.
                 * **match-type** ('str'): Jobs that match a filter
                   to include. (default includeMatched)
 
+        * **user-permissions** (`dict`)
+            :user-permissions:
+                * **match-type** ('str'): Jobs that match a filter to include.
+                  (default includeMatched)
+                * **configure** ('bool'): User with configure permissions.
+                  (default false)
+                * **amount-type**: ('bool'): User with build permissions.
+                  (default false)
+                * **amount**: ('bool'): User with workspace permissions.
+                  (default false)
+                * **permission-check**: ('str'): Match user permissions.
+                  (default MustMatchAll)
+
     * **columns** (`list`): List of columns to be shown in view.
     * **regex** (`str`): . Regular expression for selecting jobs
       (optional)
@@ -449,6 +462,23 @@ class List(jenkins_jobs.modules.base.Base):
                         'includeMatched'),
                 ]
                 convert_mapping_to_xml(sj_xml, sj_data, mapping,
+                                       fail_required=True)
+
+            if jobfilter == 'user-permissions':
+                up_xml = XML.SubElement(job_filter_xml,
+                                        'hudson.views.SecurityFilter')
+                up_xml.set('plugin', 'view-job-filters')
+                up_data = jobfilters.get('user-permissions')
+                mapping = [
+                    ('match-type', 'includeExcludeTypeString',
+                        'includeMatched'),
+                    ('configure', 'configure', False),
+                    ('build', 'build', False),
+                    ('workspace', 'workspace', False),
+                    ('permission-check', 'permissionCheckType',
+                        'MustMatchAll'),
+                ]
+                convert_mapping_to_xml(up_xml, up_data, mapping,
                                        fail_required=True)
 
         c_xml = XML.SubElement(root, 'columns')
