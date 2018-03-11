@@ -155,6 +155,13 @@ to the :ref:`view_list` definition.
                 * **max-builds-to-match** ('int'): Maximum builds to match.
                   (default 0)
 
+        * **other-views** (`dict`)
+            :other-views:
+                * **match-type** ('str'): Jobs that match a filter
+                  to include. (default includeMatched)
+                * **view-name** ('str'): View name.
+                  (default select a view other than this one)
+
     * **columns** (`list`): List of columns to be shown in view.
     * **regex** (`str`): . Regular expression for selecting jobs
       (optional)
@@ -391,6 +398,20 @@ class List(jenkins_jobs.modules.base.Base):
                     ('max-builds-to-match', 'maxBuildsToMatch', 0),
                 ]
                 convert_mapping_to_xml(pr_xml, pr_data, mapping,
+                                       fail_required=True)
+
+            if jobfilter == 'other-views':
+                ov_xml = XML.SubElement(job_filter_xml,
+                                        'hudson.views.OtherViewsFilter')
+                ov_xml.set('plugin', 'view-job-filters')
+                ov_data = jobfilters.get('other-views')
+                mapping = [
+                    ('match-type', 'includeExcludeTypeString',
+                        'includeMatched'),
+                    ('view-name', 'otherViewName',
+                        '&lt;select a view other than this one&gt;'),
+                ]
+                convert_mapping_to_xml(ov_xml, ov_data, mapping,
                                        fail_required=True)
 
         c_xml = XML.SubElement(root, 'columns')

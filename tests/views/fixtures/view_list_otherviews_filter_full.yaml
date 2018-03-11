@@ -1,0 +1,11 @@
+name: list-view-name01
+view-type: list
+description: 'Sample description'
+filter-executors: true
+filter-queue: true
+job-filters:
+  other-views:
+    match-type: includeMatched
+    view-name: '&lt;select a view other than this one&gt;'
+recurse: true
+status-filter: false
