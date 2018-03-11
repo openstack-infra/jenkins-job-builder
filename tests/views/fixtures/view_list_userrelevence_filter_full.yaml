@@ -1,0 +1,21 @@
+name: list-view-name01
+view-type: list
+description: 'Sample description'
+filter-executors: true
+filter-queue: true
+job-filters:
+  user-relevence:
+    match-type: includeMatched
+    build-count: AtLeastOne
+    mount-type: Hours
+    amount: 1.0
+    match-user-id: true
+    match-user-fullname: true
+    ignore-case: true
+    ignore-whitespace: true
+    ignore-non-alphaNumeric: true
+    match-builder: true
+    match-email: true
+    match-scm-changes: true
+recurse: true
+status-filter: false
