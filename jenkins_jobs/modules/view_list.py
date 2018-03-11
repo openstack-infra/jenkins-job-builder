@@ -124,6 +124,14 @@ to the :ref:`view_list` definition.
                 * **match-scm-changes** ('bool'): Jobs matching
                   scm changes. (default False)
 
+        * **regex-job** (`dict`)
+            :regex-job:
+                * **match-type** ('str'): Jobs that match a filter
+                  to include. (default includeMatched)
+                * **regex-name** ('str'): Regular expression name.
+                  (default '')
+                * **regex** ('str'): Regular expression. (default '')
+
     * **columns** (`list`): List of columns to be shown in view.
     * **regex** (`str`): . Regular expression for selecting jobs
       (optional)
@@ -313,6 +321,20 @@ class List(jenkins_jobs.modules.base.Base):
                     ('match-scm-changes', 'matchScmChanges', False),
                 ]
                 convert_mapping_to_xml(ur_xml, ur_data, mapping,
+                                       fail_required=True)
+
+            if jobfilter == 'regex-job':
+                rj_xml = XML.SubElement(job_filter_xml,
+                                        'hudson.views.RegExJobFilter')
+                rj_xml.set('plugin', 'view-job-filters')
+                rj_data = jobfilters.get('regex-job')
+                mapping = [
+                    ('match-type', 'includeExcludeTypeString',
+                        'includeMatched'),
+                    ('regex-name', 'valueTypeString', ''),
+                    ('regex', 'regex', ''),
+                ]
+                convert_mapping_to_xml(rj_xml, rj_data, mapping,
                                        fail_required=True)
 
         c_xml = XML.SubElement(root, 'columns')

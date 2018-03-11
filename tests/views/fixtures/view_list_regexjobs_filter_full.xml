@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hudson.model.ListView>
+  <name>list-view-name01</name>
+  <description>Sample description</description>
+  <filterExecutors>true</filterExecutors>
+  <filterQueue>true</filterQueue>
+  <properties class="hudson.model.View$PropertyList"/>
+  <jobNames>
+    <comparator class="hudson.util.CaseInsensitiveComparator"/>
+  </jobNames>
+  <jobFilters>
+    <hudson.views.RegExJobFilter plugin="view-job-filters">
+      <includeExcludeTypeString>includeMatched</includeExcludeTypeString>
+      <valueTypeString>NAME</valueTypeString>
+      <regex>.*</regex>
+    </hudson.views.RegExJobFilter>
+  </jobFilters>
+  <columns>
+    <hudson.views.StatusColumn/>
+    <hudson.views.WeatherColumn/>
+    <hudson.views.JobColumn/>
+    <hudson.views.LastSuccessColumn/>
+    <hudson.views.LastFailureColumn/>
+    <hudson.views.LastDurationColumn/>
+    <hudson.views.BuildButtonColumn/>
+  </columns>
+  <recurse>true</recurse>
+  <statusFilter>false</statusFilter>
+</hudson.model.ListView>

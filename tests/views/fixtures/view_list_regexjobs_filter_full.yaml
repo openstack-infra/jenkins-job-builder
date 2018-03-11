@@ -1,0 +1,12 @@
+name: list-view-name01
+view-type: list
+description: 'Sample description'
+filter-executors: true
+filter-queue: true
+job-filters:
+  regex-job:
+    match-type: includeMatched
+    regex-name: NAME
+    regex: '.*'
+recurse: true
+status-filter: false
