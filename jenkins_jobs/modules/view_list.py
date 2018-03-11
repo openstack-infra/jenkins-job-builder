@@ -139,6 +139,22 @@ to the :ref:`view_list` definition.
                 * **job-type** ('str'): Type of Job.
                   (default hudson.model.FreeStyleProject)
 
+        * **parameter** (`dict`)
+            :parameter:
+                * **match-type** ('str'): Jobs that match a filter to include.
+                  (default includeMatched)
+                * **name** ('str'): Job name to match. (default '')
+                * **value** ('str'): Value to match. (default '')
+                * **desc** ('str'): Description to match. (default '')
+                * **use-default-value** ('bool'): Use default value.
+                  (default False)
+                * **match-builds-in-progress** ('bool'): Match build in
+                  progress. (default False)
+                * **match-all-builds** ('bool'): Match all builds.
+                  (default False)
+                * **max-builds-to-match** ('int'): Maximum builds to match.
+                  (default 0)
+
     * **columns** (`list`): List of columns to be shown in view.
     * **regex** (`str`): . Regular expression for selecting jobs
       (optional)
@@ -355,6 +371,26 @@ class List(jenkins_jobs.modules.base.Base):
                     ('job-type', 'jobType', 'hudson.model.FreeStyleProject'),
                 ]
                 convert_mapping_to_xml(jt_xml, jt_data, mapping,
+                                       fail_required=True)
+
+            if jobfilter == 'parameter':
+                pr_xml = XML.SubElement(job_filter_xml,
+                                        'hudson.views.ParameterFilter')
+                pr_xml.set('plugin', 'view-job-filters')
+                pr_data = jobfilters.get('parameter')
+                mapping = [
+                    ('match-type', 'includeExcludeTypeString',
+                        'includeMatched'),
+                    ('name', 'nameRegex', ''),
+                    ('value', 'valueRegex', ''),
+                    ('description', 'descriptionRegex', ''),
+                    ('use-default', 'useDefaultValue', False),
+                    ('match-builds-in-progress', 'matchBuildsInProgress',
+                        False),
+                    ('match-all-builds', 'matchAllBuilds', False),
+                    ('max-builds-to-match', 'maxBuildsToMatch', 0),
+                ]
+                convert_mapping_to_xml(pr_xml, pr_data, mapping,
                                        fail_required=True)
 
         c_xml = XML.SubElement(root, 'columns')
