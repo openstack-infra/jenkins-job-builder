@@ -1,0 +1,11 @@
+name: list-view-name01
+view-type: list
+description: 'Sample description'
+filter-executors: true
+filter-queue: true
+job-filters:
+  job-type:
+    match-type: includeMatched
+    job-tpye: hudson.model.FreeStyleProject
+recurse: true
+status-filter: false
