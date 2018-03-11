@@ -162,6 +162,13 @@ to the :ref:`view_list` definition.
                 * **view-name** ('str'): View name.
                   (default select a view other than this one)
 
+        * **scm** (`dict`)
+            :scm:
+                * **match-type** ('str'): Jobs that match a filter to include.
+                  (default includeMatched)
+                * **scm-type** ('str'): Type of SCM.
+                  (default hudson.scm.NullSCM)
+
     * **columns** (`list`): List of columns to be shown in view.
     * **regex** (`str`): . Regular expression for selecting jobs
       (optional)
@@ -412,6 +419,19 @@ class List(jenkins_jobs.modules.base.Base):
                         '&lt;select a view other than this one&gt;'),
                 ]
                 convert_mapping_to_xml(ov_xml, ov_data, mapping,
+                                       fail_required=True)
+
+            if jobfilter == 'scm':
+                st_xml = XML.SubElement(job_filter_xml,
+                                        'hudson.views.ScmTypeFilter')
+                st_xml.set('plugin', 'view-job-filters')
+                st_data = jobfilters.get('scm')
+                mapping = [
+                    ('match-type', 'includeExcludeTypeString',
+                        'includeMatched'),
+                    ('scm-type', 'scmType', 'hudson.scm.NullSCM'),
+                ]
+                convert_mapping_to_xml(st_xml, st_data, mapping,
                                        fail_required=True)
 
         c_xml = XML.SubElement(root, 'columns')

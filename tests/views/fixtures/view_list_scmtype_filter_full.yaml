@@ -1,0 +1,11 @@
+name: list-view-name01
+view-type: list
+description: 'Sample description'
+filter-executors: true
+filter-queue: true
+job-filters:
+  scm:
+    match-type: includeMatched
+    scm-type: hudson.scm.NullSCM
+recurse: true
+status-filter: false
