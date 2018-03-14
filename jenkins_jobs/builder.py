@@ -80,7 +80,7 @@ class JenkinsManager(object):
             output_fn = os.path.join(output_dir, 'config.xml')
 
         if output_dir != output:
-            logger.info("Creating directory %s" % output_dir)
+            logger.debug("Creating directory %s" % output_dir)
             try:
                 os.makedirs(output_dir)
             except OSError:
@@ -239,7 +239,7 @@ class JenkinsManager(object):
 
         if (output and not hasattr(output, 'write') and
                 not os.path.isdir(output)):
-            logger.info("Creating directory %s" % output)
+            logger.debug("Creating directory %s" % output)
             try:
                 os.makedirs(output)
             except OSError:
