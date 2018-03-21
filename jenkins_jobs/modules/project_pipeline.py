@@ -40,6 +40,9 @@ interpreted by the python str.format() command.
           source code repository
         * **script-path**: path to the Groovy file containing the job's steps
           (optional, default: ``Jenkinsfile``)
+        * **lightweight-checkout** (`bool`): If selected, try to obtain the
+          Pipeline script contents directly from the SCM without performing a
+          full checkout. (optional, default: ``false``)
 
 Note that ``dsl`` and ``pipeline-scm`` parameters are mutually exclusive.
 
