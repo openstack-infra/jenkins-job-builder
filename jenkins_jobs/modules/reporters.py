@@ -70,7 +70,7 @@ def email(registry, xml_parent, data):
     XML.SubElement(mailer, 'sendToIndividuals').text = str(
         data.get('send-to-individuals', False)).lower()
     XML.SubElement(mailer, 'perModuleEmail').text = str(
-        data.get('notify-for-every-module', True)).lower()
+        data.get('notify-for-each-module', True)).lower()
 
 
 def findbugs(registry, xml_parent, data):
