@@ -14,6 +14,7 @@
 # under the License.
 
 import argparse
+import os
 
 import jenkins_jobs.version
 
@@ -32,13 +33,14 @@ def create_parser():
     parser.add_argument(
         '--conf',
         dest='conf',
-        help="configuration file")
+        default=os.environ.get('JJB_CONF', None),
+        help="configuration file [JJB_CONF]")
     parser.add_argument(
         '-l',
         '--log_level',
         dest='log_level',
-        default='info',
-        help="log level (default: %(default)s)")
+        default=os.environ.get('JJB_LOG_LEVEL', 'info'),
+        help="log level (default: %(default)s) [JJB_LOG_LEVEL]")
     parser.add_argument(
         '--ignore-cache',
         action='store_true',
@@ -68,16 +70,20 @@ def create_parser():
     parser.add_argument(
         '--server', '-s',
         dest='section',
-        default='jenkins',
-        help="The Jenkins server ini section to use. Defaults to 'jenkins'")
+        default=os.environ.get('JJB_SECTION', 'jenkins'),
+        help="The Jenkins server ini section to use. Defaults to 'jenkins' "
+        "[JJB_SECTION]")
     parser.add_argument(
         '--user', '-u',
+        default=os.environ.get('JJB_USER', None),
         help="The Jenkins user to use for authentication. This overrides "
-        "the user specified in the configuration file.")
+        "the user specified in the configuration file. [JJB_USER]")
     parser.add_argument(
         '--password', '-p',
+        default=os.environ.get('JJB_PASSWORD', None),
         help="Password or API token to use for authenticating towards Jenkins."
-        " This overrides the password specified in the configuration file.")
+        " This overrides the password specified in the configuration file."
+        " [JJB_PASSWORD]")
 
     subparser = parser.add_subparsers(
         dest='command',
