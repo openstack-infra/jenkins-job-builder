@@ -3,6 +3,7 @@
   <builders>
     <hudson.plugins.sonar.SonarRunnerBuilder plugin="sonar">
       <installationName>Sonar</installationName>
+      <sonarScannerName>scanner-3.x</sonarScannerName>
       <task>views</task>
       <project>sonar-project.properties</project>
       <properties>sonar.views.list=myview1,myview2</properties>
