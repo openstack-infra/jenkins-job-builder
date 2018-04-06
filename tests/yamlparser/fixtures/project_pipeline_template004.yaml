@@ -8,4 +8,5 @@
             url: http://hg.example.org/test_job
             clean: true
       script-path: Jenkinsfile.groovy
+      lightweight-checkout: true
 

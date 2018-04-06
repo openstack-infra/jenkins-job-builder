@@ -1422,9 +1422,11 @@ class PipelineSCM(jenkins_jobs.modules.base.Base):
                 raise JenkinsJobsException("'scm' missing or empty")
             elif scms_count == 1:
                 self.registry.dispatch('scm', definition_parent, scms[0])
-                XML.SubElement(definition_parent, 'scriptPath'
-                               ).text = pipeline_dict.get('script-path',
-                                                          'Jenkinsfile')
+                mapping = [('script-path', 'scriptPath', 'Jenkinsfile'),
+                           ('lightweight-checkout', 'lightweight', None,
+                            [True, False])]
+                convert_mapping_to_xml(definition_parent, pipeline_dict,
+                                       mapping, fail_required=False)
             else:
                 raise JenkinsJobsException('Only one SCM can be specified '
                                            'as pipeline-scm')

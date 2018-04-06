@@ -11,6 +11,7 @@
       <disableChangeLog>false</disableChangeLog>
     </scm>
     <scriptPath>Jenkinsfile.groovy</scriptPath>
+    <lightweight>true</lightweight>
   </definition>
   <actions/>
   <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
