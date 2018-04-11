@@ -108,9 +108,19 @@ class JenkinsManager(object):
         # returns job name or url based on config option
         if self._jjb_config.builder['print_job_urls']:
             return self._jjb_config.jenkins['url'] + \
-                '/job/' + '/job/'.join(job_name.split('/'))
+                '/job/' + '/job/'.join(job_name.split('/')) + '/'
         else:
             return job_name
+
+    def _view_format(self, view_name):
+        # returns job name or url based on config option
+        if self._jjb_config.builder['print_job_urls']:
+            parts = view_name.split('/')
+            return self._jjb_config.jenkins['url'] + \
+                ''.join(['/job/' + item for item in parts[:-1]]) + \
+                '/view/' + parts[-1] + '/'
+        else:
+            return view_name
 
     def update_job(self, job_name, xml):
         if self.is_job(job_name):
@@ -376,10 +386,12 @@ class JenkinsManager(object):
 
     def update_view(self, view_name, xml):
         if self.is_view(view_name):
-            logger.info("Reconfiguring jenkins view {0}".format(view_name))
+            logger.info("Reconfiguring jenkins view {0}".format(
+                self._view_format(view_name)))
             self.jenkins.reconfig_view(view_name, xml)
         else:
-            logger.info("Creating jenkins view {0}".format(view_name))
+            logger.info("Creating jenkins view {0}".format(
+                self._view_format(view_name)))
             self.jenkins.create_view(view_name, xml)
 
     def update_views(self, xml_views, output=None, n_workers=None,
