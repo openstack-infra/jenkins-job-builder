@@ -132,12 +132,11 @@ class JenkinsManager(object):
                 self._job_format(job_name)))
             self.jenkins.create_job(job_name, xml)
 
-    def is_job(self, job_name):
-        # first use cache
-        if job_name in self.job_list:
-            return True
+    def is_job(self, job_name, use_cache=True):
+        if use_cache:
+            if job_name in self.job_list:
+                return True
 
-        # if not exists, use jenkins
         return self.jenkins.job_exists(job_name)
 
     def get_job_md5(self, job_name):
@@ -200,7 +199,9 @@ class JenkinsManager(object):
             keep = []
         for job in jobs:
             # python-jenkins stores the folder and name as 'fullname'
-            if job['fullname'] not in keep:
+            # Check if the job was deleted when his parent folder was deleted
+            if job['fullname'] not in keep and \
+                    self.is_job(job['fullname'], use_cache=False):
                 if self.is_managed(job['fullname']):
                     logger.info("Removing obsolete jenkins job {0}"
                                 .format(job['fullname']))
