@@ -5,8 +5,8 @@ filter-executors: true
 filter-queue: true
 job-name:
     - job-name-1
-    - job-name-2
     - job-name-3
+    - job-name-2
 columns:
     - status
     - weather
