@@ -474,6 +474,16 @@ For example, having a configuration file with that option enabled:
 Will prevent JJb from failing if there are any non-initialized variables used
 and replace them with the empty string instead.
 
+.. tip::
+
+   Defaults for variables can be set by using the ``|`` character
+   ``{var|default_value}``. This is useful if we want to allow users of the
+   job-template to not have to pass a setting if there is a common default for
+   it.
+
+   Example:
+
+   .. literalinclude:: /../../tests/yamlparser/fixtures/variable_defaults.yaml
 
 Yaml Anchors & Aliases
 ^^^^^^^^^^^^^^^^^^^^^^
