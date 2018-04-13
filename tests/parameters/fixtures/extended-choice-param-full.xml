@@ -22,6 +22,44 @@
           <groovyScript/>
           <groovyClasspath/>
         </com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
+        <com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
+          <name>OPTIONS_CHECKBOX</name>
+          <description/>
+          <value>OptionA,OptionB,OptionC</value>
+          <visibleItemCount>2</visibleItemCount>
+          <multiSelectDelimiter>,</multiSelectDelimiter>
+          <quoteValue>false</quoteValue>
+          <defaultValue/>
+          <descriptionPropertyValue/>
+          <type>PT_CHECKBOX</type>
+          <propertyFile/>
+          <propertyKey/>
+          <defaultPropertyFile/>
+          <defaultPropertyKey/>
+          <descriptionPropertyFile/>
+          <descriptionPropertyKey/>
+          <groovyScript/>
+          <groovyClasspath/>
+        </com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
+        <com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
+          <name>MULTISELECTOPTIONS</name>
+          <description>Available options</description>
+          <value>foo|bar|select</value>
+          <visibleItemCount>2</visibleItemCount>
+          <multiSelectDelimiter>|</multiSelectDelimiter>
+          <quoteValue>true</quoteValue>
+          <defaultValue>foo</defaultValue>
+          <descriptionPropertyValue/>
+          <type>PT_MULTI_SELECT</type>
+          <propertyFile/>
+          <propertyKey>key</propertyKey>
+          <defaultPropertyFile/>
+          <defaultPropertyKey/>
+          <descriptionPropertyFile/>
+          <descriptionPropertyKey/>
+          <groovyScript/>
+          <groovyClasspath/>
+        </com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>

@@ -12,3 +12,28 @@ parameters:
       default-value: foo
       default-property-file: /home/property.prop
       default-property-key: fookey
+  - extended-choice:
+      name: OPTIONS_CHECKBOX
+      type: checkbox
+      value: !join:
+        - ','
+        -
+            - OptionA
+            - OptionB
+            - OptionC
+      visible-items: 2
+  - extended-choice:
+      name: MULTISELECTOPTIONS
+      description: "Available options"
+      property-key: key
+      quote-value: true
+      type: multi-select
+      value: !join:
+        - '|'
+        -
+            - foo
+            - bar
+            - select
+      visible-items: 2
+      multi-select-delimiter: '|'
+      default-value: foo

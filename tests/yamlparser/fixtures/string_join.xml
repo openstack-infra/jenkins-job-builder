@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties>
+    <EnvInjectJobProperty>
+      <info>
+        <propertiesContent>FILE_LIST=/path/to/file1,/path/to/file2,/path/to/file3,/path/to/file4,/path/to/file5,/path/to/file6,/path/to/file7,/path/to/file8,/path/to/file9,/path/to/file10,/path/to/file11,/path/to/file12,/path/to/file13,/path/to/file14,/path/to/file15,/path/to/file16,/path/to/file17,/path/to/file18,/path/to/file19,/path/to/file20
+</propertiesContent>
+        <loadFilesFromMaster>false</loadFilesFromMaster>
+      </info>
+      <on>true</on>
+      <keepJenkinsSystemVariables>true</keepJenkinsSystemVariables>
+      <keepBuildVariables>true</keepBuildVariables>
+      <overrideBuildParameters>false</overrideBuildParameters>
+    </EnvInjectJobProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>echo &quot;Template name: string-join-data-{name}&quot;
+echo &quot;Data to be processed:&quot;
+echo &quot;${INPUT_DATA}&quot;
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
+<BLANKLINE>
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties>
+    <EnvInjectJobProperty>
+      <info>
+        <propertiesContent>FILE_LIST=/another/different/path/to/file1,/another/different/path/to/file2,/another/different/path/to/file3,/another/different/path/to/file4,/another/different/path/to/file5,/another/different/path/to/file6,/another/different/path/to/file7,/another/different/path/to/file8,/another/different/path/to/file9,/another/different/path/to/file10,/another/different/path/to/file11,/another/different/path/to/file12,/another/different/path/to/file13,/another/different/path/to/file14,/another/different/path/to/file15,/another/different/path/to/file16,/another/different/path/to/file17,/another/different/path/to/file18,/another/different/path/to/file19,/another/different/path/to/file20
+</propertiesContent>
+        <loadFilesFromMaster>false</loadFilesFromMaster>
+      </info>
+      <on>true</on>
+      <keepJenkinsSystemVariables>true</keepJenkinsSystemVariables>
+      <keepBuildVariables>true</keepBuildVariables>
+      <overrideBuildParameters>false</overrideBuildParameters>
+    </EnvInjectJobProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>echo &quot;Template name: string-join-data-{name}&quot;
+echo &quot;Data to be processed:&quot;
+echo &quot;${INPUT_DATA}&quot;
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
