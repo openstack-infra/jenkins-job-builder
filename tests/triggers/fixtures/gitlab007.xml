@@ -2,13 +2,13 @@
 <project>
   <triggers class="vector">
     <com.dabsquared.gitlabjenkins.GitLabPushTrigger>
-      <triggerOpenMergeRequestOnPush>true</triggerOpenMergeRequestOnPush>
-      <branchFilterName/>
+      <triggerOpenMergeRequestOnPush>never</triggerOpenMergeRequestOnPush>
+      <branchFilterType>All</branchFilterType>
       <spec/>
       <triggerOnPush>true</triggerOnPush>
       <triggerOnMergeRequest>true</triggerOnMergeRequest>
-      <triggerOnAcceptedMergeRequest>false</triggerOnAcceptedMergeRequest>
-      <triggerOnClosedMergeRequest>false</triggerOnClosedMergeRequest>
+      <triggerOnAcceptedMergeRequest>true</triggerOnAcceptedMergeRequest>
+      <triggerOnClosedMergeRequest>true</triggerOnClosedMergeRequest>
       <triggerOnNoteRequest>true</triggerOnNoteRequest>
       <noteRegex>Jenkins please retry a build</noteRegex>
       <ciSkip>true</ciSkip>

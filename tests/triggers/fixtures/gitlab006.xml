@@ -7,6 +7,8 @@
       <spec/>
       <triggerOnPush>false</triggerOnPush>
       <triggerOnMergeRequest>false</triggerOnMergeRequest>
+      <triggerOnAcceptedMergeRequest>false</triggerOnAcceptedMergeRequest>
+      <triggerOnClosedMergeRequest>false</triggerOnClosedMergeRequest>
       <triggerOnNoteRequest>true</triggerOnNoteRequest>
       <noteRegex>Retrigger</noteRegex>
       <ciSkip>false</ciSkip>
