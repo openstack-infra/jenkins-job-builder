@@ -1283,7 +1283,7 @@ def gitlab(registry, xml_parent, data):
                        **include-branches** and **exclude-branches** lists.
 
     RegexBasedFilter   Filter branches by regex
-                       The target branch regex allows to limit the
+                       The target branch regex allows you to limit the
                        execution of this job to certain branches. Any
                        branch matching the specified pattern in
                        **target-branch-regex** triggers the job. No

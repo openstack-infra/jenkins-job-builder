@@ -121,7 +121,7 @@ def archive(registry, xml_parent, data):
     :arg bool only-if-success: archive artifacts only if build is successful
         (default false)
     :arg bool fingerprint: fingerprint all archived artifacts (default false)
-    :arg bool default-excludes: This option allows to enable or disable the
+    :arg bool default-excludes: This option allows you to enable or disable the
         default Ant exclusions. (default true)
     :arg bool case-sensitive: Treat include and exclude patterns as case
         sensitive. (default true)
@@ -148,8 +148,8 @@ def archive(registry, xml_parent, data):
 
 def blame_upstream(registry, xml_parent, data):
     """yaml: blame-upstream
-    Notify upstream commiters when build fails
-    Requires the Jenkins :jenkins-wiki:`Blame upstream commiters Plugin
+    Notify upstream committers when build fails
+    Requires the Jenkins :jenkins-wiki:`Blame upstream committers Plugin
     <Blame+Upstream+Committers+Plugin>`.
 
     Example:
@@ -6266,7 +6266,7 @@ def flowdock(registry, xml_parent, data):
 
     :arg str token: API token for the targeted flow.
       (required)
-    :arg str tags: Comma-separated list of tags to incude in message
+    :arg str tags: Comma-separated list of tags to include in message
       (default "")
     :arg bool chat-notification: Send chat notification when build fails
       (default true)
@@ -6330,9 +6330,9 @@ def clamav(registry, xml_parent, data):
     Check files with ClamAV, an open source antivirus engine.
     Requires the Jenkins :jenkins-wiki:`ClamAV Plugin <ClamAV+Plugin>`.
 
-    :arg str includes: Comma seperated list of files that should be scanned.
+    :arg str includes: Comma separated list of files that should be scanned.
         Must be set for ClamAV to check for artifacts. (default '')
-    :arg str excludes: Comma seperated list of files that should be ignored
+    :arg str excludes: Comma separated list of files that should be ignored
         (default '')
 
     Full Example:
@@ -6378,7 +6378,7 @@ def testselector(registry, xml_parent, data):
       (default "")
     :arg str show-fields: Shown in the tests tree
       (default "")
-    :arg str multiplicity-field: Amount of times the test should run
+    :arg str multiplicity-field: Number of times the test should run
       (default "")
 
     Example:
@@ -6616,7 +6616,7 @@ def slack(registry, xml_parent, data):
         (default '')
     :arg str build-server-url: Specify the URL for your server installation.
         (default '/')
-    :arg str room: A comma seperated list of rooms / channels to post the
+    :arg str room: A comma separated list of rooms / channels to post the
         notifications to. (default '')
     :arg bool notify-start: Send notification when the job starts (>=2.0).
         (default false)
@@ -7118,8 +7118,8 @@ def tasks(registry, xml_parent, data):
         should ensure that all new warnings will be finally fixed in subsequent
         builds. Depends on ``compute-new-warnings`` option. (default false)
     :arg bool only-use-stable-as-ref: Use the last stable build as the
-        reference to compute the number of new warnings against. This allows to
-        ignore interim unstable builds for which the number of warnings
+        reference to compute the number of new warnings against. This allows
+        you to ignore interim unstable builds for which the number of warnings
         decreased. Note that the last stable build is evaluated only by
         inspecting the unit test failures. The static analysis results are not
         considered. Depends on ``compute-new-warnings`` option. (default false)

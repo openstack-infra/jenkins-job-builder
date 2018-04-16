@@ -367,7 +367,7 @@ It's possible to assign an `id` to any of the blocks and then use that
 to reference it instead of the name. This has two primary functions:
 
 * A unique identifier where you wish to use the same naming format for
-  multiple templates. This allows to follow a naming scheme while
+  multiple templates. This allows you to follow a naming scheme while
   still using multiple templates to handle subtle variables in job
   requirements.
 * Provides a simpler name for a `job-template` where you have multiple

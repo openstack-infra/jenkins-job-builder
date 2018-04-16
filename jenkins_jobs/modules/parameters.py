@@ -888,7 +888,7 @@ def random_string_param(registry, xml_parent, data):
 
 def git_parameter_param(registry, xml_parent, data):
     """yaml: git-parameter
-    This parameter allows to select a git tag, branch or revision number as
+    This parameter allows you to select a git tag, branch or revision number as
     parameter in Parametrized builds.
     Requires the Jenkins :jenkins-wiki:`Git Parameter Plugin
     <Git+Parameter+Plugin>`.

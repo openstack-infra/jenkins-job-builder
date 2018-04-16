@@ -796,7 +796,7 @@ def slack(registry, xml_parent, data):
     :arg bool include-custom-message: Include a custom message into the
         notification. (default false)
     :arg str custom-message: Custom message to be included. (default '')
-    :arg str room: A comma seperated list of rooms / channels to send
+    :arg str room: A comma separated list of rooms / channels to send
         the notifications to. (default '')
 
     Example:
@@ -915,7 +915,7 @@ def build_discarder(registry, xml_parent, data):
 
 def slave_prerequisites(registry, xml_parent, data):
     """yaml: slave-prerequisites
-    This plugin allows to check prerequisites on slave before
+    This plugin allows you to check prerequisites on slave before
     a job can run a build on it
 
     Requires the Jenkins :jenkins-wiki:`Slave Prerequisites Plugin
@@ -953,7 +953,7 @@ def slave_prerequisites(registry, xml_parent, data):
 
 def groovy_label(registry, xml_parent, data):
     """yaml: groovy-label
-    This plugin allows to use Groovy script to restrict where this project
+    This plugin allows you to use Groovy script to restrict where this project
     can be run.
 
     Requires the Jenkins :jenkins-wiki:`Groovy Label Assignment Plugin

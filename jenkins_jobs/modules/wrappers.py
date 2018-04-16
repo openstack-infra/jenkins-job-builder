@@ -1479,7 +1479,7 @@ def logstash(registry, xml_parent, data):
 
 def mongo_db(registry, xml_parent, data):
     """yaml: mongo-db build wrapper
-    Initalizes a MongoDB database while running the build.
+    Initializes a MongoDB database while running the build.
     Requires the Jenkins :jenkins-wiki:`MongoDB plugin <MongoDB+Plugin>`.
 
     :arg str name: The name of the MongoDB install to use (required)
@@ -1613,7 +1613,7 @@ def ssh_agent_credentials(registry, xml_parent, data):
 
 
     if both **users** and **user** parameters specified, **users** will be
-        prefered, **user** will be ignored.
+        preferred, **user** will be ignored.
 
     Example:
 
@@ -1876,12 +1876,12 @@ def xvfb(registry, xml_parent, data):
     Enable xvfb during the build.
     Requires the Jenkins :jenkins-wiki:`Xvfb Plugin <Xvfb+Plugin>`.
 
-    :arg str installation-name: The name of the Xvfb tool instalation (default
+    :arg str installation-name: The name of the Xvfb tool installation (default
         'default')
     :arg bool auto-display-name: Uses the -displayfd option of Xvfb by which it
         chooses it's own display name (default false)
     :arg str display-name: Ordinal of the display Xvfb will be running on, if
-        left empty choosen based on current build executor number (default '')
+        left empty chosen based on current build executor number (default '')
     :arg str assigned-labels: If you want to start Xvfb only on specific nodes
         specify its name or label (default '')
     :arg bool parallel-build: When running multiple Jenkins nodes on the same

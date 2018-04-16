@@ -798,7 +798,7 @@ def http_request(registry, xml_parent, data):
         being called (default false)
     :arg str valid-response-codes: Configure response code to mark an
         execution as success. You can configure simple code such as "200"
-        or multiple codes separeted by comma(',') e.g. "200,404,500"
+        or multiple codes separated by comma(',') e.g. "200,404,500"
         Interval of codes should be in format From:To e.g. "100:399".
         The default (as if empty) is to fail to 4xx and 5xx.
         That means success from 100 to 399 "100:399"
@@ -1341,9 +1341,9 @@ def conditional_step(registry, xml_parent, data):
                            :SCRIPT_CAUSE: build was triggered by a script
                              (ScriptTrigger Plugin)
                            :BUILDRESULT_CAUSE: build was triggered by a
-                             result of an other job (BuildResultTrigger Plugin)
+                             result of another job (BuildResultTrigger Plugin)
                          :exclusive-cause: (bool) There might by multiple
-                           casues causing a build to be triggered, with
+                           causes causing a build to be triggered, with
                            this true, the cause must be the only one
                            causing this build this build to be triggered.
                            (default false)
@@ -2171,7 +2171,7 @@ def sbt(registry, xml_parent, data):
 
 def critical_block_start(registry, xml_parent, data):
     """yaml: critical-block-start
-    Designate the start of a critical block. Must be used in conjuction with
+    Designate the start of a critical block. Must be used in conjunction with
     critical-block-end.
 
     Must also add a build wrapper (exclusion), specifying the resources that
@@ -2192,7 +2192,7 @@ def critical_block_start(registry, xml_parent, data):
 
 def critical_block_end(registry, xml_parent, data):
     """yaml: critical-block-end
-    Designate the end of a critical block. Must be used in conjuction with
+    Designate the end of a critical block. Must be used in conjunction with
     critical-block-start.
 
     Must also add a build wrapper (exclusion), specifying the resources that
@@ -2553,7 +2553,7 @@ def tox(registry, xml_parent, data):
 
 def managed_script(registry, xml_parent, data):
     """yaml: managed-script
-    This step allows to reference and execute a centrally managed
+    This step allows you to reference and execute a centrally managed
     script within your build. Requires the Jenkins
     :jenkins-wiki:`Managed Script Plugin <Managed+Script+Plugin>`.
 
@@ -3012,7 +3012,7 @@ def sonar(registry, xml_parent, data):
 
 def xcode(registry, xml_parent, data):
     """yaml: xcode
-    This step allows to execute an xcode build step. Requires the Jenkins
+    This step allows you to execute an xcode build step. Requires the Jenkins
     :jenkins-wiki:`Xcode Plugin <Xcode+Plugin>`.
 
     :arg str developer-profile: the jenkins credential id for a
@@ -3963,7 +3963,7 @@ def nexus_artifact_uploader(registry, xml_parent, data):
 
 def ansible_playbook(parser, xml_parent, data):
     """yaml: ansible-playbook
-    This plugin allows to execute Ansible tasks as a job build step.
+    This plugin allows you to execute Ansible tasks as a job build step.
     Requires the Jenkins :jenkins-wiki:`Ansible Plugin <Ansible+Plugin>`.
 
     :arg str playbook: Path to the ansible playbook file. The path can be
@@ -4001,7 +4001,7 @@ def ansible_playbook(parser, xml_parent, data):
         empty. (default '')
     :arg bool unbuffered-output: Skip standard output buffering for the ansible
         process. The ansible output is directly rendered into the Jenkins
-        console. This option can be usefull for long running operations.
+        console. This option can be useful for long running operations.
         (default true)
     :arg bool colorized-output: Check this box to allow ansible to render ANSI
         color codes in the Jenkins console. (default false)
@@ -4114,7 +4114,7 @@ def ansible_playbook(parser, xml_parent, data):
 
 def nodejs(parser, xml_parent, data):
     """yaml: nodejs
-    This plugin allows to execute NodeJS scripts as a job build step.
+    This plugin allows you to execute NodeJS scripts as a job build step.
     Requires the Jenkins :jenkins-wiki:`NodeJS Plugin <NodeJS+Plugin>`.
 
     :arg str name: NodeJS installation name
