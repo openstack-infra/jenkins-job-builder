@@ -31,50 +31,54 @@ to the :ref:`view_list` definition.
       :jenkins-wiki:`View Job Filters <View+Job+Filters>`
 
         * **most-recent** (`dict`)
-            :most-recent: * **max-to-include** (`int`): Maximum number of jobs
-                            to include. (default 0)
-                          * **check-start-time** (`bool`): Check job start
-                            time. (default false)
+            :most-recent:
+                * **max-to-include** (`int`): Maximum number of jobs
+                  to include. (default 0)
+                * **check-start-time** (`bool`): Check job start
+                  time. (default false)
 
         * **build-duration** (`dict`)
-            :build-duration: * **match-type** ('str'): Jobs that match a filter
-                               to include. (default includeMatched)
-                             * **build-duration-type** ('str'): Duration of the
-                               build. (default Latest)
-                             * **amount-type**: ('str'): Duration in hours,
-                               days or builds. (default Hours)
-                             * **amount**: ('int'): How far back to check.
-                               (default 0)
-                             * **less-than**: ('bool'): Check build duration
-                               less than or more than. (default True)
-                             * **build-duration-minutes**: ('int'): Build
-                               duration minutes. (default 0)
+            :build-duration:
+                * **match-type** ('str'): Jobs that match a filter
+                  to include. (default includeMatched)
+                * **build-duration-type** ('str'): Duration of the
+                  build. (default Latest)
+                * **amount-type**: ('str'): Duration in hours,
+                  days or builds. (default Hours)
+                * **amount**: ('int'): How far back to check.
+                  (default 0)
+                * **less-than**: ('bool'): Check build duration
+                  less than or more than. (default True)
+                * **build-duration-minutes**: ('int'): Build
+                  duration minutes. (default 0)
 
         * **build-trend** (`dict`)
-            :build-trend: * **match-type** ('str'): Jobs that match a filter
-                               to include. (default includeMatched)
-                             * **build-trend-type** ('str'): Duration of the
-                               build. (default Latest)
-                             * **amount-type**: ('str'): Duration in hours,
-                               days or builds. (default Hours)
-                             * **amount**: ('int'): How far back to check.
-                               (default 0)
-                             * **status**: ('str'): Job status.
-                               (default Completed)
+            :build-trend:
+                * **match-type** ('str'): Jobs that match a filter
+                  to include. (default includeMatched)
+                * **build-trend-type** ('str'): Duration of the
+                  build. (default Latest)
+                * **amount-type**: ('str'): Duration in hours,
+                  days or builds. (default Hours)
+                * **amount**: ('int'): How far back to check.
+                  (default 0)
+                * **status**: ('str'): Job status.
+                  (default Completed)
 
         * **job-status** (`dict`)
-            :job-status: * **match-type** ('str'): Jobs that match a filter
-                               to include. (default includeMatched)
-                             * **unstable** ('bool'): Jobs with status
-                               unstable. (default False)
-                             * **failed** ('bool'): Jobs with status
-                               failed. (default False)
-                             * **aborted** ('bool'): Jobs with status
-                               aborted. (default False)
-                             * **disabled** ('bool'): Jobs with status
-                               disabled. (default False)
-                             * **stable** ('bool'): Jobs with status
-                               stable. (default False)
+            :job-status:
+                * **match-type** ('str'): Jobs that match a filter
+                  to include. (default includeMatched)
+                * **unstable** ('bool'): Jobs with status
+                  unstable. (default False)
+                * **failed** ('bool'): Jobs with status
+                  failed. (default False)
+                * **aborted** ('bool'): Jobs with status
+                  aborted. (default False)
+                * **disabled** ('bool'): Jobs with status
+                  disabled. (default False)
+                * **stable** ('bool'): Jobs with status
+                  stable. (default False)
 
     * **columns** (`list`): List of columns to be shown in view.
     * **regex** (`str`): . Regular expression for selecting jobs
