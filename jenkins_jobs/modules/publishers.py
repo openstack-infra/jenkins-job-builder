@@ -3678,7 +3678,7 @@ def postbuildscript(registry, xml_parent, data):
         xml_parent,
         'org.jenkinsci.plugins.postbuildscript.PostBuildScript')
 
-    info = registry.get_plugin_info('Jenkins PostBuildScript Plugin')
+    info = registry.get_plugin_info('postbuildscript')
     # Note: Assume latest version of plugin is preferred config format
     version = pkg_resources.parse_version(
         info.get('version', str(sys.maxsize)))
