@@ -307,11 +307,11 @@ def credentials_param(registry, xml_parent, data):
     :arg string default: default credentials ID (optional)
     :arg str description: a description of the parameter (optional)
 
-    Example::
+    Example:
 
-        .. literalinclude::
-            /../../tests/parameters/fixtures/credentials-param001.yaml
-           :language: yaml
+    .. literalinclude:: \
+    /../../tests/parameters/fixtures/credentials-param001.yaml
+       :language: yaml
 
     """
     cred_impl_types = {
