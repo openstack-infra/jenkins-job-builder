@@ -268,7 +268,7 @@ def hue_light(registry, xml_parent, data):
     :arg int light-id: ID of light. Define multiple lights by a comma as a
         separator (required)
     :arg string pre-build: Colour of building state (default 'blue')
-    :arg string good-build: Colour of succesful state (default 'green')
+    :arg string good-build: Colour of successful state (default 'green')
     :arg string unstable-build: Colour of unstable state (default 'yellow')
     :arg string bad-build: Colour of unsuccessful state (default 'red')
 
@@ -4327,7 +4327,7 @@ def plot(registry, xml_parent, data):
         filename, same behaviour as the Jenkins Plot plugin)
     :arg list series: list data series definitions
 
-      :Serie: * **file** (`str`) : files to include
+      :Series: * **file** (`str`) : files to include
               * **inclusion-flag** filtering mode for CSV files. Possible
                 values are:
 

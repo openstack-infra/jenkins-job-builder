@@ -1555,7 +1555,7 @@ def monitor_files(registry, xml_parent, data):
 
         :File:
             * **path** (`str`) -- File path to monitor. You can use a pattern
-              that specifies a set of files if you dont know the real file
+              that specifies a set of files if you don't know the real file
               path. (required)
             * **strategy** (`str`) -- Choose your strategy if there is more
               than one matching file. Can be one of Ignore file ('IGNORE') or
