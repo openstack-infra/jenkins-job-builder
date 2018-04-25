@@ -1,0 +1,16 @@
+- job-template:
+    name: '{name}-variable-defaults'
+
+    builders:
+      - shell: '{script|echo yolo}'
+
+- project:
+    name: default
+    jobs:
+      - '{name}-variable-defaults'
+
+- project:
+    name: override
+    jobs:
+      - '{name}-variable-defaults'
+    script: echo override
