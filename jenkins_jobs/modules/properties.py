@@ -558,28 +558,19 @@ def build_blocker(registry, xml_parent, data):
         raise JenkinsJobsException('blocking-jobs field is missing')
     elif data.get('blocking-jobs', None) is None:
         raise JenkinsJobsException('blocking-jobs list must not be empty')
-    XML.SubElement(blocker, 'useBuildBlocker').text = str(
-        data.get('use-build-blocker', True)).lower()
+
     jobs = ''
     for value in data['blocking-jobs']:
         jobs = jobs + value + '\n'
-    XML.SubElement(blocker, 'blockingJobs').text = jobs
-
-    block_level_list = ('GLOBAL', 'NODE')
-    block_level = data.get('block-level', 'GLOBAL')
-    if block_level not in block_level_list:
-        raise InvalidAttributeError('block-level',
-                                    block_level,
-                                    block_level_list)
-    XML.SubElement(blocker, 'blockLevel').text = block_level
-
-    queue_scanning_list = ('DISABLED', 'ALL', 'BUILDABLE')
-    queue_scanning = data.get('queue-scanning', 'DISABLED')
-    if queue_scanning not in queue_scanning_list:
-        raise InvalidAttributeError('queue-scanning',
-                                    queue_scanning,
-                                    queue_scanning_list)
-    XML.SubElement(blocker, 'scanQueueFor').text = queue_scanning
+    mapping = [
+        ('use-build-blocker', 'useBuildBlocker', True),
+        ('', 'blockingJobs', jobs),
+        ('blocking-level', 'blockLevel', 'GLOBAL', ('GLOBAL', 'NODE')),
+        ('queue-scanning', 'scanQueueFor', 'DISABLED',
+            ('DISABLED', 'ALL', 'BUILDABLE')),
+    ]
+    helpers.convert_mapping_to_xml(
+        blocker, data, mapping, fail_required=True)
 
 
 def copyartifact(registry, xml_parent, data):
