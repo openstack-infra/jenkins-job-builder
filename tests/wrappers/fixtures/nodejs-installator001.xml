@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <buildWrappers>
-    <jenkins.plugins.nodejs.tools.NpmPackagesBuildWrapper>
+    <jenkins.plugins.nodejs.NodeJSBuildWrapper plugin="nodejs@0">
       <nodeJSInstallationName>latest node</nodeJSInstallationName>
-    </jenkins.plugins.nodejs.tools.NpmPackagesBuildWrapper>
+    </jenkins.plugins.nodejs.NodeJSBuildWrapper>
   </buildWrappers>
 </project>

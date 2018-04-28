@@ -1814,8 +1814,11 @@ def nodejs_installator(registry, xml_parent, data):
             /../../tests/wrappers/fixtures/nodejs-installator001.yaml
     """
     npm_node = XML.SubElement(xml_parent,
-                              'jenkins.plugins.nodejs.tools.'
-                              'NpmPackagesBuildWrapper')
+                              'jenkins.plugins.nodejs.'
+                              'NodeJSBuildWrapper')
+
+    version = registry.get_plugin_info('nodejs').get('version', '0')
+    npm_node.set("plugin", "nodejs@" + version)
     mapping = [('name', 'nodeJSInstallationName', None)]
     convert_mapping_to_xml(npm_node, data, mapping, fail_required=True)
 
