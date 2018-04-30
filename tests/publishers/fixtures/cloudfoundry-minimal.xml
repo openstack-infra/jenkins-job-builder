@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <com.hpe.cloudfoundryjenkins.CloudFoundryPushPublisher plugin="cloudfoundry">
+      <target>https://api.stackato-rkw2.local</target>
+      <organization>AS</organization>
+      <cloudSpace>SimpleSpace</cloudSpace>
+      <credentialsId>j89jk213</credentialsId>
+      <selfSigned>false</selfSigned>
+      <resetIfExists>false</resetIfExists>
+      <pluginTimeout>120</pluginTimeout>
+      <appURIs/>
+      <servicesToCreate/>
+      <manifestChoice>
+        <value>manifestFile</value>
+        <manifestFile>manifest.yml</manifestFile>
+        <appName/>
+        <memory>512</memory>
+        <hostname/>
+        <instances>1</instances>
+        <timeout>60</timeout>
+        <noRoute>false</noRoute>
+        <appPath/>
+        <buildpack/>
+        <stack/>
+        <command/>
+        <domain/>
+      </manifestChoice>
+    </com.hpe.cloudfoundryjenkins.CloudFoundryPushPublisher>
+  </publishers>
+</project>
