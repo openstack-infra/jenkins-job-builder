@@ -13,7 +13,9 @@ publishers:
       notify-failure: True
       notify-back-to-normal: True
       notify-repeated-failure: True
+      notify-regression: True
       include-test-summary: True
+      include-failed-tests: True
       commit-info-choice: 'AUTHORS_AND_TITLES'
       include-custom-message: True
       custom-message: 'A custom message.'

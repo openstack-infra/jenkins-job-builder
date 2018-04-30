@@ -6635,6 +6635,12 @@ def slack(registry, xml_parent, data):
     :arg bool notify-repeated-failure: Send notification when job fails
         successively (previous build was also a failure) (>=2.0).
         (default false)
+    :arg bool notify-regression: Send notification when number of failed tests
+        increased or the failed tests are different than previous build
+        (>=2.2). (default false)
+    :arg bool include-failed-tests: includes all failed tests when some tests
+        failed. does nothing if no failed tests were found (>=2.2).
+        (default false)
     :arg bool include-test-summary: Include the test summary (>=2.0).
         (default false)
     :arg str commit-info-choice: What commit information to include into
@@ -6699,8 +6705,10 @@ def slack(registry, xml_parent, data):
         ('notify-unstable', 'notifyUnstable', False),
         ('notify-failure', 'notifyFailure', False),
         ('notify-back-to-normal', 'notifyBackToNormal', False),
+        ('notify-regression', 'notifyRegression', False),
         ('notify-repeated-failure', 'notifyRepeatedFailure', False),
         ('include-test-summary', 'includeTestSummary', False),
+        ('include-failed-tests', 'includeFailedTests', False),
         ('commit-info-choice', 'commitInfoChoice', 'NONE'),
         ('include-custom-message', 'includeCustomMessage', False),
         ('custom-message', 'customMessage', ''),

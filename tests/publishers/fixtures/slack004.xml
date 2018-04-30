@@ -14,8 +14,10 @@
       <notifyUnstable>true</notifyUnstable>
       <notifyFailure>true</notifyFailure>
       <notifyBackToNormal>true</notifyBackToNormal>
+      <notifyRegression>true</notifyRegression>
       <notifyRepeatedFailure>true</notifyRepeatedFailure>
       <includeTestSummary>true</includeTestSummary>
+      <includeFailedTests>true</includeFailedTests>
       <commitInfoChoice>AUTHORS_AND_TITLES</commitInfoChoice>
       <includeCustomMessage>true</includeCustomMessage>
       <customMessage>A custom message.</customMessage>
