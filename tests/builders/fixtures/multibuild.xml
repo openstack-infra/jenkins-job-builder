@@ -19,6 +19,7 @@
             </hudson.plugins.git.GitRevisionBuildParameters>
           </configs>
           <abortAllJob>true</abortAllJob>
+          <aggregatedTestResults>false</aggregatedTestResults>
           <enableRetryStrategy>false</enableRetryStrategy>
         </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
@@ -31,6 +32,7 @@
             </hudson.plugins.parameterizedtrigger.FileBuildParameters>
           </configs>
           <abortAllJob>false</abortAllJob>
+          <aggregatedTestResults>false</aggregatedTestResults>
           <enableRetryStrategy>false</enableRetryStrategy>
         </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
       </phaseJobs>
@@ -50,6 +52,7 @@
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
           </configs>
           <abortAllJob>false</abortAllJob>
+          <aggregatedTestResults>true</aggregatedTestResults>
           <enableRetryStrategy>false</enableRetryStrategy>
         </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
@@ -61,6 +64,7 @@
             </hudson.plugins.parameterizedtrigger.matrix.MatrixSubsetBuildParameters>
           </configs>
           <abortAllJob>false</abortAllJob>
+          <aggregatedTestResults>false</aggregatedTestResults>
           <enableRetryStrategy>false</enableRetryStrategy>
           <enableCondition>true</enableCondition>
           <condition>${BUILDNUMBER} % 2 == 1</condition>
@@ -78,6 +82,7 @@
           <currParams>true</currParams>
           <configs/>
           <abortAllJob>false</abortAllJob>
+          <aggregatedTestResults>false</aggregatedTestResults>
           <enableRetryStrategy>false</enableRetryStrategy>
           <killPhaseOnJobResultCondition>FAILURE</killPhaseOnJobResultCondition>
         </com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
@@ -93,6 +98,7 @@
           <currParams>false</currParams>
           <configs/>
           <abortAllJob>false</abortAllJob>
+          <aggregatedTestResults>false</aggregatedTestResults>
           <parsingRulesPath>/PhaseFour/PhaseFourRetry.prop</parsingRulesPath>
           <maxRetries>3</maxRetries>
           <enableRetryStrategy>true</enableRetryStrategy>
