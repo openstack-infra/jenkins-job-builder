@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <org.jenkins__ci.plugins.flexible__publish.FlexiblePublisher>
+      <publishers>
+        <org.jenkins__ci.plugins.flexible__publish.ConditionalPublisher>
+          <condition class="org.jenkins_ci.plugins.run_condition.core.NeverRun"/>
+          <aggregationCondition class="org.jenkins_ci.plugins.run_condition.core.AlwaysRun"/>
+          <runner class="org.jenkins_ci.plugins.run_condition.BuildStepRunner$Fail"/>
+          <publisherList>
+            <hudson.tasks.ArtifactArchiver>
+              <artifacts>**/**</artifacts>
+              <allowEmptyArchive>true</allowEmptyArchive>
+              <onlyIfSuccessful>false</onlyIfSuccessful>
+              <fingerprint>false</fingerprint>
+              <defaultExcludes>true</defaultExcludes>
+              <caseSensitive>true</caseSensitive>
+              <latestOnly>false</latestOnly>
+            </hudson.tasks.ArtifactArchiver>
+          </publisherList>
+        </org.jenkins__ci.plugins.flexible__publish.ConditionalPublisher>
+      </publishers>
+    </org.jenkins__ci.plugins.flexible__publish.FlexiblePublisher>
+  </publishers>
+</project>

@@ -5761,6 +5761,12 @@ def conditional_publisher(registry, xml_parent, data):
     :arg str condition-kind: Condition kind that must be verified before the
       action is executed. Valid values and their additional attributes are
       described in the conditions_ table.
+    :arg bool condition-aggregation: If true Matrix Aggregation will be
+      enabled. (default false)
+    :arg str condition-aggregation-kind: Condition Aggregation kind that
+      must be verified before the
+      action is executed. Valid values and their additional attributes are
+      described in the conditions_ table.
     :arg str on-evaluation-failure: What should be the outcome of the build
       if the evaluation of the condition fails. Possible values are `fail`,
       `mark-unstable`, `run-and-mark-unstable`, `run` and `dont-run`.
@@ -5827,8 +5833,8 @@ def conditional_publisher(registry, xml_parent, data):
     <../../tests/publishers/fixtures/conditional-publisher002.yaml>`
 
     """
-    def publish_condition(cdata):
-        kind = cdata['condition-kind']
+    def publish_condition_tag(cdata, prefix, condition_tag):
+        kind = cdata['%s-kind' % prefix]
         ctag = XML.SubElement(cond_publisher, condition_tag)
         class_pkg = 'org.jenkins_ci.plugins.run_condition'
 
@@ -5841,12 +5847,13 @@ def conditional_publisher(registry, xml_parent, data):
         elif kind == "boolean-expression":
             ctag.set('class',
                      class_pkg + '.core.BooleanCondition')
-            XML.SubElement(ctag, "token").text = cdata['condition-expression']
+            XML.SubElement(ctag,
+                           "token").text = cdata['%s-expression' % prefix]
         elif kind == "current-status":
             ctag.set('class',
                      class_pkg + '.core.StatusCondition')
             wr = XML.SubElement(ctag, 'worstResult')
-            wr_name = cdata['condition-worst']
+            wr_name = cdata['%s-worst' % prefix]
             if wr_name not in hudson_model.THRESHOLDS:
                 raise JenkinsJobsException(
                     "threshold must be one of %s" %
@@ -5859,7 +5866,7 @@ def conditional_publisher(registry, xml_parent, data):
                 str(wr_threshold['complete']).lower()
 
             br = XML.SubElement(ctag, 'bestResult')
-            br_name = cdata['condition-best']
+            br_name = cdata['%s-best' % prefix]
             if br_name not in hudson_model.THRESHOLDS:
                 raise JenkinsJobsException(
                     "threshold must be one of %s" %
@@ -5873,22 +5880,23 @@ def conditional_publisher(registry, xml_parent, data):
         elif kind == "shell":
             ctag.set('class',
                      class_pkg + '.contributed.ShellCondition')
-            XML.SubElement(ctag, "command").text = cdata['condition-command']
+            XML.SubElement(ctag, "command").text = cdata['%s-command' % prefix]
         elif kind == "windows-shell":
             ctag.set('class',
                      class_pkg + '.contributed.BatchFileCondition')
-            XML.SubElement(ctag, "command").text = cdata['condition-command']
+            XML.SubElement(ctag, "command").text = cdata['%s-command' % prefix]
         elif kind == "regexp":
             ctag.set('class',
                      class_pkg + '.core.ExpressionCondition')
             XML.SubElement(ctag,
-                           "expression").text = cdata['condition-expression']
-            XML.SubElement(ctag, "label").text = cdata['condition-searchtext']
+                           "expression").text = cdata['%s-expression' % prefix]
+            XML.SubElement(ctag,
+                           "label").text = cdata['%s-searchtext' % prefix]
         elif kind == "file-exists":
             ctag.set('class',
                      class_pkg + '.core.FileExistsCondition')
-            XML.SubElement(ctag, "file").text = cdata['condition-filename']
-            basedir = cdata.get('condition-basedir', 'workspace')
+            XML.SubElement(ctag, "file").text = cdata['%s-filename' % prefix]
+            basedir = cdata.get('%s-basedir', 'workspace')
             basedir_tag = XML.SubElement(ctag, "baseDir")
             if "workspace" == basedir:
                 basedir_tag.set('class',
@@ -5902,8 +5910,15 @@ def conditional_publisher(registry, xml_parent, data):
                                 class_pkg + '.common.'
                                 'BaseDirectory$JenkinsHome')
         else:
-            raise JenkinsJobsException('%s is not a valid condition-kind '
-                                       'value.' % kind)
+            raise JenkinsJobsException('%s is not a valid %s-kind '
+                                       'value.' % (kind, prefix))
+
+    def publish_condition(cdata):
+        return publish_condition_tag(cdata, 'condition', condition_tag)
+
+    def publish_aggregation_condition(cdata):
+        return publish_condition_tag(cdata, 'condition-aggregation',
+                                     aggregation_condition_tag)
 
     def publish_action(parent, action):
         for edited_node in create_publishers(registry, action):
@@ -5920,6 +5935,7 @@ def conditional_publisher(registry, xml_parent, data):
     root_tag = XML.SubElement(xml_parent, flex_publisher_tag)
     publishers_tag = XML.SubElement(root_tag, "publishers")
     condition_tag = "condition"
+    aggregation_condition_tag = "aggregationCondition"
 
     evaluation_classes_pkg = 'org.jenkins_ci.plugins.run_condition'
     evaluation_classes = {
@@ -5932,9 +5948,24 @@ def conditional_publisher(registry, xml_parent, data):
         'dont-run': evaluation_classes_pkg + '.BuildStepRunner$DontRun',
     }
 
+    plugin_info = registry.get_plugin_info("Flexible Publish Plugin")
+    # Note: Assume latest version of plugin is preferred config format
+    version = pkg_resources.parse_version(
+        plugin_info.get('version', str(sys.maxsize)))
+
+    # Support for MatrixAggregator was added in v0.11
+    # See JENKINS-14494
+    has_matrix_aggregator = version >= pkg_resources.parse_version("0.11")
+
     for cond_action in data:
         cond_publisher = XML.SubElement(publishers_tag, cond_publisher_tag)
         publish_condition(cond_action)
+        condition_aggregation = cond_action.get('condition-aggregation', False)
+        if condition_aggregation and has_matrix_aggregator:
+            publish_aggregation_condition(cond_action)
+        elif condition_aggregation:
+            raise JenkinsJobsException("Matrix Aggregation is not supported "
+                                       "in your plugin version.")
         evaluation_flag = cond_action.get('on-evaluation-failure', 'fail')
         if evaluation_flag not in evaluation_classes.keys():
             raise JenkinsJobsException('on-evaluation-failure value '
@@ -5949,11 +5980,6 @@ def conditional_publisher(registry, xml_parent, data):
             actions = cond_action['action']
 
             action_parent = cond_publisher
-
-            plugin_info = registry.get_plugin_info("Flexible Publish Plugin")
-            # Note: Assume latest version of plugin is preferred config format
-            version = pkg_resources.parse_version(
-                plugin_info.get('version', str(sys.maxsize)))
 
             # XML tag changed from publisher to publisherList in v0.13
             # check the plugin version to determine further operations
