@@ -2,6 +2,7 @@
 <project>
   <publishers>
     <hudson.plugins.s3.S3BucketPublisher>
+      <dontWaitForConcurrentBuildCompletion>true</dontWaitForConcurrentBuildCompletion>
       <profileName>banana</profileName>
       <entries>
         <hudson.plugins.s3.Entry>
@@ -14,7 +15,6 @@
           <managedArtifacts>true</managedArtifacts>
           <useServerSideEncryption>true</useServerSideEncryption>
           <flatten>true</flatten>
-          <dontWaitForConcurrentBuildCompletion>true</dontWaitForConcurrentBuildCompletion>
         </hudson.plugins.s3.Entry>
       </entries>
       <userMetadata>

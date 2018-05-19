@@ -5199,6 +5199,9 @@ def s3(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`S3 plugin <S3+Plugin>`.
 
     :arg str s3-profile: Globally-defined S3 profile to use
+    :arg bool dont-wait-for-concurrent-builds: Don't wait
+      for completion of concurrent builds before publishing to S3
+      (default false)
     :arg list entries:
       :entries:
         * **destination-bucket** (`str`) - Destination S3 bucket
@@ -5219,9 +5222,6 @@ def s3(registry, xml_parent, data):
         * **flatten** (`bool`) - Ignore the directory structure of the
           artifacts in the source project and copy all matching artifacts
           directly into the specified bucket. (default false)
-        * **dont-wait-for-concurrent-builds** (`bool`) - Don't wait
-          for completion of concurrent builds before publishing to S3
-          (default false)
     :arg list metadata-tags:
       :metadata-tags:
         * **key** Metadata key for files from this build. It will be
@@ -5239,6 +5239,10 @@ def s3(registry, xml_parent, data):
     if data is None or not data.get('entries'):
         raise JenkinsJobsException('No filesets defined.')
 
+    XML.SubElement(deployer, 'dontWaitForConcurrentBuildCompletion').text = (
+        str(data.get('dont-wait-for-concurrent-builds', False)).lower()
+    )
+
     XML.SubElement(deployer, 'profileName').text = data.get('s3-profile')
 
     entries = XML.SubElement(deployer, 'entries')
@@ -5255,9 +5259,7 @@ def s3(registry, xml_parent, data):
                     ('uploadFromSlave', 'upload-from-slave', False),
                     ('managedArtifacts', 'managed-artifacts', False),
                     ('useServerSideEncryption', 's3-encryption', False),
-                    ('flatten', 'flatten', False),
-                    ('dontWaitForConcurrentBuildCompletion',
-                     'dont-wait-for-concurrent-builds', False)]
+                    ('flatten', 'flatten', False)]
 
         for xml_key, yaml_key, default in settings:
             xml_config = XML.SubElement(fileset, xml_key)

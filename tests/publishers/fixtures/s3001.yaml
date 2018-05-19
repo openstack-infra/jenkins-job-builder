@@ -1,6 +1,7 @@
 publishers:
   - s3:
       s3-profile: banana
+      dont-wait-for-concurrent-builds: true
       entries:
         - destination-bucket: herp-derp
           source-files: 'bargle_${BUILD_ID}.tgz'
@@ -11,7 +12,6 @@ publishers:
           managed-artifacts: true
           s3-encryption: true
           flatten: true
-          dont-wait-for-concurrent-builds: true
       metadata-tags:
         - key: warbl ${garbl}
           value: herp derp weevils
