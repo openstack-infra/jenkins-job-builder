@@ -19,8 +19,8 @@ The folder Project module handles creating Jenkins folder projects.
 You may specify ``folder`` in the ``project-type`` attribute of
 the :ref:`Job` definition.
 
-Requires the Jenkins :jenkins-wiki:`CloudBees Folder Plugin
-<CloudBees+Folder+Plugin>`.
+Requires the Jenkins :jenkins-wiki:`CloudBees Folders Plugin
+<CloudBees+Folders+Plugin>`.
 
 Job example:
 

@@ -1287,7 +1287,7 @@ def sauce_ondemand(registry, xml_parent, data):
     mapping = [
         ('enable-sauce-connect', 'enableSauceConnect', False),
         ('sauce-host', 'seleniumHost', ''),
-        ('sauce-port', 'seleniumPort', '')
+        ('sauce-port', 'seleniumPort', ''),
         ('launch-sauce-connect-on-slave', 'launchSauceConnectOnSlave', False),
         ('https-protocol', 'httpsProtocol', ''),
         ('sauce-connect-options', 'options', '')]
