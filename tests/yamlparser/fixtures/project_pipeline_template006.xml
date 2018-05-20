@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow-definition plugin="workflow-job">
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps">
+    <script>stage('Build another job') {
+  build(job: &quot;hello&quot;)
+}
+</script>
+    <sandbox>false</sandbox>
+  </definition>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <publishers/>
+  <buildWrappers/>
+</flow-definition>
