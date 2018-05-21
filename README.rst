@@ -42,6 +42,14 @@ Patches are submitted via Gerrit at:
 
 Please do not submit GitHub pull requests, they will be automatically closed.
 
+Mailing list:
+
+* https://groups.google.com/forum/#!forum/jenkins-job-builder
+
+IRC:
+
+* ``#openstack-jjb`` on Freenode
+
 More details on how you can contribute is available on our wiki at:
 
 * http://docs.openstack.org/infra/manual/developers.html
