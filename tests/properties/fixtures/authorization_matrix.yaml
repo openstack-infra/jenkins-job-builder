@@ -9,6 +9,7 @@ properties:
         - job-workspace
         - job-cancel
         - run-delete
+        - run-replay
         - run-update
         - scm-tag
       anonymous:

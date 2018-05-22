@@ -18,6 +18,7 @@
       <permission>hudson.model.Item.Workspace:admin</permission>
       <permission>com.synopsys.arc.jenkins.plugins.ownership.OwnershipPlugin.Jobs:admin</permission>
       <permission>hudson.model.Run.Delete:admin</permission>
+      <permission>hudson.model.Run.Replay:admin</permission>
       <permission>hudson.model.Run.Update:admin</permission>
       <permission>hudson.scm.SCM.Tag:admin</permission>
       <permission>hudson.model.Item.Read:anonymous</permission>
