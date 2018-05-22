@@ -85,7 +85,7 @@ class CustomFormatter(Formatter):
         (?<!{){({{)*                # non-pair opening {
         (?:obj:)?                   # obj:
         (?P<key>\w+)                # key
-        (?:\|(?P<default>[\w\s]*))? # default fallback
+        (?:\|(?P<default>[^}]*))?   # default fallback
         }(}})*(?!})                 # non-pair closing }
     """
 
