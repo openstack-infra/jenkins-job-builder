@@ -21,6 +21,10 @@
           <descriptionPropertyKey/>
           <groovyScript/>
           <groovyClasspath/>
+          <defaultGroovyScript/>
+          <defaultGroovyClasspath/>
+          <descriptionGroovyScript/>
+          <descriptionGroovyClasspath/>
         </com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
         <com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
           <name>OPTIONS_CHECKBOX</name>
@@ -40,6 +44,10 @@
           <descriptionPropertyKey/>
           <groovyScript/>
           <groovyClasspath/>
+          <defaultGroovyScript/>
+          <defaultGroovyClasspath/>
+          <descriptionGroovyScript/>
+          <descriptionGroovyClasspath/>
         </com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
         <com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
           <name>MULTISELECTOPTIONS</name>
@@ -59,6 +67,10 @@
           <descriptionPropertyKey/>
           <groovyScript/>
           <groovyClasspath/>
+          <defaultGroovyScript/>
+          <defaultGroovyClasspath/>
+          <descriptionGroovyScript/>
+          <descriptionGroovyClasspath/>
         </com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>

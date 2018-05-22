@@ -398,6 +398,14 @@ def extended_choice_param(registry, xml_parent, data):
     :arg str groovy-script: the groovy script contents (optional, default ',')
     :arg str classpath: the classpath for the groovy script
         (optional, default ',')
+    :arg str default-groovy-script: the default groovy
+        script contents (optional, default '')
+    :arg str default-groovy-classpath: the default classpath for the
+        groovy script (optional, default '')
+    :arg str description-groovy-script: location of groovy script when value
+        description needs to come from a groovy script (optional, default '')
+    :arg str description-groovy-classpath: classpath for the value description
+        groovy script (optional, default '')
 
 
     Minimal Example:
@@ -443,6 +451,10 @@ def extended_choice_param(registry, xml_parent, data):
         ('description-property-key', 'descriptionPropertyKey', ''),
         ('groovy-script', 'groovyScript', ''),
         ('classpath', 'groovyClasspath', ''),
+        ('default-groovy-script', 'defaultGroovyScript', ''),
+        ('default-groovy-classpath', 'defaultGroovyClasspath', ''),
+        ('description-groovy-script', 'descriptionGroovyScript', ''),
+        ('description-groovy-classpath', 'descriptionGroovyClasspath', ''),
     ]
     convert_mapping_to_xml(pdef, data, mapping, fail_required=True)
 
