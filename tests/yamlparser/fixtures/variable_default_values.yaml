@@ -1,0 +1,23 @@
+- project:
+    name: test_variable_default_values
+    jobs:
+        - 'variable_default_values':
+            defined_var: '7'
+
+- job-template:
+    name: 'variable_default_values'
+    properties:
+      - build-discarder:
+          days-to-keep: '{undefined_var|+1}'
+          num-to-keep: '{defined_var|+1}'
+          artifact-days-to-keep: '{undefined_var|-1}'
+          artifact-num-to-keep: '{defined_var|-1}'
+    builders:
+      - shell: |
+          echo "{{defined_var|+1}}"
+          echo "{{defined_var|-1}}"
+          echo "{{undefined_var|+1}}"
+          echo "{{undefined_var|-1}}"
+
+
+
