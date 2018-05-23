@@ -201,6 +201,33 @@ create a view, you must define a view in a YAML file and have a variable called 
 
 Views are processed differently than Jobs and therefore will not work within a `Project`_ or a `Job Template`_.
 
+.. _view-template:
+
+View Template
+^^^^^^^^^^^^^
+
+Allow views to also be configured via templates similar to job-templates. This
+is useful when you have multiple views defined that have similar configuration
+except for a few variables. View Templates can be passed variables to fill in
+sections automatically via a project configuration using the new 'views' key.
+
+Minimal Example::
+
+  - view-template:
+      name: '{name}-template-{seq}'
+      description: 'testing view templates feature'
+      view-type: list
+      regex: 'test-view-.*'
+
+  - project:
+      name: 'test-view'
+      views:
+          - '{name}-template-{seq}'
+      seq:
+          - a
+          - b
+          - c
+
 .. _macro:
 
 Macro

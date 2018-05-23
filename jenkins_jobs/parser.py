@@ -316,6 +316,69 @@ class YamlParser(object):
                     raise JenkinsJobsException("Failed to find suitable "
                                                "template named '{0}'"
                                                .format(jobname))
+
+            for viewspec in project.get('views', []):
+                if isinstance(viewspec, dict):
+                    # Singleton dict containing dict of view-specific params
+                    viewname, viewparams = next(iter(viewspec.items()))
+                    if not isinstance(viewparams, dict):
+                        viewparams = {}
+                else:
+                    viewname = viewspec
+                    viewparams = {}
+                view = self._getView(viewname)
+                if view:
+                    # Just naming an existing defined view
+                    if viewname in seen:
+                        self._handle_dups("Duplicate view '{0}' specified "
+                                          "for project '{1}'"
+                                          .format(viewname, project['name']))
+                    seen.add(viewname)
+                    continue
+                # see if it's a view group
+                group = self._getViewGroup(viewname)
+                if group:
+                    for group_viewspec in group['views']:
+                        if isinstance(group_viewspec, dict):
+                            group_viewname, group_viewparams = \
+                                next(iter(group_viewspec.items()))
+                            if not isinstance(group_viewparams, dict):
+                                group_viewparams = {}
+                        else:
+                            group_viewname = group_viewspec
+                            group_viewparams = {}
+                        view = self._getView(group_viewname)
+                        if view:
+                            if group_viewname in seen:
+                                self._handle_dups(
+                                    "Duplicate view '{0}' specified for "
+                                    "project '{1}'".format(group_viewname,
+                                                           project['name']))
+                            seen.add(group_viewname)
+                            continue
+                        template = self._getViewTemplate(group_viewname)
+                        # Allow a group to override parameters set by a project
+                        d = type(project)(project)
+                        d.update(viewparams)
+                        d.update(group)
+                        d.update(group_viewparams)
+                        # Except name, since the group's name is not useful
+                        d['name'] = project['name']
+                        if template:
+                            self._expandYamlForTemplateView(
+                                d, template, jobs_glob)
+                    continue
+                # see if it's a template
+                template = self._getViewTemplate(viewname)
+                if template:
+                    d = type(project)(project)
+                    d.update(viewparams)
+                    self._expandYamlForTemplateView(d, template, jobs_glob)
+                else:
+                    raise JenkinsJobsException("Failed to find suitable "
+                                               "template named '{0}'"
+                                               .format(viewname))
+
         # check for duplicate generated jobs
         seen = set()
         # walk the list in reverse so that last definition wins
@@ -325,6 +388,17 @@ class YamlParser(object):
                                   "specified".format(job['name']))
                 self.jobs.remove(job)
             seen.add(job['name'])
+
+        # check for duplicate generated views
+        seen_views = set()
+        # walk the list in reverse so that last definition wins
+        for view in self.views[::-1]:
+            if view['name'] in seen_views:
+                self._handle_dups("Duplicate definitions for view '{0}' "
+                                  "specified".format(view['name']))
+                self.views.remove(view)
+            seen_views.add(view['name'])
+
         return self.jobs, self.views
 
     def _expandYamlForTemplateJob(self, project, template, jobs_glob=None):
@@ -411,3 +485,73 @@ class YamlParser(object):
         # The \n\n is not hard coded, because they get stripped if the
         # project does not otherwise have a description.
         return "\n\n" + MAGIC_MANAGE_STRING
+
+    # Views related
+    def _getView(self, name):
+        view = self.data.get('view', {}).get(name, None)
+        if not view:
+            return view
+        return self._applyDefaults(view)
+
+    def _getViewGroup(self, name):
+        return self.data.get('view-group', {}).get(name, None)
+
+    def _getViewTemplate(self, name):
+        print(name)
+        view = self.data.get('view-template', {}).get(name, None)
+        if not view:
+            return view
+        return self._applyDefaults(view)
+
+    def _expandYamlForTemplateView(self, project, template, views_glob=None):
+        dimensions = []
+        template_name = template['name']
+        # reject keys that are not useful during yaml expansion
+        for k in ['views']:
+            project.pop(k)
+        excludes = project.pop('exclude', [])
+        for (k, v) in project.items():
+            tmpk = '{{{0}}}'.format(k)
+            if tmpk not in template_name:
+                continue
+            if type(v) == list:
+                dimensions.append(zip([k] * len(v), v))
+        # XXX somewhat hackish to ensure we actually have a single
+        # pass through the loop
+        if len(dimensions) == 0:
+            dimensions = [(("", ""),)]
+
+        for values in itertools.product(*dimensions):
+            params = copy.deepcopy(project)
+            params = self._applyDefaults(params, template)
+
+            expanded_values = {}
+            for (k, v) in values:
+                if isinstance(v, dict):
+                    inner_key = next(iter(v))
+                    expanded_values[k] = inner_key
+                    expanded_values.update(v[inner_key])
+                else:
+                    expanded_values[k] = v
+
+            params.update(expanded_values)
+            params = deep_format(params, params)
+            if combination_matches(params, excludes):
+                logger.debug('Excluding combination %s', str(params))
+                continue
+
+            for key in template.keys():
+                if key not in params:
+                    params[key] = template[key]
+
+            params['template-name'] = template_name
+            expanded = deep_format(
+                template, params,
+                self.jjb_config.yamlparser['allow_empty_variables'])
+
+            view_name = expanded.get('name')
+            if views_glob and not matches(view_name, views_glob):
+                continue
+
+            self._formatDescription(expanded)
+            self.views.append(expanded)
