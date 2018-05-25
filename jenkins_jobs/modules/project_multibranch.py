@@ -579,10 +579,6 @@ def github_scm(xml_parent, data):
         raise InvalidAttributeError('discover-pr-origin',
                                     dpro_strategy,
                                     dpro_strategy_map.keys())
-    if trust not in trust_map:
-        raise InvalidAttributeError('discover-pr-forks-trust',
-                                    trust,
-                                    trust_map.keys())
     dpro_mapping = [
         ('discover-pr-origin', 'strategyId', 'merge-current',
         dpro_strategy_map)
