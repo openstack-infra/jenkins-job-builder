@@ -29,6 +29,7 @@
     <jenkins.advancedqueue.PrioritySorterJobColumn/>
     <hudson.views.BuildFilterColumn/>
     <jenkins.branch.DescriptionColumn/>
+    <com.sonatype.insight.ci.hudson.QualityColumn plugin="sonatype-clm-ci"/>
   </columns>
   <recurse>true</recurse>
   <statusFilter>false</statusFilter>

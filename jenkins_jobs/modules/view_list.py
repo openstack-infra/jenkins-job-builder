@@ -245,6 +245,9 @@ COLUMN_DICT = {
     'priority-sorter': 'jenkins.advancedqueue.PrioritySorterJobColumn',
     'build-filter': 'hudson.views.BuildFilterColumn',
     'desc': 'jenkins.branch.DescriptionColumn',
+    'policy-violations':
+        'com.sonatype.insight.ci.hudson.QualityColumn '
+        'plugin="sonatype-clm-ci"',
 }
 DEFAULT_COLUMNS = ['status', 'weather', 'job', 'last-success', 'last-failure',
                    'last-duration', 'build-button']
