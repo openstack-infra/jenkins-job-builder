@@ -1,0 +1,6 @@
+parameters:
+  - label:
+      name: EXAMPLE LABEL 2
+      description: "EXAMPLE LABEL DESCRIPTION 2"
+      matching-label: "unstable"
+      node-eligibility: "ignore-offline"

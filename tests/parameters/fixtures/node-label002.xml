@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <org.jvnet.jenkins.plugins.nodelabelparameter.LabelParameterDefinition>
+          <name>EXAMPLE LABEL 2</name>
+          <description>EXAMPLE LABEL DESCRIPTION 2</description>
+          <defaultValue/>
+          <allNodesMatchingLabel>true</allNodesMatchingLabel>
+          <triggerIfResult>unstable</triggerIfResult>
+          <nodeEligibility class="org.jvnet.jenkins.plugins.nodelabelparameter.node.IgnoreOfflineNodeEligibility"/>
+        </org.jvnet.jenkins.plugins.nodelabelparameter.LabelParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+</project>
