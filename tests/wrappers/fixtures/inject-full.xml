@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <EnvInjectBuildWrapper>
+      <info>
+        <propertiesFilePath>example.prop full</propertiesFilePath>
+        <propertiesContent>EXAMPLE=foo-bar full</propertiesContent>
+        <scriptFilePath>scriptfull.sh</scriptFilePath>
+        <scriptContent>test script content full</scriptContent>
+        <loadFilesFromMaster>false</loadFilesFromMaster>
+        <secureGroovyScript>
+          <script>test groovy-script location full</script>
+          <sandbox>true</sandbox>
+        </secureGroovyScript>
+      </info>
+    </EnvInjectBuildWrapper>
+  </buildWrappers>
+</project>
