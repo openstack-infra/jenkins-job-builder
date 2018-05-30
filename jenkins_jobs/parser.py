@@ -98,7 +98,7 @@ class YamlParser(object):
         for path in fn:
             if not hasattr(path, 'read') and os.path.isdir(path):
                 files_to_process.extend([os.path.join(path, f)
-                                         for f in os.listdir(path)
+                                         for f in sorted(os.listdir(path))
                                          if (f.endswith('.yml')
                                              or f.endswith('.yaml'))])
             else:
@@ -134,7 +134,9 @@ class YamlParser(object):
 
     def _parse_fp(self, fp):
         # wrap provided file streams to ensure correct encoding used
-        data = local_yaml.load(utils.wrap_stream(fp), search_path=self.path)
+        data = local_yaml.load(utils.wrap_stream(fp),
+                               self.jjb_config.yamlparser['retain_anchors'],
+                               search_path=self.path)
         if data:
             if not isinstance(data, list):
                 raise JenkinsJobsException(

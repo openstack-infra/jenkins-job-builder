@@ -41,6 +41,7 @@ recursive=False
 exclude=.*
 allow_duplicates=False
 allow_empty_variables=False
+retain_anchors=False
 
 # other named sections could be used in addition to the implicit [jenkins]
 # if you have multiple jenkins servers.
@@ -299,6 +300,13 @@ class JJBConfig(object):
             config and config.has_section('job_builder') and
             config.has_option('job_builder', 'allow_empty_variables') and
             config.getboolean('job_builder', 'allow_empty_variables'))
+
+        # retain anchors across files?
+        retain_anchors = False
+        if config and config.has_option('job_builder', 'retain_anchors'):
+            retain_anchors = config.getboolean('job_builder',
+                                               'retain_anchors')
+        self.yamlparser['retain_anchors'] = retain_anchors
 
     def validate(self):
         # Inform the user as to what is likely to happen, as they may specify

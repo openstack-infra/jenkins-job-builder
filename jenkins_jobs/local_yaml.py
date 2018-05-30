@@ -564,8 +564,9 @@ class LazyLoader(CustomLoader):
         return self._cls.from_yaml(self._loader, node)
 
 
-def load(stream, **kwargs):
-    LocalAnchorLoader.reset_anchors()
+def load(stream, retain_anchors=False, **kwargs):
+    if not retain_anchors:
+        LocalAnchorLoader.reset_anchors()
     return yaml.load(stream, functools.partial(LocalLoader, **kwargs))
 
 

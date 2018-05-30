@@ -50,6 +50,9 @@ def recurse_path(root, excludes=None):
     relative = [e for e in excludes if os.path.sep in e and
                 not os.path.isabs(e)]
     for root, dirs, files in os.walk(basepath, topdown=True):
+        # sort in-place to ensure dirnames are visited in alphabetical order
+        # a predictable order makes it easier to use the retain_anchors option
+        dirs.sort()
         dirs[:] = [
             d for d in dirs
             if not any([fnmatch.fnmatch(d, pattern) for pattern in patterns])
