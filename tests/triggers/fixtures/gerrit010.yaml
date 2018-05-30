@@ -1,0 +1,23 @@
+triggers:
+  - gerrit:
+      trigger-on-comment-added-event: true
+      trigger-approval-category: 'APRV'
+      trigger-approval-value: 1
+      projects:
+        - project-compare-type: 'PLAIN'
+          project-pattern: 'test-project'
+          branch-compare-type: 'ANT'
+          branch-pattern: '**'
+          file-paths:
+              - compare-type: ANT
+                pattern: subdirectory/**
+      skip-vote:
+          successful: 'false'
+          failed: 'false'
+          unstable: 'false'
+          notbuilt: 'false'
+      silent: false
+      escape-quotes: false
+      no-name-and-email: false
+      dynamic-trigger-enabled: true
+      dynamic-trigger-url: http://myhost/mytrigger
