@@ -51,6 +51,11 @@ query_plugins_info=False
 
 CONFIG_REQUIRED_MESSAGE = ("A valid configuration file is required. "
                            "No configuration file passed.")
+DEPRECATED_PLUGIN_CONFIG_SECTION_MESSAGE = (
+    "Defining plugin configuration using a [{plugin}] section in your config"
+    " file is deprecated. The recommended way to define plugins now is by"
+    " using a [plugin \"{plugin}\"] section"
+)
 _NOTSET = object()
 
 
@@ -353,8 +358,6 @@ class JJBConfig(object):
             if old_value is not _NOTSET:
                 value = old_value
                 logger.warning(
-                    "Defining plugin configuration using [" + plugin + "] is "
-                    "deprecated. The recommended way to define plugins now is "
-                    "by configuring [plugin \"" + plugin + "\"]")
-
+                    DEPRECATED_PLUGIN_CONFIG_SECTION_MESSAGE.format(
+                        plugin=plugin))
         return value

@@ -94,14 +94,14 @@ class TestConfigs(CmdTestsBase):
         jenkins_jobs.jjb_config.get_plugin_config(
             'new_plugin', 'setting')
         self.assertIn(
-            'Defining plugin configuration using [old_plugin] is deprecated',
+            'using a [old_plugin] section in your config file is deprecated',
             self.logger.output)
         self.assertNotIn(
-            'Defining plugin configuration using [old_plugin_no_conf] is '
+            'using a [old_plugin_no_conf] secton in your config file is '
             'deprecated',
             self.logger.output)
         self.assertNotIn(
-            'Defining plugin configuration using [new_plugin] is deprecated',
+            'using a [new_plugin] section in your config file is deprecated',
             self.logger.output)
 
     def test_config_options_not_replaced_by_cli_defaults(self):
