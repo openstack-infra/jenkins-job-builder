@@ -204,10 +204,8 @@ def build_gerrit_skip_votes(xml_parent, data):
     skip_vote_node = XML.SubElement(xml_parent, 'skipVote')
     skip_vote = data.get('skip-vote', {})
     for result_kind, tag_name in outcomes:
-        if skip_vote.get(result_kind, False):
-            XML.SubElement(skip_vote_node, tag_name).text = 'true'
-        else:
-            XML.SubElement(skip_vote_node, tag_name).text = 'false'
+        setting = skip_vote.get(result_kind, False)
+        XML.SubElement(skip_vote_node, tag_name).text = str(setting).lower()
 
 
 def gerrit(registry, xml_parent, data):
