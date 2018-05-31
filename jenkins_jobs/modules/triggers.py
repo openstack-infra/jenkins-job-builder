@@ -841,7 +841,7 @@ def jms_messaging(registry, xml_parent, data):
         - FedMsg
 
     Requires the Jenkins :jenkins-wiki:`JMS Messaging Plugin
-    Pipeline Plugin <JMS+Messaging+Plugin>`.
+    <JMS+Messaging+Plugin>`.
 
     :arg str selector: The JSON or YAML formatted text that conforms to
         the schema for defining the various OpenShift resources. (default '')
