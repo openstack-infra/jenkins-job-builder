@@ -1,9 +1,7 @@
 hipchat:
   enabled: true
-  rooms:
-      - My Room
-      - Your Room
-  start-notify: true
+  room: My Room  # Cover the deprecated room parameter
+  start-notify: true  # Cover the deprecated start-notify parameter
   notify-success: true
   notify-aborted: true
   notify-not-built: true
