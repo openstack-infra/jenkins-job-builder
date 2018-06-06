@@ -15,6 +15,7 @@
 # under the License.
 
 import os
+import yaml
 
 from testtools import ExpectedException
 from yaml.composer import ComposerError
@@ -77,6 +78,42 @@ class TestCaseLocalYamlIncludeAnchors(base.BaseTestCase):
         jjb_config.jenkins['user'] = 'jenkins'
         jjb_config.jenkins['password'] = 'password'
         jjb_config.builder['plugins_info'] = []
+        jjb_config.validate()
+        j = YamlParser(jjb_config)
+        j.load_files([os.path.join(self.fixtures_path, f) for f in files])
+
+
+class TestCaseLocalYamlRetainAnchors(base.BaseTestCase):
+
+    fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
+
+    def test_retain_anchors_default(self):
+        """
+        Verify that anchors are NOT retained across files by default.
+        """
+
+        files = ["custom_retain_anchors_include001.yaml",
+                 "custom_retain_anchors.yaml"]
+
+        jjb_config = JJBConfig()
+        # use the default value for retain_anchors
+        jjb_config.validate()
+        j = YamlParser(jjb_config)
+        with ExpectedException(yaml.composer.ComposerError,
+                               "found undefined alias.*"):
+            j.load_files([os.path.join(self.fixtures_path, f) for f in files])
+
+    def test_retain_anchors_enabled(self):
+        """
+        Verify that anchors are retained across files if retain_anchors is
+        enabled in the config.
+        """
+
+        files = ["custom_retain_anchors_include001.yaml",
+                 "custom_retain_anchors.yaml"]
+
+        jjb_config = JJBConfig()
+        jjb_config.yamlparser['retain_anchors'] = True
         jjb_config.validate()
         j = YamlParser(jjb_config)
         j.load_files([os.path.join(self.fixtures_path, f) for f in files])

@@ -57,6 +57,15 @@ job_builder section
   so user can be sure which instance was updated. User may click the link to
   go directly to that job. False by default.
 
+**retain_anchors**
+  (Optional) If set to True, YAML anchors will be retained across files,
+  allowing jobs to be composed from bits of YAML defined in separate files.
+  Note this means that the order of processing files matters - `jenkins-jobs`
+  loads files in alphabetical order (all files in a dir are loaded before any
+  files in subdirs). For example, if your anchors are in a file named `foo.yml`
+  they will be accessible in `qux.yml` but not in `bar.yml`. They will also be
+  accessible in `mydir/bar.yml` and `mydir/qux.yml`. False by default.
+
 
 jenkins section
 ^^^^^^^^^^^^^^^

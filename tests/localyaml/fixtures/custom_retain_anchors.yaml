@@ -1,0 +1,8 @@
+- project:
+    name: retain_anchors
+    jobs:
+      - retain_anchors
+
+- job-template:
+    name: retain_anchors
+    <<: *retain_anchors_defaults
