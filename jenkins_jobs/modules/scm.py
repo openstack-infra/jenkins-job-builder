@@ -745,7 +745,7 @@ def store(registry, xml_parent, data):
             ('', 'pundleType', pundle_type.upper(), valid_pundle_types)]
         convert_mapping_to_xml(pundle, data, mapping, fail_required=True)
 
-    generate_parcel = True if 'parcel-builder-file' else False
+    generate_parcel = 'parcel-builder-file' in data
     mapping_optional = [
         ('version-regex', 'versionRegex', None),
         ('minimum-blessing', 'minimumBlessingLevel', None),
