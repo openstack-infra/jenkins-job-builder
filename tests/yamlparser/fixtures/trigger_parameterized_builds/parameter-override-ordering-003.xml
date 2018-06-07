@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project>
+<matrix-project>
+  <executionStrategy class="hudson.matrix.DefaultMatrixExecutionStrategyImpl">
+    <runSequentially>false</runSequentially>
+  </executionStrategy>
+  <combinationFilter/>
+  <axes>
+    <hudson.matrix.TextAxis>
+      <name>foo_bar</name>
+      <values>
+        <string>foo</string>
+        <string>bar</string>
+      </values>
+    </hudson.matrix.TextAxis>
+  </axes>
   <actions/>
   <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
   <keepDependencies>false</keepDependencies>
@@ -15,32 +28,33 @@
     <hudson.plugins.parameterizedtrigger.BuildTrigger>
       <configs>
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-          <configs>
-            <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
-            <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
-              <properties/>
-            </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
-            <hudson.plugins.parameterizedtrigger.FileBuildParameters>
-              <propertiesFile/>
-              <failTriggerOnMissing>false</failTriggerOnMissing>
-            </hudson.plugins.parameterizedtrigger.FileBuildParameters>
-            <hudson.plugins.git.GitRevisionBuildParameters>
-              <combineQueuedCommits>false</combineQueuedCommits>
-            </hudson.plugins.git.GitRevisionBuildParameters>
-          </configs>
-          <projects/>
-          <condition>UNSTABLE_OR_BETTER</condition>
-          <triggerFromChildProjects>false</triggerFromChildProjects>
+          <configs class="java.util.Collections$EmptyList"/>
+          <projects>foo</projects>
+          <condition>ALWAYS</condition>
+          <triggerFromChildProjects>true</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>
     </hudson.plugins.parameterizedtrigger.BuildTrigger>
   </publishers>
   <buildWrappers/>
-</project>
+</matrix-project>
 <BLANKLINE>
 <?xml version="1.0" encoding="utf-8"?>
-<project>
+<matrix-project>
+  <executionStrategy class="hudson.matrix.DefaultMatrixExecutionStrategyImpl">
+    <runSequentially>false</runSequentially>
+  </executionStrategy>
+  <combinationFilter/>
+  <axes>
+    <hudson.matrix.TextAxis>
+      <name>foo_bar</name>
+      <values>
+        <string>foo</string>
+        <string>bar</string>
+      </values>
+    </hudson.matrix.TextAxis>
+  </axes>
   <actions/>
   <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
   <keepDependencies>false</keepDependencies>
@@ -56,21 +70,9 @@
     <hudson.plugins.parameterizedtrigger.BuildTrigger>
       <configs>
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-          <configs>
-            <hudson.plugins.parameterizedtrigger.FileBuildParameters>
-              <propertiesFile/>
-              <failTriggerOnMissing>false</failTriggerOnMissing>
-            </hudson.plugins.parameterizedtrigger.FileBuildParameters>
-            <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
-              <properties/>
-            </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
-            <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
-            <hudson.plugins.git.GitRevisionBuildParameters>
-              <combineQueuedCommits>false</combineQueuedCommits>
-            </hudson.plugins.git.GitRevisionBuildParameters>
-          </configs>
-          <projects/>
-          <condition>UNSTABLE_OR_BETTER</condition>
+          <configs class="java.util.Collections$EmptyList"/>
+          <projects>foo</projects>
+          <condition>ALWAYS</condition>
           <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
@@ -78,4 +80,4 @@
     </hudson.plugins.parameterizedtrigger.BuildTrigger>
   </publishers>
   <buildWrappers/>
-</project>
+</matrix-project>

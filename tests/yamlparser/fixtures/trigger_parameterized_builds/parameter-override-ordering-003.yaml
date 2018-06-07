@@ -1,0 +1,36 @@
+- project:
+    name: trigger-from-child
+    jobs:
+        - 'hydra_{name}_jjb-test1'
+        - 'hydra_{name}_jjb-test2'
+
+- job-template:
+    project-type: matrix
+    axes:
+      - axis:
+          type: user-defined
+          name: foo_bar
+          values:
+              - foo
+              - bar
+    name: 'hydra_{name}_jjb-test1'
+    display-name: 'JJB Test1'
+    publishers:
+        - trigger-parameterized-builds:
+            - project: 'foo'
+              trigger-from-child-projects: true
+
+- job-template:
+    project-type: matrix
+    axes:
+      - axis:
+          type: user-defined
+          name: foo_bar
+          values:
+              - foo
+              - bar
+    name: 'hydra_{name}_jjb-test2'
+    display-name: 'JJB Test2'
+    publishers:
+        - trigger-parameterized-builds:
+            - project: 'foo'

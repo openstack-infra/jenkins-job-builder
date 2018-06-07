@@ -16,6 +16,7 @@
           </configs>
           <projects>another_job</projects>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
@@ -31,6 +32,7 @@
           </configs>
           <projects>yet_another_job</projects>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>

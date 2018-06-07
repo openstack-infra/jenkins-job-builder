@@ -8,6 +8,7 @@ publishers:
         - trigger-parameterized-builds:
           - project: archive
             current-parameters: true
+            trigger-from-child-projects: true
             trigger-with-no-params: true
           - project: cleanup
             current-parameters: true

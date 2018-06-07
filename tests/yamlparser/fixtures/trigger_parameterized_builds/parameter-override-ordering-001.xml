@@ -33,6 +33,7 @@ print(&quot;Doing something cool with python&quot;)
           </configs>
           <projects>default_job</projects>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>
@@ -52,6 +53,7 @@ print(&quot;Doing something cool with python&quot;)
           </configs>
           <projects>first_job</projects>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
@@ -67,6 +69,7 @@ print(&quot;Doing something cool with python&quot;)
           </configs>
           <projects>second_job</projects>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>
@@ -110,6 +113,7 @@ print(&quot;Doing something cool with python&quot;)
           </configs>
           <projects>default_job</projects>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>
@@ -129,6 +133,7 @@ print(&quot;Doing something cool with python&quot;)
           </configs>
           <projects>1.2_first_job</projects>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
@@ -144,6 +149,7 @@ print(&quot;Doing something cool with python&quot;)
           </configs>
           <projects>1.2_second_job</projects>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>
