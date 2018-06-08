@@ -5,3 +5,4 @@ scm:
         credentials-id: 'secret'
         repo-owner: 'SANDBOX'
         repo: 'test'
+        discover-tags: true
