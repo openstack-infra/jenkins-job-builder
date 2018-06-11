@@ -36,6 +36,7 @@ Job template example:
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
+from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 
 
 class Folder(jenkins_jobs.modules.base.Base):
@@ -50,7 +51,11 @@ class Folder(jenkins_jobs.modules.base.Base):
         XML.SubElement(xml_parent, 'views')
         attributes = {"class": "hudson.views.DefaultViewsTabBar"}
         XML.SubElement(xml_parent, 'viewsTabBar', attrib=attributes)
-        XML.SubElement(xml_parent, 'primaryView').text = 'All'
-        XML.SubElement(xml_parent, 'healthMetrics')
+
+        mappings = [
+            ('', 'primaryView', 'All'),
+            ('', 'healthMetrics', ''),
+        ]
+        convert_mapping_to_xml(xml_parent, data, mappings, True)
 
         return xml_parent
