@@ -71,7 +71,7 @@ def git(registry, xml_parent, data):
     :arg list(str) branches: list of branch specifiers to build (default '**')
     :arg bool skip-tag: Skip tagging (default true)
 
-        .. deprecated:: 1.6.0. Please use per-build-tag extension, which has
+        .. deprecated:: 2.0.0. Please use per-build-tag extension, which has
            the inverse meaning.
 
     :arg bool clean: Clean after checkout (default false)
