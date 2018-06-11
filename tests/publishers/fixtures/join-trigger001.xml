@@ -12,6 +12,7 @@
               </configs>
               <projects>archive</projects>
               <condition>ALWAYS</condition>
+              <triggerFromChildProjects>true</triggerFromChildProjects>
               <triggerWithNoParameters>true</triggerWithNoParameters>
             </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
             <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
@@ -20,6 +21,7 @@
               </configs>
               <projects>cleanup</projects>
               <condition>ALWAYS</condition>
+              <triggerFromChildProjects>false</triggerFromChildProjects>
               <triggerWithNoParameters>false</triggerWithNoParameters>
             </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
           </configs>

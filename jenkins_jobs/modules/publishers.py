@@ -507,6 +507,8 @@ def trigger_parameterized_builds(registry, xml_parent, data):
         if any of the property files are not found in the workspace.
         Only valid when 'property-file' is specified.
         (default 'False')
+    :arg bool trigger-from-child-projects: Trigger build from child projects.
+        Used for matrix projects. (default 'False')
     :arg bool use-matrix-child-files: Use files in workspaces of child
         builds (default 'False')
     :arg str matrix-child-combination-filter: A Groovy expression to filter
@@ -560,6 +562,10 @@ def trigger_parameterized_builds(registry, xml_parent, data):
 
         condition = XML.SubElement(tconfig, 'condition')
         condition.text = project_def.get('condition', 'ALWAYS')
+        trigger_from_child_projects = XML.SubElement(
+            tconfig, 'triggerFromChildProjects')
+        trigger_from_child_projects.text = str(
+            project_def.get('trigger-from-child-projects', False)).lower()
         trigger_with_no_params = XML.SubElement(tconfig,
                                                 'triggerWithNoParameters')
         trigger_with_no_params.text = str(

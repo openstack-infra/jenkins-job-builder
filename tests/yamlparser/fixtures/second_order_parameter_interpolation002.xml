@@ -22,6 +22,7 @@
           </configs>
           <projects/>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>
@@ -54,6 +55,7 @@
           </configs>
           <projects>experimental_p2_bar</projects>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>
@@ -86,6 +88,7 @@
           </configs>
           <projects>production_p1_foo</projects>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>
@@ -118,6 +121,7 @@
           </configs>
           <projects/>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>

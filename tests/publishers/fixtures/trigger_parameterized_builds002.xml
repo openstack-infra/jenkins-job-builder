@@ -12,6 +12,7 @@
           </configs>
           <projects>test-project-all</projects>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
@@ -23,6 +24,7 @@
           </configs>
           <projects>test-project-just-name</projects>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
@@ -34,6 +36,7 @@
           </configs>
           <projects>test-project-just-node</projects>
           <condition>ALWAYS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>

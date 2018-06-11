@@ -11,6 +11,7 @@
           </configs>
           <projects>fixture</projects>
           <condition>SUCCESS</condition>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>
