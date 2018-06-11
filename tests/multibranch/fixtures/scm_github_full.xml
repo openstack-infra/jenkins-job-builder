@@ -41,6 +41,7 @@
             <org.jenkinsci.plugins.github__branch__source.BranchDiscoveryTrait>
               <strategyId>3</strategyId>
             </org.jenkinsci.plugins.github__branch__source.BranchDiscoveryTrait>
+            <org.jenkinsci.plugins.github__branch__source.TagDiscoveryTrait/>
             <org.jenkinsci.plugins.github__branch__source.ForkPullRequestDiscoveryTrait>
               <strategyId>3</strategyId>
               <trust class="org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustEveryone"/>

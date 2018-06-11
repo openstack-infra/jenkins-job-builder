@@ -36,7 +36,9 @@
           <repoOwner>SANDBOX</repoOwner>
           <repository>test</repository>
           <credentialsId>secret</credentialsId>
-          <traits/>
+          <traits>
+            <com.cloudbees.jenkins.plugins.bitbucket.TagDiscoveryTrait/>
+          </traits>
         </source>
       </jenkins.branch.BranchSource>
     </data>

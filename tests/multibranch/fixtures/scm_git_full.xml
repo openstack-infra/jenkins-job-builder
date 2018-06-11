@@ -36,6 +36,7 @@
           <remote>https://example.com/jonhndoe/keep-frontend.git</remote>
           <credentialsId>secret</credentialsId>
           <traits>
+            <jenkins.plugins.git.traits.TagDiscoveryTrait/>
             <jenkins.plugins.git.traits.IgnoreOnPushNotificationTrait/>
           </traits>
         </source>

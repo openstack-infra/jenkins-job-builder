@@ -6,3 +6,4 @@ scm:
         credentials-id: secret
         discover-branches: false
         ignore-on-push-notifications: true
+        discover-tags: true

@@ -10,3 +10,4 @@ scm:
         discover-pr-forks-strategy: both
         discover-pr-forks-trust: everyone
         discover-pr-origin: both
+        discover-tags: true

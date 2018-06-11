@@ -296,6 +296,9 @@ def bitbucket_scm(xml_parent, data):
         User Account. (required)
     :arg str repo: The BitBucket repo. (required)
 
+    :arg bool discover-tags: Discovers tags on the repository.
+        (default false)
+
     Minimal Example:
 
     .. literalinclude::
@@ -324,7 +327,10 @@ def bitbucket_scm(xml_parent, data):
     helpers.convert_mapping_to_xml(
         source, data, mapping_optional, fail_required=False)
 
-    XML.SubElement(source, 'traits')
+    traits = XML.SubElement(source, 'traits')
+    if data.get('discover-tags', False):
+        XML.SubElement(traits,
+            'com.cloudbees.jenkins.plugins.bitbucket.TagDiscoveryTrait')
 
 
 def gerrit_scm(xml_parent, data):
@@ -413,6 +419,8 @@ def git_scm(xml_parent, data):
 
     :arg bool discover-branches: Discovers branches on the repository.
         (default true)
+    :arg bool discover-tags: Discovers tags on the repository.
+        (default false)
     :arg bool ignore-on-push-notifications: If a job should not trigger upon
         push notifications. (default false)
 
@@ -446,6 +454,9 @@ def git_scm(xml_parent, data):
     if data.get('discover-branches', True):
         XML.SubElement(traits, ''.join([traits_path, '.BranchDiscoveryTrait']))
 
+    if data.get('discover-tags', False):
+        XML.SubElement(traits, ''.join([traits_path, '.TagDiscoveryTrait']))
+
     if data.get('ignore-on-push-notifications', False):
         XML.SubElement(
             traits, ''.join([traits_path, '.IgnoreOnPushNotificationTrait']))
@@ -476,6 +487,8 @@ def github_scm(xml_parent, data):
     :arg str discover-pr-origin: Discovers pull requests where the origin
         repository is the same as the target repository.
         Valid options: merge-current, current, both.  (default 'merge-current')
+    :arg bool discover-tags: Discovers tags on the repository.
+        (default false)
 
     Minimal Example:
 
@@ -525,6 +538,13 @@ def github_scm(xml_parent, data):
         ]
         helpers.convert_mapping_to_xml(
             bd, data, bd_mapping, fail_required=True)
+
+    if data.get('discover-tags', False):
+        XML.SubElement(
+            traits, ''.join([
+                github_path_dscore, '.TagDiscoveryTrait'
+            ])
+        )
 
     if data.get('discover-pr-forks-strategy', 'merged-current'):
         dprf = XML.SubElement(
