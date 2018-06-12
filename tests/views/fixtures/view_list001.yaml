@@ -25,5 +25,6 @@ columns:
     - build-filter
     - desc
     - policy-violations
+    - member-graph-view
 recurse: true
 status-filter: false
