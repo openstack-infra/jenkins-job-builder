@@ -21,7 +21,7 @@
     <hudson.views.LastDurationColumn/>
     <hudson.views.BuildButtonColumn/>
     <hudson.views.LastStableColumn/>
-    <hudson.plugins.robot.view.RobotListViewColum/>
+    <hudson.plugins.robot.view.RobotListViewColumn/>
     <hudson.plugins.findbugs.FindBugsColumn/>
     <hudson.plugins.jacococoveragecolumn.JaCoCoColumn/>
     <hudson.plugins.git.GitBranchSpecifierColumn/>

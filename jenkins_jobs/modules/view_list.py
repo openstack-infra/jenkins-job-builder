@@ -236,7 +236,7 @@ COLUMN_DICT = {
     'last-duration': 'hudson.views.LastDurationColumn',
     'build-button': 'hudson.views.BuildButtonColumn',
     'last-stable': 'hudson.views.LastStableColumn',
-    'robot-list': 'hudson.plugins.robot.view.RobotListViewColum',
+    'robot-list': 'hudson.plugins.robot.view.RobotListViewColumn',
     'find-bugs': 'hudson.plugins.findbugs.FindBugsColumn',
     'jacoco': 'hudson.plugins.jacococoveragecolumn.JaCoCoColumn',
     'git-branch': 'hudson.plugins.git.GitBranchSpecifierColumn',
