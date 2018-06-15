@@ -248,6 +248,9 @@ COLUMN_DICT = {
     'policy-violations':
         'com.sonatype.insight.ci.hudson.QualityColumn '
         'plugin="sonatype-clm-ci"',
+    'member-graph-view':
+        'com.barchart.jenkins.cascade.GraphViewColumn '
+        'plugin="maven-release-cascade"',
 }
 DEFAULT_COLUMNS = ['status', 'weather', 'job', 'last-success', 'last-failure',
                    'last-duration', 'build-button']

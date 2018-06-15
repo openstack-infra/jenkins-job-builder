@@ -30,6 +30,7 @@
     <hudson.views.BuildFilterColumn/>
     <jenkins.branch.DescriptionColumn/>
     <com.sonatype.insight.ci.hudson.QualityColumn plugin="sonatype-clm-ci"/>
+    <com.barchart.jenkins.cascade.GraphViewColumn plugin="maven-release-cascade"/>
   </columns>
   <recurse>true</recurse>
   <statusFilter>false</statusFilter>
