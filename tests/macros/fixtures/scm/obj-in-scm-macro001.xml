@@ -37,6 +37,7 @@
       <hudson.plugins.git.extensions.impl.CleanBeforeCheckout/>
       <hudson.plugins.git.extensions.impl.CloneOption>
         <shallow>true</shallow>
+        <depth>1</depth>
       </hudson.plugins.git.extensions.impl.CloneOption>
       <hudson.plugins.git.extensions.impl.SubmoduleOption>
         <disableSubmodules>false</disableSubmodules>

@@ -34,7 +34,8 @@
         </options>
       </hudson.plugins.git.extensions.impl.ChangelogToBranch>
       <hudson.plugins.git.extensions.impl.CloneOption>
-        <shallow>false</shallow>
+        <shallow>true</shallow>
+        <depth>3</depth>
         <noTags>false</noTags>
         <timeout>20</timeout>
       </hudson.plugins.git.extensions.impl.CloneOption>

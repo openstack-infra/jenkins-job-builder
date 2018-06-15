@@ -27,6 +27,7 @@
       <hudson.plugins.git.extensions.impl.CleanCheckout/>
       <hudson.plugins.git.extensions.impl.CloneOption>
         <shallow>false</shallow>
+        <depth>1</depth>
       </hudson.plugins.git.extensions.impl.CloneOption>
       <hudson.plugins.git.extensions.impl.WipeWorkspace/>
     </extensions>

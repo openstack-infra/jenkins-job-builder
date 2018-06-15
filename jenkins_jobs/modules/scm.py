@@ -169,6 +169,7 @@ def git(registry, xml_parent, data):
         * **scm-name** (`string`) - The unique scm name for this Git SCM
             (optional)
         * **shallow-clone** (`bool`) - Perform shallow clone (default false)
+        * **depth** (`int`) - Set shallow clone depth (default 1)
         * **do-not-fetch-tags** (`bool`) - Perform a clone without tags
             (default false)
         * **sparse-checkout** (`dict`)
@@ -381,8 +382,10 @@ def git(registry, xml_parent, data):
     )
     if any(key in data for key in clone_options):
         clo = XML.SubElement(exts_node, impl_prefix + 'CloneOption')
-        XML.SubElement(clo, 'shallow').text = str(
-            data.get('shallow-clone', False)).lower()
+        clone_mapping = [
+            ('shallow-clone', 'shallow', False),
+            ('depth', 'depth', 1)]
+        convert_mapping_to_xml(clo, data, clone_mapping, fail_required=True)
         if 'do-not-fetch-tags' in data:
             XML.SubElement(clo, 'noTags').text = str(
                 data.get('do-not-fetch-tags', False)).lower()

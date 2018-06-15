@@ -29,6 +29,7 @@
     <extensions>
       <hudson.plugins.git.extensions.impl.CloneOption>
         <shallow>false</shallow>
+        <depth>1</depth>
         <timeout>20</timeout>
       </hudson.plugins.git.extensions.impl.CloneOption>
       <hudson.plugins.git.extensions.impl.CheckoutOption>

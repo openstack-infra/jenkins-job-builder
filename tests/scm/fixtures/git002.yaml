@@ -6,6 +6,8 @@ scm:
         - stable
       browser: githubweb
       browser-url: http://github.com/foo/example.git
+      shallow-clone: true
+      depth: 3
       timeout: 20
       do-not-fetch-tags: false
       changelog-against:
