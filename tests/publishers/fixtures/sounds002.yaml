@@ -1,0 +1,10 @@
+publishers:
+- sounds:
+    failure:
+      sound: EXPLODE
+      from:
+        - not_build
+        - success
+        - aborted
+        - failure
+        - unstable
