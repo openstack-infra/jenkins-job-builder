@@ -1,0 +1,15 @@
+scm:
+  - accurev:
+      depot: Test depot
+      stream: Test stream
+      server-name: Test server name
+      ignore-parent-changes: true
+      clean-reference-tree: true
+      build-from-snapshot: true
+      do-not-pop-content: true
+      workspace: Test workspace
+      reference-tree: Test reference tree
+      directory-offset: Test directory offset
+      sub-path: Test sub path
+      filter-poll-scm: Test filter
+      snapshot-name-format: Test snapshot name format
