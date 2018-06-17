@@ -920,15 +920,17 @@ def inject(registry, xml_parent, data):
     :arg str script-file: path to the script file (optional)
     :arg str script-content: contents of a script (optional)
     :arg bool load-from-master: load files from master (default false)
+    :arg str groovy-script: contents of the groovy script (optional)
+    :arg bool groovy-sandbox: use groovy sandbox (default false)
 
-    Example::
+    Minimal Example:
 
-      wrappers:
-        - inject:
-            properties-file: /usr/local/foo
-            properties-content: PATH=/foo/bar
-            script-file: /usr/local/foo.sh
-            script-content: echo $PATH
+    .. literalinclude:: /../../tests/wrappers/fixtures/inject-minimal.yaml
+
+    Full Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/inject-full.yaml
+
     """
     eib = XML.SubElement(xml_parent, 'EnvInjectBuildWrapper')
     info = XML.SubElement(eib, 'info')
@@ -940,6 +942,14 @@ def inject(registry, xml_parent, data):
         ('load-from-master', 'loadFilesFromMaster', False),
     ]
     convert_mapping_to_xml(info, data, mapping, fail_required=False)
+
+    secure_groovy_script = XML.SubElement(info, 'secureGroovyScript')
+    mapping = [
+        ('groovy-script', 'script', None),
+        ('groovy-sandbox', 'sandbox', False),
+    ]
+    convert_mapping_to_xml(secure_groovy_script, data, mapping,
+                           fail_required=False)
 
 
 def inject_ownership_variables(registry, xml_parent, data):
