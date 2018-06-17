@@ -454,25 +454,27 @@ def git(registry, xml_parent, data):
         XML.SubElement(exts_node, impl_prefix + 'AuthorInChangelog')
 
     browser = data.get('browser', 'auto')
-    browserdict = {'auto': 'auto',
-                   'assemblaweb': 'AssemblaWeb',
-                   'bitbucketweb': 'BitbucketWeb',
-                   'cgit': 'CGit',
-                   'fisheye': 'FisheyeGitRepositoryBrowser',
-                   'gitblit': 'GitBlitRepositoryBrowser',
-                   'githubweb': 'GithubWeb',
-                   'gitiles': 'Gitiles',
-                   'gitlab': 'GitLab',
-                   'gitlist': 'GitList',
-                   'gitoriousweb': 'GitoriousWeb',
-                   'gitweb': 'GitWeb',
-                   'kiln': 'KilnGit',
-                   'microsoft-tfs-2013': 'TFS2013GitRepositoryBrowser',
-                   'phabricator': 'Phabricator',
-                   'redmineweb': 'RedmineWeb',
-                   'rhodecode': 'RhodeCode',
-                   'stash': 'Stash',
-                   'viewgit': 'ViewGitWeb'}
+    browserdict = {
+        'auto': 'auto',
+        'assemblaweb': 'AssemblaWeb',
+        'bitbucketweb': 'BitbucketWeb',
+        'cgit': 'CGit',
+        'fisheye': 'FisheyeGitRepositoryBrowser',
+        'gitblit': 'GitBlitRepositoryBrowser',
+        'githubweb': 'GithubWeb',
+        'gitiles': 'Gitiles',
+        'gitlab': 'GitLab',
+        'gitlist': 'GitList',
+        'gitoriousweb': 'GitoriousWeb',
+        'gitweb': 'GitWeb',
+        'kiln': 'KilnGit',
+        'microsoft-tfs-2013': 'TFS2013GitRepositoryBrowser',
+        'phabricator': 'Phabricator',
+        'redmineweb': 'RedmineWeb',
+        'rhodecode': 'RhodeCode',
+        'stash': 'Stash',
+        'viewgit': 'ViewGitWeb',
+    }
     if browser not in browserdict:
         valid = sorted(browserdict.keys())
         raise JenkinsJobsException("Browser entered is not valid must be one "
