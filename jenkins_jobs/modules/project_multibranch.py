@@ -55,6 +55,8 @@ Plugins required:
       (default '-1, all')
     * **days-to-keep** (`int`): For how many days should a build be kept.
       (default '-1, forever')
+    * **script-path** (`str`): Path to Jenkinsfile, relative to workspace.
+      (default 'Jenkinsfile')
 
 Job examples:
 
@@ -270,7 +272,8 @@ class WorkflowMultiBranch(jenkins_jobs.modules.base.Base):
             'class': self.jenkins_class,
             'reference': '../..'
         })
-        XML.SubElement(factory, 'scriptPath').text = 'Jenkinsfile'
+        XML.SubElement(factory, 'scriptPath').text = data.get(
+            'script-path', 'Jenkinsfile')
 
         return xml_parent
 

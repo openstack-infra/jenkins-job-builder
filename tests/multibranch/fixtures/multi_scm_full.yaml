@@ -7,6 +7,7 @@ periodic-folder-trigger: 1d
 prune-dead-branches: True
 number-to-keep: '10'
 days-to-keep: '10'
+script-path: 'some.Jenkinsfile'
 scm:
     - bitbucket:
         repo-owner: 'SANDBOX'

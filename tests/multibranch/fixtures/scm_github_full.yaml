@@ -1,5 +1,6 @@
 name: scm-github-full
 project-type: multibranch
+script-path: some.Jenkinsfile
 scm:
     - github:
         api-uri: http://example.org/github
