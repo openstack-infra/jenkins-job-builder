@@ -42,6 +42,12 @@
             <jenkins.scm.impl.trait.RegexSCMHeadFilterTrait>
               <regex>master|\d+\.\d+</regex>
             </jenkins.scm.impl.trait.RegexSCMHeadFilterTrait>
+            <com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait>
+              <strategyId>2</strategyId>
+            </com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait>
+            <com.cloudbees.jenkins.plugins.bitbucket.BranchDiscoveryTrait>
+              <strategyId>3</strategyId>
+            </com.cloudbees.jenkins.plugins.bitbucket.BranchDiscoveryTrait>
           </traits>
         </source>
       </jenkins.branch.BranchSource>

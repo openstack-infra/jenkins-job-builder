@@ -9,3 +9,6 @@ scm:
         server-url: https://bitbucket.example.com:8080
         discover-tags: true
         head-filter-regex: 'master|\d+\.\d+'
+        discover-pr-origin: headOnly
+        discover-branch: all
+
