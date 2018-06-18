@@ -298,6 +298,7 @@ def bitbucket_scm(xml_parent, data):
 
     :arg bool discover-tags: Discovers tags on the repository.
         (default false)
+    :arg str server-url: The address of the bitbucket server. (optional)
 
     Minimal Example:
 
@@ -323,6 +324,7 @@ def bitbucket_scm(xml_parent, data):
 
     mapping_optional = [
         ('credentials-id', 'credentialsId', None),
+        ('server-url', 'serverUrl', None),
     ]
     helpers.convert_mapping_to_xml(
         source, data, mapping_optional, fail_required=False)

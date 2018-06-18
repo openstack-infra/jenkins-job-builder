@@ -36,6 +36,7 @@
           <repoOwner>SANDBOX</repoOwner>
           <repository>test</repository>
           <credentialsId>secret</credentialsId>
+          <serverUrl>https://bitbucket.example.com:8080</serverUrl>
           <traits>
             <com.cloudbees.jenkins.plugins.bitbucket.TagDiscoveryTrait/>
           </traits>
