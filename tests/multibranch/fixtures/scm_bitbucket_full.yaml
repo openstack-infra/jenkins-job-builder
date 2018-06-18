@@ -8,3 +8,4 @@ scm:
         repo: 'test'
         server-url: https://bitbucket.example.com:8080
         discover-tags: true
+        head-filter-regex: 'master|\d+\.\d+'

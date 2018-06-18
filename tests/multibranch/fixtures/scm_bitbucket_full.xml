@@ -39,6 +39,9 @@
           <serverUrl>https://bitbucket.example.com:8080</serverUrl>
           <traits>
             <com.cloudbees.jenkins.plugins.bitbucket.TagDiscoveryTrait/>
+            <jenkins.scm.impl.trait.RegexSCMHeadFilterTrait>
+              <regex>master|\d+\.\d+</regex>
+            </jenkins.scm.impl.trait.RegexSCMHeadFilterTrait>
           </traits>
         </source>
       </jenkins.branch.BranchSource>
