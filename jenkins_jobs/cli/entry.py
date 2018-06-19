@@ -17,7 +17,6 @@ import io
 import os
 import logging
 import platform
-import sys
 
 from stevedore import extension
 import yaml
@@ -26,9 +25,6 @@ from jenkins_jobs.cli.parser import create_parser
 from jenkins_jobs.config import JJBConfig
 from jenkins_jobs import utils
 from jenkins_jobs import version
-
-if sys.version_info[0] != 2:
-    from importlib import reload
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
@@ -147,14 +143,15 @@ def main():
 
     # utf-8 workaround for avoiding unicode errors in stdout/stderr
     # see https://stackoverflow.com/a/2001767/99834
-    import codecs
     import sys
 
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
-    sys.stdout = codecs.getwriter('utf8')(sys.stdout)
-    sys.stderr = codecs.getwriter('utf8')(sys.stderr)
-    # end of workaround
+    if sys.version_info[0] == 2:
+        import codecs
+        reload(sys)  # noqa
+        sys.setdefaultencoding('utf-8')
+        sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+        sys.stderr = codecs.getwriter('utf8')(sys.stderr)
+        # end of workaround
 
     argv = sys.argv[1:]
     jjb = JenkinsJobs(argv)
