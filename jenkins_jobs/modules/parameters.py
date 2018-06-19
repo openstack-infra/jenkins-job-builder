@@ -668,8 +668,8 @@ def dynamic_string_scriptler_param(registry, xml_parent, data):
 
 def dynamic_param_common(registry, xml_parent, data, ptype):
     pdef = base_param(registry, xml_parent, data, False,
-                      'com.seitenbau.jenkins.plugins.dynamicparameter.'
-                      + ptype)
+                      'com.seitenbau.jenkins.plugins.dynamicparameter.' +
+                      ptype)
     XML.SubElement(pdef, '__remote').text = str(
         data.get('remote', False)).lower()
     XML.SubElement(pdef, '__script').text = data.get('script', None)

@@ -417,7 +417,7 @@ class YamlInclude(BaseYAMLObject):
         try:
             with io.open(filename, 'r', encoding='utf-8') as f:
                 return f.read()
-        except:
+        except Exception:
             logger.error("Failed to include file using search path: '{0}'"
                          .format(':'.join(loader.search_path)))
             raise

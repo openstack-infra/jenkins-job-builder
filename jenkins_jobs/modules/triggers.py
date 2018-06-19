@@ -153,9 +153,9 @@ def build_gerrit_triggers(xml_parent, data):
                     "format instead.", event)
 
             if not tag_name:
-                known = ', '.join(available_simple_triggers.keys()
-                                  + ['comment-added-event',
-                                     'comment-added-contains-event'])
+                known = ', '.join(available_simple_triggers.keys() +
+                                  ['comment-added-event',
+                                   'comment-added-contains-event'])
                 msg = ("The event '%s' under 'trigger-on' is not one of the "
                        "known: %s.") % (event, known)
                 raise JenkinsJobsException(msg)
@@ -880,8 +880,8 @@ def jms_messaging(registry, xml_parent, data):
     if len(checks) > 0:
         msgchecks = XML.SubElement(jmsm, 'checks')
         for check in checks:
-            msgcheck = XML.SubElement(msgchecks, namespace
-                                      + 'messaging.checks.MsgCheck')
+            msgcheck = XML.SubElement(msgchecks, namespace +
+                                      'messaging.checks.MsgCheck')
             mapping = [
                 ('field', 'field', ''),
                 ('expected-value', 'expectedValue', '')]

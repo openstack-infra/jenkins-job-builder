@@ -99,8 +99,8 @@ class YamlParser(object):
             if not hasattr(path, 'read') and os.path.isdir(path):
                 files_to_process.extend([os.path.join(path, f)
                                          for f in sorted(os.listdir(path))
-                                         if (f.endswith('.yml')
-                                             or f.endswith('.yaml'))])
+                                         if (f.endswith('.yml') or
+                                             f.endswith('.yaml'))])
             else:
                 files_to_process.append(path)
 

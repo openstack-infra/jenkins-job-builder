@@ -21,6 +21,7 @@ http://docs.openstack.org/infra/zuul/launchers.html#zuul-parameters
 """
 
 import itertools
+import jenkins_jobs.modules.base
 
 
 def zuul():
@@ -55,7 +56,6 @@ def zuul_post():
         - zuul-post
     """
 
-import jenkins_jobs.modules.base
 
 ZUUL_PARAMETERS = [
     {'string':
