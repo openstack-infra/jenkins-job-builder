@@ -1,0 +1,11 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v1.2.1-1
+    hooks:
+    -   id: check-added-large-files
+    -   id: end-of-file-fixer
+    -   id: flake8
+        args: ['--config=setup.cfg']
+    -   id: trailing-whitespace

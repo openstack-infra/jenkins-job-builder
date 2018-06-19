@@ -246,7 +246,8 @@ class SingleJobTestCase(BaseScenariosTestCase):
     def test_yaml_snippet(self):
         config = self._get_config()
 
-        expected_xml = self._read_utf8_content().strip()
+        expected_xml = self._read_utf8_content().strip() \
+            .replace('<BLANKLINE>', '').replace('\n\n', '\n')
 
         parser = YamlParser(config)
         parser.parse(self.in_filename)
@@ -290,14 +291,14 @@ class SingleJobTestCase(BaseScenariosTestCase):
 
         # Prettify generated XML
         pretty_xml = u"\n".join(job.output().decode('utf-8')
-                                for job in xml_jobs).strip()
+                                for job in xml_jobs) \
+            .strip().replace('\n\n', '\n')
 
         self.assertThat(
             pretty_xml,
             testtools.matchers.DocTestMatches(expected_xml,
-                                              doctest.ELLIPSIS |
-                                              doctest.REPORT_NDIFF)
-        )
+                                            doctest.ELLIPSIS |
+                                            doctest.REPORT_NDIFF))
 
 
 class JsonTestCase(BaseScenariosTestCase):
