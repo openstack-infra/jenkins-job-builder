@@ -22,6 +22,7 @@ import logging
 import os
 from pprint import pformat
 import re
+from six.moves.urllib.parse import quote
 import time
 import xml.etree.ElementTree as XML
 
@@ -116,7 +117,8 @@ class JenkinsManager(object):
         # returns job name or url based on config option
         if self._jjb_config.builder['print_job_urls']:
             return self._jjb_config.jenkins['url'] + \
-                '/job/' + '/job/'.join(job_name.split('/')) + '/'
+                '/job/' + quote(
+                    '/job/'.join(job_name.split('/')).encode('utf8')) + '/'
         else:
             return job_name
 
