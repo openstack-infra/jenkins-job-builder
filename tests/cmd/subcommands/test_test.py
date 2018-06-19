@@ -251,7 +251,7 @@ class TestJenkinsGetPluginInfoError(CmdTestsBase):
                 self.execute_jenkins_jobs_with_args(args)
             except jenkins.JenkinsException:
                 self.fail("jenkins.JenkinsException propagated to main")
-            except:
+            except Exception:
                 pass  # only care about jenkins.JenkinsException for now
 
     @mock.patch('jenkins.Jenkins.get_plugins')

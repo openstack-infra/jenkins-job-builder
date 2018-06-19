@@ -656,8 +656,8 @@ def clone_workspace(registry, xml_parent, data):
 
     if 'criteria' in data and criteria not in criteria_list:
         raise JenkinsJobsException(
-            'clone-workspace criteria must be one of: '
-            + ', '.join(criteria_list))
+            'clone-workspace criteria must be one of: ' +
+            ', '.join(criteria_list))
     else:
         XML.SubElement(cloneworkspace, 'criteria').text = criteria
 
@@ -667,8 +667,8 @@ def clone_workspace(registry, xml_parent, data):
 
     if 'archive-method' in data and archive_method not in archive_list:
         raise JenkinsJobsException(
-            'clone-workspace archive-method must be one of: '
-            + ', '.join(archive_list))
+            'clone-workspace archive-method must be one of: ' +
+            ', '.join(archive_list))
     else:
         XML.SubElement(cloneworkspace, 'archiveMethod').text = archive_method
 
@@ -2083,8 +2083,8 @@ def claim_build(registry, xml_parent, data):
 
 def base_email_ext(registry, xml_parent, data, ttype):
     trigger = XML.SubElement(xml_parent,
-                             'hudson.plugins.emailext.plugins.trigger.'
-                             + ttype)
+                             'hudson.plugins.emailext.plugins.trigger.' +
+                             ttype)
     email = XML.SubElement(trigger, 'email')
     XML.SubElement(email, 'recipientList').text = ''
     XML.SubElement(email, 'subject').text = '$PROJECT_DEFAULT_SUBJECT'
@@ -4033,8 +4033,8 @@ def postbuildscript(registry, xml_parent, data):
                 for shell_script in script_data:
                     script_xml = XML.SubElement(
                         scripts_xml,
-                        'org.jenkinsci.plugins.postbuildscript.'
-                        + script_types[step])
+                        'org.jenkinsci.plugins.postbuildscript.' +
+                        script_types[step])
                     file_path_xml = XML.SubElement(script_xml, 'filePath')
                     file_path_xml.text = shell_script
 

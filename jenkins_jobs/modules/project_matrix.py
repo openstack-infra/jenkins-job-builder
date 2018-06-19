@@ -136,8 +136,8 @@ class Matrix(jenkins_jobs.modules.base.Base):
         root = XML.Element('matrix-project')
 
         # Default to 'execution-strategy'
-        strategies = ([s for s in data.keys() if s.endswith('-strategy')]
-                      or ['execution-strategy'])
+        strategies = ([s for s in data.keys() if s.endswith('-strategy')] or
+                      ['execution-strategy'])
 
         # Job can not have multiple strategies
         if len(strategies) > 1:
