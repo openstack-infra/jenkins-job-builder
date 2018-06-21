@@ -507,7 +507,7 @@ def priority_sorter(registry, xml_parent, data):
         /../../tests/properties/fixtures/priority_sorter002.yaml
        :language: yaml
     """
-    plugin_info = registry.get_plugin_info('Priority Sorter Plugin')
+    plugin_info = registry.get_plugin_info('PrioritySorter')
     version = pkg_resources.parse_version(plugin_info.get('version', '0'))
 
     if version >= pkg_resources.parse_version("2.0"):
