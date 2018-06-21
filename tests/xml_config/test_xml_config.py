@@ -40,7 +40,7 @@ class TestXmlJobGeneratorExceptions(base.BaseTestCase):
         xml_generator = xml_config.XmlJobGenerator(reg)
         e = self.assertRaises(errors.JenkinsJobsException,
                               xml_generator.generateXML, job_data)
-        self.assertIn("Unrecognized project type:", str(e))
+        self.assertIn("Unrecognized project-type:", str(e))
 
     def test_invalid_view(self):
         self.conf_filename = None
@@ -56,7 +56,7 @@ class TestXmlJobGeneratorExceptions(base.BaseTestCase):
         xml_generator = xml_config.XmlViewGenerator(reg)
         e = self.assertRaises(errors.JenkinsJobsException,
                               xml_generator.generateXML, view_data)
-        self.assertIn("Unrecognized view type:", str(e))
+        self.assertIn("Unrecognized view-type:", str(e))
 
     def test_incorrect_template_params(self):
         self.conf_filename = None

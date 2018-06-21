@@ -63,74 +63,63 @@ class XmlJob(object):
         return out.toprettyxml(indent='  ', encoding='utf-8')
 
 
-class XmlJobGenerator(object):
+class XmlGenerator(object):
+    """A super-class to capture common XML generation logic.
+
+    Sub-classes should define three attribute: ``entry_point_group``,
+    ``kind_attribute`` and ``kind_default``.  The value of ``kind_attribute``
+    in the given data dictionary (or ``kind_default`` if it isn't present)
+    will be used to filter the entry points in ``entry_point_group``; the
+    module so found will be used to generate the XML object.
+    """
+
+    def __init__(self, registry):
+        self.registry = registry
+
+    def generateXML(self, data_list):
+        xml_objs = []
+        for data in data_list:
+            xml_objs.append(self._getXMLForData(data))
+        return xml_objs
+
+    def _getXMLForData(self, data):
+        kind = data.get(self.kind_attribute, self.kind_default)
+
+        for ep in pkg_resources.iter_entry_points(
+                group=self.entry_point_group, name=kind):
+            Mod = ep.load()
+            mod = Mod(self.registry)
+            xml = mod.root_xml(data)
+            self._gen_xml(xml, data)
+            obj = XmlJob(xml, data['name'])
+            return obj
+
+        names = [
+            ep.name for ep in pkg_resources.iter_entry_points(
+                group=self.entry_point_group)]
+        raise errors.JenkinsJobsException(
+            'Unrecognized {}: {} (supported types are: {})'.format(
+                self.kind_attribute, kind, ', '.join(names)))
+
+    def _gen_xml(self, xml, data):
+        for module in self.registry.modules:
+            if hasattr(module, 'gen_xml'):
+                module.gen_xml(xml, data)
+
+
+class XmlJobGenerator(XmlGenerator):
     """ This class is responsible for generating Jenkins Configuration XML from
     a compatible intermediate representation of Jenkins Jobs.
     """
-
-    def __init__(self, registry):
-        self.registry = registry
-
-    def generateXML(self, jobdict_list):
-        xml_jobs = []
-        for job in jobdict_list:
-            xml_jobs.append(self._getXMLForJob(job))
-        return xml_jobs
-
-    def _getXMLForJob(self, data):
-        kind = data.get('project-type', 'freestyle')
-
-        for ep in pkg_resources.iter_entry_points(
-                group='jenkins_jobs.projects', name=kind):
-            Mod = ep.load()
-            mod = Mod(self.registry)
-            xml = mod.root_xml(data)
-            self._gen_xml(xml, data)
-            job = XmlJob(xml, data['name'])
-            return job
-
-        raise errors.JenkinsJobsException("Unrecognized project type: '%s'"
-                                          % kind)
-
-    def _gen_xml(self, xml, data):
-        for module in self.registry.modules:
-            if hasattr(module, 'gen_xml'):
-                module.gen_xml(xml, data)
+    entry_point_group = 'jenkins_jobs.projects'
+    kind_attribute = 'project-type'
+    kind_default = 'freestyle'
 
 
-class XmlViewGenerator(object):
+class XmlViewGenerator(XmlGenerator):
     """ This class is responsible for generating Jenkins Configuration XML from
     a compatible intermediate representation of Jenkins Views.
     """
-
-    def __init__(self, registry):
-        self.registry = registry
-
-    def generateXML(self, viewdict_list):
-        xml_views = []
-        for view in viewdict_list:
-            xml_views.append(self._getXMLForView(view))
-        return xml_views
-
-    def _getXMLForView(self, data):
-        kind = data.get('view-type', 'list')
-
-        for ep in pkg_resources.iter_entry_points(
-                group='jenkins_jobs.views', name=kind):
-            Mod = ep.load()
-            mod = Mod(self.registry)
-            xml = mod.root_xml(data)
-            self._gen_xml(xml, data)
-            view = XmlJob(xml, data['name'])
-            return view
-        names = [
-            ep.name for ep in pkg_resources.iter_entry_points(
-                group='jenkins_jobs.views')]
-        raise errors.JenkinsJobsException(
-            'Unrecognized view type: {} (supported types are: {})'.format(
-                kind, ', '.join(names)))
-
-    def _gen_xml(self, xml, data):
-        for module in self.registry.modules:
-            if hasattr(module, 'gen_xml'):
-                module.gen_xml(xml, data)
+    entry_point_group = 'jenkins_jobs.views'
+    kind_attribute = 'view-type'
+    kind_default = 'list'
