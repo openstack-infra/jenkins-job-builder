@@ -5,4 +5,5 @@ scm:
         credentials-id: 'secret'
         repo-owner: 'SANDBOX'
         repo: 'test'
+        server-url: https://bitbucket.example.com:8080
         discover-tags: true
