@@ -1,0 +1,6 @@
+parameters:
+  - label:
+      name: EXAMPLE LABEL 1
+      description: "EXAMPLE LABEL DESCRIPTION 1"
+      matching-label: "success"
+      node-eligibility: "all"
