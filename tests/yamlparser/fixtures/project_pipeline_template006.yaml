@@ -1,0 +1,18 @@
+- job-template:
+    name: '{name}-unit-tests'
+    project-type: pipeline
+    dsl: |
+      stage('Build another job') {{
+        build(job: "{isay}")
+      }}
+
+- job-group:
+    name: '{name}-tests'
+    jobs:
+      - '{name}-unit-tests':
+          isay: 'hello'
+
+- project:
+    name: project-name
+    jobs:
+    - '{name}-tests'
