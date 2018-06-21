@@ -2063,6 +2063,9 @@ def config_file_provider(registry, xml_parent, data):
               (default '')
             * **variable** (`str`) -- Define an environment variable to be
               used (default '')
+            * **replace-tokens** (`bool`) -- Replace tokens in config file. For
+              example "password: ${PYPI_JENKINS_PASS}" will be replaced with
+              the global variable configured in Jenkins.
 
     Example:
 

@@ -7,11 +7,13 @@
           <fileId>org.jenkinsci.plugins.configfiles.custom.CustomConfig1234</fileId>
           <targetLocation/>
           <variable/>
+          <replaceTokens>false</replaceTokens>
         </org.jenkinsci.plugins.configfiles.buildwrapper.ManagedFile>
         <org.jenkinsci.plugins.configfiles.buildwrapper.ManagedFile>
           <fileId>org.jenkinsci.plugins.configfiles.custom.CustomConfig5678</fileId>
           <targetLocation>/foo.txt</targetLocation>
           <variable>varName</variable>
+          <replaceTokens>true</replaceTokens>
         </org.jenkinsci.plugins.configfiles.buildwrapper.ManagedFile>
       </managedFiles>
     </org.jenkinsci.plugins.configfiles.buildwrapper.ConfigFileBuildWrapper>
