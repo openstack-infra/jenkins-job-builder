@@ -1,6 +1,8 @@
 hipchat:
   enabled: true
-  room: My Room
+  rooms:
+      - My Room
+      - Your Room
   notify-start: true
   notify-success: true
   notify-aborted: true
