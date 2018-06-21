@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <scm class="hudson.plugins.accurev.AccurevSCM">
+    <depot>Test depot</depot>
+    <stream>Test stream</stream>
+    <serverName>Test server name</serverName>
+    <ignoreStreamParent>true</ignoreStreamParent>
+    <cleanreftree>true</cleanreftree>
+    <useSnapshot>true</useSnapshot>
+    <dontPopContent>true</dontPopContent>
+    <workspace>Test workspace</workspace>
+    <reftree>Test reference tree</reftree>
+    <directoryOffset>Test directory offset</directoryOffset>
+    <subPath>Test sub path</subPath>
+    <filterForPollSCM>Test filter</filterForPollSCM>
+    <snapshotNameFormat>Test snapshot name format</snapshotNameFormat>
+  </scm>
+</project>

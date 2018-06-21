@@ -1375,6 +1375,65 @@ def dimensions(registry, xml_parent, data):
     convert_mapping_to_xml(scm, data, optional_mapping, fail_required=False)
 
 
+def accurev(registry, xml_parent, data):
+    """yaml: accurev
+    Specifies the AccuRev SCM repository for this job.
+    Requires the Jenkins :jenkins-wiki:`AccuRev Plugin <AccuRev+Plugin>`.
+
+    :arg str depot: Depot you want to use for the current job (optional)
+    :arg str stream: Stream where the build will be generated from (optional)
+    :arg str server-name: AccuRev server you are using
+        for your builds (required)
+    :arg bool ignore-parent-changes: Ignore possibility
+        of changes in the parent stream (default false)
+    :arg bool clean-reference-tree: Deletes any external files
+        in reference tree (default false)
+    :arg bool build-from-snapshot: Creates snapshot
+        of the target stream, then populates and
+        builds from that snapshot (default false)
+    :arg bool do-not-pop-content: If checkbox is on, elements
+        are not populating vice versa (default false)
+    :arg str workspace: Name of existing workspace (optional)
+    :arg str reference-tree: Name of the reference tree (optional)
+    :arg str directory-offset: Relative directory path from
+        the default Jenkins workspace location
+        where the files from the stream, workspace,
+        or reference tree should be retrieved from. (optional)
+    :arg str sub-path: Makes a "best effort" to ensure
+        that only the sub-path is populated (optional)
+    :arg str filter-poll-scm: Specify directories or
+        files you want Jenkins to check before starting a build (optional)
+    :arg str snapshot-name-format: Naming conventions
+        for the snapshot in this field (optional)
+
+    Example:
+
+    .. literalinclude:: /../../tests/scm/fixtures/accurev001.yaml
+    """
+    scm = XML.SubElement(xml_parent,
+                         'scm', {'class': 'hudson.plugins.accurev.AccurevSCM'})
+    mapping = [
+        ('depot', 'depot', None),
+        ('stream', 'stream', None),
+        ('server-name', 'serverName', None),
+        ('ignore-parent-changes', 'ignoreStreamParent', False),
+        ('clean-reference-tree', 'cleanreftree', False),
+        ('build-from-snapshot', 'useSnapshot', False),
+        ('do-not-pop-content', 'dontPopContent', False),
+    ]
+    convert_mapping_to_xml(scm, data, mapping, fail_required=True)
+
+    additional_mapping = [
+        ('workspace', 'workspace', None),
+        ('reference-tree', 'reftree', None),
+        ('directory-offset', 'directoryOffset', None),
+        ('sub-path', 'subPath', None),
+        ('filter-poll-scm', 'filterForPollSCM', None),
+        ('snapshot-name-format', 'snapshotNameFormat', None),
+    ]
+    convert_mapping_to_xml(scm, data, additional_mapping, fail_required=False)
+
+
 class SCM(jenkins_jobs.modules.base.Base):
     sequence = 30
 
