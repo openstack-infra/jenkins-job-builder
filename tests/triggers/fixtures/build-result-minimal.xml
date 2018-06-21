@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.buildresulttrigger.BuildResultTrigger plugin="buildresult-trigger">
+      <spec/>
+      <combinedJobs>false</combinedJobs>
+      <jobsInfo>
+        <org.jenkinsci.plugins.buildresulttrigger.model.BuildResultTriggerInfo>
+          <jobNames>t,e,s,t</jobNames>
+          <checkedResults>
+            <org.jenkinsci.plugins.buildresulttrigger.model.CheckedResult>
+              <checked>ABORTED</checked>
+            </org.jenkinsci.plugins.buildresulttrigger.model.CheckedResult>
+          </checkedResults>
+        </org.jenkinsci.plugins.buildresulttrigger.model.BuildResultTriggerInfo>
+      </jobsInfo>
+    </org.jenkinsci.plugins.buildresulttrigger.BuildResultTrigger>
+  </triggers>
+</project>

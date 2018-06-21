@@ -1406,26 +1406,21 @@ def build_result(registry, xml_parent, data):
     :arg str cron: The cron syntax with which to poll the jobs for the
         supplied result (default '')
 
-    Example::
+    Full Example:
 
-      triggers:
-        - build-result:
-            combine: true
-            cron: '* * * * *'
-            groups:
-              - jobs:
-                  - foo
-                  - example
-                results:
-                  - unstable
-              - jobs:
-                  - foo2
-                results:
-                  - not-built
-                  - aborted
+    .. literalinclude::
+       /../../tests/triggers/fixtures/build-result-full.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+       /../../tests/triggers/fixtures/build-result-minimal.yaml
+       :language: yaml
     """
     brt = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.'
                          'buildresulttrigger.BuildResultTrigger')
+    brt.set('plugin', 'buildresult-trigger')
     mapping = [
         ('cron', 'spec', ''),
         ('combine', 'combinedJobs', False),
