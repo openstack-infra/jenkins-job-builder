@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <com.dabsquared.gitlabjenkins.publisher.GitLabMessagePublisher plugin="gitlab-plugin">
+      <onlyForFailure>true</onlyForFailure>
+      <replaceSuccessNote>true</replaceSuccessNote>
+      <replaceFailureNote>true</replaceFailureNote>
+      <replaceAbortNote>true</replaceAbortNote>
+      <replaceUnstableNote>true</replaceUnstableNote>
+      <successNoteText>SUCCESS</successNoteText>
+      <failureNoteText>Build was failed. See log on Jenkins</failureNoteText>
+      <abortNoteText>Build was aborted</abortNoteText>
+      <unstableNoteText>The build is unstable</unstableNoteText>
+    </com.dabsquared.gitlabjenkins.publisher.GitLabMessagePublisher>
+  </publishers>
+</project>

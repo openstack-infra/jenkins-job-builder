@@ -1,0 +1,11 @@
+publishers:
+  - gitlab-message:
+      failure-only: true
+      success-note: true
+      success-note-text: "SUCCESS"
+      failure-note: true
+      failure-note-text: "Build was failed. See log on Jenkins"
+      abort-note: true
+      abort-note-text: "Build was aborted"
+      unstable-note: true
+      unstable-note-text: "The build is unstable"
