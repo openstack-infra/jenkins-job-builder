@@ -7793,6 +7793,76 @@ def tasks(registry, xml_parent, data):
         thrsh_xml, thrsh_data, thrsh_mappings, fail_required=True)
 
 
+def packer(registry, xml_parent, data):
+    """yaml: packer
+    This plugin allows for a job to publish an image generated Packer
+    Requires the Jenkins :jenkins-wiki:`Packer Plugin <Packer+Plugin>`.
+
+    :arg str name: Name of the packer installation (required)
+    :arg str json-template: Path to a Packer JSON template file (default '')
+    :arg str json-template-text: Text of Packer JSON template (default '')
+    :arg str add-params: Specify which additional parameters
+        to pass to packer (default '')
+    :arg bool use-debug: adds -debug argument when packer executes
+        (default false)
+    :arg str change-dir: If set, the current directory will be changed
+        to this before starting packer (default '')
+    :arg str template-mode: Packer template option used (default global)
+
+        :template-mode values:
+            * **global**
+            * **file**
+            * **text**
+    :arg list file-entries: File entries for the packer
+        configuration (default [])
+    :arg str variable-name: Variable name for a file to used in the
+        configuration JSON (default '')
+    :arg str contents: File contents of the configuration JSON (default '')
+
+    Minimal Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/packer-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        /../../tests/publishers/fixtures/packer-full.yaml
+        :language: yaml
+    """
+
+    root = XML.SubElement(xml_parent,
+        'biz.neustar.jenkins.plugins.packer.PackerPublisher')
+
+    template_valid_types = ['global', 'file', 'text']
+    mapping = [
+        ('name', 'name', None),
+        ('json-template', 'jsonTemplate', ''),
+        ('json-template-text', 'jsonTemplateText', ''),
+        ('add-params', 'params', ''),
+        ('use-debug', 'useDebug', False),
+        ('change-dir', 'changeDir', ''),
+        ('template-mode', 'templateMode', 'global', template_valid_types),
+    ]
+    helpers.convert_mapping_to_xml(root, data, mapping, fail_required=True)
+
+    format_dict = {
+        'packer-file-entry':
+            'biz.neustar.jenkins.plugins.packer.PackerFileEntry'
+    }
+    if 'file-entries' in data:
+        file_entries_tag = XML.SubElement(root, 'fileEntries')
+        for file_entries in data['file-entries']:
+            for file, params in file_entries.items():
+                packer_file_entry_tag = XML.SubElement(file_entries_tag,
+                                       format_dict.get('packer-file-entry'))
+                XML.SubElement(packer_file_entry_tag,
+                       'varFileName').text = params.get('variable-name', '')
+                XML.SubElement(packer_file_entry_tag,
+                       'contents').text = params.get('contents', '')
+
+
 class Publishers(jenkins_jobs.modules.base.Base):
     sequence = 70
 

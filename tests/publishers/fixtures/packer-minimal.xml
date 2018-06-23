@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <biz.neustar.jenkins.plugins.packer.PackerPublisher>
+      <name>test name</name>
+      <jsonTemplate/>
+      <jsonTemplateText/>
+      <params/>
+      <useDebug>false</useDebug>
+      <changeDir/>
+      <templateMode>global</templateMode>
+    </biz.neustar.jenkins.plugins.packer.PackerPublisher>
+  </publishers>
+</project>

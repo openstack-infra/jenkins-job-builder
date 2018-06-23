@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <biz.neustar.jenkins.plugins.packer.PackerPublisher>
+      <name>test name</name>
+      <jsonTemplate>test template</jsonTemplate>
+      <jsonTemplateText>test template text</jsonTemplateText>
+      <params>additional params</params>
+      <useDebug>true</useDebug>
+      <changeDir>change to directory</changeDir>
+      <templateMode>global</templateMode>
+      <fileEntries>
+        <biz.neustar.jenkins.plugins.packer.PackerFileEntry>
+          <varFileName>test var</varFileName>
+          <contents>test content</contents>
+        </biz.neustar.jenkins.plugins.packer.PackerFileEntry>
+        <biz.neustar.jenkins.plugins.packer.PackerFileEntry>
+          <varFileName>test var 2</varFileName>
+          <contents>test content 2</contents>
+        </biz.neustar.jenkins.plugins.packer.PackerFileEntry>
+      </fileEntries>
+    </biz.neustar.jenkins.plugins.packer.PackerPublisher>
+  </publishers>
+</project>
