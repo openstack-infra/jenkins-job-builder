@@ -1,0 +1,17 @@
+wrappers:
+  - vault-secrets:
+      vault-url: 'http://127.0.0.1:8200'
+      credentials-id: 'myCredentials'
+      secrets:
+        - secret-path: 'secret/my-secret'
+          secret-values:
+            - env-var: 'USERNAME'
+              vault-key: 'username'
+            - env-var: 'PASSWORD'
+              vault-key: 'password'
+        - secret-path: 'secret/my-secret2'
+          secret-values:
+            - env-var: 'USERNAME2'
+              vault-key: 'username2'
+            - env-var: 'PASSWORD2'
+              vault-key: 'password2'
