@@ -2,7 +2,7 @@
 # of appearance. Changing the order has an impact on the overall integration
 # process, which may cause wedges in the gate later.
 six>=1.9.0 # MIT
-PyYAML>=3.10.0 # MIT
+PyYAML>=3.10.0,<4 # MIT
 pbr>=1.8 # Apache-2.0
 stevedore>=1.17.1 # Apache-2.0
 python-jenkins>=0.4.15
