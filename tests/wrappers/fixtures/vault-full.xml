@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <com.datapipe.jenkins.vault.VaultBuildWrapper plugin="hashicorp-vault-plugin">
+      <configuration>
+        <vaultUrl>http://127.0.0.1:8200</vaultUrl>
+        <vaultCredentialId>myCredentials</vaultCredentialId>
+      </configuration>
+      <vaultSecrets>
+        <com.datapipe.jenkins.vault.model.VaultSecret>
+          <path>secret/my-secret</path>
+          <secretValues>
+            <com.datapipe.jenkins.vault.model.VaultSecretValue>
+              <envVar>USERNAME</envVar>
+              <vaultKey>username</vaultKey>
+            </com.datapipe.jenkins.vault.model.VaultSecretValue>
+            <com.datapipe.jenkins.vault.model.VaultSecretValue>
+              <envVar>PASSWORD</envVar>
+              <vaultKey>password</vaultKey>
+            </com.datapipe.jenkins.vault.model.VaultSecretValue>
+          </secretValues>
+        </com.datapipe.jenkins.vault.model.VaultSecret>
+        <com.datapipe.jenkins.vault.model.VaultSecret>
+          <path>secret/my-secret2</path>
+          <secretValues>
+            <com.datapipe.jenkins.vault.model.VaultSecretValue>
+              <envVar>USERNAME2</envVar>
+              <vaultKey>username2</vaultKey>
+            </com.datapipe.jenkins.vault.model.VaultSecretValue>
+            <com.datapipe.jenkins.vault.model.VaultSecretValue>
+              <envVar>PASSWORD2</envVar>
+              <vaultKey>password2</vaultKey>
+            </com.datapipe.jenkins.vault.model.VaultSecretValue>
+          </secretValues>
+        </com.datapipe.jenkins.vault.model.VaultSecret>
+      </vaultSecrets>
+      <valuesToMask/>
+      <vaultAccessor/>
+    </com.datapipe.jenkins.vault.VaultBuildWrapper>
+  </buildWrappers>
+</project>
