@@ -20,7 +20,7 @@ username=fedora-atomic
   &quot;repo&quot;: &quot;php-simplepie&quot;,
   &quot;status&quot;: &quot;&lt;success/failure/aborted&gt;&quot;,
   &quot;test_guidance&quot;: &quot;&lt;comma-separated-list-of-test-suites-to-run&gt;&quot;}
-}</messageContent>
+</messageContent>
     </com.redhat.jenkins.plugins.ci.CIMessageNotifier>
   </publishers>
 </project>

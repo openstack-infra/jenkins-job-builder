@@ -19,4 +19,3 @@
     num: 1
     jobs:
       - 'test-job-{num}'
-

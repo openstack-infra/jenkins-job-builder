@@ -16,4 +16,3 @@ builders:
         server:
             uri: 'unix:///var/run/docker.sock'
             credentials-id: 'docker-server'
-

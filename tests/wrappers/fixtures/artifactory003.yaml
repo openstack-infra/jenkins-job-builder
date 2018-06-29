@@ -11,4 +11,3 @@ wrappers:
       env-vars-include-patterns:
       - 'PROJECT_*'
       - 'ORG_*'
-

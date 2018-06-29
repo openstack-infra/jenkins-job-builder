@@ -18,6 +18,3 @@
           echo "{{defined_var|-1}}"
           echo "{{undefined_var|+1}}"
           echo "{{undefined_var|-1}}"
-
-
-

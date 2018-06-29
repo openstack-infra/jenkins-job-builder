@@ -7,4 +7,3 @@ publishers:
               - archive:
                   artifacts: '**/**'
                   allow-empty: 'true'
-

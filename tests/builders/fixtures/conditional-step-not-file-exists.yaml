@@ -7,4 +7,3 @@ builders:
               condition-basedir: workspace
           steps:
               - shell: "touch $WORKSPACE/mytestfile"
-

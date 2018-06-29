@@ -42,4 +42,3 @@
     defaults: myproject2
     builders:
         - shell: "echo 'confVersion: {confversion} & fooVersion: {fooversion}'"
-

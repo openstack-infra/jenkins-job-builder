@@ -28,4 +28,3 @@
          echo "Job name: template-test-ids-{num}-{type}"
       - shell: |
          echo "{test_var}"
-

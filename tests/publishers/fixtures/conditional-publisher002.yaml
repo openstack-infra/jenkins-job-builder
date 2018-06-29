@@ -15,4 +15,3 @@ publishers:
           action:
               - aggregate-tests:
                   include-failed-builds: true
-

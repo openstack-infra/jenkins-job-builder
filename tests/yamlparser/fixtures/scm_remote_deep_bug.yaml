@@ -12,4 +12,3 @@
     name: 'scm_remote_deep_bug_jobs'
     jobs:
         - 'scm_remote_deep_bug_tpl'
-

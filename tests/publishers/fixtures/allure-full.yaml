@@ -10,4 +10,3 @@ publishers:
       commandline: allure2
       report-build-policy: UNSTABLE
       include-properties: true
-
