@@ -10,5 +10,5 @@ builders:
             java-opts:
               - "-Xms512m -Xmx1024m"
               - "-XX:PermSize=128m -XX:MaxPermSize=256m"
-            settings: mvn/settings.xml              
+            settings: mvn/settings.xml
             global-settings: mvn/globalsettings.xml

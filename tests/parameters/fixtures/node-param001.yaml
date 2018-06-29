@@ -8,4 +8,3 @@ parameters:
         - slave003
       ignore-offline-nodes: true
       allowed-multiselect: true
-

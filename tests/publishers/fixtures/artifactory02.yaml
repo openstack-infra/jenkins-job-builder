@@ -31,4 +31,3 @@ publishers:
       env-vars-include: true
       env-vars-include-patterns: []
       env-vars-exclude-patterns: []
-

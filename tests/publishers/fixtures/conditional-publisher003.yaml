@@ -8,4 +8,3 @@ publishers:
                   allow-empty: 'true'
               - aggregate-tests:
                   include-failed-builds: true
-

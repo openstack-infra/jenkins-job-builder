@@ -6,4 +6,3 @@ triggers:
         enable-concurrent: true
         label: master
         exit-code: 0
-

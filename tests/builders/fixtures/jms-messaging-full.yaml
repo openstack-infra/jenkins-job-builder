@@ -16,5 +16,5 @@ builders:
           "namespace": "rpms",
           "repo": "php-simplepie",
           "status": "<success/failure/aborted>",
-          "test_guidance": "<comma-separated-list-of-test-suites-to-run>"}
+          "test_guidance": "<comma-separated-list-of-test-suites-to-run>"
         }

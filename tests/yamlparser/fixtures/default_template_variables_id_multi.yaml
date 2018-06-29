@@ -16,5 +16,3 @@
          echo "Variable: {test_var|Hello World}"
          echo "Allow empty Variable: {test_var|}"
          echo "show that we expand for num: {num}"
-
-

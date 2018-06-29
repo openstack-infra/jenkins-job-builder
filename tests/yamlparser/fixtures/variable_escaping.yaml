@@ -12,6 +12,3 @@
           echo "{{defined_var|def}}"
           echo "{{undefined_var|def}}"
           echo "{{undefined_var|defined_var}}"
-
-
-

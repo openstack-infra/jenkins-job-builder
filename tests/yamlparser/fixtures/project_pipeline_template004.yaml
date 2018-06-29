@@ -9,4 +9,3 @@
             clean: true
       script-path: Jenkinsfile.groovy
       lightweight-checkout: true
-

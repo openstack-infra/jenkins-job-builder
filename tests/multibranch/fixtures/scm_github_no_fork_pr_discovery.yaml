@@ -5,4 +5,3 @@ scm:
         repo: 'foo'
         repo-owner: 'johndoe'
         discover-pr-forks-strategy: false
-

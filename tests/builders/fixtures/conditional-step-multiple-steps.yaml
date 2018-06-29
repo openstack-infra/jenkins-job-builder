@@ -4,4 +4,3 @@ builders:
         steps:
             - shell: 'first command'
             - shell: 'second command'
-

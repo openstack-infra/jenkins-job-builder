@@ -2,4 +2,3 @@ properties:
   - branch-api:
       time-period: Day
       number-of-builds: 5
-

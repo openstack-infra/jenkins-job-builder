@@ -6,4 +6,3 @@ publishers:
       remove-prefix: 'base/source/dir'
       excludes: '**/*.excludedfiletype'
       flatten: true
-

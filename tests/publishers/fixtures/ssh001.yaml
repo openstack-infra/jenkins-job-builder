@@ -9,4 +9,3 @@ publishers:
       command: 'rm -r jenkins_$BUILD_NUMBER'
       timeout: 1800000
       flatten: true
-
