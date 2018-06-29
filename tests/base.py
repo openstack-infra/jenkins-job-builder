@@ -246,7 +246,7 @@ class SingleJobTestCase(BaseScenariosTestCase):
     def test_yaml_snippet(self):
         config = self._get_config()
 
-        expected_xml = self._read_utf8_content()
+        expected_xml = self._read_utf8_content().strip()
 
         parser = YamlParser(config)
         parser.parse(self.in_filename)
@@ -290,7 +290,7 @@ class SingleJobTestCase(BaseScenariosTestCase):
 
         # Prettify generated XML
         pretty_xml = u"\n".join(job.output().decode('utf-8')
-                                for job in xml_jobs)
+                                for job in xml_jobs).strip()
 
         self.assertThat(
             pretty_xml,
