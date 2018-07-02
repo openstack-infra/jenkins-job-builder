@@ -26,5 +26,17 @@ columns:
     - desc
     - policy-violations
     - member-graph-view
+    - extra-tests-total
+    - extra-tests-failed
+    - extra-tests-passed
+    - extra-tests-skipped
+    - extra-tests-format-0
+    - extra-tests-format-1
+    - extra-build-parameters
+    - extra-build-description
+    - extra-last-user-name
+    - extra-workspace-link
+    - extra-configure-button
+    - extra-last-output
 recurse: true
 status-filter: false

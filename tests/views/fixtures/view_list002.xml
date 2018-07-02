@@ -16,6 +16,10 @@
     <hudson.views.LastSuccessColumn/>
     <hudson.views.LastFailureColumn/>
     <hudson.views.LastDurationColumn/>
+    <jenkins.plugins.extracolumns.BuildParametersColumn plugin="extra-columns">
+      <singlePara>true</singlePara>
+      <parameterName>MY_PARAMETER</parameterName>
+    </jenkins.plugins.extracolumns.BuildParametersColumn>
   </columns>
   <includeRegex>(?!test.*).*</includeRegex>
   <recurse>false</recurse>

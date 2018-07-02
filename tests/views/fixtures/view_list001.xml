@@ -31,6 +31,36 @@
     <jenkins.branch.DescriptionColumn/>
     <com.sonatype.insight.ci.hudson.QualityColumn plugin="sonatype-clm-ci"/>
     <com.barchart.jenkins.cascade.GraphViewColumn plugin="maven-release-cascade"/>
+    <jenkins.plugins.extracolumns.TestResultColumn plugin="extra-columns">
+      <testResultFormat>2</testResultFormat>
+    </jenkins.plugins.extracolumns.TestResultColumn>
+    <jenkins.plugins.extracolumns.TestResultColumn plugin="extra-columns">
+      <testResultFormat>3</testResultFormat>
+    </jenkins.plugins.extracolumns.TestResultColumn>
+    <jenkins.plugins.extracolumns.TestResultColumn plugin="extra-columns">
+      <testResultFormat>4</testResultFormat>
+    </jenkins.plugins.extracolumns.TestResultColumn>
+    <jenkins.plugins.extracolumns.TestResultColumn plugin="extra-columns">
+      <testResultFormat>5</testResultFormat>
+    </jenkins.plugins.extracolumns.TestResultColumn>
+    <jenkins.plugins.extracolumns.TestResultColumn plugin="extra-columns">
+      <testResultFormat>0</testResultFormat>
+    </jenkins.plugins.extracolumns.TestResultColumn>
+    <jenkins.plugins.extracolumns.TestResultColumn plugin="extra-columns">
+      <testResultFormat>1</testResultFormat>
+    </jenkins.plugins.extracolumns.TestResultColumn>
+    <jenkins.plugins.extracolumns.BuildParametersColumn plugin="extra-columns">
+      <singlePara>false</singlePara>
+      <parameterName/>
+    </jenkins.plugins.extracolumns.BuildParametersColumn>
+    <jenkins.plugins.extracolumns.BuildDescriptionColumn plugin="extra-columns">
+      <columnWidth>3</columnWidth>
+      <forceWidth>false</forceWidth>
+    </jenkins.plugins.extracolumns.BuildDescriptionColumn>
+    <jenkins.plugins.extracolumns.UserNameColumn plugin="extra-columns"/>
+    <jenkins.plugins.extracolumns.WorkspaceColumn plugin="extra-columns"/>
+    <jenkins.plugins.extracolumns.ConfigureProjectColumn plugin="extra-columns"/>
+    <jenkins.plugins.extracolumns.LastBuildConsoleColumn plugin="extra-columns"/>
   </columns>
   <recurse>true</recurse>
   <statusFilter>false</statusFilter>
