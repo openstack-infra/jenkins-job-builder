@@ -29,6 +29,8 @@ Plugins required:
     * :jenkins-wiki:`Workflow Plugin <Workflow+Plugin>`.
     * :jenkins-wiki:`Pipeline Multibranch Defaults Plugin
       <Pipeline+Multibranch+Defaults+Plugin>` (optional)
+    * :jenkins-wiki:`Basic Branch Build Strategies Plugin
+      <Basic+Branch+Build+Strategies+Plugin>` (optional)
 
 :Job Parameters:
 
@@ -278,12 +280,12 @@ class WorkflowMultiBranch(jenkins_jobs.modules.base.Base):
 
 
 class WorkflowMultiBranchDefaults(WorkflowMultiBranch):
-        jenkins_class = (
-            'org.jenkinsci.plugins.pipeline.multibranch'
-            '.defaults.PipelineMultiBranchDefaultsProject')
-        jenkins_factory_class = (
-            'org.jenkinsci.plugins.pipeline.multibranch'
-            '.defaults.PipelineBranchDefaultsProjectFactory')
+    jenkins_class = (
+        'org.jenkinsci.plugins.pipeline.multibranch'
+        '.defaults.PipelineMultiBranchDefaultsProject')
+    jenkins_factory_class = (
+        'org.jenkinsci.plugins.pipeline.multibranch'
+        '.defaults.PipelineBranchDefaultsProjectFactory')
 
 
 def bitbucket_scm(xml_parent, data):
@@ -311,6 +313,11 @@ def bitbucket_scm(xml_parent, data):
         repository is the same as the target repository.
         Valid options: mergeOnly, headOnly, mergeAndHead.
         Value is not specified by default.
+    :arg list build-strategies: Provides control over whether to build a branch
+        (or branch like things such as change requests and tags) whenever it is
+        discovered initially or a change from the previous revision has been
+        detected. (optional)
+        Refer to :func:`~build_strategies <build_strategies>`.
 
     Minimal Example:
 
@@ -380,6 +387,9 @@ def bitbucket_scm(xml_parent, data):
         helpers.convert_mapping_to_xml(
             dbr, data, dbr_mapping, fail_required=True)
 
+    if data.get('build-strategies', None):
+        build_strategies(xml_parent, data)
+
 
 def gerrit_scm(xml_parent, data):
     """Configure Gerrit SCM
@@ -398,6 +408,11 @@ def gerrit_scm(xml_parent, data):
         (default '*')
     :arg str excludes: Comma-separated list of branches to be excluded.
         (default '')
+    :arg list build-strategies: Provides control over whether to build a branch
+        (or branch like things such as change requests and tags) whenever it is
+        discovered initially or a change from the previous revision has been
+        detected. (optional)
+        Refer to :func:`~build_strategies <build_strategies>`.
 
     Minimal Example:
 
@@ -455,6 +470,9 @@ def gerrit_scm(xml_parent, data):
             '.RefSpecsSCMSourceTrait_-RefSpecTemplate'))
         XML.SubElement(e, 'value').text = x
 
+    if data.get('build-strategies', None):
+        build_strategies(xml_parent, data)
+
 
 def git_scm(xml_parent, data):
     """Configure Git SCM
@@ -471,6 +489,11 @@ def git_scm(xml_parent, data):
         (default false)
     :arg bool ignore-on-push-notifications: If a job should not trigger upon
         push notifications. (default false)
+    :arg list build-strategies: Provides control over whether to build a branch
+        (or branch like things such as change requests and tags) whenever it is
+        discovered initially or a change from the previous revision has been
+        detected. (optional)
+        Refer to :func:`~build_strategies <build_strategies>`.
 
     Minimal Example:
 
@@ -509,6 +532,9 @@ def git_scm(xml_parent, data):
         XML.SubElement(
             traits, ''.join([traits_path, '.IgnoreOnPushNotificationTrait']))
 
+    if data.get('build-strategies', None):
+        build_strategies(xml_parent, data)
+
 
 def github_scm(xml_parent, data):
     """Configure GitHub SCM
@@ -537,6 +563,11 @@ def github_scm(xml_parent, data):
         Valid options: merge-current, current, both.  (default 'merge-current')
     :arg bool discover-tags: Discovers tags on the repository.
         (default false)
+    :arg list build-strategies: Provides control over whether to build a branch
+        (or branch like things such as change requests and tags) whenever it is
+        discovered initially or a change from the previous revision has been
+        detected. (optional)
+        Refer to :func:`~build_strategies <build_strategies>`.
 
     Minimal Example:
 
@@ -654,3 +685,144 @@ def github_scm(xml_parent, data):
     ]
     helpers.convert_mapping_to_xml(
         dpro, data, dpro_mapping, fail_required=True)
+
+    if data.get('build-strategies', None):
+        build_strategies(xml_parent, data)
+
+
+def build_strategies(xml_parent, data):
+    """Configure Basic Branch Build Strategies.
+
+    Requires the :jenkins-wiki:`Basic Branch Build Strategies Plugin
+    <Basic+Branch+Build+Strategies+Plugin>`.
+
+    :arg list build-strategies: Definition of build strategies.
+
+        * **tags** (dict): Builds tags
+            * **ignore-tags-newer-than** (int) The number of days since the tag
+                was created before it is eligible for automatic building.
+                (optional, default -1)
+            * **ignore-tags-older-than** (int) The number of days since the tag
+                was created after which it is no longer eligible for automatic
+                building. (optional, default -1)
+        * **change-request** (dict): Builds change requests / pull requests
+            * **ignore-target-only-changes** (bool) Ignore rebuilding merge
+                branches when only the target branch changed.
+                (optional, default false)
+        * **regular-branches** (bool): Builds regular branches whenever a
+            change is detected. (optional, default None)
+        * **named-branches** (list): Builds named branches whenever a change
+          is detected.
+
+            * **exact-name** (dict) Matches the name verbatim.
+                * **name** (str) The name to match. (optional)
+                * **case-sensitive** (bool) Check this box if the name should
+                    be matched case sensitively. (default false)
+            * **regex-name** (dict) Matches the name against a regular
+              expression.
+
+                * **regex** (str) A Java regular expression to restrict the
+                    names. Names that do not match the supplied regular
+                    expression will be ignored. (default `^.*$`)
+                * **case-sensitive** (bool) Check this box if the name should
+                    be matched case sensitively. (default false)
+            * **wildcards-name** (dict) Matches the name against an
+              include/exclude set of wildcards.
+
+                * **includes** (str) Space-separated list of name patterns to
+                    consider. You may use `*` as a wildcard;
+                    for example: `master release*` (default `*`)
+                * **excludes** (str) Name patterns to ignore even if matched
+                    by the includes list. For example: release (optional)
+
+    """
+
+    basic_build_strategies = 'jenkins.branch.buildstrategies.basic'
+    bbs = XML.SubElement(xml_parent, 'buildStrategies')
+    for bbs_list in data.get('build-strategies', None):
+        if 'tags' in bbs_list:
+            tags = bbs_list['tags']
+            tags_elem = XML.SubElement(bbs, ''.join([basic_build_strategies,
+            '.TagBuildStrategyImpl']), {
+                'plugin': 'basic-branch-build-strategies',
+            })
+
+            newer_than = -1
+            if ('ignore-tags-newer-than' in tags and
+                    tags['ignore-tags-newer-than'] >= 0):
+                newer_than = str(tags['ignore-tags-newer-than'] * 86400000)
+            XML.SubElement(tags_elem, 'atMostMillis').text = str(newer_than)
+
+            older_than = -1
+            if ('ignore-tags-older-than' in tags and
+                    tags['ignore-tags-older-than'] >= 0):
+                older_than = str(tags['ignore-tags-older-than'] * 86400000)
+            XML.SubElement(tags_elem, 'atLeastMillis').text = str(older_than)
+
+        if bbs_list.get('regular-branches', False):
+            XML.SubElement(bbs, ''.join([basic_build_strategies,
+            '.BranchBuildStrategyImpl']), {
+                'plugin': 'basic-branch-build-strategies',
+            })
+
+        if 'change-request' in bbs_list:
+            cr = bbs_list['change-request']
+            cr_elem = XML.SubElement(bbs, ''.join([basic_build_strategies,
+            '.ChangeRequestBuildStrategyImpl']), {
+                'plugin': 'basic-branch-build-strategies',
+            })
+            itoc = cr.get('ignore-target-only-changes', False)
+            XML.SubElement(cr_elem, 'ignoreTargetOnlyChanges').text = (
+                str(itoc).lower())
+
+        if 'named-branches' in bbs_list:
+            named_branch_elem = XML.SubElement(bbs, ''.join(
+                [basic_build_strategies, '.NamedBranchBuildStrategyImpl']), {
+                'plugin': 'basic-branch-build-strategies',
+            })
+
+            filters = XML.SubElement(named_branch_elem, 'filters')
+
+            for nb in bbs_list['named-branches']:
+                if 'exact-name' in nb:
+                    exact_name_elem = XML.SubElement(filters, ''.join(
+                        [basic_build_strategies,
+                        '.NamedBranchBuildStrategyImpl',
+                        '_-ExactNameFilter']))
+                    exact_name_mapping = [
+                        ('name', 'name', ''),
+                        ('case-sensitive', 'caseSensitive', False)
+                    ]
+                    helpers.convert_mapping_to_xml(
+                        exact_name_elem,
+                        nb['exact-name'],
+                        exact_name_mapping,
+                        fail_required=False)
+
+                if 'regex-name' in nb:
+                    regex_name_elem = XML.SubElement(filters, ''.join([
+                        basic_build_strategies,
+                        '.NamedBranchBuildStrategyImpl',
+                        '_-RegexNameFilter']))
+                    regex_name_mapping = [
+                        ('regex', 'regex', '^.*$'),
+                        ('case-sensitive', 'caseSensitive', False)
+                    ]
+                    helpers.convert_mapping_to_xml(
+                        regex_name_elem, nb['regex-name'],
+                        regex_name_mapping, fail_required=False)
+
+                if 'wildcards-name' in nb:
+                    wildcards_name_elem = XML.SubElement(filters, ''.join([
+                        basic_build_strategies,
+                        '.NamedBranchBuildStrategyImpl',
+                        '_-WildcardsNameFilter']))
+                    wildcards_name_mapping = [
+                        ('includes', 'includes', '*'),
+                        ('excludes', 'excludes', '')
+                    ]
+                    helpers.convert_mapping_to_xml(
+                        wildcards_name_elem,
+                        nb['wildcards-name'],
+                        wildcards_name_mapping,
+                        fail_required=False)
