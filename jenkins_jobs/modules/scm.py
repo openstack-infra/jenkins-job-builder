@@ -432,7 +432,7 @@ def git(registry, xml_parent, data):
         # The default value of per-build-tag is False if skip-tag is not set,
         # so we set the default value of skip-tag to True.
         per_build_tag_default = False
-        if str(data.get('skip-tag', True)).lower == 'false':
+        if str(data.get('skip-tag', True)).lower() == 'false':
             per_build_tag_default = True
         if str(data.get('per-build-tag',
                         per_build_tag_default)).lower() == 'true':
