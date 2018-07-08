@@ -601,7 +601,7 @@ def convert_mapping_to_xml(parent, data, mapping, fail_required=True):
     If fail_required is False parameter is treated as optional. Logic will skip
     configuring the XML tag for the parameter. We recommend for new plugins to
     set fail_required=True and instead of optional parameters provide a default
-    value for all paramters that are not required instead.
+    value for all parameters that are not required instead.
 
     valid_options provides a way to check if the value the user input is from a
     list of available options. When the user pass a value that is not supported
