@@ -32,7 +32,7 @@
     <data>
       <jenkins.branch.BranchSource>
         <source class="jenkins.plugins.git.GitSCMSource" plugin="git">
-          <id>1-1-1-1-1</id>
+          <id>gt-https://example.com/jonhndoe/keep-frontend.git</id>
           <remote>https://example.com/jonhndoe/keep-frontend.git</remote>
           <credentialsId>secret</credentialsId>
           <traits>

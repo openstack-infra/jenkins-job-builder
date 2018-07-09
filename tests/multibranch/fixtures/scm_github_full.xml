@@ -32,7 +32,7 @@
     <data>
       <jenkins.branch.BranchSource>
         <source class="org.jenkinsci.plugins.github_branch_source.GitHubSCMSource" plugin="github-branch-source">
-          <id>1-1-1-1-1</id>
+          <id>gh-example-owner-example-repo</id>
           <repoOwner>example-owner</repoOwner>
           <repository>example-repo</repository>
           <apiUri>http://example.org/github</apiUri>
