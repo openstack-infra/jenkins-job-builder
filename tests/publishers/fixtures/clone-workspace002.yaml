@@ -1,7 +1,7 @@
 publishers:
   - clone-workspace:
-      criteria: "any"
-      archive-method: "tar"
+      criteria: "Any"
+      archive-method: "TAR"
       override-default-excludes: false
       workspace-glob: "**/*.zip"
       workspace-exclude-glob: "**/*.tgz"
