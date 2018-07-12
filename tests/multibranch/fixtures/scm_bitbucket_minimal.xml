@@ -32,7 +32,7 @@
     <data>
       <jenkins.branch.BranchSource>
         <source class="com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource" plugin="cloudbees-bitbucket-branch-source">
-          <id>1-1-1-1-1</id>
+          <id>bb-SANDBOX-test</id>
           <repoOwner>SANDBOX</repoOwner>
           <repository>test</repository>
           <traits/>

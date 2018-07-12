@@ -37,7 +37,7 @@
     <data>
       <jenkins.branch.BranchSource>
         <source class="com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource" plugin="cloudbees-bitbucket-branch-source">
-          <id>1-1-1-1-1</id>
+          <id>bb-SANDBOX-test</id>
           <repoOwner>SANDBOX</repoOwner>
           <repository>test</repository>
           <credentialsId>secret</credentialsId>
@@ -46,7 +46,7 @@
       </jenkins.branch.BranchSource>
       <jenkins.branch.BranchSource>
         <source class="jenkins.plugins.git.GitSCMSource" plugin="git">
-          <id>1-1-1-1-1</id>
+          <id>gt-https://example.com/jonhndoe/keep-frontend.git</id>
           <remote>https://example.com/jonhndoe/keep-frontend.git</remote>
           <credentialsId>secret</credentialsId>
           <traits>
@@ -56,7 +56,7 @@
       </jenkins.branch.BranchSource>
       <jenkins.branch.BranchSource>
         <source class="org.jenkinsci.plugins.github_branch_source.GitHubSCMSource" plugin="github-branch-source">
-          <id>1-1-1-1-1</id>
+          <id>gh-johndoe-foo</id>
           <repoOwner>johndoe</repoOwner>
           <repository>foo</repository>
           <credentialsId>secret</credentialsId>
