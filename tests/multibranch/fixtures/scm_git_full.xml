@@ -38,6 +38,9 @@
           <traits>
             <jenkins.plugins.git.traits.TagDiscoveryTrait/>
             <jenkins.plugins.git.traits.IgnoreOnPushNotificationTrait/>
+            <jenkins.scm.impl.trait.RegexSCMHeadFilterTrait>
+              <regex>master|\d+\.\d+</regex>
+            </jenkins.scm.impl.trait.RegexSCMHeadFilterTrait>
           </traits>
         </source>
         <buildStrategies>
