@@ -29,6 +29,9 @@ Cloning::
 
     git clone https://git.openstack.org/openstack-infra/jenkins-job-builder
 
+Install pre-commit from https://pre-commit.com/#intro in order to run some
+minimal testing on your commits.
+
 A virtual environment is recommended for development.  For example, Jenkins
 Job Builder may be installed from the top level directory::
 

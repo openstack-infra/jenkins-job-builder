@@ -11,4 +11,3 @@ scm:
         head-filter-regex: 'master|\d+\.\d+'
         discover-pr-origin: headOnly
         discover-branch: all
-
