@@ -27,7 +27,7 @@ Jenkins notification plugin.
 import xml.etree.ElementTree as XML
 
 import jenkins_jobs.modules.base
-from jenkins_jobs.modules.helpers import convert_mapping_to_xml
+import jenkins_jobs.modules.helpers as helpers
 
 
 def http_endpoint(registry, xml_parent, data):
@@ -65,8 +65,10 @@ def http_endpoint(registry, xml_parent, data):
         ('', 'event', event, supported_events),
         ('timeout', 'timeout', 30000),
         ('url', 'url', None),
-        ('log', 'loglines', 0)]
-    convert_mapping_to_xml(endpoint_element, data, mapping, fail_required=True)
+        ('log', 'loglines', 0),
+    ]
+    helpers.convert_mapping_to_xml(
+        endpoint_element, data, mapping, fail_required=True)
 
 
 class Notifications(jenkins_jobs.modules.base.Base):
