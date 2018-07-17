@@ -226,7 +226,6 @@ import jenkins_jobs.modules.base
 
 from jenkins_jobs.modules.helpers import convert_mapping_to_xml
 
-
 COLUMN_DICT = {
     'status': 'hudson.views.StatusColumn',
     'weather': 'hudson.views.WeatherColumn',
@@ -251,6 +250,50 @@ COLUMN_DICT = {
     'member-graph-view':
         'com.barchart.jenkins.cascade.GraphViewColumn '
         'plugin="maven-release-cascade"',
+    'extra-tests-total': [
+        ['jenkins.plugins.extracolumns.TestResultColumn',
+         {'plugin': 'extra-columns'}],
+        '<testResultFormat>2</testResultFormat>'],
+    'extra-tests-failed': [
+        ['jenkins.plugins.extracolumns.TestResultColumn',
+         {'plugin': 'extra-columns'}],
+        '<testResultFormat>3</testResultFormat>'],
+    'extra-tests-passed': [
+        ['jenkins.plugins.extracolumns.TestResultColumn',
+         {'plugin': 'extra-columns'}],
+        '<testResultFormat>4</testResultFormat>'],
+    'extra-tests-skipped': [
+        ['jenkins.plugins.extracolumns.TestResultColumn',
+         {'plugin': 'extra-columns'}],
+        '<testResultFormat>5</testResultFormat>'],
+    'extra-tests-format-0': [
+        ['jenkins.plugins.extracolumns.TestResultColumn',
+         {'plugin': 'extra-columns'}],
+        '<testResultFormat>0</testResultFormat>'],
+    'extra-tests-format-1': [
+        ['jenkins.plugins.extracolumns.TestResultColumn',
+         {'plugin': 'extra-columns'}],
+        '<testResultFormat>1</testResultFormat>'],
+    'extra-build-description': [
+        ['jenkins.plugins.extracolumns.BuildDescriptionColumn',
+         {'plugin': 'extra-columns'}],
+        '<columnWidth>3</columnWidth>', '<forceWidth>false</forceWidth>'],
+    'extra-build-parameters': [
+        ['jenkins.plugins.extracolumns.BuildParametersColumn',
+         {'plugin': 'extra-columns'}],
+        '<singlePara>false</singlePara>', '<parameterName/>'],
+    'extra-last-user-name':
+        'jenkins.plugins.extracolumns.UserNameColumn'
+        ' plugin="extra-columns"',
+    'extra-last-output':
+        'jenkins.plugins.extracolumns.LastBuildConsoleColumn'
+        ' plugin="extra-columns"',
+    'extra-workspace-link':
+        'jenkins.plugins.extracolumns.WorkspaceColumn '
+        'plugin="extra-columns"',
+    'extra-configure-button':
+        'jenkins.plugins.extracolumns.ConfigureProjectColumn'
+        ' plugin="extra-columns"',
 }
 DEFAULT_COLUMNS = ['status', 'weather', 'job', 'last-success', 'last-failure',
                    'last-duration', 'build-button']
@@ -274,8 +317,12 @@ class List(jenkins_jobs.modules.base.Base):
 
         jn_xml = XML.SubElement(root, 'jobNames')
         jobnames = data.get('job-name', None)
-        XML.SubElement(jn_xml, 'comparator', {'class':
-                       'hudson.util.CaseInsensitiveComparator'})
+        XML.SubElement(
+            jn_xml,
+            'comparator', {
+                'class': 'hudson.util.CaseInsensitiveComparator'
+            }
+        )
         if jobnames is not None:
             jobnames = sorted(jobnames)  # Job names must be sorted in the xml
             for jobname in jobnames:
@@ -304,7 +351,7 @@ class List(jenkins_jobs.modules.base.Base):
                 bd_data = jobfilters.get('build-duration')
                 mapping = [
                     ('match-type', 'includeExcludeTypeString',
-                        'includeMatched'),
+                     'includeMatched'),
                     ('build-duration-type', 'buildCountTypeString', 'Latest'),
                     ('amount-type', 'amountTypeString', 'Hours'),
                     ('amount', 'amount', '0'),
@@ -321,7 +368,7 @@ class List(jenkins_jobs.modules.base.Base):
                 bt_data = jobfilters.get('build-trend')
                 mapping = [
                     ('match-type', 'includeExcludeTypeString',
-                        'includeMatched'),
+                     'includeMatched'),
                     ('build-trend-type', 'buildCountTypeString', 'Latest'),
                     ('amount-type', 'amountTypeString', 'Hours'),
                     ('amount', 'amount', '0'),
@@ -337,7 +384,7 @@ class List(jenkins_jobs.modules.base.Base):
                 js_data = jobfilters.get('job-status')
                 mapping = [
                     ('match-type', 'includeExcludeTypeString',
-                        'includeMatched'),
+                     'includeMatched'),
                     ('unstable', 'unstable', False),
                     ('failed', 'failed', False),
                     ('aborted', 'aborted', False),
@@ -348,13 +395,15 @@ class List(jenkins_jobs.modules.base.Base):
                                        fail_required=True)
 
             if jobfilter == 'upstream-downstream':
-                ud_xml = XML.SubElement(job_filter_xml,
-                    'hudson.views.UpstreamDownstreamJobsFilter')
+                ud_xml = XML.SubElement(
+                    job_filter_xml,
+                    'hudson.views.UpstreamDownstreamJobsFilter'
+                )
                 ud_xml.set('plugin', 'view-job-filters')
                 ud_data = jobfilters.get('upstream-downstream')
                 mapping = [
                     ('include-upstream', 'includeUpstream',
-                        False),
+                     False),
                     ('include-downstream', 'includeDownstream', False),
                     ('recursive', 'recursive', False),
                     ('exclude-originals', 'excludeOriginals', False),
@@ -363,15 +412,17 @@ class List(jenkins_jobs.modules.base.Base):
                                        fail_required=True)
 
             if jobfilter == 'fallback':
-                fb_xml = XML.SubElement(job_filter_xml,
-                                        'hudson.views.AddRemoveFallbackFilter')
+                fb_xml = XML.SubElement(
+                    job_filter_xml,
+                    'hudson.views.AddRemoveFallbackFilter'
+                )
                 fb_xml.set('plugin', 'view-job-filters')
                 fb_data = jobfilters.get('fallback')
                 mapping = [
                     ('fallback-type', 'fallbackTypeString',
-                        'REMOVE_ALL_IF_ALL_INCLUDED'),
+                     'REMOVE_ALL_IF_ALL_INCLUDED'),
                     ('fallback-type', 'fallbackType',
-                        'REMOVE_ALL_IF_ALL_INCLUDED'),
+                     'REMOVE_ALL_IF_ALL_INCLUDED'),
                 ]
                 convert_mapping_to_xml(fb_xml, fb_data, mapping,
                                        fail_required=True)
@@ -383,7 +434,7 @@ class List(jenkins_jobs.modules.base.Base):
                 bs_data = jobfilters.get('build-status')
                 mapping = [
                     ('match-type', 'includeExcludeTypeString',
-                        'includeMatched'),
+                     'includeMatched'),
                     ('never-built', 'neverBuilt', False),
                     ('building', 'building', False),
                     ('in-build-queue', 'inBuildQueue', False),
@@ -398,7 +449,7 @@ class List(jenkins_jobs.modules.base.Base):
                 ur_data = jobfilters.get('user-relevence')
                 mapping = [
                     ('match-type', 'includeExcludeTypeString',
-                        'includeMatched'),
+                     'includeMatched'),
                     ('build-count', 'buildCountTypeString', 'AtLeastOne'),
                     ('amount-type', 'amountTypeString', 'Hours'),
                     ('amount', 'amount', '0'),
@@ -407,7 +458,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('ignore-case', 'ignoreCase', False),
                     ('ignore-whitespace', 'ignoreWhitespace', False),
                     ('ignore-non-alphaNumeric', 'ignoreNonAlphaNumeric',
-                        False),
+                     False),
                     ('match-builder', 'matchBuilder', False),
                     ('match-email', 'matchEmail', False),
                     ('match-scm-changes', 'matchScmChanges', False),
@@ -422,7 +473,7 @@ class List(jenkins_jobs.modules.base.Base):
                 rj_data = jobfilters.get('regex-job')
                 mapping = [
                     ('match-type', 'includeExcludeTypeString',
-                        'includeMatched'),
+                     'includeMatched'),
                     ('regex-name', 'valueTypeString', ''),
                     ('regex', 'regex', ''),
                 ]
@@ -436,7 +487,7 @@ class List(jenkins_jobs.modules.base.Base):
                 jt_data = jobfilters.get('job-type')
                 mapping = [
                     ('match-type', 'includeExcludeTypeString',
-                        'includeMatched'),
+                     'includeMatched'),
                     ('job-type', 'jobType', 'hudson.model.FreeStyleProject'),
                 ]
                 convert_mapping_to_xml(jt_xml, jt_data, mapping,
@@ -449,13 +500,13 @@ class List(jenkins_jobs.modules.base.Base):
                 pr_data = jobfilters.get('parameter')
                 mapping = [
                     ('match-type', 'includeExcludeTypeString',
-                        'includeMatched'),
+                     'includeMatched'),
                     ('name', 'nameRegex', ''),
                     ('value', 'valueRegex', ''),
                     ('description', 'descriptionRegex', ''),
                     ('use-default', 'useDefaultValue', False),
                     ('match-builds-in-progress', 'matchBuildsInProgress',
-                        False),
+                     False),
                     ('match-all-builds', 'matchAllBuilds', False),
                     ('max-builds-to-match', 'maxBuildsToMatch', 0),
                 ]
@@ -469,9 +520,9 @@ class List(jenkins_jobs.modules.base.Base):
                 ov_data = jobfilters.get('other-views')
                 mapping = [
                     ('match-type', 'includeExcludeTypeString',
-                        'includeMatched'),
+                     'includeMatched'),
                     ('view-name', 'otherViewName',
-                        '&lt;select a view other than this one&gt;'),
+                     '&lt;select a view other than this one&gt;'),
                 ]
                 convert_mapping_to_xml(ov_xml, ov_data, mapping,
                                        fail_required=True)
@@ -483,7 +534,7 @@ class List(jenkins_jobs.modules.base.Base):
                 st_data = jobfilters.get('scm')
                 mapping = [
                     ('match-type', 'includeExcludeTypeString',
-                        'includeMatched'),
+                     'includeMatched'),
                     ('scm-type', 'scmType', 'hudson.scm.NullSCM'),
                 ]
                 convert_mapping_to_xml(st_xml, st_data, mapping,
@@ -496,7 +547,7 @@ class List(jenkins_jobs.modules.base.Base):
                 sj_data = jobfilters.get('secured-job')
                 mapping = [
                     ('match-type', 'includeExcludeTypeString',
-                        'includeMatched'),
+                     'includeMatched'),
                 ]
                 convert_mapping_to_xml(sj_xml, sj_data, mapping,
                                        fail_required=True)
@@ -508,12 +559,12 @@ class List(jenkins_jobs.modules.base.Base):
                 up_data = jobfilters.get('user-permissions')
                 mapping = [
                     ('match-type', 'includeExcludeTypeString',
-                        'includeMatched'),
+                     'includeMatched'),
                     ('configure', 'configure', False),
                     ('build', 'build', False),
                     ('workspace', 'workspace', False),
                     ('permission-check', 'permissionCheckType',
-                        'MustMatchAll'),
+                     'MustMatchAll'),
                 ]
                 convert_mapping_to_xml(up_xml, up_data, mapping,
                                        fail_required=True)
@@ -525,7 +576,7 @@ class List(jenkins_jobs.modules.base.Base):
                 uc_data = jobfilters.get('unclassified')
                 mapping = [
                     ('match-type', 'includeExcludeTypeString',
-                        'includeMatched'),
+                     'includeMatched'),
                 ]
                 convert_mapping_to_xml(uc_xml, uc_data, mapping,
                                        fail_required=True)
@@ -534,8 +585,27 @@ class List(jenkins_jobs.modules.base.Base):
         columns = data.get('columns', DEFAULT_COLUMNS)
 
         for column in columns:
-            if column in COLUMN_DICT:
-                XML.SubElement(c_xml, COLUMN_DICT[column])
+            if isinstance(column, dict):
+                if 'extra-build-parameter' in column:
+                    p_name = column['extra-build-parameter']
+                    x = XML.SubElement(
+                        c_xml,
+                        'jenkins.plugins.extracolumns.BuildParametersColumn',
+                        plugin='extra-columns'
+                    )
+                    x.append(XML.fromstring(
+                        '<singlePara>true</singlePara>'))
+                    x.append(XML.fromstring(
+                        '<parameterName>%s</parameterName>' % p_name))
+            else:
+                if column in COLUMN_DICT:
+                    if isinstance(COLUMN_DICT[column], list):
+                        x = XML.SubElement(c_xml, COLUMN_DICT[column][0][0],
+                                           **COLUMN_DICT[column][0][1])
+                        for tag in COLUMN_DICT[column][1:]:
+                            x.append(XML.fromstring(tag))
+                    else:
+                        XML.SubElement(c_xml, COLUMN_DICT[column])
         mapping = [
             ('regex', 'includeRegex', None),
             ('recurse', 'recurse', False),

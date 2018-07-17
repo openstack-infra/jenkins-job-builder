@@ -8,4 +8,5 @@ columns:
     - last-success
     - last-failure
     - last-duration
+    - extra-build-parameter: MY_PARAMETER
 regex: (?!test.*).*
