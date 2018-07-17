@@ -40,6 +40,55 @@
             <jenkins.plugins.git.traits.IgnoreOnPushNotificationTrait/>
           </traits>
         </source>
+        <buildStrategies>
+          <jenkins.branch.buildstrategies.basic.TagBuildStrategyImpl plugin="basic-branch-build-strategies">
+            <atMostMillis>86400000</atMostMillis>
+            <atLeastMillis>604800000</atLeastMillis>
+          </jenkins.branch.buildstrategies.basic.TagBuildStrategyImpl>
+          <jenkins.branch.buildstrategies.basic.TagBuildStrategyImpl plugin="basic-branch-build-strategies">
+            <atMostMillis>-1</atMostMillis>
+            <atLeastMillis>-1</atLeastMillis>
+          </jenkins.branch.buildstrategies.basic.TagBuildStrategyImpl>
+          <jenkins.branch.buildstrategies.basic.ChangeRequestBuildStrategyImpl plugin="basic-branch-build-strategies">
+            <ignoreTargetOnlyChanges>true</ignoreTargetOnlyChanges>
+          </jenkins.branch.buildstrategies.basic.ChangeRequestBuildStrategyImpl>
+          <jenkins.branch.buildstrategies.basic.ChangeRequestBuildStrategyImpl plugin="basic-branch-build-strategies">
+            <ignoreTargetOnlyChanges>false</ignoreTargetOnlyChanges>
+          </jenkins.branch.buildstrategies.basic.ChangeRequestBuildStrategyImpl>
+          <jenkins.branch.buildstrategies.basic.BranchBuildStrategyImpl plugin="basic-branch-build-strategies"/>
+          <jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl plugin="basic-branch-build-strategies">
+            <filters>
+              <jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl_-ExactNameFilter>
+                <name>test</name>
+                <caseSensitive>true</caseSensitive>
+              </jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl_-ExactNameFilter>
+              <jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl_-RegexNameFilter>
+                <regex>test.*$</regex>
+                <caseSensitive>true</caseSensitive>
+              </jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl_-RegexNameFilter>
+              <jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl_-WildcardsNameFilter>
+                <includes>testinclude</includes>
+                <excludes>testexclude</excludes>
+              </jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl_-WildcardsNameFilter>
+            </filters>
+          </jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl>
+          <jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl plugin="basic-branch-build-strategies">
+            <filters>
+              <jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl_-ExactNameFilter>
+                <name/>
+                <caseSensitive>false</caseSensitive>
+              </jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl_-ExactNameFilter>
+              <jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl_-RegexNameFilter>
+                <regex>^.*$</regex>
+                <caseSensitive>false</caseSensitive>
+              </jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl_-RegexNameFilter>
+              <jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl_-WildcardsNameFilter>
+                <includes>*</includes>
+                <excludes/>
+              </jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl_-WildcardsNameFilter>
+            </filters>
+          </jenkins.branch.buildstrategies.basic.NamedBranchBuildStrategyImpl>
+        </buildStrategies>
       </jenkins.branch.BranchSource>
     </data>
     <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
