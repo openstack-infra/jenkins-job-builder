@@ -965,6 +965,10 @@ def github_pull_request(registry, xml_parent, data):
         allows you to selectively test pull requests destined for these
         branches only. Supports regular expressions (e.g. 'master',
         'feature-.*'). (optional)
+    :arg list black-list-target-branches: Adding branches to this blacklist
+        allows you to selectively prevent pull requests builds destined for
+        these branches. Supports regular expressions (e.g. 'master',
+        'feature-.*'). (optional)
     :arg string auth-id: the auth id to use (optional)
     :arg string build-desc-template: the template for build descriptions in
         jenkins (optional)
@@ -1055,6 +1059,14 @@ def github_pull_request(registry, xml_parent, data):
         ghprb_wltb = XML.SubElement(ghprb, 'whiteListTargetBranches')
         for branch in white_list_target_branches:
             be = XML.SubElement(ghprb_wltb, 'org.jenkinsci.plugins.'
+                                'ghprb.GhprbBranch')
+            XML.SubElement(be, 'branch').text = str(branch)
+
+    black_list_target_branches = data.get('black-list-target-branches', [])
+    if black_list_target_branches:
+        ghprb_bltb = XML.SubElement(ghprb, 'blackListTargetBranches')
+        for branch in black_list_target_branches:
+            be = XML.SubElement(ghprb_bltb, 'org.jenkinsci.plugins.'
                                 'ghprb.GhprbBranch')
             XML.SubElement(be, 'branch').text = str(branch)
 
