@@ -638,39 +638,23 @@ def clone_workspace(registry, xml_parent, data):
         'hudson.plugins.cloneworkspace.CloneWorkspacePublisher')
     cloneworkspace.set('plugin', 'clone-workspace-scm')
 
+    criteria_valid_types = ['Any', 'Not Failed', 'Successful']
+    archive_valid_types = ['TAR', 'ZIP']
+
     mappings = [
         ('workspace-glob', 'workspaceGlob', ''),
         ('override-default-excludes', 'overrideDefaultExcludes', False),
+        ('criteria', 'criteria', 'Any', criteria_valid_types),
+        ('archive-method', 'archiveMethod', 'TAR', archive_valid_types),
     ]
     helpers.convert_mapping_to_xml(
         cloneworkspace, data, mappings, fail_required=True)
 
-    if 'workspace-exclude-glob' in data:
-        XML.SubElement(
-            cloneworkspace,
-            'workspaceExcludeGlob').text = data['workspace-exclude-glob']
-
-    criteria_list = ['Any', 'Not Failed', 'Successful']
-
-    criteria = data.get('criteria', 'Any').title()
-
-    if 'criteria' in data and criteria not in criteria_list:
-        raise JenkinsJobsException(
-            'clone-workspace criteria must be one of: ' +
-            ', '.join(criteria_list))
-    else:
-        XML.SubElement(cloneworkspace, 'criteria').text = criteria
-
-    archive_list = ['TAR', 'ZIP']
-
-    archive_method = data.get('archive-method', 'TAR').upper()
-
-    if 'archive-method' in data and archive_method not in archive_list:
-        raise JenkinsJobsException(
-            'clone-workspace archive-method must be one of: ' +
-            ', '.join(archive_list))
-    else:
-        XML.SubElement(cloneworkspace, 'archiveMethod').text = archive_method
+    mappings = [
+        ('workspace-exclude-glob', 'workspaceExcludeGlob', ''),
+    ]
+    helpers.convert_mapping_to_xml(
+        cloneworkspace, data, mappings, fail_required=False)
 
 
 def cloud_foundry(parser, xml_parent, data):

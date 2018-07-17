@@ -6,6 +6,7 @@
       <overrideDefaultExcludes>false</overrideDefaultExcludes>
       <criteria>Any</criteria>
       <archiveMethod>TAR</archiveMethod>
+      <workspaceExcludeGlob/>
     </hudson.plugins.cloneworkspace.CloneWorkspacePublisher>
   </publishers>
 </project>
