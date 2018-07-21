@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.sonatype.nexus.ci.iq.IqPolicyEvaluatorBuildStep>
+      <com__sonatype__nexus__ci__iq__IqPolicyEvaluator____iqStage>build</com__sonatype__nexus__ci__iq__IqPolicyEvaluator____iqStage>
+      <com__sonatype__nexus__ci__iq__IqPolicyEvaluator____failBuildOnNetworkError>false</com__sonatype__nexus__ci__iq__IqPolicyEvaluator____failBuildOnNetworkError>
+      <com__sonatype__nexus__ci__iq__IqPolicyEvaluator____iqApplication class="org.sonatype.nexus.ci.iq.ManualApplication">
+        <applicationId>nexus-iq-application-id001</applicationId>
+      </com__sonatype__nexus__ci__iq__IqPolicyEvaluator____iqApplication>
+      <com__sonatype__nexus__ci__iq__IqPolicyEvaluator____iqScanPatterns/>
+    </org.sonatype.nexus.ci.iq.IqPolicyEvaluatorBuildStep>
+  </builders>
+</project>

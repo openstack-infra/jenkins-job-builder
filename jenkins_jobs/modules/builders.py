@@ -4083,6 +4083,95 @@ def nexus_artifact_uploader(registry, xml_parent, data):
         nexus_artifact_uploader, data, mapping, fail_required=True)
 
 
+def nexus_iq_policy_evaluator(registry, xml_parent, data):
+    """yaml: nexus-iq-policy-evaluator
+    Integrates the Nexus Lifecycle into a Jenkins job.
+    This function triggers 'Invokes Nexus Policy Evaluation'.
+    Requires the Jenkins :jenkins-wiki:`Nexus
+    Platform Plugin <Nexus+Platform+Plugin>`.
+
+    :arg str stage: Controls the stage the policy evaluation will be
+        run against on the Nexus IQ Server (required)
+
+        :stage values:
+            * **build**
+            * **stage-release**
+            * **operate**
+    :arg dict application-type: Specifies an IQ Application (default manual)
+
+        :application-type values:
+            * **manual**
+            * **selected**
+    :arg str application-id: Specify the IQ Application ID (required)
+    :arg list scan-patterns: List of Ant-style patterns relative to the
+        workspace root that denote files/archives to be scanned (default [])
+    :arg bool fail-build-network-error: Controls the build outcome if there
+        is a failure in communicating with the Nexus IQ Server (default false)
+
+    Minimal Example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/nexus-iq-policy-evaluator-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/nexus-iq-policy-evaluator-full.yaml
+       :language: yaml
+    """
+    nexus_iq_policy_evaluator = XML.SubElement(
+        xml_parent,
+        'org.sonatype.nexus.ci.iq.IqPolicyEvaluatorBuildStep')
+
+    format_dict = {
+        'stage': 'com__sonatype__nexus__ci__iq__IqPolicyEvaluator____iqStage',
+        'fone': 'com__sonatype__nexus__ci__iq__IqPolicyEvaluator'
+                '____failBuildOnNetworkError',
+    }
+
+    valid_stages = ['build', 'stage-release', 'operate']
+    mapping = [
+        ('stage', format_dict.get('stage'), None, valid_stages),
+        ('fail-build-network-error', format_dict.get('fone'), False),
+    ]
+    helpers.convert_mapping_to_xml(
+        nexus_iq_policy_evaluator, data, mapping, fail_required=True)
+
+    application_type_label = data.get('application-type', 'manual').lower()
+    application_type_label_dict = {
+        'manual': 'org.sonatype.nexus.ci.iq.ManualApplication',
+        'selected': 'org.sonatype.nexus.ci.iq.SelectedApplication',
+    }
+    if application_type_label not in application_type_label_dict:
+        raise InvalidAttributeError(application_type_label,
+                                    application_type_label,
+                                    application_type_label_dict.keys())
+
+    application_type_tag = XML.SubElement(
+        nexus_iq_policy_evaluator,
+        'com__sonatype__nexus__ci__iq__IqPolicyEvaluator____iqApplication')
+    application_type_tag.set(
+        "class", application_type_label_dict[application_type_label]
+    )
+
+    mapping = [
+        ('application-id', 'applicationId', None),
+    ]
+    helpers.convert_mapping_to_xml(application_type_tag, data,
+        mapping, fail_required=True)
+
+    scan_pattern_list = data.get('scan-patterns', [])
+    iq_scan_pattern_tag = XML.SubElement(nexus_iq_policy_evaluator,
+                                  'com__sonatype__nexus__ci__iq'
+                                  '__IqPolicyEvaluator____iqScanPatterns')
+
+    for scan_pattern in scan_pattern_list:
+        scan_pattern_tag = XML.SubElement(
+            iq_scan_pattern_tag, 'org.sonatype.nexus.ci.iq.ScanPattern')
+        XML.SubElement(scan_pattern_tag, 'scanPattern').text = scan_pattern
+
+
 def ansible_playbook(parser, xml_parent, data):
     """yaml: ansible-playbook
     This plugin allows you to execute Ansible tasks as a job build step.
