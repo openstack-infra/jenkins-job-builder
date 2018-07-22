@@ -2222,8 +2222,7 @@ def email_ext(registry, xml_parent, data):
     }
     ctype = data.get('content-type', 'default')
     if ctype not in content_type_mime:
-        raise JenkinsJobsException('email-ext content type must be one of: %s'
-                                   % ', '.join(content_type_mime.keys()))
+        raise InvalidAttributeError(ctype, ctype, content_type_mime.keys())
     XML.SubElement(emailext, 'contentType').text = content_type_mime[ctype]
 
     mappings = [
@@ -2241,16 +2240,17 @@ def email_ext(registry, xml_parent, data):
     helpers.convert_mapping_to_xml(
         emailext, data, mappings, fail_required=True)
 
-    matrix_dict = {'both': 'BOTH',
-                   'only-configurations': 'ONLY_CONFIGURATIONS',
-                   'only-parent': 'ONLY_PARENT'}
+    matrix_dict = {
+        'both': 'BOTH',
+        'only-configurations': 'ONLY_CONFIGURATIONS',
+        'only-parent': 'ONLY_PARENT'
+    }
     matrix_trigger = data.get('matrix-trigger', None)
     # If none defined, then do not create entry
     if matrix_trigger is not None:
         if matrix_trigger not in matrix_dict:
-            raise JenkinsJobsException("matrix-trigger entered is not valid, "
-                                       "must be one of: %s" %
-                                       ", ".join(matrix_dict.keys()))
+            raise InvalidAttributeError(matrix_trigger, matrix_trigger,
+                                        matrix_dict.keys())
         XML.SubElement(emailext, 'matrixTriggerMode').text = matrix_dict.get(
             matrix_trigger)
 
