@@ -51,7 +51,7 @@ import logging
 import xml.etree.ElementTree as XML
 
 import jenkins_jobs.modules.base
-from jenkins_jobs.modules.helpers import convert_mapping_to_xml
+import jenkins_jobs.modules.helpers as helpers
 
 
 class Workflow(jenkins_jobs.modules.base.Base):
@@ -69,10 +69,12 @@ class Workflow(jenkins_jobs.modules.base.Base):
                                         {'plugin': 'workflow-cps',
                                          'class': 'org.jenkinsci.plugins.'
                                          'workflow.cps.CpsFlowDefinition'})
+
         mapping = [
             ('dsl', 'script', None),
-            ('sandbox', 'sandbox', False)]
-        convert_mapping_to_xml(xml_definition,
-            data, mapping, fail_required=True)
+            ('sandbox', 'sandbox', False),
+        ]
+        helpers.convert_mapping_to_xml(
+            xml_definition, data, mapping, fail_required=True)
 
         return xml_parent
