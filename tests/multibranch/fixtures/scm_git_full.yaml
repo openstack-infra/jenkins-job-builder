@@ -8,6 +8,7 @@ scm:
         discover-branches: false
         ignore-on-push-notifications: true
         discover-tags: true
+        head-filter-regex: 'master|\d+\.\d+'
         build-strategies:
             - tags:
                 ignore-tags-newer-than: 1

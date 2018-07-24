@@ -489,6 +489,9 @@ def git_scm(xml_parent, data):
         (default false)
     :arg bool ignore-on-push-notifications: If a job should not trigger upon
         push notifications. (default false)
+    :arg str head-filter-regex: A regular expression for filtering
+        discovered source branches. Requires the :jenkins-wiki:`SCM API Plugin
+        <SCM+API+Plugin>`.
     :arg list build-strategies: Provides control over whether to build a branch
         (or branch like things such as change requests and tags) whenever it is
         discovered initially or a change from the previous revision has been
@@ -531,6 +534,11 @@ def git_scm(xml_parent, data):
     if data.get('ignore-on-push-notifications', False):
         XML.SubElement(
             traits, ''.join([traits_path, '.IgnoreOnPushNotificationTrait']))
+
+    if data.get('head-filter-regex', None):
+        rshf = XML.SubElement(traits,
+            'jenkins.scm.impl.trait.RegexSCMHeadFilterTrait')
+        XML.SubElement(rshf, 'regex').text = data.get('head-filter-regex')
 
     if data.get('build-strategies', None):
         build_strategies(xml_parent, data)
