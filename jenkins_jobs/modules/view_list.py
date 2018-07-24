@@ -223,8 +223,7 @@ Example:
 
 import xml.etree.ElementTree as XML
 import jenkins_jobs.modules.base
-
-from jenkins_jobs.modules.helpers import convert_mapping_to_xml
+import jenkins_jobs.modules.helpers as helpers
 
 COLUMN_DICT = {
     'status': 'hudson.views.StatusColumn',
@@ -309,8 +308,9 @@ class List(jenkins_jobs.modules.base.Base):
             ('name', 'name', None),
             ('description', 'description', ''),
             ('filter-executors', 'filterExecutors', False),
-            ('filter-queue', 'filterQueue', False)]
-        convert_mapping_to_xml(root, data, mapping, fail_required=True)
+            ('filter-queue', 'filterQueue', False),
+        ]
+        helpers.convert_mapping_to_xml(root, data, mapping, fail_required=True)
 
         XML.SubElement(root, 'properties',
                        {'class': 'hudson.model.View$PropertyList'})
@@ -341,7 +341,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('max-to-include', 'maxToInclude', '0'),
                     ('check-start-time', 'checkStartTime', False),
                 ]
-                convert_mapping_to_xml(mr_xml, mr_data, mapping,
+                helpers.convert_mapping_to_xml(mr_xml, mr_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'build-duration':
@@ -358,7 +358,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('less-than', 'lessThan', True),
                     ('build-duration-minutes', 'buildDurationMinutes', '0'),
                 ]
-                convert_mapping_to_xml(bd_xml, bd_data, mapping,
+                helpers.convert_mapping_to_xml(bd_xml, bd_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'build-trend':
@@ -374,7 +374,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('amount', 'amount', '0'),
                     ('status', 'statusTypeString', 'Completed'),
                 ]
-                convert_mapping_to_xml(bt_xml, bt_data, mapping,
+                helpers.convert_mapping_to_xml(bt_xml, bt_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'job-status':
@@ -391,7 +391,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('disabled', 'disabled', False),
                     ('stable', 'stable', False),
                 ]
-                convert_mapping_to_xml(js_xml, js_data, mapping,
+                helpers.convert_mapping_to_xml(js_xml, js_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'upstream-downstream':
@@ -408,7 +408,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('recursive', 'recursive', False),
                     ('exclude-originals', 'excludeOriginals', False),
                 ]
-                convert_mapping_to_xml(ud_xml, ud_data, mapping,
+                helpers.convert_mapping_to_xml(ud_xml, ud_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'fallback':
@@ -424,7 +424,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('fallback-type', 'fallbackType',
                      'REMOVE_ALL_IF_ALL_INCLUDED'),
                 ]
-                convert_mapping_to_xml(fb_xml, fb_data, mapping,
+                helpers.convert_mapping_to_xml(fb_xml, fb_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'build-status':
@@ -439,7 +439,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('building', 'building', False),
                     ('in-build-queue', 'inBuildQueue', False),
                 ]
-                convert_mapping_to_xml(bs_xml, bs_data, mapping,
+                helpers.convert_mapping_to_xml(bs_xml, bs_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'user-relevence':
@@ -463,7 +463,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('match-email', 'matchEmail', False),
                     ('match-scm-changes', 'matchScmChanges', False),
                 ]
-                convert_mapping_to_xml(ur_xml, ur_data, mapping,
+                helpers.convert_mapping_to_xml(ur_xml, ur_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'regex-job':
@@ -477,7 +477,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('regex-name', 'valueTypeString', ''),
                     ('regex', 'regex', ''),
                 ]
-                convert_mapping_to_xml(rj_xml, rj_data, mapping,
+                helpers.convert_mapping_to_xml(rj_xml, rj_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'job-type':
@@ -490,7 +490,7 @@ class List(jenkins_jobs.modules.base.Base):
                      'includeMatched'),
                     ('job-type', 'jobType', 'hudson.model.FreeStyleProject'),
                 ]
-                convert_mapping_to_xml(jt_xml, jt_data, mapping,
+                helpers.convert_mapping_to_xml(jt_xml, jt_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'parameter':
@@ -510,7 +510,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('match-all-builds', 'matchAllBuilds', False),
                     ('max-builds-to-match', 'maxBuildsToMatch', 0),
                 ]
-                convert_mapping_to_xml(pr_xml, pr_data, mapping,
+                helpers.convert_mapping_to_xml(pr_xml, pr_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'other-views':
@@ -524,7 +524,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('view-name', 'otherViewName',
                      '&lt;select a view other than this one&gt;'),
                 ]
-                convert_mapping_to_xml(ov_xml, ov_data, mapping,
+                helpers.convert_mapping_to_xml(ov_xml, ov_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'scm':
@@ -537,7 +537,7 @@ class List(jenkins_jobs.modules.base.Base):
                      'includeMatched'),
                     ('scm-type', 'scmType', 'hudson.scm.NullSCM'),
                 ]
-                convert_mapping_to_xml(st_xml, st_data, mapping,
+                helpers.convert_mapping_to_xml(st_xml, st_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'secured-job':
@@ -549,7 +549,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('match-type', 'includeExcludeTypeString',
                      'includeMatched'),
                 ]
-                convert_mapping_to_xml(sj_xml, sj_data, mapping,
+                helpers.convert_mapping_to_xml(sj_xml, sj_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'user-permissions':
@@ -566,7 +566,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('permission-check', 'permissionCheckType',
                      'MustMatchAll'),
                 ]
-                convert_mapping_to_xml(up_xml, up_data, mapping,
+                helpers.convert_mapping_to_xml(up_xml, up_data, mapping,
                                        fail_required=True)
 
             if jobfilter == 'unclassified':
@@ -578,7 +578,7 @@ class List(jenkins_jobs.modules.base.Base):
                     ('match-type', 'includeExcludeTypeString',
                      'includeMatched'),
                 ]
-                convert_mapping_to_xml(uc_xml, uc_data, mapping,
+                helpers.convert_mapping_to_xml(uc_xml, uc_data, mapping,
                                        fail_required=True)
 
         c_xml = XML.SubElement(root, 'columns')
@@ -609,7 +609,9 @@ class List(jenkins_jobs.modules.base.Base):
         mapping = [
             ('regex', 'includeRegex', None),
             ('recurse', 'recurse', False),
-            ('status-filter', 'statusFilter', None)]
-        convert_mapping_to_xml(root, data, mapping, fail_required=False)
+            ('status-filter', 'statusFilter', None),
+        ]
+        helpers.convert_mapping_to_xml(
+            root, data, mapping, fail_required=False)
 
         return root
