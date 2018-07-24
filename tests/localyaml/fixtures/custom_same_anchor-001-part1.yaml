@@ -8,5 +8,5 @@
           which-build: last-successful
           optional: true
           flatten: true
-          do-not-finferprint: true
+          do-not-fingerprint: true
           parameter-filters: PUBLISH=true
