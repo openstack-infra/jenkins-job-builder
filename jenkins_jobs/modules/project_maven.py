@@ -87,7 +87,7 @@ import xml.etree.ElementTree as XML
 
 from jenkins_jobs.errors import InvalidAttributeError
 import jenkins_jobs.modules.base
-from jenkins_jobs.modules.helpers import config_file_provider_settings
+import jenkins_jobs.modules.helpers as helpers
 from jenkins_jobs.modules import hudson_model
 
 
@@ -171,7 +171,7 @@ class Maven(jenkins_jobs.modules.base.Base):
         if 'custom-workspace' in data['maven']:
             XML.SubElement(xml_parent, 'customWorkspace').text = str(
                 data['maven'].get('custom-workspace'))
-        config_file_provider_settings(xml_parent, data['maven'])
+        helpers.config_file_provider_settings(xml_parent, data['maven'])
 
         run_post_steps = XML.SubElement(xml_parent, 'runPostStepsIfResult')
         run_conditions = ['SUCCESS', 'UNSTABLE', 'FAILURE']
