@@ -1,0 +1,9 @@
+builders:
+  - nexus-iq-policy-evaluator:
+      stage: 'stage-release'
+      application-type: 'selected'
+      application-id: 'nexus-iq-application-id002'
+      scan-patterns:
+        - '**/target/*.war'
+        - '**/target/*.ear'
+      fail-build-network-error: true

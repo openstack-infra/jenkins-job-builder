@@ -1,0 +1,4 @@
+builders:
+  - nexus-iq-policy-evaluator:
+      stage: 'build'
+      application-id: 'nexus-iq-application-id001'
