@@ -1752,6 +1752,8 @@ def ssh_agent_credentials(registry, xml_parent, data):
 
     :arg list users: A list of Jenkins users credential IDs (required)
     :arg str user: The user id of the jenkins user credentials (deprecated)
+    :arg bool ignore-missing-credentials: Specifies the option to ignore
+        missing credentials (default false)
 
     Example:
 
@@ -1811,6 +1813,12 @@ def ssh_agent_credentials(registry, xml_parent, data):
 
     for user in user_list:
         XML.SubElement(entry_xml, xml_key).text = user
+
+    mapping = [
+        ('ignore-missing-credentials', 'ignoreMissing', False),
+    ]
+    helpers.convert_mapping_to_xml(entry_xml, data, mapping,
+                                   fail_required=False)
 
 
 def credentials_binding(registry, xml_parent, data):
