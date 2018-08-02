@@ -4,3 +4,7 @@ properties:
         - cat1
         - cat2
       option: project
+      parameters-limit: true
+      parameters-check-list:
+        - 'param1'
+        - 'param2'
