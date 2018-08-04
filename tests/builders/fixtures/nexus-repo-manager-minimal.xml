@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.sonatype.nexus.ci.nxrm.NexusPublisherBuildStep>
+      <nexusInstanceId>Nexus-Repo-Instance</nexusInstanceId>
+      <nexusRepositoryId>Releases</nexusRepositoryId>
+    </org.sonatype.nexus.ci.nxrm.NexusPublisherBuildStep>
+  </builders>
+</project>

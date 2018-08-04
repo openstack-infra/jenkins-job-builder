@@ -1,0 +1,4 @@
+builders:
+    - nexus-repo-manager:
+        instance-id: Nexus-Repo-Instance
+        repo-id: Releases
