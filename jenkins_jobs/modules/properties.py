@@ -302,6 +302,8 @@ def branch_api(registry, xml_parent, data):
         of builds will be enforced. (default 'Hour')
 
         :valid values: **Hour**, **Day**, **Week**, **Month**, **Year**
+    :arg bool skip-rate-limit: Permit user triggered builds to
+        skip the rate limit (default false)
 
     Minimal Example:
 
@@ -324,6 +326,7 @@ def branch_api(registry, xml_parent, data):
     mapping = [
         ('time-period', 'durationName', 'Hour', valid_time_periods),
         ('number-of-builds', 'count', 1),
+        ('skip-rate-limit', 'userBoost', False),
     ]
     helpers.convert_mapping_to_xml(branch, data, mapping, fail_required=True)
 

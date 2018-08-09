@@ -2,3 +2,4 @@ properties:
   - branch-api:
       time-period: Day
       number-of-builds: 5
+      skip-rate-limit: true
