@@ -463,23 +463,25 @@ def ansicolor(registry, xml_parent, data):
     Translate ANSI color codes to HTML in the console log.
     Requires the Jenkins :jenkins-wiki:`Ansi Color Plugin <AnsiColor+Plugin>`.
 
-    :arg string colormap: (optional) color mapping to use
+    :arg string colormap: Color mapping to use (default xterm)
 
-    Examples::
+    Minimal Example:
 
-      wrappers:
-        - ansicolor
+    .. literalinclude:: /../../tests/wrappers/fixtures/ansicolor-minimal.yaml
+       :language: yaml
 
-      # Explicitly setting the colormap
-      wrappers:
-        - ansicolor:
-            colormap: vga
+    Full Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/ansicolor-full.yaml
+       :language: yaml
     """
     cwrapper = XML.SubElement(
         xml_parent,
         'hudson.plugins.ansicolor.AnsiColorBuildWrapper')
+
+    valid_types = ['xterm', 'vga', 'css', 'gnome-terminal']
     mapping = [
-        ('colormap', 'colorMapName', None),
+        ('colormap', 'colorMapName', 'xterm', valid_types),
     ]
     helpers.convert_mapping_to_xml(
         cwrapper, data, mapping, fail_required=False)
