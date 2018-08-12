@@ -2,13 +2,14 @@
 <project>
   <builders>
     <hudson.tasks.Ant>
+      <targets>debug test install</targets>
       <buildFile>build.xml</buildFile>
-      <antOpts>-ea -Xmx512m</antOpts>
+      <antName>Standard Ant</antName>
+      <antOpts>-ea
+-Xmx512m</antOpts>
       <properties>builddir=/tmp/
 failonerror=True
 </properties>
-      <targets>debug test install</targets>
-      <antName>Standard Ant</antName>
     </hudson.tasks.Ant>
   </builders>
 </project>

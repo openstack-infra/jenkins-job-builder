@@ -301,28 +301,30 @@ def ant(registry, xml_parent, data):
     """
     ant = XML.SubElement(xml_parent, 'hudson.tasks.Ant')
 
-    mappings = []
     if type(data) is str:
         # Support for short form: -ant: "target"
         data = {'targets': data}
+
+    mapping = [
+        ('targets', 'targets', None),
+        ('buildfile', 'buildFile', None),
+        ('ant-name', 'antName', 'default'),
+    ]
+    helpers.convert_mapping_to_xml(ant, data, mapping, fail_required=False)
+
+    mapping = []
     for setting, value in sorted(data.items()):
-        if setting == 'targets':
-            mappings.append(('', 'targets', value))
-        if setting == 'buildfile':
-            mappings.append(('', 'buildFile', value))
         if setting == 'properties':
             properties = value
             prop_string = ''
             for prop, val in properties.items():
                 prop_string += "%s=%s\n" % (prop, val)
-            mappings.append(('', 'properties', prop_string))
+            mapping.append(('', 'properties', prop_string))
         if setting == 'java-opts':
-            jopt_string = ' '.join(value)
-            mappings.append(('', 'antOpts', jopt_string))
+            jopt_string = '\n'.join(value)
+            mapping.append(('', 'antOpts', jopt_string))
 
-    mappings.append(('ant-name', 'antName', 'default'))
-
-    helpers.convert_mapping_to_xml(ant, data, mappings, fail_required=True)
+    helpers.convert_mapping_to_xml(ant, data, mapping, fail_required=True)
 
 
 def trigger_remote(registry, xml_parent, data):
