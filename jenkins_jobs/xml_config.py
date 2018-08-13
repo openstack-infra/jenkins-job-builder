@@ -90,7 +90,8 @@ class XmlGenerator(object):
             Mod = ep.load()
             mod = Mod(self.registry)
             xml = mod.root_xml(data)
-            self._gen_xml(xml, data)
+            if "view-type" not in data:
+                self._gen_xml(xml, data)
             obj = XmlJob(xml, data['name'])
             return obj
 
