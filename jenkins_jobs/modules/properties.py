@@ -554,16 +554,24 @@ def build_blocker(registry, xml_parent, data):
 
     :arg bool use-build-blocker: Enable or disable build blocker (default true)
     :arg list blocking-jobs: One regular expression per line to select
-        blocking jobs by their names. (required)
+        blocking jobs by their names (required)
     :arg str block-level: block build globally ('GLOBAL') or per node ('NODE')
         (default 'GLOBAL')
     :arg str queue-scanning: scan build queue for all builds ('ALL') or only
-        buildable builds ('BUILDABLE') (default 'DISABLED'))
+        buildable builds ('BUILDABLE') (default 'DISABLED')
 
     Example:
 
+    Minimal Example:
+
     .. literalinclude::
-        /../../tests/properties/fixtures/build-blocker01.yaml
+       /../../tests/properties/fixtures/build-blocker-minimal.yaml
+       :language: yaml
+
+    Full Example:
+
+    .. literalinclude::
+       /../../tests/properties/fixtures/build-blocker-full.yaml
        :language: yaml
     """
     blocker = XML.SubElement(xml_parent,
@@ -575,14 +583,16 @@ def build_blocker(registry, xml_parent, data):
         raise JenkinsJobsException('blocking-jobs list must not be empty')
 
     jobs = ''
-    for value in data['blocking-jobs']:
-        jobs = jobs + value + '\n'
+    for setting, value in data.items():
+        if setting == 'blocking-jobs':
+            jobs = '\n'.join(value)
+    block_level_types = ['GLOBAL', 'NODE']
+    queue_scan_types = ['DISABLED', 'ALL', 'BUILDABLE']
     mapping = [
         ('use-build-blocker', 'useBuildBlocker', True),
         ('', 'blockingJobs', jobs),
-        ('blocking-level', 'blockLevel', 'GLOBAL', ('GLOBAL', 'NODE')),
-        ('queue-scanning', 'scanQueueFor', 'DISABLED',
-            ('DISABLED', 'ALL', 'BUILDABLE')),
+        ('blocking-level', 'blockLevel', 'GLOBAL', block_level_types),
+        ('queue-scanning', 'scanQueueFor', 'DISABLED', queue_scan_types),
     ]
     helpers.convert_mapping_to_xml(blocker, data, mapping, fail_required=True)
 

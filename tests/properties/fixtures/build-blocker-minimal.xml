@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <hudson.plugins.buildblocker.BuildBlockerProperty>
+      <useBuildBlocker>true</useBuildBlocker>
+      <blockingJobs>.*-deploy</blockingJobs>
+      <blockLevel>GLOBAL</blockLevel>
+      <scanQueueFor>DISABLED</scanQueueFor>
+    </hudson.plugins.buildblocker.BuildBlockerProperty>
+  </properties>
+</project>

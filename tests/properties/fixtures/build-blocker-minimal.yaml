@@ -1,0 +1,4 @@
+properties:
+  - build-blocker:
+      blocking-jobs:
+        - ".*-deploy"
