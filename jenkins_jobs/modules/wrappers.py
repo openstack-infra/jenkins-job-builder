@@ -169,19 +169,22 @@ def ci_skip(registry, xml_parent, data):
     .. literalinclude:: /../../tests/wrappers/fixtures/ci-skip001.yaml
     """
     rpobj = XML.SubElement(xml_parent, 'ruby-proxy-object')
-    robj = XML.SubElement(rpobj, 'ruby-object', attrib={
+    robj = XML.SubElement(rpobj, 'ruby-object', {
         'pluginid': 'ci-skip',
         'ruby-class': 'Jenkins::Tasks::BuildWrapperProxy'
     })
     pluginid = XML.SubElement(robj, 'pluginid', {
-        'pluginid': 'ci-skip', 'ruby-class': 'String'
+        'pluginid': 'ci-skip',
+        'ruby-class': 'String'
     })
     pluginid.text = 'ci-skip'
     obj = XML.SubElement(robj, 'object', {
-        'ruby-class': 'CiSkipWrapper', 'pluginid': 'ci-skip'
+        'pluginid': 'ci-skip',
+        'ruby-class': 'CiSkipWrapper',
     })
     XML.SubElement(obj, 'ci__skip', {
-        'pluginid': 'ci-skip', 'ruby-class': 'NilClass'
+        'pluginid': 'ci-skip',
+        'ruby-class': 'NilClass'
     })
 
 
