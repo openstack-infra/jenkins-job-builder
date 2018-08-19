@@ -498,6 +498,7 @@ def build_keeper(registry, xml_parent, data):
           * **keep-since**
           * **build-number**
           * **keep-first-failed**
+          * **run-condition**
     :arg int build-period: Number argument to calculate build to keep,
         depends on the policy. (default 0)
     :arg bool dont-keep-failed: Flag to indicate if to keep failed builds.
@@ -505,6 +506,25 @@ def build_keeper(registry, xml_parent, data):
     :arg int number-of-fails: number of consecutive failed builds in order
         to mark first as keep forever, only applies to keep-first-failed
         policy (default 0)
+    :arg bool keep-build: Build will be kept if there is a problem
+        evaluating the RunCondition (default false)
+    :arg str token: Token value for the boolean condition (default '')
+    :arg list build-cause: The cause why the build
+        was triggered (default USER_CAUSE)
+    :arg bool exclusive-cause: Cause must be the only one causing this
+        build to be triggered (default False)
+    :arg str command: Contents of your shell script (default '')
+    :arg str allowed-nodes: Node to be executed on (default '')
+    :arg str expression: The regular expression used to
+        match the label (default '')
+    :arg str label: The label that will be tested by
+        the regular expression (default '')
+    :arg str arg1: First string argument for
+        strings-match condition (default '')
+    :arg str arg2: Second string argument for
+        strings-match condition (default '')
+    :arg bool ignore-case: Ignore the case of the strings when
+        matching the two string arguments (default False)
 
     Example:
 
@@ -517,7 +537,7 @@ def build_keeper(registry, xml_parent, data):
                           'org.jenkins__ci.plugins.build__keeper.BuildKeeper')
 
     valid_policies = ('by-day', 'keep-since', 'build-number',
-                      'keep-first-failed')
+                      'keep-first-failed', 'run-condition')
     policy = data.get('policy')
 
     mapping = [
@@ -548,6 +568,120 @@ def build_keeper(registry, xml_parent, data):
         mapping = [
             ('number-of-fails', 'numberOfFails', 0),
         ]
+    elif policy == 'run-condition':
+        policy_element = XML.SubElement(root,
+                                        'policy',
+                                        {'class': 'org.jenkins_ci.plugins.'
+                                         'build_keeper.RunConditionPolicy'})
+
+        run_condition = data.get('run-condition', [])
+        run_condition_base_class = {
+            'core': "org.jenkins_ci.plugins.run_condition.core.",
+            'shell': "org.jenkins_ci.plugins.run_condition.contributed.",
+        }
+        mapping = [
+            ('keep-build', 'keepBuildIfEvalFails', False),
+        ]
+        bool_cond_mapping = [
+            ('token', 'token', ''),
+        ]
+        build_cause_types = ['USER_CAUSE', 'CLI_CAUSE', 'REMOTE_CAUSE',
+                             'SCM_CAUSE', 'TIMER_CAUSE', 'UPSTREAM_CAUSE',
+                             'FS_CAUSE', 'URL_CAUSE', 'IVY_CAUSE',
+                             'SCRIPT_CAUSE', 'BUILDRESULT_CAUSE']
+        cause_cond_mapping = [
+            ('build-cause', 'buildCause', 'USER_CAUSE', build_cause_types),
+            ('exclusive-cause', 'exclusiveCause', False),
+        ]
+        execute_mapping = [
+            ('command', 'command', ''),
+        ]
+        regexp_match_mapping = [
+            ('expression', 'expression', ''),
+            ('label', 'label', ''),
+        ]
+        strings_match_mapping = [
+            ('arg1', 'arg1', ''),
+            ('arg2', 'arg2', ''),
+            ('ignore-case', 'ignoreCase', False),
+        ]
+        for value in run_condition:
+            if value.get('type') == 'always':
+                XML.SubElement(policy_element,
+                               'runCondition',
+                               {'class':
+                                ''.join((run_condition_base_class.get('core'),
+                                         'AlwaysRun'))})
+            elif value.get('type') == 'never':
+                XML.SubElement(policy_element,
+                               'runCondition',
+                               {'class':
+                                ''.join((run_condition_base_class.get('core'),
+                                         'NeverRun'))})
+            elif value.get('type') == 'boolean-condition':
+                boolean_condition_element = XML.SubElement(
+                    policy_element,
+                    'runCondition',
+                    {'class': ''.join((run_condition_base_class.get('core'),
+                                       'BooleanCondition'))})
+                helpers.convert_mapping_to_xml(
+                    boolean_condition_element, value,
+                    bool_cond_mapping, fail_required=False)
+            elif value.get('type') == 'cause-condition':
+                cause_condition_element = XML.SubElement(
+                    policy_element,
+                    'runCondition',
+                    {'class': ''.join((run_condition_base_class.get('core'),
+                                       'CauseCondition'))})
+                helpers.convert_mapping_to_xml(
+                    cause_condition_element, value,
+                    cause_cond_mapping, fail_required=False)
+            elif value.get('type') == 'execute-shell':
+                execute_shell_element = XML.SubElement(
+                    policy_element,
+                    'runCondition',
+                    {'class': ''.join((run_condition_base_class.get('shell'),
+                                       'ShellCondition'))})
+                helpers.convert_mapping_to_xml(
+                    execute_shell_element, value,
+                    execute_mapping, fail_required=False)
+            elif value.get('type') == 'execute-batch':
+                execute_shell_element = XML.SubElement(
+                    policy_element,
+                    'runCondition',
+                    {'class': ''.join((run_condition_base_class.get('shell'),
+                                       'BatchFileCondition'))})
+                helpers.convert_mapping_to_xml(
+                    execute_shell_element, value,
+                    execute_mapping, fail_required=False)
+            elif value.get('type') == 'execution-node':
+                execute_shell_element = XML.SubElement(
+                    policy_element,
+                    'runCondition',
+                    {'class': ''.join((run_condition_base_class.get('core'),
+                                       'NodeCondition'))})
+                allowed_nodes = XML.SubElement(
+                    execute_shell_element, 'allowedNodes')
+                XML.SubElement(allowed_nodes, 'string').text = value.get(
+                    'allowed-nodes', None)
+            elif value.get('type') == 'regexp-match':
+                regexp_match_element = XML.SubElement(
+                    policy_element,
+                    'runCondition',
+                    {'class': ''.join((run_condition_base_class.get('core'),
+                                       'ExpressionCondition'))})
+                helpers.convert_mapping_to_xml(
+                    regexp_match_element, value,
+                    regexp_match_mapping, fail_required=False)
+            elif value.get('type') == 'strings-match':
+                strings_match_element = XML.SubElement(
+                    policy_element,
+                    'runCondition',
+                    {'class': ''.join((run_condition_base_class.get('core'),
+                                       'StringsMatchCondition'))})
+                helpers.convert_mapping_to_xml(
+                    strings_match_element, value,
+                    strings_match_mapping, fail_required=False)
     else:
         InvalidAttributeError('policy', policy, valid_policies)
 
