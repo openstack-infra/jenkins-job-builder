@@ -1,0 +1,4 @@
+builders:
+    - config-file-provider:
+        files:
+            - file-id: org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig0123456789012
