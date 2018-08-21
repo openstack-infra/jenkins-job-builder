@@ -767,19 +767,6 @@ def rbenv(registry, xml_parent, data):
     .. literalinclude:: /../../tests/wrappers/fixtures/rbenv003.yaml
     """
 
-    mapping = [
-        # option, xml name, default value (text), attributes (hard coded)
-        ("preinstall-gem-list", 'gem__list', 'bundler,rake'),
-        ("rbenv-root", 'rbenv__root', '$HOME/.rbenv'),
-        ("rbenv-repo", 'rbenv__repository',
-            'https://github.com/rbenv/rbenv'),
-        ("rbenv-branch", 'rbenv__revision', 'master'),
-        ("ruby-build-repo", 'ruby__build__repository',
-            'https://github.com/rbenv/ruby-build'),
-        ("ruby-build-branch", 'ruby__build__revision', 'master'),
-        ("ruby-version", 'version', '1.9.3-p484'),
-    ]
-
     rpo = XML.SubElement(xml_parent,
                          'ruby-proxy-object')
 
@@ -799,18 +786,25 @@ def rbenv(registry, xml_parent, data):
                        {'ruby-class': 'RbenvWrapper',
                         'pluginid': 'rbenv'})
 
+    mapping = [
+        # option, xml name, default value (text), attributes (hard coded)
+        ("preinstall-gem-list", 'gem__list', 'bundler,rake'),
+        ("rbenv-root", 'rbenv__root', '$HOME/.rbenv'),
+        ("rbenv-repo", 'rbenv__repository',
+            'https://github.com/rbenv/rbenv'),
+        ("rbenv-branch", 'rbenv__revision', 'master'),
+        ("ruby-build-repo", 'ruby__build__repository',
+            'https://github.com/rbenv/ruby-build'),
+        ("ruby-build-branch", 'ruby__build__revision', 'master'),
+        ("ruby-version", 'version', '1.9.3-p484'),
+    ]
+    helpers.convert_mapping_to_xml(o, data, mapping, fail_required=False)
+
     for elem in mapping:
         (optname, xmlname, val) = elem[:3]
-        xe = XML.SubElement(o,
-                            xmlname,
-                            {'ruby-class': "String",
-                             'pluginid': "rbenv"})
-        if optname and optname in data:
-            val = data[optname]
-        if type(val) == bool:
-            xe.text = str(val).lower()
-        else:
-            xe.text = val
+        elem_tag = o.find(xmlname)
+        elem_tag.set("ruby-class", "String")
+        elem_tag.set("pluginid", "rbenv")
 
     ignore_local_class = 'FalseClass'
 
