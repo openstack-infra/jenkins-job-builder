@@ -1,0 +1,3 @@
+wrappers:
+  - ansicolor:
+      colormap: "gnome-terminal"
