@@ -11,6 +11,14 @@ scm:
         head-filter-regex: 'master|\d+\.\d+'
         discover-pr-origin: headOnly
         discover-branch: all
+        discover-pr-forks-strategy: current
+        discover-pr-forks-trust: everyone
+        local-branch: true
+        checkout-over-ssh:
+            credentials: 'ssh_secret'
+        filter-by-name-wildcard:
+            includes: '*'
+            excludes: 'master'
         build-strategies:
             - tags:
                 ignore-tags-newer-than: 1
