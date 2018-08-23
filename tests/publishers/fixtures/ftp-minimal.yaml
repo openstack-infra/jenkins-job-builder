@@ -1,0 +1,5 @@
+publishers:
+  - ftp:
+      site: 'ftp.example.com'
+      target: 'dest/dir'
+      source: 'base/source/dir/**'

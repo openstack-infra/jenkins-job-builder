@@ -10,13 +10,13 @@
             <verbose>true</verbose>
             <transfers>
               <jenkins.plugins.publish__over__ssh.BapSshTransfer>
-                <remoteDirectory>dest/dir</remoteDirectory>
+                <remoteDirectory>'dest/dir/'yyyyMMddHHmmss</remoteDirectory>
                 <sourceFiles>base/source/dir/**</sourceFiles>
                 <excludes>**/*.excludedfiletype</excludes>
                 <removePrefix>base/source/dir</removePrefix>
-                <remoteDirectorySDF>false</remoteDirectorySDF>
+                <remoteDirectorySDF>true</remoteDirectorySDF>
                 <flatten>true</flatten>
-                <cleanRemote>false</cleanRemote>
+                <cleanRemote>true</cleanRemote>
                 <execCommand>rm -r jenkins_$BUILD_NUMBER</execCommand>
                 <execTimeout>1800000</execTimeout>
                 <usePty>true</usePty>
@@ -27,8 +27,8 @@
           </jenkins.plugins.publish__over__ssh.BapSshPublisher>
         </publishers>
         <continueOnError>false</continueOnError>
-        <failOnError>false</failOnError>
-        <alwaysPublishFromMaster>false</alwaysPublishFromMaster>
+        <failOnError>true</failOnError>
+        <alwaysPublishFromMaster>true</alwaysPublishFromMaster>
         <hostConfigurationAccess class="jenkins.plugins.publish_over_ssh.BapSshPublisherPlugin" reference="../.."/>
       </delegate>
     </jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin>

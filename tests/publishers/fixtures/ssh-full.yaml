@@ -1,0 +1,16 @@
+publishers:
+  - ssh:
+      site: 'server.example.com'
+      target: "'dest/dir/'yyyyMMddHHmmss"
+      target-is-date-format: true
+      clean-remote: true
+      source: 'base/source/dir/**'
+      command: 'rm -r jenkins_$BUILD_NUMBER'
+      timeout: 1800000
+      use-pty: true
+      excludes: '**/*.excludedfiletype'
+      remove-prefix: 'base/source/dir'
+      fail-on-error: true
+      always-publish-from-master: true
+      flatten: true
+      verbose: true

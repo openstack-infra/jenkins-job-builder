@@ -1,0 +1,12 @@
+publishers:
+  - ftp:
+      site: 'ftp.example.com'
+      target: "'dest/dir/'yyyyMMddHHmmss"
+      target-is-date-format: true
+      clean-remote: true
+      source: 'base/source/dir/**'
+      excludes: '**/*.excludedfiletype'
+      remove-prefix: 'base/source/dir'
+      fail-on-error: true
+      flatten: true
+      verbose: true

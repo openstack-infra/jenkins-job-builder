@@ -1159,24 +1159,31 @@ def ftp(registry, xml_parent, data):
     Requires the Jenkins :jenkins-wiki:`Publish over FTP Plugin
     <Publish+Over+FTP+Plugin>`.
 
-    :arg str site: name of the ftp site
-    :arg str target: destination directory
+    :arg str site: name of the ftp site (required)
+    :arg str target: destination directory (required)
     :arg bool target-is-date-format: whether target is a date format. If true,
       raw text should be quoted (default false)
     :arg bool clean-remote: should the remote directory be deleted before
       transferring files (default false)
-    :arg str source: source path specifier
+    :arg str source: source path specifier (required)
     :arg str excludes: excluded file pattern (optional)
     :arg str remove-prefix: prefix to remove from uploaded file paths
       (optional)
     :arg bool fail-on-error: fail the build if an error occurs (default false).
     :arg bool flatten: only create files on the server, don't create
       directories (default false).
+    :arg bool verbose: adds lots of detail useful for debug to the console
+      but generally should be left off (default false)
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude::  /../../tests/publishers/fixtures/ftp001.yaml
-       :language: yaml
+        .. literalinclude:: /../../tests/publishers/fixtures/ftp-minimal.yaml
+           :language: yaml
+
+    Full Example:
+
+        .. literalinclude::  /../../tests/publishers/fixtures/ftp-full.yaml
+           :language: yaml
 
     """
     console_prefix = 'FTP: '
@@ -1906,11 +1913,18 @@ def ssh(registry, xml_parent, data):
       before being sent to the remote server (defaults false)
     :arg bool flatten: only create files on the server, don't create
       directories (default false).
+    :arg bool verbose: adds lots of detail useful for debug to the console
+      but generally should be left off (default false)
 
-    Example:
+    Minimal Example:
 
-    .. literalinclude::  /../../tests/publishers/fixtures/ssh001.yaml
-       :language: yaml
+        .. literalinclude:: /../../tests/publishers/fixtures/ssh-minimal.yaml
+           :language: yaml
+
+    Full Example:
+
+        .. literalinclude::  /../../tests/publishers/fixtures/ssh-full.yaml
+           :language: yaml
     """
     console_prefix = 'SSH: '
     tag_prefix = 'jenkins.plugins.publish'
@@ -2674,7 +2688,8 @@ def base_publish_over(xml_parent, data, console_prefix,
 
     inner = XML.SubElement(publishers, publisher_tag)
     XML.SubElement(inner, 'configName').text = data['site']
-    XML.SubElement(inner, 'verbose').text = 'true'
+    XML.SubElement(inner, 'verbose').text = str(
+        data.get('verbose', False)).lower()
 
     transfers = XML.SubElement(inner, 'transfers')
     transfersset = XML.SubElement(transfers, transferset_tag)
@@ -2732,10 +2747,17 @@ def cifs(registry, xml_parent, data):
     :arg bool fail-on-error: fail the build if an error occurs (default false).
     :arg bool flatten: only create files on the server, don't create
         directories (default false).
+    :arg bool verbose: adds lots of detail useful for debug to the console
+      but generally should be left off (default false)
 
-    Example:
+    Minimal Example:
 
-        .. literalinclude::  /../../tests/publishers/fixtures/cifs001.yaml
+        .. literalinclude:: /../../tests/publishers/fixtures/cifs-minimal.yaml
+           :language: yaml
+
+    Full Example:
+
+        .. literalinclude::  /../../tests/publishers/fixtures/cifs-full.yaml
            :language: yaml
 
     """

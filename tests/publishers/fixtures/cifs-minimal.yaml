@@ -3,6 +3,3 @@ publishers:
       site: 'cifs.share'
       target: 'dest/dir'
       source: 'base/source/dir/**'
-      remove-prefix: 'base/source/dir'
-      excludes: '**/*.excludedfiletype'
-      flatten: true

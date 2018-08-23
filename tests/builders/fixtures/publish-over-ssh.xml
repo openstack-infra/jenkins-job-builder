@@ -8,7 +8,7 @@
           <publishers>
             <jenkins.plugins.publish__over__ssh.BapSshPublisher>
               <configName>server.example.com</configName>
-              <verbose>true</verbose>
+              <verbose>false</verbose>
               <transfers>
                 <jenkins.plugins.publish__over__ssh.BapSshTransfer>
                   <remoteDirectory>dest/dir</remoteDirectory>
