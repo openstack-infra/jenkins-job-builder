@@ -1102,26 +1102,29 @@ def vault_secrets(registry, xml_parent, data):
     helpers.convert_mapping_to_xml(
         configuration, data, conf_mapping, fail_required=True)
 
+    secret_obj_mapping = [
+        ('secret-path', 'path', ''),
+    ]
+    secret_value_mapping = [
+        ('env-var', 'envVar', ''),
+        ('vault-key', 'vaultKey', ''),
+    ]
     secretsobj = XML.SubElement(vault, 'vaultSecrets')
     secrets = data.get('secrets', [])
     for secret in secrets:
         secretobj = XML.SubElement(
             secretsobj, 'com.datapipe.jenkins.vault.model.VaultSecret')
-        XML.SubElement(
-            secretobj, 'path').text = secret.get('secret-path', '')
+
+        helpers.convert_mapping_to_xml(
+            secretobj, secret, secret_obj_mapping, fail_required=False)
         secretvaluesobj = XML.SubElement(secretobj, 'secretValues')
         for secretvalue in secret['secret-values']:
             secretvalueobj = XML.SubElement(
                 secretvaluesobj,
                 'com.datapipe.jenkins.vault.model.VaultSecretValue')
-            XML.SubElement(
-                secretvalueobj,
-                'envVar').text = \
-                secretvalue.get('env-var', '')
-            XML.SubElement(
-                secretvalueobj,
-                'vaultKey').text = \
-                secretvalue.get('vault-key', '')
+            helpers.convert_mapping_to_xml(
+                secretvalueobj, secretvalue,
+                secret_value_mapping, fail_required=False)
     XML.SubElement(vault, 'valuesToMask')
     XML.SubElement(vault, 'vaultAccessor')
 
