@@ -2297,18 +2297,22 @@ def artifactory_generic(registry, xml_parent, data):
         info.get('version', str(sys.maxsize)))
 
     if version >= pkg_resources.parse_version('2.3.0'):
-        deployReleaseRepo = XML.SubElement(details, 'deployReleaseRepository')
-        XML.SubElement(deployReleaseRepo, 'keyFromText').text = data.get(
-            'key-from-text', '')
-        XML.SubElement(deployReleaseRepo, 'keyFromSelect').text = data.get(
-            'key-from-select', '')
-        XML.SubElement(deployReleaseRepo, 'dynamicMode').text = str(
-            'key-from-text' in data.keys()).lower()
+        deploy_release_repo = XML.SubElement(
+            details, 'deployReleaseRepository')
+        mapping = [
+            ('key-from-text', 'keyFromText', ''),
+            ('key-from-select', 'keyFromSelect', ''),
+            ('key-from-text', 'dynamicMode', ''),
+        ]
+        helpers.convert_mapping_to_xml(
+            deploy_release_repo, data, mapping, fail_required=False)
     else:
-        XML.SubElement(details, 'repositoryKey').text = data.get(
-            'repo-key', '')
-        XML.SubElement(details, 'snapshotsRepositoryKey').text = data.get(
-            'snapshot-repo-key', '')
+        mapping = [
+            ('repo-key', 'repositoryKey', ''),
+            ('snapshot-repo-key', 'snapshotsRepositoryKey', ''),
+        ]
+        helpers.convert_mapping_to_xml(
+            details, data, mapping, fail_required=False)
 
     XML.SubElement(artifactory, 'deployPattern').text = ','.join(data.get(
         'deploy-pattern', []))
@@ -2316,15 +2320,14 @@ def artifactory_generic(registry, xml_parent, data):
         data.get('resolve-pattern', []))
     XML.SubElement(artifactory, 'matrixParams').text = ','.join(
         data.get('matrix-params', []))
-
-    XML.SubElement(artifactory, 'deployBuildInfo').text = str(
-        data.get('deploy-build-info', False)).lower()
-    XML.SubElement(artifactory, 'includeEnvVars').text = str(
-        data.get('env-vars-include', False)).lower()
-    XML.SubElement(artifactory, 'discardOldBuilds').text = str(
-        data.get('discard-old-builds', False)).lower()
-    XML.SubElement(artifactory, 'discardBuildArtifacts').text = str(
-        data.get('discard-build-artifacts', True)).lower()
+    mapping = [
+        ('deploy-build-info', 'deployBuildInfo', False),
+        ('env-vars-include', 'includeEnvVars', False),
+        ('discard-old-builds', 'discardOldBuilds', False),
+        ('discard-build-artifacts', 'discardBuildArtifacts', True),
+    ]
+    helpers.convert_mapping_to_xml(
+        artifactory, data, mapping, fail_required=False)
 
     # envVarsPatterns
     helpers.artifactory_env_vars_patterns(artifactory, data)

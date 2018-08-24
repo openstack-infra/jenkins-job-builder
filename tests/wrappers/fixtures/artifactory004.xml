@@ -8,7 +8,7 @@
         <deployReleaseRepository>
           <keyFromText/>
           <keyFromSelect>repo</keyFromSelect>
-          <dynamicMode>false</dynamicMode>
+          <dynamicMode/>
         </deployReleaseRepository>
       </details>
       <deployPattern>*.zip=&gt;results</deployPattern>
