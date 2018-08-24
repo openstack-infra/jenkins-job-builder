@@ -1206,6 +1206,11 @@ def jclouds(registry, xml_parent, data):
        :language: yaml
 
     """
+    mapping = [
+        ('cloud-name', 'cloudName', ''),
+        ('count', 'count', '1'),
+        ('stop-on-terminate', 'suspendOrTerminate', False),
+    ]
     if 'instances' in data:
         buildWrapper = XML.SubElement(
             xml_parent, 'jenkins.plugins.jclouds.compute.JCloudsBuildWrapper')
@@ -1216,12 +1221,8 @@ def jclouds(registry, xml_parent, data):
                                           'jenkins.plugins.jclouds.compute.'
                                           'InstancesToRun')
                 XML.SubElement(instance, 'templateName').text = template
-                XML.SubElement(instance, 'cloudName').text = \
-                    params.get('cloud-name', '')
-                XML.SubElement(instance, 'count').text = \
-                    str(params.get('count', 1))
-                XML.SubElement(instance, 'suspendOrTerminate').text = \
-                    str(params.get('stop-on-terminate', False)).lower()
+                helpers.convert_mapping_to_xml(
+                    instance, params, mapping, fail_required=False)
     if data.get('single-use'):
         XML.SubElement(xml_parent,
                        'jenkins.plugins.jclouds.compute.'
