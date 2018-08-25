@@ -9,6 +9,8 @@
       <optional>true</optional>
       <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
       <parameters>PUBLISH=true</parameters>
+      <exclude/>
+      <resultVariableSuffix/>
       <selector class="hudson.plugins.copyartifact.LastCompletedBuildSelector"/>
     </hudson.plugins.copyartifact.CopyArtifact>
   </builders>

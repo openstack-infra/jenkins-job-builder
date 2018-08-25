@@ -7,3 +7,5 @@ builders:
       optional: true
       flatten: true
       parameter-filters: PUBLISH=true
+      exclude: "*.txt"
+      result-var-suffix: "PROJECT_ABC"
