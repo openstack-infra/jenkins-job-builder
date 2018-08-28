@@ -18,6 +18,9 @@ builders:
       ipa-export-method: ad-hoc
       ipa-version: "${VERSION}"
       ipa-output: "/output"
+      compile-bitcode: false
+      upload-bitcode: false
+      upload-symbols: false
       development-team-id: foo
       keychain-path: "/Users/jenkins/Library/Keychains/jenkins-uasdk-ios-pre_review"
       keychain-password: "testpass"

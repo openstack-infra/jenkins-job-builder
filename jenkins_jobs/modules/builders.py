@@ -3157,6 +3157,12 @@ def xcode(registry, xml_parent, data):
         (default '')
     :arg str ipa-output: The output directory for the .ipa file,
         relative to the build directory. (default '')
+    :arg bool compile-bitcode: recompile from Bitcode when exporting the
+        application to IPA. (default true)
+    :arg bool upload-bitcode: include Bitcode when exporting applications to
+        IPA. (default true)
+    :arg bool upload-symbols: include symbols when exporting applications to
+        IPA. (default true)
     :arg development-team-id: The ID of the Apple development team to use to
         sign the IPA (default '')
     :arg str keychain-name: The globally configured keychain to unlock for
@@ -3236,6 +3242,9 @@ def xcode(registry, xml_parent, data):
         ('keychain-path', 'keychainPath', ''),
         ('keychain-password', 'keychainPwd', ''),
         ('keychain-unlock', 'unlockKeychain', False),
+        ('compile-bitcode', 'compileBitcode', True),
+        ('upload-bitcode', 'uploadBitcode', True),
+        ('upload-symbols', 'uploadSymbols', True)
     ]
     helpers.convert_mapping_to_xml(xcode, data, mapping, fail_required=True)
 
