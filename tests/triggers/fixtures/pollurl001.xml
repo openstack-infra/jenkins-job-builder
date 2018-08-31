@@ -8,14 +8,14 @@
       <entries>
         <org.jenkinsci.plugins.urltrigger.URLTriggerEntry>
           <url>http://example.com/url1</url>
-          <proxyActivated>false</proxyActivated>
           <username>username</username>
           <password>sekr3t</password>
           <checkStatus>true</checkStatus>
-          <statusCode>202</statusCode>
+          <proxyActivated>false</proxyActivated>
           <timeout>442</timeout>
           <checkETag>false</checkETag>
           <checkLastModificationDate>true</checkLastModificationDate>
+          <statusCode>202</statusCode>
           <inspectingContent>true</inspectingContent>
           <contentTypes>
             <org.jenkinsci.plugins.urltrigger.content.SimpleContentType/>
@@ -33,12 +33,13 @@
         </org.jenkinsci.plugins.urltrigger.URLTriggerEntry>
         <org.jenkinsci.plugins.urltrigger.URLTriggerEntry>
           <url>http://example.com/url2</url>
-          <proxyActivated>true</proxyActivated>
           <checkStatus>false</checkStatus>
           <statusCode>200</statusCode>
+          <proxyActivated>true</proxyActivated>
           <timeout>300</timeout>
           <checkETag>true</checkETag>
           <checkLastModificationDate>false</checkLastModificationDate>
+          <statusCode/>
           <inspectingContent>true</inspectingContent>
           <contentTypes>
             <org.jenkinsci.plugins.urltrigger.content.XMLContentType>
