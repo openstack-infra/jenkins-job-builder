@@ -9,6 +9,8 @@
       <optional>true</optional>
       <doNotFingerprintArtifacts>true</doNotFingerprintArtifacts>
       <parameters>PUBLISH=true</parameters>
+      <exclude/>
+      <resultVariableSuffix/>
       <selector class="hudson.plugins.copyartifact.DownstreamBuildSelector">
         <upstreamProjectName>bar</upstreamProjectName>
         <upstreamBuildNumber>123</upstreamBuildNumber>

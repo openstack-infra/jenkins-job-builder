@@ -9,6 +9,8 @@
       <optional>true</optional>
       <doNotFingerprintArtifacts>true</doNotFingerprintArtifacts>
       <parameters>PUBLISH=true</parameters>
+      <exclude/>
+      <resultVariableSuffix/>
       <selector class="hudson.plugins.copyartifact.SpecificBuildSelector">
         <buildNumber>123</buildNumber>
       </selector>

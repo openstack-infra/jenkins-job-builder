@@ -167,7 +167,12 @@ def copyartifact(registry, xml_parent, data):
         which-build
     :arg string parameter-filters: Filter matching jobs based on these
         parameters (optional)
-
+    :arg string exclude: Specify paths or patterns of artifacts to
+        exclude, even if specified in "Artifacts to copy". (default '')
+    :arg string result-var-suffix: The build number of the selected build
+        will be recorded into the variable named
+        COPYARTIFACT_BUILD_NUMBER_(SUFFIX)
+        for later build steps to reference. (default '')
 
     Example:
 
@@ -191,6 +196,8 @@ def copyartifact(registry, xml_parent, data):
         ('optional', 'optional', False),
         ('do-not-fingerprint', 'doNotFingerprintArtifacts', False),
         ('parameter-filters', 'parameters', ''),
+        ('exclude', 'exclude', ''),
+        ('result-var-suffix', 'resultVariableSuffix', ''),
     ]
     helpers.convert_mapping_to_xml(t, data, mappings, fail_required=True)
     helpers.copyartifact_build_selector(t, data)
