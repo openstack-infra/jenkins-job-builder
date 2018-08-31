@@ -1,0 +1,11 @@
+triggers:
+  - gitlab-merge-request:
+      cron: '* * * * *'
+      project-path: 'test/project'
+      target-branch-regex: '(.*release.*|.*hotfix.*)'
+      use-http-url: false
+      assignee-filter: 'jenkinsbot'
+      tag-filter: 'fix'
+      trigger-comment: 'rebuild'
+      auto-close-failed: false
+      auto-merge-passed: false

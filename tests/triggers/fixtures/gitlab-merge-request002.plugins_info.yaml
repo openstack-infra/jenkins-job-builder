@@ -1,0 +1,3 @@
+- longName: 'Gitlab Merge Request Builder'
+  shortName: 'gitlab-merge-request-jenkins'
+  version: '2'

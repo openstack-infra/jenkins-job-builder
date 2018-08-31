@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.gitlab.GitlabBuildTrigger>
+      <spec>* * * * *</spec>
+      <projectPath>test/project</projectPath>
+      <targetBranchRegex>(.*release.*|.*hotfix.*)</targetBranchRegex>
+      <useHttpUrl>false</useHttpUrl>
+      <assigneeFilter>jenkinsbot</assigneeFilter>
+      <tagFilter>fix</tagFilter>
+      <triggerComment>rebuild</triggerComment>
+      <autoCloseFailed>false</autoCloseFailed>
+      <autoMergePassed>false</autoMergePassed>
+    </org.jenkinsci.plugins.gitlab.GitlabBuildTrigger>
+  </triggers>
+</project>

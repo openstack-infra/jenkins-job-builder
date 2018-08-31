@@ -1200,11 +1200,14 @@ def github_pull_request(registry, xml_parent, data):
 def gitlab_merge_request(registry, xml_parent, data):
     """yaml: gitlab-merge-request
     Build merge requests in gitlab and report results.
-    Requires the Jenkins :jenkins-wiki:`Gitlab MergeRequest Builder Plugin.
+    Requires the Jenkins :jenkins-wiki:`Gitlab MergeRequest Builder Plugin
     <Gitlab+Merge+Request+Builder+Plugin>`.
 
     :arg string cron: Cron syntax of when to run (required)
     :arg string project-path: Gitlab-relative path to project (required)
+    :arg string target-branch-regex: Allow execution of this job for certain
+        branches only (default ''). Requires Gitlab MergeRequest Builder
+        Plugin >= 2.0.0
     :arg string use-http-url: Use the HTTP(S) URL to fetch/clone repository
         (default false)
     :arg string assignee-filter: Only MRs with this assigned user will
@@ -1215,36 +1218,66 @@ def gitlab_merge_request(registry, xml_parent, data):
         in merge reguest (default '')
     :arg string publish-build-progress-messages: Publish build progress
         messages (except build failed) (default true)
+
+        .. deprecated:: 2.0.0
+
     :arg string auto-close-failed: On failure, auto close the request
         (default false)
     :arg string auto-merge-passed: On success, auto merge the request
         (default false)
 
-    Example:
+    Example (version < 2.0.0):
 
     .. literalinclude:: \
-        /../../tests/triggers/fixtures/gitlab-merge-request.yaml
+        /../../tests/triggers/fixtures/gitlab-merge-request001.yaml
+
+    Example (version >= 2.0.0):
+
+    .. literalinclude:: \
+        /../../tests/triggers/fixtures/gitlab-merge-request002.yaml
     """
     ghprb = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.gitlab.'
                            'GitlabBuildTrigger')
 
-    # Because of a design limitation in the GitlabBuildTrigger Jenkins plugin
-    # both 'spec' and '__cron' have to be set to the same value to have them
-    # take effect. Also, cron and projectPath are prefixed with underscores
-    # in the plugin, but spec is not.
-    mapping = [
-        ('cron', 'spec', None),
-        ('cron', '__cron', None),
-        ('project-path', '__projectPath', None),
-        ('use-http-url', '__useHttpUrl', False),
-        ('assignee-filter', '__assigneeFilter', 'jenkins'),
-        ('tag-filter', '__tagFilter', 'Build'),
-        ('trigger-comment', '__triggerComment', ''),
-        ('publish-build-progress-messages', '__publishBuildProgressMessages',
-         True),
-        ('auto-close-failed', '__autoCloseFailed', False),
-        ('auto-merge-passed', '__autoMergePassed', False),
-    ]
+    plugin_info = registry.get_plugin_info('Gitlab Merge Request Builder')
+
+    # Note: Assume latest version of plugin is preferred config format
+    plugin_ver = pkg_resources.parse_version(
+        plugin_info.get('version', str(sys.maxsize)))
+
+    if plugin_ver >= pkg_resources.parse_version("2.0.0"):
+        mapping = [
+            ('cron', 'spec', None),
+            ('project-path', 'projectPath', None),
+            ('target-branch-regex', 'targetBranchRegex', ''),
+            ('use-http-url', 'useHttpUrl', False),
+            ('assignee-filter', 'assigneeFilter', 'jenkins'),
+            ('tag-filter', 'tagFilter', 'Build'),
+            ('trigger-comment', 'triggerComment', ''),
+            ('auto-close-failed', 'autoCloseFailed', False),
+            ('auto-merge-passed', 'autoMergePassed', False),
+        ]
+    else:
+        # The plugin version is < 2.0.0
+
+        # Because of a design limitation in the GitlabBuildTrigger Jenkins
+        # plugin both 'spec' and '__cron' have to be set to the same value to
+        # have them take effect. Also, cron and projectPath are prefixed with
+        # underscores in the plugin, but spec is not.
+        mapping = [
+            ('cron', 'spec', None),
+            ('cron', '__cron', None),
+            ('project-path', '__projectPath', None),
+            ('use-http-url', '__useHttpUrl', False),
+            ('assignee-filter', '__assigneeFilter', 'jenkins'),
+            ('tag-filter', '__tagFilter', 'Build'),
+            ('trigger-comment', '__triggerComment', ''),
+            ('publish-build-progress-messages',
+                '__publishBuildProgressMessages', True),
+            ('auto-close-failed', '__autoCloseFailed', False),
+            ('auto-merge-passed', '__autoMergePassed', False),
+        ]
+
     helpers.convert_mapping_to_xml(ghprb, data, mapping, True)
 
 
