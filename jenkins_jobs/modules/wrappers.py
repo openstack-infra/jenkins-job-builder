@@ -1856,6 +1856,24 @@ def credentials_binding(registry, xml_parent, data):
                      * **secret-key** (`str`) Environment variable for the
                        access secret key (Required for binding-type
                        amazon-web-services)
+                     * **key-file-variable** (`str`) Environment variable
+                       to be set to the temporary path of the SSH key
+                       file during the build.
+                     * **username-variable** (`str`) Environment variable
+                       to be set to the username during
+                       the build. (optional)
+                     * **passphrase-variable** (`str`) Environment
+                       variable to be set to the password
+                       during the build. (optional)
+                     * **keystore-variable** (`str`) Environment
+                       variable to be set to the temporary
+                       keystore location during the build.
+                     * **password-variable** (`str`) Environment
+                       variable to be set to the password
+                       during the build.
+                     * **alias-variable** (`str`) Environment variable
+                       to be set to the keystore alias name
+                       of the certificate during the build.
 
     Example:
 
@@ -1887,7 +1905,16 @@ def credentials_binding(registry, xml_parent, data):
         'text': 'org.jenkinsci.plugins.credentialsbinding.impl.StringBinding',
         'amazon-web-services':
             'com.cloudbees.jenkins.plugins.awscredentials'
-            '.AmazonWebServicesCredentialsBinding'
+            '.AmazonWebServicesCredentialsBinding',
+        'ssh-user-private-key':
+            'org.jenkinsci.plugins.credentialsbinding'
+            '.impl.SSHUserPrivateKeyBinding',
+        'docker-server-creds-binding':
+            'org.jenkinsci.plugins.docker.commons'
+            '.credentials.DockerServerCredentialsBinding',
+        'cert-multi-binding':
+            'org.jenkinsci.plugins.credentialsbinding'
+            '.impl.CertificateMultiBinding'
     }
     for binding in data:
         for binding_type, params in binding.items():
@@ -1908,6 +1935,22 @@ def credentials_binding(registry, xml_parent, data):
                 mapping = [
                     ('access-key', 'accessKeyVariable', None),
                     ('secret-key', 'secretKeyVariable', None),
+                ]
+                helpers.convert_mapping_to_xml(
+                    binding_xml, params, mapping, fail_required=True)
+            elif binding_type == 'ssh-user-private-key':
+                mapping = [
+                    ('key-file-variable', 'keyFileVariable', None),
+                    ('username-variable', 'usernameVariable', ''),
+                    ('passphrase-variable', 'passphraseVariable', ''),
+                ]
+                helpers.convert_mapping_to_xml(
+                    binding_xml, params, mapping, fail_required=True)
+            elif binding_type == 'cert-multi-binding':
+                mapping = [
+                    ('keystore-variable', 'keystoreVariable', None),
+                    ('password-variable', 'passwordVariable', None),
+                    ('alias-variable', 'aliasVariable', None),
                 ]
                 helpers.convert_mapping_to_xml(
                     binding_xml, params, mapping, fail_required=True)
