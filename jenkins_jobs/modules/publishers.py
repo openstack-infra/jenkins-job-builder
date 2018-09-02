@@ -1361,6 +1361,23 @@ def cucumber_reports(registry, xml_parent, data):
         (default false)
     :arg bool parallel-testing: Run same test in parallel for multiple devices
         (default false)
+    :arg int failed-steps-number: Maximum number of failed steps above which
+        build result is changed (default 0)
+    :arg int skipped-steps-number: Maximum number of skipped steps above which
+        build result is changed (default 0)
+    :arg int pending-steps-number: Maximum number of pending steps above which
+        build result is changed (default 0)
+    :arg int undefined-steps-number: Maximum number of undefined steps above
+        which build result is changed (default 0)
+    :arg int failed-scenarios-number: Maximum number of failed scenarios above
+        which build result is changed (default 0)
+    :arg int failed-features-number: Maximum number of failed features above
+        which build result is changed (default 0)
+    :arg list build-status: Build result to which the build should be set
+        when the report becomes failed or unstable (default '')
+    :arg int trends-limit: Number of past reports that should be presented.
+        Zero means unlimited number of builds (default 0)
+    :arg list sorting-method: Result sorting order (default 'NATURAL')
 
     Full example:
 
@@ -1379,6 +1396,8 @@ def cucumber_reports(registry, xml_parent, data):
                                       'CucumberReportPublisher')
     cucumber_reports.set('plugin', 'cucumber-reports')
 
+    valid_build_status = ['', 'UNSTABLE', 'FAILURE']
+    valid_sorting_method = ['NATURAL', 'ALPHABETICAL']
     mappings = [
         ('json-reports-path', 'jsonReportDirectory', ''),
         ('plugin-url-path', 'pluginUrlPath', ''),
@@ -1390,10 +1409,36 @@ def cucumber_reports(registry, xml_parent, data):
         ('missing-fails', 'missingFails', False),
         ('no-flash-charts', 'noFlashCharts', False),
         ('ignore-failed-tests', 'ignoreFailedTests', False),
-        ('parallel-testing', 'parallelTesting', False)
+        ('parallel-testing', 'parallelTesting', False),
+        ('failed-steps-number', 'failedStepsNumber', 0),
+        ('skipped-steps-number', 'skippedStepsNumber', 0),
+        ('pending-steps-number', 'pendingStepsNumber', 0),
+        ('undefined-steps-number', 'undefinedStepsNumber', 0),
+        ('failed-scenarios-number', 'failedScenariosNumber', 0),
+        ('failed-features-number', 'failedFeaturesNumber', 0),
+        ('build-status', 'buildStatus', '', valid_build_status),
+        ('trends-limit', 'trendsLimit', 0),
+        ('sorting-method', 'sortingMethod', 'NATURAL', valid_sorting_method),
     ]
     helpers.convert_mapping_to_xml(
         cucumber_reports, data, mappings, fail_required=True)
+
+    if 'sorting-values' in data:
+        format_dict = {
+            'classifications': 'net.masterthought.jenkins'
+                               '.CucumberReportPublisher_-Classification'
+        }
+        classifications_tag = XML.SubElement(
+            cucumber_reports, 'classifications')
+        for values in data['sorting-values']:
+            for value, params in values.items():
+                cucumber_report_publisher = XML.SubElement(
+                    classifications_tag, format_dict.get('classifications'))
+                XML.SubElement(
+                    cucumber_report_publisher, 'key').text = params.get('key')
+                XML.SubElement(
+                    cucumber_report_publisher, 'value').text = params.get(
+                    'value')
 
 
 def cucumber_testresult(registry, xml_parent, data):

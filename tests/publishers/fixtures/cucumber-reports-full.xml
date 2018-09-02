@@ -13,6 +13,25 @@
       <noFlashCharts>true</noFlashCharts>
       <ignoreFailedTests>true</ignoreFailedTests>
       <parallelTesting>true</parallelTesting>
+      <failedStepsNumber>1</failedStepsNumber>
+      <skippedStepsNumber>2</skippedStepsNumber>
+      <pendingStepsNumber>3</pendingStepsNumber>
+      <undefinedStepsNumber>4</undefinedStepsNumber>
+      <failedScenariosNumber>5</failedScenariosNumber>
+      <failedFeaturesNumber>6</failedFeaturesNumber>
+      <buildStatus>UNSTABLE</buildStatus>
+      <trendsLimit>7</trendsLimit>
+      <sortingMethod>ALPHABETICAL</sortingMethod>
+      <classifications>
+        <net.masterthought.jenkins.CucumberReportPublisher_-Classification>
+          <key>classification key 1</key>
+          <value>classification value 1</value>
+        </net.masterthought.jenkins.CucumberReportPublisher_-Classification>
+        <net.masterthought.jenkins.CucumberReportPublisher_-Classification>
+          <key>classification key 2</key>
+          <value>classification value 2</value>
+        </net.masterthought.jenkins.CucumberReportPublisher_-Classification>
+      </classifications>
     </net.masterthought.jenkins.CucumberReportPublisher>
   </publishers>
 </project>

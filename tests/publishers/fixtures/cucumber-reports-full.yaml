@@ -11,3 +11,19 @@ publishers:
       no-flash-charts: true
       ignore-failed-tests: true
       parallel-testing: true
+      failed-steps-number: 1
+      skipped-steps-number: 2
+      pending-steps-number: 3
+      undefined-steps-number: 4
+      failed-scenarios-number: 5
+      failed-features-number: 6
+      build-status: UNSTABLE
+      trends-limit: 7
+      sorting-method: ALPHABETICAL
+      sorting-values:
+        - key-value-pair:
+            key: classification key 1
+            value: classification value 1
+        - key-value-pair:
+            key: classification key 2
+            value: classification value 2
