@@ -430,6 +430,8 @@ def extended_choice_param(registry, xml_parent, data):
     :arg str groovy-script: the groovy script contents (optional, default ',')
     :arg str groovy-script-file: location of groovy script file to generate
         parameters (optional, default '')
+    :arg str bindings: variable bindings for the groovy script
+        (optional, default '')
     :arg str classpath: the classpath for the groovy script
         (optional, default ',')
     :arg str default-groovy-script: the default groovy
@@ -483,6 +485,7 @@ def extended_choice_param(registry, xml_parent, data):
         ('default-property-key', 'defaultPropertyKey', ''),
         ('description-property-file', 'descriptionPropertyFile', ''),
         ('description-property-key', 'descriptionPropertyKey', ''),
+        ('bindings', 'bindings', ''),
         ('groovy-script', 'groovyScript', ''),
         ('groovy-script-file', 'groovyScriptFile', ''),
         ('classpath', 'groovyClasspath', ''),
