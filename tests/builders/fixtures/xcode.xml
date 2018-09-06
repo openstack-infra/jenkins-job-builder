@@ -30,6 +30,9 @@
       <keychainPath/>
       <keychainPwd/>
       <unlockKeychain>false</unlockKeychain>
+      <compileBitcode>true</compileBitcode>
+      <uploadBitcode>true</uploadBitcode>
+      <uploadSymbols>true</uploadSymbols>
       <manualSigning>false</manualSigning>
     </au.com.rayh.XCodeBuilder>
     <au.com.rayh.DeveloperProfileLoader>
@@ -64,6 +67,9 @@
       <keychainPath>/Users/jenkins/Library/Keychains/jenkins-uasdk-ios-pre_review</keychainPath>
       <keychainPwd>testpass</keychainPwd>
       <unlockKeychain>true</unlockKeychain>
+      <compileBitcode>false</compileBitcode>
+      <uploadBitcode>false</uploadBitcode>
+      <uploadSymbols>false</uploadSymbols>
       <manualSigning>true</manualSigning>
       <provisioningProfiles>
         <au.com.rayh.ProvisioningProfile>
