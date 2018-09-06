@@ -4181,6 +4181,33 @@ def nexus_iq_policy_evaluator(registry, xml_parent, data):
         XML.SubElement(scan_pattern_tag, 'scanPattern').text = scan_pattern
 
 
+def nexus_repo_manager(registry, xml_parent, data):
+    """yaml: nexus-repo-manager
+    Allows for artifacts selected in Jenkins packages to be
+    available in Nexus Repository Manager.
+    Requires the Jenkins :jenkins-wiki:`Nexus
+    Platform Plugin <Nexus+Platform+Plugin>`.
+
+    :arg str instance-id: The ID of the Nexus Instance (required)
+    :arg str repo-id: The ID of the Nexus Repository (required)
+
+    Minimal Example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/nexus-repo-manager-minimal.yaml
+       :language: yaml
+    """
+    nexus_repo_manager = XML.SubElement(xml_parent,
+                                        'org.sonatype.nexus.ci.'
+                                        'nxrm.NexusPublisherBuildStep')
+    mapping = [
+        ('instance-id', 'nexusInstanceId', None),
+        ('repo-id', 'nexusRepositoryId', None),
+    ]
+    helpers.convert_mapping_to_xml(nexus_repo_manager,
+                                   data, mapping, fail_required=True)
+
+
 def ansible_playbook(parser, xml_parent, data):
     """yaml: ansible-playbook
     This plugin allows you to execute Ansible tasks as a job build step.
