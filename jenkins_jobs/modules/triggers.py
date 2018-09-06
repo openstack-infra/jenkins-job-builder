@@ -786,28 +786,28 @@ def pollurl(registry, xml_parent, data):
     urls = data.get('urls', [])
     if not urls:
         raise JenkinsJobsException('At least one url must be provided')
+    mapping = [
+        ('proxy', 'proxyActivated', False),
+        ('timeout', 'timeout', 300),
+        ('check-etag', 'checkETag', False),
+        ('check-date', 'checkLastModificationDate', False)
+    ]
     for url in urls:
         entry = XML.SubElement(entries, namespace + 'URLTriggerEntry')
         XML.SubElement(entry, 'url').text = url['url']
-        XML.SubElement(entry, 'proxyActivated').text = \
-            str(url.get('proxy', False)).lower()
         if 'username' in url:
             XML.SubElement(entry, 'username').text = url['username']
         if 'password' in url:
             XML.SubElement(entry, 'password').text = url['password']
         if 'check-status' in url:
             XML.SubElement(entry, 'checkStatus').text = 'true'
-            XML.SubElement(entry, 'statusCode').text = \
-                str(url.get('check-status'))
+            mapping.append(('check-status', 'statusCode', ''))
         else:
             XML.SubElement(entry, 'checkStatus').text = 'false'
             XML.SubElement(entry, 'statusCode').text = '200'
-        XML.SubElement(entry, 'timeout').text = \
-            str(url.get('timeout', 300))
-        XML.SubElement(entry, 'checkETag').text = \
-            str(url.get('check-etag', False)).lower()
-        XML.SubElement(entry, 'checkLastModificationDate').text = \
-            str(url.get('check-date', False)).lower()
+
+        helpers.convert_mapping_to_xml(
+            entry, url, mapping, fail_required=False)
         check_content = url.get('check-content', [])
         XML.SubElement(entry, 'inspectingContent').text = \
             str(bool(check_content)).lower()
