@@ -1023,11 +1023,21 @@ def github_pull_request(registry, xml_parent, data):
     """
     ghprb = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.ghprb.'
                            'GhprbTrigger')
-    XML.SubElement(ghprb, 'spec').text = data.get('cron', '')
+    mapping = [
+        ('cron', 'spec', ''),
+        ('allow-whitelist-orgs-as-admins',
+         'allowMembersOfWhitelistedOrgsAsAdmin', False),
+        ('cron', 'cron', ''),
+        ('trigger-phrase', 'triggerPhrase', ''),
+        ('skip-build-phrase', 'skipBuildPhrase', ''),
+        ('only-trigger-phrase', 'onlyTriggerPhrase', False),
+        ('github-hooks', 'useGitHubHooks', False),
+        ('permit-all', 'permitAll', False),
+        ('auto-close-on-fail',
+         'autoCloseFailedPullRequests', False),
+    ]
     admin_string = "\n".join(data.get('admin-list', []))
     XML.SubElement(ghprb, 'adminlist').text = admin_string
-    XML.SubElement(ghprb, 'allowMembersOfWhitelistedOrgsAsAdmin').text = str(
-        data.get('allow-whitelist-orgs-as-admins', False)).lower()
     white_string = "\n".join(data.get('white-list', []))
     XML.SubElement(ghprb, 'whitelist').text = white_string
     org_string = "\n".join(data.get('org-list', []))
@@ -1036,7 +1046,6 @@ def github_pull_request(registry, xml_parent, data):
     XML.SubElement(ghprb, 'whiteListLabels').text = white_list_labels_string
     black_list_labels_string = "\n".join(data.get('black-list-labels', []))
     XML.SubElement(ghprb, 'blackListLabels').text = black_list_labels_string
-    XML.SubElement(ghprb, 'cron').text = data.get('cron', '')
     excluded_regions_string = "\n".join(data.get('excluded-regions', []))
     XML.SubElement(ghprb, 'excludedRegions').text = excluded_regions_string
     included_regions_string = "\n".join(data.get('included-regions', []))
@@ -1047,19 +1056,8 @@ def github_pull_request(registry, xml_parent, data):
         XML.SubElement(ghprb, 'buildDescTemplate').text = str(
             build_desc_template)
 
-    XML.SubElement(ghprb, 'triggerPhrase').text = \
-        data.get('trigger-phrase', '')
-    XML.SubElement(ghprb, 'skipBuildPhrase').text = str(
-        data.get('skip-build-phrase', '')).lower()
-    XML.SubElement(ghprb, 'onlyTriggerPhrase').text = str(
-        data.get('only-trigger-phrase', False)).lower()
-    XML.SubElement(ghprb, 'useGitHubHooks').text = str(
-        data.get('github-hooks', False)).lower()
-    XML.SubElement(ghprb, 'permitAll').text = str(
-        data.get('permit-all', False)).lower()
-    XML.SubElement(ghprb, 'autoCloseFailedPullRequests').text = str(
-        data.get('auto-close-on-fail', False)).lower()
-
+    helpers.convert_mapping_to_xml(
+        ghprb, data, mapping, fail_required=False)
     white_list_target_branches = data.get('white-list-target-branches', [])
     if white_list_target_branches:
         ghprb_wltb = XML.SubElement(ghprb, 'whiteListTargetBranches')

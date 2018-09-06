@@ -2,10 +2,8 @@
 <project>
   <triggers class="vector">
     <org.jenkinsci.plugins.ghprb.GhprbTrigger>
-      <spec>* * * * *</spec>
       <adminlist>user1
 user2</adminlist>
-      <allowMembersOfWhitelistedOrgsAsAdmin>true</allowMembersOfWhitelistedOrgsAsAdmin>
       <whitelist>user3
 user4</whitelist>
       <orgslist>org1
@@ -14,12 +12,14 @@ org2</orgslist>
 label2</whiteListLabels>
       <blackListLabels>label3
 label4</blackListLabels>
-      <cron>* * * * *</cron>
       <excludedRegions>exclude
 region</excludedRegions>
       <includedRegions>include
 region</includedRegions>
       <buildDescTemplate>build description</buildDescTemplate>
+      <spec>* * * * *</spec>
+      <allowMembersOfWhitelistedOrgsAsAdmin>true</allowMembersOfWhitelistedOrgsAsAdmin>
+      <cron>* * * * *</cron>
       <triggerPhrase>retest this please</triggerPhrase>
       <skipBuildPhrase>no tests</skipBuildPhrase>
       <onlyTriggerPhrase>true</onlyTriggerPhrase>
