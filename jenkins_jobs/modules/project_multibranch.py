@@ -313,11 +313,40 @@ def bitbucket_scm(xml_parent, data):
         repository is the same as the target repository.
         Valid options: mergeOnly, headOnly, mergeAndHead.
         Value is not specified by default.
+    :arg str discover-pr-forks-strategy: Fork strategy. Valid options:
+        merge-current, current, both, false. (default 'merge-current')
+    :arg str discover-pr-forks-trust: Discovers pull requests where the origin
+        repository is a fork of the target repository.
+        Valid options: contributors, everyone, permission or nobody.
+        (default 'contributors')
     :arg list build-strategies: Provides control over whether to build a branch
         (or branch like things such as change requests and tags) whenever it is
         discovered initially or a change from the previous revision has been
         detected. (optional)
         Refer to :func:`~build_strategies <build_strategies>`.
+    :arg bool local-branch: Check out to matching local branch
+        If given, checkout the revision to build as HEAD on this branch.
+        If selected, then the branch name is computed from the remote branch
+        without the origin. In that case, a remote branch origin/master will
+        be checked out to a local branch named master, and a remote branch
+        origin/develop/new-feature will be checked out to a local branch
+        named develop/newfeature.
+        Requires the :jenkins-wiki:`Git Plugin <Git+Plugin>`.
+    :arg dict checkout-over-ssh: Checkout repo over ssh.
+
+        * **credentials** ('str'): Credentials to use for
+            checkout of the repo over ssh.
+
+    :arg dict filter-by-name-wildcard: Enable filter by name with wildcards.
+        Requires the :jenkins-wiki:`SCM API Plugin <SCM+API+Plugin>`.
+
+        * **includes** ('str'): Space-separated list
+            of name patterns to consider. You may use * as a wildcard;
+            for example: `master release*`
+        * **excludes** ('str'): Name patterns to
+            ignore even if matched by the includes list.
+            For example: `release*`
+
 
     Minimal Example:
 
@@ -373,6 +402,43 @@ def bitbucket_scm(xml_parent, data):
         helpers.convert_mapping_to_xml(
             dpro, data, dpro_mapping, fail_required=True)
 
+    if data.get('discover-pr-forks-strategy'):
+        dprf = XML.SubElement(traits,
+             'com.cloudbees.jenkins.plugins.bitbucket'
+             '.ForkPullRequestDiscoveryTrait')
+        dprf_strategy = {
+            'merge-current': '1',
+            'current': '2',
+            'both': '3',
+        }
+        dprf_mapping = [
+            ('discover-pr-forks-strategy', 'strategyId', 'merge-current',
+            dprf_strategy)
+        ]
+        helpers.convert_mapping_to_xml(
+            dprf, data, dprf_mapping, fail_required=True)
+
+        trust = data.get('discover-pr-forks-trust', 'contributors')
+        trust_map = {
+            'contributors': ''.join([
+                'com.cloudbees.jenkins.plugins.bitbucket'
+                '.ForkPullRequestDiscoveryTrait$TrustContributors']),
+            'everyone': ''.join([
+                'com.cloudbees.jenkins.plugins.bitbucket'
+                '.ForkPullRequestDiscoveryTrait$TrustEveryone']),
+            'permission': ''.join([
+                'com.cloudbees.jenkins.plugins.bitbucket'
+                '.ForkPullRequestDiscoveryTrait$TrustPermission']),
+            'nobody': ''.join([
+                'com.cloudbees.jenkins.plugins.bitbucket'
+                '.ForkPullRequestDiscoveryTrait$TrustNobody']),
+        }
+        if trust not in trust_map:
+            raise InvalidAttributeError('discover-pr-forks-trust',
+                                        trust,
+                                        trust_map.keys())
+        XML.SubElement(dprf, 'trust').attrib['class'] = trust_map[trust]
+
     if data.get('discover-branch', None):
         dbr = XML.SubElement(traits,
             'com.cloudbees.jenkins.plugins.bitbucket.BranchDiscoveryTrait')
@@ -389,6 +455,48 @@ def bitbucket_scm(xml_parent, data):
 
     if data.get('build-strategies', None):
         build_strategies(xml_parent, data)
+
+    if data.get('local-branch', False):
+        lbr = XML.SubElement(traits,
+            'jenkins.plugins.git.traits.LocalBranchTrait', {
+                'plugin': 'git',
+            }
+        )
+        lbr_extension = XML.SubElement(lbr,
+            'extension', {
+                'class': 'hudson.plugins.git.extensions.impl.LocalBranch',
+            }
+        )
+        XML.SubElement(lbr_extension,
+            'localBranch').text = "**"
+
+    if data.get('checkout-over-ssh', None):
+        cossh = XML.SubElement(traits,
+            'com.cloudbees.jenkins.plugins.bitbucket.SSHCheckoutTrait')
+        cossh_credentials = [
+            ('credentials', 'credentialsId', ''),
+        ]
+        helpers.convert_mapping_to_xml(
+            cossh,
+            data.get('checkout-over-ssh'),
+            cossh_credentials,
+            fail_required=True)
+
+    if data.get('filter-by-name-wildcard', None):
+        wscmf_name = XML.SubElement(traits,
+            'jenkins.scm.impl.trait.WildcardSCMHeadFilterTrait', {
+                'plugin': 'scm-api',
+            }
+        )
+        wscmf_name_mapping = [
+            ('includes', 'includes', ''),
+            ('excludes', 'excludes', '')
+        ]
+        helpers.convert_mapping_to_xml(
+            wscmf_name,
+            data.get('filter-by-name-wildcard', ''),
+            wscmf_name_mapping,
+            fail_required=True)
 
 
 def gerrit_scm(xml_parent, data):

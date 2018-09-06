@@ -45,9 +45,25 @@
             <com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait>
               <strategyId>2</strategyId>
             </com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait>
+            <com.cloudbees.jenkins.plugins.bitbucket.ForkPullRequestDiscoveryTrait>
+              <strategyId>2</strategyId>
+              <trust class="com.cloudbees.jenkins.plugins.bitbucket.ForkPullRequestDiscoveryTrait$TrustEveryone"/>
+            </com.cloudbees.jenkins.plugins.bitbucket.ForkPullRequestDiscoveryTrait>
             <com.cloudbees.jenkins.plugins.bitbucket.BranchDiscoveryTrait>
               <strategyId>3</strategyId>
             </com.cloudbees.jenkins.plugins.bitbucket.BranchDiscoveryTrait>
+            <jenkins.plugins.git.traits.LocalBranchTrait plugin="git">
+              <extension class="hudson.plugins.git.extensions.impl.LocalBranch">
+                <localBranch>**</localBranch>
+              </extension>
+            </jenkins.plugins.git.traits.LocalBranchTrait>
+            <com.cloudbees.jenkins.plugins.bitbucket.SSHCheckoutTrait>
+              <credentialsId>ssh_secret</credentialsId>
+            </com.cloudbees.jenkins.plugins.bitbucket.SSHCheckoutTrait>
+            <jenkins.scm.impl.trait.WildcardSCMHeadFilterTrait plugin="scm-api">
+              <includes>*</includes>
+              <excludes>master</excludes>
+            </jenkins.scm.impl.trait.WildcardSCMHeadFilterTrait>
           </traits>
         </source>
         <buildStrategies>
