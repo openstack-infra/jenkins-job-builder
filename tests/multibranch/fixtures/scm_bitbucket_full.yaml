@@ -42,3 +42,18 @@ scm:
                 - exact-name: {}
                 - regex-name: {}
                 - wildcards-name: {}
+        clean:
+            after: true
+            before: true
+        prune: true
+        shallow-clone: true
+        depth: 3
+        do-not-fetch-tags: true
+        submodule:
+            disable: false
+            recursive: true
+            parent-credentials: true
+            timeout: 100
+        timeout: "100"
+        use-author: true
+        wipe-workspace: true

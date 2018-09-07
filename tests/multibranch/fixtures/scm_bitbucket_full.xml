@@ -64,6 +64,44 @@
               <includes>*</includes>
               <excludes>master</excludes>
             </jenkins.scm.impl.trait.WildcardSCMHeadFilterTrait>
+            <jenkins.plugins.git.traits.CleanAfterCheckoutTrait>
+              <extension class="hudson.plugins.git.extensions.impl.CleanCheckout"/>
+            </jenkins.plugins.git.traits.CleanAfterCheckoutTrait>
+            <jenkins.plugins.git.traits.CleanBeforeCheckoutTrait>
+              <extension class="hudson.plugins.git.extensions.impl.CleanBeforeCheckout"/>
+            </jenkins.plugins.git.traits.CleanBeforeCheckoutTrait>
+            <jenkins.plugins.git.traits.CloneOptionTrait>
+              <extension class="hudson.plugins.git.extensions.impl.CloneOption">
+                <shallow>true</shallow>
+                <depth>3</depth>
+                <noTags>true</noTags>
+                <timeout>100</timeout>
+              </extension>
+            </jenkins.plugins.git.traits.CloneOptionTrait>
+            <jenkins.plugins.git.traits.SubmoduleOptionTrait>
+              <extension class="hudson.plugins.git.extensions.impl.SubmoduleOption">
+                <disableSubmodules>false</disableSubmodules>
+                <recursiveSubmodules>true</recursiveSubmodules>
+                <trackingSubmodules>false</trackingSubmodules>
+                <parentCredentials>true</parentCredentials>
+                <reference/>
+                <timeout>100</timeout>
+              </extension>
+            </jenkins.plugins.git.traits.SubmoduleOptionTrait>
+            <jenkins.plugins.git.traits.CheckoutOptionTrait>
+              <extension class="hudson.plugins.git.extensions.impl.CheckoutOption">
+                <timeout>100</timeout>
+              </extension>
+            </jenkins.plugins.git.traits.CheckoutOptionTrait>
+            <jenkins.plugins.git.traits.PruneStaleBranchTrait>
+              <extension class="hudson.plugins.git.extensions.impl.PruneStaleBranch"/>
+            </jenkins.plugins.git.traits.PruneStaleBranchTrait>
+            <jenkins.plugins.git.traits.WipeWorkspaceTrait>
+              <extension class="hudson.plugins.git.extensions.impl.WipeWorkspace"/>
+            </jenkins.plugins.git.traits.WipeWorkspaceTrait>
+            <jenkins.plugins.git.traits.AuthorInChangelogTrait>
+              <extension class="hudson.plugins.git.extensions.impl.AuthorInChangelog"/>
+            </jenkins.plugins.git.traits.AuthorInChangelogTrait>
           </traits>
         </source>
         <buildStrategies>
