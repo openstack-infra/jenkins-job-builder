@@ -4,11 +4,11 @@
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <org.jvnet.jenkins.plugins.nodelabelparameter.LabelParameterDefinition>
-          <name>EXAMPLE LABEL 1</name>
-          <description>EXAMPLE LABEL DESCRIPTION 1</description>
+          <name>EXAMPLE LABEL 6</name>
+          <description>EXAMPLE LABEL DESCRIPTION 6</description>
           <defaultValue/>
-          <allNodesMatchingLabel>false</allNodesMatchingLabel>
-          <triggerIfResult>success</triggerIfResult>
+          <allNodesMatchingLabel>true</allNodesMatchingLabel>
+          <triggerIfResult>allCases</triggerIfResult>
           <nodeEligibility class="org.jvnet.jenkins.plugins.nodelabelparameter.node.AllNodeEligibility"/>
         </org.jvnet.jenkins.plugins.nodelabelparameter.LabelParameterDefinition>
       </parameterDefinitions>
