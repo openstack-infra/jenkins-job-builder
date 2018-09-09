@@ -3950,6 +3950,12 @@ def docker_build_publish(parse, xml_parent, data):
     :arg str file-path: Path of the Dockerfile. (default '')
     :arg str build-context: Project root path for the build, defaults to the
         workspace if not specified. (default '')
+    :arg bool create-fingerprint: If enabled, the plugin will create
+        fingerprints after the build of each image. (default false)
+    :arg str build-args: Additional build arguments passed to
+        docker build (default '')
+    :arg bool force-tag: Force tag replacement when tag already
+        exists (default false)
 
     Minimal example:
 
@@ -3974,6 +3980,9 @@ def docker_build_publish(parse, xml_parent, data):
         ('skip-push', 'skipPush', False),
         ('file-path', 'dockerfilePath', ''),
         ('build-context', 'buildContext', ''),
+        ('create-fingerprint', 'createFingerprint', False),
+        ('build-args', 'buildAdditionalArgs', ''),
+        ('force-tag', 'forceTag', False),
     ]
     helpers.convert_mapping_to_xml(db, data, mapping, fail_required=True)
 
