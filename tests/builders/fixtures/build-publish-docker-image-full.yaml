@@ -1,0 +1,10 @@
+builders:
+  - build-publish-docker-image:
+      docker-registry-url: Docker registry URL
+      image: Image string
+      docker-file-directory: Directory for Dockerfile
+      push-on-success: true
+      push-credentials-id: 71e4f29c-162b-40d0-85d9-3ddfba2911a0
+      clean-images: true
+      jenkins-job-delete: true
+      cloud: cloud

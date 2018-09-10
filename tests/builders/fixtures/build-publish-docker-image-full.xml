@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <com.nirima.jenkins.plugins.docker.builder.DockerBuilderPublisher plugin="docker-plugin">
+      <fromRegistry plugin="docker-commons">
+        <url>Docker registry URL</url>
+      </fromRegistry>
+      <tags>
+        <string>Image string</string>
+      </tags>
+      <dockerFileDirectory>Directory for Dockerfile</dockerFileDirectory>
+      <pushOnSuccess>true</pushOnSuccess>
+      <pushCredentialsId>71e4f29c-162b-40d0-85d9-3ddfba2911a0</pushCredentialsId>
+      <cleanImages>true</cleanImages>
+      <cleanupWithJenkinsJobDelete>true</cleanupWithJenkinsJobDelete>
+      <cloud>cloud</cloud>
+    </com.nirima.jenkins.plugins.docker.builder.DockerBuilderPublisher>
+  </builders>
+</project>
