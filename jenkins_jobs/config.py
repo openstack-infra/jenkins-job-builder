@@ -313,6 +313,12 @@ class JJBConfig(object):
                                                'retain_anchors')
         self.yamlparser['retain_anchors'] = retain_anchors
 
+        update = None
+        if (config and config.has_section('job_builder') and
+                config.has_option('job_builder', 'update')):
+            update = config.get('job_builder', 'update')
+        self.builder['update'] = update
+
     def validate(self):
         # Inform the user as to what is likely to happen, as they may specify
         # a real jenkins instance in test mode to get the plugin info to check

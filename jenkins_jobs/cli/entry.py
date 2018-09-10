@@ -86,10 +86,16 @@ class JenkinsJobs(object):
 
         self._set_config(self.jjb_config.builder, 'ignore_cache')
         self._set_config(self.jjb_config.builder, 'flush_cache')
+        self._set_config(self.jjb_config.builder, 'update')
         self._set_config(self.jjb_config.yamlparser, 'allow_empty_variables')
         self._set_config(self.jjb_config.jenkins, 'section')
         self._set_config(self.jjb_config.jenkins, 'user')
         self._set_config(self.jjb_config.jenkins, 'password')
+
+        # Note: CLI options override config file options.
+        if getattr(self.options, 'update', None) is None:
+            self.options.update = str(self.jjb_config.builder.get('update',
+                                                                  'all'))
 
         if getattr(self.options, 'plugins_info_path', None) is not None:
             with io.open(self.options.plugins_info_path, 'r',
