@@ -10,6 +10,9 @@ builders:
         skip-tag: false
         file-path: '/tmp/'
         build-context: '/tmp/'
+        create-fingerprint: true
+        build-args: --build-arg https_proxy="http://some.proxy:port"
+        force-tag: true
         registry:
             url: 'https://registry.example.org'
             credentials-id: 'registry-docker'
