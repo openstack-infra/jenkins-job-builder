@@ -35,8 +35,7 @@ import xml.etree.ElementTree as XML
 
 from jenkins_jobs.errors import JenkinsJobsException
 import jenkins_jobs.modules.base
-from jenkins_jobs.modules.helpers import build_trends_publisher
-from jenkins_jobs.modules.helpers import findbugs_settings
+import jenkins_jobs.modules.helpers as helpers
 
 
 def email(registry, xml_parent, data):
@@ -134,8 +133,8 @@ def findbugs(registry, xml_parent, data):
                               'hudson.plugins.findbugs.FindBugsReporter')
     findbugs.set('plugin', 'findbugs')
 
-    findbugs_settings(findbugs, data)
-    build_trends_publisher('[FINDBUGS] ', findbugs, data)
+    helpers.findbugs_settings(findbugs, data)
+    helpers.build_trends_publisher('[FINDBUGS] ', findbugs, data)
 
 
 class Reporters(jenkins_jobs.modules.base.Base):
