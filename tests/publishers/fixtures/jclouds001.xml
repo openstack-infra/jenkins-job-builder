@@ -2,15 +2,15 @@
 <project>
   <publishers>
     <jenkins.plugins.jclouds.blobstore.BlobStorePublisher>
-      <profileName>hp</profileName>
       <entries>
         <jenkins.plugins.jclouds.blobstore.BlobStoreEntry>
           <container>jenkins</container>
-          <path/>
           <sourceFile>*.tar.gz</sourceFile>
           <keepHierarchy>false</keepHierarchy>
+          <path>test base dir</path>
         </jenkins.plugins.jclouds.blobstore.BlobStoreEntry>
       </entries>
+      <profileName>hp</profileName>
     </jenkins.plugins.jclouds.blobstore.BlobStorePublisher>
   </publishers>
 </project>

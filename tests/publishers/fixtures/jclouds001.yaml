@@ -3,4 +3,4 @@ publishers:
       profile: hp
       files: '*.tar.gz'
       container: jenkins
-      basedir:
+      basedir: test base dir

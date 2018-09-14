@@ -186,28 +186,27 @@ def jclouds(registry, xml_parent, data):
     deployer = XML.SubElement(xml_parent,
                               'jenkins.plugins.jclouds.blobstore.'
                               'BlobStorePublisher')
-
-    if 'profile' not in data:
-        raise JenkinsJobsException('profile parameter is missing')
-    XML.SubElement(deployer, 'profileName').text = data.get('profile')
-
     entries = XML.SubElement(deployer, 'entries')
-
     deployer_entry = XML.SubElement(entries,
                                     'jenkins.plugins.jclouds.blobstore.'
                                     'BlobStoreEntry')
-
+    deployer_mapping = [
+        ('profile', 'profileName', None),
+    ]
+    helpers.convert_mapping_to_xml(
+        deployer, data, deployer_mapping, fail_required=True)
     try:
         XML.SubElement(deployer_entry, 'container').text = data['container']
-        XML.SubElement(deployer_entry, 'path').text = data.get('basedir', '')
         XML.SubElement(deployer_entry, 'sourceFile').text = data['files']
     except KeyError as e:
         raise JenkinsJobsException("blobstore requires '%s' to be set"
                                    % e.args[0])
-
-    mapping = [('hierarchy', 'keepHierarchy', False)]
+    deployer_entry_mapping = [
+        ('hierarchy', 'keepHierarchy', False),
+        ('basedir', 'path', ''),
+    ]
     helpers.convert_mapping_to_xml(
-        deployer_entry, data, mapping, fail_required=True)
+        deployer_entry, data, deployer_entry_mapping, fail_required=True)
 
 
 def javadoc(registry, xml_parent, data):
