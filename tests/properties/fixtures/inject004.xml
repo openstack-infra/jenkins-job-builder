@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <EnvInjectJobProperty>
+      <info>
+        <loadFilesFromMaster>false</loadFilesFromMaster>
+        <secureGroovyScript>
+          <script>test groovy-content location 004</script>
+          <sandbox>true</sandbox>
+        </secureGroovyScript>
+      </info>
+      <on>true</on>
+      <keepJenkinsSystemVariables>true</keepJenkinsSystemVariables>
+      <keepBuildVariables>true</keepBuildVariables>
+      <overrideBuildParameters>false</overrideBuildParameters>
+    </EnvInjectJobProperty>
+  </properties>
+</project>

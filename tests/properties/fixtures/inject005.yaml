@@ -1,0 +1,3 @@
+properties:
+  - inject:
+      groovy-content: test groovy-content location 005
