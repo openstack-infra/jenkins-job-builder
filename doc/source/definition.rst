@@ -83,6 +83,7 @@ support such use cases in addition to simplifying referencing
 templates when the name contains the more complex substitution with
 default values.
 
+.. _default-values:
 
 Default Values for Template Variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,8 +93,79 @@ substituted, but where in most cases the same or no value is needed,
 it is possible to specify defaults for the variables within the
 templates themselves.
 
-This can be used to provide common settings for particular templates.
-For example:
+There are 2 ways JJB allows us to define defaults for a parameter in a
+job-template.
+
+#. Defining the default variable value in the job-template itself
+
+   With this method we declare the default value of the variable in the
+   job-template itself just once. We can section off the job-template into
+   two sections like this:
+
+   .. code-block:: yaml
+
+      - job-template:
+          name: '{project-name}-verify'
+
+          #####################
+          # Variable Defaults #
+          #####################
+
+          branch: master
+
+          #####################
+          # Job Configuration #
+          #####################
+
+          parameters:
+            - string:
+                name: BRANCH
+                default: '{branch}'
+
+          scm:
+            - git:
+                refspec: 'refs/heads/{branch}'
+
+   In this case there is still two branch definitions for the job-template.
+   However we also provide the default value for the {branch} variable at the
+   top of the file. Just once. This will be the value that the job takes on if
+   it is not passed in by a project using the template.
+
+#. Using {var|default}
+
+   In this method we can define the default with the definition of the
+   variable. For example:
+
+   .. code-block:: yaml
+
+      - job-template:
+          name: '{project-name}-verify'
+          parameters:
+            - string:
+                name: BRANCH
+                default: '{branch|master}'
+
+   However where this method falls apart if we need to use the same JJB
+   variable in more than one place as we will have multiple places to define
+   the default value for the template. For example:
+
+   .. code-block:: yaml
+
+      - job-template:
+          name: '{project-name}-verify'
+          parameters:
+            - string:
+                name: BRANCH
+                default: '{branch|master}'
+
+          scm:
+            - git:
+                refspec: 'refs/heads/{branch|master}'
+
+   We can see in this case the ``{branch|master}`` variable is defined in two
+   places. Not ideal.
+
+More complex example:
 
 .. literalinclude::
     /../../tests/yamlparser/fixtures/template_default_variables.yaml
@@ -503,14 +575,71 @@ and replace them with the empty string instead.
 
 .. tip::
 
-   Defaults for variables can be set by using the ``|`` character
-   ``{var|default_value}``. This is useful if we want to allow users of the
-   job-template to not have to pass a setting if there is a common default for
-   it.
+   Refer to :ref:`default-values` for details on setting variable defaults.
 
-   Example:
+Variable Inheritence
+^^^^^^^^^^^^^^^^^^^^
 
-   .. literalinclude:: /../../tests/yamlparser/fixtures/variable_defaults.yaml
+It is possible in JJB to define defaults for variables at different levels such
+that it is possible for users of job-templates to override variables defined
+in the job-template.
+
+Variable priorities for each definition type are as follows:
+
+#. job-group
+#. project
+#. job-template
+#. defaults
+
+From this list we can immediately see that if we want to make variables in
+job-templates override-able then using defaults configuration is useless as it
+has the lowest precedence when JJB is deciding where to pull from.
+
+On the other side of the spectrum, job-groups has the highest precedence. Which
+unfortunately means if we define a variable in a job-group with the intention
+of overriding it at the project level then we are out of luck. For this reason
+avoid setting variables in job-groups unless we want to enforce a setting for a
+set of jobs and prevent projects from overriding it.
+
+Declaring variable defaults
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Refer to :ref:`default-values` for details on how to declare variable defaults.
+
+Overriding job-template variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When a project wants to use a job-template it can use override it as follows:
+
+.. code-block:: yaml
+
+   - project:
+       name: foo
+       jobs:
+         - '{project-name}-merge'
+         - '{project-name}-verify'
+
+       branch: master
+
+This is the standard way that most folks use and it will set ``branch: master``
+for every job-template in the list. However sometimes we may want to provide an
+alternative value for a specific job in the list. In this case the more
+specific declaration takes precendence:
+
+.. code-block:: yaml
+
+   - project:
+       name: foo
+       jobs:
+         - '{project-name}-merge':
+             branch: production
+         - '{project-name}-verify'
+
+       branch: master
+
+In this case the verify job will get the value **master** but the merge job
+will instead get the branch value **production**.
+
 
 Yaml Anchors & Aliases
 ^^^^^^^^^^^^^^^^^^^^^^
