@@ -253,7 +253,9 @@ def jdepend(registry, xml_parent, data):
     jdepend = XML.SubElement(
         xml_parent,
         'hudson.plugins.jdepend.JDependRecorder')
-    mapping = [('file', 'configuredJDependFile', None)]
+    mapping = [
+        ('file', 'configuredJDependFile', None),
+    ]
     helpers.convert_mapping_to_xml(jdepend, data, mapping, fail_required=True)
 
 
