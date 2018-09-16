@@ -563,14 +563,12 @@ def trigger_parameterized_builds(registry, xml_parent, data):
 
         condition = XML.SubElement(tconfig, 'condition')
         condition.text = project_def.get('condition', 'ALWAYS')
-        trigger_from_child_projects = XML.SubElement(
-            tconfig, 'triggerFromChildProjects')
-        trigger_from_child_projects.text = str(
-            project_def.get('trigger-from-child-projects', False)).lower()
-        trigger_with_no_params = XML.SubElement(tconfig,
-                                                'triggerWithNoParameters')
-        trigger_with_no_params.text = str(
-            project_def.get('trigger-with-no-params', False)).lower()
+        mapping = [
+            ('trigger-from-child-projects', 'triggerFromChildProjects', False),
+            ('trigger-with-no-params', 'triggerWithNoParameters', False),
+        ]
+        helpers.convert_mapping_to_xml(
+            tconfig, project_def, mapping, fail_required=False)
 
 
 def trigger(registry, xml_parent, data):
