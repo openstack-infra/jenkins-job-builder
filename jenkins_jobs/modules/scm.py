@@ -561,14 +561,17 @@ def cvs(registry, xml_parent, data):
        :language: yaml
     """
     prefix = 'hudson.scm.'
-    valid_loc_types = {'HEAD': 'Head', 'TAG': 'Tag', 'BRANCH': 'Branch'}
+    valid_loc_types = {
+        'HEAD': 'Head',
+        'TAG': 'Tag',
+        'BRANCH': 'Branch'
+    }
 
     cvs = XML.SubElement(xml_parent, 'scm', {'class': prefix + 'CVSSCM'})
     repos = data.get('repos')
     repos_tag = XML.SubElement(cvs, 'repositories')
     for repo in repos:
         repo_tag = XML.SubElement(repos_tag, prefix + 'CvsRepository')
-
         compression_level = repo.get('compression-level', '-1')
         repo_mapping = [
             ('root', 'cvsRoot', None),
