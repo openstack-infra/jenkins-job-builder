@@ -4019,6 +4019,47 @@ def docker_build_publish(parse, xml_parent, data):
             registry, registry_data, mappings, fail_required=True)
 
 
+def docker_pull_image(registry, xml_parent, data):
+    """yaml: docker-pull-image
+    Provides integration between Jenkins and Docker Hub, utilizing a
+    Docker Hub hook to trigger one (or more) Jenkins job(s).
+    Requires the Jenkins :jenkins-wiki:`CloudBees Docker Hub Notification
+    <CloudBees+Docker+Hub+Notification>`.
+
+    :arg str image: Image ID on DockerHub (default '')
+    :arg str docker-registry-url: URL to the Docker registry
+        you are using (default '')
+    :arg str credentials-id: Registry credentials (default '')
+
+    Minimal example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/docker-pull-image-minimal.yaml
+
+    Full example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/docker-pull-image-full.yaml
+    """
+    docker_pull_image = XML.SubElement(
+        xml_parent, 'org.jenkinsci.plugins.registry.'
+                    'notification.DockerPullImageBuilder')
+    docker_pull_image.set('plugin', 'dockerhub-notification')
+    registry = XML.SubElement(docker_pull_image, 'registry')
+    registry.set('plugin', 'docker-commons')
+    mapping = [
+        ('image', 'image', ''),
+    ]
+    helpers.convert_mapping_to_xml(
+        docker_pull_image, data, mapping, fail_required=False)
+    registry_mapping = [
+        ('docker-registry-url', 'url', ''),
+        ('credentials-id', 'credentialsId', ''),
+    ]
+    helpers.convert_mapping_to_xml(
+        registry, data, registry_mapping, fail_required=False)
+
+
 def build_name_setter(registry, xml_parent, data):
     """yaml: build-name-setter
     Define Build Name Setter options which allows your build name to be
