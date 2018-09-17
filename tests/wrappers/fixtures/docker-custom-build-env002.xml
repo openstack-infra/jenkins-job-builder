@@ -28,6 +28,8 @@
       <group/>
       <command>/bin/cat</command>
       <net>bridge</net>
+      <memory/>
+      <cpu/>
     </com.cloudbees.jenkins.plugins.okidocki.DockerBuildWrapper>
   </buildWrappers>
 </project>

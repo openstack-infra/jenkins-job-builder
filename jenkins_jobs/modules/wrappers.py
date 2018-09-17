@@ -68,6 +68,10 @@ def docker_custom_build_env(registry, xml_parent, data):
         permission set
     :arg str command: Container start command (default '/bin/cat')
     :arg str net: Network bridge (default 'bridge')
+    :arg str memory-limit: Configure the limit memory
+        constraint (default '')
+    :arg str cpu-shares: Configure the CPU shares
+        constraint (default '')
 
     .. _image_types:
 
@@ -152,6 +156,8 @@ def docker_custom_build_env(registry, xml_parent, data):
         ('group', 'group', ''),
         ('command', 'command', '/bin/cat'),
         ('net', 'net', 'bridge'),
+        ('memory-limit', 'memory', ''),
+        ('cpu-shares', 'cpu', ''),
     ]
     helpers.convert_mapping_to_xml(
         entry_xml, data, mapping, fail_required=True)
