@@ -1,0 +1,3 @@
+publishers:
+    - docker-stop-container:
+        remove-stopped-containers: true
