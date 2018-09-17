@@ -2,6 +2,10 @@
 <project>
   <properties>
     <com.nirima.jenkins.plugins.docker.DockerJobProperty>
+      <registry plugin="docker-commons">
+        <url/>
+        <credentialsId/>
+      </registry>
       <tagOnCompletion>false</tagOnCompletion>
       <additionalTag/>
       <pushOnSuccess>false</pushOnSuccess>

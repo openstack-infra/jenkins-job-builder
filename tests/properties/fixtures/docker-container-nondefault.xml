@@ -2,6 +2,10 @@
 <project>
   <properties>
     <com.nirima.jenkins.plugins.docker.DockerJobProperty>
+      <registry plugin="docker-commons">
+        <url/>
+        <credentialsId/>
+      </registry>
       <tagOnCompletion>true</tagOnCompletion>
       <additionalTag>my-hands-are-typing-words</additionalTag>
       <pushOnSuccess>true</pushOnSuccess>
