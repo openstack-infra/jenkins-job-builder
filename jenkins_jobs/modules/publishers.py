@@ -5202,6 +5202,34 @@ def doxygen(registry, xml_parent, data):
             data.get('keep-all', False)).lower()
 
 
+def docker_stop_container(registry, xml_parent, data):
+    """yaml: docker-stop-container
+    This plugin allows removing stopped docker containers.
+    It requires the :jenkins-wiki:`Docker build step plugin
+    <Docker+build+step+plugin>`.
+
+    :arg bool remove-stopped-containers: Boolean value to remove
+        stopped docker containers (default False)
+
+    Minimal Example:
+    .. literalinclude:: /../../tests/
+    publishers/fixtures/docker-stop-container-minimal.yaml
+
+    Full Example:
+    .. literalinclude:: /../../tests/
+    publishers/fixtures/docker-stop-container-full.yaml
+    """
+    docker_stop_container = XML.SubElement(xml_parent,
+        'com.nirima.jenkins.plugins.docker'
+        '.publisher.DockerPublisherControl')
+    docker_stop_container.set('plugin', 'docker-plugin')
+    mapping = [
+        ('remove-stopped-containers', 'remove', False),
+    ]
+    helpers.convert_mapping_to_xml(
+        docker_stop_container, data, mapping, fail_required=False)
+
+
 def sitemonitor(registry, xml_parent, data):
     """yaml: sitemonitor
     This plugin checks the availability of an url.
