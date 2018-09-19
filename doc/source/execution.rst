@@ -66,6 +66,11 @@ job_builder section
   they will be accessible in `qux.yml` but not in `bar.yml`. They will also be
   accessible in `mydir/bar.yml` and `mydir/qux.yml`. False by default.
 
+**update**
+  (Optional) If set, allows the user to specify if only "jobs" or "views"
+  (or "all") are updated. Users can override the setting here by passing
+  ``--jobs-only`` or ``--views-only`` CLI options.
+  (Valid options: jobs, views, all)
 
 jenkins section
 ^^^^^^^^^^^^^^^

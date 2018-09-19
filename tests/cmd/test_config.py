@@ -118,6 +118,7 @@ class TestConfigs(CmdTestsBase):
         self.assertEqual(jjb_config.jenkins['password'], "jenkins_password")
         self.assertEqual(jjb_config.builder['ignore_cache'], True)
         self.assertEqual(jjb_config.builder['flush_cache'], True)
+        self.assertEqual(jjb_config.builder['update'], "all")
         self.assertEqual(
             jjb_config.yamlparser['allow_empty_variables'], True)
 
