@@ -745,7 +745,11 @@ def github_scm(xml_parent, data):
 
     :arg str api-uri: The GitHub API uri for hosted / on-site GitHub. Must
         first be configured in Global Configuration. (default GitHub)
-    :arg bool ssh-checkout: Checkout over SSH. (default false)
+    :arg bool ssh-checkout: Checkout over SSH.
+
+        * **credentials** ('str'): Credentials to use for
+            checkout of the repo over ssh.
+
     :arg str credentials-id: Credentials used to scan branches and pull
         requests, check out sources and mark commit statuses. (optional)
     :arg str repo-owner: Specify the name of the GitHub Organization or
@@ -852,12 +856,21 @@ def github_scm(xml_parent, data):
         helpers.convert_mapping_to_xml(
             bd, data, bd_mapping, fail_required=True)
 
-    if data.get('ssh-checkout', False):
-        XML.SubElement(
+    if data.get('ssh-checkout', None):
+        cossh = XML.SubElement(
             traits, ''.join([
                 github_path_dscore, '.SSHCheckoutTrait'
             ])
         )
+        if not isinstance(data.get('ssh-checkout'), bool):
+            cossh_credentials = [
+                ('credentials', 'credentialsId', ''),
+            ]
+            helpers.convert_mapping_to_xml(
+                cossh,
+                data.get('ssh-checkout'),
+                cossh_credentials,
+                fail_required=True)
 
     if data.get('discover-tags', False):
         XML.SubElement(
