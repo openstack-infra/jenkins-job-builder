@@ -35,7 +35,11 @@
           <id>bb-SANDBOX-test</id>
           <repoOwner>SANDBOX</repoOwner>
           <repository>test</repository>
-          <traits/>
+          <traits>
+            <jenkins.plugins.git.traits.WipeWorkspaceTrait>
+              <extension class="hudson.plugins.git.extensions.impl.WipeWorkspace"/>
+            </jenkins.plugins.git.traits.WipeWorkspaceTrait>
+          </traits>
         </source>
       </jenkins.branch.BranchSource>
     </data>

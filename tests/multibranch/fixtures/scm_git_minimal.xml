@@ -37,6 +37,9 @@
           <credentialsId/>
           <traits>
             <jenkins.plugins.git.traits.BranchDiscoveryTrait/>
+            <jenkins.plugins.git.traits.WipeWorkspaceTrait>
+              <extension class="hudson.plugins.git.extensions.impl.WipeWorkspace"/>
+            </jenkins.plugins.git.traits.WipeWorkspaceTrait>
           </traits>
         </source>
       </jenkins.branch.BranchSource>

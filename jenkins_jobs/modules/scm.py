@@ -223,13 +223,6 @@ def git(registry, xml_parent, data):
         ("git-config-email", 'gitConfigEmail', ''),
     ]
 
-    choosing_strategies = {
-        'default': 'hudson.plugins.git.util.DefaultBuildChooser',
-        'gerrit': ('com.sonyericsson.hudson.plugins.'
-                   'gerrit.trigger.hudsontrigger.GerritTriggerBuildChooser'),
-        'inverse': 'hudson.plugins.git.util.InverseBuildChooser',
-    }
-
     scm = XML.SubElement(xml_parent,
                          'scm', {'class': 'hudson.plugins.git.GitSCM'})
     XML.SubElement(scm, 'configVersion').text = '2'
@@ -287,173 +280,10 @@ def git(registry, xml_parent, data):
         else:
             xe.text = val
 
-    exts_node = XML.SubElement(scm, 'extensions')
-    impl_prefix = 'hudson.plugins.git.extensions.impl.'
+    exts = XML.SubElement(scm, 'extensions')
 
-    if 'basedir' in data:
-        ext = XML.SubElement(exts_node,
-                             impl_prefix + 'RelativeTargetDirectory')
-        XML.SubElement(ext, 'relativeTargetDir').text = data['basedir']
-    if 'changelog-against' in data:
-        ext_name = impl_prefix + 'ChangelogToBranch'
-        ext = XML.SubElement(exts_node, ext_name)
-        opts = XML.SubElement(ext, 'options')
-        change_remote = data['changelog-against'].get('remote', 'origin')
-        change_branch = data['changelog-against'].get('branch', 'master')
-        XML.SubElement(opts, 'compareRemote').text = change_remote
-        XML.SubElement(opts, 'compareTarget').text = change_branch
-    if 'choosing-strategy' in data:
-        try:
-            choosing_strategy = choosing_strategies[
-                data.get('choosing-strategy')]
-        except KeyError:
-            raise ValueError('Invalid choosing-strategy %r' %
-                             data.get('choosing-strategy'))
-        ext = XML.SubElement(exts_node, impl_prefix + 'BuildChooserSetting')
-        XML.SubElement(ext, 'buildChooser', {'class': choosing_strategy})
-    if 'clean' in data:
-        # Keep support for old format 'clean' configuration by checking
-        # if 'clean' is boolean. Else we're using the new extensions style.
-        if isinstance(data['clean'], bool):
-            clean_after = data['clean']
-            clean_before = False
-            logger.warning(
-                "'clean: bool' configuration format is deprecated, "
-                "please use the extension style format to configure "
-                "this option.")
-        else:
-            clean_after = data['clean'].get('after', False)
-            clean_before = data['clean'].get('before', False)
-        if clean_after:
-            ext_name = impl_prefix + 'CleanCheckout'
-            ext = XML.SubElement(exts_node, ext_name)
-        if clean_before:
-            ext_name = impl_prefix + 'CleanBeforeCheckout'
-            ext = XML.SubElement(exts_node, ext_name)
-    if 'excluded-users' in data:
-        excluded_users = '\n'.join(data['excluded-users'])
-        ext = XML.SubElement(exts_node, impl_prefix + 'UserExclusion')
-        XML.SubElement(ext, 'excludedUsers').text = excluded_users
-    if 'included-regions' in data or 'excluded-regions' in data:
-        ext = XML.SubElement(exts_node,
-                             'hudson.plugins.git.extensions.impl.'
-                             'PathRestriction')
-        if 'included-regions' in data:
-            include_string = '\n'.join(data['included-regions'])
-            XML.SubElement(ext, 'includedRegions').text = include_string
-        if 'excluded-regions' in data:
-            exclude_string = '\n'.join(data['excluded-regions'])
-            XML.SubElement(ext, 'excludedRegions').text = exclude_string
-    if 'ignore-commits-with-messages' in data:
-        for msg in data['ignore-commits-with-messages']:
-            ext_name = impl_prefix + 'MessageExclusion'
-            ext = XML.SubElement(exts_node, ext_name)
-            XML.SubElement(ext, 'excludedMessage').text = msg
-    if 'local-branch' in data:
-        ext = XML.SubElement(exts_node, impl_prefix + 'LocalBranch')
-        XML.SubElement(ext, 'localBranch').text = str(data['local-branch'])
-    if 'merge' in data:
-        merge = data['merge']
-        merge_strategies = ['default', 'resolve', 'recursive', 'octopus',
-                            'ours', 'subtree']
-        fast_forward_modes = ['FF', 'FF_ONLY', 'NO_FF']
-        name = merge.get('remote', 'origin')
-        branch = merge['branch']
-        ext = XML.SubElement(exts_node, impl_prefix + 'PreBuildMerge')
-        merge_opts = XML.SubElement(ext, 'options')
-        XML.SubElement(merge_opts, 'mergeRemote').text = name
-        XML.SubElement(merge_opts, 'mergeTarget').text = branch
-        strategy = merge.get('strategy', 'default')
-        if strategy not in merge_strategies:
-            raise InvalidAttributeError('strategy', strategy, merge_strategies)
-        XML.SubElement(merge_opts, 'mergeStrategy').text = strategy
-        fast_forward_mode = merge.get('fast-forward-mode', 'FF')
-        if fast_forward_mode not in fast_forward_modes:
-            raise InvalidAttributeError('fast-forward-mode', fast_forward_mode,
-                                        fast_forward_modes)
-        XML.SubElement(merge_opts, 'fastForwardMode').text = fast_forward_mode
-    if 'scm-name' in data:
-        ext = XML.SubElement(exts_node, impl_prefix + 'ScmName')
-        XML.SubElement(ext, 'name').text = str(data['scm-name'])
-    clone_options = (
-        "shallow-clone",
-        "timeout",
-        "do-not-fetch-tags"
-    )
-    if any(key in data for key in clone_options):
-        clo = XML.SubElement(exts_node, impl_prefix + 'CloneOption')
-        clone_mapping = [
-            ('shallow-clone', 'shallow', False),
-            ('depth', 'depth', 1),
-        ]
-        helpers.convert_mapping_to_xml(
-            clo, data, clone_mapping, fail_required=True)
-        if 'do-not-fetch-tags' in data:
-            XML.SubElement(clo, 'noTags').text = str(
-                data.get('do-not-fetch-tags', False)).lower()
-        if 'timeout' in data:
-            XML.SubElement(clo, 'timeout').text = str(data['timeout'])
-    if 'sparse-checkout' in data:
-        ext_name = impl_prefix + 'SparseCheckoutPaths'
-        ext = XML.SubElement(exts_node, ext_name)
-        sparse_co = XML.SubElement(ext, 'sparseCheckoutPaths')
-        sparse_paths = data['sparse-checkout'].get('paths')
-        if sparse_paths is not None:
-            path_tagname = impl_prefix + 'SparseCheckoutPath'
-            for path in sparse_paths:
-                path_tag = XML.SubElement(sparse_co, path_tagname)
-                XML.SubElement(path_tag, 'path').text = path
-    if 'submodule' in data:
-        ext_name = impl_prefix + 'SubmoduleOption'
-        ext = XML.SubElement(exts_node, ext_name)
-        XML.SubElement(ext, 'disableSubmodules').text = str(
-            data['submodule'].get('disable', False)).lower()
-        XML.SubElement(ext, 'recursiveSubmodules').text = str(
-            data['submodule'].get('recursive', False)).lower()
-        XML.SubElement(ext, 'trackingSubmodules').text = str(
-            data['submodule'].get('tracking', False)).lower()
-        XML.SubElement(ext, 'parentCredentials').text = str(
-            data['submodule'].get('parent-credentials', False)).lower()
-        XML.SubElement(ext, 'reference').text = str(
-            data['submodule'].get('reference-repo', ''))
-        XML.SubElement(ext, 'timeout').text = str(
-            data['submodule'].get('timeout', 10))
-    if 'timeout' in data:
-        co = XML.SubElement(exts_node, impl_prefix + 'CheckoutOption')
-        XML.SubElement(co, 'timeout').text = str(data['timeout'])
-
-    polling_using_workspace = str(data.get('force-polling-using-workspace',
-                                           False)).lower()
-    if polling_using_workspace == 'true':
-        ext_name = impl_prefix + 'DisableRemotePoll'
-        ext = XML.SubElement(exts_node, ext_name)
-    if 'per-build-tag' in data or 'skip-tag' in data:
-        # We want to support both skip-tag (the old option) and per-build-tag
-        # (the new option), with the new one overriding the old one.
-        # Unfortunately they have inverse meanings, so we have to be careful.
-        # The default value of per-build-tag is False if skip-tag is not set,
-        # so we set the default value of skip-tag to True.
-        per_build_tag_default = False
-        if str(data.get('skip-tag', True)).lower() == 'false':
-            per_build_tag_default = True
-        if str(data.get('per-build-tag',
-                        per_build_tag_default)).lower() == 'true':
-            XML.SubElement(exts_node, impl_prefix + 'PerBuildTag')
-    prune = str(data.get('prune', False)).lower()
-    if prune == 'true':
-        XML.SubElement(exts_node, impl_prefix + 'PruneStaleBranch')
-    ignore_notify_commits = str(data.get('ignore-notify', False)).lower()
-    if ignore_notify_commits == 'true':
-        XML.SubElement(exts_node, impl_prefix + 'IgnoreNotifyCommit')
-    # By default we wipe the workspace
-    wipe_workspace = str(data.get('wipe-workspace', True)).lower()
-    if wipe_workspace == 'true':
-        ext_name = impl_prefix + 'WipeWorkspace'
-        ext = XML.SubElement(exts_node, ext_name)
-
-    use_author = str(data.get('use-author', False)).lower()
-    if use_author == 'true':
-        XML.SubElement(exts_node, impl_prefix + 'AuthorInChangelog')
+    # handle all supported git extensions
+    git_extensions(exts, data)
 
     browser = data.get('browser', 'auto')
     browserdict = {
@@ -496,6 +326,235 @@ def git(registry, xml_parent, data):
         if browser == 'phabricator':
             XML.SubElement(bc, 'repo').text = str(
                 data.get('repo-name', ''))
+
+
+def git_extensions(xml_parent, data):
+    logger = logging.getLogger("%s:git_extensions" % __name__)
+
+    trait = xml_parent.tag == "traits"
+
+    # list of availavble traits here: https://bit.ly/2CNEtqS
+    trait_prefix = 'jenkins.plugins.git.traits.'
+    impl_prefix = 'hudson.plugins.git.extensions.impl.'
+
+    choosing_strategies = {
+        'default': 'hudson.plugins.git.util.DefaultBuildChooser',
+        'gerrit': ('com.sonyericsson.hudson.plugins.'
+                   'gerrit.trigger.hudsontrigger.GerritTriggerBuildChooser'),
+        'inverse': 'hudson.plugins.git.util.InverseBuildChooser',
+    }
+
+    if not trait and 'basedir' in data:
+        ext = XML.SubElement(xml_parent,
+                             impl_prefix + 'RelativeTargetDirectory')
+        XML.SubElement(ext, 'relativeTargetDir').text = data['basedir']
+    if not trait and 'changelog-against' in data:
+        ext_name = impl_prefix + 'ChangelogToBranch'
+        ext = XML.SubElement(xml_parent, ext_name)
+        opts = XML.SubElement(ext, 'options')
+        change_remote = data['changelog-against'].get('remote', 'origin')
+        change_branch = data['changelog-against'].get('branch', 'master')
+        XML.SubElement(opts, 'compareRemote').text = change_remote
+        XML.SubElement(opts, 'compareTarget').text = change_branch
+    if not trait and 'choosing-strategy' in data:
+        try:
+            choosing_strategy = choosing_strategies[
+                data.get('choosing-strategy')]
+        except KeyError:
+            raise ValueError('Invalid choosing-strategy %r' %
+                             data.get('choosing-strategy'))
+        ext = XML.SubElement(xml_parent, impl_prefix + 'BuildChooserSetting')
+        XML.SubElement(ext, 'buildChooser', {'class': choosing_strategy})
+    if 'clean' in data:
+        # Keep support for old format 'clean' configuration by checking
+        # if 'clean' is boolean. Else we're using the new extensions style.
+        if isinstance(data['clean'], bool):
+            clean_after = data['clean']
+            clean_before = False
+            logger.warning(
+                "'clean: bool' configuration format is deprecated, "
+                "please use the extension style format to configure "
+                "this option.")
+        else:
+            clean_after = data['clean'].get('after', False)
+            clean_before = data['clean'].get('before', False)
+        if clean_after:
+            ext_name = impl_prefix + 'CleanCheckout'
+            if trait:
+                trait_name = 'CleanAfterCheckoutTrait'
+                tr = XML.SubElement(xml_parent, trait_prefix + trait_name)
+                ext = XML.SubElement(tr, "extension", {"class": ext_name})
+            else:
+                ext = XML.SubElement(xml_parent, ext_name)
+        if clean_before:
+            ext_name = impl_prefix + 'CleanBeforeCheckout'
+            if trait:
+                trait_name = 'CleanBeforeCheckoutTrait'
+                tr = XML.SubElement(xml_parent, trait_prefix + trait_name)
+                ext = XML.SubElement(tr, "extension", {"class": ext_name})
+            else:
+                ext = XML.SubElement(xml_parent, ext_name)
+    if not trait and 'excluded-users' in data:
+        excluded_users = '\n'.join(data['excluded-users'])
+        ext = XML.SubElement(xml_parent, impl_prefix + 'UserExclusion')
+        XML.SubElement(ext, 'excludedUsers').text = excluded_users
+    if not trait and 'included-regions' in data or 'excluded-regions' in data:
+        ext = XML.SubElement(xml_parent,
+                             'hudson.plugins.git.extensions.impl.'
+                             'PathRestriction')
+        if 'included-regions' in data:
+            include_string = '\n'.join(data['included-regions'])
+            XML.SubElement(ext, 'includedRegions').text = include_string
+        if 'excluded-regions' in data:
+            exclude_string = '\n'.join(data['excluded-regions'])
+            XML.SubElement(ext, 'excludedRegions').text = exclude_string
+    if not trait and 'ignore-commits-with-messages' in data:
+        for msg in data['ignore-commits-with-messages']:
+            ext_name = impl_prefix + 'MessageExclusion'
+            ext = XML.SubElement(xml_parent, ext_name)
+            XML.SubElement(ext, 'excludedMessage').text = msg
+    if not trait and 'local-branch' in data:
+        ext = XML.SubElement(xml_parent, impl_prefix + 'LocalBranch')
+        XML.SubElement(ext, 'localBranch').text = str(data['local-branch'])
+    if not trait and 'merge' in data:
+        merge = data['merge']
+        merge_strategies = ['default', 'resolve', 'recursive', 'octopus',
+                            'ours', 'subtree']
+        fast_forward_modes = ['FF', 'FF_ONLY', 'NO_FF']
+        name = merge.get('remote', 'origin')
+        branch = merge['branch']
+        ext = XML.SubElement(xml_parent, impl_prefix + 'PreBuildMerge')
+        merge_opts = XML.SubElement(ext, 'options')
+        XML.SubElement(merge_opts, 'mergeRemote').text = name
+        XML.SubElement(merge_opts, 'mergeTarget').text = branch
+        strategy = merge.get('strategy', 'default')
+        if strategy not in merge_strategies:
+            raise InvalidAttributeError('strategy', strategy, merge_strategies)
+        XML.SubElement(merge_opts, 'mergeStrategy').text = strategy
+        fast_forward_mode = merge.get('fast-forward-mode', 'FF')
+        if fast_forward_mode not in fast_forward_modes:
+            raise InvalidAttributeError('fast-forward-mode', fast_forward_mode,
+                                        fast_forward_modes)
+        XML.SubElement(merge_opts, 'fastForwardMode').text = fast_forward_mode
+    if not trait and 'scm-name' in data:
+        ext = XML.SubElement(xml_parent, impl_prefix + 'ScmName')
+        XML.SubElement(ext, 'name').text = str(data['scm-name'])
+
+    clone_options = (
+        "shallow-clone",
+        "timeout",
+        "do-not-fetch-tags"
+    )
+    if any(key in data for key in clone_options):
+        ext_name = impl_prefix + 'CloneOption'
+
+        if trait:
+            tr = XML.SubElement(xml_parent, trait_prefix + 'CloneOptionTrait')
+            ext = XML.SubElement(tr, "extension", {"class": ext_name})
+        else:
+            ext = XML.SubElement(xml_parent, ext_name)
+
+        clone_mapping = [
+            ('shallow-clone', 'shallow', False),
+            ('depth', 'depth', 1),
+        ]
+        helpers.convert_mapping_to_xml(
+            ext, data, clone_mapping, fail_required=True)
+        if 'do-not-fetch-tags' in data:
+            XML.SubElement(ext, 'noTags').text = str(
+                data.get('do-not-fetch-tags', False)).lower()
+        if 'timeout' in data:
+            XML.SubElement(ext, 'timeout').text = str(data['timeout'])
+    if not trait and 'sparse-checkout' in data:
+        ext_name = impl_prefix + 'SparseCheckoutPaths'
+        ext = XML.SubElement(xml_parent, ext_name)
+        sparse_co = XML.SubElement(ext, 'sparseCheckoutPaths')
+        sparse_paths = data['sparse-checkout'].get('paths')
+        if sparse_paths is not None:
+            path_tagname = impl_prefix + 'SparseCheckoutPath'
+            for path in sparse_paths:
+                path_tag = XML.SubElement(sparse_co, path_tagname)
+                XML.SubElement(path_tag, 'path').text = path
+    if 'submodule' in data:
+        ext_name = impl_prefix + 'SubmoduleOption'
+        if trait:
+            trait_name = 'SubmoduleOptionTrait'
+            tr = XML.SubElement(xml_parent, trait_prefix + trait_name)
+            ext = XML.SubElement(tr, "extension", {"class": ext_name})
+        else:
+            ext = XML.SubElement(xml_parent, ext_name)
+
+        XML.SubElement(ext, 'disableSubmodules').text = str(
+            data['submodule'].get('disable', False)).lower()
+        XML.SubElement(ext, 'recursiveSubmodules').text = str(
+            data['submodule'].get('recursive', False)).lower()
+        XML.SubElement(ext, 'trackingSubmodules').text = str(
+            data['submodule'].get('tracking', False)).lower()
+        XML.SubElement(ext, 'parentCredentials').text = str(
+            data['submodule'].get('parent-credentials', False)).lower()
+        XML.SubElement(ext, 'reference').text = str(
+            data['submodule'].get('reference-repo', ''))
+        XML.SubElement(ext, 'timeout').text = str(
+            data['submodule'].get('timeout', 10))
+    if 'timeout' in data:
+        ext_name = impl_prefix + 'CheckoutOption'
+        if trait:
+            trait_name = 'CheckoutOptionTrait'
+            tr = XML.SubElement(xml_parent, trait_prefix + trait_name)
+            ext = XML.SubElement(tr, "extension", {"class": ext_name})
+        else:
+            ext = XML.SubElement(xml_parent, ext_name)
+        XML.SubElement(ext, 'timeout').text = str(data['timeout'])
+
+    polling_using_workspace = str(data.get('force-polling-using-workspace',
+                                           False)).lower()
+    if not trait and polling_using_workspace == 'true':
+        ext_name = impl_prefix + 'DisableRemotePoll'
+        ext = XML.SubElement(xml_parent, ext_name)
+    if not trait and 'per-build-tag' in data or 'skip-tag' in data:
+        # We want to support both skip-tag (the old option) and per-build-tag
+        # (the new option), with the new one overriding the old one.
+        # Unfortunately they have inverse meanings, so we have to be careful.
+        # The default value of per-build-tag is False if skip-tag is not set,
+        # so we set the default value of skip-tag to True.
+        per_build_tag_default = False
+        if str(data.get('skip-tag', True)).lower() == 'false':
+            per_build_tag_default = True
+        if str(data.get('per-build-tag',
+                        per_build_tag_default)).lower() == 'true':
+            XML.SubElement(xml_parent, impl_prefix + 'PerBuildTag')
+    prune = str(data.get('prune', False)).lower()
+    if prune == 'true':
+        ext_name = impl_prefix + 'PruneStaleBranch'
+        if trait:
+            trait_name = 'PruneStaleBranchTrait'
+            tr = XML.SubElement(xml_parent, trait_prefix + trait_name)
+            ext = XML.SubElement(tr, "extension", {"class": ext_name})
+        else:
+            ext = XML.SubElement(xml_parent, ext_name)
+    ignore_notify_commits = str(data.get('ignore-notify', False)).lower()
+    if not trait and ignore_notify_commits == 'true':
+        XML.SubElement(xml_parent, impl_prefix + 'IgnoreNotifyCommit')
+    # By default we wipe the workspace
+    wipe_workspace = str(data.get('wipe-workspace', True)).lower()
+    if wipe_workspace == 'true':
+        ext_name = impl_prefix + 'WipeWorkspace'
+        if trait:
+            trait_name = 'WipeWorkspaceTrait'
+            tr = XML.SubElement(xml_parent, trait_prefix + trait_name)
+            ext = XML.SubElement(tr, "extension", {"class": ext_name})
+        else:
+            ext = XML.SubElement(xml_parent, ext_name)
+
+    use_author = str(data.get('use-author', False)).lower()
+    if use_author == 'true':
+        ext_name = impl_prefix + 'AuthorInChangelog'
+        if trait:
+            trait_name = 'AuthorInChangelogTrait'
+            tr = XML.SubElement(xml_parent, trait_prefix + trait_name)
+            ext = XML.SubElement(tr, "extension", {"class": ext_name})
+        else:
+            ext = XML.SubElement(xml_parent, ext_name)
 
 
 def cvs(registry, xml_parent, data):
