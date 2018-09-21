@@ -292,7 +292,9 @@ def hue_light(registry, xml_parent, data):
     hue_light.set('plugin', 'hue-light')
     lightId = XML.SubElement(hue_light, 'lightId')
 
-    id_mapping = [('light-id', 'string', None)]
+    id_mapping = [
+        ('light-id', 'string', None),
+    ]
     helpers.convert_mapping_to_xml(
         lightId, data, id_mapping, fail_required=True)
 
