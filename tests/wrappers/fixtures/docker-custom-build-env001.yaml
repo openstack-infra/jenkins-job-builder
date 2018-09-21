@@ -8,3 +8,5 @@ wrappers:
       group: jenkins
       command: /bin/cat
       net: bridge
+      memory-limit: memory=L<inf, memory-swap=inf
+      cpu-shares: 2
