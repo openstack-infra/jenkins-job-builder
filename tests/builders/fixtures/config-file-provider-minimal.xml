@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jenkinsci.plugins.configfiles.builder.ConfigFileBuildStep plugin="config-file-provider">
+      <managedFiles>
+        <org.jenkinsci.plugins.configfiles.buildwrapper.ManagedFile>
+          <fileId>org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig0123456789012</fileId>
+          <targetLocation/>
+          <variable/>
+          <replaceTokens>false</replaceTokens>
+        </org.jenkinsci.plugins.configfiles.buildwrapper.ManagedFile>
+      </managedFiles>
+    </org.jenkinsci.plugins.configfiles.builder.ConfigFileBuildStep>
+  </builders>
+</project>

@@ -2154,10 +2154,16 @@ def config_file_provider(registry, xml_parent, data):
               example "password: ${PYPI_JENKINS_PASS}" will be replaced with
               the global variable configured in Jenkins.
 
-    Example:
+    Full Example:
 
     .. literalinclude::
-        ../../tests/builders/fixtures/config-file-provider01.yaml
+        ../../tests/builders/fixtures/config-file-provider-full.yaml
+       :language: yaml
+
+    Minimal Example:
+
+    .. literalinclude::
+        ../../tests/builders/fixtures/config-file-provider-minimal.yaml
        :language: yaml
     """
     cfp = XML.SubElement(xml_parent,
