@@ -94,8 +94,9 @@ class JenkinsJobs(object):
 
         # Note: CLI options override config file options.
         if getattr(self.options, 'update', None) is None:
-            self.options.update = str(self.jjb_config.builder.get('update',
-                                                                  'all'))
+            self.options.update = self.jjb_config.builder.get('update')
+            if self.options.update is None:
+                self.options.update = 'all'
 
         if getattr(self.options, 'plugins_info_path', None) is not None:
             with io.open(self.options.plugins_info_path, 'r',
