@@ -1,0 +1,9 @@
+wrappers:
+  - build-keeper:
+      policy: 'run-condition'
+      keep-build: true
+      run-condition:
+        - type: strings-match
+          arg1: abc
+          arg2: xyz
+          ignore-case: true
