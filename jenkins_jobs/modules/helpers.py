@@ -186,16 +186,18 @@ def config_file_provider_settings(xml_parent, data):
 def copyartifact_build_selector(xml_parent, data, select_tag='selector'):
 
     select = data.get('which-build', 'last-successful')
-    selectdict = {'last-successful': 'StatusBuildSelector',
-                  'last-completed': 'LastCompletedBuildSelector',
-                  'specific-build': 'SpecificBuildSelector',
-                  'last-saved': 'SavedBuildSelector',
-                  'upstream-build': 'TriggeredBuildSelector',
-                  'permalink': 'PermalinkBuildSelector',
-                  'workspace-latest': 'WorkspaceSelector',
-                  'build-param': 'ParameterizedBuildSelector',
-                  'downstream-build': 'DownstreamBuildSelector',
-                  'multijob-build': 'MultiJobBuildSelector'}
+    selectdict = {
+        'last-successful': 'StatusBuildSelector',
+        'last-completed': 'LastCompletedBuildSelector',
+        'specific-build': 'SpecificBuildSelector',
+        'last-saved': 'SavedBuildSelector',
+        'upstream-build': 'TriggeredBuildSelector',
+        'permalink': 'PermalinkBuildSelector',
+        'workspace-latest': 'WorkspaceSelector',
+        'build-param': 'ParameterizedBuildSelector',
+        'downstream-build': 'DownstreamBuildSelector',
+        'multijob-build': 'MultiJobBuildSelector'
+    }
     if select not in selectdict:
         raise InvalidAttributeError('which-build',
                                     select,
@@ -221,23 +223,24 @@ def copyartifact_build_selector(xml_parent, data, select_tag='selector'):
                                   {'class':
                                    'hudson.plugins.copyartifact.' +
                                       selectdict[select]})
+    mapping = []
     if select == 'specific-build':
-        XML.SubElement(selector, 'buildNumber').text = data['build-number']
+        mapping.append(('build-number', 'buildNumber', ''))
     if select == 'last-successful':
-        XML.SubElement(selector, 'stable').text = str(
-            data.get('stable', False)).lower()
+        mapping.append(('stable', 'stable', False))
     if select == 'upstream-build':
-        XML.SubElement(selector, 'fallbackToLastSuccessful').text = str(
-            data.get('fallback-to-last-successful', False)).lower()
+        mapping.append(
+            ('fallback-to-last-successful', 'fallbackToLastSuccessful', False))
     if select == 'permalink':
-        XML.SubElement(selector, 'id').text = permalinkdict[permalink]
+        mapping.append(('', 'id', permalinkdict[permalink]))
     if select == 'build-param':
-        XML.SubElement(selector, 'parameterName').text = data['param']
+        mapping.append(('param', 'parameterName', ''))
     if select == 'downstream-build':
-        XML.SubElement(selector, 'upstreamProjectName').text = (
-            data['upstream-project-name'])
-        XML.SubElement(selector, 'upstreamBuildNumber').text = (
-            data['upstream-build-number'])
+        mapping.append(
+            ('upstream-project-name', 'upstreamProjectName', ''))
+        mapping.append(
+            ('upstream-build-number', 'upstreamBuildNumber', ''))
+    convert_mapping_to_xml(selector, data, mapping, fail_required=False)
 
 
 def findbugs_settings(xml_parent, data):
