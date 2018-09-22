@@ -1100,6 +1100,9 @@ def docker_container(registry, xml_parent, data):
     """yaml: docker-container
     Requires the Jenkins: :jenkins-wiki:`Docker Plugin<Docker+Plugin>`.
 
+    :arg str docker-registry-url: URL of the Docker registry. (default '')
+    :arg str credentials-id: Credentials Id for the Docker registey.
+        (default '')
     :arg bool commit-on-success: When a job completes, the docker slave
         instance is committed with repository based on the job name and build
         number as tag. (default false)
@@ -1125,6 +1128,14 @@ def docker_container(registry, xml_parent, data):
     xml_docker = XML.SubElement(
         xml_parent, 'com.nirima.jenkins.plugins.docker.DockerJobProperty')
 
+    registry = XML.SubElement(xml_docker, 'registry')
+    registry.set('plugin', 'docker-commons')
+    registry_mapping = [
+        ('docker-registry-url', 'url', ''),
+        ('credentials-id', 'credentialsId', ''),
+    ]
+    helpers.convert_mapping_to_xml(
+        registry, data, registry_mapping, fail_required=False)
     mapping = [
         ('commit-on-success', 'tagOnCompletion', False),
         ('additional-tag', 'additionalTag', ''),
