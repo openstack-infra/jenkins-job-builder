@@ -613,7 +613,7 @@ def build_blocker(registry, xml_parent, data):
     mapping = [
         ('use-build-blocker', 'useBuildBlocker', True),
         ('', 'blockingJobs', jobs),
-        ('blocking-level', 'blockLevel', 'GLOBAL', block_level_types),
+        ('block-level', 'blockLevel', 'GLOBAL', block_level_types),
         ('queue-scanning', 'scanQueueFor', 'DISABLED', queue_scan_types),
     ]
     helpers.convert_mapping_to_xml(blocker, data, mapping, fail_required=True)

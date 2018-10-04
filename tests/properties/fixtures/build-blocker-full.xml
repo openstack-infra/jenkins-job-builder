@@ -5,7 +5,7 @@
       <useBuildBlocker>true</useBuildBlocker>
       <blockingJobs>.*-deploy
 ^maintenance.*</blockingJobs>
-      <blockLevel>GLOBAL</blockLevel>
+      <blockLevel>NODE</blockLevel>
       <scanQueueFor>BUILDABLE</scanQueueFor>
     </hudson.plugins.buildblocker.BuildBlockerProperty>
   </properties>
