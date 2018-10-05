@@ -447,6 +447,7 @@ def git_extensions(xml_parent, data):
         "timeout",
         "do-not-fetch-tags",
         "honor-refspec",
+        "reference-repo",
     )
     if any(key in data for key in clone_options):
         ext_name = impl_prefix + 'CloneOption'
@@ -471,6 +472,8 @@ def git_extensions(xml_parent, data):
         if 'honor-refspec' in data:
             XML.SubElement(ext, 'honorRefspec').text = str(
                 data.get('honor-refspec', False)).lower()
+        if 'reference-repo' in data:
+            XML.SubElement(ext, 'reference').text = str(data['reference-repo'])
     if not trait and 'sparse-checkout' in data:
         ext_name = impl_prefix + 'SparseCheckoutPaths'
         ext = XML.SubElement(xml_parent, ext_name)
