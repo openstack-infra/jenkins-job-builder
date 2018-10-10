@@ -7586,6 +7586,25 @@ def chuck_norris(registry, xml_parent, data):
     return XML.SubElement(chuck, "factGenerator")
 
 
+def publishers_from(registry, xml_parent, data):
+    """yaml: publishers-from
+    Use publishers from another project.
+    Requires the Jenkins :jenkins-wiki:`Template Project Plugin
+    <Template+Project+Plugin>`.
+
+    :arg str project-name: The name of the other project.
+
+    Example:
+
+    .. literalinclude:: ../../tests/publishers/fixtures/publishers-from.yaml
+       :language: yaml
+    """
+    pbs = XML.SubElement(xml_parent,
+                         'hudson.plugins.templateproject.ProxyPublisher')
+    mapping = [('project-name', 'projectName', None)]
+    helpers.convert_mapping_to_xml(pbs, data, mapping, fail_required=True)
+
+
 def tasks(registry, xml_parent, data):
     """yaml: tasks
 
