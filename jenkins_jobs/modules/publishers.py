@@ -1936,11 +1936,13 @@ def ssh(registry, xml_parent, data):
 
     if xml_parent.tag == 'publishers':
         plugin_tag = '%s__over__ssh.BapSshPublisherPlugin' % tag_prefix
+        is_builder = False
     else:
         plugin_tag = '%s__over__ssh.BapSshBuilderPlugin' % tag_prefix
+        is_builder = True
 
     base_publish_over(xml_parent, data, console_prefix, plugin_tag,
-                      publisher_tag, transfer_tag, reference_tag)
+                      publisher_tag, transfer_tag, reference_tag, is_builder)
 
 
 def pipeline(registry, xml_parent, data):
@@ -2678,10 +2680,11 @@ def groovy_postbuild(registry, xml_parent, data):
 
 def base_publish_over(xml_parent, data, console_prefix,
                       plugin_tag, publisher_tag,
-                      transferset_tag, reference_plugin_tag):
+                      transferset_tag, reference_plugin_tag,
+                      is_builder=False):
     outer = XML.SubElement(xml_parent, plugin_tag)
     # 'Publish over SSH' builder has an extra top delegate element
-    if xml_parent.tag == 'builders':
+    if xml_parent.tag == 'builders' or is_builder:
         outer = XML.SubElement(outer, 'delegate')
 
     XML.SubElement(outer, 'consolePrefix').text = console_prefix
@@ -2764,7 +2767,12 @@ def cifs(registry, xml_parent, data):
 
     """
     console_prefix = 'CIFS: '
-    plugin_tag = 'jenkins.plugins.publish__over__cifs.CifsPublisherPlugin'
+    if xml_parent.tag == 'publishers':
+        plugin_tag = 'jenkins.plugins.publish__over__cifs.CifsPublisherPlugin'
+        is_builder = False
+    else:
+        plugin_tag = 'jenkins.plugins.publish__over__cifs.CifsBuilderPlugin'
+        is_builder = True
     publisher_tag = 'jenkins.plugins.publish__over__cifs.CifsPublisher'
     transfer_tag = 'jenkins.plugins.publish__over__cifs.CifsTransfer'
     plugin_reference_tag = ('jenkins.plugins.publish_over_cifs.'
@@ -2775,7 +2783,8 @@ def cifs(registry, xml_parent, data):
                       plugin_tag,
                       publisher_tag,
                       transfer_tag,
-                      plugin_reference_tag)
+                      plugin_reference_tag,
+                      is_builder)
 
 
 def cigame(registry, xml_parent, data):
