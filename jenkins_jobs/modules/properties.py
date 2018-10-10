@@ -206,6 +206,28 @@ def gitlab(registry, xml_parent, data):
     helpers.convert_mapping_to_xml(gitlab, data, mapping, fail_required=True)
 
 
+def gitlab_logo(registry, xml_parent, data):
+    """yaml: gitlab-logo
+    Configures the GitLab-Logo Plugin.
+    Requires the Jenkins :jenkins-wiki:`GitLab Logo Plugin
+    <GitLab+Logo+Plugin>`.
+
+    :arg str repository-name: the GitLab repository name (required)
+
+    Example:
+
+    .. literalinclude:: /../../tests/properties/fixtures/gitlab-logo.yaml
+       :language: yaml
+    """
+    logo = XML.SubElement(xml_parent,
+                          'org.jenkinsci.plugins.gitlablogo.'
+                          'GitlabLogoProperty')
+    mapping = [
+        ('repository-name', 'repositoryName', None)
+    ]
+    helpers.convert_mapping_to_xml(logo, data, mapping, fail_required=True)
+
+
 def disk_usage(registry, xml_parent, data):
     """yaml: disk-usage
     Enables the Disk Usage Plugin.
