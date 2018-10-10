@@ -20,3 +20,4 @@ triggers:
           - exclude1
           - exclude2
       target-branch-regex: '(.*debug.*|.*release.*)'
+      secret-token: 'secret-build-token'
