@@ -6,7 +6,7 @@
       <combinedJobs>false</combinedJobs>
       <jobsInfo>
         <org.jenkinsci.plugins.buildresulttrigger.model.BuildResultTriggerInfo>
-          <jobNames>t,e,s,t</jobNames>
+          <jobNames>test</jobNames>
           <checkedResults>
             <org.jenkinsci.plugins.buildresulttrigger.model.CheckedResult>
               <checked>ABORTED</checked>

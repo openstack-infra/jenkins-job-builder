@@ -1,6 +1,7 @@
 triggers:
   - build-result:
        groups:
-        - jobs: test
+        - jobs:
+            - test
           results:
             - aborted
