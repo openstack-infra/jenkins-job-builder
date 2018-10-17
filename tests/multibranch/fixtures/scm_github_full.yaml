@@ -4,7 +4,8 @@ script-path: some.Jenkinsfile
 scm:
     - github:
         api-uri: http://example.org/github
-        ssh-checkout: true
+        ssh-checkout:
+            credentials: 'ssh_secret'
         repo: example-repo
         repo-owner: example-owner
         credentials-id: example-credential
