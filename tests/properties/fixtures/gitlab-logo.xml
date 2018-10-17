@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <properties>
+    <org.jenkinsci.plugins.gitlablogo.GitlabLogoProperty>
+      <repositoryName>gitlab-repository-name</repositoryName>
+    </org.jenkinsci.plugins.gitlablogo.GitlabLogoProperty>
+  </properties>
+</project>
