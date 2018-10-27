@@ -2888,7 +2888,7 @@ def cmake(registry, xml_parent, data):
 
 
 def dsl(registry, xml_parent, data):
-    """yaml: dsl
+    r"""yaml: dsl
     Process Job DSL
 
     Requires the Jenkins :jenkins-wiki:`Job DSL plugin <Job+DSL+Plugin>`.
@@ -3475,7 +3475,7 @@ def jms_messaging(registry, xml_parent, data):
 
 
 def openshift_build_verify(registry, xml_parent, data):
-    """yaml: openshift-build-verify
+    r"""yaml: openshift-build-verify
     Performs the equivalent of an 'oc get builds` command invocation for the
     provided buildConfig key provided; once the list of builds are obtained,
     the state of the latest build is inspected for up to a minute to see if
@@ -3524,7 +3524,7 @@ def openshift_build_verify(registry, xml_parent, data):
 
 
 def openshift_builder(registry, xml_parent, data):
-    """yaml: openshift-builder
+    r"""yaml: openshift-builder
     Perform builds in OpenShift for the job.
     Requires the Jenkins :jenkins-wiki:`OpenShift
     Pipeline Plugin <OpenShift+Pipeline+Plugin>`.
@@ -3580,7 +3580,7 @@ def openshift_builder(registry, xml_parent, data):
 
 
 def openshift_creator(registry, xml_parent, data):
-    """yaml: openshift-creator
+    r"""yaml: openshift-creator
     Performs the equivalent of an oc create command invocation;
     this build step takes in the provided JSON or YAML text, and if it
     conforms to OpenShift schema, creates whichever
@@ -3628,7 +3628,7 @@ def openshift_creator(registry, xml_parent, data):
 
 
 def openshift_dep_verify(registry, xml_parent, data):
-    """yaml: openshift-dep-verify
+    r"""yaml: openshift-dep-verify
     Determines whether the expected set of DeploymentConfig's,
     ReplicationController's, and active replicas are present based on prior
     use of the scaler (2) and deployer (3) steps
@@ -3679,7 +3679,7 @@ def openshift_dep_verify(registry, xml_parent, data):
 
 
 def openshift_deployer(registry, xml_parent, data):
-    """yaml: openshift-deployer
+    r"""yaml: openshift-deployer
     Start a deployment in OpenShift for the job.
     Requires the Jenkins :jenkins-wiki:`OpenShift
     Pipeline Plugin <OpenShift+Pipeline+Plugin>`.
@@ -3725,7 +3725,7 @@ def openshift_deployer(registry, xml_parent, data):
 
 
 def openshift_img_tagger(registry, xml_parent, data):
-    """yaml: openshift-img-tagger
+    r"""yaml: openshift-img-tagger
     Performs the equivalent of an oc tag command invocation in order to
     manipulate tags for images in OpenShift ImageStream's
     Requires the Jenkins :jenkins-wiki:`OpenShift
@@ -3776,7 +3776,7 @@ def openshift_img_tagger(registry, xml_parent, data):
 
 
 def openshift_scaler(registry, xml_parent, data):
-    """yaml: openshift-scaler
+    r"""yaml: openshift-scaler
     Scale deployments in OpenShift for the job.
     Requires the Jenkins :jenkins-wiki:`OpenShift
     Pipeline Plugin <OpenShift+Pipeline+Plugin>`.
@@ -3823,7 +3823,7 @@ def openshift_scaler(registry, xml_parent, data):
 
 
 def openshift_svc_verify(registry, xml_parent, data):
-    """yaml: openshift-svc-verify
+    r"""yaml: openshift-svc-verify
     Verify a service is up in OpenShift for the job.
     Requires the Jenkins :jenkins-wiki:`OpenShift
     Pipeline Plugin <OpenShift+Pipeline+Plugin>`.

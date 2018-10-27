@@ -32,9 +32,9 @@ sorted( foo, key=AlphanumSort)
 import re
 
 
-re_chunk = re.compile("([\D]+|[\d]+)")
-re_letters = re.compile("\D+")
-re_numbers = re.compile("\d+")
+re_chunk = re.compile(r"([\D]+|[\d]+)")
+re_letters = re.compile(r"\D+")
+re_numbers = re.compile(r"\d+")
 
 
 def getchunk(item):

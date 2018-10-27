@@ -290,7 +290,7 @@ class WorkflowMultiBranchDefaults(WorkflowMultiBranch):
 
 
 def bitbucket_scm(xml_parent, data):
-    """Configure BitBucket scm
+    r"""Configure BitBucket scm
 
     Requires the :jenkins-wiki:`Bitbucket Branch Source Plugin
     <Bitbucket+Branch+Source+Plugin>`.
@@ -626,7 +626,7 @@ def gerrit_scm(xml_parent, data):
 
 
 def git_scm(xml_parent, data):
-    """Configure Git SCM
+    r"""Configure Git SCM
 
     Requires the :jenkins-wiki:`Git Plugin <Git+Plugin>`.
 
@@ -738,7 +738,7 @@ def git_scm(xml_parent, data):
 
 
 def github_scm(xml_parent, data):
-    """Configure GitHub SCM
+    r"""Configure GitHub SCM
 
     Requires the :jenkins-wiki:`GitHub Branch Source Plugin
     <GitHub+Branch+Source+Plugin>`.

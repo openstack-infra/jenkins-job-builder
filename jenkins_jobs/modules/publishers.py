@@ -1658,7 +1658,7 @@ def violations(registry, xml_parent, data):
 
 
 def findbugs(registry, xml_parent, data):
-    """yaml: findbugs
+    r"""yaml: findbugs
     FindBugs reporting for builds
 
     Requires the Jenkins :jenkins-wiki:`FindBugs Plugin
@@ -2962,7 +2962,7 @@ def sounds(parser, xml_parent, data):
 
 
 def performance(registry, xml_parent, data):
-    """yaml: performance
+    r"""yaml: performance
     Publish performance test results from jmeter and junit.
     Requires the Jenkins :jenkins-wiki:`Performance Plugin
     <Performance+Plugin>`.
@@ -4391,7 +4391,7 @@ def warnings(registry, xml_parent, data):
 
 
 def sloccount(registry, xml_parent, data):
-    """yaml: sloccount
+    r"""yaml: sloccount
     Generates the trend report for SLOCCount
 
     Requires the Jenkins :jenkins-wiki:`SLOCCount Plugin <SLOCCount+Plugin>`.
@@ -7220,7 +7220,7 @@ def jms_messaging(registry, xml_parent, data):
 
 
 def openshift_build_canceller(registry, xml_parent, data):
-    """yaml: openshift-build-canceller
+    r"""yaml: openshift-build-canceller
     This action is intended to provide cleanup for a Jenkins job which failed
     because a build is hung (instead of terminating with a failure code);
     this step will allow you to perform the equivalent of a oc cancel-build
@@ -7271,7 +7271,7 @@ def openshift_build_canceller(registry, xml_parent, data):
 
 
 def openshift_deploy_canceller(registry, xml_parent, data):
-    """yaml: openshift-deploy-canceller
+    r"""yaml: openshift-deploy-canceller
     This action is intended to provide cleanup for any OpenShift deployments
     left running when the Job completes; this step will allow you to perform
     the equivalent of a oc deploy --cancel for the provided deployment config.

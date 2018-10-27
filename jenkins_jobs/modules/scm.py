@@ -46,7 +46,7 @@ import jenkins_jobs.modules.helpers as helpers
 
 
 def git(registry, xml_parent, data):
-    """yaml: git
+    r"""yaml: git
     Specifies the git SCM repository for this job.
     Requires the Jenkins :jenkins-wiki:`Git Plugin <Git+Plugin>`.
 
@@ -994,7 +994,7 @@ def svn(registry, xml_parent, data):
 
 
 def tfs(registry, xml_parent, data):
-    """yaml: tfs
+    r"""yaml: tfs
     Specifies the Team Foundation Server repository for this job.
     Requires the Jenkins :jenkins-wiki:`Team Foundation Server Plugin
     <Team+Foundation+Server+Plugin>`.
@@ -1216,7 +1216,7 @@ def hg(self, xml_parent, data):
 
 
 def openshift_img_streams(registry, xml_parent, data):
-    """yaml: openshift-img-streams
+    r"""yaml: openshift-img-streams
     Rather than a Build step extension plugin, this is an extension of the
     Jenkins SCM plugin, where this baked-in polling mechanism provided by
     Jenkins is leveraged by exposing some of the common semantics between

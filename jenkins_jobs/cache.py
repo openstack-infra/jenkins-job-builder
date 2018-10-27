@@ -43,7 +43,7 @@ class JobCache(object):
     def __init__(self, jenkins_url, flush=False):
         cache_dir = self.get_cache_dir()
         # One cache per remote Jenkins URL:
-        host_vary = re.sub('[^A-Za-z0-9\-\~]', '_', jenkins_url)
+        host_vary = re.sub(r'[^A-Za-z0-9\-\~]', '_', jenkins_url)
         self.cachefilename = os.path.join(
             cache_dir, 'cache-host-jobs-' + host_vary + '.yml')
 

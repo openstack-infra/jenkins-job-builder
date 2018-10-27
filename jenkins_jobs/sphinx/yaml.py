@@ -29,7 +29,7 @@ from sphinx.ext.autodoc import FunctionDocumenter
 from sphinx.locale import _
 
 
-yaml_sig_re = re.compile('yaml:\s*(.*)')
+yaml_sig_re = re.compile(r'yaml:\s*(.*)')
 
 
 class PyYAMLFunction(PyModulelevel):

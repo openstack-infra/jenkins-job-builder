@@ -81,7 +81,7 @@ class CustomFormatter(Formatter):
     Custom formatter to allow non-existing key references when formatting a
     string
     """
-    _expr = """
+    _expr = r"""
         (?<!{){({{)*                # non-pair opening {
         (?:obj:)?                   # obj:
         (?P<key>\w+)                # key
