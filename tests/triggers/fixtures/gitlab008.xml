@@ -20,6 +20,7 @@
       <addCiMessage>true</addCiMessage>
       <allowAllBranches>false</allowAllBranches>
       <targetBranchRegex/>
+      <secretToken/>
       <includeBranchesSpec/>
       <excludeBranchesSpec/>
     </com.dabsquared.gitlabjenkins.GitLabPushTrigger>

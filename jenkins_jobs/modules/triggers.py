@@ -1332,6 +1332,7 @@ def gitlab(registry, xml_parent, data):
     :arg list exclude-branches: Defined list of branches to exclude
         (default [])
     :arg str target-branch-regex: Regular expression to select branches
+    :arg str secret-token: Secret token for build trigger
 
     .. _`branch filter type`:
 
@@ -1434,7 +1435,8 @@ def gitlab(registry, xml_parent, data):
          False),
         ('add-ci-message', 'addCiMessage', False),
         ('allow-all-branches', 'allowAllBranches', False),
-        ('target-branch-regex', 'targetBranchRegex', '')
+        ('target-branch-regex', 'targetBranchRegex', ''),
+        ('secret-token', 'secretToken', '')
     ]
 
     list_mapping = (
