@@ -51,6 +51,7 @@ import jenkins_jobs.modules.helpers as helpers
 import pkg_resources
 from jenkins_jobs.modules import hudson_model
 from jenkins_jobs.modules.publishers import ssh
+from jenkins_jobs.modules.publishers import cifs
 
 logger = logging.getLogger(__name__)
 
@@ -2337,6 +2338,34 @@ def publish_over_ssh(registry, xml_parent, data):
        :language: yaml
     """
     ssh(registry, xml_parent, data)
+
+
+def publish_over_cifs(registry, xml_parent, data):
+    """yaml: publish-over-cifs
+    Upload files via CIFS.
+    Requires the Jenkins :jenkins-wiki:`Publish over CIFS Plugin
+    <Publish+Over+CIFS+Plugin>`.
+
+    :arg str site: name of the ssh site
+    :arg str target: destination directory
+    :arg bool target-is-date-format: whether target is a date format. If true,
+        raw text should be quoted (default false)
+    :arg bool clean-remote: should the remote directory be deleted before
+        transferring files (default false)
+    :arg str source: source path specifier
+    :arg str excludes: excluded file pattern (optional)
+    :arg str remove-prefix: prefix to remove from uploaded file paths
+        (optional)
+    :arg bool fail-on-error: fail the build if an error occurs (default false)
+    :arg bool flatten: only create files on the server, don't create
+        directories (default false)
+
+    Example:
+
+    .. literalinclude:: /../../tests/builders/fixtures/publish-over-cifs.yaml
+       :language: yaml
+    """
+    cifs(registry, xml_parent, data)
 
 
 def saltstack(parser, xml_parent, data):
