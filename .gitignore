@@ -3,6 +3,8 @@
 *.eggs
 *.egg-info
 *.pyc
+*.sw[a-z]
+.python-version
 .test
 .testrepository
 .tox

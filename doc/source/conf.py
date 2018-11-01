@@ -255,4 +255,5 @@ texinfo_documents = [
 # texinfo_show_urls = 'footnote'
 
 extlinks = {'jenkins-wiki': ('https://wiki.jenkins.io/display/JENKINS/%s',
-                             None)}
+                             None),
+            'jenkins-plugins': ('https://plugins.jenkins.io/%s', None)}

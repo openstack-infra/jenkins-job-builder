@@ -44,6 +44,7 @@ scm:
         shallow-clone: true
         depth: 3
         do-not-fetch-tags: true
+        disable-pr-notifications: true
         submodule:
             disable: false
             recursive: true

@@ -90,6 +90,7 @@
             <jenkins.plugins.git.traits.AuthorInChangelogTrait>
               <extension class="hudson.plugins.git.extensions.impl.AuthorInChangelog"/>
             </jenkins.plugins.git.traits.AuthorInChangelogTrait>
+            <com.adobe.jenkins.disable__github__multibranch__status.DisableStatusUpdateTrait plugin="disable-github-multibranch-status"/>
           </traits>
         </source>
         <buildStrategies>
