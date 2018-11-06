@@ -4158,6 +4158,7 @@ def nexus_iq_policy_evaluator(registry, xml_parent, data):
         :stage values:
             * **build**
             * **stage-release**
+            * **release**
             * **operate**
     :arg dict application-type: Specifies an IQ Application (default manual)
 
@@ -4192,7 +4193,7 @@ def nexus_iq_policy_evaluator(registry, xml_parent, data):
                 '____failBuildOnNetworkError',
     }
 
-    valid_stages = ['build', 'stage-release', 'operate']
+    valid_stages = ['build', 'release', 'stage-release', 'operate']
     mapping = [
         ('stage', format_dict.get('stage'), None, valid_stages),
         ('fail-build-network-error', format_dict.get('fone'), False),
