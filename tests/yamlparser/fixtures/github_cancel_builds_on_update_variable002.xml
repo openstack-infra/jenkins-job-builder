@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <actions/>
+  <description>&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>true</canRoam>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.ghprb.GhprbTrigger>
+      <adminlist/>
+      <whitelist/>
+      <orgslist/>
+      <whiteListLabels/>
+      <blackListLabels/>
+      <excludedRegions/>
+      <includedRegions/>
+      <spec/>
+      <allowMembersOfWhitelistedOrgsAsAdmin>false</allowMembersOfWhitelistedOrgsAsAdmin>
+      <cron/>
+      <triggerPhrase/>
+      <skipBuildPhrase/>
+      <onlyTriggerPhrase>false</onlyTriggerPhrase>
+      <useGitHubHooks>false</useGitHubHooks>
+      <permitAll>false</permitAll>
+      <autoCloseFailedPullRequests>false</autoCloseFailedPullRequests>
+    </org.jenkinsci.plugins.ghprb.GhprbTrigger>
+  </triggers>
+  <builders/>
+  <publishers/>
+  <buildWrappers/>
+</project>
