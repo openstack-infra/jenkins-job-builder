@@ -13,9 +13,16 @@
 # limitations under the License.import os
 
 import os
+from jenkins_jobs.modules import view_all
 from jenkins_jobs.modules import view_list
 from jenkins_jobs.modules import view_pipeline
 from tests import base
+
+
+class TestCaseModuleViewAll(base.BaseScenariosTestCase):
+    fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
+    scenarios = base.get_scenarios(fixtures_path)
+    klass = view_all.All
 
 
 class TestCaseModuleViewList(base.BaseScenariosTestCase):

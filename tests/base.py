@@ -43,6 +43,7 @@ from jenkins_jobs.modules import project_matrix
 from jenkins_jobs.modules import project_maven
 from jenkins_jobs.modules import project_multibranch
 from jenkins_jobs.modules import project_multijob
+from jenkins_jobs.modules import view_all
 from jenkins_jobs.modules import view_list
 from jenkins_jobs.modules import view_pipeline
 from jenkins_jobs.parser import YamlParser
@@ -197,7 +198,9 @@ class BaseScenariosTestCase(testscenarios.TestWithScenarios, BaseTestCase):
                 project = project_externaljob.ExternalJob(registry)
 
         if 'view-type' in yaml_content:
-            if yaml_content['view-type'] == "list":
+            if yaml_content['view-type'] == "all":
+                project = view_all.All(None)
+            elif yaml_content['view-type'] == "list":
                 project = view_list.List(None)
             elif yaml_content['view-type'] == "pipeline":
                 project = view_pipeline.Pipeline(None)
