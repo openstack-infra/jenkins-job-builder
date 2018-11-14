@@ -785,6 +785,10 @@ def github_scm(xml_parent, data):
         * **depth** (`int`) - Set shallow clone depth (default 1)
         * **do-not-fetch-tags** (`bool`) - Perform a clone without tags
             (default false)
+        * **disable-pr-notifications** (`bool`) - Disable default github status
+            notifications on pull requests (default false) (Requires the
+            :jenkins-plugins:`GitHub Branch Source Plugin
+            <disable-github-multibranch-status>`.)
         * **submodule** (`dict`)
             * **disable** (`bool`) - By disabling support for submodules you
               can still keep using basic git plugin functionality and just have
@@ -952,6 +956,18 @@ def github_scm(xml_parent, data):
     # - wipe-workspace
     # - use-author
     git_extensions(traits, data)
+
+    # github-only extensions
+    disable_github_status_path_dscore = (
+        'com.adobe.jenkins.disable__github__multibranch__status')
+    if data.get('disable-pr-notifications', False):
+        XML.SubElement(
+            traits, ''.join([
+                disable_github_status_path_dscore, '.DisableStatusUpdateTrait'
+            ]), {
+                'plugin': 'disable-github-multibranch-status'
+            }
+        )
 
 
 def build_strategies(xml_parent, data):
