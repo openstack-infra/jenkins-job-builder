@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <builders>
+    <org.jenkinsci.plugins.registry.notification.DockerPullImageBuilder plugin="dockerhub-notification">
+      <registry plugin="docker-commons">
+        <url/>
+        <credentialsId/>
+      </registry>
+      <image/>
+    </org.jenkinsci.plugins.registry.notification.DockerPullImageBuilder>
+  </builders>
+</project>

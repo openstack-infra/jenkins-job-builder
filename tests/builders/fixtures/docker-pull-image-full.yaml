@@ -1,0 +1,5 @@
+builders:
+  - docker-pull-image:
+      image: test-image-id
+      docker-registry-url: https://index.docker.io/v1/
+      credentials-id: 71e4f29c-162b-40d0-85d9-3ddfba2911a0
