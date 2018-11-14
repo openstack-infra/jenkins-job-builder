@@ -499,7 +499,6 @@ class YamlParser(object):
         return self.data.get('view-group', {}).get(name, None)
 
     def _getViewTemplate(self, name):
-        print(name)
         view = self.data.get('view-template', {}).get(name, None)
         if not view:
             return view
