@@ -25,3 +25,4 @@ testr_subunit_log
 __pycache__
 /.stestr
 settings.json
+.venv
