@@ -1117,7 +1117,10 @@ def github_pull_request(registry, xml_parent, data):
         error_comment
     )
 
-    cancel_builds_on_update = data.get('cancel-builds-on-update', False)
+    # When the value of cancel-builds-on-update comes from deep_formatter,
+    # the value is of type 'str', otherwise the value is of type 'bool'
+    cancel_builds_on_update = str(
+        data.get('cancel-builds-on-update', False)).lower() == 'true'
 
     # We want to have only one 'extensions' subelement, even if status
     # handling, comment handling and other extensions are enabled.

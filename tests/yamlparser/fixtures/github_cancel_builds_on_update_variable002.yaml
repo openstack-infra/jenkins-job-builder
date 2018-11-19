@@ -1,0 +1,12 @@
+---
+- job-template:
+    name: 'github-pull-request-variable-test-false'
+    triggers:
+      - github-pull-request:
+          cancel-builds-on-update: '{test-var}'
+
+- project:
+    name: test-false
+    test-var: false
+    jobs:
+      - 'github-pull-request-variable-test-false'
