@@ -49,6 +49,16 @@
             </jenkins.plugins.git.traits.RefSpecsSCMSourceTrait>
           </traits>
         </source>
+        <strategy class="jenkins.branch.DefaultBranchPropertyStrategy">
+          <properties class="java.util.Arrays$ArrayList">
+            <a class="jenkins.branch.BranchProperty-array">
+              <jenkins.branch.NoTriggerBranchProperty/>
+              <org.jenkinsci.plugins.workflow.multibranch.DurabilityHintBranchProperty plugin="workflow-multibranch">
+                <hint>MAX_SURVIVABILITY</hint>
+              </org.jenkinsci.plugins.workflow.multibranch.DurabilityHintBranchProperty>
+            </a>
+          </properties>
+        </strategy>
         <buildStrategies>
           <jenkins.branch.buildstrategies.basic.TagBuildStrategyImpl plugin="basic-branch-build-strategies">
             <atMostMillis>86400000</atMostMillis>

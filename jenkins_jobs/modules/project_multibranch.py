@@ -325,6 +325,10 @@ def bitbucket_scm(xml_parent, data):
         discovered initially or a change from the previous revision has been
         detected. (optional)
         Refer to :func:`~build_strategies <build_strategies>`.
+    :arg dict property-strategies: Provides control over how to build a branch
+        (like to disable SCM triggering or to override the pipeline durability)
+        (optional)
+        Refer to :func:`~property_strategies <property_strategies>`.
     :arg bool local-branch: Check out to matching local branch
         If given, checkout the revision to build as HEAD on this branch.
         If selected, then the branch name is computed from the remote branch
@@ -485,6 +489,9 @@ def bitbucket_scm(xml_parent, data):
         helpers.convert_mapping_to_xml(
             dbr, data, dbr_mapping, fail_required=True)
 
+    if data.get('property-strategies', None):
+        property_strategies(xml_parent, data)
+
     if data.get('build-strategies', None):
         build_strategies(xml_parent, data)
 
@@ -564,6 +571,10 @@ def gerrit_scm(xml_parent, data):
         discovered initially or a change from the previous revision has been
         detected. (optional)
         Refer to :func:`~build_strategies <build_strategies>`.
+    :arg dict property-strategies: Provides control over how to build a branch
+        (like to disable SCM triggering or to override the pipeline durability)
+        (optional)
+        Refer to :func:`~property_strategies <property_strategies>`.
 
     Minimal Example:
 
@@ -621,6 +632,9 @@ def gerrit_scm(xml_parent, data):
             '.RefSpecsSCMSourceTrait_-RefSpecTemplate'))
         XML.SubElement(e, 'value').text = x
 
+    if data.get('property-strategies', None):
+        property_strategies(xml_parent, data)
+
     if data.get('build-strategies', None):
         build_strategies(xml_parent, data)
 
@@ -648,6 +662,10 @@ def git_scm(xml_parent, data):
         discovered initially or a change from the previous revision has been
         detected. (optional)
         Refer to :func:`~build_strategies <build_strategies>`.
+    :arg dict property-strategies: Provides control over how to build a branch
+        (like to disable SCM triggering or to override the pipeline durability)
+        (optional)
+        Refer to :func:`~property_strategies <property_strategies>`.
 
     :extensions:
 
@@ -722,6 +740,9 @@ def git_scm(xml_parent, data):
             'jenkins.scm.impl.trait.RegexSCMHeadFilterTrait')
         XML.SubElement(rshf, 'regex').text = data.get('head-filter-regex')
 
+    if data.get('property-strategies', None):
+        property_strategies(xml_parent, data)
+
     if data.get('build-strategies', None):
         build_strategies(xml_parent, data)
 
@@ -774,6 +795,10 @@ def github_scm(xml_parent, data):
         discovered initially or a change from the previous revision has been
         detected. (optional)
         Refer to :func:`~build_strategies <build_strategies>`.
+    :arg dict property-strategies: Provides control over how to build a branch
+        (like to disable SCM triggering or to override the pipeline durability)
+        (optional)
+        Refer to :func:`~property_strategies <property_strategies>`.
 
     :extensions:
 
@@ -943,6 +968,9 @@ def github_scm(xml_parent, data):
     helpers.convert_mapping_to_xml(
         dpro, data, dpro_mapping, fail_required=True)
 
+    if data.get('property-strategies', None):
+        property_strategies(xml_parent, data)
+
     if data.get('build-strategies', None):
         build_strategies(xml_parent, data)
 
@@ -1106,3 +1134,62 @@ def build_strategies(xml_parent, data):
                         nb['wildcards-name'],
                         wildcards_name_mapping,
                         fail_required=False)
+
+
+def property_strategies(xml_parent, data):
+    """Configure Basic Branch Property Strategies.
+
+    Requires the :jenkins-wiki:`Branch API Plugin <Branch+API+Plugin>`.
+
+    :arg dict property-strategies: Definition of property strategies.
+
+        * **all-branches** (list): A list of property strategy definitions
+            for use with all branches.
+
+            * **suppress-scm-triggering** (bool): Suppresses automatic SCM
+                triggering (optional)
+            * **pipeline-branch-durability-override** (str): Set a custom
+                branch speed/durability level. Valid values:
+                performance-optimized, survivable-nonatomic, or
+                max-survivability (optional) Requires the :jenkins-wiki:
+                `Pipeline Multibranch Plugin <Pipeline+Multibranch+Plugin>`
+    """
+
+    # Valid options for the pipeline branch durability override.
+    pbdo_map = collections.OrderedDict([
+        ("max-survivability", "MAX_SURVIVABILITY"),
+        ("performance-optimized", "PERFORMANCE_OPTIMIZED"),
+        ("survivable-nonatomic", "SURVIVABLE_NONATOMIC"),
+    ])
+    basic_property_strategies = 'jenkins.branch'
+    workflow_multibranch = 'org.jenkinsci.plugins.workflow.multibranch'
+    dbps = XML.SubElement(xml_parent, 'strategy', {
+        'class': ''.join([basic_property_strategies,
+                          '.DefaultBranchPropertyStrategy'])})
+    prop_strats = data.get('property-strategies', None)
+
+    if prop_strats:
+        props_elem = XML.SubElement(dbps, 'properties', {
+            'class': 'java.util.Arrays$ArrayList'})
+        props_elem = XML.SubElement(props_elem, 'a', {
+            'class': ''.join([
+                basic_property_strategies, '.BranchProperty-array'])})
+
+        for dbs_list in prop_strats.get('all-branches', None):
+
+            if dbs_list.get('suppress-scm-triggering', False):
+                XML.SubElement(props_elem, ''.join([
+                    basic_property_strategies, '.NoTriggerBranchProperty']))
+
+            pbdo_val = dbs_list.get(
+                'pipeline-branch-durability-override', None)
+            if pbdo_val:
+                if not pbdo_map.get(pbdo_val):
+                    raise InvalidAttributeError(
+                        'pipeline-branch-durability-override',
+                        pbdo_val,
+                        pbdo_map.keys())
+                pbdo_elem = XML.SubElement(props_elem, ''.join([
+                    workflow_multibranch, '.DurabilityHintBranchProperty']), {
+                        'plugin': 'workflow-multibranch'})
+                XML.SubElement(pbdo_elem, 'hint').text = pbdo_map.get(pbdo_val)
