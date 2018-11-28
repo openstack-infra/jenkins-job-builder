@@ -48,7 +48,7 @@ def base_param(registry, xml_parent, data, do_default, ptype):
     if do_default:
         default = data.get('default', None)
         if default:
-            XML.SubElement(pdef, 'defaultValue').text = default
+            XML.SubElement(pdef, 'defaultValue').text = str(default)
         else:
             XML.SubElement(pdef, 'defaultValue')
     return pdef
