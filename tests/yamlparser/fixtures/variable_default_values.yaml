@@ -3,6 +3,10 @@
     jobs:
         - 'variable_default_values':
             defined_var: '7'
+        - 'test_int_default_{int}':
+            int: 0
+        - 'test_int_default_{int}':
+            int: 1
 
 - job-template:
     name: 'variable_default_values'
@@ -18,3 +22,10 @@
           echo "{{defined_var|-1}}"
           echo "{{undefined_var|+1}}"
           echo "{{undefined_var|-1}}"
+
+- job-template:
+    name: 'test_int_default_{int}'
+    parameters:
+      - string:
+          name: INT_DEFAULT
+          default: '{int}'
