@@ -4337,6 +4337,8 @@ def ansible_playbook(parser, xml_parent, data):
     :arg int workers: Specify number of parallel processes to use (default 5)
     :arg str credentials-id: The ID of credentials for the SSH connections.
         Only private key authentication is supported (default '')
+    :arg str vault-credentials-id: The ID of credentials for the vault
+        decryption (default '')
     :arg bool sudo: Run operations with sudo. It works only when the remote
         user is sudoer with nopasswd option (default false)
     :arg str sudo-user: Desired sudo user. "root" is used when this field is
@@ -4416,6 +4418,8 @@ def ansible_playbook(parser, xml_parent, data):
         'task-to-start-at', '')
     XML.SubElement(plugin, 'credentialsId').text = data.get(
         'credentials-id', '')
+    XML.SubElement(plugin, 'vaultCredentialsId').text = data.get(
+        'vault-credentials-id', '')
     if data.get('sudo', False):
         XML.SubElement(plugin, 'sudo').text = 'true'
         XML.SubElement(plugin, 'sudoUser').text = data.get('sudo-user', '')
