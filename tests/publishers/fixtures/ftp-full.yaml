@@ -10,3 +10,5 @@ publishers:
       fail-on-error: true
       flatten: true
       verbose: true
+      retries: 99
+      retry-delay: 12345

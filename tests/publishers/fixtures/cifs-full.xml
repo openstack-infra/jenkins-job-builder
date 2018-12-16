@@ -21,6 +21,10 @@
             </transfers>
             <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
             <usePromotionTimestamp>false</usePromotionTimestamp>
+            <retry class="jenkins.plugins.publish_over_cifs.CifsRetry">
+              <retries>99</retries>
+              <retryDelay>12345</retryDelay>
+            </retry>
           </jenkins.plugins.publish__over__cifs.CifsPublisher>
         </publishers>
         <continueOnError>false</continueOnError>

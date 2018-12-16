@@ -1175,6 +1175,10 @@ def ftp(registry, xml_parent, data):
       directories (default false).
     :arg bool verbose: adds lots of detail useful for debug to the console
       but generally should be left off (default false)
+    :arg int retries: the number of times to retry this server in the event of
+      failure (optional)
+    :arg int retry-delay: the time to wait, in milliseconds, before attempting
+      another transfer (default 10000)
 
     Minimal Example:
 
@@ -1191,6 +1195,7 @@ def ftp(registry, xml_parent, data):
     plugin_tag = 'jenkins.plugins.publish__over__ftp.BapFtpPublisherPlugin'
     publisher_tag = 'jenkins.plugins.publish__over__ftp.BapFtpPublisher'
     transfer_tag = 'jenkins.plugins.publish__over__ftp.BapFtpTransfer'
+    retry_tag = 'jenkins.plugins.publish_over_ftp.BapFtpRetry'
     plugin_reference_tag = 'jenkins.plugins.publish_over_ftp.'    \
         'BapFtpPublisherPlugin'
     (_, transfer_node) = base_publish_over(xml_parent,
@@ -1199,6 +1204,7 @@ def ftp(registry, xml_parent, data):
                                            plugin_tag,
                                            publisher_tag,
                                            transfer_tag,
+                                           retry_tag,
                                            plugin_reference_tag)
     mapping = [('', 'asciiMode', 'false')]
     helpers.convert_mapping_to_xml(
@@ -1916,6 +1922,10 @@ def ssh(registry, xml_parent, data):
       directories (default false).
     :arg bool verbose: adds lots of detail useful for debug to the console
       but generally should be left off (default false)
+    :arg int retries: the number of times to retry this server in the event of
+      failure (optional)
+    :arg int retry-delay: the time to wait, in milliseconds, before attempting
+      another transfer (default 10000)
 
     Minimal Example:
 
@@ -1931,6 +1941,7 @@ def ssh(registry, xml_parent, data):
     tag_prefix = 'jenkins.plugins.publish'
     publisher_tag = '%s__over__ssh.BapSshPublisher' % tag_prefix
     transfer_tag = '%s__over__ssh.BapSshTransfer' % tag_prefix
+    retry_tag = '%s_over_ssh.BapSshRetry' % tag_prefix
     reference_tag = '%s_over_ssh.BapSshPublisherPlugin' % tag_prefix
 
     if xml_parent.tag == 'publishers':
@@ -1941,7 +1952,8 @@ def ssh(registry, xml_parent, data):
         is_builder = True
 
     base_publish_over(xml_parent, data, console_prefix, plugin_tag,
-                      publisher_tag, transfer_tag, reference_tag, is_builder)
+                      publisher_tag, transfer_tag, retry_tag, reference_tag,
+                      is_builder)
 
 
 def pipeline(registry, xml_parent, data):
@@ -2679,8 +2691,8 @@ def groovy_postbuild(registry, xml_parent, data):
 
 def base_publish_over(xml_parent, data, console_prefix,
                       plugin_tag, publisher_tag,
-                      transferset_tag, reference_plugin_tag,
-                      is_builder=False):
+                      transferset_tag, retry_tag,
+                      reference_plugin_tag, is_builder=False):
     outer = XML.SubElement(xml_parent, plugin_tag)
     # 'Publish over SSH' builder has an extra top delegate element
     if xml_parent.tag == 'builders' or is_builder:
@@ -2721,6 +2733,12 @@ def base_publish_over(xml_parent, data, console_prefix,
     XML.SubElement(inner, 'useWorkspaceInPromotion').text = 'false'
     XML.SubElement(inner, 'usePromotionTimestamp').text = 'false'
 
+    if 'retries' in data:
+        retry = XML.SubElement(inner, 'retry', {'class': retry_tag})
+        XML.SubElement(retry, 'retries').text = str(data.get('retries', 0))
+        XML.SubElement(retry, 'retryDelay').text = str(
+            data.get('retry-delay', 10000))
+
     XML.SubElement(delegate, 'continueOnError').text = 'false'
     XML.SubElement(delegate, 'failOnError').text = str(
         data.get('fail-on-error', False)).lower()
@@ -2753,6 +2771,10 @@ def cifs(registry, xml_parent, data):
         directories (default false).
     :arg bool verbose: adds lots of detail useful for debug to the console
       but generally should be left off (default false)
+    :arg int retries: the number of times to retry this server in the event of
+      failure (optional)
+    :arg int retry-delay: the time to wait, in milliseconds, before attempting
+      another transfer (default 10000)
 
     Minimal Example:
 
@@ -2774,6 +2796,7 @@ def cifs(registry, xml_parent, data):
         is_builder = True
     publisher_tag = 'jenkins.plugins.publish__over__cifs.CifsPublisher'
     transfer_tag = 'jenkins.plugins.publish__over__cifs.CifsTransfer'
+    retry_tag = 'jenkins.plugins.publish_over_cifs.CifsRetry'
     plugin_reference_tag = ('jenkins.plugins.publish_over_cifs.'
                             'CifsPublisherPlugin')
     base_publish_over(xml_parent,
@@ -2782,6 +2805,7 @@ def cifs(registry, xml_parent, data):
                       plugin_tag,
                       publisher_tag,
                       transfer_tag,
+                      retry_tag,
                       plugin_reference_tag,
                       is_builder)
 
