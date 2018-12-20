@@ -11,6 +11,7 @@
       <skippedTags/>
       <startAtTask/>
       <credentialsId/>
+      <vaultCredentialsId/>
       <sudo>false</sudo>
       <forks>5</forks>
       <unbufferedOutput>true</unbufferedOutput>

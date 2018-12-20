@@ -15,6 +15,7 @@ machine02.example.com
       <skippedTags>ovirt</skippedTags>
       <startAtTask>Deploy application</startAtTask>
       <credentialsId>0891c950-487b-4749-aa69-d87425e14459</credentialsId>
+      <vaultCredentialsId>0421b950-487b-4749-aa69-d87425e14459</vaultCredentialsId>
       <sudo>true</sudo>
       <sudoUser>cloud-user</sudoUser>
       <forks>2</forks>
