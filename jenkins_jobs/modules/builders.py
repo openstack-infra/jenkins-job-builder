@@ -3958,6 +3958,66 @@ def description_setter(registry, xml_parent, data):
         descriptionsetter, data, mapping, fail_required=True)
 
 
+def build_publish_docker_image(registry, xml_parent, data):
+    """yaml: build-publish-docker-image
+    Requires the Jenkins :jenkins-wiki:`CloudBees Docker Build and
+    Publish plugin <CloudBees+Docker+Build+and+Publish+plugin>`.
+
+    :arg str docker-registry-url: URL to the Docker registry you are
+        using (default '')
+    :arg str image: Repository name to be applied to the resulting image
+        in case of success (default '')
+    :arg str docker-file-directory: Build step that sends a Dockerfile for
+        building to docker host that used for this build run (default '')
+    :arg bool push-on-success: Resulting docker image will be pushed to
+        the registry (or registries) specified within the
+        "Image" field (default false)
+    :arg str push-credentials-id: Credentials to push to a private
+        registry (default '')
+    :arg bool clean-images: Option to clean local images (default false)
+    :arg bool jenkins-job-delete: Attempt to remove images when jenkins
+        deletes the run	(default false)
+    :arg str cloud: Cloud to use to build image	(default '')
+
+    Minimal example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/build-publish-docker-image-minimal.yaml
+
+    Full example:
+
+    .. literalinclude::
+        /../../tests/builders/fixtures/build-publish-docker-image-full.yaml
+    """
+    dbp = XML.SubElement(xml_parent,
+                         'com.nirima.jenkins.plugins.docker.builder'
+                         '.DockerBuilderPublisher')
+    dbp.set('plugin', 'docker-plugin')
+
+    from_registry = XML.SubElement(dbp, 'fromRegistry')
+    from_registry.set('plugin', 'docker-commons')
+    from_registry_mapping = [
+        ('docker-registry-url', 'url', ''),
+    ]
+    helpers.convert_mapping_to_xml(
+        from_registry, data, from_registry_mapping,
+        fail_required=False)
+
+    tags = XML.SubElement(dbp, 'tags')
+    XML.SubElement(tags, 'string').text = data.get('image', '')
+
+    mapping = [
+        ('docker-file-directory', 'dockerFileDirectory', ''),
+        ('push-on-success', 'pushOnSuccess', False),
+        ('push-credentials-id', 'pushCredentialsId', ''),
+        ('clean-images', 'cleanImages', False),
+        ('jenkins-job-delete', 'cleanupWithJenkinsJobDelete', False),
+        ('cloud', 'cloud', ''),
+    ]
+    helpers.convert_mapping_to_xml(
+        dbp, data, mapping, fail_required=False)
+
+
 def docker_build_publish(parse, xml_parent, data):
     """yaml: docker-build-publish
     Requires the Jenkins :jenkins-wiki:`Docker build publish Plugin
