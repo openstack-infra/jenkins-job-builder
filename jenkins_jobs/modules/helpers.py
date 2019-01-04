@@ -155,7 +155,7 @@ def config_file_provider_settings(xml_parent, data):
     if 'global-settings' in data:
         # Support for Config File Provider
         global_settings_file = str(data['global-settings'])
-        global_settings_type = data.get('settings-type', 'file')
+        global_settings_type = data.get('global-settings-type', 'file')
 
         # For cfp versions <2.10.0 we are able to detect cfp via the config
         # settings name.

@@ -1,0 +1,7 @@
+project-type: maven
+maven:
+  goals: deploy
+  settings-type: file
+  settings: test
+  global-settings-type: cfp
+  global-settings: test
