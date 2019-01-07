@@ -968,6 +968,11 @@ def github_scm(xml_parent, data):
     helpers.convert_mapping_to_xml(
         dpro, data, dpro_mapping, fail_required=True)
 
+    if data.get('head-filter-regex', None):
+        rshf = XML.SubElement(traits,
+            'jenkins.scm.impl.trait.RegexSCMHeadFilterTrait')
+        XML.SubElement(rshf, 'regex').text = data.get('head-filter-regex')
+
     if data.get('property-strategies', None):
         property_strategies(xml_parent, data)
 

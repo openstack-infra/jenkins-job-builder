@@ -10,6 +10,7 @@ scm:
         repo-owner: example-owner
         credentials-id: example-credential
         branch-discovery: all
+        head-filter-regex: "(.*/master|.*/release/.*)"
         discover-pr-forks-strategy: both
         discover-pr-forks-trust: everyone
         discover-pr-origin: both

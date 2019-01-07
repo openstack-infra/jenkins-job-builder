@@ -52,6 +52,9 @@
             <org.jenkinsci.plugins.github__branch__source.OriginPullRequestDiscoveryTrait>
               <strategyId>3</strategyId>
             </org.jenkinsci.plugins.github__branch__source.OriginPullRequestDiscoveryTrait>
+            <jenkins.scm.impl.trait.RegexSCMHeadFilterTrait>
+              <regex>(.*/master|.*/release/.*)</regex>
+            </jenkins.scm.impl.trait.RegexSCMHeadFilterTrait>
             <jenkins.plugins.git.traits.CleanAfterCheckoutTrait>
               <extension class="hudson.plugins.git.extensions.impl.CleanCheckout"/>
             </jenkins.plugins.git.traits.CleanAfterCheckoutTrait>
