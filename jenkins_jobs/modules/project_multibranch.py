@@ -76,6 +76,7 @@ import six
 
 from jenkins_jobs.modules.scm import git_extensions
 from jenkins_jobs.errors import InvalidAttributeError
+from jenkins_jobs.errors import JenkinsJobsException
 
 logger = logging.getLogger(str(__name__))
 
@@ -1146,7 +1147,8 @@ def property_strategies(xml_parent, data):
 
     Requires the :jenkins-wiki:`Branch API Plugin <Branch+API+Plugin>`.
 
-    :arg dict property-strategies: Definition of property strategies.
+    :arg dict property-strategies: Definition of property strategies.  Either
+        `named-branches` or `all-branches` may be specified, but not both.
 
         * **all-branches** (list): A list of property strategy definitions
             for use with all branches.
@@ -1158,43 +1160,162 @@ def property_strategies(xml_parent, data):
                 performance-optimized, survivable-nonatomic, or
                 max-survivability (optional) Requires the :jenkins-wiki:
                 `Pipeline Multibranch Plugin <Pipeline+Multibranch+Plugin>`
+
+        * **named-branches** (dict): Named branches get different properties.
+            Comprised of a list of defaults and a list of property strategy
+            exceptions for use with specific branches.
+
+            * **defaults** (list): A list of property strategy definitions
+                to be applied by default to all branches, unless overridden
+                by an entry in `exceptions`
+
+                * **suppress-scm-triggering** (bool): Suppresses automatic SCM
+                    triggering (optional)
+                * **pipeline-branch-durability-override** (str): Set a custom
+                    branch speed/durability level. Valid values:
+                    performance-optimized, survivable-nonatomic, or
+                    max-survivability (optional) Requires the :jenkins-wiki:
+                    `Pipeline Multibranch Plugin <Pipeline+Multibranch+Plugin>`
+
+            * **exceptions** (list): A list of branch names and the property
+                strategies to be used on that branch, instead of any listed
+                in `defaults`.
+
+                * **exception** (dict): Defines exception
+                    * **branch-name** (str): Name of the branch to which these
+                        properties will be applied.
+                    * **properties** (list): A list of properties to apply to
+                        this branch.
+
+                        * **suppress-scm-triggering** (bool): Suppresses
+                            automatic SCM triggering (optional)
+                        * **pipeline-branch-durability-override** (str): Set a
+                            custom branch speed/durability level. Valid values:
+                            performance-optimized, survivable-nonatomic, or
+                            max-survivability (optional) Requires the
+                            :jenkins-wiki:`Pipeline Multibranch Plugin
+                            <Pipeline+Multibranch+Plugin>`
     """
 
+    valid_prop_strats = [
+        'all-branches',
+        'named-branches'
+    ]
+
+    basic_property_strategies = 'jenkins.branch'
+
+    prop_strats = data.get('property-strategies', None)
+
+    if prop_strats:
+
+        for prop_strat in prop_strats:
+            if prop_strat not in valid_prop_strats:
+                raise InvalidAttributeError('property-strategies',
+                                            prop_strat,
+                                            valid_prop_strats)
+        if len(prop_strats) > 1:
+            raise JenkinsJobsException(
+                'Only one property strategy may be specified')
+
+        all_branches = prop_strats.get('all-branches', None)
+        named_branches = prop_strats.get('named-branches', None)
+
+        if all_branches:
+
+            strat_elem = XML.SubElement(xml_parent, 'strategy', {
+                'class': ''.join([basic_property_strategies,
+                                  '.DefaultBranchPropertyStrategy'])})
+            props_elem = XML.SubElement(strat_elem, 'properties', {
+                'class': 'java.util.Arrays$ArrayList'})
+            props_elem = XML.SubElement(props_elem, 'a', {
+                'class': ''.join([
+                    basic_property_strategies, '.BranchProperty-array'])})
+
+            apply_property_strategies(props_elem, all_branches)
+
+        elif named_branches:
+
+            strat_elem = XML.SubElement(xml_parent, 'strategy', {
+                'class': ''.join([basic_property_strategies,
+                                  '.NamedExceptionsBranchPropertyStrategy'])})
+
+            nbs_defaults = named_branches.get('defaults', None)
+            if nbs_defaults:
+
+                props_elem = XML.SubElement(strat_elem, 'defaultProperties', {
+                    'class': 'java.util.Arrays$ArrayList'})
+                props_elem = XML.SubElement(props_elem, 'a', {
+                    'class': ''.join([
+                        basic_property_strategies, '.BranchProperty-array'])})
+
+                apply_property_strategies(props_elem, nbs_defaults)
+
+            nbs_exceptions = named_branches.get('exceptions', None)
+            if nbs_exceptions:
+
+                props_elem = XML.SubElement(strat_elem, 'namedExceptions', {
+                    'class': 'java.util.Arrays$ArrayList'})
+                props_elem = XML.SubElement(props_elem, 'a', {
+                    'class': ''.join([
+                        basic_property_strategies,
+                        '.NamedExceptionsBranchPropertyStrategy$Named-array'
+                    ])})
+
+                for named_exception in nbs_exceptions:
+                    named_exception = named_exception.get('exception', None)
+                    if not named_exception:
+                        continue
+
+                    exc_elem = XML.SubElement(props_elem, ''.join([
+                        basic_property_strategies,
+                        '.NamedExceptionsBranchPropertyStrategy_-Named']))
+
+                    ne_branch_name = named_exception.get('branch-name', None)
+                    if ne_branch_name is not None:
+                        XML.SubElement(exc_elem, 'name').text = ne_branch_name
+
+                    ne_properties = named_exception.get('properties', None)
+                    if ne_properties:
+                        exc_elem = XML.SubElement(exc_elem, 'props', {
+                            'class': 'java.util.Arrays$ArrayList'})
+                        exc_elem = XML.SubElement(exc_elem, 'a', {
+                            'class': ''.join([
+                                basic_property_strategies,
+                                '.BranchProperty-array'])})
+                        apply_property_strategies(exc_elem, ne_properties)
+
+
+def apply_property_strategies(props_elem, props_list):
+    # there are 3 locations at which property strategies can be defined:
+    # globally (all-branches), defaults (named-branches), exceptions
+    # (also named-branches)
+
+    basic_property_strategies = 'jenkins.branch'
+    workflow_multibranch = 'org.jenkinsci.plugins.workflow.multibranch'
     # Valid options for the pipeline branch durability override.
     pbdo_map = collections.OrderedDict([
         ("max-survivability", "MAX_SURVIVABILITY"),
         ("performance-optimized", "PERFORMANCE_OPTIMIZED"),
         ("survivable-nonatomic", "SURVIVABLE_NONATOMIC"),
     ])
-    basic_property_strategies = 'jenkins.branch'
-    workflow_multibranch = 'org.jenkinsci.plugins.workflow.multibranch'
-    dbps = XML.SubElement(xml_parent, 'strategy', {
-        'class': ''.join([basic_property_strategies,
-                          '.DefaultBranchPropertyStrategy'])})
-    prop_strats = data.get('property-strategies', None)
 
-    if prop_strats:
-        props_elem = XML.SubElement(dbps, 'properties', {
-            'class': 'java.util.Arrays$ArrayList'})
-        props_elem = XML.SubElement(props_elem, 'a', {
-            'class': ''.join([
-                basic_property_strategies, '.BranchProperty-array'])})
+    for dbs_list in props_list:
 
-        for dbs_list in prop_strats.get('all-branches', None):
+        if dbs_list.get('suppress-scm-triggering', False):
+            XML.SubElement(props_elem, ''.join([
+                basic_property_strategies, '.NoTriggerBranchProperty']))
 
-            if dbs_list.get('suppress-scm-triggering', False):
-                XML.SubElement(props_elem, ''.join([
-                    basic_property_strategies, '.NoTriggerBranchProperty']))
-
-            pbdo_val = dbs_list.get(
-                'pipeline-branch-durability-override', None)
-            if pbdo_val:
-                if not pbdo_map.get(pbdo_val):
-                    raise InvalidAttributeError(
-                        'pipeline-branch-durability-override',
-                        pbdo_val,
-                        pbdo_map.keys())
-                pbdo_elem = XML.SubElement(props_elem, ''.join([
-                    workflow_multibranch, '.DurabilityHintBranchProperty']), {
-                        'plugin': 'workflow-multibranch'})
-                XML.SubElement(pbdo_elem, 'hint').text = pbdo_map.get(pbdo_val)
+        pbdo_val = dbs_list.get(
+            'pipeline-branch-durability-override', None)
+        if pbdo_val:
+            if not pbdo_map.get(pbdo_val):
+                raise InvalidAttributeError(
+                    'pipeline-branch-durability-override',
+                    pbdo_val,
+                    pbdo_map.keys())
+            pbdo_elem = XML.SubElement(props_elem, ''.join([
+                workflow_multibranch,
+                '.DurabilityHintBranchProperty']), {
+                    'plugin': 'workflow-multibranch'})
+            XML.SubElement(pbdo_elem, 'hint').text = pbdo_map.get(
+                pbdo_val)

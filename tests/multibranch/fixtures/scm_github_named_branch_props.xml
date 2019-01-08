@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject plugin="workflow-multibranch">
+  <properties/>
+  <views>
+    <hudson.model.AllView>
+      <name>All</name>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+      <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../../.."/>
+    </hudson.model.AllView>
+  </views>
+  <viewsTabBar class="hudson.views.DefaultViewsTabBar"/>
+  <folderViews class="jenkins.branch.MultiBranchProjectViewHolder" plugin="branch-api">
+    <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+  </folderViews>
+  <healthMetrics>
+    <com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric plugin="cloudbees-folder">
+      <nonRecursive>false</nonRecursive>
+    </com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric>
+  </healthMetrics>
+  <icon class="jenkins.branch.MetadataActionFolderIcon" plugin="branch-api">
+    <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+  </icon>
+  <orphanedItemStrategy class="com.cloudbees.hudson.plugins.folder.computed.DefaultOrphanedItemStrategy" plugin="cloudbees-folder">
+    <pruneDeadBranches>true</pruneDeadBranches>
+    <daysToKeep>-1</daysToKeep>
+    <numToKeep>-1</numToKeep>
+  </orphanedItemStrategy>
+  <triggers/>
+  <sources class="jenkins.branch.MultiBranchProject$BranchSourceList" plugin="branch-api">
+    <data>
+      <jenkins.branch.BranchSource>
+        <source class="org.jenkinsci.plugins.github_branch_source.GitHubSCMSource" plugin="github-branch-source">
+          <id>gh-johndoe-foo</id>
+          <repoOwner>johndoe</repoOwner>
+          <repository>foo</repository>
+          <traits>
+            <org.jenkinsci.plugins.github__branch__source.BranchDiscoveryTrait>
+              <strategyId>1</strategyId>
+            </org.jenkinsci.plugins.github__branch__source.BranchDiscoveryTrait>
+            <org.jenkinsci.plugins.github__branch__source.ForkPullRequestDiscoveryTrait>
+              <strategyId>1</strategyId>
+              <trust class="org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustContributors"/>
+            </org.jenkinsci.plugins.github__branch__source.ForkPullRequestDiscoveryTrait>
+            <org.jenkinsci.plugins.github__branch__source.OriginPullRequestDiscoveryTrait>
+              <strategyId>1</strategyId>
+            </org.jenkinsci.plugins.github__branch__source.OriginPullRequestDiscoveryTrait>
+            <jenkins.plugins.git.traits.WipeWorkspaceTrait>
+              <extension class="hudson.plugins.git.extensions.impl.WipeWorkspace"/>
+            </jenkins.plugins.git.traits.WipeWorkspaceTrait>
+          </traits>
+        </source>
+        <strategy class="jenkins.branch.NamedExceptionsBranchPropertyStrategy">
+          <defaultProperties class="java.util.Arrays$ArrayList">
+            <a class="jenkins.branch.BranchProperty-array">
+              <org.jenkinsci.plugins.workflow.multibranch.DurabilityHintBranchProperty plugin="workflow-multibranch">
+                <hint>MAX_SURVIVABILITY</hint>
+              </org.jenkinsci.plugins.workflow.multibranch.DurabilityHintBranchProperty>
+            </a>
+          </defaultProperties>
+          <namedExceptions class="java.util.Arrays$ArrayList">
+            <a class="jenkins.branch.NamedExceptionsBranchPropertyStrategy$Named-array">
+              <jenkins.branch.NamedExceptionsBranchPropertyStrategy_-Named>
+                <name>master</name>
+                <props class="java.util.Arrays$ArrayList">
+                  <a class="jenkins.branch.BranchProperty-array">
+                    <jenkins.branch.NoTriggerBranchProperty/>
+                    <org.jenkinsci.plugins.workflow.multibranch.DurabilityHintBranchProperty plugin="workflow-multibranch">
+                      <hint>SURVIVABLE_NONATOMIC</hint>
+                    </org.jenkinsci.plugins.workflow.multibranch.DurabilityHintBranchProperty>
+                  </a>
+                </props>
+              </jenkins.branch.NamedExceptionsBranchPropertyStrategy_-Named>
+              <jenkins.branch.NamedExceptionsBranchPropertyStrategy_-Named>
+                <name>staging</name>
+                <props class="java.util.Arrays$ArrayList">
+                  <a class="jenkins.branch.BranchProperty-array">
+                    <jenkins.branch.NoTriggerBranchProperty/>
+                  </a>
+                </props>
+              </jenkins.branch.NamedExceptionsBranchPropertyStrategy_-Named>
+            </a>
+          </namedExceptions>
+        </strategy>
+      </jenkins.branch.BranchSource>
+    </data>
+    <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+  </sources>
+  <factory class="org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory">
+    <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+    <scriptPath>Jenkinsfile</scriptPath>
+  </factory>
+</org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject>

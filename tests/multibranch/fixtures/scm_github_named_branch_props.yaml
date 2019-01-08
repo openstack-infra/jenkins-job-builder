@@ -1,0 +1,21 @@
+name: 'demo-multibranch-github-min'
+project-type: multibranch
+scm:
+    - github:
+        repo: 'foo'
+        repo-owner: 'johndoe'
+
+        property-strategies:
+            named-branches:
+                defaults:
+                  - pipeline-branch-durability-override: max-survivability
+                exceptions:
+                  - exception:
+                      branch-name: master
+                      properties:
+                        - suppress-scm-triggering: true
+                        - pipeline-branch-durability-override: survivable-nonatomic
+                  - exception:
+                      branch-name: staging
+                      properties:
+                        - suppress-scm-triggering: true
