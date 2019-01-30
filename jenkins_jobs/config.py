@@ -265,9 +265,9 @@ class JJBConfig(object):
 
         plugins_info = None
         if (config.has_option(self._section, 'query_plugins_info') and
-           not config.getboolean(self._section, "query_plugins_info")):
-                logger.debug("Skipping plugin info retrieval")
-                plugins_info = []
+                not config.getboolean(self._section, "query_plugins_info")):
+            logger.debug("Skipping plugin info retrieval")
+            plugins_info = []
         self.builder['plugins_info'] = plugins_info
 
         self.recursive = config.getboolean('job_builder', 'recursive')

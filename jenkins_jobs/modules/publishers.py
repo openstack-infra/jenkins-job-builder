@@ -6265,7 +6265,7 @@ def conditional_publisher(registry, xml_parent, data):
                 # Check the length of actions list for versions prior to 0.13.
                 # Flexible Publish will overwrite action if more than one is
                 # specified.  Limit the action list to one element.
-                if len(actions) is not 1:
+                if len(actions) != 1:
                     raise JenkinsJobsException("Only one action may be "
                                                "specified for each condition.")
             for action in actions:
