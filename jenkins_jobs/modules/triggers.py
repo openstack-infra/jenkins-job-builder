@@ -2186,6 +2186,133 @@ def stash_pull_request(registry, xml_parent, data):
         pr_trigger, data, mappings, fail_required=True)
 
 
+def generic_webhook_trigger(registry, xml_parent, data):
+    """yaml: generic-webhook-trigger
+    Generic webhook trigger. Trigger when a set of parameters are submitted.
+    Requires the Jenkins
+    :jenkins-wiki:`Generic Webhook Trigger <Generic+Webhook+Trigger+Plugin>`.
+
+
+    :arg string token: A token to use to trigger the job. (default '')
+    :arg bool print-post-content: Print post content in job log.
+    :arg bool print-contrib-var: Print contributed variables in job log.
+    :arg bool silent-response: Avoid responding with information about
+     triggered jobs.
+    :arg string cause: This will be displayed in any triggered job.
+    :arg string regex-filter-expression: Regular expression to test on the
+     evaluated text specified in regex-filter-text
+    :arg string regex-filter-text: Text to test for the given
+     regexp-filter-expression.
+
+    :arg list post-content-params: Parameters to use from posted JSON/XML
+
+        :post-content-params: * **type** (`string`) -- JSONPath or XPath
+            * **key** (`string`) -- Variable name
+            * **value** (`string`) -- Expression to evaluate in POST content.
+              Use JSONPath for JSON or XPath for XML.
+            * **regex-filter** (`string`) -- Anything in the evaluated value,
+              matching this regular expression, will be removed. (optional)
+            * **default-value** (`string`) -- This value will be used if
+              expression does not match anything. (optional)
+
+    :arg list request-params: Parameters to use passed in as request arguments
+
+        :request-params: * **key** (`string`) -- Name of request parameter
+            * **regex-filter** (`string`) -- Anything in the evaluated value,
+              matching this regular expression, will be removed. (optional)
+    :arg list header-params: Parameters to use passed in as headers
+
+        :header-params: * **key** (`string`) -- Name of request header in
+              lowercase. Resulting variable name has '_' instead of '-'
+              characters.
+            * **regex-filter** (`string`) -- Anything in the evaluated value,
+              matching this regular expression, will be removed. (optional)
+
+    Example:
+
+    .. literalinclude::
+        /../../tests/triggers/fixtures/generic-webhook-trigger-full.yaml
+    """
+
+    namespace = 'org.jenkinsci.plugins.gwt.'
+    gwtrig = XML.SubElement(xml_parent,
+                            namespace + 'GenericTrigger')
+    gwtrig.set('plugin', 'generic-webhook-trigger')
+    XML.SubElement(gwtrig, 'spec')
+
+    # Generic Varibles (Post content parameters in UI)
+    try:
+        if data.get('post-content-params'):
+            gen_vars = XML.SubElement(gwtrig, 'genericVariables')
+            mappings = [
+                ('type', 'expressionType', '', ['JSONPath', 'XPath']),
+                ('key', 'key', ''),
+                ('value', 'value', ''),
+                ('regex-filter', 'regexpFilter', ''),
+                ('default-value', 'defaultValue', ''),
+            ]
+
+            for gen_var_list in data.get('post-content-params'):
+                gen_var_tag = XML.SubElement(
+                    gen_vars, namespace + 'GenericVariable')
+                helpers.convert_mapping_to_xml(
+                    gen_var_tag, gen_var_list, mappings, fail_required=True)
+    except AttributeError:
+        pass
+
+    # This is dropped here in the middle as that's how the jenkins config is
+    # done. It probably doesn't need to be, but since this is the first
+    # swing..
+    mapping = [
+        ('regex-filter-text', 'regexpFilterText', ''),
+        ('regex-filter-expression', 'regexpFilterExpression', '')
+    ]
+    helpers.convert_mapping_to_xml(gwtrig, data, mapping, fail_required=False)
+
+    # Generic Request Variables (Request parameters in UI)
+    try:
+        if data.get('request-params'):
+            gen_req_vars = XML.SubElement(gwtrig, 'genericRequestVariables')
+            mappings = [
+                ('key', 'key', ''),
+                ('regex-filter', 'regexpFilter', '')
+            ]
+
+            for gen_req_list in data.get('request-params'):
+                gen_req_tag = XML.SubElement(
+                    gen_req_vars, namespace + 'GenericRequestVariable')
+                helpers.convert_mapping_to_xml(
+                    gen_req_tag, gen_req_list, mappings, fail_required=False)
+    except AttributeError:
+        pass
+
+    try:
+        if data.get('header-params'):
+            gen_header_vars = XML.SubElement(gwtrig, 'genericHeaderVariables')
+            mappings = [
+                ('key', 'key', ''),
+                ('regex-filter', 'regexpFilter', '')
+            ]
+            for gen_header_list in data.get('header-params'):
+                gen_header_tag = XML.SubElement(
+                    gen_header_vars, namespace + 'GenericHeaderVariable')
+                helpers.convert_mapping_to_xml(
+                    gen_header_tag, gen_header_list, mappings,
+                    fail_required=False)
+    except AttributeError:
+        pass
+
+    mapping = [
+        ('print-post-content', 'printPostContent', False),
+        ('print-contrib-var', 'printContributedVariables', False),
+        ('cause', 'causeString', ''),
+        ('token', 'token', ''),
+        ('silent-response', 'silentResponse', False),
+    ]
+    # This should cover all the top level
+    helpers.convert_mapping_to_xml(gwtrig, data, mapping, fail_required=False)
+
+
 class Triggers(jenkins_jobs.modules.base.Base):
     sequence = 50
 

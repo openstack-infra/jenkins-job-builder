@@ -1,0 +1,26 @@
+triggers:
+  - generic-webhook-trigger:
+        post-content-params:
+            - type: JSONPath
+              key: action
+              value: $.action
+              regex-filter: value_filter
+              default-value: default_value
+            - type: XPath
+              key: blah
+              value: whooga
+              regex-filter: value_filer
+              default-value: default_something
+        regex-filter-text: $action
+        regex-filter-expression: ^(opened|reopened|synchronize)$
+        request-params:
+            - key: request_test_1
+              regex-filter: requesT_value_1
+        header-params:
+            - key: header_test1
+              regex-filter: header_value1
+        print-post-content: true
+        print-contrib-var: true
+        cause: Generic Cause
+        token: blah
+        silent-response: true

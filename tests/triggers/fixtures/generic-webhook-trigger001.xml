@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.gwt.GenericTrigger plugin="generic-webhook-trigger">
+      <spec/>
+      <regexpFilterText/>
+      <regexpFilterExpression/>
+      <genericRequestVariables>
+        <org.jenkinsci.plugins.gwt.GenericRequestVariable>
+          <key>action</key>
+          <regexpFilter>boogie</regexpFilter>
+        </org.jenkinsci.plugins.gwt.GenericRequestVariable>
+      </genericRequestVariables>
+      <printPostContent>false</printPostContent>
+      <printContributedVariables>false</printContributedVariables>
+      <causeString/>
+      <token/>
+      <silentResponse>false</silentResponse>
+    </org.jenkinsci.plugins.gwt.GenericTrigger>
+  </triggers>
+</project>
