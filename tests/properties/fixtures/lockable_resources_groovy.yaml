@@ -1,0 +1,5 @@
+---
+properties:
+  - lockable-resources:
+      match-script: "resourceName == MY_VAR"
+      groovy-sandbox: true

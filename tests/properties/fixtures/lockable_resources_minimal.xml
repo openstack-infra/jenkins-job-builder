@@ -6,6 +6,9 @@
       <resourceNamesVar/>
       <resourceNumber>0</resourceNumber>
       <labelName/>
+      <resourceMatchScript>
+        <sandbox>false</sandbox>
+      </resourceMatchScript>
     </org.jenkins.plugins.lockableresources.RequiredResourcesProperty>
   </properties>
 </project>

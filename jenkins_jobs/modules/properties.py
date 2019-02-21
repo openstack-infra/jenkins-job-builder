@@ -1103,6 +1103,10 @@ def lockable_resources(registry, xml_parent, data):
     :arg int number: Number of resources to request, empty value or 0 means
         all. This is useful, if you have a pool of similar resources,
         from which you want one or more to be reserved. (default 0)
+    :arg str match-script: Groovy script to reserve resource based on its
+        properties. Leave empty to disable. (default None)
+    :arg bool groovy-sandbox: Execute the provided match-script in Groovy
+        sandbox. Leave empty to disable. (default False)
 
     Example:
 
@@ -1116,6 +1120,10 @@ def lockable_resources(registry, xml_parent, data):
 
     .. literalinclude::
         /../../tests/properties/fixtures/lockable_resources_full.yaml
+       :language: yaml
+
+    .. literalinclude::
+        /../../tests/properties/fixtures/lockable_resources_groovy.yaml
        :language: yaml
     """
     lockable_resources = XML.SubElement(
@@ -1131,6 +1139,14 @@ def lockable_resources(registry, xml_parent, data):
     ]
     helpers.convert_mapping_to_xml(
         lockable_resources, data, mapping, fail_required=True)
+    secure_groovy_script = XML.SubElement(lockable_resources,
+        'resourceMatchScript')
+    mapping = [
+        ('match-script', 'script', None),
+        ('groovy-sandbox', 'sandbox', False),
+    ]
+    helpers.convert_mapping_to_xml(secure_groovy_script, data, mapping,
+        fail_required=False)
 
 
 def docker_container(registry, xml_parent, data):

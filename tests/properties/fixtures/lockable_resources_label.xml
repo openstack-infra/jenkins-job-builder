@@ -6,6 +6,9 @@
       <resourceNamesVar/>
       <resourceNumber>0</resourceNumber>
       <labelName>pool-1</labelName>
+      <resourceMatchScript>
+        <sandbox>false</sandbox>
+      </resourceMatchScript>
     </org.jenkins.plugins.lockableresources.RequiredResourcesProperty>
   </properties>
 </project>
