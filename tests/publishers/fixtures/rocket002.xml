@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <publishers>
+    <jenkins.plugins.rocketchatnotifier.RocketChatNotifier plugin="rocketchatnotifier">
+      <trustSSL>true</trustSSL>
+      <buildServerUrl>http://localhost:8080/</buildServerUrl>
+      <channel>#channel,@user</channel>
+      <startNotification>true</startNotification>
+      <notifySuccess>true</notifySuccess>
+      <notifyAborted>true</notifyAborted>
+      <notifyNotBuilt>true</notifyNotBuilt>
+      <notifyUnstable>true</notifyUnstable>
+      <notifyFailure>true</notifyFailure>
+      <notifyBackToNormal>true</notifyBackToNormal>
+      <notifyRepeatedFailure>true</notifyRepeatedFailure>
+      <includeTestSummary>true</includeTestSummary>
+      <includeTestLog>true</includeTestLog>
+      <includeCustomMessage>true</includeCustomMessage>
+      <commitInfoChoice>AUTHORS_AND_TITLES</commitInfoChoice>
+      <rawMessage>true</rawMessage>
+      <webhookToken>non-secure-webhook-token</webhookToken>
+      <webhookTokenCredentialId>secret-text-id</webhookTokenCredentialId>
+      <attachments>
+        <jenkins.plugins.rocketchatnotifier.model.MessageAttachment>
+          <title>The Black</title>
+        </jenkins.plugins.rocketchatnotifier.model.MessageAttachment>
+        <jenkins.plugins.rocketchatnotifier.model.MessageAttachment>
+          <title>The Red</title>
+          <color>red</color>
+        </jenkins.plugins.rocketchatnotifier.model.MessageAttachment>
+        <jenkins.plugins.rocketchatnotifier.model.MessageAttachment>
+          <title>The Blue</title>
+          <color>blue</color>
+          <text>The navy blue</text>
+        </jenkins.plugins.rocketchatnotifier.model.MessageAttachment>
+        <jenkins.plugins.rocketchatnotifier.model.MessageAttachment>
+          <title>The White</title>
+          <titleLink>title_link</titleLink>
+          <titleLinkDownload>true</titleLinkDownload>
+          <color>white</color>
+          <text>All&amp;all</text>
+          <collapsed>true</collapsed>
+          <messageLink>message_link</messageLink>
+          <authorName>author_name</authorName>
+          <authorLink>author_link</authorLink>
+          <authorIcon>author_icon</authorIcon>
+          <thumbUrl>http://hostname/thumb.png</thumbUrl>
+          <imageUrl>http://hostname/image.jpg</imageUrl>
+          <audioUrl>http://hostname/audio.mp3</audioUrl>
+          <videoUrl>http://hostname/video.avi</videoUrl>
+        </jenkins.plugins.rocketchatnotifier.model.MessageAttachment>
+      </attachments>
+      <customMessage>Hello World!</customMessage>
+    </jenkins.plugins.rocketchatnotifier.RocketChatNotifier>
+  </publishers>
+</project>

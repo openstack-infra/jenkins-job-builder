@@ -1,0 +1,42 @@
+publishers:
+- rocket:
+    channel: '#channel,@user'
+    abort: true
+    back-to-normal: true
+    failure: true
+    not-built: true
+    repeated-failure: true
+    start: true
+    success: true
+    unstable: true
+    trust-ssl: true
+    build-server: 'http://localhost:8080/'
+    webhook-token: 'non-secure-webhook-token'
+    webhook-token-credential-id: 'secret-text-id'
+    commit-info: 'authors-and-titles'
+    include-custom-message: true
+    include-test-log: true
+    include-test-summary: true
+    custom-message: 'Hello World!'
+    raw-message: true
+    attachments:
+        - title: The Black
+        - title: The Red
+          color: red
+        - title: The Blue
+          color: blue
+          text: The navy blue
+        - title: The White
+          title-link: title_link
+          title-link-download: true
+          message-link: message_link
+          color: white
+          text: 'All&all'
+          collapsed: true
+          author-name: author_name
+          author-link: author_link
+          author-icon: author_icon
+          thumb: 'http://hostname/thumb.png'
+          image: 'http://hostname/image.jpg'
+          audio: 'http://hostname/audio.mp3'
+          video: 'http://hostname/video.avi'
