@@ -4,3 +4,4 @@ scm:
       branches:
         - master
       do-not-fetch-tags: true
+      honor-refspec: true

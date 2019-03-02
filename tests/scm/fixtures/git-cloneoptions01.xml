@@ -28,6 +28,7 @@
         <shallow>false</shallow>
         <depth>1</depth>
         <noTags>true</noTags>
+        <honorRefspec>true</honorRefspec>
       </hudson.plugins.git.extensions.impl.CloneOption>
       <hudson.plugins.git.extensions.impl.WipeWorkspace/>
     </extensions>
