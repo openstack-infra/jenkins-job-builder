@@ -527,8 +527,13 @@ class Jinja2Loader(CustomLoader):
         self._template.environment.undefined = jinja2.StrictUndefined
         self._template.environment.loader = jinja2.FileSystemLoader(
             search_path)
+        self._loader = self._template.environment.loader
 
     def format(self, **kwargs):
+        # For some reasons loader is overwritten with incorrect one during
+        # instance lifecycle. It's not very clear how to fix this properly,
+        # so we just overwrite with correct one
+        self._template.environment.loader = self._loader
         return self._template.render(kwargs)
 
 
