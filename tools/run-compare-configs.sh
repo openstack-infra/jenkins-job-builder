@@ -23,9 +23,9 @@ CONFIGS=$(ls -1 ${CONFIGS_DIR}/*.conf 2>/dev/null)
 cd .test
 if [ -e /usr/zuul-env/bin/zuul-cloner ];
 then
-    /usr/zuul-env/bin/zuul-cloner -m ../tools/run-compare-clonemap.yaml --cache-dir /opt/git git://git.openstack.org openstack-infra/project-config
+    /usr/zuul-env/bin/zuul-cloner -m ../tools/run-compare-clonemap.yaml --cache-dir /opt/git https://git.openstack.org openstack-infra/project-config
 else
-    git clone --depth=1 git://git.openstack.org/openstack-infra/project-config
+    git clone --depth=1 https://git.openstack.org/openstack-infra/project-config
 fi
 # setup a default configuration to compare results against
 cp -r project-config/jenkins/jobs/* run-conf/config
