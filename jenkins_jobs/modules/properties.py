@@ -1199,6 +1199,24 @@ def docker_container(registry, xml_parent, data):
         xml_docker, data, mapping, fail_required=True)
 
 
+def disable_resume(registry, xml_parent, data):
+    """yaml: disable-resume
+    Do not allow the pipeline to resume if the master restarts
+    Requires the Jenkins :jenkins-wiki:`Pipeline Job Plugin
+    <Pipeline+Job+Plugin>`.
+
+    Example:
+
+    .. literalinclude::
+        /../../tests/properties/fixtures/disable-resume.yaml
+       :language: yaml
+
+    """
+    XML.SubElement(xml_parent,
+                   'org.jenkinsci.plugins.workflow.job.properties.'
+                   'DisableResumeJobProperty')
+
+
 class Properties(jenkins_jobs.modules.base.Base):
     sequence = 20
 
