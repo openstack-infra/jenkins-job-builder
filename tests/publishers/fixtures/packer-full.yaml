@@ -1,0 +1,16 @@
+publishers:
+  - packer:
+      name: test name
+      json-template: test template
+      json-template-text: test template text
+      add-params: additional params
+      use-debug: true
+      change-dir: change to directory
+      template-mode: global
+      file-entries:
+        - files:
+            variable-name: test var
+            contents: test content
+        - files:
+            variable-name: test var 2
+            contents: test content 2
