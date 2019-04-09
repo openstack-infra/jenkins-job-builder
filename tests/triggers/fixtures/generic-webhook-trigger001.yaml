@@ -1,0 +1,5 @@
+triggers:
+  - generic-webhook-trigger:
+        request-params:
+             - regex-filter: "boogie"
+               key: action

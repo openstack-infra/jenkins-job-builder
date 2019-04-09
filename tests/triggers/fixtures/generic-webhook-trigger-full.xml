@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <triggers class="vector">
+    <org.jenkinsci.plugins.gwt.GenericTrigger plugin="generic-webhook-trigger">
+      <spec/>
+      <genericVariables>
+        <org.jenkinsci.plugins.gwt.GenericVariable>
+          <expressionType>JSONPath</expressionType>
+          <key>action</key>
+          <value>$.action</value>
+          <regexpFilter>value_filter</regexpFilter>
+          <defaultValue>default_value</defaultValue>
+        </org.jenkinsci.plugins.gwt.GenericVariable>
+        <org.jenkinsci.plugins.gwt.GenericVariable>
+          <expressionType>XPath</expressionType>
+          <key>blah</key>
+          <value>whooga</value>
+          <regexpFilter>value_filer</regexpFilter>
+          <defaultValue>default_something</defaultValue>
+        </org.jenkinsci.plugins.gwt.GenericVariable>
+      </genericVariables>
+      <regexpFilterText>$action</regexpFilterText>
+      <regexpFilterExpression>^(opened|reopened|synchronize)$</regexpFilterExpression>
+      <genericRequestVariables>
+        <org.jenkinsci.plugins.gwt.GenericRequestVariable>
+          <key>request_test_1</key>
+          <regexpFilter>requesT_value_1</regexpFilter>
+        </org.jenkinsci.plugins.gwt.GenericRequestVariable>
+      </genericRequestVariables>
+      <genericHeaderVariables>
+        <org.jenkinsci.plugins.gwt.GenericHeaderVariable>
+          <key>header_test1</key>
+          <regexpFilter>header_value1</regexpFilter>
+        </org.jenkinsci.plugins.gwt.GenericHeaderVariable>
+      </genericHeaderVariables>
+      <printPostContent>true</printPostContent>
+      <printContributedVariables>true</printContributedVariables>
+      <causeString>Generic Cause</causeString>
+      <token>blah</token>
+      <silentResponse>true</silentResponse>
+    </org.jenkinsci.plugins.gwt.GenericTrigger>
+  </triggers>
+</project>
