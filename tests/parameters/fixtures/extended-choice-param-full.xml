@@ -19,6 +19,7 @@
           <defaultPropertyKey>fookey</defaultPropertyKey>
           <descriptionPropertyFile/>
           <descriptionPropertyKey/>
+          <bindings/>
           <groovyScript/>
           <groovyScriptFile/>
           <groovyClasspath/>
@@ -43,6 +44,7 @@
           <defaultPropertyKey/>
           <descriptionPropertyFile/>
           <descriptionPropertyKey/>
+          <bindings/>
           <groovyScript/>
           <groovyScriptFile/>
           <groovyClasspath/>
@@ -67,6 +69,7 @@
           <defaultPropertyKey/>
           <descriptionPropertyFile/>
           <descriptionPropertyKey/>
+          <bindings/>
           <groovyScript/>
           <groovyScriptFile/>
           <groovyClasspath/>
