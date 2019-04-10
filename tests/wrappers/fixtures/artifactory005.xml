@@ -7,20 +7,26 @@
         <artifactoryUrl>http://artifactory.example.net/artifactory</artifactoryUrl>
         <deployReleaseRepository>
           <keyFromText/>
-          <keyFromSelect>repo</keyFromSelect>
+          <keyFromSelect/>
           <dynamicMode/>
         </deployReleaseRepository>
       </details>
-      <useSpecs>false</useSpecs>
-      <deployPattern>*.zip=&gt;results</deployPattern>
-      <resolvePattern>libs-release-local:prod/*=&gt;prod-jars</resolvePattern>
-      <matrixParams>custom_prop=${PROJECT_ENV_VAR}</matrixParams>
+      <uploadSpec>
+        <spec>{ &quot;files&quot;: [ { &quot;pattern&quot;: &quot;*.jar&quot;, &quot;target&quot;: &quot;release&quot; } ] }</spec>
+      </uploadSpec>
+      <downloadSpec>
+        <spec>{ &quot;files&quot;: [ { &quot;pattern&quot;: &quot;*.jar&quot;, &quot;target&quot;: &quot;release&quot; } ] }</spec>
+      </downloadSpec>
+      <useSpecs>true</useSpecs>
+      <deployPattern/>
+      <resolvePattern/>
+      <matrixParams/>
       <deployBuildInfo>true</deployBuildInfo>
-      <includeEnvVars>true</includeEnvVars>
-      <discardOldBuilds>true</discardOldBuilds>
+      <includeEnvVars>false</includeEnvVars>
+      <discardOldBuilds>false</discardOldBuilds>
       <discardBuildArtifacts>true</discardBuildArtifacts>
       <envVarsPatterns>
-        <includePatterns>PROJECT_*,ORG_*</includePatterns>
+        <includePatterns/>
         <excludePatterns/>
       </envVarsPatterns>
     </org.jfrog.hudson.generic.ArtifactoryGenericConfigurator>

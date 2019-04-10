@@ -2437,6 +2437,14 @@ def artifactory_generic(registry, xml_parent, data):
         (default '')
     :arg str key-from-text: Repository key to use that can be configured
         dynamically using Jenkins variables (plugin >= 2.3.0) (default '')
+    :arg str upload-spec: File Spec schema for uploading files is as follows
+        (default '')
+    :arg str download-spec: File Spec schema for downloading
+        files is as follows (default '')
+    :arg str upload-spec-file: File location for uploading Spec schema
+        (default '')
+    :arg str download-spec-file: File location for downloading Spec schema
+        (default '')
     :arg list deploy-pattern: List of patterns for mappings
         build artifacts to published artifacts. Supports Ant-style wildcards
         mapping to target directories. E.g.: */*.zip=>dir (default [])
@@ -2470,6 +2478,7 @@ def artifactory_generic(registry, xml_parent, data):
 
     """
 
+    use_specs = False
     artifactory = XML.SubElement(
         xml_parent,
         'org.jfrog.hudson.generic.ArtifactoryGenericConfigurator')
@@ -2501,6 +2510,28 @@ def artifactory_generic(registry, xml_parent, data):
         ]
         helpers.convert_mapping_to_xml(
             details, data, mapping, fail_required=False)
+
+    if 'upload-spec' in data or 'download-spec' in data:
+        upload_spec = data.get('upload-spec', '')
+        upl_spec_xml = XML.SubElement(artifactory, 'uploadSpec')
+        XML.SubElement(upl_spec_xml, 'spec').text = upload_spec
+
+        download_spec = data.get('download-spec', '')
+        dnl_spec_xml = XML.SubElement(artifactory, 'downloadSpec')
+        XML.SubElement(dnl_spec_xml, 'spec').text = download_spec
+        use_specs = True
+
+    if 'upload-spec-file' in data or 'download-spec-file' in data:
+        upload_spec_file = data.get('upload-spec-file', '')
+        upl_spec_xml = XML.SubElement(artifactory, 'uploadSpec')
+        XML.SubElement(upl_spec_xml, 'filePath').text = upload_spec_file
+
+        download_spec_file = data.get('download-spec-file', '')
+        dnl_spec_xml = XML.SubElement(artifactory, 'downloadSpec')
+        XML.SubElement(dnl_spec_xml, 'filePath').text = download_spec_file
+        use_specs = True
+
+    XML.SubElement(artifactory, 'useSpecs').text = str(use_specs).lower()
 
     XML.SubElement(artifactory, 'deployPattern').text = ','.join(data.get(
         'deploy-pattern', []))

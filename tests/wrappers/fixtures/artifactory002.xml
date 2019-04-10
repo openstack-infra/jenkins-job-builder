@@ -8,6 +8,7 @@
         <repositoryKey>release-repo</repositoryKey>
         <snapshotsRepositoryKey>snapshot-repo</snapshotsRepositoryKey>
       </details>
+      <useSpecs>false</useSpecs>
       <deployPattern>*.zip=&gt;results</deployPattern>
       <resolvePattern>libs-release-local:prod/*=&gt;prod-jars</resolvePattern>
       <matrixParams>custom_prop=${PROJECT_ENV_VAR}</matrixParams>

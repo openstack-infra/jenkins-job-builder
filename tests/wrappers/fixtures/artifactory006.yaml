@@ -1,0 +1,7 @@
+wrappers:
+  - artifactory-generic:
+      url: http://artifactory.example.net/artifactory
+      name: 'test'
+      deploy-build-info: true
+      upload-spec-file: "path/to/upload-file"
+      download-spec-file: "path/to/download-file"

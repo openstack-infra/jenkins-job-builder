@@ -1,0 +1,7 @@
+wrappers:
+  - artifactory-generic:
+      url: http://artifactory.example.net/artifactory
+      name: 'test'
+      deploy-build-info: true
+      upload-spec: '{ "files": [ { "pattern": "*.jar", "target": "release" } ] }'
+      download-spec: '{ "files": [ { "pattern": "*.jar", "target": "release" } ] }'
