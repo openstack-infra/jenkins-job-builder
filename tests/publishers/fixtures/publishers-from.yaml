@@ -1,0 +1,3 @@
+publishers:
+  - publishers-from:
+      project-name: base-build
