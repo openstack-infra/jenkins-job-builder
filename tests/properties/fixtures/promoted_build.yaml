@@ -1,5 +1,0 @@
-properties:
-  - promoted-build:
-      names:
-        - "Release to QA"
-        - "Jane Must Approve"

@@ -1,7 +1,0 @@
-publishers:
-  - stash:
-      url: "https://mystash"
-      credentials-id: "MyCredentialsId"
-      ignore-ssl: true
-      commit-sha1: c
-      include-build-number: true

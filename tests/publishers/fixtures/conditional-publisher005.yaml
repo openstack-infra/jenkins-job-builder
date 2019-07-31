@@ -1,9 +1,0 @@
-publishers:
-    - conditional-publisher:
-        - condition-kind: never
-          condition-aggregation: True
-          condition-aggregation-kind: always
-          action:
-              - archive:
-                  artifacts: '**/**'
-                  allow-empty: 'true'

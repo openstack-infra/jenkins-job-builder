@@ -1,5 +1,0 @@
-- job:
-      name: test_job
-      project-type: flow
-      needs-workspace: true
-      dsl-file: script.groovy

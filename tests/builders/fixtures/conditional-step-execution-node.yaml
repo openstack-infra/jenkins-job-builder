@@ -1,8 +1,0 @@
-builders:
-      - conditional-step:
-          condition-kind: execution-node
-          nodes:
-              - "master"
-              - "master2"
-          steps:
-              - shell: "sl"

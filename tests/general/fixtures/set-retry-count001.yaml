@@ -1,3 +1,0 @@
-name: openstack-infra
-project-type: freestyle
-retry-count: 8

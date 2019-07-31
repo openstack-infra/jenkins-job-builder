@@ -1,3 +1,0 @@
-publishers:
-  - testng:
-      pattern: "**/testng-results.xml"

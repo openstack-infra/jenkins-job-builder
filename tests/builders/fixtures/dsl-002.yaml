@@ -1,4 +1,0 @@
-builders:
-  - dsl:
-      targets: "jobs/*/*/*.groovy"
-      ignore-existing: true

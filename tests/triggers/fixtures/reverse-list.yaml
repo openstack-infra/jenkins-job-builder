@@ -1,7 +1,0 @@
-triggers:
-  - reverse:
-        jobs:
-            - 'a'
-            - 'b'
-            - 'c'
-        result: 'failure'

@@ -1,4 +1,0 @@
-publishers:
-  - trigger-parameterized-builds:
-      - project: 'fixture'
-        condition: SUCCESS

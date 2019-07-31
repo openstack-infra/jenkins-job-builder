@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<project>
-  <buildWrappers>
-    <hudson.plugins.sonar.SonarBuildWrapper plugin="sonar">
-      <installationName>test-sonar-installation</installationName>
-    </hudson.plugins.sonar.SonarBuildWrapper>
-  </buildWrappers>
-</project>

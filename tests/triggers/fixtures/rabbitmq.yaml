@@ -1,3 +1,0 @@
-triggers:
-  - rabbitmq:
-      token: 'build_trigger_token'

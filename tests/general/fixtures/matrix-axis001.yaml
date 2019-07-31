@@ -1,8 +1,0 @@
-name: matrix-test001
-project-type: matrix
-axes:
-    - axis:
-        type: dynamic
-        name: config
-        values:
-            - config_list

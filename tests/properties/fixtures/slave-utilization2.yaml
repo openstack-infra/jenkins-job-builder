@@ -1,3 +1,0 @@
-properties:
-  - slave-utilization:
-      single-instance-per-slave: true

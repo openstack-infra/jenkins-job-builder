@@ -1,3 +1,0 @@
-publishers:
-  - doxygen:
-      doxyfile: "Doxyfile"

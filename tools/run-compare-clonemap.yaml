@@ -1,3 +1,0 @@
-clonemap:
- - name: 'openstack-infra/project-config'
-   dest: 'project-config'

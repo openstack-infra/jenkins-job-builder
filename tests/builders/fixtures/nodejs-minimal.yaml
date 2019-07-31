@@ -1,3 +1,0 @@
-builders:
-  - nodejs:
-      script: "console.log('Some output');"

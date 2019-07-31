@@ -1,3 +1,0 @@
-wrappers:
-  - openstack:
-      single-use: True

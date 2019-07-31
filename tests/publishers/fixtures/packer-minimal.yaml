@@ -1,3 +1,0 @@
-publishers:
-  - packer:
-      name: test name

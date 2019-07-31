@@ -1,6 +1,0 @@
-builders:
-  - doxygen:
-      doxyfile: Doxyfile
-      install: doxygen
-      ignore-failure: true
-      unstable-warning: true

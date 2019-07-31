@@ -1,4 +1,0 @@
-properties:
-    - rebuild:
-        auto-rebuild: true
-        rebuild-disabled: true

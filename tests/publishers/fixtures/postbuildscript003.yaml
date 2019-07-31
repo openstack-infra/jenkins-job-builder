@@ -1,5 +1,0 @@
-publishers:
-    - postbuildscript:
-        execute-on: 'matrix'
-        builders:
-            - shell: 'echo "Shell execution"'

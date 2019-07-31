@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<project>
-  <properties>
-    <org.bstick12.jenkinsci.plugins.leastload.LeastLoadDisabledProperty>
-      <leastLoadDisabled>true</leastLoadDisabled>
-    </org.bstick12.jenkinsci.plugins.leastload.LeastLoadDisabledProperty>
-  </properties>
-</project>

@@ -1,5 +1,0 @@
-properties:
-    - slack:
-        room: dummy, dummy2
-        notify-start: true
-        notify-success: true

@@ -1,7 +1,0 @@
-publishers:
-    - google-cloud-storage:
-        credentials-id: 'myCredentials'
-        uploads:
-            - expiring-elements:
-                bucket-name: 'gs://myBucket'
-                days-to-retain: 7

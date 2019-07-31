@@ -1,4 +1,0 @@
-properties:
-  - builds-chain-fingerprinter:
-      per-builds-chain: true
-      per-job-chain: true

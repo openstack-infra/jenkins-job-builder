@@ -1,5 +1,0 @@
-wrappers:
-    - m2-repository-cleanup:
-        patterns:
-            - com/ibm/**
-            - com/microsoft/**

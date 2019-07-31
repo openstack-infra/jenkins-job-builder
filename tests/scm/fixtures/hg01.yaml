@@ -1,3 +1,0 @@
-scm:
-  - hg:
-     url: ssh://hg@hg/repo

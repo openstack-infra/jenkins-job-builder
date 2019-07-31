@@ -1,4 +1,0 @@
-triggers:
-  - monitor-files:
-      files:
-          - path: 'path1'

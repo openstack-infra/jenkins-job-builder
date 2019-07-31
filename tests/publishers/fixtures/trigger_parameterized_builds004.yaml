@@ -1,6 +1,0 @@
-publishers:
-  - trigger-parameterized-builds:
-    - project:
-        - other_job
-      property-file: version.prop
-      use-matrix-child-files: True

@@ -1,7 +1,0 @@
-builders:
-      - conditional-step:
-          condition-kind: build-cause
-          cause: SCM_CAUSE
-          exclusive-cause: true
-          steps:
-              - shell: "sl"

@@ -1,7 +1,0 @@
-- project:
-    name: 'hello'
-    jobs:
-      - 'job1'
-
-- job:
-    name: 'job1'

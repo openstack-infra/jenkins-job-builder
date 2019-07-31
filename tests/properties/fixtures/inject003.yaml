@@ -1,5 +1,0 @@
-properties:
-  - inject:
-      keep-build-variables: false
-      keep-system-variables: false
-      override-build-parameters: true

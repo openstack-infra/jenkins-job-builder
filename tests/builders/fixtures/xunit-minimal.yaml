@@ -1,5 +1,0 @@
-builders:
-  - xunit:
-      types:
-        - junit:
-            pattern: "junit.xml"

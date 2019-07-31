@@ -1,6 +1,0 @@
-publishers:
-  - build-publisher:
-      publish-unstable-builds: false
-      publish-failed-builds: false
-      days-to-keep: -1
-      num-to-keep: 100

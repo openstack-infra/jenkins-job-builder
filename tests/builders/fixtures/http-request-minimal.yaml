@@ -1,3 +1,0 @@
-builders:
-  - http-request:
-      url: http://example.com/jenkinsTest

@@ -1,8 +1,0 @@
-publishers:
-  - stash:
-      url: "https://mystash"
-      username: a
-      password: b
-      ignore-ssl: true
-      commit-sha1: c
-      include-build-number: true

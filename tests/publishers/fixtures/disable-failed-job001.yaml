@@ -1,4 +1,0 @@
-publishers:
-  - disable-failed-job:
-      when-to-disable: 'Failure and Unstable'
-      no-of-failures: 3

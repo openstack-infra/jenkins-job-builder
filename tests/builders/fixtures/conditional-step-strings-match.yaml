@@ -1,8 +1,0 @@
-builders:
-      - conditional-step:
-          condition-kind: strings-match
-          condition-string1: "my string 1"
-          condition-string2: "my string 2"
-          condition-case-insensitive: true
-          steps:
-              - shell: "sl"

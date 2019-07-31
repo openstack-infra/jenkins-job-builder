@@ -1,3 +1,0 @@
-builders:
-    - sonatype-clm:
-        application-name: jenkins-job-builder

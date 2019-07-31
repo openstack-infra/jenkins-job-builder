@@ -1,3 +1,0 @@
-publishers:
-- junit:
-    results: nosetests.xml

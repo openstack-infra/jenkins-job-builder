@@ -1,4 +1,0 @@
-wrappers:
-  - env-script:
-      script-content: 'echo foo=bar'
-      only-run-on-parent: true

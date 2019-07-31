@@ -1,4 +1,0 @@
-builders:
-  - trigger-builds:
-    - project: "build_started"
-      git-revision: false

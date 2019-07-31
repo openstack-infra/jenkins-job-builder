@@ -1,4 +1,0 @@
-wrappers:
-  - xvnc:
-      screenshot: true
-      xauthority: false

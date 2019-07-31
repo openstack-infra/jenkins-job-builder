@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<project>
-  <properties>
-    <hudson.plugins.heavy__job.HeavyJobProperty>
-      <weight>2</weight>
-    </hudson.plugins.heavy__job.HeavyJobProperty>
-  </properties>
-</project>

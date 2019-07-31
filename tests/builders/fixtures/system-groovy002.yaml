@@ -1,5 +1,0 @@
-builders:
-  - system-groovy:
-      command: "Some command"
-      bindings: "Some bindings"
-      class-path: "Some classpath"

@@ -1,4 +1,0 @@
-wrappers:
-  - build-keeper:
-      policy: 'build-number'
-      build-period: 1

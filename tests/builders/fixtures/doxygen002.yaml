@@ -1,4 +1,0 @@
-builders:
-  - doxygen:
-      doxyfile: Doxyfile
-      install: doxygen

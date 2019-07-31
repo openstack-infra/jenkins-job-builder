@@ -1,3 +1,0 @@
-builders:
-  - fingerprint:
-      targets: module/dist/**/*.zip

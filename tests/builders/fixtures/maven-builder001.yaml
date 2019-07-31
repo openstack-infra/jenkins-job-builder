@@ -1,5 +1,0 @@
-builders:
-      - maven-builder:
-          name: mvn3
-          pom: modules/pom.xml
-          goals: clean install

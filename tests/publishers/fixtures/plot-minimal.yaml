@@ -1,7 +1,0 @@
-publishers:
-  - plot:
-      - yaxis: ''
-        group: 'bench'
-        series:
-            - file: 'data.csv'
-              format: 'csv'

@@ -1,2 +1,0 @@
-builders:
-  - python: 'import foobar'

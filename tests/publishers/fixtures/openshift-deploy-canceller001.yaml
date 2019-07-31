@@ -1,7 +1,0 @@
-publishers:
-  - openshift-deploy-canceller:
-      api-url: https://openshift.example.local.url/
-      dep-cfg: front
-      namespace: test6
-      auth-token: ose-key-dep-canceller1
-      verbose: true

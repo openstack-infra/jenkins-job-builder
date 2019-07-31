@@ -1,5 +1,0 @@
-wrappers:
-  - build-keeper:
-      policy: 'by-day'
-      build-period: 10
-      dont-keep-failed: true

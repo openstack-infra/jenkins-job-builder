@@ -1,4 +1,0 @@
-scm:
-  - url:
-      url-list:
-        - 'http://jenkins.domain.local/jnlpJars/jenkins-cli.jar'

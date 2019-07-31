@@ -1,5 +1,0 @@
-triggers:
-  - parameterized-timer:
-      cron: |
-        0 * * * * % param1=value1;param2=value2
-        30 * * * * % param1=value3;param2=value4

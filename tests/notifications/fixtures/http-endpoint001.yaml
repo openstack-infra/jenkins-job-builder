@@ -1,3 +1,0 @@
-notifications:
-  - http:
-      url: http://example.com/jenkins_endpoint

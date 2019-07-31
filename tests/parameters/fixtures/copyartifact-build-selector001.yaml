@@ -1,5 +1,0 @@
-parameters:
-  - copyartifact-build-selector:
-      name: BUILD_SELECTOR
-      which-build: workspace-latest
-      description: 'Which build from upstream to copy artifacts from'

@@ -1,3 +1,0 @@
-publishers:
-  - aggregate-tests:
-      include-failed-builds: true

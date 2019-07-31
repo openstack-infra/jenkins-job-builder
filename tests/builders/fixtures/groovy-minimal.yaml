@@ -1,3 +1,0 @@
-builders:
-  - groovy:
-      command: "println Hello"

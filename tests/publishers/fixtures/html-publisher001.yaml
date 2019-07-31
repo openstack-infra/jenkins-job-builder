@@ -1,8 +1,0 @@
-publishers:
-  - html-publisher:
-      name: "some name"
-      dir: "path/"
-      files: "index.html"
-      keep-all: true
-      allow-missing: true
-      link-to-last-build: true

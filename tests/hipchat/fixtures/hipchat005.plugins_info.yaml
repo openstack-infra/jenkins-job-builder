@@ -1,6 +1,0 @@
-- longName: 'Jenkins HipChat Plugin'
-  shortName: 'hipchat'
-  version: "0.1.9"
-- longName: 'Derp HipChat Plugin'
-  shortName: 'hipchat'
-  version: "0.1.0"

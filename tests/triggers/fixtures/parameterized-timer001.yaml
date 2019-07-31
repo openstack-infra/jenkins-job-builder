@@ -1,3 +1,0 @@
-triggers:
-  - parameterized-timer:
-      cron: "@midnight % PARAM=value"

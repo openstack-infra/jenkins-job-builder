@@ -1,3 +1,0 @@
-# Deprecated usage, here to test backward compatibility
-triggers:
-  - pollscm: "*/30 * * * *"

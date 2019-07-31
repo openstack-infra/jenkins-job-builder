@@ -1,5 +1,0 @@
-parameters:
-  - run:
-      name: FOO
-      project-name: "foo-build"
-      description: "Select a foo-build for promotion"

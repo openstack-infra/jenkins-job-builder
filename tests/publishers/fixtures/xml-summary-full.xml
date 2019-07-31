@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<project>
-  <publishers>
-    <hudson.plugins.summary__report.ACIPluginPublisher plugin="summary_report">
-      <name>*_summary_report.xml</name>
-      <shownOnProjectPage>true</shownOnProjectPage>
-    </hudson.plugins.summary__report.ACIPluginPublisher>
-  </publishers>
-</project>

@@ -1,3 +1,0 @@
-builders:
-  - scan-build:
-      target: path/to/target

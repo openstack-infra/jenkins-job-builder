@@ -1,4 +1,0 @@
-publishers:
-  - fingerprint:
-      files: builddir/test*.xml
-      record-artifacts: false

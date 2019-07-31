@@ -1,3 +1,0 @@
-publishers:
-  - jdepend:
-      file: build/jdepend/main.xml

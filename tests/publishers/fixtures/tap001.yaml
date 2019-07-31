@@ -1,4 +1,0 @@
-publishers:
-  - tap:
-      results: puiparts.tap
-      todo-is-failure: false

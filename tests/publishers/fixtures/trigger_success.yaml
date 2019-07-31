@@ -1,4 +1,0 @@
-publishers:
-  - trigger:
-      project: other_job
-      threshold: SUCCESS

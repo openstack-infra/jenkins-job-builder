@@ -1,6 +1,0 @@
-properties:
-  - slave-prerequisites:
-      script: |
-        #!/bin/bash
-        AVAILABLE=$(df -BG --output=avail / | tail -1)
-        test ${AVAILABLE%G} -ge 10

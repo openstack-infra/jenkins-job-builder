@@ -1,4 +1,0 @@
-wrappers:
-  - exclusion:
-      resources:
-          - myresource

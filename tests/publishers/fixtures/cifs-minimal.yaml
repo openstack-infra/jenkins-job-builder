@@ -1,5 +1,0 @@
-publishers:
-  - cifs:
-      site: 'cifs.share'
-      target: 'dest/dir'
-      source: 'base/source/dir/**'

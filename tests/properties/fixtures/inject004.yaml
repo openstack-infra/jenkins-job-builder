@@ -1,4 +1,0 @@
-properties:
-  - inject:
-      groovy-content: test groovy-content location 004
-      groovy-sandbox: true

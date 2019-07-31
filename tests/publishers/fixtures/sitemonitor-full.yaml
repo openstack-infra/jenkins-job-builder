@@ -1,5 +1,0 @@
-publishers:
-  - sitemonitor:
-      sites:
-        - url: http://foo.example.com
-        - url: http://bar.example.com:8080/

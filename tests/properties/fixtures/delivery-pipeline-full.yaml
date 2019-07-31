@@ -1,5 +1,0 @@
-properties:
-  - delivery-pipeline:
-      stage: Stage
-      task: Task
-      description: Task-Description

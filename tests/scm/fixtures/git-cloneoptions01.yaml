@@ -1,7 +1,0 @@
-scm:
-  - git:
-      url: https://github.com/openstack-infra/jenkins-job-builder.git
-      branches:
-        - master
-      do-not-fetch-tags: true
-      honor-refspec: true

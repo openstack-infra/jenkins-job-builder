@@ -1,5 +1,0 @@
-publishers:
-  - pipeline:
-      project: test_project
-      current-parameters: true
-      predefined-parameters: foo=bar

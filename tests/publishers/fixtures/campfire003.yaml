@@ -1,6 +1,0 @@
-publishers:
-    - campfire:
-        subdomain: 'sub'
-        ssl: false
-        token: 'TOKEN'
-        room: 'room'

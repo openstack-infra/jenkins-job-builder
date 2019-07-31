@@ -1,4 +1,0 @@
-builders:
-  - shell:
-      command: "make test"
-      unstable-return: 3

@@ -1,3 +1,0 @@
-wrappers:
-  - mongo-db:
-      name: 2.4.6

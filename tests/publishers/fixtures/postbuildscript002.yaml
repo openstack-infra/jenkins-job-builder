@@ -1,5 +1,0 @@
-publishers:
-    - postbuildscript:
-        builders:
-            - shell: 'echo "Shell execution"'
-            - ant: 'ant_target'

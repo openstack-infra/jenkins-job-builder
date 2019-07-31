@@ -1,4 +1,0 @@
-triggers:
-  - reverse:
-        jobs: 'Fantastic-job'
-        result: 'failure'

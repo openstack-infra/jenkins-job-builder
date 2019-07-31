@@ -1,5 +1,0 @@
-wrappers:
-  - artifactory-maven:
-      url: http://artifactory.example.net/artifactory
-      name: 'test'
-      repo-key: repo

@@ -1,6 +1,0 @@
----
-properties:
-  - lockable-resources:
-      resources: "the-resource"
-      var-name: "RESOURCE_NAME"
-      number: 10

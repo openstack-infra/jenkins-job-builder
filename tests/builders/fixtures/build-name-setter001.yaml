@@ -1,4 +1,0 @@
-builders:
-      - build-name-setter:
-          name: 'version.txt'
-          file: true

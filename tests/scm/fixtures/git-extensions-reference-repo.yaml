@@ -1,4 +1,0 @@
-scm:
-  - git:
-      url: https://example.com/project.git
-      reference-repo: /path/to/reference/repo.git

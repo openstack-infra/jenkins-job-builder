@@ -1,3 +1,0 @@
-wrappers:
-  - android-emulator:
-      os: android-7

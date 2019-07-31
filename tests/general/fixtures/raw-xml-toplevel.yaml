@@ -1,3 +1,0 @@
-raw:
-  xml: |
-    <createdByJenkinsAutojobs><ref>refs/heads/branch</ref><tag>feature</tag></createdByJenkinsAutojobs>

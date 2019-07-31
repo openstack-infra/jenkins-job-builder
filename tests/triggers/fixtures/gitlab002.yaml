@@ -1,6 +1,0 @@
-triggers:
-  - gitlab:
-      include-branches:
-        - 'master'
-      exclude-branches:
-        - 'feature'

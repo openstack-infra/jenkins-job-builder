@@ -1,3 +1,0 @@
-wrappers:
-  - nodejs-installator:
-      name: "latest node"

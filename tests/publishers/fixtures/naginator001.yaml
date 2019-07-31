@@ -1,8 +1,0 @@
-publishers:
-  - naginator:
-      rerun-unstable-builds: true
-      rerun-matrix-part: true
-      progressive-delay-increment: 5
-      progressive-delay-maximum: 15
-      max-failed-builds: 6
-      regular-expression: "foo"

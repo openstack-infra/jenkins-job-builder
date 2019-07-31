@@ -1,3 +1,0 @@
-publishers:
- - rundeck:
-    job-id: testproject:group/jobname

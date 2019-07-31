@@ -1,5 +1,0 @@
-builders:
-  - trigger-builds:
-    - project: "build_started"
-      property-file: propfile.txt
-      block: true

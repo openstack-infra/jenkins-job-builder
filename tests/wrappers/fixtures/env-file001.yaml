@@ -1,3 +1,0 @@
-wrappers:
-  - env-file:
-      properties-file: /tmp/foo.txt

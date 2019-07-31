@@ -1,3 +1,0 @@
-publishers:
-  - logparser:
-      parse-rules: "project-log-parser-rules.txt"
